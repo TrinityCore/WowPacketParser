@@ -485,11 +485,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         var hasJumpExtraData = packet.ReadBit("HasJumpExtraData", index);
 
                         var hasAnimationTierTransition = false;
-                        var hasUnknown901 = false;
+                        var hasSplineVisual = false;
                         if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
                         {
                             hasAnimationTierTransition = packet.ReadBit("HasAnimationTierTransition", index);
-                            hasUnknown901 = packet.ReadBit("Unknown901", index);
+                            hasSplineVisual = packet.ReadBit("HasSplineVisual", index);
                         }
 
                         if (hasSplineFilterKey)
@@ -540,14 +540,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                             packet.ReadByte("AnimTier", index);
                         }
 
-                        if (hasUnknown901)
+                        if (hasSplineVisual)
                         {
                             for (var i = 0; i < 16; ++i)
                             {
-                                packet.ReadInt32("Unknown1", index, "Unknown901", i);
-                                packet.ReadInt32("Unknown2", index, "Unknown901", i);
-                                packet.ReadInt32("Unknown3", index, "Unknown901", i);
-                                packet.ReadInt32("Unknown4", index, "Unknown901", i);
+                                packet.ReadInt32("VisualSpellID", index, "SplineVisual", i);
+                                packet.ReadInt32("SpellXSpellVisualID", index, "SplineVisual", i);
+                                packet.ReadInt32("ScriptVisualID", index, "SplineVisual", i);
+                                packet.ReadInt32("SplineIndex", index, "SplineVisual", i);
                             }
                         }
                     }
