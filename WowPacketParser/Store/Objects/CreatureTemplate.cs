@@ -22,13 +22,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("name")]
         public string Name;
 
-        [DBFieldName("femaleName", TargetedDatabaseFlag.SinceCataclysm)]
+        [DBFieldName("femaleName", TargetedDatabaseFlag.SinceCataclysm | TargetedDatabaseFlag.AnyClassic)]
         public string FemaleName;
 
         [DBFieldName("subname", nullable: true)]
         public string SubName;
 
-        [DBFieldName("TitleAlt", TargetedDatabaseFlag.SinceWarlordsOfDraenor /*Mists of Pandaria*/, nullable: true)]
+        [DBFieldName("TitleAlt", TargetedDatabaseFlag.SinceWarlordsOfDraenor /*Mists of Pandaria*/ | TargetedDatabaseFlag.AnyClassic, nullable: true)]
         public string TitleAlt;
 
         [DBFieldName("IconName", nullable: true)]
@@ -134,13 +134,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unit_flags2")]
         public UnitFlags2? UnitFlags2;
 
-        [DBFieldName("unit_flags3", TargetedDatabaseFlag.SinceLegion)]
+        [DBFieldName("unit_flags3", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.AnyClassic)]
         public UnitFlags3? UnitFlags3;
 
         [DBFieldName("dynamicflags", TargetedDatabaseFlag.TillCataclysm)]
         public UnitDynamicFlags? DynamicFlags;
 
-        [DBFieldName("dynamicflags", TargetedDatabaseFlag.SinceWarlordsOfDraenor)]
+        [DBFieldName("dynamicflags", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.AnyClassic)]
         public UnitDynamicFlagsWOD? DynamicFlagsWod;
 
         [DBFieldName("VehicleId")]
