@@ -2164,7 +2164,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
             {
                 data.GlyphInfo[i] = ReadCreateGlyphInfo(packet, indexes, "GlyphInfo", i);
             }
-            data.Unk340_2 = packet.ReadByte("Unk340_2", indexes);
+            data.GlyphsEnabled = packet.ReadByte("GlyphsEnabled", indexes);
             for (var i = 0; i < data.KnownTitles.Count; ++i)
             {
                 data.KnownTitles[i] = packet.ReadUInt64("KnownTitles", indexes, i);
@@ -2838,7 +2838,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
                 }
                 if (changesMask[107])
                 {
-                    data.Unk340_2 = packet.ReadByte("Unk340_2", indexes);
+                    data.GlyphsEnabled = packet.ReadByte("GlyphsEnabled", indexes);
                 }
             }
             if (changesMask[108])
