@@ -16,10 +16,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("FirstLineID")]
         public uint? FirstLineID;
 
-        [DBFieldName("LastLineEndTime", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
+        [DBFieldName("LastLineEndTime", TargetedDatabaseFlag.TillBattleForAzeroth)]
         public uint? LastLineEndTime;
 
-        [DBFieldName("TextureKitId", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("TextureKitId", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public uint? TextureKitId;
 
         [DBFieldName("VerifiedBuild")]

@@ -13,10 +13,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("DifficultyID", true)]
         public uint? DifficultyID;
 
-        [DBFieldName("LevelScalingMin", TargetedDatabase.Legion, TargetedDatabase.Shadowlands)]
+        [DBFieldName("LevelScalingMin", TargetedDatabaseFlag.Legion | TargetedDatabaseFlag.BattleForAzeroth)]
         public uint? LevelScalingMin;
 
-        [DBFieldName("LevelScalingMax", TargetedDatabase.Legion, TargetedDatabase.Shadowlands)]
+        [DBFieldName("LevelScalingMax", TargetedDatabaseFlag.Legion | TargetedDatabaseFlag.BattleForAzeroth)]
         public uint? LevelScalingMax;
 
         [DBFieldName("LevelScalingDeltaMin")]
@@ -25,8 +25,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("LevelScalingDeltaMax")]
         public int? LevelScalingDeltaMax;
 
-        [DBFieldName("SandboxScalingID", TargetedDatabase.Legion, TargetedDatabase.BattleForAzeroth)]
-        [DBFieldName("ContentTuningID", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("SandboxScalingID", TargetedDatabaseFlag.Legion)]
+        [DBFieldName("ContentTuningID", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public int? ContentTuningID;
 
         [DBFieldName("VerifiedBuild")]

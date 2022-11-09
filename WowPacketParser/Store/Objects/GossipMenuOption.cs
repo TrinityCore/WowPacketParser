@@ -17,8 +17,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("OptionID", true)]
         public uint? OptionID;
 
-        [DBFieldName("OptionIcon", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
-        [DBFieldName("OptionNpc", TargetedDatabase.Shadowlands)]
+        [DBFieldName("OptionIcon", TargetedDatabaseFlag.TillBattleForAzeroth)]
+        [DBFieldName("OptionNpc", TargetedDatabaseFlag.SinceShadowlands)]
         public GossipOptionNpc? OptionNpc;
 
         [DBFieldName("OptionText")]
@@ -27,13 +27,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("OptionBroadcastTextId")]
         public int? OptionBroadcastTextId;
 
-        [DBFieldName("OptionType", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
+        [DBFieldName("OptionType", TargetedDatabaseFlag.TillBattleForAzeroth)]
         public GossipOptionType? OptionType;
 
-        [DBFieldName("OptionNpcFlag", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
+        [DBFieldName("OptionNpcFlag", TargetedDatabaseFlag.TillBattleForAzeroth)]
         public NPCFlags? OptionNpcFlag;
 
-        [DBFieldName("Language", TargetedDatabase.Shadowlands)]
+        [DBFieldName("Language", TargetedDatabaseFlag.SinceShadowlands)]
         public Language? Language;
 
         [DBFieldName("ActionMenuID")]

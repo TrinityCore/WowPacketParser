@@ -4,12 +4,12 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("spell_areatrigger_splines", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
-    [DBTableName("areatrigger_create_properties_spline_point", TargetedDatabase.Shadowlands)]
+    [DBTableName("spell_areatrigger_splines", TargetedDatabaseFlag.TillBattleForAzeroth)]
+    [DBTableName("areatrigger_create_properties_spline_point", TargetedDatabaseFlag.SinceShadowlands)]
     public sealed record AreaTriggerCreatePropertiesSplinePoint : IDataModel
     {
-        [DBFieldName("SpellMiscId", TargetedDatabase.Zero, TargetedDatabase.Shadowlands, true)]
-        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabase.Shadowlands, true)]
+        [DBFieldName("SpellMiscId", TargetedDatabaseFlag.TillBattleForAzeroth, true)]
+        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabaseFlag.SinceShadowlands, true)]
         public uint? AreaTriggerCreatePropertiesId;
 
         [DBFieldName("Idx", true)]

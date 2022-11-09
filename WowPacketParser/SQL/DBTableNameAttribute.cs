@@ -16,9 +16,7 @@ namespace WowPacketParser.SQL
         /// </summary>
         public readonly string Name;
 
-        private readonly TargetedDatabase? _addedInVersion;
-
-        private readonly TargetedDatabase? _removedInVersion;
+        private readonly TargetedDatabaseFlag _validForVersion;
 
         /// <summary>
         /// </summary>
@@ -26,42 +24,28 @@ namespace WowPacketParser.SQL
         public DBTableNameAttribute(string name)
         {
             Name = name;
+            _validForVersion = TargetedDatabaseFlag.Any;
         }
 
         /// <summary>
         /// </summary>
         /// <param name="name">table name</param>
         /// <param name="addedInVersion">initial version</param>
-        public DBTableNameAttribute(string name, TargetedDatabase addedInVersion)
+        public DBTableNameAttribute(string name, TargetedDatabaseFlag validForVersion)
             : this(name)
         {
-            _addedInVersion = addedInVersion;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="name">table name</param>
-        /// <param name="addedInVersion">initial version</param>
-        /// <param name="removedInVersion">final version</param>
-        public DBTableNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion)
-            : this(name, addedInVersion)
-        {
-            _removedInVersion = removedInVersion;
+            _validForVersion = validForVersion;
         }
 
         public bool IsVisible()
         {
-            TargetedDatabase target = Settings.TargetedDatabase;
+            int target = (int)Settings.TargetedDatabase;
+            TargetedDatabaseFlag targetFlag = (TargetedDatabaseFlag)(1 << target);
 
-            if (_addedInVersion.HasValue)
-                if (_addedInVersion.Value < target)
-                    return false;
+            if (_validForVersion.HasFlag(targetFlag))
+                return true;
 
-            if (_removedInVersion.HasValue)
-                if (target >= _removedInVersion.Value)
-                    return false;
-
-            return true;
+            return false;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Id", true)]
         public uint? ID;
 
-        [DBFieldName("UniqueID", TargetedDatabase.Shadowlands)]
+        [DBFieldName("UniqueID", TargetedDatabaseFlag.SinceShadowlands)]
         public uint? UniqueID;
 
         [DBFieldName("TableHash", true)]
@@ -19,10 +19,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RecordId", true)]
         public int? RecordID;
 
-        [DBFieldName("Deleted", TargetedDatabase.Zero, TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("Deleted", TargetedDatabaseFlag.TillLegion)]
         public bool? Deleted;
 
-        [DBFieldName("Status", TargetedDatabase.Shadowlands)]
+        [DBFieldName("Status", TargetedDatabaseFlag.SinceShadowlands)]
         public HotfixStatus? Status;
 
         [DBFieldName("VerifiedBuild")]

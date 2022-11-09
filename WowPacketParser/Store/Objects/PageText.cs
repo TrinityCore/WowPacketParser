@@ -16,10 +16,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("NextPageID")]
         public uint? NextPageID;
 
-        [DBFieldName("PlayerConditionID", TargetedDatabase.Legion)]
+        [DBFieldName("PlayerConditionID", TargetedDatabaseFlag.SinceLegion)]
         public int? PlayerConditionID;
 
-        [DBFieldName("Flags", TargetedDatabase.Legion)]
+        [DBFieldName("Flags", TargetedDatabaseFlag.SinceLegion)]
         public byte? Flags;
 
         [DBFieldName("VerifiedBuild")]

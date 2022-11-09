@@ -16,13 +16,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CombatReach")]
         public float? CombatReach;
 
-        [DBFieldName("Gender", TargetedDatabase.Classic, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("Gender", TargetedDatabaseFlag.TillCataclysm | TargetedDatabaseFlag.AnyClassic)]
         public Gender? Gender;
 
         [DBFieldName("DisplayID_Other_Gender")]
         public uint? DisplayIDOtherGender = 0;
 
-        [DBFieldName("VerifiedBuild", TargetedDatabase.Legion)]
+        [DBFieldName("VerifiedBuild", TargetedDatabaseFlag.SinceLegion)]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }
