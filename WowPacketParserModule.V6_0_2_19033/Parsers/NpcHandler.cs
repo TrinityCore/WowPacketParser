@@ -31,7 +31,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
                 gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OptionID", idx);
             else
-                packet.ReadInt32("GossipNPCOptionID", idx);
+                gossipOption.GossipNPCOptionID = packet.ReadInt32("GossipNPCOptionID", idx);
 
             gossipOption.OptionNpc = (GossipOptionNpc?)packet.ReadByte("OptionNPC", idx);
             gossipMessageOption.OptionNpc = (int) gossipOption.OptionNpc;
@@ -89,7 +89,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
                 gossipOption.FillOptionType(npcGuid);
 
-            Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
+                Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);
+            else
+                Storage.GossipMenuOptions.Add((gossipOption.MenuID, (uint)gossipOption.GossipNPCOptionID), gossipOption, packet.TimeSpan);
 
             return gossipMessageOption;
         }
@@ -190,7 +193,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packetGossip.GossipUnit = packet.ReadPackedGuid128("GossipUnit");
 
             var menuID = packetGossip.MenuId = packet.ReadUInt32("MenuID");
-            var optionID = packetGossip.OptionId = packet.ReadUInt32("OptionID");
+            uint optionID = 0;
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
+                optionID = packetGossip.OptionId = packet.ReadUInt32("OptionID");
+            else
+                optionID = packetGossip.OptionId = packet.ReadUInt32("GossipNPCOptionID");
 
             var bits8 = packet.ReadBits(8);
             packet.ResetBitReader();

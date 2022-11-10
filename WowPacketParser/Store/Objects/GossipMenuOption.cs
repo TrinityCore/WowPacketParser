@@ -34,10 +34,10 @@ namespace WowPacketParser.Store.Objects
         public Language? Language;
 
         [DBFieldName("ActionMenuID")]
-        public uint? ActionMenuID;
+        public uint? ActionMenuID = 0;
 
         [DBFieldName("ActionPoiID", false, true)]
-        public object ActionPoiID;
+        public object ActionPoiID = 0;
 
         [DBFieldName("BoxCoded")]
         public bool? BoxCoded;
@@ -53,6 +53,8 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
+
+        public int GossipNPCOptionID;
 
         public string BroadcastTextIDHelper;
 
