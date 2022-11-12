@@ -441,11 +441,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     packet.ReadVector3("Direction", index);
                     packet.ReadUInt32("TransportID", index);
                     packet.ReadSingle("Magnitude", index);
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
-                        packet.ReadInt32("field_34");
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_5_43903))
+                        packet.ReadInt32("Unused910");
                     packet.ReadBits("Type", 2, index);
 
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185) && ClientVersion.RemovedInVersion(ClientVersionBuild.V9_2_5_43903))
                     {
                         var unused910 = packet.ReadBit();
                         if (unused910)
