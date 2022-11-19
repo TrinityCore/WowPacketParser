@@ -107,8 +107,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadPackedGuid128("InspecteeGUID", idx);
             packet.ReadInt32("SpecializationID", idx);
             var itemCount = packet.ReadUInt32();
-            packet.ResetBitReader();
             var nameLen = packet.ReadBits(6);
+            packet.ResetBitReader();
             packet.ReadByteE<Gender>("GenderID", idx);
             packet.ReadByteE<Race>("Race", idx);
             packet.ReadByteE<Class>("ClassID", idx);
