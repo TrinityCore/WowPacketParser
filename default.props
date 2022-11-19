@@ -1,0 +1,18 @@
+<Project>
+    <PropertyGroup>
+        <OutputPath>bin/$(Configuration)/</OutputPath>
+        <TargetFramework>net7.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Company>TrinityCore</Company>
+        <Copyright>Copyright © 2010-2022</Copyright>
+        <PackageProjectUrl>https://www.trinitycore.org/</PackageProjectUrl>
+        <NeutralLanguage>en</NeutralLanguage>
+        <RepositoryUrl>https://github.com/TrinityCore/WowPacketParser</RepositoryUrl>
+        <RepositoryType>GitHub</RepositoryType>
+        <Authors>TrinityCore</Authors>
+
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+</Project>

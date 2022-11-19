@@ -1,56 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../default.props" />
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <Company>TrinityCore</Company>
-    <Copyright>Copyright © 2010-2020</Copyright>
-    <PackageProjectUrl>https://www.trinitycore.org/</PackageProjectUrl>
-    <NeutralLanguage>en</NeutralLanguage>
-    <RepositoryUrl>https://github.com/TrinityCore/WowPacketParser</RepositoryUrl>
-    <RepositoryType>GitHub</RepositoryType>
-    <Authors>TrinityCore</Authors>
-    <StartupObject>WowPacketParser.Program</StartupObject>
-  </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="DotNetZip" Version="1.16.0" />
+        <PackageReference Include="MySql.Data" Version="8.0.31" />
+        <PackageReference Include="RawScape.Wintellect.PowerCollections" Version="1.0.1" />
+        <PackageReference Include="Sigil" Version="5.0.0" />
+        <PackageReference Include="SSH.NET" Version="2020.0.2" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+        <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
+    </ItemGroup>
 
-  <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-  </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="DBFileReaderLib">
+            <HintPath>..\packages\DBFileReaderLib.1.0.0.0\lib\DBFileReaderLib.dll</HintPath>
+        </Reference>
+    </ItemGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="DotNetZip" Version="1.15.0" />
-    <PackageReference Include="MySql.Data" Version="8.0.30" />
-    <PackageReference Include="RawScape.Wintellect.PowerCollections" Version="1.0.1" />
-    <PackageReference Include="Sigil" Version="5.0.0" />
-    <PackageReference Include="SSH.NET" Version="2020.0.2" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.7" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="DBFileReaderLib">
-      <HintPath>..\packages\DBFileReaderLib.1.0.0.0\lib\DBFileReaderLib.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\WowPacketParser.Proto\WowPacketParser.Proto.csproj" />
-  </ItemGroup>
-
+    <ItemGroup>
+        <ProjectReference Include="..\WowPacketParser.Proto\WowPacketParser.Proto.csproj" />
+    </ItemGroup>
 </Project>

@@ -1,41 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../default.props" />
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Copyright>Copyright © 2013-2020</Copyright>
-    <Authors>TrinityCore</Authors>
-    <PackageProjectUrl>https://www.trinitycore.org/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/TrinityCore/WowPacketParser</RepositoryUrl>
-    <RepositoryType>GitHub</RepositoryType>
-    <NeutralLanguage>en</NeutralLanguage>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputPath>../WowPacketParser/bin/$(Configuration)/Parsers/</OutputPath>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-  </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Sigil" Version="5.0.0" />
+    </ItemGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\WowPacketParser\bin\Release\Parsers\</OutputPath>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <OutputPath>..\WowPacketParser\bin\Debug\Parsers\</OutputPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Sigil" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
-      <EmbedInteropTypes>false</EmbedInteropTypes>
-      <Private>false</Private>
-    </ProjectReference>
-  </ItemGroup>
-
+    <ItemGroup>
+        <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
+            <EmbedInteropTypes>false</EmbedInteropTypes>
+            <Private>false</Private>
+        </ProjectReference>
+    </ItemGroup>
 </Project>
