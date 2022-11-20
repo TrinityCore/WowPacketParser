@@ -254,9 +254,7 @@ namespace WowPacketParser.Misc
             if (!Settings.DumpFormatWithText())
                 return;
 
-            if (Writer == null)
-                Writer = new StringBuilder();
-
+            Writer ??= new StringBuilder();
             Writer.Append(value);
         }
 
@@ -265,9 +263,7 @@ namespace WowPacketParser.Misc
             if (!Settings.DumpFormatWithText())
                 return;
 
-            if (Writer == null)
-                Writer = new StringBuilder();
-
+            Writer ??= new StringBuilder();
             Writer.AppendFormat(format, args);
         }
 
@@ -276,9 +272,7 @@ namespace WowPacketParser.Misc
             if (!Settings.DumpFormatWithText())
                 return;
 
-            if (Writer == null)
-                Writer = new StringBuilder();
-
+            Writer ??= new StringBuilder();
             Writer.AppendLine();
         }
 
@@ -287,9 +281,7 @@ namespace WowPacketParser.Misc
             if (!Settings.DumpFormatWithText())
                 return;
 
-            if (Writer == null)
-                Writer = new StringBuilder();
-
+            Writer ??= new StringBuilder();
             Writer.AppendLine(value);
         }
 
@@ -298,9 +290,7 @@ namespace WowPacketParser.Misc
             if (!Settings.DumpFormatWithText())
                 return;
 
-            if (Writer == null)
-                Writer = new StringBuilder();
-
+            Writer ??= new StringBuilder();
             Writer.AppendLine(string.Format(format, args));
         }
 
@@ -320,7 +310,12 @@ namespace WowPacketParser.Misc
 
         public T AddValue<T>(string name, T obj, params object[] indexes)
         {
-            WriteLine("{0}{1}: {2}", GetIndexString(indexes), name, obj);
+            if (!Settings.DumpFormatWithText())
+                return obj;
+
+            Writer ??= new StringBuilder();
+            Writer.AppendLine($"{GetIndexString(indexes)}{name}: {obj}");
+
             return obj;
         }
     }
