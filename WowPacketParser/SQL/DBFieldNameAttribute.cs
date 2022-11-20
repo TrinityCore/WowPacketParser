@@ -11,7 +11,7 @@ namespace WowPacketParser.SQL
     ///  arrays ("dmg_min1, dmg_min2, dmg_min3" -> name = dmg_min, count = 3, startAtZero = false)
     /// </summary>
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
-    public sealed class DBFieldNameAttribute : Attribute
+    public sealed class DBFieldNameAttribute : Attribute, IAttribute
     {
         /// <summary>
         /// Column name
