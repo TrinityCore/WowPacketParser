@@ -122,10 +122,10 @@ namespace WowPacketParser.Tests.Misc
         }
 
         [AttributeUsage(AttributeTargets.Field)]
-        private class FieldTestAttribute : Attribute { }
+        private class FieldTestAttribute : Attribute, IAttribute { }
 
         [AttributeUsage(AttributeTargets.Field)]
-        private class FieldDummyTestAttribute : Attribute { }
+        private class FieldDummyTestAttribute : Attribute, IAttribute { }
 
         private class TestFoo
         {
