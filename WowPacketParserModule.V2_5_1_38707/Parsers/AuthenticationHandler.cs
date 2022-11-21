@@ -15,7 +15,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
             var queued = packet.ReadBit("Queued");
             if (ok)
             {
-                packet.ReadUInt32("VirtualRealmAddress");
+                packet.ReadUInt32_Sanitize("VirtualRealmAddress");
                 var realms = packet.ReadUInt32();
                 packet.ReadUInt32("TimeRested");
                 packet.ReadByte("ActiveExpansionLevel");

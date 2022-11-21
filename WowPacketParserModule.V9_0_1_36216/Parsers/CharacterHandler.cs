@@ -85,7 +85,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             for (var j = 0; j < mailSenderLengths.Length; ++j)
                 if (mailSenderLengths[j] > 1)
-                    packet.ReadDynamicString("MailSender", mailSenderLengths[j], idx);
+                    packet.ReadDynamicString_Sanitize("MailSender", mailSenderLengths[j], idx);
 
             var name = packet.ReadWoWString_Sanitize("Character Name", nameLength, idx);
 

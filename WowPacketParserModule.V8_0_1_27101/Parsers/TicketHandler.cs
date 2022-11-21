@@ -18,12 +18,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var textLen = packet.ReadBits(12);
 
             if (hasClubID)
-                packet.ReadUInt64("ClubID", indexes);
+                packet.ReadUInt64_Sanitize("ClubID", indexes);
             if (hasChannelGUID)
                 packet.ReadPackedGuid128("ChannelGUID", indexes);
             if (hasRealmAddress)
             {
-                packet.ReadUInt32("VirtualRealmAddress", indexes);
+                packet.ReadUInt32_Sanitize("VirtualRealmAddress", indexes);
                 packet.ReadUInt16("field_4", indexes);
                 packet.ReadByte("field_6", indexes);
             }
@@ -42,11 +42,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         public static void ReadClubFinderResult(Packet packet, params object[] indexes)
         {
-            packet.ReadUInt64("ClubFinderPostingID", indexes);
-            packet.ReadUInt64("ClubID ", indexes);
+            packet.ReadUInt64_Sanitize("ClubFinderPostingID", indexes);
+            packet.ReadUInt64_Sanitize("ClubID ", indexes);
             packet.ReadPackedGuid128("ClubFinderGUID", indexes);
             var nameLen = packet.ReadBits(12);
-            packet.ReadWoWString("ClubName", nameLen, indexes);
+            packet.ReadWoWString_Sanitize("ClubName", nameLen, indexes);
         }
 
         public static void ReadUnused910(Packet packet, params object[] indexes)
