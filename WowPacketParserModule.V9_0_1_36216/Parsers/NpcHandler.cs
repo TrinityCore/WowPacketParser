@@ -140,22 +140,22 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             int optionsCount = packet.ReadInt32("GossipOptionsCount");
             int questsCount = packet.ReadInt32("GossipQuestsCount");
 
-            bool hasUnk1000_field3C = false;
             bool hasBroadcastTextID = false;
+            bool hasBroadcastTextID2 = false;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
             {
-                hasUnk1000_field3C = packet.ReadBit("Unk1000_field_3C");
                 hasBroadcastTextID = packet.ReadBit("HasBroadcastTextID");
+                hasBroadcastTextID2 = packet.ReadBit("HasBroadcastTextID2");
             }
 
             for (int i = 0; i < optionsCount; ++i)
                 packetGossip.Options.Add(V6_0_2_19033.Parsers.NpcHandler.ReadGossipOptionsData((uint)menuId, guid, packet, i, "GossipOptions"));
 
-            if (hasUnk1000_field3C)
-                packet.ReadInt32("Unk1000_field_38");
-
             if (hasBroadcastTextID)
                 broadcastTextID = (uint)packet.ReadInt32("BroadcastTextID");
+
+            if (hasBroadcastTextID2)
+                broadcastTextID = (uint)packet.ReadInt32("BroadcastTextID2");
 
             for (int i = 0; i < questsCount; ++i)
                 packetGossip.Quests.Add(V7_0_3_22248.Parsers.NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests"));

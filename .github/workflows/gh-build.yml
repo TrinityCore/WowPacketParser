@@ -1,0 +1,40 @@
+name: WPP
+
+on:
+  push:
+  pull_request:
+
+env:
+  DOTNET_VERSION: '7.0.x'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        configuration: [Debug, Release]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --configuration ${{ matrix.configuration }} --no-restore
+      
+    - name: Execute unit tests
+      run: dotnet test --configuration ${{ matrix.configuration }} --no-build
+      
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: WPP-${{ matrix.os }}-${{ matrix.configuration }}
+        path: WowPacketParser/bin/${{ matrix.configuration }}/

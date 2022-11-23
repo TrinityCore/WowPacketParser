@@ -1,23 +1,28 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class ItemHandler
     {
-        public static void ItemEnchantInstanceData(Packet packet, params object[] idx)
+        public static ItemEnchantData ItemEnchantInstanceData(Packet packet, params object[] idx)
         {
-            packet.ReadUInt32("ID");
-            packet.ReadUInt32("Expiration");
-            packet.ReadUInt32("Charges");
-            packet.ReadByte("Slot");
+            var data = new ItemEnchantData();
+            data.ID = packet.ReadInt32("ID");
+            data.Expiration = packet.ReadUInt32("Expiration");
+            data.Charges = packet.ReadUInt32("Charges");
+            data.Slot = packet.ReadByte("Slot");
+            return data;
         }
 
-        public static void ReadItemGemInstanceData(Packet packet, params object[] idx)
+        public static ItemGemData ReadItemGemInstanceData(Packet packet, params object[] idx)
         {
-            packet.ReadByte("Slot", idx);
-            Substructures.ItemHandler.ReadItemInstance(packet, "Item", idx);
+            var data = new ItemGemData();
+            data.Slot = packet.ReadByte("Slot", idx);
+            data.Item = Substructures.ItemHandler.ReadItemInstance(packet, "Item", idx);
+            return data;
         }
 
         [Parser(Opcode.SMSG_ITEM_PUSH_RESULT)]

@@ -14,8 +14,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt32("Index", idx);
             packet.ReadUInt32("AzeriteEssenceID", idx);
             packet.ReadUInt32("Rank", idx);
-            packet.ResetBitReader();
             packet.ReadBit("SlotUnlocked", idx);
+            packet.ResetBitReader();
         }
 
         public static void ReadInspectItemData(Packet packet, params object[] idx)
@@ -33,15 +33,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             Substructures.ItemHandler.ReadItemInstance(packet, idx);
 
-            packet.ResetBitReader();
             packet.ReadBit("Usable", idx);
             var enchantsCount = packet.ReadBits("EnchantsCount", 4, idx);
             var gemsCount = packet.ReadBits("GemsCount", 2, idx);
+            packet.ResetBitReader();
 
             for (int i = 0; i < azeriteEssenceCount; i++)
-            {
                 ReadAzeriteEssenceData(packet, "AzeriteEssence", i);
-            }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
             {
@@ -78,8 +76,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadPackedGuid128("InspecteeGUID", idx);
             packet.ReadInt32("SpecializationID", idx);
             var itemCount = packet.ReadUInt32();
-            packet.ResetBitReader();
             var nameLen = packet.ReadBits(6);
+            packet.ResetBitReader();
             packet.ReadByteE<Gender>("GenderID", idx);
             packet.ReadByte("Skin", idx);
             packet.ReadByte("HairColor", idx);
@@ -293,14 +291,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             for (int i = 0; i < pvpTalentCount; i++)
                 packet.ReadUInt16("PvpTalents", i);
 
-            packet.ResetBitReader();
             var hasGuildData = packet.ReadBit("HasGuildData");
             var hasAzeriteLevel = packet.ReadBit("HasAzeriteLevel");
+            packet.ResetBitReader();
 
             for (int i = 0; i < itemCount; i++)
-            {
                 ReadInspectItemData(packet, "Item", i);
-            }
 
             if (hasGuildData)
             {
@@ -353,9 +349,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             for (int i = 0; i < pvpTalentCount; i++)
                 packet.ReadUInt16("PvpTalents", i);
 
-            packet.ResetBitReader();
             var hasGuildData = packet.ReadBit("HasGuildData");
             var hasAzeriteLevel = packet.ReadBit("HasAzeriteLevel");
+            packet.ResetBitReader();
 
             for (int i = 0; i < 6; i++)
             {

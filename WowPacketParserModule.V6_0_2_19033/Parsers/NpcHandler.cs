@@ -31,7 +31,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
                 gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OptionID", idx);
             else
-                packet.ReadInt32("GossipNPCOptionID", idx);
+                gossipOption.GossipOptionID = packet.ReadInt32("GossipOptionID", idx);
 
             gossipOption.OptionNpc = (GossipOptionNpc?)packet.ReadByte("OptionNPC", idx);
             gossipMessageOption.OptionNpc = (int) gossipOption.OptionNpc;
@@ -45,7 +45,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
             {
-                packet.ReadInt32("Unk1000_field_17B0", idx);
+                gossipOption.Flags = packet.ReadInt32("Flags", idx);
                 gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OptionID", idx);
             }
 
@@ -53,14 +53,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             uint textLen = packet.ReadBits(12);
             uint confirmLen = packet.ReadBits(12);
             bool hasSpellId = false;
-            bool hasUnk1000 = false;
+            bool hasOverrideIconId = false;
             if (ClientVersion.AddedInVersion(ClientType.Shadowlands) || ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build))
             {
                 packet.ReadBits("Status", 2, idx);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639) || ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build))
                     hasSpellId = packet.ReadBit();
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
-                    hasUnk1000 = packet.ReadBit();
+                    hasOverrideIconId = packet.ReadBit();
 
                 uint rewardsCount = packet.ReadUInt32();
                 for (uint i = 0; i < rewardsCount; ++i)
@@ -79,17 +79,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 gossipOption.BoxText = gossipMessageOption.BoxText;
 
             if (hasSpellId)
-                packet.ReadInt32("SpellID", idx);
+                gossipOption.SpellID = packet.ReadInt32("SpellID", idx);
 
-            if (hasUnk1000)
-                packet.ReadInt32("Unk1000_field_17A8", idx);
+            if (hasOverrideIconId)
+                gossipOption.OverrideIconID = packet.ReadInt32("OverrideIconID", idx);
 
             gossipOption.FillBroadcastTextIDs();
 
             if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
                 gossipOption.FillOptionType(npcGuid);
 
-            Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
+                Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);
+            else
+                Storage.GossipMenuOptions.Add((gossipOption.MenuID, (uint)gossipOption.GossipOptionID), gossipOption, packet.TimeSpan);
 
             return gossipMessageOption;
         }
@@ -190,7 +193,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packetGossip.GossipUnit = packet.ReadPackedGuid128("GossipUnit");
 
             var menuID = packetGossip.MenuId = packet.ReadUInt32("MenuID");
-            var optionID = packetGossip.OptionId = packet.ReadUInt32("OptionID");
+            uint optionID = 0;
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
+                optionID = packetGossip.OptionId = packet.ReadUInt32("OptionID");
+            else
+                optionID = packetGossip.OptionId = packet.ReadUInt32("GossipOptionID");
 
             var bits8 = packet.ReadBits(8);
             packet.ResetBitReader();

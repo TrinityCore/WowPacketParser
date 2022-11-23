@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -13,6 +14,8 @@ namespace WowPacketParser.Misc
 {
     public static class Utilities
     {
+        private static ConcurrentDictionary<Type, Dictionary<FieldInfo, List<IAttribute>>> _typeCache = new();
+
         public static DateTime GetDateTimeFromUnixTime(long unixTime)
         {
             try
@@ -276,13 +279,16 @@ namespace WowPacketParser.Misc
         /// <typeparam name="T">Type (class/struct)</typeparam>
         /// <typeparam name="TK">Attribute</typeparam>
         /// <returns>A list of tuples where Item1 is FieldInfo and Item2 the corresponding attribute</returns>
-        public static Dictionary<FieldInfo, List<TK>> GetFieldsAndAttributes<T, TK>(bool remove = true) where TK : Attribute
+        public static Dictionary<FieldInfo, List<IAttribute>> GetFieldsAndAttributes<T, TK>(bool remove = true) where TK : IAttribute
         {
+            if (_typeCache.TryGetValue(typeof(T), out var dict))
+                return dict;
+
             var fi = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance);
             if (fi.Length <= 0)
                 return null;
 
-            var dict = new Dictionary<FieldInfo, List<TK>>(fi.Length);
+            dict = new Dictionary<FieldInfo, List<IAttribute>>(fi.Length);
 
             foreach (FieldInfo field in fi)
             {
@@ -290,8 +296,10 @@ namespace WowPacketParser.Misc
                 if (remove && attrs.Length <= 0)
                     continue;
 
-                dict.Add(field, ((TK[]) attrs).ToList());
+                dict.Add(field, ((IAttribute[]) attrs).ToList());
             }
+
+            _typeCache[typeof(T)] = dict;
 
             return dict;
         }

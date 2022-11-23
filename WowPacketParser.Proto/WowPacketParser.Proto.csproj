@@ -1,39 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../default.props" />
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <Authors>TrinityCore</Authors>
-        <Company>TrinityCore</Company>
-        <Copyright>Copyright © 2014-2020</Copyright>
-        <PackageProjectUrl>https://www.trinitycore.org/</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/TrinityCore/WowPacketParser</RepositoryUrl>
-        <RepositoryType>GitHub</RepositoryType>
-        <NeutralLanguage>en</NeutralLanguage>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <OutputPath>..\WowPacketParser\bin\Debug\Parsers\</OutputPath>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-        <WarningsAsErrors />
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <OutputPath>..\WowPacketParser\bin\Release\Parsers\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-        <WarningsAsErrors />
-    </PropertyGroup>
-    
     <ItemGroup>
-        <PackageReference Include="Google.Protobuf" Version="3.17.3" />
-        <PackageReference Include="Grpc" Version="2.38.0" />
-        <PackageReference Include="Grpc.Tools" Version="2.38.0">
+        <PackageReference Include="Google.Protobuf" Version="3.21.9" />
+        <PackageReference Include="Grpc" Version="2.46.5" />
+        <PackageReference Include="Grpc.Tools" Version="2.50.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -42,5 +17,4 @@
     <ItemGroup>
         <Protobuf Include="PacketStructures\structures.proto" GrpcServices="None" />
     </ItemGroup>
-
 </Project>

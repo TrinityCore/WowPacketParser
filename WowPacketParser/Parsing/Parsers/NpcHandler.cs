@@ -18,6 +18,7 @@ namespace WowPacketParser.Parsing.Parsers
         public uint? OptionIndex { get; set; }
         public uint? ActionMenuId { get; set; }
         public object ActionPoiId { get; set; }
+        public int? GossipNpcOptionId { get; set; }
         public TimeSpan TimeSpan { get; set; }
 
         public bool HasSelection { get { return MenuId.HasValue && OptionIndex.HasValue; } }
@@ -28,6 +29,7 @@ namespace WowPacketParser.Parsing.Parsers
             OptionIndex = optionId;
             ActionMenuId = null;
             ActionPoiId = null;
+            GossipNpcOptionId = null;
             TimeSpan = timespan;
         }
 
@@ -38,6 +40,7 @@ namespace WowPacketParser.Parsing.Parsers
             OptionIndex = null;
             ActionMenuId = null;
             ActionPoiId = null;
+            GossipNpcOptionId = null;
             TimeSpan = TimeSpan.Zero;
         }
     }
@@ -47,6 +50,16 @@ namespace WowPacketParser.Parsing.Parsers
         public static uint LastGossipPOIEntry;
         public static GossipOptionSelection LastGossipOption = new GossipOptionSelection();
         public static GossipOptionSelection TempGossipOptionPOI = new GossipOptionSelection();
+
+        public static void AddGossipNpcOption(int gossipNpcOptionId, TimeSpan timeSpan, bool checkDelay = false)
+        {
+            if (LastGossipOption.HasSelection)
+                if (!checkDelay || (timeSpan - LastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
+                    Storage.GossipMenuOptions[(LastGossipOption.MenuId, LastGossipOption.OptionIndex)].Item1.GossipNpcOptionID = gossipNpcOptionId;
+
+            LastGossipOption.Reset();
+            TempGossipOptionPOI.Reset();
+        }
 
         public static void AddToCreatureTrainers(uint? trainerId, TimeSpan timeSpan, bool checkDelay = false)
         {

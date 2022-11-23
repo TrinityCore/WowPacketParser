@@ -1,52 +1,34 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../default.props" />
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Authors>TrinityCore</Authors>
-    <Copyright>Copyright © 2015-2020</Copyright>
-    <PackageProjectUrl>https://www.trinitycore.org/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/TrinityCore/WowPacketParser</RepositoryUrl>
-    <RepositoryType>GitHub</RepositoryType>
-    <NeutralLanguage>en</NeutralLanguage>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputPath>../WowPacketParser/bin/$(Configuration)/Parsers/</OutputPath>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-  </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Sigil" Version="5.0.0" />
+    </ItemGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\WowPacketParser\bin\Debug\Parsers\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\WowPacketParser\bin\Release\Parsers\</OutputPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Sigil" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\WowPacketParserModule.Substructures\WowPacketParserModule.Substructures.csproj">
-      <EmbedInteropTypes>false</EmbedInteropTypes>
-      <Private>true</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\WowPacketParserModule.V6_0_2_19033\WowPacketParserModule.V6_0_2_19033.csproj">
-      <EmbedInteropTypes>false</EmbedInteropTypes>
-      <Private>false</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\WowPacketParserModule.V7_0_3_22248\WowPacketParserModule.V7_0_3_22248.csproj">
-      <EmbedInteropTypes>false</EmbedInteropTypes>
-      <Private>false</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\WowPacketParserModule.V8_0_1_27101\WowPacketParserModule.V8_0_1_27101.csproj">
-      <EmbedInteropTypes>false</EmbedInteropTypes>
-      <Private>false</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
-      <EmbedInteropTypes>false</EmbedInteropTypes>
-      <Private>false</Private>
-    </ProjectReference>
-  </ItemGroup>
-
+    <ItemGroup>
+        <ProjectReference Include="..\WowPacketParserModule.Substructures\WowPacketParserModule.Substructures.csproj">
+            <EmbedInteropTypes>false</EmbedInteropTypes>
+            <Private>true</Private>
+        </ProjectReference>
+        <ProjectReference Include="..\WowPacketParserModule.V6_0_2_19033\WowPacketParserModule.V6_0_2_19033.csproj">
+            <EmbedInteropTypes>false</EmbedInteropTypes>
+            <Private>false</Private>
+        </ProjectReference>
+        <ProjectReference Include="..\WowPacketParserModule.V7_0_3_22248\WowPacketParserModule.V7_0_3_22248.csproj">
+            <EmbedInteropTypes>false</EmbedInteropTypes>
+            <Private>false</Private>
+        </ProjectReference>
+        <ProjectReference Include="..\WowPacketParserModule.V8_0_1_27101\WowPacketParserModule.V8_0_1_27101.csproj">
+            <EmbedInteropTypes>false</EmbedInteropTypes>
+            <Private>false</Private>
+        </ProjectReference>
+        <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
+            <EmbedInteropTypes>false</EmbedInteropTypes>
+            <Private>false</Private>
+        </ProjectReference>
+    </ItemGroup>
 </Project>

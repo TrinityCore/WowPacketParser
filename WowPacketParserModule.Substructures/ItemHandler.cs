@@ -17,6 +17,7 @@ namespace WowPacketParserModule.Substructures
 
             var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
             var hasModifications = packet.ReadBit("HasModifications", indexes);
+            packet.ResetBitReader();
             if (hasBonuses)
             {
                 instance.Context = packet.ReadByte("Context", indexes);
@@ -50,6 +51,7 @@ namespace WowPacketParserModule.Substructures
             packet.ResetBitReader();
             var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
             var hasModifications = packet.ReadBit("HasModifications", indexes);
+            packet.ResetBitReader();
             if (hasBonuses)
             {
                 instance.Context = packet.ReadByte("Context", indexes);
@@ -82,10 +84,11 @@ namespace WowPacketParserModule.Substructures
 
             packet.ResetBitReader();
             var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
+            packet.ResetBitReader();
 
             {
-                packet.ResetBitReader();
                 var modificationCount = packet.ReadBits(6);
+                packet.ResetBitReader();
                 for (var j = 0u; j < modificationCount; ++j)
                 {
                     var value = packet.ReadInt32();
@@ -117,10 +120,11 @@ namespace WowPacketParserModule.Substructures
 
             packet.ResetBitReader();
             var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
+            packet.ResetBitReader();
 
             {
-                packet.ResetBitReader();
                 var modificationCount = packet.ReadBits(6);
+                packet.ResetBitReader();
                 for (var j = 0u; j < modificationCount; ++j)
                 {
                     var value = packet.ReadInt32();

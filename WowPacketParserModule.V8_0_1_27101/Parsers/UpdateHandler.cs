@@ -441,11 +441,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     packet.ReadVector3("Direction", index);
                     packet.ReadUInt32("TransportID", index);
                     packet.ReadSingle("Magnitude", index);
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
-                        packet.ReadInt32("field_34");
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_5_43903))
+                        packet.ReadInt32("Unused910");
                     packet.ReadBits("Type", 2, index);
 
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185) && ClientVersion.RemovedInVersion(ClientVersionBuild.V9_2_5_43903))
                     {
                         var unused910 = packet.ReadBit();
                         if (unused910)
@@ -686,8 +686,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         areaTriggerTemplate.Type = (byte)AreaTriggerType.Disk;
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
-                    if (packet.ReadBit("HasAreaTriggerUnk1000", index))
-                        areaTriggerTemplate.Type = (byte)AreaTriggerType.Unk1000;
+                    if (packet.ReadBit("HasAreaTriggerBoundedPlane", index))
+                        areaTriggerTemplate.Type = (byte)AreaTriggerType.BoundedPlane;
 
                 bool hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
 
@@ -812,12 +812,15 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     areaTriggerTemplate.Data[7] = packet.ReadSingle("LocationZOffsetTarget", index);
                 }
 
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Unk1000)
+                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.BoundedPlane)
                 {
-                    areaTriggerTemplate.Data[0] = packet.ReadSingle("field_F0", index);
-                    areaTriggerTemplate.Data[1] = packet.ReadSingle("field_F4", index);
-                    areaTriggerTemplate.Data[2] = packet.ReadSingle("field_F8", index);
-                    areaTriggerTemplate.Data[3] = packet.ReadSingle("field_FC", index);
+                    Vector2 extents = packet.ReadVector2("Extents", index);
+                    Vector2 extentsTarget = packet.ReadVector2("ExtentsTarget", index);
+
+                    areaTriggerTemplate.Data[0] = extents.X;
+                    areaTriggerTemplate.Data[1] = extents.Y;
+                    areaTriggerTemplate.Data[2] = extentsTarget.X;
+                    areaTriggerTemplate.Data[3] = extentsTarget.Y;
                 }
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasMovementScript) != 0)
