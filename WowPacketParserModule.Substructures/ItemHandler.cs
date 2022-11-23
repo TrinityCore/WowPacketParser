@@ -160,5 +160,25 @@ namespace WowPacketParserModule.Substructures
                 return ReadItemInstance901(packet, indexes);
             return ReadItemInstance815(packet, indexes);
         }
+
+        public static ItemEnchantData ReadItemEnchantData(Packet packet, params object[] indexes)
+        {
+            return new ItemEnchantData
+            {
+                ID = packet.ReadInt32("ID", indexes),
+                Expiration = packet.ReadUInt32("Expiration", indexes),
+                Charges = packet.ReadInt32("Charges", indexes),
+                Slot = packet.ReadByte("Slot", indexes)
+            };
+        }
+
+        public static ItemGemData ReadItemGemData(Packet packet, params object[] indexes)
+        {
+            return new ItemGemData
+            {
+                Slot = packet.ReadByte("Slot", indexes),
+                Item = ReadItemInstance(packet, "Item", indexes)
+            };
+        }
     }
 }

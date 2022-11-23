@@ -64,10 +64,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("Unlocked", idx);
 
             for (var i = 0; i < bits1; i++)
-                ItemHandler.ReadItemGemInstanceData(packet, idx, i);
+                Substructures.ItemHandler.ReadItemGemData(packet, idx, i);
 
             for (var i = 0; i < bits2; i++)
-                ItemHandler.ItemEnchantInstanceData(packet, idx, i);
+                Substructures.ItemHandler.ReadItemEnchantData(packet, idx, i);
         }
 
         [Parser(Opcode.SMSG_MAIL_LIST_RESULT)]

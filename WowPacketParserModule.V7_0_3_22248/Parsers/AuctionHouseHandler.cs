@@ -33,17 +33,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ResetBitReader();
 
             for (int i = 0; i < gemsCount; i++)
-            {
-                ItemHandler.ReadItemGemInstanceData(packet, "Gems", idx, i);
-            }
+                Substructures.ItemHandler.ReadItemGemData(packet, idx, "Gems", i);
 
             for (int i = 0; i < enchantmentsCount; i++)
-            {
-                packet.ReadInt32("ID", idx, i);
-                packet.ReadUInt32("Expiration", idx, i);
-                packet.ReadInt32("Charges", idx, i);
-                packet.ReadByte("Slot", idx, i);
-            }
+                Substructures.ItemHandler.ReadItemEnchantData(packet, idx, "Enchantments", i);
 
             if (!censorServerSideInfo)
             {

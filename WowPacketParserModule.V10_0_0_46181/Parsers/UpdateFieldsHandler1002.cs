@@ -2892,11 +2892,11 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_2_46479
 
             for (var i = 0; i < data.Enchantments.Count; ++i)
             {
-                data.Enchantments[i] = V7_0_3_22248.Parsers.ItemHandler.ItemEnchantInstanceData(packet, indexes, "Enchantments", i);
+                data.Enchantments[i] = Substructures.ItemHandler.ReadItemEnchantData(packet, indexes, "Enchantments", i);
             }
             for (var i = 0; i < data.Gems.Count; ++i)
             {
-                data.Gems[i] = V7_0_3_22248.Parsers.ItemHandler.ReadItemGemInstanceData(packet, indexes, "Gem", i);
+                data.Gems[i] = Substructures.ItemHandler.ReadItemGemData(packet, indexes, "Gem", i);
             }
             return data;
         }
@@ -2923,7 +2923,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_2_46479
                 {
                     if (data.Enchantments.UpdateMask[i])
                     {
-                        data.Enchantments[i] = V7_0_3_22248.Parsers.ItemHandler.ItemEnchantInstanceData(packet, indexes, "Enchantments", i);
+                        data.Enchantments[i] = Substructures.ItemHandler.ReadItemEnchantData(packet, indexes, "Enchantments", i);
                     }
                 }
             }
@@ -2933,7 +2933,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_2_46479
                 {
                     if (data.Gems.UpdateMask[i])
                     {
-                        data.Gems[i] = V7_0_3_22248.Parsers.ItemHandler.ReadItemGemInstanceData(packet, indexes, "Gems", i);
+                        data.Gems[i] = Substructures.ItemHandler.ReadItemGemData(packet, indexes, "Gems", i);
                     }
                 }
             }

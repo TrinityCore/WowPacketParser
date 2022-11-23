@@ -5,7 +5,7 @@ namespace WowPacketParser.Store.Objects
     {
         public int ID;
         public uint Expiration;
-        public uint Charges;
+        public int Charges;
         public byte Slot;
     }
 }
