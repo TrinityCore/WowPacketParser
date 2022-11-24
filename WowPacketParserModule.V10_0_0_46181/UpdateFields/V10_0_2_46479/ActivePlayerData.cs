@@ -103,7 +103,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_2_46479
         public System.Nullable<int> TransportServerTime { get; set; }
         public System.Nullable<uint> WeeklyRewardsPeriodSinceOrigin { get; set; }
         public System.Nullable<short> DEBUGSoulbindConduitRank { get; set; }
-        public System.Nullable<int> ActiveTraitConfigID { get; set; }
+        public System.Nullable<uint> ActiveCombatTraitConfigID { get; set; }
         public DynamicUpdateField<IResearch>[] Research { get; } = new DynamicUpdateField<IResearch>[1] { new DynamicUpdateField<IResearch>() };
         public DynamicUpdateField<System.Nullable<ulong>> KnownTitles { get; } = new DynamicUpdateField<System.Nullable<ulong>>();
         public DynamicUpdateField<System.Nullable<ushort>> ResearchSites { get; } = new DynamicUpdateField<System.Nullable<ushort>>();

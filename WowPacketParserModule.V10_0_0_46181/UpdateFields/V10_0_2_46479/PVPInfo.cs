@@ -7,7 +7,8 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_2_46479
 {
     public class PVPInfo : IPVPInfo
     {
-        public System.Nullable<sbyte> Field_00 { get; set; }
+        public System.Nullable<sbyte> Bracket { get; set; }
+        public System.Nullable<int> PvpRatingID { get; set; }
         public System.Nullable<uint> WeeklyPlayed { get; set; }
         public System.Nullable<uint> WeeklyWon { get; set; }
         public System.Nullable<uint> SeasonPlayed { get; set; }
@@ -18,12 +19,11 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_2_46479
         public System.Nullable<uint> PvpTierID { get; set; }
         public System.Nullable<uint> WeeklyBestWinPvpTierID { get; set; }
         public System.Nullable<uint> Field_28 { get; set; }
-        public System.Nullable<uint> Field_30 { get; set; }
-        public System.Nullable<uint> Field_34 { get; set; }
-        public System.Nullable<uint> Field_38 { get; set; }
-        public System.Nullable<uint> Field_3C { get; set; }
-        public System.Nullable<uint> Field_40 { get; set; }
-        public System.Nullable<uint> Field_44 { get; set; }
+        public System.Nullable<uint> Field_2C { get; set; }
+        public System.Nullable<uint> WeeklyRoundsPlayed { get; set; }
+        public System.Nullable<uint> WeeklyRoundsWon { get; set; }
+        public System.Nullable<uint> SeasonRoundsPlayed { get; set; }
+        public System.Nullable<uint> SeasonRoundsWon { get; set; }
         public System.Nullable<bool> Disqualified { get; set; }
     }
 }

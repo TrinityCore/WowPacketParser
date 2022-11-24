@@ -24,8 +24,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
         public System.Nullable<ulong> ArtifactXP { get; set; }
         public System.Nullable<byte> ItemAppearanceModID { get; set; }
         public System.Nullable<uint> DynamicFlags2 { get; set; }
-        public IItemModData ModifierData { get; set; }
-        public System.Nullable<ushort> Unk1000 { get; set; }
+        public System.Nullable<ushort> DEBUGItemLevel { get; set; }
         public DynamicUpdateField<IArtifactPower> ArtifactPowers { get; } = new DynamicUpdateField<IArtifactPower>();
         public DynamicUpdateField<ISocketedGem> Gems { get; } = new DynamicUpdateField<ISocketedGem>();
         public IItemModList Modifiers { get; set; }

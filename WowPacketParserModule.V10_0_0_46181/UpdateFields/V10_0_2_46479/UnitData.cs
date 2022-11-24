@@ -27,7 +27,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_2_46479
         public WowGuid BattlePetCompanionGUID { get; set; }
         public System.Nullable<ulong> BattlePetDBID { get; set; }
         public IUnitChannel ChannelData { get; set; }
-        public System.Nullable<sbyte> Field_EC { get; set; }
+        public System.Nullable<sbyte> SpellEmpowerStage { get; set; }
         public System.Nullable<uint> SummonedByHomeRealm { get; set; }
         public System.Nullable<byte> Race { get; set; }
         public System.Nullable<byte> ClassId { get; set; }
@@ -132,7 +132,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_2_46479
         public System.Nullable<int> LookAtControllerID { get; set; }
         public System.Nullable<int> TaxiNodesID { get; set; }
         public WowGuid GuildGUID { get; set; }
-        public System.Nullable<int> Field_2F8 { get; set; }
+        public System.Nullable<int> FlightCapabilityID { get; set; }
         public System.Nullable<uint> SilencedSchoolMask { get; set; }
         public WowGuid NameplateAttachToGUID { get; set; }
         public DynamicUpdateField<IPassiveSpellHistory> PassiveSpells { get; } = new DynamicUpdateField<IPassiveSpellHistory>();

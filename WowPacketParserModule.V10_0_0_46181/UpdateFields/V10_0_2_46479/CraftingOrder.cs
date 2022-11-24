@@ -1,4 +1,4 @@
-﻿using WowPacketParser.Misc;
+using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
 using WowPacketParser.Store.Objects.UpdateFields;
 
@@ -8,10 +8,9 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_2_46479
 {
     public class CraftingOrder : ICraftingOrder
     {
-        public ICraftingOrder_Unk1 Unk1 { get; set; }
-        public ItemInstance Item { get; set; }
         public DynamicUpdateField<ItemEnchantData> Enchantments { get; } = new DynamicUpdateField<ItemEnchantData>();
         public DynamicUpdateField<ItemGemData> Gems { get; } = new DynamicUpdateField<ItemGemData>();
+        public ICraftingOrderData Data { get; set; }
     }
 }
 

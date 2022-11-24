@@ -26,11 +26,11 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_2_46479
         public System.Nullable<uint> CustomParam { get; set; }
         public System.Nullable<int> Level { get; set; }
         public System.Nullable<uint> AnimGroupInstance { get; set; }
-        public System.Nullable<uint> Unk1000 { get; set; }
-        public System.Nullable<uint> Unk1000_2 { get; set; }
-        public System.Nullable<uint> Unk1000_3 { get; set; }
+        public System.Nullable<uint> UiWidgetItemID { get; set; }
+        public System.Nullable<uint> UiWidgetItemQuality { get; set; }
+        public System.Nullable<uint> UiWidgetItemUnknown1000 { get; set; }
         public DynamicUpdateField<System.Nullable<int>> EnableDoodadSets { get; } = new DynamicUpdateField<System.Nullable<int>>();
-        public DynamicUpdateField<System.Nullable<int>> Unk1000_4 { get; } = new DynamicUpdateField<System.Nullable<int>>();
+        public DynamicUpdateField<System.Nullable<int>> WorldEffects { get; } = new DynamicUpdateField<System.Nullable<int>>();
     }
 }
 

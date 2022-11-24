@@ -1,7 +1,7 @@
 ﻿
 namespace WowPacketParser.Store.Objects.UpdateFields
 {
-    public interface ITraitNode
+    public interface ICraftingOrderItem
     {
     }
 }

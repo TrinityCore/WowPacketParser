@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_2_46479
         public System.Nullable<float>[] AvgItemLevel { get; } = new System.Nullable<float>[6];
         public System.Nullable<byte> CurrentBattlePetBreedQuality { get; set; }
         public System.Nullable<int> HonorLevel { get; set; }
-        public System.Nullable<long> Field_E8 { get; set; }
+        public System.Nullable<long> LogoutTime { get; set; }
         public System.Nullable<int> Field_B0 { get; set; }
         public System.Nullable<int> Field_B4 { get; set; }
         public ICTROptions CtrOptions { get; set; }
@@ -41,7 +41,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_2_46479
         public DynamicUpdateField<IChrCustomizationChoice> Customizations { get; } = new DynamicUpdateField<IChrCustomizationChoice>();
         public DynamicUpdateField<IQuestLog> QuestSessionQuestLog { get; } = new DynamicUpdateField<IQuestLog>();
         public DynamicUpdateField<IArenaCooldown> ArenaCooldowns { get; } = new DynamicUpdateField<IArenaCooldown>();
-        public DynamicUpdateField<System.Nullable<int>> Unk1000 { get; } = new DynamicUpdateField<System.Nullable<int>>();
+        public DynamicUpdateField<System.Nullable<int>> VisualItemReplacements { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public System.Nullable<bool> HasQuestSession { get; set; }
         public System.Nullable<bool> HasLevelLink { get; set; }
     }

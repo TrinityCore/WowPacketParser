@@ -1,7 +1,7 @@
 ﻿
 namespace WowPacketParser.Store.Objects.UpdateFields
 {
-    public interface ICraftingOrder_Unk2
+    public interface ICraftingOrderData
     {
     }
 }

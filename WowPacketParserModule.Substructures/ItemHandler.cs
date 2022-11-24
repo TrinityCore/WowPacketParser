@@ -180,5 +180,22 @@ namespace WowPacketParserModule.Substructures
                 Item = ReadItemInstance(packet, "Item", indexes)
             };
         }
+
+        public static void ReadItemBonusKey(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("ItemID", indexes);
+            var itemBonusListCount = packet.ReadUInt32();
+            var itemModifiersCount = packet.ReadUInt32();
+
+            for (var i = 0u; i < itemBonusListCount; ++i)
+                packet.ReadInt32("BonusListID", indexes, i);
+
+            for (var i = 0u; i < itemModifiersCount; ++i)
+            {
+                var value = packet.ReadInt32();
+                ItemModifier mod = packet.ReadByteE<ItemModifier>();
+                packet.AddValue(mod.ToString(), value, indexes);
+            }
+        }
     }
 }

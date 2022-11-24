@@ -169,47 +169,6 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
             return data;
         }
 
-        public static IItemModData ReadCreateItemModData(Packet packet, params object[] indexes)
-        {
-            var data = new ItemModData();
-            data.Entry = packet.ReadInt32("Entry", indexes);
-            data.BonusListIDs.Resize(packet.ReadUInt32());
-            data.Modifiers.Resize(packet.ReadUInt32());
-            for (var i = 0; i < data.BonusListIDs.Count; ++i)
-            {
-                data.BonusListIDs[i] = packet.ReadInt32("BonusListIDs", indexes, i);
-            }
-            for (var i = 0; i < data.Modifiers.Count; ++i)
-            {
-                data.Modifiers[i] = ReadCreateItemMod(packet, indexes, "Modifiers", i);
-            }
-            return data;
-        }
-
-        public static IItemModData ReadUpdateItemModData(Packet packet, params object[] indexes)
-        {
-            var data = new ItemModData();
-            data.BonusListIDs.ReadUpdateMask(packet);
-            data.Modifiers.ReadUpdateMask(packet);
-            packet.ResetBitReader();
-            for (var i = 0; i < data.BonusListIDs.Count; ++i)
-            {
-                if (data.BonusListIDs.UpdateMask[i])
-                {
-                    data.BonusListIDs[i] = packet.ReadInt32("BonusListIDs", indexes, i);
-                }
-            }
-            for (var i = 0; i < data.Modifiers.Count; ++i)
-            {
-                if (data.Modifiers.UpdateMask[i])
-                {
-                    data.Modifiers[i] = ReadUpdateItemMod(packet, data.Modifiers[i] as ItemMod, indexes, "Modifiers", i);
-                }
-            }
-            data.Entry = packet.ReadInt32("Entry", indexes);
-            return data;
-        }
-
         public static IItemModList ReadCreateItemModList(Packet packet, params object[] indexes)
         {
             var data = new ItemModList();
@@ -294,10 +253,10 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
             {
                 data.DynamicFlags2 = packet.ReadUInt32("DynamicFlags2", indexes);
             }
-            data.ModifierData = ReadCreateItemModData(packet, indexes, "ModifierData");
+            Substructures.ItemHandler.ReadItemBonusKey(packet, indexes, "ItemBonusKey");
             if ((flags & UpdateFieldFlag.Owner) != UpdateFieldFlag.None)
             {
-                data.Unk1000 = packet.ReadUInt16("Unk1000", indexes);
+                data.DEBUGItemLevel = packet.ReadUInt16("DEBUGItemLevel", indexes);
             }
             for (var i = 0; i < data.ArtifactPowers.Count; ++i)
             {
@@ -419,11 +378,11 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
                 }
                 if (changesMask[19])
                 {
-                    data.ModifierData = ReadCreateItemModData(packet, indexes, "ModifierData");
+                    Substructures.ItemHandler.ReadItemBonusKey(packet, indexes, "ItemBonusKey");
                 }
                 if (changesMask[20])
                 {
-                    data.Unk1000 = packet.ReadUInt16("Unk1000", indexes);
+                    data.DEBUGItemLevel = packet.ReadUInt16("DEBUGItemLevel", indexes);
                 }
                 if (changesMask[17])
                 {
@@ -2560,13 +2519,23 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
             return data;
         }
 
-        public static ITraitNode ReadCreateTraitNode(Packet packet, params object[] indexes)
+        public static ITraitEntry ReadCreateTraitEntry(Packet packet, params object[] indexes)
         {
-            var data = new TraitNode();
+            var data = new TraitEntry();
             data.TraitNodeID = packet.ReadInt32("TraitNodeID", indexes);
-            data.TraitNodeEntry = packet.ReadInt32("TraitNodeEntry", indexes);
+            data.TraitNodeEntryID = packet.ReadInt32("TraitNodeEntryID", indexes);
             data.Rank = packet.ReadInt32("Rank", indexes);
-            data.TreeFlags = packet.ReadInt32("TreeFlags", indexes);
+            data.GrantedRanks = packet.ReadInt32("GrantedRanks", indexes);
+            return data;
+        }
+
+        public static ITraitEntry ReadUpdateTraitEntry(Packet packet, params object[] indexes)
+        {
+            var data = new TraitEntry();
+            data.TraitNodeID = packet.ReadInt32("TraitNodeID", indexes);
+            data.TraitNodeEntryID = packet.ReadInt32("TraitNodeEntryID", indexes);
+            data.Rank = packet.ReadInt32("Rank", indexes);
+            data.GrantedRanks = packet.ReadInt32("GrantedRanks", indexes);
             return data;
         }
 
@@ -2576,36 +2545,35 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
             packet.ResetBitReader();
             data.ID = packet.ReadInt32("ID", indexes);
             data.Type = packet.ReadInt32("Type", indexes);
-            data.TraitNode.Resize(packet.ReadUInt32());
-            switch (data.Type)
+            data.Entries.Resize(packet.ReadUInt32());
+            if (data.Type == 2)
             {
-                case 1:
-                    data.SpecializationID = packet.ReadInt32("SpecializationID", indexes);
-                    data.Flags = packet.ReadInt32("Flags", indexes);
-                    data.LoadoutIndex = packet.ReadInt32("LoadoutIndex", indexes);
-                    break;
-                case 2:
-                    data.SkillLineId = packet.ReadInt32("SkillLineId", indexes);
-                    break;
-                case 3:
-                    data.SystemID = packet.ReadInt32("SystemID", indexes);
-                    break;
-                default:
-                    break;
+                data.SkillLineID = packet.ReadInt32("SkillLineID", indexes);
             }
-            for (var i = 0; i < data.TraitNode.Count; ++i)
+            if (data.Type == 1)
             {
-                data.TraitNode[i] = ReadCreateTraitNode(packet, indexes, "TraitNode", i);
+                data.ChrSpecializationID = packet.ReadInt32("ChrSpecializationID", indexes);
+                data.CombatConfigFlags = packet.ReadInt32("CombatConfigFlags", indexes);
+                data.LocalIdentifier = packet.ReadInt32("LocalIdentifier", indexes);
             }
-            data.LoadoutNameLen = packet.ReadBits("LoadoutNameLen", 9, indexes);
-            data.LoadoutName = packet.ReadWoWString("LoadoutName", (int)data.LoadoutNameLen, indexes);
+            if (data.Type == 3)
+            {
+                data.TraitSystemID = packet.ReadInt32("TraitSystemID", indexes);
+            }
+            for (var i = 0; i < data.Entries.Count; ++i)
+            {
+                data.Entries[i] = ReadCreateTraitEntry(packet, indexes, "Entries", i);
+            }
+            data.Name = new string('*', (int)packet.ReadBits(9));
+            data.Name = packet.ReadWoWString("Name", data.Name.Length, indexes);
             return data;
         }
 
-        public static ITraitConfig ReadUpdateTraitConfigs(Packet packet, params object[] indexes)
+        public static ITraitConfig ReadUpdateTraitConfig(Packet packet, params object[] indexes)
         {
             var data = new TraitConfig();
-            var rawChangesMask = new int[12];
+            packet.ResetBitReader();
+            var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(12);
             var changesMask = new BitArray(rawChangesMask);
 
@@ -2613,7 +2581,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
             {
                 if (changesMask[1])
                 {
-                    data.TraitNode.ReadUpdateMask(packet);
+                    data.Entries.ReadUpdateMask(packet);
                 }
             }
             packet.ResetBitReader();
@@ -2621,11 +2589,11 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
             {
                 if (changesMask[1])
                 {
-                    for (var i = 0; i < data.TraitNode.Count; ++i)
+                    for (var i = 0; i < data.Entries.Count; ++i)
                     {
-                        if (data.TraitNode.UpdateMask[i])
+                        if (data.Entries.UpdateMask[i])
                         {
-                            data.TraitNode[i] = ReadCreateTraitNode(packet, indexes, "TraitNode", i);
+                            data.Entries[i] = ReadUpdateTraitEntry(packet, data.Entries[i] as TraitEntry, indexes, "Entries", i);
                         }
                     }
                 }
@@ -2637,30 +2605,56 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
             if (changesMask[4])
             {
                 if (changesMask[5])
+                {
                     data.Type = packet.ReadInt32("Type", indexes);
-                if (changesMask[6] && data.Type == 2)
-                    data.SkillLineId = packet.ReadInt32("SkillLineId", indexes);
-                if (changesMask[7] && data.Type == 1)
-                    data.SpecializationID = packet.ReadInt32("SpecializationID", indexes);
+                }
+                if (changesMask[6])
+                {
+                    if (data.Type == 2)
+                    {
+                        data.SkillLineID = packet.ReadInt32("SkillLineID", indexes);
+                    }
+                }
+                if (changesMask[7])
+                {
+                    if (data.Type == 1)
+                    {
+                        data.ChrSpecializationID = packet.ReadInt32("ChrSpecializationID", indexes);
+                    }
+                }
             }
             if (changesMask[8])
             {
-                if (changesMask[9] && data.Type == 1)
-                    data.Flags = packet.ReadInt32("CombatConfigFlags", indexes);
-                if (changesMask[10] && data.Type == 1)
-                    data.LoadoutIndex = packet.ReadInt32("LoadoutIndex", indexes);
-                if (changesMask[11] && data.Type == 3)
-                    data.SystemID = packet.ReadInt32("SystemID", indexes);
+                if (changesMask[9])
+                {
+                    if (data.Type == 1)
+                    {
+                        data.CombatConfigFlags = packet.ReadInt32("CombatConfigFlags", indexes);
+                    }
+                }
+                if (changesMask[10])
+                {
+                    if (data.Type == 1)
+                    {
+                        data.LocalIdentifier = packet.ReadInt32("LocalIdentifier", indexes);
+                    }
+                }
+                if (changesMask[11])
+                {
+                    if (data.Type == 3)
+                    {
+                        data.TraitSystemID = packet.ReadInt32("TraitSystemID", indexes);
+                    }
+                }
             }
             if (changesMask[0])
             {
                 if (changesMask[3])
                 {
-                    data.LoadoutNameLen = packet.ReadBits(9);
-                    data.LoadoutName = packet.ReadWoWString("LoadoutName", (int)data.LoadoutNameLen, indexes);
+                    data.Name = new string('*', (int)packet.ReadBits(9));
+                    data.Name = packet.ReadWoWString("Name", data.Name.Length, indexes);
                 }
             }
-            packet.ResetBitReader();
             return data;
         }
 
@@ -3332,7 +3326,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
                     {
                         if (data.TraitConfigs.UpdateMask[i])
                         {
-                            data.TraitConfigs[i] = ReadUpdateTraitConfigs(packet, data.TraitConfigs[i] as TraitConfig, indexes, "TraitConfigs", i);
+                            data.TraitConfigs[i] = ReadUpdateTraitConfig(packet, data.TraitConfigs[i] as TraitConfig, indexes, "TraitConfigs", i);
                         }
                     }
                 }

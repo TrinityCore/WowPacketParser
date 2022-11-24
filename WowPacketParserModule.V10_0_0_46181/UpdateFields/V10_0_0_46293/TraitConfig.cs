@@ -9,14 +9,12 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
     {
         public System.Nullable<int> ID { get; set; }
         public System.Nullable<int> Type { get; set; }
-        public System.Nullable<uint> LoadoutNameLen { get; set; }
-        public DynamicUpdateField<ITraitNode> TraitNode { get; } = new DynamicUpdateField<ITraitNode>();
-        public string LoadoutName { get; set; }
-        public System.Nullable<int> SkillLineId { get; set; }
-        public System.Nullable<int> SpecializationID { get; set; }
-        public System.Nullable<int> Flags { get; set; }
-        public System.Nullable<int> LoadoutIndex { get; set; }
-        public System.Nullable<int> SystemID { get; set; }
+        public System.Nullable<int> SkillLineID { get; set; }
+        public System.Nullable<int> ChrSpecializationID { get; set; }
+        public System.Nullable<int> CombatConfigFlags { get; set; }
+        public System.Nullable<int> LocalIdentifier { get; set; }
+        public System.Nullable<int> TraitSystemID { get; set; }
+        public DynamicUpdateField<ITraitEntry> Entries { get; } = new DynamicUpdateField<ITraitEntry>();
+        public string Name { get; set; }
     }
 }
-
