@@ -866,6 +866,7 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V10_0_2_46619:
                 case ClientVersionBuild.V10_0_2_46689:
                 case ClientVersionBuild.V10_0_2_46702:
+                case ClientVersionBuild.V10_0_2_46781:
                     return ClientVersionBuild.V10_0_0_46181;
                 //Classic
                 case ClientVersionBuild.V1_13_2_31446:
