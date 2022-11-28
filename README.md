@@ -45,12 +45,12 @@ Nightly Builds
 
 ##### Windows
 - Visual Studio 2022
-  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202022;%20Configuration:%20Debug&branch=master)
-  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202022;%20Configuration:%20Release&branch=master)
+  - [Debug](https://nightly.link/TrinityCore/WowPacketParser/workflows/gh-build/master/WPP-windows-latest-Debug.zip)
+  - [Release](https://nightly.link/TrinityCore/WowPacketParser/workflows/gh-build/master/WPP-windows-latest-Release.zip)
   
 ##### Linux (Ubuntu)
-  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Ubuntu;%20Configuration:%20Debug&branch=master)
-  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Ubuntu;%20Configuration:%20Release&branch=master)
+  - [Debug](https://nightly.link/TrinityCore/WowPacketParser/workflows/gh-build/master/WPP-ubuntu-latest-Debug.zip)
+  - [Release](https://nightly.link/TrinityCore/WowPacketParser/workflows/gh-build/master/WPP-ubuntu-latest-Release.zip)
   
 ##### macOS (currently not supported)
   
