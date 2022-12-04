@@ -439,8 +439,7 @@ namespace WowPacketParser.SQL.Builders
                         addonRow.Comment += " - !!! on transport - transport template not found !!!";
                     }
                 }
-                else
-                    ++count;
+                ++count;
 
                 rows.Add(row);
             }
