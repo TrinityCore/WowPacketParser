@@ -261,6 +261,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_CHANNEL_LIST, 0x06EE},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x11C5},
             {Opcode.SMSG_CHAT, 0x0E60},
+            {Opcode.SMSG_CONTROL_UPDATE, 0x01EA},
             {Opcode.SMSG_CREATE_CHAR, 0x1469},
             {Opcode.SMSG_DELETE_CHAR, 0x1529},
             {Opcode.SMSG_ENUM_CHARACTERS_RESULT, 0x040A},
@@ -349,6 +350,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MOTD, 0x0E20},
             {Opcode.SMSG_MOVE_APPLY_MOVEMENT_FORCE, 0x1232},
             {Opcode.SMSG_MOVE_ROOT, 0x198B},
+            {Opcode.SMSG_MOVE_SET_ACTIVE_MOVER, 0x129A},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x01F4}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED, 0x02DC}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_SET_RUN_SPEED, 0x1B9B}, // 5.4.7 17956
