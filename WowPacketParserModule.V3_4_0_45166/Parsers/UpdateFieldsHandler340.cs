@@ -2165,6 +2165,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
                 data.GlyphInfo[i] = ReadCreateGlyphInfo(packet, indexes, "GlyphInfo", i);
             }
             data.GlyphsEnabled = packet.ReadByte("GlyphsEnabled", indexes);
+            data.Unk340 = packet.ReadByte("Unk340", indexes);
             for (var i = 0; i < data.KnownTitles.Count; ++i)
             {
                 data.KnownTitles[i] = packet.ReadUInt64("KnownTitles", indexes, i);
@@ -2840,172 +2841,176 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
                 {
                     data.GlyphsEnabled = packet.ReadByte("GlyphsEnabled", indexes);
                 }
+                if (changesMask[108])
+                {
+                    data.Unk340 = packet.ReadByte("Unk340", indexes);
+                }
             }
-            if (changesMask[108])
+            if (changesMask[109])
             {
                 for (var i = 0; i < 129; ++i)
                 {
-                    if (changesMask[109 + i])
+                    if (changesMask[110 + i])
                     {
                         data.InvSlots[i] = packet.ReadPackedGuid128("InvSlots", indexes, i);
                     }
                 }
             }
-            if (changesMask[238])
+            if (changesMask[239])
             {
                 for (var i = 0; i < 2; ++i)
                 {
-                    if (changesMask[239 + i])
+                    if (changesMask[240 + i])
                     {
                         data.TrackResourceMask[i] = packet.ReadUInt32("TrackResourceMask", indexes, i);
                     }
                 }
             }
-            if (changesMask[241])
+            if (changesMask[242])
             {
                 for (var i = 0; i < 7; ++i)
                 {
-                    if (changesMask[242 + i])
+                    if (changesMask[243 + i])
                     {
                         data.SpellCritPercentage[i] = packet.ReadSingle("SpellCritPercentage", indexes, i);
                     }
-                    if (changesMask[249 + i])
+                    if (changesMask[250 + i])
                     {
                         data.ModDamageDonePos[i] = packet.ReadInt32("ModDamageDonePos", indexes, i);
                     }
-                    if (changesMask[256 + i])
+                    if (changesMask[257 + i])
                     {
                         data.ModDamageDoneNeg[i] = packet.ReadInt32("ModDamageDoneNeg", indexes, i);
                     }
-                    if (changesMask[263 + i])
+                    if (changesMask[264 + i])
                     {
                         data.ModDamageDonePercent[i] = packet.ReadSingle("ModDamageDonePercent", indexes, i);
                     }
                 }
             }
-            if (changesMask[270])
+            if (changesMask[271])
             {
                 for (var i = 0; i < 240; ++i)
                 {
-                    if (changesMask[271 + i])
+                    if (changesMask[272 + i])
                     {
                         data.ExploredZones[i] = packet.ReadUInt64("ExploredZones", indexes, i);
                     }
                 }
             }
-            if (changesMask[511])
+            if (changesMask[512])
             {
                 for (var i = 0; i < 2; ++i)
                 {
-                    if (changesMask[512 + i])
+                    if (changesMask[513 + i])
                     {
                         data.RestInfo[i] = ReadUpdateRestInfo(packet, data.RestInfo[i] as RestInfo, indexes, "RestInfo", i);
                     }
                 }
             }
-            if (changesMask[514])
+            if (changesMask[515])
             {
                 for (var i = 0; i < 3; ++i)
                 {
-                    if (changesMask[515 + i])
+                    if (changesMask[516 + i])
                     {
                         data.WeaponDmgMultipliers[i] = packet.ReadSingle("WeaponDmgMultipliers", indexes, i);
                     }
-                    if (changesMask[518 + i])
+                    if (changesMask[519 + i])
                     {
                         data.WeaponAtkSpeedMultipliers[i] = packet.ReadSingle("WeaponAtkSpeedMultipliers", indexes, i);
                     }
                 }
             }
-            if (changesMask[521])
+            if (changesMask[522])
             {
                 for (var i = 0; i < 12; ++i)
                 {
-                    if (changesMask[522 + i])
+                    if (changesMask[523 + i])
                     {
                         data.BuybackPrice[i] = packet.ReadUInt32("BuybackPrice", indexes, i);
                     }
-                    if (changesMask[534 + i])
+                    if (changesMask[535 + i])
                     {
                         data.BuybackTimestamp[i] = packet.ReadInt64("BuybackTimestamp", indexes, i);
                     }
                 }
             }
-            if (changesMask[546])
+            if (changesMask[547])
             {
                 for (var i = 0; i < 32; ++i)
                 {
-                    if (changesMask[547 + i])
+                    if (changesMask[548 + i])
                     {
                         data.CombatRatings[i] = packet.ReadInt32("CombatRatings", indexes, i);
                     }
                 }
             }
-            if (changesMask[586])
+            if (changesMask[587])
             {
                 for (var i = 0; i < 4; ++i)
                 {
-                    if (changesMask[587 + i])
+                    if (changesMask[588 + i])
                     {
                         data.NoReagentCostMask[i] = packet.ReadUInt32("NoReagentCostMask", indexes, i);
                     }
                 }
             }
-            if (changesMask[591])
+            if (changesMask[592])
             {
                 for (var i = 0; i < 2; ++i)
                 {
-                    if (changesMask[592 + i])
+                    if (changesMask[593 + i])
                     {
                         data.ProfessionSkillLine[i] = packet.ReadInt32("ProfessionSkillLine", indexes, i);
                     }
                 }
             }
-            if (changesMask[594])
+            if (changesMask[595])
             {
                 for (var i = 0; i < 4; ++i)
                 {
-                    if (changesMask[595 + i])
+                    if (changesMask[596 + i])
                     {
                         data.BagSlotFlags[i] = packet.ReadUInt32("BagSlotFlags", indexes, i);
                     }
                 }
             }
-            if (changesMask[599])
+            if (changesMask[600])
             {
                 for (var i = 0; i < 7; ++i)
                 {
-                    if (changesMask[600 + i])
+                    if (changesMask[601 + i])
                     {
                         data.BankBagSlotFlags[i] = packet.ReadUInt32("BankBagSlotFlags", indexes, i);
                     }
                 }
             }
-            if (changesMask[607])
+            if (changesMask[608])
             {
                 for (var i = 0; i < 875; ++i)
                 {
-                    if (changesMask[608 + i])
+                    if (changesMask[609 + i])
                     {
                         data.QuestCompleted[i] = packet.ReadUInt64("QuestCompleted", indexes, i);
                     }
                 }
             }
-            if (changesMask[1483])
+            if (changesMask[1484])
             {
                 for (var i = 0; i < 6; ++i)
                 {
-                    if (changesMask[1484 + i])
+                    if (changesMask[1485 + i])
                     {
                         data.GlyphInfo[i] = ReadUpdateGlyphInfo(packet, data.GlyphInfo[i] as GlyphInfo, indexes, "GlyphInfo", i);
                     }
                 }
             }
-            if (changesMask[579])
+            if (changesMask[580])
             {
                 for (var i = 0; i < 6; ++i)
                 {
-                    if (changesMask[580 + i])
+                    if (changesMask[581 + i])
                     {
                         data.PvpInfo[i] = ReadUpdatePVPInfo(packet, data.PvpInfo[i] as PVPInfo, indexes, "PvpInfo", i);
                     }

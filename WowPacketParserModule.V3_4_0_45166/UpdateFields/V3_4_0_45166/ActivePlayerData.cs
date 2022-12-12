@@ -112,6 +112,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
         public System.Nullable<int> TransportServerTime { get; set; }
         public IGlyphInfo[] GlyphInfo { get; } = new IGlyphInfo[6];
         public System.Nullable<byte> GlyphsEnabled { get; set; }
+        public System.Nullable<byte> Unk340 { get; set; }
         public DynamicUpdateField<IResearch>[] Research { get; } = new DynamicUpdateField<IResearch>[1] { new DynamicUpdateField<IResearch>() };
         public DynamicUpdateField<System.Nullable<ulong>> KnownTitles { get; } = new DynamicUpdateField<System.Nullable<ulong>>();
         public DynamicUpdateField<System.Nullable<uint>> ResearchSites { get; } = new DynamicUpdateField<System.Nullable<uint>>();
