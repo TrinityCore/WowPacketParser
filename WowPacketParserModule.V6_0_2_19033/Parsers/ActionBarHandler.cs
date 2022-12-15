@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -8,31 +7,25 @@ using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
-    [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
     public static class ActionBarHandler
     {
         [Parser(Opcode.SMSG_UPDATE_ACTION_BUTTONS)]
         public static void HandleActionButtons(Packet packet)
         {
-            const int buttonCount = 132;
+            var buttonCount = ClientVersion.AddedInVersion(ClientType.Dragonflight) ? 180 : 132;
 
             for (int i = 0; i < buttonCount; ++i)
             {
+                var packedData = packet.ReadUInt64();
 
-                var actionVal = packet.ReadUInt32();
-                var type = packet.ReadUInt32();
-
-                if (actionVal == 0 && (ActionButtonType)type == ActionButtonType.Spell)
+                if (packedData == 0)
                     continue;
 
-                PlayerCreateInfoAction action = new PlayerCreateInfoAction
-                {
-                    Button = (uint)i,
-                    Action = actionVal
-                };
+                var actionVal = packedData & 0xFFFFFFFFFFFFFFu;
+                var type = (byte)((packedData >> 56) & 0xFF);
 
-                packet.AddValue("Action " + i, action.Action);
-                packet.AddValue("Type " + i, type);
+                packet.AddValue("Action", actionVal, i);
+                packet.AddValue("Type", type, i);
 
                 if (type != 0)
                     continue;
@@ -45,16 +38,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         Player player = character as Player;
                         if (player != null && player.FirstLogin)
                         {
-                            action.Race = player.Race;
-                            action.Class = player.Class;
-                            action.Type = (ActionButtonType)type;
+                            var action = new PlayerCreateInfoAction
+                            {
+                                Button = (uint)i,
+                                Action = (uint)actionVal,
+                                Race = player.Race,
+                                Class = player.Class,
+                                Type = (ActionButtonType)type
+                            };
+
                             Storage.StartActions.Add(action, packet.TimeSpan);
                         }
                     }
                 }
             }
 
-            packet.ReadByte("Packet Type");
+            packet.ReadByte("Reason");
         }
 
         [Parser(Opcode.CMSG_SET_ACTION_BUTTON)]
