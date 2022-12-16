@@ -2610,41 +2610,26 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
                 }
                 if (changesMask[6])
                 {
-                    if (data.Type == 2)
-                    {
-                        data.SkillLineID = packet.ReadInt32("SkillLineID", indexes);
-                    }
+                    data.SkillLineID = packet.ReadInt32("SkillLineID", indexes);
                 }
                 if (changesMask[7])
                 {
-                    if (data.Type == 1)
-                    {
-                        data.ChrSpecializationID = packet.ReadInt32("ChrSpecializationID", indexes);
-                    }
+                    data.ChrSpecializationID = packet.ReadInt32("ChrSpecializationID", indexes);
                 }
             }
             if (changesMask[8])
             {
                 if (changesMask[9])
                 {
-                    if (data.Type == 1)
-                    {
-                        data.CombatConfigFlags = packet.ReadInt32("CombatConfigFlags", indexes);
-                    }
+                    data.CombatConfigFlags = packet.ReadInt32("CombatConfigFlags", indexes);
                 }
                 if (changesMask[10])
                 {
-                    if (data.Type == 1)
-                    {
-                        data.LocalIdentifier = packet.ReadInt32("LocalIdentifier", indexes);
-                    }
+                    data.LocalIdentifier = packet.ReadInt32("LocalIdentifier", indexes);
                 }
                 if (changesMask[11])
                 {
-                    if (data.Type == 3)
-                    {
-                        data.TraitSystemID = packet.ReadInt32("TraitSystemID", indexes);
-                    }
+                    data.TraitSystemID = packet.ReadInt32("TraitSystemID", indexes);
                 }
             }
             if (changesMask[0])
