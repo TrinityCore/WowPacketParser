@@ -82,7 +82,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardDisplaySpell", TargetedDatabaseFlag.TillCataclysm)]
         public uint? RewardDisplaySpell;
 
-        [DBFieldName("RewardDisplaySpell", TargetedDatabaseFlag.Legion | TargetedDatabaseFlag.BattleForAzeroth | TargetedDatabaseFlag.AnyClassic, 3)]
+        [DBFieldName("RewardDisplaySpell", TargetedDatabaseFlag.Legion | TargetedDatabaseFlag.BattleForAzeroth, 3)]
         public uint?[] RewardDisplaySpellLegion;
 
         [DBFieldName("RewardSpell", TargetedDatabaseFlag.TillWrathOfTheLichKing)]

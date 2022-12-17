@@ -1,5 +1,6 @@
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
+using WowPacketParser.Enums;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -15,7 +16,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SpellID")]
         public uint? SpellID;
 
-        [DBFieldName("PlayerConditionID")]
+        [DBFieldName("PlayerConditionID", TargetedDatabaseFlag.SinceShadowlands)]
         public uint? PlayerConditionID;
 
         [DBFieldName("VerifiedBuild")]

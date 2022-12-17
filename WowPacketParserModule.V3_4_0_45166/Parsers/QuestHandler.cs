@@ -47,9 +47,17 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             quest.RewardBonusMoney = (uint)packet.ReadInt32("RewardBonusMoney");
 
-            quest.RewardDisplaySpellLegion = new uint?[3];
-            for (int i = 0; i < 3; ++i)
-                quest.RewardDisplaySpellLegion[i] = packet.ReadUInt32("RewardDisplaySpell", i);
+            for (uint i = 0; i < 3; ++i)
+            {
+                QuestRewardDisplaySpell questRewardDisplaySpell = new QuestRewardDisplaySpell
+                {
+                    QuestID = (uint)id.Key,
+                    Idx = i,
+                    SpellID = (uint)packet.ReadInt32<SpellId>("SpellID", i, "RewardDisplaySpell"),
+                };
+
+                Storage.QuestRewardDisplaySpells.Add(questRewardDisplaySpell, packet.TimeSpan);
+            }
 
             quest.RewardSpellWod = (uint)packet.ReadInt32("RewardSpell");
             quest.RewardHonorWod = (uint)packet.ReadInt32("RewardHonor");
