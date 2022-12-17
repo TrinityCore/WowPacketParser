@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using WowPacketParser.DBC.Structures.Shadowlands;
+using WowPacketParser.DBC.Structures.Dragonflight;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
@@ -181,7 +181,7 @@ namespace WowPacketParser.SQL
                         }
                         else
                         {
-                            broadcastText.ConditionID = Convert.ToUInt32(reader["ConditionID"]);
+                            broadcastText.ConditionID = Convert.ToInt32(reader["ConditionID"]);
                             broadcastText.SoundEntriesID = new uint[2];
                             broadcastText.SoundEntriesID[0] = Convert.ToUInt32(reader[$"Sound{soundFieldName}ID1"]);
                             broadcastText.SoundEntriesID[1] = Convert.ToUInt32(reader[$"Sound{soundFieldName}ID2"]);
