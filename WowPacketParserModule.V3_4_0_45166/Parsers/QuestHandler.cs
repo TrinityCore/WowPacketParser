@@ -56,7 +56,8 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                     SpellID = (uint)packet.ReadInt32<SpellId>("SpellID", i, "RewardDisplaySpell"),
                 };
 
-                Storage.QuestRewardDisplaySpells.Add(questRewardDisplaySpell, packet.TimeSpan);
+                if (questRewardDisplaySpell.SpellID != 0)
+                    Storage.QuestRewardDisplaySpells.Add(questRewardDisplaySpell, packet.TimeSpan);
             }
 
             quest.RewardSpellWod = (uint)packet.ReadInt32("RewardSpell");
