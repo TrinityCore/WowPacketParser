@@ -124,19 +124,6 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
                 broadcastTextID = packet.ReadUInt32("BroadcastTextID");
 
-            var npcTextId = SQLDatabase.GetNPCTextIDByMenuIDAndBroadcastText(menuId, broadcastTextID);
-            if (npcTextId != 0)
-            {
-                GossipMenu gossip = new();
-                gossip.MenuID = packetGossip.MenuId;
-                gossip.TextID = packetGossip.TextId = npcTextId;
-                gossip.ObjectType = guid.GetObjectType();
-                gossip.ObjectEntry = guid.GetEntry();
-                Storage.Gossips.Add(gossip, packet.TimeSpan);
-            }
-            else
-                AddBroadcastTextToGossip(packetGossip.MenuId, broadcastTextID, guid);
-
             int optionsCount = packet.ReadInt32("GossipOptionsCount");
             int questsCount = packet.ReadInt32("GossipQuestsCount");
 
@@ -156,6 +143,19 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             if (hasBroadcastTextID2)
                 broadcastTextID = (uint)packet.ReadInt32("BroadcastTextID2");
+
+            var npcTextId = SQLDatabase.GetNPCTextIDByMenuIDAndBroadcastText(menuId, broadcastTextID);
+            if (npcTextId != 0)
+            {
+                GossipMenu gossip = new();
+                gossip.MenuID = packetGossip.MenuId;
+                gossip.TextID = packetGossip.TextId = npcTextId;
+                gossip.ObjectType = guid.GetObjectType();
+                gossip.ObjectEntry = guid.GetEntry();
+                Storage.Gossips.Add(gossip, packet.TimeSpan);
+            }
+            else
+                AddBroadcastTextToGossip(packetGossip.MenuId, broadcastTextID, guid);
 
             for (int i = 0; i < questsCount; ++i)
                 packetGossip.Quests.Add(V7_0_3_22248.Parsers.NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests"));
