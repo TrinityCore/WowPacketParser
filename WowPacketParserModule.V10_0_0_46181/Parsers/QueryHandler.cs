@@ -133,9 +133,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             quest.ManagedWorldStateID = packet.ReadInt32("ManagedWorldStateID");
             quest.QuestSessionBonus = packet.ReadInt32("QuestSessionBonus");
 
-            packet.ReadInt32("Unk1000_field_2E64");
-            var conditionalQuestStuffCount = packet.ReadUInt32("ConditionalQuestStuffCount");
-            var conditionalQuestStuffCount2 = packet.ReadUInt32("ConditionalQuestStuffCount2");
+            packet.ReadInt32("QuestGiverCreatureID");
+            var conditionalQuestDescriptionCount = packet.ReadUInt32();
+            var conditionalQuestCompletionLogCount = packet.ReadUInt32();
 
             for (uint i = 0; i < rewardDisplaySpellCount; ++i)
             {
@@ -225,14 +225,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             quest.QuestTurnTargetName = packet.ReadWoWString("PortraitTurnInName", questTurnTargetNameLen);
             quest.QuestCompletionLog = packet.ReadWoWString("QuestCompletionLog", questCompletionLogLen);
 
-            for (int i = 0; i < conditionalQuestStuffCount; i++)
-            {
-                QuestHandler.ReadConditionalQuestStuff(packet, "ConditionalQuestStuff");
-            }
-            for (int i = 0; i < conditionalQuestStuffCount2; i++)
-            {
-                QuestHandler.ReadConditionalQuestStuff(packet, "ConditionalQuestStuff2");
-            }
+            for (int i = 0; i < conditionalQuestDescriptionCount; i++)
+                QuestHandler.ReadConditionalQuestText(packet, "ConditionalQuestDescription", i);
+
+            for (int i = 0; i < conditionalQuestCompletionLogCount; i++)
+                QuestHandler.ReadConditionalQuestText(packet, "ConditionalQuestCompletionLog", i);
 
             if (ClientLocale.PacketLocale != LocaleConstant.enUS)
             {

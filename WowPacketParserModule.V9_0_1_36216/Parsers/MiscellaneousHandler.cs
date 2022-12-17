@@ -159,6 +159,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("LiveRegionKeyBindingsCopyEnabled");
             packet.ReadBit("Unknown901CheckoutRelated");
             var europaTicket = packet.ReadBit("IsEuropaTicketSystemStatusEnabled");
+            var launchEta = packet.ReadBit();
+            packet.ReadBit("AddonsDisabled");
+            packet.ReadBit("Unused1000");
+
             packet.ResetBitReader();
 
             if (europaTicket)
@@ -182,10 +186,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadInt32("GameRuleUnknown1");
                 gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
                 packet.ReadInt16("MaxPlayerNameQueriesPerPacket");
-
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
-                    packet.ReadInt16("PlayerNameQueryTelemetryInterval");
             }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
+                packet.ReadInt16("PlayerNameQueryTelemetryInterval");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+                packet.ReadUInt32("PlayerNameQueryInterval");
 
             for (int i = 0; i < liveRegionCharacterCopySourceRegionsCount; i++)
                 packet.ReadUInt32("LiveRegionCharacterCopySourceRegion", i);

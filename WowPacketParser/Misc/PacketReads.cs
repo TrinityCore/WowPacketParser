@@ -636,12 +636,23 @@ namespace WowPacketParser.Misc
             return value;
         }
 
+        private object ReadBitsE(Type type, int bits)
+        {
+            long rawVal = ReadBits(bits);
+            return Enum.ToObject(type, rawVal);
+        }
+
         private TEnum ReadBitsE<TEnum>(int bits) where TEnum : struct, IConvertible
         {
-            var type = typeof(TEnum);
-            long rawVal = ReadBits(bits);
-            var value = Enum.ToObject(type, rawVal);
-            return (TEnum) value;
+            return (TEnum)ReadBitsE(typeof(TEnum), bits);
+        }
+
+        public object ReadBitsE(Type type, string name, int bits, params object[] indexes)
+        {
+            var val = ReadBitsE(type, bits);
+            var val64 = Convert.ToInt64(val);
+            AddValue(name, FormatInteger(val64, val.ToString()), indexes);
+            return val;
         }
 
         public TEnum ReadBitsE<TEnum>(string name, int bits, params object[] indexes) where TEnum : struct, IConvertible

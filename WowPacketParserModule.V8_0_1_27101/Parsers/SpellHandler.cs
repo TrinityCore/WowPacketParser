@@ -17,7 +17,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ResetBitReader();
 
-            if (ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build))
+            if (ClientVersion.AddedInVersion(ClientType.Dragonflight))
+                packet.ReadBitsE<TargetFlag>("Flags", 28, idx);
+            else if (ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build))
                 packet.ReadBitsE<TargetFlag>("Flags", 27, idx);
             else if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
                 packet.ReadBitsE<TargetFlag>("Flags", 26, idx);
@@ -303,7 +305,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                     if (hasRemaining)
                         auraEntry.Remaining = aura.MaxDuration;
-                    
+
                     if (hasTimeMod)
                         packet.ReadSingle("TimeMod");
 

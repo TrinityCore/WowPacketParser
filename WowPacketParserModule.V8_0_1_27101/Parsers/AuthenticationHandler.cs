@@ -57,6 +57,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                             packet.ReadByteE<Class>("ClassID", "AvailableClasses", i, "Classes", j);
                             packet.ReadByteE<ClientType>("ActiveExpansionLevel", "AvailableClasses", i, "Classes", j);
                             packet.ReadByteE<ClientType>("AccountExpansionLevel", "AvailableClasses", i, "Classes", j);
+                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+                                packet.ReadByte("MinActiveExpansionLevel", "AvailableClasses", i, "Classes", j);
                         }
                     }
                 }

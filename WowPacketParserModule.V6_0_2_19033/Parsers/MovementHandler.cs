@@ -590,6 +590,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_SET_NORMAL_FALL)]
         [Parser(Opcode.SMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES)]
         [Parser(Opcode.SMSG_MOVE_UNSET_IGNORE_MOVEMENT_FORCES)]
+        [Parser(Opcode.SMSG_MOVE_SET_CAN_ADV_FLY)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_CAN_ADV_FLY)]
         public static void HandleMovementIndex(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
@@ -602,12 +604,34 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_MOD_MOVEMENT_FORCE_MAGNITUDE)]
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_AIR_FRICTION)]
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_MAX_VEL)]
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_LIFT_COEFFICIENT)]
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_DOUBLE_JUMP_VEL_MOD)]
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_GLIDE_START_MIN_HEIGHT)]
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_ADD_IMPULSE_MAX_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_SURFACE_FRICTION)]
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_OVER_MAX_DECELERATION)]
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_LAUNCH_SPEED_COEFFICIENT)]
         public static void HandleMovementIndexSpeed(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
             packet.ReadInt32("SequenceIndex");
 
             packet.ReadSingle("Speed");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_BANKING_RATE)]
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_PITCHING_RATE_DOWN)]
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_PITCHING_RATE_UP)]
+        [Parser(Opcode.SMSG_MOVE_SET_ADV_FLYING_TURN_VELOCITY_THRESHOLD)]
+        public static void HandleMovementIndexSpeedRange(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+
+            packet.ReadSingle("SpeedMin");
+            packet.ReadSingle("SpeedMax");
         }
 
         [Parser(Opcode.SMSG_MOVE_SET_VEHICLE_REC_ID)]

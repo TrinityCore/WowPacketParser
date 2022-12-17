@@ -11,12 +11,12 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 {
     public static class QuestHandler
     {
-        public static void ReadConditionalQuestStuff(Packet packet, params object[] indexes)
+        public static void ReadConditionalQuestText(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("PlayerConditionID", indexes);
-            packet.ReadInt32("field_4", indexes);
-            var conditionalQuestTextLen = packet.ReadBits(12);
-            packet.ReadWoWString("ConditionalQuestText", conditionalQuestTextLen, indexes);
+            packet.ReadInt32("QuestGiverCreatureID", indexes);
+            var textLength = packet.ReadBits(12);
+            packet.ReadWoWString("Text", textLength, indexes);
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS)]
@@ -49,8 +49,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             var objectivesCount = packet.ReadUInt32("ObjectivesCount");
             packet.ReadInt32("QuestStartItemID");
             packet.ReadInt32("QuestSessionBonus");
-            packet.ReadInt32("Unk1000"); // questgiver entry?
-            var conditionalQuestStuffCount = packet.ReadUInt32("ConditionalQuestStuffCount");
+            packet.ReadInt32("QuestGiverCreatureID");
+            var conditionalDescriptionTextCount = packet.ReadUInt32();
 
             for (var i = 0; i < learnSpellsCount; i++)
                 packet.ReadInt32("LearnSpells", i);
@@ -96,10 +96,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadWoWString("PortraitTurnInText", portraitTurnInTextLen);
             packet.ReadWoWString("PortraitTurnInName", portraitTurnInNameLen);
 
-            for (int i = 0; i < conditionalQuestStuffCount; i++)
-            {
-                ReadConditionalQuestStuff(packet, "ConditionalQuestStuff");
-            }
+            for (int i = 0; i < conditionalDescriptionTextCount; i++)
+                ReadConditionalQuestText(packet, "ConditionalDescriptionText");
 
             Storage.QuestDetails.Add(questDetails, packet.TimeSpan);
         }
@@ -166,8 +164,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             requestItems.AutoLaunched = packet.ReadBit("AutoLaunched");
 
             packet.ResetBitReader();
-            packet.ReadInt32("Unk1000"); // questgiver entry?
-            var conditionalQuestStuffCount = packet.ReadUInt32();
+            packet.ReadInt32("QuestGiverCreatureID"); // questgiver entry?
+            var conditionalCompletionTextCount = packet.ReadUInt32();
 
             uint questTitleLen = 0;
             uint completionTextLen = 0;
@@ -175,10 +173,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             questTitleLen = packet.ReadBits(9);
             completionTextLen = packet.ReadBits(12);
 
-            for (int i = 0; i < conditionalQuestStuffCount; i++)
-            {
-                ReadConditionalQuestStuff(packet, "ConditionalQuestStuff");
-            }
+            for (int i = 0; i < conditionalCompletionTextCount; i++)
+                ReadConditionalQuestText(packet, "ConditionalCompletionText");
 
             requestItems.QuestTitle = packet.ReadWoWString("QuestTitle", questTitleLen);
             string completionText = requestItems.CompletionText = packet.ReadWoWString("CompletionText", completionTextLen);
@@ -246,8 +242,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadInt32("PortraitGiverMount");
             packet.ReadInt32("PortraitGiverModelSceneID");
             packet.ReadInt32("PortraitTurnIn");
-            packet.ReadInt32("PortraitTurnIn");
-            var conditionalQuestStuffCount = packet.ReadUInt32();
+            packet.ReadInt32("QuestGiverCreatureID");
+            var conditionalRewardTextCount = packet.ReadUInt32();
 
             packet.ResetBitReader();
 
@@ -258,10 +254,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             uint portraitTurnInTextLen = packet.ReadBits(10);
             uint portraitTurnInNameLen = packet.ReadBits(8);
 
-            for (int i = 0; i < conditionalQuestStuffCount; i++)
-            {
-                ReadConditionalQuestStuff(packet, "ConditionalQuestStuff");
-            }
+            for (int i = 0; i < conditionalRewardTextCount; i++)
+                ReadConditionalQuestText(packet, "ConditionalRewardText");
 
             packet.ReadWoWString("QuestTitle", questTitleLen);
             questOfferReward.RewardText = packet.ReadWoWString("RewardText", rewardTextLen);
@@ -272,7 +266,5 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             Storage.QuestOfferRewards.Add(questOfferReward, packet.TimeSpan);
         }
-
-        // SMSG_QUERY_QUEST_INFO_RESPONSE
     }
 }

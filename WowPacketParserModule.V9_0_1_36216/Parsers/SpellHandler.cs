@@ -63,7 +63,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             var weightCount = packet.ReadBits("WeightCount", 2, idx);
 
-            V7_0_3_22248.Parsers.SpellHandler.ReadSpellTargetData(packet, null, spellId, idx, "Target");
+            V8_0_1_27101.Parsers.SpellHandler.ReadSpellTargetData(packet, null, spellId, idx, "Target");
 
             if (hasMoveUpdate)
                 V7_0_3_22248.Parsers.MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");
