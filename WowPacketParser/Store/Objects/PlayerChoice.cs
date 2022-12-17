@@ -10,28 +10,28 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ChoiceId", true)]
         public int? ChoiceId;
 
-        [DBFieldName("UiTextureKitId", TargetedDatabase.Legion)]
+        [DBFieldName("UiTextureKitId", TargetedDatabaseFlag.SinceLegion)]
         public int? UiTextureKitId;
 
-        [DBFieldName("SoundKitId", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("SoundKitId", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public uint? SoundKitId;
 
-        [DBFieldName("CloseSoundKitId", TargetedDatabase.Shadowlands)]
+        [DBFieldName("CloseSoundKitId", TargetedDatabaseFlag.SinceShadowlands)]
         public uint? CloseSoundKitId;
 
-        [DBFieldName("Duration", TargetedDatabase.Shadowlands)]
+        [DBFieldName("Duration", TargetedDatabaseFlag.SinceShadowlands)]
         public long? Duration;
 
         [DBFieldName("Question")]
         public string Question;
 
-        [DBFieldName("PendingChoiceText", TargetedDatabase.Shadowlands)]
+        [DBFieldName("PendingChoiceText", TargetedDatabaseFlag.SinceShadowlands)]
         public string PendingChoiceText;
 
-        [DBFieldName("HideWarboardHeader", TargetedDatabase.Legion)]
+        [DBFieldName("HideWarboardHeader", TargetedDatabaseFlag.SinceLegion)]
         public int HideWarboardHeader;
 
-        [DBFieldName("KeepOpenAfterChoice", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("KeepOpenAfterChoice", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public int KeepOpenAfterChoice;
 
         [DBFieldName("VerifiedBuild")]
@@ -47,7 +47,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ResponseId", true)]
         public int? ResponseId;
 
-        [DBFieldName("ResponseIdentifier", TargetedDatabase.Shadowlands)]
+        [DBFieldName("ResponseIdentifier", TargetedDatabaseFlag.SinceShadowlands)]
         public short? ResponseIdentifier;
 
         [DBFieldName("Index", true)]
@@ -56,28 +56,28 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ChoiceArtFileId")]
         public int? ChoiceArtFileId;
 
-        [DBFieldName("Flags", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("Flags", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public int? Flags;
 
-        [DBFieldName("WidgetSetId", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("WidgetSetId", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public uint? WidgetSetId;
 
-        [DBFieldName("UiTextureAtlasElementID", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("UiTextureAtlasElementID", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public uint? UiTextureAtlasElementID;
 
-        [DBFieldName("SoundKitId", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("SoundKitId", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public uint? SoundKitId;
 
-        [DBFieldName("GroupId", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("GroupId", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public int? GroupId;
 
-        [DBFieldName("Header", TargetedDatabase.Legion)]
+        [DBFieldName("Header", TargetedDatabaseFlag.SinceLegion)]
         public string Header;
 
-        [DBFieldName("Subheader", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("Subheader", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public string Subheader;
 
-        [DBFieldName("ButtonTooltip", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("ButtonTooltip", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public string ButtonTooltip;
 
         [DBFieldName("Answer")]
@@ -86,13 +86,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Description")]
         public string Description;
 
-        [DBFieldName("Confirmation", TargetedDatabase.Legion)]
+        [DBFieldName("Confirmation", TargetedDatabaseFlag.SinceLegion)]
         public string Confirmation;
 
-        [DBFieldName("RewardQuestID", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("RewardQuestID", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public uint? RewardQuestID;
 
-        [DBFieldName("UiTextureKitID", TargetedDatabase.Shadowlands)]
+        [DBFieldName("UiTextureKitID", TargetedDatabaseFlag.SinceShadowlands)]
         public uint? UiTextureKitID;
 
         [DBFieldName("VerifiedBuild")]

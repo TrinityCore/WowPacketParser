@@ -34,10 +34,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("FlagsExtra")]
         public ItemFlagExtra? FlagsExtra;
 
-        [DBFieldName("Unk430_1", TargetedDatabase.Cataclysm)]
+        [DBFieldName("Unk430_1", TargetedDatabaseFlag.SinceCataclysm)]
         public float? Unk430_1;
 
-        [DBFieldName("Unk430_2", TargetedDatabase.Cataclysm)]
+        [DBFieldName("Unk430_2", TargetedDatabaseFlag.SinceCataclysm)]
         public float? Unk430_2;
 
         [DBFieldName("BuyCount")]
@@ -94,7 +94,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ContainerSlots")]
         public uint? ContainerSlots;
 
-        [DBFieldName("StatsCount", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("StatsCount", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? StatsCount;
 
         [DBFieldName("stat_type", 10)]
@@ -103,56 +103,56 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("stat_value", 10)]
         public int?[] StatValues;
 
-        [DBFieldName("scaling_value", TargetedDatabase.Cataclysm, 10)]
+        [DBFieldName("scaling_value", TargetedDatabaseFlag.SinceCataclysm, 10)]
         public int?[] ScalingValue;
 
-        [DBFieldName("socket_cost_rate", TargetedDatabase.Cataclysm, 10)]
+        [DBFieldName("socket_cost_rate", TargetedDatabaseFlag.SinceCataclysm, 10)]
         public int?[] SocketCostRate;
 
         [DBFieldName("ScalingStatDistribution")]
         public int? ScalingStatDistribution;
 
-        [DBFieldName("ScalingStatValue", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("ScalingStatValue", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? ScalingStatValue;
 
-        [DBFieldName("dmg_min", TargetedDatabase.Zero, TargetedDatabase.Cataclysm, 2)]
+        [DBFieldName("dmg_min", TargetedDatabaseFlag.TillWrathOfTheLichKing, 2)]
         public float?[] DamageMins;
 
-        [DBFieldName("dmg_max", TargetedDatabase.Zero, TargetedDatabase.Cataclysm, 2)]
+        [DBFieldName("dmg_max", TargetedDatabaseFlag.TillWrathOfTheLichKing, 2)]
         public float?[] DamageMaxs;
 
-        [DBFieldName("dmg_type", TargetedDatabase.Zero, TargetedDatabase.Cataclysm, 2)]
+        [DBFieldName("dmg_type", TargetedDatabaseFlag.TillWrathOfTheLichKing, 2)]
         public DamageType?[] DamageTypes;
 
 
-        [DBFieldName("armor", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("armor", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? Armor;
 
-        [DBFieldName("holy_res", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("holy_res", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? HolyResistance;
 
-        [DBFieldName("fire_res", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("fire_res", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? FireResistance;
 
-        [DBFieldName("nature_res", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("nature_res", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? NatureResistance;
 
-        [DBFieldName("frost_res", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("frost_res", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? FrostResistance;
 
-        [DBFieldName("shadow_res", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("shadow_res", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? ShadowResistance;
 
-        [DBFieldName("arcane_res", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("arcane_res", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? ArcaneResistance;
 
-        [DBFieldName("DamageType", TargetedDatabase.Cataclysm)]
+        [DBFieldName("DamageType", TargetedDatabaseFlag.SinceCataclysm)]
         public DamageType? DamageType;
 
         [DBFieldName("delay")]
         public uint? Delay;
 
-        [DBFieldName("ammo_type", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("ammo_type", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public AmmoType? AmmoType;
 
         [DBFieldName("RangedModRange")]
@@ -167,7 +167,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("spellcharges_", 5)]
         public int?[] TriggeredSpellCharges;
 
-        [DBFieldName("spellppmRate_", TargetedDatabase.Zero, TargetedDatabase.Cataclysm, 5)]
+        [DBFieldName("spellppmRate_", TargetedDatabaseFlag.TillWrathOfTheLichKing, 5)]
         public float? TriggeredSpellPpmRate;
 
         [DBFieldName("spellcooldown_", 5)]
@@ -212,7 +212,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RandomSuffix")]
         public uint? RandomSuffix;
 
-        [DBFieldName("block", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("block", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? Block;
 
         [DBFieldName("itemset")]
@@ -245,7 +245,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("GemProperties")]
         public int? GemProperties;
 
-        [DBFieldName("RequiredDisenchantSkill", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("RequiredDisenchantSkill", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public int? RequiredDisenchantSkill;
 
         [DBFieldName("ArmorDamageModifier")]
@@ -260,28 +260,28 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("HolidayId")]
         public Holiday? HolidayID;
 
-        [DBFieldName("ScriptName", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("ScriptName", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public string ScriptName;
 
-        [DBFieldName("DisenchantID", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("DisenchantID", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? DisenchantID;
 
-        [DBFieldName("FoodType", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("FoodType", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? FoodType;
 
-        [DBFieldName("minMoneyLoot", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("minMoneyLoot", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint MinMoneyLoot;
 
-        [DBFieldName("maxMoneyLoot", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("maxMoneyLoot", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint MaxMoneyLoot;
 
-        [DBFieldName("StatScalingFactor", TargetedDatabase.Cataclysm)]
+        [DBFieldName("StatScalingFactor", TargetedDatabaseFlag.SinceCataclysm)]
         public float? StatScalingFactor;
 
-        [DBFieldName("CurrencySubstitutionId", TargetedDatabase.Cataclysm)]
+        [DBFieldName("CurrencySubstitutionId", TargetedDatabaseFlag.SinceCataclysm)]
         public uint? CurrencySubstitutionID;
 
-        [DBFieldName("CurrencySubstitutionCount", TargetedDatabase.Cataclysm)]
+        [DBFieldName("CurrencySubstitutionCount", TargetedDatabaseFlag.SinceCataclysm)]
         public uint? CurrencySubstitutionCount;
 
         [DBFieldName("flagsCustom")]

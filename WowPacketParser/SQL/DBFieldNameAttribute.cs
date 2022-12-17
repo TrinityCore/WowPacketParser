@@ -50,9 +50,7 @@ namespace WowPacketParser.SQL
         /// </summary>
         private readonly bool _multipleFields;
 
-        private readonly TargetedDatabase? _addedInVersion;
-
-        private readonly TargetedDatabase? _removedInVersion;
+        private readonly TargetedDatabaseFlag _validForVersion;
 
         /// <summary>
         /// matches any version
@@ -66,6 +64,7 @@ namespace WowPacketParser.SQL
             NoQuotes = noQuotes;
             Nullable = nullable;
             Count = 1;
+            _validForVersion = TargetedDatabaseFlag.Any;
         }
 
         /// <summary>
@@ -82,32 +81,33 @@ namespace WowPacketParser.SQL
             Nullable = nullable;
             Count = 1;
             Locale = locale;
+            _validForVersion = TargetedDatabaseFlag.Any;
         }
 
         /// <summary>
-        /// [addedInVersion, +inf[
+        /// [validForVersion, +inf[
         /// </summary>
         /// <param name="name">database field name</param>
-        /// <param name="addedInVersion">initial version</param>
+        /// <param name="validForVersion">valid versions</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, bool isPrimaryKey = false, bool noQuotes = false, bool nullable = false)
+        public DBFieldNameAttribute(string name, TargetedDatabaseFlag validForVersion, bool isPrimaryKey = false, bool noQuotes = false, bool nullable = false)
         {
             Name = name;
             IsPrimaryKey = isPrimaryKey;
             NoQuotes = noQuotes;
             Nullable = nullable;
             Count = 1;
-            _addedInVersion = addedInVersion;
+            _validForVersion = validForVersion;
         }
 
         /// <summary>
-        /// [addedInVersion, +inf[
+        /// [validForVersion, +inf[
         /// </summary>
         /// <param name="name">database field name</param>
-        /// <param name="addedInVersion">initial version</param>
+        /// <param name="validForVersion">valid versions</param>
         /// <param name="locale">initial locale</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, LocaleConstant locale, bool isPrimaryKey = false, bool noQuotes = false, bool nullable = false)
+        public DBFieldNameAttribute(string name, TargetedDatabaseFlag validForVersion, LocaleConstant locale, bool isPrimaryKey = false, bool noQuotes = false, bool nullable = false)
         {
             Name = name;
             IsPrimaryKey = isPrimaryKey;
@@ -115,46 +115,7 @@ namespace WowPacketParser.SQL
             Nullable = nullable;
             Count = 1;
             Locale = locale;
-            _addedInVersion = addedInVersion;
-        }
-
-        /// <summary>
-        /// [addedInVersion, removedInVersion[
-        /// </summary>
-        /// <param name="name">database field name</param>
-        /// <param name="addedInVersion">initial version</param>
-        /// <param name="removedInVersion">final version</param>
-        /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion, bool isPrimaryKey = false, bool noQuotes = false, bool nullable = false)
-        {
-            Name = name;
-            IsPrimaryKey = isPrimaryKey;
-            NoQuotes = noQuotes;
-            Nullable = nullable;
-            Count = 1;
-            _addedInVersion = addedInVersion;
-            _removedInVersion = removedInVersion;
-
-        }
-
-        /// <summary>
-        /// [addedInVersion, removedInVersion[
-        /// </summary>
-        /// <param name="name">database field name</param>
-        /// <param name="addedInVersion">initial version</param>
-        /// <param name="removedInVersion">final version</param>
-        /// <param name="locale">initial locale</param>
-        /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion, LocaleConstant locale, bool isPrimaryKey = false, bool noQuotes = false, bool nullable = false)
-        {
-            Name = name;
-            IsPrimaryKey = isPrimaryKey;
-            NoQuotes = noQuotes;
-            Nullable = nullable;
-            Count = 1;
-            Locale = locale;
-            _addedInVersion = addedInVersion;
-            _removedInVersion = removedInVersion;
+            _validForVersion = validForVersion;
         }
 
         /// <summary>
@@ -173,17 +134,18 @@ namespace WowPacketParser.SQL
             Count = count;
             StartAtZero = startAtZero;
             _multipleFields = true;
+            _validForVersion = TargetedDatabaseFlag.Any;
         }
 
         /// <summary>
         /// [addedInVersion, +inf[
         /// </summary>
         /// <param name="name">database field name</param>
-        /// <param name="addedInVersion">initial version</param>
+        /// <param name="validForVersion">valid versions</param>
         /// <param name="count">number of fields</param>
         /// <param name="startAtZero">true if fields name start at 0</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, int count, bool startAtZero = false,
+        public DBFieldNameAttribute(string name, TargetedDatabaseFlag validForVersion, int count, bool startAtZero = false,
             bool isPrimaryKey = false, bool noQuotes = false, bool nullable = false)
         {
             Name = name;
@@ -191,31 +153,7 @@ namespace WowPacketParser.SQL
             NoQuotes = noQuotes;
             Nullable = nullable;
             Count = count;
-            _addedInVersion = addedInVersion;
-
-            StartAtZero = startAtZero;
-            _multipleFields = true;
-        }
-
-        /// <summary>
-        /// [addedInVersion, removedInVersion[
-        /// </summary>
-        /// <param name="name">database field name</param>
-        /// <param name="addedInVersion">initial version</param>
-        /// <param name="removedInVersion">final version</param>
-        /// <param name="count">number of fields</param>
-        /// <param name="startAtZero">true if fields name start at 0</param>
-        /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion,
-            int count, bool startAtZero = false, bool isPrimaryKey = false, bool noQuotes = false, bool nullable = false)
-        {
-            Name = name;
-            IsPrimaryKey = isPrimaryKey;
-            NoQuotes = noQuotes;
-            Nullable = nullable;
-            Count = count;
-            _addedInVersion = addedInVersion;
-            _removedInVersion = removedInVersion;
+            _validForVersion = validForVersion;
 
             StartAtZero = startAtZero;
             _multipleFields = true;
@@ -226,15 +164,13 @@ namespace WowPacketParser.SQL
             if (Locale != null && Locale != ClientLocale.PacketLocale)
                 return false;
 
-            TargetedDatabase target = Settings.TargetedDatabase;
+            int target = (int)Settings.TargetedDatabase;
+            TargetedDatabaseFlag targetFlag = (TargetedDatabaseFlag)(1 << target);
 
-            if (_addedInVersion.HasValue && !_removedInVersion.HasValue)
-                return target >= _addedInVersion.Value;
+            if (_validForVersion.HasFlag(targetFlag))
+                return true;
 
-            if (_addedInVersion.HasValue && _removedInVersion.HasValue)
-                return target >= _addedInVersion.Value && target < _removedInVersion.Value;
-
-            return true;
+            return false;
         }
 
         /// <summary>

@@ -22,19 +22,19 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("areaId")]
         public uint? AreaID;
 
-        [DBFieldName("spawnMask", TargetedDatabase.Zero, TargetedDatabase.Legion)]
+        [DBFieldName("spawnMask", TargetedDatabaseFlag.TillWarlordsOfDraenor)]
         public uint? SpawnMask;
 
-        [DBFieldName("spawnDifficulties", TargetedDatabase.Legion)]
+        [DBFieldName("spawnDifficulties", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.AnyClassic)]
         public string spawnDifficulties;
 
-        [DBFieldName("phaseMask", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        [DBFieldName("phaseMask", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
         public uint? PhaseMask;
 
-        [DBFieldName("PhaseId", TargetedDatabase.Cataclysm)]
+        [DBFieldName("PhaseId", TargetedDatabaseFlag.SinceCataclysm | TargetedDatabaseFlag.AnyClassic)]
         public string PhaseID;
 
-        [DBFieldName("PhaseGroup", TargetedDatabase.Cataclysm)]
+        [DBFieldName("PhaseGroup", TargetedDatabaseFlag.SinceCataclysm | TargetedDatabaseFlag.AnyClassic)]
         public int? PhaseGroup;
 
         [DBFieldName("modelid")]

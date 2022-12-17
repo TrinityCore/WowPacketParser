@@ -34,17 +34,17 @@ namespace WowPacketParser.Store.Objects
         //TODO: move to gameobject_questitem
         public uint?[] QuestItems;
 
-        [DBFieldName("Data", TargetedDatabase.Zero, TargetedDatabase.Cataclysm, 24, true)]
-        [DBFieldName("Data", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor, 32, true)]
-        [DBFieldName("Data", TargetedDatabase.WarlordsOfDraenor, TargetedDatabase.BattleForAzeroth, 33, true)]
-        [DBFieldName("Data", TargetedDatabase.BattleForAzeroth, TargetedDatabase.Shadowlands, 34, true)]
-        [DBFieldName("Data", TargetedDatabase.Shadowlands, 35, true)]
+        [DBFieldName("Data", TargetedDatabaseFlag.TillWrathOfTheLichKing, 24, true)]
+        [DBFieldName("Data", TargetedDatabaseFlag.Cataclysm, 32, true)]
+        [DBFieldName("Data", TargetedDatabaseFlag.WarlordsOfDraenor | TargetedDatabaseFlag.Legion, 33, true)]
+        [DBFieldName("Data", TargetedDatabaseFlag.BattleForAzeroth, 34, true)]
+        [DBFieldName("Data", TargetedDatabaseFlag.SinceShadowlands, 35, true)]
         public int?[] Data;
 
-        [DBFieldName("RequiredLevel", TargetedDatabase.Cataclysm, TargetedDatabase.Shadowlands)]
+        [DBFieldName("RequiredLevel", TargetedDatabaseFlag.FromCataclysmTillBattleForAzeroth)]
         public int? RequiredLevel;
 
-        [DBFieldName("ContentTuningId", TargetedDatabase.Shadowlands)]
+        [DBFieldName("ContentTuningId", TargetedDatabaseFlag.SinceShadowlands)]
         public int? ContentTuningId;
 
         [DBFieldName("VerifiedBuild")]
@@ -63,7 +63,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ItemId")]
         public uint? ItemId;
 
-        [DBFieldName("VerifiedBuild", TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("VerifiedBuild", TargetedDatabaseFlag.SinceWarlordsOfDraenor)]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

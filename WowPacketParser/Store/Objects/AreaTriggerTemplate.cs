@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Id", true)]
         public uint? Id;
 
-        [DBFieldName("IsServerSide", TargetedDatabase.Shadowlands, true)]
+        [DBFieldName("IsServerSide", TargetedDatabaseFlag.SinceShadowlands, true)]
         public byte? IsServerSide = 0;
 
         [DBFieldName("Type")] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers

@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("gossip_menu_option_addon", TargetedDatabase.Shadowlands, TargetedDatabase.Dragonflight)]
+    [DBTableName("gossip_menu_option_addon", TargetedDatabaseFlag.Shadowlands)]
     public sealed record GossipMenuOptionAddon : IDataModel
     {
         [DBFieldName("MenuID", true)]

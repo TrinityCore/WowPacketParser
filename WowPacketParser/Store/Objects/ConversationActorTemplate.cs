@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         CreatureActor = 1
     };
 
-    [DBTableName("conversation_actor_template", TargetedDatabase.Zero, TargetedDatabase.BattleForAzeroth)]
+    [DBTableName("conversation_actor_template", TargetedDatabaseFlag.TillLegion)]
     public sealed record ConversationActorTemplate : IDataModel
     {
         [DBFieldName("Id", true)]

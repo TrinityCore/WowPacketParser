@@ -16,7 +16,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Type")]
         public QuestRequirementType? Type;
 
-        [DBFieldName("Order", TargetedDatabase.Legion)]
+        [DBFieldName("Order", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.AnyClassic)]
         public uint? Order;
 
         [DBFieldName("StorageIndex")]
@@ -31,7 +31,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Flags")]
         public uint? Flags;
 
-        [DBFieldName("Flags2", TargetedDatabase.Legion)] // 7.1.0
+        [DBFieldName("Flags2", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.AnyClassic)] // 7.1.0
         public uint? Flags2;
 
         [DBFieldName("ProgressBarWeight")]

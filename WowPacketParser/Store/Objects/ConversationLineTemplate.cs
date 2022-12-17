@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Id", true)]
         public uint? Id;
 
-        [DBFieldName("StartTime", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
+        [DBFieldName("StartTime", TargetedDatabaseFlag.TillBattleForAzeroth)]
         public uint? StartTime;
 
         [DBFieldName("UiCameraID")]

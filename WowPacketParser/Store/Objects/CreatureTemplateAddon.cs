@@ -24,18 +24,18 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("emote")]
         public uint? Emote;
 
-        [DBFieldName("aiAnimKit", TargetedDatabase.Legion)]
+        [DBFieldName("aiAnimKit", TargetedDatabaseFlag.SinceLegion)]
         public ushort? AIAnimKit;
 
-        [DBFieldName("movementAnimKit", TargetedDatabase.Legion)]
+        [DBFieldName("movementAnimKit", TargetedDatabaseFlag.SinceLegion)]
         public ushort? MovementAnimKit;
 
-        [DBFieldName("meleeAnimKit", TargetedDatabase.Legion)]
+        [DBFieldName("meleeAnimKit", TargetedDatabaseFlag.SinceLegion)]
         public ushort? MeleeAnimKit;
 
         // visibilityDistanceType exists in all database versions but because UnitFlags2 to detect the value from sniff doesn't exist in earlier client version
         // we pretend the field doesn't exist
-        [DBFieldName("visibilityDistanceType", TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("visibilityDistanceType", TargetedDatabaseFlag.SinceWarlordsOfDraenor)]
         public byte? VisibilityDistanceType;
 
         [DBFieldName("auras")]
