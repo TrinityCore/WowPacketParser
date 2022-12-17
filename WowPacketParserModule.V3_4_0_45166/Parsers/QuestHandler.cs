@@ -136,15 +136,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ResetBitReader();
 
-            uint logTitleLen = packet.ReadBits("logTitleLen", 9);
-            uint logDescriptionLen = packet.ReadBits("logDescriptionLen", 12);
-            uint questDescriptionLen = packet.ReadBits("questDescriptionLen", 12);
-            uint areaDescriptionLen = packet.ReadBits("areaDescriptionLen", 9);
-            uint questGiverTextWindowLen = packet.ReadBits("questGiverTextWindowLen", 10);
-            uint questGiverTargetNameLen = packet.ReadBits("questGiverTargetNameLen", 8);
-            uint questTurnTextWindowLen = packet.ReadBits("questTurnTextWindowLen", 10);
-            uint questTurnTargetNameLen = packet.ReadBits("questTurnTargetNameLen", 8);
-            uint questCompletionLogLen = packet.ReadBits("questCompletionLogLen", 11);
+            uint logTitleLen = packet.ReadBits(9);
+            uint logDescriptionLen = packet.ReadBits(12);
+            uint questDescriptionLen = packet.ReadBits(12);
+            uint areaDescriptionLen = packet.ReadBits(9);
+            uint questGiverTextWindowLen = packet.ReadBits(10);
+            uint questGiverTargetNameLen = packet.ReadBits(8);
+            uint questTurnTextWindowLen = packet.ReadBits(10);
+            uint questTurnTargetNameLen = packet.ReadBits(8);
+            uint questCompletionLogLen = packet.ReadBits(11);
 
             for (uint i = 0; i < objectiveCount; ++i)
             {
