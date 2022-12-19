@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -80,6 +81,86 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             int questsCount = packet.ReadInt32("GossipQuestsCount");
             for (int i = 0; i < questsCount; ++i)
                 packetGossip.Quests.Add(ReadGossipQuestTextData(packet, i, "GossipQuests"));
+        }
+
+        [Parser(Opcode.SMSG_VENDOR_INVENTORY)]
+        public static void HandleVendorInventoryList(Packet packet)
+        {
+            var guidBytes = new byte[8];
+
+            guidBytes[1] = packet.ReadBit();
+            guidBytes[0] = packet.ReadBit();
+
+            var count = packet.ReadBits("VendorItems", 21);
+
+            guidBytes[3] = packet.ReadBit();
+            guidBytes[6] = packet.ReadBit();
+            guidBytes[5] = packet.ReadBit();
+            guidBytes[2] = packet.ReadBit();
+            guidBytes[7] = packet.ReadBit();
+
+            var hasExtendedCostId = new bool[count];
+            var hasPlayerConditionId = new bool[count];
+
+            for (var i = 0; i < count; ++i)
+            {
+                hasExtendedCostId[i] = !packet.ReadBit();
+                hasPlayerConditionId[i] = !packet.ReadBit();
+            }
+
+            guidBytes[4] = packet.ReadBit();
+
+            var tempList = new List<NpcVendor>();
+            for (int i = 0; i < count; ++i)
+            {
+                NpcVendor vendor = new NpcVendor
+                {
+                    Slot = packet.ReadInt32("MuID", i),
+                };
+
+                packet.ReadInt32("Durability", i);
+
+                if (hasExtendedCostId[i])
+                    vendor.ExtendedCost = (uint)packet.ReadInt32("ExtendedCostID", i);
+
+                vendor.Item = packet.ReadInt32("ItemID", i);
+                vendor.Type = (uint)packet.ReadInt32("Type", i);
+                packet.ReadInt32("Price", i);
+                packet.ReadInt32("ItemDisplayInfoID", i);
+
+                if (hasPlayerConditionId[i])
+                    vendor.PlayerConditionID = (uint)packet.ReadInt32("PlayerConditionFailed", i);
+
+                int maxCount = packet.ReadInt32("Quantity", i);
+                int buyCount = packet.ReadInt32("StackCount", i);
+                vendor.MaxCount = maxCount == -1 ? 0 : (uint)maxCount; // TDB
+                if (vendor.Type == 2)
+                    vendor.MaxCount = (uint)buyCount;
+
+                tempList.Add(vendor);
+            }
+
+            packet.ReadXORByte(guidBytes, 5);
+            packet.ReadXORByte(guidBytes, 4);
+            packet.ReadXORByte(guidBytes, 1);
+            packet.ReadXORByte(guidBytes, 0);
+            packet.ReadXORByte(guidBytes, 6);
+
+            packet.ReadByte("Reason");
+
+            packet.ReadXORByte(guidBytes, 2);
+            packet.ReadXORByte(guidBytes, 3);
+            packet.ReadXORByte(guidBytes, 7);
+
+            uint entry = packet.WriteGuid("Vendor", guidBytes).GetEntry();
+            tempList.ForEach(v =>
+            {
+                v.Entry = entry;
+                Storage.NpcVendors.Add(v, packet.TimeSpan);
+            });
+
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
         }
     };
 }
