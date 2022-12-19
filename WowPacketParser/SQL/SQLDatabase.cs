@@ -346,7 +346,7 @@ namespace WowPacketParser.SQL
             }
 
             // Phase - Before Cataclysm there was phasemask system
-            if (Settings.TargetedDatabase >= TargetedDatabase.Cataclysm)
+            if (Settings.TargetedDatabase > TargetedDatabase.Cataclysm)
             {
                 NameStores.Add(StoreNameType.PhaseId, GetDict<int, string>(
                     $"SELECT `ID`, `Name` FROM {Settings.TDBDatabase}.phase_name;"));
