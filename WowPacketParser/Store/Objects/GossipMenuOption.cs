@@ -63,7 +63,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("OverrideIconID", TargetedDatabaseFlag.Dragonflight, false, false, true)]
         public int? OverrideIconID;
 
-        [DBFieldName("GossipNpcOptionID", TargetedDatabaseFlag.Dragonflight)]
+        [DBFieldName("GossipNpcOptionID", TargetedDatabaseFlag.SinceShadowlands, false, false, true)]
         public int? GossipNpcOptionID;
 
         [DBFieldName("VerifiedBuild")]
