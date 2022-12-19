@@ -76,7 +76,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardMoneyMultiplier", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.AnyClassic)]
         public float? RewardMoneyMultiplier;
 
-        [DBFieldName("RewardBonusMoney")]
+        //[DBFieldName("RewardBonusMoney")]
         public uint? RewardBonusMoney;
 
         [DBFieldName("RewardDisplaySpell", TargetedDatabaseFlag.TillCataclysm)]
