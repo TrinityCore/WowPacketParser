@@ -601,7 +601,7 @@ namespace WowPacketParser.Enums.Version.V3_4_0_45166
             { Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST, 0x369A },
             { Opcode.CMSG_SET_ACHIEVEMENTS_HIDDEN, 0x3224 },
             { Opcode.CMSG_SET_ACTION_BAR_TOGGLES, 0x3532 },
-            { Opcode.CMSG_SET_ACTION_BUTTON, 0x3637 },
+            { Opcode.CMSG_SET_ACTION_BUTTON, 0x355D },
             { Opcode.CMSG_SET_ACTIVE_MOVER, 0x3A3D },
             { Opcode.CMSG_SET_ADVANCED_COMBAT_LOGGING, 0x32AE },
             { Opcode.CMSG_SET_ASSISTANT_LEADER, 0x3651 },
