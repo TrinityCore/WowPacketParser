@@ -39,6 +39,9 @@ namespace WowPacketParser.Enums
         DarkIronDwarf       = 34,
         Vulpera             = 35,
         MagharOrc           = 36,
-        Mechagnome          = 37
+        Mechagnome          = 37,
+
+        DracthyrAlliance    = 52,
+        DractyhrHorde       = 70,
     }
 }
