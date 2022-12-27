@@ -36,6 +36,9 @@ namespace WowPacketParser.SQL.Builders
                     if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
 
+                if (!Filters.CheckFilter(go.Guid))
+                    continue;
+
                 var addon = new GameObjectTemplateAddon
                 {
                     Entry = obj.Key.GetEntry()

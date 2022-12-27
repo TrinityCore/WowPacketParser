@@ -42,6 +42,9 @@ namespace WowPacketParser.SQL.Builders
                     if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
 
+                if (!Filters.CheckFilter(npc.Guid))
+                    continue;
+
                 var auras = string.Empty;
                 var commentAuras = string.Empty;
                 if (npc.Auras != null && npc.Auras.Count != 0)
@@ -177,6 +180,9 @@ namespace WowPacketParser.SQL.Builders
                 if (Settings.MapFilters.Length > 0)
                     if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
+
+                if (!Filters.CheckFilter(npc.Guid))
+                    continue;
 
                 // Ignore pets
                 if (npc.Guid.GetHighType() == HighGuidType.Pet)
@@ -324,6 +330,9 @@ namespace WowPacketParser.SQL.Builders
                 if (Settings.MapFilters.Length > 0)
                     if (!(npc.Value.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
+
+                if (!Filters.CheckFilter(npc.Value.Guid))
+                    continue;
 
                 var equip = npc.Value.GetEquipment();
                 if (equip == null)
@@ -958,6 +967,9 @@ namespace WowPacketParser.SQL.Builders
                 if (Settings.MapFilters.Length > 0)
                     if (!npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters))
                         continue;
+
+                if (!Filters.CheckFilter(npc.Guid))
+                    continue;
 
                 var row = new Row<NpcSpellClick>();
                 row.Data.Entry = unit.Key.GetEntry();

@@ -9,6 +9,7 @@ namespace WowPacketParser.Misc
 
         public static readonly string[] Filters = Conf.GetStringList("Filters", new string[0]);
         public static readonly string[] IgnoreFilters = Conf.GetStringList("IgnoreFilters", new string[0]);
+        public static readonly string[] EntryFilters = Conf.GetStringList("EntryFilters", new string[0]);
         public static readonly string[] IgnoreByEntryFilters = Conf.GetStringList("IgnoreByEntryFilters", new string[0]);
         public static readonly string[] MapFilters = Conf.GetStringList("MapFilters", new string[0]);
         public static readonly string[] AreaFilters = Conf.GetStringList("AreaFilters", new string[0]);

@@ -71,6 +71,9 @@ namespace WowPacketParser.SQL.Builders
                     if (!(creature.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
 
+                if (!Filters.CheckFilter(creature.Guid))
+                    continue;
+
                 uint entry = (uint)creature.ObjectData.EntryID;
                 if (entry == 0)
                     continue;   // broken entry, nothing to spawn
@@ -294,6 +297,9 @@ namespace WowPacketParser.SQL.Builders
                 if (Settings.MapFilters.Length > 0)
                     if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
+
+                if (!Filters.CheckFilter(go.Guid))
+                    continue;
 
                 uint entry = (uint)go.ObjectData.EntryID;
                 if (entry == 0)
