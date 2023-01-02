@@ -6,6 +6,12 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 {
     public static class ItemHandler
     {
+        public static void ReadUIEventToast(Packet packet, params object[] args)
+        {
+            packet.ReadInt32("UiEventToastID", args);
+            packet.ReadInt32("Asset", args);
+        }
+
         [Parser(Opcode.SMSG_ITEM_PUSH_RESULT)]
         public static void HandleItemPushResult(Packet packet)
         {
@@ -29,10 +35,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             var toastCount = packet.ReadUInt32();
             for (var i = 0u; i < toastCount; i++)
-            {
-                packet.ReadInt32("UiEventToastID", "Toasts", i);
-                packet.ReadInt32("Asset", "Toasts", i);
-            }
+                ReadUIEventToast(packet, "UiEventToast", i);
 
             packet.ReadBit("Pushed");
             packet.ReadBit("Created");
