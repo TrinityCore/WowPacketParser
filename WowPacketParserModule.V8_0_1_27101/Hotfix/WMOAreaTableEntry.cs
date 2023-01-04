@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V8_0_1_27101.Hotfix
 {
-    [HotfixStructure(DB2Hash.WMOAreaTable)]
+    [HotfixStructure(DB2Hash.WmoAreaTable)]
     public class WMOAreaTableEntry
     {
         public string AreaName { get; set; }
