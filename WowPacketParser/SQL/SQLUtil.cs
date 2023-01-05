@@ -188,6 +188,11 @@ namespace WowPacketParser.SQL
             return Utilities.GetAttributes<DBFieldNameAttribute>(field).Any(a => a.IsPrimaryKey);
         }
 
+        public static bool IsHotfixTable<T>() where T : IDataModel
+        {
+            return Attribute.IsDefined(typeof(T), typeof(HotfixAttribute));
+        }
+
         /// <param name="storeList"><see cref="DataBag{T}"/> with items form sniff.</param>
         /// <param name="dbList"><see cref="DataBag{T}"/> with items from database.</param>
         /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
