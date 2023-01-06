@@ -19,8 +19,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ReagentCount", 8)]
         public short?[] ReagentCount;
 
-        [DBFieldName("ReagentReCraftCount", 8)]
-        public short?[] ReagentReCraftCount;
+        [DBFieldName("ReagentRecraftCount", 8)]
+        public short?[] ReagentRecraftCount;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
@@ -41,8 +41,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ReagentCount", 8)]
         public short?[] ReagentCount;
 
-        [DBFieldName("ReagentReCraftCount", 8)]
-        public short?[] ReagentReCraftCount;
+        [DBFieldName("ReagentRecraftCount", 8)]
+        public short?[] ReagentRecraftCount;
 
         [DBFieldName("ReagentSource", 8)]
         public byte?[] ReagentSource;

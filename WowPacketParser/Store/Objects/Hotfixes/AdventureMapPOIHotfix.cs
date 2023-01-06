@@ -5,7 +5,7 @@ namespace WowPacketParser.Store.Objects
 {
     [Hotfix]
     [DBTableName("adventure_map_poi")]
-    public sealed record AdventureMapPOIHotfix1000: IDataModel
+    public sealed record AdventureMapPoiHotfix1000: IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;
@@ -55,7 +55,7 @@ namespace WowPacketParser.Store.Objects
 
     [Hotfix]
     [DBTableName("adventure_map_poi_locale")]
-    public sealed record AdventureMapPOILocaleHotfix1000: IDataModel
+    public sealed record AdventureMapPoiLocaleHotfix1000: IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;

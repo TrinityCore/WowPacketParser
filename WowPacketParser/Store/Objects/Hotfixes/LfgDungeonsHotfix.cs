@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public byte? TypeID;
 
         [DBFieldName("Subtype")]
-        public byte? Subtype;
+        public sbyte? Subtype;
 
         [DBFieldName("Faction")]
         public sbyte? Faction;
@@ -52,8 +52,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("OrderIndex")]
         public byte? OrderIndex;
 
-        [DBFieldName("RequiredPlayerConditionID")]
-        public uint? RequiredPlayerConditionID;
+        [DBFieldName("RequiredPlayerConditionId")]
+        public uint? RequiredPlayerConditionId;
 
         [DBFieldName("RandomID")]
         public ushort? RandomID;

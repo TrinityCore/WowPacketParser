@@ -23,7 +23,7 @@ namespace WowPacketParser.Store.Objects
         public int? ItemBonusListChest;
 
         [DBFieldName("AzeriteUnlockMappingSetID")]
-        public int? AzeriteUnlockMappingSetID;
+        public uint? AzeriteUnlockMappingSetID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

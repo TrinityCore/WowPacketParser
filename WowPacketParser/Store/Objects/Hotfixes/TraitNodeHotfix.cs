@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public int? PosY;
 
         [DBFieldName("Type")]
-        public byte? Type;
+        public sbyte? Type;
 
         [DBFieldName("Flags")]
         public int? Flags;

@@ -26,7 +26,7 @@ namespace WowPacketParser.Store.Objects
         public byte? GarrTypeID;
 
         [DBFieldName("BuildingType")]
-        public byte? BuildingType;
+        public sbyte? BuildingType;
 
         [DBFieldName("HordeGameObjectID")]
         public int? HordeGameObjectID;

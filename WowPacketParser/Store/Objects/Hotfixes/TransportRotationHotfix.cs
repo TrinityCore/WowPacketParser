@@ -17,7 +17,7 @@ namespace WowPacketParser.Store.Objects
         public uint? TimeIndex;
 
         [DBFieldName("GameObjectsID")]
-        public int? GameObjectsID;
+        public uint? GameObjectsID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

@@ -115,8 +115,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("GemProperties")]
         public ushort? GemProperties;
 
-        [DBFieldName("SocketMatchEnchantmentID")]
-        public ushort? SocketMatchEnchantmentID;
+        [DBFieldName("SocketMatchEnchantmentId")]
+        public ushort? SocketMatchEnchantmentId;
 
         [DBFieldName("TotemCategoryID")]
         public ushort? TotemCategoryID;

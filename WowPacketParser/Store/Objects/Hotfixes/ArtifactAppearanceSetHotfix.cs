@@ -32,7 +32,7 @@ namespace WowPacketParser.Store.Objects
         public byte? Flags;
 
         [DBFieldName("ArtifactID")]
-        public int? ArtifactID;
+        public uint? ArtifactID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

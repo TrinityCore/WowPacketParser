@@ -29,7 +29,7 @@ namespace WowPacketParser.Store.Objects
         public int? IblGroupPointsModSetID;
 
         [DBFieldName("ParentItemBonusTreeID")]
-        public int? ParentItemBonusTreeID;
+        public uint? ParentItemBonusTreeID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

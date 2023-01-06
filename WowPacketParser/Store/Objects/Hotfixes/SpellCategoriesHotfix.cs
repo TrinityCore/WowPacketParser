@@ -35,7 +35,7 @@ namespace WowPacketParser.Store.Objects
         public short? ChargeCategory;
 
         [DBFieldName("SpellID")]
-        public int? SpellID;
+        public uint? SpellID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

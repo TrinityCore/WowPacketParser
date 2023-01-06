@@ -19,8 +19,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ScenarioID")]
         public ushort? ScenarioID;
 
-        [DBFieldName("CriteriatreeID")]
-        public uint? CriteriatreeID;
+        [DBFieldName("Criteriatreeid")]
+        public uint? Criteriatreeid;
 
         [DBFieldName("RewardQuestID")]
         public int? RewardQuestID;

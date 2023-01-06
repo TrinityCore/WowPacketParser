@@ -17,7 +17,7 @@ namespace WowPacketParser.Store.Objects
         public uint? PlayerConditionID;
 
         [DBFieldName("MountID")]
-        public int? MountID;
+        public uint? MountID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

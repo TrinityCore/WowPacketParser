@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
         public sbyte? PowerType;
 
         [DBFieldName("ClassID")]
-        public int? ClassID;
+        public uint? ClassID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

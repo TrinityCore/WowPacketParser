@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
         public ushort? PhaseID;
 
         [DBFieldName("PhaseGroupID")]
-        public int? PhaseGroupID;
+        public uint? PhaseGroupID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

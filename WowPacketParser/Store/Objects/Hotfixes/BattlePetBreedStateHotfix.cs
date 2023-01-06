@@ -17,7 +17,7 @@ namespace WowPacketParser.Store.Objects
         public ushort? Value;
 
         [DBFieldName("BattlePetBreedID")]
-        public int? BattlePetBreedID;
+        public uint? BattlePetBreedID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

@@ -41,7 +41,7 @@ namespace WowPacketParser.Store.Objects
         public byte? FeatureTypeIndex;
 
         [DBFieldName("FeatureSubtypeIndex")]
-        public byte? FeatureSubtypeIndex;
+        public sbyte? FeatureSubtypeIndex;
 
         [DBFieldName("CurrencyID")]
         public int? CurrencyID;

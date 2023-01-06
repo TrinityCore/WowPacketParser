@@ -23,7 +23,7 @@ namespace WowPacketParser.Store.Objects
         public uint? SoundID;
 
         [DBFieldName("EmotesTextID")]
-        public int? EmotesTextID;
+        public uint? EmotesTextID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

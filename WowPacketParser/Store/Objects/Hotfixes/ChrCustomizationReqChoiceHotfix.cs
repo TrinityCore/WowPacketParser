@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
         public int? ChrCustomizationChoiceID;
 
         [DBFieldName("ChrCustomizationReqID")]
-        public int? ChrCustomizationReqID;
+        public uint? ChrCustomizationReqID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

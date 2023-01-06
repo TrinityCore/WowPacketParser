@@ -29,7 +29,7 @@ namespace WowPacketParser.Store.Objects
         public sbyte? ExpansionID;
 
         [DBFieldName("Class")]
-        public int? Class;
+        public uint? Class;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

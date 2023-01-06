@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public byte? MaxLevel;
 
         [DBFieldName("MapID")]
-        public int? MapID;
+        public uint? MapID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

@@ -17,7 +17,7 @@ namespace WowPacketParser.Store.Objects
         public int? UiMapArtID;
 
         [DBFieldName("UiMapID")]
-        public int? UiMapID;
+        public uint? UiMapID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
         public ushort? ChrSpecializationID;
 
         [DBFieldName("GlyphPropertiesID")]
-        public int? GlyphPropertiesID;
+        public uint? GlyphPropertiesID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

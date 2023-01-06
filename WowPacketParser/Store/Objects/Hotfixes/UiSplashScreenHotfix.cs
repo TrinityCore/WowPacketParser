@@ -38,7 +38,7 @@ namespace WowPacketParser.Store.Objects
         public int? HordeQuestID;
 
         [DBFieldName("ScreenType")]
-        public byte? ScreenType;
+        public sbyte? ScreenType;
 
         [DBFieldName("TextureKitID")]
         public int? TextureKitID;

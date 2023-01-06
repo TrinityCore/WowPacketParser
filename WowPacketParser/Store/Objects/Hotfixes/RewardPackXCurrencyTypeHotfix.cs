@@ -17,7 +17,7 @@ namespace WowPacketParser.Store.Objects
         public int? Quantity;
 
         [DBFieldName("RewardPackID")]
-        public int? RewardPackID;
+        public uint? RewardPackID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

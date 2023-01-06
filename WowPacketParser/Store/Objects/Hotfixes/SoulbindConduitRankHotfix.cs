@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public float? AuraPointsOverride;
 
         [DBFieldName("SoulbindConduitID")]
-        public int? SoulbindConduitID;
+        public uint? SoulbindConduitID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

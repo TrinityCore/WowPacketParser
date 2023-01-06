@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V9_0_1_36216.Hotfix
 {
-    [HotfixStructure(DB2Hash.KeyChain, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.Keychain, HasIndexInData = false)]
     public class KeychainEntry
     {
         [HotfixArray(32)]

@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public int? LockID;
 
         [DBFieldName("ResetInterval")]
-        public byte? ResetInterval;
+        public sbyte? ResetInterval;
 
         [DBFieldName("MaxPlayers")]
         public int? MaxPlayers;
@@ -38,7 +38,7 @@ namespace WowPacketParser.Store.Objects
         public int? ContentTuningID;
 
         [DBFieldName("MapID")]
-        public int? MapID;
+        public uint? MapID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

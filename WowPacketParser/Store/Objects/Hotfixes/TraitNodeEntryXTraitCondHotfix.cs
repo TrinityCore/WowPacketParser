@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
         public int? TraitCondID;
 
         [DBFieldName("TraitNodeEntryID")]
-        public int? TraitNodeEntryID;
+        public uint? TraitNodeEntryID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

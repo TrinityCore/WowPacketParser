@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public int? MaxMythicPlusSeasonID;
 
         [DBFieldName("ContentTuningID")]
-        public int? ContentTuningID;
+        public uint? ContentTuningID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

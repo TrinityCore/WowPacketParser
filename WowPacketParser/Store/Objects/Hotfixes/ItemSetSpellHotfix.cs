@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public byte? Threshold;
 
         [DBFieldName("ItemSetID")]
-        public int? ItemSetID;
+        public uint? ItemSetID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

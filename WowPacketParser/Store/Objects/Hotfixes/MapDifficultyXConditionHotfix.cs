@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public int? OrderIndex;
 
         [DBFieldName("MapDifficultyID")]
-        public int? MapDifficultyID;
+        public uint? MapDifficultyID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

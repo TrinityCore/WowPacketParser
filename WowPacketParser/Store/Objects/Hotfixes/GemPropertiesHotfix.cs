@@ -10,8 +10,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ID", true)]
         public uint? ID;
 
-        [DBFieldName("EnchantID")]
-        public ushort? EnchantID;
+        [DBFieldName("EnchantId")]
+        public ushort? EnchantId;
 
         [DBFieldName("Type")]
         public int? Type;

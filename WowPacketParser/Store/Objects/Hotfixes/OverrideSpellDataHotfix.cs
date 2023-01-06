@@ -13,8 +13,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Spells", 10)]
         public int?[] Spells;
 
-        [DBFieldName("PlayerActionbarFileDataID")]
-        public int? PlayerActionbarFileDataID;
+        [DBFieldName("PlayerActionBarFileDataID")]
+        public int? PlayerActionBarFileDataID;
 
         [DBFieldName("Flags")]
         public byte? Flags;

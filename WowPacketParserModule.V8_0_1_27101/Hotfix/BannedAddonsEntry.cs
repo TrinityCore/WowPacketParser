@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V8_0_1_27101.Hotfix
 {
-    [HotfixStructure(DB2Hash.BannedAddOns, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.BannedAddons, HasIndexInData = false)]
     public class BannedAddOnsEntry
     {
         public string Name { get; set; }

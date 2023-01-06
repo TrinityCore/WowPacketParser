@@ -5,7 +5,7 @@ namespace WowPacketParser.Store.Objects
 {
     [Hotfix]
     [DBTableName("gossip_npc_option")]
-    public sealed record GossipNPCOptionHotfix1000: IDataModel
+    public sealed record GossipNpcOptionHotfix1000: IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;
@@ -57,7 +57,7 @@ namespace WowPacketParser.Store.Objects
     }
     [Hotfix]
     [DBTableName("gossip_npc_option")]
-    public sealed record GossipNPCOptionHotfix1002: IDataModel
+    public sealed record GossipNpcOptionHotfix1002: IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;

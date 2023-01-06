@@ -41,7 +41,7 @@ namespace WowPacketParser.Store.Objects
         public float? CreatureSpellDamage;
 
         [DBFieldName("Lvl")]
-        public int? Lvl;
+        public uint? Lvl;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

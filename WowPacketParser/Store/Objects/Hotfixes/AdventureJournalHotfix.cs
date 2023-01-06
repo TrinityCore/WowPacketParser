@@ -67,8 +67,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CurrencyQuantity")]
         public uint? CurrencyQuantity;
 
-        [DBFieldName("UIMapID")]
-        public ushort? UIMapID;
+        [DBFieldName("UiMapID")]
+        public ushort? UiMapID;
 
         [DBFieldName("BonusPlayerConditionID", 2)]
         public uint?[] BonusPlayerConditionID;

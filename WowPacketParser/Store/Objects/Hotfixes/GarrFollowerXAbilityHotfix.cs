@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public ushort? GarrAbilityID;
 
         [DBFieldName("GarrFollowerID")]
-        public int? GarrFollowerID;
+        public uint? GarrFollowerID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

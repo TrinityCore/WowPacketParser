@@ -17,7 +17,7 @@ namespace WowPacketParser.Store.Objects
         public sbyte? Quality;
 
         [DBFieldName("ParentILSQualitySetID")]
-        public int? ParentILSQualitySetID;
+        public uint? ParentILSQualitySetID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

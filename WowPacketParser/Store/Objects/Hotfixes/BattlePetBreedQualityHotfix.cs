@@ -17,7 +17,7 @@ namespace WowPacketParser.Store.Objects
         public float? StateMultiplier;
 
         [DBFieldName("QualityEnum")]
-        public byte? QualityEnum;
+        public sbyte? QualityEnum;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V8_0_1_27101.Hotfix
 {
-    [HotfixStructure(DB2Hash.GameObjectDisplayInfo, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.GameobjectDisplayInfo, HasIndexInData = false)]
     public class GameObjectDisplayInfoEntry
     {
         [HotfixArray(3, true)]

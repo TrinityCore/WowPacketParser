@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V7_0_3_22248.Hotfix
 {
-    [HotfixStructure(DB2Hash.ArtifactQuestXP, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.ArtifactQuestXp, HasIndexInData = false)]
     public class ArtifactQuestXPEntry
     {
         [HotfixArray(10)]

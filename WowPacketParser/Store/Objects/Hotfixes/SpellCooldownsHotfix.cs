@@ -26,7 +26,7 @@ namespace WowPacketParser.Store.Objects
         public int? AuraSpellID;
 
         [DBFieldName("SpellID")]
-        public int? SpellID;
+        public uint? SpellID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

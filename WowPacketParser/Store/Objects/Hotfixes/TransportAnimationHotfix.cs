@@ -26,7 +26,7 @@ namespace WowPacketParser.Store.Objects
         public uint? TimeIndex;
 
         [DBFieldName("TransportID")]
-        public int? TransportID;
+        public uint? TransportID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

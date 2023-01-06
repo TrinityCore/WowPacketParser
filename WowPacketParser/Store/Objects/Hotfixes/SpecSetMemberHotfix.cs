@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
         public int? ChrSpecializationID;
 
         [DBFieldName("SpecSetID")]
-        public int? SpecSetID;
+        public uint? SpecSetID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

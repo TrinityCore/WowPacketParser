@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public byte? GarrAbilityCategoryID;
 
         [DBFieldName("GarrFollowerTypeID")]
-        public byte? GarrFollowerTypeID;
+        public sbyte? GarrFollowerTypeID;
 
         [DBFieldName("IconFileDataID")]
         public int? IconFileDataID;

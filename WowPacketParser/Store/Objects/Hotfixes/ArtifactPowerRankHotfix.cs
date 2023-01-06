@@ -23,7 +23,7 @@ namespace WowPacketParser.Store.Objects
         public float? AuraPointsOverride;
 
         [DBFieldName("ArtifactPowerID")]
-        public int? ArtifactPowerID;
+        public uint? ArtifactPowerID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

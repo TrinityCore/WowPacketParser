@@ -32,7 +32,7 @@ namespace WowPacketParser.Store.Objects
         public int? OnLootSpellVisualKitID;
 
         [DBFieldName("CurrencyTypesID")]
-        public int? CurrencyTypesID;
+        public uint? CurrencyTypesID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

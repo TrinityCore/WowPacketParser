@@ -11,7 +11,7 @@ namespace WowPacketParser.Store.Objects
         public uint? ID;
 
         [DBFieldName("TraitNodeID")]
-        public int? TraitNodeID;
+        public uint? TraitNodeID;
 
         [DBFieldName("TraitCostID")]
         public int? TraitCostID;

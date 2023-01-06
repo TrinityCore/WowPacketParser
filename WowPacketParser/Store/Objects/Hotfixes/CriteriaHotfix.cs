@@ -16,8 +16,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Asset")]
         public int? Asset;
 
-        [DBFieldName("ModifierTreeID")]
-        public uint? ModifierTreeID;
+        [DBFieldName("ModifierTreeId")]
+        public uint? ModifierTreeId;
 
         [DBFieldName("StartEvent")]
         public byte? StartEvent;

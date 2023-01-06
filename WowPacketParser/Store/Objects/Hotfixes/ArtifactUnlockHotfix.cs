@@ -23,7 +23,7 @@ namespace WowPacketParser.Store.Objects
         public uint? PlayerConditionID;
 
         [DBFieldName("ArtifactID")]
-        public int? ArtifactID;
+        public uint? ArtifactID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

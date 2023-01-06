@@ -59,7 +59,7 @@ namespace WowPacketParser.Store.Objects
         public int? DecayTimeAfterImpact;
 
         [DBFieldName("SpellVisualMissileSetID")]
-        public int? SpellVisualMissileSetID;
+        public uint? SpellVisualMissileSetID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

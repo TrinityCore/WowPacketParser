@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public int? Class;
 
         [DBFieldName("Tier")]
-        public byte? Tier;
+        public sbyte? Tier;
 
         [DBFieldName("OrderIndex")]
         public int? OrderIndex;

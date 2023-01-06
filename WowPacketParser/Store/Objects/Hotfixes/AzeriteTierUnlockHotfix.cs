@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public byte? AzeriteLevel;
 
         [DBFieldName("AzeriteTierUnlockSetID")]
-        public int? AzeriteTierUnlockSetID;
+        public uint? AzeriteTierUnlockSetID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

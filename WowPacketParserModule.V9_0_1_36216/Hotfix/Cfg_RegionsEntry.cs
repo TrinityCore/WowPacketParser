@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V9_0_1_36216.Hotfix
 {
-    [HotfixStructure(DB2Hash.Cfg_Regions, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.CfgRegions, HasIndexInData = false)]
     public class Cfg_RegionsEntry
     {
         public string Tag { get; set; }

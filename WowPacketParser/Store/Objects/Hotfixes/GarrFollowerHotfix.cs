@@ -23,7 +23,7 @@ namespace WowPacketParser.Store.Objects
         public byte? GarrTypeID;
 
         [DBFieldName("GarrFollowerTypeID")]
-        public byte? GarrFollowerTypeID;
+        public sbyte? GarrFollowerTypeID;
 
         [DBFieldName("HordeCreatureID")]
         public int? HordeCreatureID;
@@ -44,7 +44,7 @@ namespace WowPacketParser.Store.Objects
         public int? AllianceGarrClassSpecID;
 
         [DBFieldName("Quality")]
-        public byte? Quality;
+        public sbyte? Quality;
 
         [DBFieldName("FollowerLevel")]
         public byte? FollowerLevel;

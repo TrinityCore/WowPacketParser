@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
         public int? ItemEffectID;
 
         [DBFieldName("ItemID")]
-        public int? ItemID;
+        public uint? ItemID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

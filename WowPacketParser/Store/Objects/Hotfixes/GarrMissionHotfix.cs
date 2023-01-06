@@ -38,7 +38,7 @@ namespace WowPacketParser.Store.Objects
         public byte? GarrMissionTypeID;
 
         [DBFieldName("GarrFollowerTypeID")]
-        public byte? GarrFollowerTypeID;
+        public sbyte? GarrFollowerTypeID;
 
         [DBFieldName("MaxFollowers")]
         public byte? MaxFollowers;

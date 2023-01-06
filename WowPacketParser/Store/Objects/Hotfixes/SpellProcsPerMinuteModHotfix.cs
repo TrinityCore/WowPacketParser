@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public float? Coeff;
 
         [DBFieldName("SpellProcsPerMinuteID")]
-        public int? SpellProcsPerMinuteID;
+        public uint? SpellProcsPerMinuteID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

@@ -17,7 +17,7 @@ namespace WowPacketParser.Store.Objects
         public uint? PlayerConditionID;
 
         [DBFieldName("ParentItemLimitCategoryID")]
-        public int? ParentItemLimitCategoryID;
+        public uint? ParentItemLimitCategoryID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

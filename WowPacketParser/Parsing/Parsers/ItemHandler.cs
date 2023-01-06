@@ -1174,7 +1174,7 @@ namespace WowPacketParser.Parsing.Parsers
                     Storage.ObjectNames.Add(new ObjectName { ObjectType = StoreNameType.Item, ID = (int)itemId, Name = item.Name }, packet.TimeSpan);
                     break;
                 }
-                case DB2Hash.KeyChain:
+                case DB2Hash.Keychain:
                 {
                     packet.ReadUInt32("Key Chain Id");
                     packet.ReadBytes("Key", 32);

@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
         public ushort? AreaID;
 
         [DBFieldName("AreaGroupID")]
-        public int? AreaGroupID;
+        public uint? AreaGroupID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
