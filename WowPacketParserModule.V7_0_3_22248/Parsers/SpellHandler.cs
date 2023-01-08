@@ -37,7 +37,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             ReadSpellTargetData(packet, null, spellId, idx, "Target");
 
             if (hasMoveUpdate)
-                MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");
+                Substructures.MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");
 
             for (var i = 0; i < weightCount; ++i)
                 V6_0_2_19033.Parsers.SpellHandler.ReadSpellWeight(packet, idx, "Weight", i);
@@ -344,7 +344,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                     if (hasRemaining)
                         auraEntry.Remaining = aura.MaxDuration;
-                    
+
                     if (hasTimeMod)
                         packet.ReadSingle("TimeMod");
 

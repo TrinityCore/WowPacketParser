@@ -411,23 +411,23 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
                 {
-                    packet.ReadSingle("field_454", index);
-                    packet.ReadSingle("field_458", index);
-                    packet.ReadSingle("field_45C", index);
-                    packet.ReadSingle("field_460", index);
-                    packet.ReadSingle("field_464", index);
-                    packet.ReadSingle("field_468", index);
-                    packet.ReadSingle("field_46C", index);
-                    packet.ReadSingle("field_470", index);
-                    packet.ReadSingle("field_474", index);
-                    packet.ReadSingle("field_478", index);
-                    packet.ReadSingle("field_47C", index);
-                    packet.ReadSingle("field_480", index);
-                    packet.ReadSingle("field_484", index);
-                    packet.ReadSingle("field_488", index);
-                    packet.ReadSingle("field_48C", index);
-                    packet.ReadSingle("field_490", index);
-                    packet.ReadSingle("field_494", index);
+                    packet.ReadSingle("AdvFlyingAirFriction", index);
+                    packet.ReadSingle("AdvFlyingMaxVel", index);
+                    packet.ReadSingle("AdvFlyingLiftCoefficient", index);
+                    packet.ReadSingle("AdvFlyingDoubleJumpVelMod", index);
+                    packet.ReadSingle("AdvFlyingGlideStartMinHeight", index);
+                    packet.ReadSingle("AdvFlyingAddImpulseMaxSpeed", index);
+                    packet.ReadSingle("AdvFlyingMinBankingRate", index);
+                    packet.ReadSingle("AdvFlyingMaxBankingRate", index);
+                    packet.ReadSingle("AdvFlyingMinPitchingRateDown", index);
+                    packet.ReadSingle("AdvFlyingMaxPitchingRateDown", index);
+                    packet.ReadSingle("AdvFlyingMinPitchingRateUp", index);
+                    packet.ReadSingle("AdvFlyingMaxPitchingRateUp", index);
+                    packet.ReadSingle("AdvFlyingMinTurnVelocityThreshold", index);
+                    packet.ReadSingle("AdvFlyingMaxTurnVelocityThreshold", index);
+                    packet.ReadSingle("AdvFlyingSurfaceFriction", index);
+                    packet.ReadSingle("AdvFlyingOverMaxDeceleration", index);
+                    packet.ReadSingle("AdvFlyingLaunchSpeedCoefficient", index);
                 }
 
                 packet.ResetBitReader();

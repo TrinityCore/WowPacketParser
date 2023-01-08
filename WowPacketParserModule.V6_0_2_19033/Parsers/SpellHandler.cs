@@ -119,7 +119,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var weightCount = packet.ReadBits("WeightCount", 2, idx);
 
             if (hasMoveUpdate)
-                MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");
+                Substructures.MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");
 
             for (var i = 0; i < weightCount; ++i)
                 ReadSpellWeight(packet, idx, "Weight", i);
@@ -1151,7 +1151,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
             var hasStatus = packet.ReadBit("HasStatus");
             if (hasStatus)
-                MovementHandler.ReadMovementStats(packet, "Status");
+                Substructures.MovementHandler.ReadMovementStats(packet, "Status");
         }
     }
 }

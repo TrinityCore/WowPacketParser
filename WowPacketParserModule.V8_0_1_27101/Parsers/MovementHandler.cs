@@ -250,7 +250,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_MOVE_UPDATE_MOD_MOVEMENT_FORCE_MAGNITUDE)]
         public static void HandleMoveUpdateModMovementForceMagnitude(Packet packet)
         {
-            V7_0_3_22248.Parsers.MovementHandler.ReadMovementStats(packet, "MovementStats");
+            Substructures.MovementHandler.ReadMovementStats(packet, "MovementStats");
             packet.ReadSingle("Speed");
         }
     }
