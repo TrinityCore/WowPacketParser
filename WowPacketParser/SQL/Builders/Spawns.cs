@@ -7,6 +7,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
 
 namespace WowPacketParser.SQL.Builders
 {
@@ -204,8 +205,11 @@ namespace WowPacketParser.SQL.Builders
                 {
                     addonRow.Data.PathID = 0;
                     addonRow.Data.Mount = (uint)creature.UnitData.MountDisplayID;
-                    addonRow.Data.Bytes1 = creature.Bytes1;
-                    addonRow.Data.Bytes2 = creature.Bytes2;
+                    addonRow.Data.StandState = creature.UnitData.StandState ?? 0;
+                    addonRow.Data.AnimTier = creature.UnitData.AnimTier ?? 0;
+                    addonRow.Data.VisFlags = creature.UnitData.VisFlags ?? 0;
+                    addonRow.Data.SheathState = creature.UnitData.SheatheState ?? 0;
+                    addonRow.Data.PvpFlags = creature.UnitData.PvpFlags ?? 0;
                     addonRow.Data.Emote = (uint)creature.UnitData.EmoteState.GetValueOrDefault(0);
                     addonRow.Data.Auras = auras;
                     addonRow.Data.AIAnimKit = creature.AIAnimKit.GetValueOrDefault(0);

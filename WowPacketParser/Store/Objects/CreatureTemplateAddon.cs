@@ -15,11 +15,20 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("mount")]
         public uint? MountID;
 
-        [DBFieldName("bytes1")]
-        public uint? Bytes1;
+        [DBFieldName("StandState")]
+        public byte? StandState;
 
-        [DBFieldName("bytes2")]
-        public uint? Bytes2;
+        [DBFieldName("AnimTier")]
+        public byte? AnimTier;
+
+        [DBFieldName("VisFlags")]
+        public byte? VisFlags;
+
+        [DBFieldName("SheathState")]
+        public byte? SheathState;
+
+        [DBFieldName("PvpFlags")]
+        public byte? PvpFlags;
 
         [DBFieldName("emote")]
         public uint? Emote;

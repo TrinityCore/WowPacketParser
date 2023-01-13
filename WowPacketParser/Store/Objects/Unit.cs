@@ -19,10 +19,8 @@ namespace WowPacketParser.Store.Objects
         public ushort? MeleeAnimKit;
 
         // Fields from UPDATE_FIELDS
-        public uint Bytes1;
         public UnitDynamicFlags? DynamicFlags;
         public UnitDynamicFlagsWOD? DynamicFlagsWod;
-        public uint Bytes2;
 
         public IUnitData UnitData;
 
@@ -43,8 +41,6 @@ namespace WowPacketParser.Store.Objects
 
         public override void LoadValuesFromUpdateFields()
         {
-            Bytes1 = BitConverter.ToUInt32(new byte[] { UnitData.StandState ?? 0, UnitData.PetTalentPoints ?? 0, UnitData.VisFlags ?? 0, UnitData.AnimTier  ?? 0}, 0);
-            Bytes2 = BitConverter.ToUInt32(new byte[] { UnitData.SheatheState ?? 0, UnitData.PvpFlags ?? 0, UnitData.PetFlags ?? 0, UnitData.ShapeshiftForm  ?? 0}, 0);
             if (ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor))
                 DynamicFlagsWod = (UnitDynamicFlagsWOD)ObjectData.DynamicFlags;
             else
