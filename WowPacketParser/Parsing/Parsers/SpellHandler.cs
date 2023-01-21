@@ -927,61 +927,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("SpellVisualKit ID");
         }
 
-        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleCastVisual434(Packet packet)
-        {
-            packet.ReadSingle("Z");
-            packet.ReadInt32("SpellVisualKit ID"); // not confirmed
-            packet.ReadInt16("Unk Int16 1"); // usually 0
-            packet.ReadSingle("O");
-            packet.ReadSingle("X");
-            packet.ReadInt16("Unk Int16 2"); // usually 0
-            packet.ReadSingle("Y");
-
-            var guid1 = new byte[8];
-            var guid2 = new byte[8];
-
-            guid2[1] = packet.ReadBit();
-            guid1[3] = packet.ReadBit();
-            guid1[0] = packet.ReadBit();
-            guid2[2] = packet.ReadBit();
-            guid2[5] = packet.ReadBit();
-            guid1[2] = packet.ReadBit();
-            guid1[4] = packet.ReadBit();
-            guid2[6] = packet.ReadBit();
-
-            guid2[0] = packet.ReadBit();
-            packet.ReadBit("Unk Bit"); // usually 1
-            guid1[6] = packet.ReadBit();
-            guid2[7] = packet.ReadBit();
-            guid1[5] = packet.ReadBit();
-            guid1[1] = packet.ReadBit();
-            guid1[7] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
-
-            guid2[4] = packet.ReadBit();
-
-            packet.ReadXORByte(guid1, 7);
-            packet.ReadXORByte(guid1, 4);
-            packet.ReadXORByte(guid2, 7);
-            packet.ReadXORByte(guid1, 1);
-            packet.ReadXORByte(guid1, 3);
-            packet.ReadXORByte(guid1, 0);
-            packet.ReadXORByte(guid1, 6);
-            packet.ReadXORByte(guid2, 0);
-            packet.ReadXORByte(guid2, 4);
-            packet.ReadXORByte(guid1, 5);
-            packet.ReadXORByte(guid2, 1);
-            packet.ReadXORByte(guid2, 5);
-            packet.ReadXORByte(guid2, 6);
-            packet.ReadXORByte(guid2, 2);
-            packet.ReadXORByte(guid1, 2);
-            packet.ReadXORByte(guid2, 3);
-
-            packet.WriteGuid("Caster Guid", guid1);
-            packet.WriteGuid("Unk Guid", guid2);
-        }
-
         [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleCastVisualKit430(Packet packet)
         {
