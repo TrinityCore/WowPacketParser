@@ -7,6 +7,46 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 {
     public static class MiscellaneousHandler
     {
+        [Parser(Opcode.SMSG_SETUP_CURRENCY)]
+        public static void HandleSetupCurrency(Packet packet)
+        {
+            var count = packet.ReadUInt32("SetupCurrencyRecord");
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Type", i);
+                packet.ReadInt32("Quantity", i);
+
+                packet.ResetBitReader();
+
+                var hasWeeklyQuantity = packet.ReadBit();
+                var hasMaxWeeklyQuantity = packet.ReadBit();
+                var hasTrackedQuantity = packet.ReadBit();
+                var hasMaxQuantity = packet.ReadBit();
+                var hasTotalEarned = packet.ReadBit();
+                var hasLastSpendTime = packet.ReadBit();
+                packet.ReadBits("Flags", 5, i);
+
+                if (hasWeeklyQuantity)
+                    packet.ReadUInt32("WeeklyQuantity", i);
+
+                if (hasMaxWeeklyQuantity)
+                    packet.ReadUInt32("MaxWeeklyQuantity", i);
+
+                if (hasTrackedQuantity)
+                    packet.ReadUInt32("TrackedQuantity", i);
+
+                if (hasMaxQuantity)
+                    packet.ReadInt32("MaxQuantity", i);
+
+                if (hasTotalEarned)
+                    packet.ReadInt32("TotalEarned", i);
+
+                if (hasLastSpendTime)
+                    packet.ReadTime64("LastSpendTime", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_SET_CURRENCY)]
         public static void HandleSetCurrency(Packet packet)
         {
