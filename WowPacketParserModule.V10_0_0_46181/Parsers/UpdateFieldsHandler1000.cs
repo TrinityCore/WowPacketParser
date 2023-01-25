@@ -4252,11 +4252,11 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
             var data = new AreaTriggerData();
             data.OverrideScaleCurve = ReadCreateScaleCurve(packet, indexes, "OverrideScaleCurve");
             data.Caster = packet.ReadPackedGuid128("Caster", indexes);
-            data.Unk1000 = packet.ReadUInt32("Unk1000", indexes);
             data.Duration = packet.ReadUInt32("Duration", indexes);
             data.TimeToTarget = packet.ReadUInt32("TimeToTarget", indexes);
             data.TimeToTargetScale = packet.ReadUInt32("TimeToTargetScale", indexes);
             data.TimeToTargetExtraScale = packet.ReadUInt32("TimeToTargetExtraScale", indexes);
+            data.Field_B0 = packet.ReadUInt32("Field_B0", indexes);
             data.SpellID = packet.ReadInt32("SpellID", indexes);
             data.SpellForVisuals = packet.ReadInt32("SpellForVisuals", indexes);
             data.SpellVisual = ReadCreateSpellCastVisual(packet, indexes, "SpellVisual");
@@ -4266,13 +4266,11 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
             data.Field_80 = packet.ReadUInt32("Field_80", indexes);
             data.Field_84 = packet.ReadUInt32("Field_84", indexes);
             data.Field_88 = packet.ReadPackedGuid128("Field_88", indexes);
-            data.Unk1000_field_F8 = packet.ReadSingle("Unk1000_field_F8", indexes);
-            data.Unk1000_field_FC = packet.ReadSingle("Unk1000_field_FC", indexes);
-            data.Unk1000_field_100 = packet.ReadSingle("Unk1000_field_100", indexes);
-            data.Unk1000_curve = ReadCreateScaleCurve(packet, indexes, "Unk1000_curve");
-            data.Unk1000_curve_2 = ReadCreateScaleCurve(packet, indexes, "Unk1000_curve_2");
-            data.Unk1000_curve_3 = ReadCreateScaleCurve(packet, indexes, "Unk1000_curve_3");
+            data.Field_F8 = packet.ReadVector3("Field_F8", indexes);
             data.ExtraScaleCurve = ReadCreateScaleCurve(packet, indexes, "ExtraScaleCurve");
+            data.Field_C38 = ReadCreateScaleCurve(packet, indexes, "Field_C38");
+            data.Field_C54 = ReadCreateScaleCurve(packet, indexes, "Field_C54");
+            data.Field_C70 = ReadCreateScaleCurve(packet, indexes, "Field_C70");
             data.VisualAnim = ReadCreateVisualAnim(packet, indexes, "VisualAnim");
             return data;
         }
@@ -4297,23 +4295,23 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
                 }
                 if (changesMask[7])
                 {
-                    data.Unk1000 = packet.ReadUInt32("Unk1000", indexes);
+                    data.Duration = packet.ReadUInt32("Duration", indexes);
                 }
                 if (changesMask[8])
                 {
-                    data.Duration = packet.ReadUInt32("Duration", indexes);
+                    data.TimeToTarget = packet.ReadUInt32("TimeToTarget", indexes);
                 }
                 if (changesMask[9])
                 {
-                    data.TimeToTarget = packet.ReadUInt32("TimeToTarget", indexes);
+                    data.TimeToTargetScale = packet.ReadUInt32("TimeToTargetScale", indexes);
                 }
                 if (changesMask[10])
                 {
-                    data.TimeToTargetScale = packet.ReadUInt32("TimeToTargetScale", indexes);
+                    data.TimeToTargetExtraScale = packet.ReadUInt32("TimeToTargetExtraScale", indexes);
                 }
                 if (changesMask[11])
                 {
-                    data.TimeToTargetExtraScale = packet.ReadUInt32("TimeToTargetExtraScale", indexes);
+                    data.Field_B0 = packet.ReadUInt32("Field_B0", indexes);
                 }
                 if (changesMask[12])
                 {
@@ -4353,25 +4351,23 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
                 }
                 if (changesMask[21])
                 {
-                    data.Unk1000_field_F8 = packet.ReadSingle("Unk1000_field_F8", indexes);
-                    data.Unk1000_field_FC = packet.ReadSingle("Unk1000_field_FC", indexes);
-                    data.Unk1000_field_100 = packet.ReadSingle("Unk1000_field_100", indexes);
+                    data.Field_F8 = packet.ReadVector3("Field_F8", indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.Unk1000_curve = ReadUpdateScaleCurve(packet, data.Unk1000_curve as ScaleCurve, indexes, "Unk1000_curve");
+                    data.ExtraScaleCurve = ReadUpdateScaleCurve(packet, data.ExtraScaleCurve as ScaleCurve, indexes, "ExtraScaleCurve");
                 }
                 if (changesMask[3])
                 {
-                    data.Unk1000_curve_2 = ReadUpdateScaleCurve(packet, data.Unk1000_curve_2 as ScaleCurve, indexes, "Unk1000_curve_2");
+                    data.Field_C38 = ReadUpdateScaleCurve(packet, data.Field_C38 as ScaleCurve, indexes, "Field_C38");
                 }
                 if (changesMask[4])
                 {
-                    data.Unk1000_curve_3 = ReadUpdateScaleCurve(packet, data.Unk1000_curve_3 as ScaleCurve, indexes, "Unk1000_curve_3");
+                    data.Field_C54 = ReadUpdateScaleCurve(packet, data.Field_C54 as ScaleCurve, indexes, "Field_C54");
                 }
                 if (changesMask[5])
                 {
-                    data.ExtraScaleCurve = ReadUpdateScaleCurve(packet, data.ExtraScaleCurve as ScaleCurve, indexes, "ExtraScaleCurve");
+                    data.Field_C70 = ReadUpdateScaleCurve(packet, data.Field_C70 as ScaleCurve, indexes, "Field_C70");
                 }
                 if (changesMask[22])
                 {
