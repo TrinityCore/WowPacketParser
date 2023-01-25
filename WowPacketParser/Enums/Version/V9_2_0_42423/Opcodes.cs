@@ -816,6 +816,7 @@ namespace WowPacketParser.Enums.Version.V9_2_0_42423
             {Opcode.SMSG_ACCOUNT_COSMETIC_ADDED, 0x2885},
             {Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE, 0x286B},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x26FD},
+            {Opcode.SMSG_ACCOUNT_HEIRLOOM_UPDATE, 0x25AE},
             {Opcode.SMSG_ACCOUNT_MOUNT_UPDATE, 0x25AC},
             {Opcode.SMSG_ACCOUNT_NOTIFICATIONS_RESPONSE, 0x2884},
             {Opcode.SMSG_ACCOUNT_TOY_UPDATE, 0x25AD},
