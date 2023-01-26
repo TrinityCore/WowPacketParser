@@ -15,11 +15,14 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         public static void ReadCraftingData(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("CraftingQualityID", indexes);
-            packet.ReadInt32("field_4", indexes);
-            packet.ReadInt32("field_8", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_5_47777))
+                packet.ReadSingle("QualityProgress", indexes);
+
+            packet.ReadInt32("SkillLineAbilityID", indexes);
+            packet.ReadInt32("CraftingDataID", indexes);
             packet.ReadInt32("Multicraft", indexes);
-            packet.ReadInt32("field_10", indexes);
-            packet.ReadInt32("field_14", indexes);
+            packet.ReadInt32("SkillFromReagents", indexes);
+            packet.ReadInt32("Skill", indexes);
             packet.ReadInt32("CritBonusSkill", indexes);
             packet.ReadSingle("field_1C", indexes);
             packet.ReadUInt64("field_20", indexes);
