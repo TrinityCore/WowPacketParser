@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 
 namespace WowPacketParser.Loading
 {
@@ -231,9 +232,9 @@ namespace WowPacketParser.Loading
 
                             _reader.ReadBytes(additionalSize - 20);
                         }
-                        else if ((_snifferId == 0x15 || _snifferId == 0x16) && additionalSize > 0)
+                        else if ((_snifferId == 0x15 || _snifferId == 0x16) && additionalSize > 0) // ymir
                         {
-                            // ymir
+                            var optionalStart = _reader.BaseStream.Position;
                             var unixMilliseconds = _reader.ReadDouble();
                             time = DateTime.UnixEpoch.AddMilliseconds(unixMilliseconds);
                             time = DateTime.SpecifyKind(time, DateTimeKind.Utc);
@@ -248,6 +249,32 @@ namespace WowPacketParser.Loading
                                         writer = new StringBuilder();
                                         writer.AppendLine("# " + Encoding.UTF8.GetString(_reader.ReadBytes(commentLength)));
                                         writer.AppendLine();
+                                    }
+                                }
+                            }
+
+                            if (_snifferVersion >= 0x0102)
+                            {
+                                while (_reader.BaseStream.Position - optionalStart < additionalSize)
+                                {
+                                    var type = _reader.ReadByte();
+                                    switch (type)
+                                    {
+                                        case 0x50: // override phasing
+                                        {
+                                            var lowGuid = _reader.ReadUInt64();
+                                            var highGuid = _reader.ReadUInt64();
+                                            var phaseId = _reader.ReadInt32();
+                                            var affectedGuid = new WowGuid128(lowGuid, highGuid);
+                                            if (Storage.Objects.ContainsKey(affectedGuid))
+                                                Storage.Objects[affectedGuid].Item1.PhaseOverride = phaseId;
+                                            break;
+                                        }
+                                        default:
+                                        {
+                                            _reader.ReadBytes((int)(_reader.BaseStream.Position - optionalStart)); // skip unk
+                                            break;
+                                        }
                                     }
                                 }
                             }

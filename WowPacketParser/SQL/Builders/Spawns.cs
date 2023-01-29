@@ -124,11 +124,15 @@ namespace WowPacketParser.SQL.Builders
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && creature.Phases != null)
                 {
-                    string data = string.Join(" - ", creature.Phases);
-                    if (string.IsNullOrEmpty(data) || Settings.ForcePhaseZero)
-                        data = "0";
-
-                    row.Data.PhaseID = data;
+                    if (creature.PhaseOverride == null)
+                    {
+                        string data = string.Join(" - ", creature.Phases);
+                        if (string.IsNullOrEmpty(data) || Settings.ForcePhaseZero)
+                            data = "0";
+                        row.Data.PhaseID = data;
+                    }
+                    else
+                        row.Data.PhaseID = creature.PhaseOverride.GetValueOrDefault(0).ToString();
                 }
 
                 if (SQLDatabase.CreatureEquipments.TryGetValue(entry, out var equipList))
@@ -251,6 +255,9 @@ namespace WowPacketParser.SQL.Builders
 
                 if (creature.Movement.HasWpsOrRandMov)
                     row.Comment += " (possible waypoints or random movement)";
+
+                if (creature.PhaseOverride != null)
+                    row.Comment += $" (overridden phaseid: {creature.PhaseOverride.GetValueOrDefault(0)}";
 
                 rows.Add(row);
             }

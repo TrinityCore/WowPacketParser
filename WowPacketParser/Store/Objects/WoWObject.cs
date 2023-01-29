@@ -26,6 +26,8 @@ namespace WowPacketParser.Store.Objects
 
         public HashSet<ushort> Phases; // Possible phases
 
+        public int? PhaseOverride = null;
+
         public uint DifficultyID;
 
         public bool ForceTemporarySpawn;
