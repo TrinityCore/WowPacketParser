@@ -1,3 +1,4 @@
+using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -46,7 +47,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
             {
                 gossipOption.Flags = packet.ReadInt32("Flags", idx);
-                gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OptionID", idx);
+                gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OrderIndex", idx);
             }
 
             packet.ResetBitReader();
@@ -89,10 +90,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
                 gossipOption.FillOptionType(npcGuid);
 
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
-                Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);
-            else
-                Storage.GossipMenuOptions.Add((gossipOption.MenuID, (uint)gossipOption.GossipOptionID), gossipOption, packet.TimeSpan);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+                Storage.GossipOptionIdToOrderIndexMap.Add((gossipOption.MenuID.GetValueOrDefault(), gossipOption.GossipOptionID.GetValueOrDefault()), gossipOption.OptionID.GetValueOrDefault());
+            Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);
 
             return gossipMessageOption;
         }
@@ -197,7 +197,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
                 optionID = packetGossip.OptionId = packet.ReadUInt32("OptionID");
             else
-                optionID = packetGossip.OptionId = packet.ReadUInt32("GossipOptionID");
+            {
+                var gossipOptionId = packet.ReadInt32("GossipOptionID");
+                Storage.GossipOptionIdToOrderIndexMap.TryGetValue((menuID, gossipOptionId), out optionID);
+                packetGossip.OptionId = optionID;
+            }
 
             var bits8 = packet.ReadBits(8);
             packet.ResetBitReader();
