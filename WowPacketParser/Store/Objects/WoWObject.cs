@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Proto;
 using WowPacketParser.Store.Objects.UpdateFields;
 using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
 
@@ -10,6 +11,7 @@ namespace WowPacketParser.Store.Objects
     {
         public WowGuid Guid;
         public ObjectType Type;
+        public CreateObjectType CreateType;
 
         public MovementInfo Movement;
 

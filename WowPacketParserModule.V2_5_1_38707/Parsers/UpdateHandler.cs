@@ -145,8 +145,9 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                     case UpdateTypeCataclysm.CreateObject2:
                     {
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
-                        var createObject = new CreateObject() { Guid = guid, Values = new(){}, CreateType = type.ToCreateObjectType() };
-                        ReadCreateObjectBlock(packet, createObject, guid, map, i);
+                        var createType = type.ToCreateObjectType();
+                        var createObject = new CreateObject() { Guid = guid, Values = new(){}, CreateType = createType };
+                        ReadCreateObjectBlock(packet, createObject, guid, map, createType, i);
                         createObject.Text = partWriter.Text;
                         createObject.TextStartOffset = partWriter.StartOffset;
                         createObject.TextLength = partWriter.Length;
@@ -157,7 +158,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
             }
         }
 
-        private static void ReadCreateObjectBlock(Packet packet, CreateObject createObject, WowGuid guid, uint map, object index)
+        private static void ReadCreateObjectBlock(Packet packet, CreateObject createObject, WowGuid guid, uint map, CreateObjectType createType, object index)
         {
             ObjectType objType;
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V2_5_4_42695))
@@ -170,6 +171,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
 
             WoWObject obj = CoreParsers.UpdateHandler.CreateObject(objType, guid, map);
 
+            obj.CreateType = createType;
             obj.Movement = ReadMovementUpdateBlock(packet, guid, obj, index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_4_42695))

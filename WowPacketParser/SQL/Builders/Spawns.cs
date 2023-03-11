@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
@@ -73,6 +74,9 @@ namespace WowPacketParser.SQL.Builders
                         continue;
 
                 if (!Filters.CheckFilter(creature.Guid))
+                    continue;
+
+                if (Settings.GenerateCreateObject2SpawnsOnly && creature.CreateType != CreateObjectType.Spawn)
                     continue;
 
                 uint entry = (uint)creature.ObjectData.EntryID;
@@ -180,6 +184,7 @@ namespace WowPacketParser.SQL.Builders
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + " - ";
                 row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)creature.DifficultyID, false) + ")";
+                row.Comment += creature.CreateType == CreateObjectType.Spawn ? " CreateObject2" : " CreateObject1";
 
                 string auras = string.Empty;
                 string commentAuras = string.Empty;
@@ -312,6 +317,9 @@ namespace WowPacketParser.SQL.Builders
                 if (!Filters.CheckFilter(go.Guid))
                     continue;
 
+                if (Settings.GenerateCreateObject2SpawnsOnly && go.CreateType != CreateObjectType.Spawn)
+                    continue;
+
                 uint entry = (uint)go.ObjectData.EntryID;
                 if (entry == 0)
                     continue;   // broken entry, nothing to spawn
@@ -425,6 +433,7 @@ namespace WowPacketParser.SQL.Builders
                 row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
                 row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
+                row.Comment += go.CreateType == CreateObjectType.Spawn ? " CreateObject2" : " CreateObject1";
 
                 if (go.IsTemporarySpawn() && !Settings.SaveTempSpawns)
                 {

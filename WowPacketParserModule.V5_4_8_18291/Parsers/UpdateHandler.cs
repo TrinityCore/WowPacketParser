@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ParseBitStream(guid, 0, 4, 7, 2, 6, 3, 1, 5);
 
             var destroyed = packet.WriteGuid("GUID", guid);
-            
+
             var update = packet.Holder.UpdateObject = new();
             update.Destroyed.Add(new DestroyedObject()
             {
@@ -69,8 +69,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     case UpdateTypeCataclysm.CreateObject2: // Might != CreateObject1 on Cata
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
-                        var createObject = new CreateObject() { Guid = guid, Values = new(){Legacy = new()}, CreateType = type.ToCreateObjectType() };
-                        ReadCreateObjectBlock(packet, createObject, guid, map, i);
+                        var createType = type.ToCreateObjectType();
+                        var createObject = new CreateObject() { Guid = guid, Values = new(){Legacy = new()}, CreateType = createType };
+                        ReadCreateObjectBlock(packet, createObject, guid, map, createType, i);
                         createObject.Text = partWriter.Text;
                         createObject.TextStartOffset = partWriter.StartOffset;
                         createObject.TextLength = partWriter.Length;
@@ -86,11 +87,12 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             }
         }
 
-        private static void ReadCreateObjectBlock(Packet packet, CreateObject createObject, WowGuid guid, uint map, object index)
+        private static void ReadCreateObjectBlock(Packet packet, CreateObject createObject, WowGuid guid, uint map, CreateObjectType createType, object index)
         {
             ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeLegacy>("Object Type", index));
             WoWObject obj = CoreParsers.UpdateHandler.CreateObject(objType, guid, map);
 
+            obj.CreateType = createType;
             obj.Movement = ReadMovementUpdateBlock(packet, guid, index);
             obj.UpdateFields = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, createObject.Values.Legacy, objType, index);
             obj.DynamicUpdateFields = CoreParsers.UpdateHandler.ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
