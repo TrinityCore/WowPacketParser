@@ -7,12 +7,13 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
     public static class PerksProgramHandler
     {
         [Parser(Opcode.SMSG_PERKS_PROGRAM_ACTIVITY_UPDATE)]
-        public static void HandleperksActivityUpdateOpcode(Packet packet)
+        public static void HandlePerksProgramAcitivtyUpdate(Packet packet)
         {
-            var perksactivitysize = packet.ReadUInt32("PerksActivitySize");
-
-            for (var i = 0; i < perksactivitysize; ++i)
-                packet.ReadInt32("PerksActivityUpdate");
+            var activityCount = packet.ReadUInt32("ActivityCount");
+            for (var i = 0; i < activityCount; i++)
+            {
+                packet.ReadInt32<PerksActivityId>("ActivityID", i);
+            }
         }
 
     }
