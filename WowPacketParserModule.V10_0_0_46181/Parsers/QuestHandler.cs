@@ -266,5 +266,30 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             Storage.QuestOfferRewards.Add(questOfferReward, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_QUERY_QUEST_ITEM_USABILITY)]
+        public static void QueryQuestItemUsability(Packet packet)
+        {
+            packet.ReadPackedGuid128("CreatureGUID");
+            var itemGuidCount = packet.ReadUInt32("ItemGuidCount");
+            for (var i = 0; i < itemGuidCount; ++i)
+                packet.ReadPackedGuid128("ItemGUID", i);
+        }
+
+        [Parser(Opcode.CMSG_UI_MAP_QUEST_LINES_REQUEST)]
+        public static void UiMapQuestLinesRequest(Packet packet)
+        {
+            packet.ReadInt32("UIMapID");
+        }
+
+        [Parser(Opcode.SMSG_UI_MAP_QUEST_LINES_RESPONSE)]
+        public static void UiMapQuestLinesResponse(Packet packet)
+        {
+            packet.ReadInt32("UIMapID");
+            var count = packet.ReadUInt32("QuestLineXQuestLineIDCount");
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("QuestLineXQuestLineID", i);
+        }
     }
 }
