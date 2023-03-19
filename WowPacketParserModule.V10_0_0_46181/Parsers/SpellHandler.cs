@@ -107,5 +107,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             if (hasHealPrediction)
                 V6_0_2_19033.Parsers.SpellHandler.ReadSpellTargetedHealPrediction(packet, "HealPrediction");
         }
+
+        [Parser(Opcode.CMSG_SET_EMPOWER_MIN_HOLD_STAGE_PERCENT)]
+        public static void HandleHolStagePct(Packet packet)
+        {
+            packet.ReadSingle("MinHoldStagePct");
+        }
     }
 }
