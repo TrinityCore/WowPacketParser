@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_RATED_SOLO_SHUFFLE)]
         public static void HandleBattleMasterJoinRatedShuffle(Packet packet)
         {
-            packet.ReadByteE<LfgRoleFlag>("RolesMask");  //Int8
+            packet.ReadByteE<LfgRoleFlag>("RolesMask");
         }
     }
 }
