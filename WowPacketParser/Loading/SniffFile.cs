@@ -36,6 +36,8 @@ namespace WowPacketParser.Loading
         private readonly List<string> _skippedHeaders = new List<string>();
         private readonly List<string> _noStructureHeaders = new List<string>();
 
+        private static byte _xorSeed;
+
         public SniffFile(string fileName, DumpFormatType dumpFormat = DumpFormatType.Text, Tuple<int, int> number = null)
         {
             if (string.IsNullOrWhiteSpace(fileName))
@@ -472,6 +474,137 @@ namespace WowPacketParser.Loading
                     FusionDump(packets);
                     break;
                 }
+                case DumpFormatType.SanitizedPkt:
+                {
+                    List<Packet> packetList = new List<Packet>();
+
+                    Random rnd = new Random();
+                    _xorSeed = (byte)rnd.Next(1, 255);
+
+                    var outFileName = Path.ChangeExtension(FileName, null) + "_sanitized.pkt";
+
+                    if (Utilities.FileIsInUse(outFileName))
+                    {
+                        Trace.WriteLine($"Save file {outFileName} is in use, parsing will not be done.");
+                        break;
+                    }
+                    File.Delete(outFileName);
+
+                    _stats.SetStartTime(DateTime.Now);
+
+                    var threadCount = Settings.Threads;
+                    if (threadCount == 0)
+                        threadCount = Environment.ProcessorCount;
+
+                    ThreadPool.SetMinThreads(threadCount + 2, 4);
+
+                    var written = false;
+                    var firstRead = true;
+
+                    var reader = _compression != FileCompression.None ? new Reader(_tempName, _sniffType) : new Reader(FileName, _sniffType);
+
+                    var pwp = new ParallelWorkProcessor<Packet>(() => // read
+                    {
+                        if (!reader.PacketReader.CanRead())
+                            return Tuple.Create<Packet, bool>(null, true);
+
+                        Packet packet;
+                        var b = reader.TryRead(out packet);
+
+                        if (firstRead)
+                        {
+                            Trace.WriteLine(
+                                $"{_logPrefix}: Parsing {Utilities.BytesToString(reader.PacketReader.GetTotalSize())} of packets. Detected version {ClientVersion.VersionString}");
+
+                            firstRead = false;
+                        }
+
+                        return Tuple.Create(packet, b);
+                    }, packet => // parse
+                    {
+                        // We have to parse the packets and then modify them
+                        if (packet.Direction == Direction.BNClientToServer ||
+                            packet.Direction == Direction.BNServerToClient)
+                            BattlenetHandler.ParseBattlenet(packet);
+                        else
+                            Handler.Parse(packet); // Attribute in handlers affect the Readers to write instead of read
+
+                        // Update statistics
+                        _stats.AddByStatus(packet.Status);
+                        return packet;
+                    },
+                    packet => // write
+                    {
+                        ShowPercentProgress("Processing...", reader.PacketReader.GetCurrentSize(), reader.PacketReader.GetTotalSize());
+                        
+                        if (!packet.Status.HasAnyFlag(Settings.OutputFlag) || !packet.WriteToFile)
+                        {
+                            packet.ClosePacket();
+                            return;
+                        }
+                        
+                        written = true;
+                        
+                        // get packet header if necessary
+                        if (Settings.LogPacketErrors)
+                        {
+                            switch (packet.Status)
+                            {
+                                case ParsedStatus.WithErrors:
+                                    _withErrorHeaders.Add(packet.GetHeader());
+                                    break;
+                                case ParsedStatus.NotParsed:
+                                    _skippedHeaders.Add(packet.GetHeader());
+                                    break;
+                                case ParsedStatus.NoStructure:
+                                    _noStructureHeaders.Add(packet.GetHeader());
+                                    break;
+                            }
+                        }
+
+                        // we can't sanitize stuff we can't read
+                        switch (packet.Status)
+                        {
+                            case ParsedStatus.WithErrors:
+                                _withErrorHeaders.Add(packet.GetHeader());
+                                packet.ClosePacket();
+                                return;
+                            case ParsedStatus.NotParsed:
+                                _skippedHeaders.Add(packet.GetHeader());
+                                packet.ClosePacket();
+                                return;
+                            case ParsedStatus.NoStructure:
+                                _noStructureHeaders.Add(packet.GetHeader());
+                                packet.ClosePacket();
+                                return;
+                        }
+
+                        // add packet to out list
+                        packetList.Add(packet);
+                    }, threadCount);
+
+                    pwp.WaitForFinished(Timeout.Infinite);
+
+                    reader.PacketReader.Dispose();
+
+                    _stats.SetEndTime(DateTime.Now);
+
+                    if (written)
+                        Trace.WriteLine($"{_logPrefix}: Saved file to '{outFileName}'");
+                    else
+                    {
+                        Trace.WriteLine($"{_logPrefix}: No file produced");
+                        File.Delete(outFileName);
+                    }
+
+                    Trace.WriteLine($"{_logPrefix}: {_stats}");
+
+                    SanitizedDump(outFileName, reader.PacketReader.GetFileHeader(), packetList);
+                    
+                    GC.Collect(); // Force a GC collect after parsing a file. It seems to help.
+
+                    break;
+                }
                 default:
                 {
                     Trace.WriteLine($"{_logPrefix}: Dump format is none, nothing will be processed.");
@@ -558,6 +691,12 @@ namespace WowPacketParser.Loading
         {
             Trace.WriteLine($"{_logPrefix}: Copying {packets.Count} packets to .pkt format...");
             BinaryPacketWriter.Write(SniffType.Pkt, fileName, Encoding.ASCII, packets);
+        }
+
+        private void SanitizedDump(string fileName, byte[] fileHeader, ICollection<Packet> packets)
+        {
+            Trace.WriteLine($"{_logPrefix}: Copying {packets.Count} packets to .pkt format...");
+            SanitizedBinaryPacketWriter.Write(SniffType.Pkt, fileName, Encoding.ASCII, fileHeader, packets);
         }
 
         private void WriteSQLs()
@@ -657,6 +796,11 @@ namespace WowPacketParser.Loading
         private string GetCompressedFileName()
         {
             return FileName + _compression.GetExtension();
+        }
+
+        public static byte GetXORSeed()
+        {
+            return _xorSeed;
         }
     }
 }

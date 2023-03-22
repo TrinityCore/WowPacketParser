@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var nameLength = packet.ReadBits(9);
             var hasArenaTeamId = packet.ReadBit("HasArenaTeamId");
 
-            packet.ReadWoWString("Name", nameLength);
+            packet.ReadWoWString_Sanitize("Name", nameLength);
 
             if (hasArenaTeamId)
                 packet.ReadInt32("ArenaTeamId");
@@ -48,7 +48,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     packet.ReadUInt32("Step", i, j);
                 }
 
-                packet.ReadUInt32("VirtualRealmAddress", i);
+                packet.ReadUInt32_Sanitize("VirtualRealmAddress", i);
 
                 packet.ReadByteE<GuildMemberFlag>("Status", i);
                 packet.ReadByte("Level", i);

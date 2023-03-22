@@ -40,7 +40,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (hasData)
             {
                 packet.ReadPackedGuid128("Guild Guid");
-                packet.ReadInt32("VirtualRealmAddress");
+                packet.ReadInt32_Sanitize("VirtualRealmAddress");
                 var rankCount = packet.ReadInt32("RankCount");
                 packet.ReadInt32("EmblemColor");
                 packet.ReadInt32("EmblemStyle");
@@ -60,7 +60,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ResetBitReader();
                 var nameLen = packet.ReadBits(7);
-                packet.ReadWoWString("Guild Name", nameLen);
+                packet.ReadWoWString_Sanitize("Guild Name", nameLen);
             }
         }
 
@@ -140,7 +140,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadUInt32("Step", i, j);
                 }
 
-                packet.ReadUInt32("VirtualRealmAddress", i);
+                packet.ReadUInt32_Sanitize("VirtualRealmAddress", i);
 
                 packet.ReadByteE<GuildMemberFlag>("Status", i);
                 packet.ReadByte("Level", i);
@@ -156,9 +156,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("Authenticated", i);
                 packet.ReadBit("SorEligible", i);
 
-                packet.ReadWoWString("Name", bits36, i);
-                packet.ReadWoWString("Note", bits92, i);
-                packet.ReadWoWString("OfficerNote", bits221, i);
+                packet.ReadWoWString_Sanitize("Name", bits36, i);
+                packet.ReadWoWString_Sanitize("Note", bits92, i);
+                packet.ReadWoWString_Sanitize("OfficerNote", bits221, i);
             }
 
             packet.ResetBitReader();
@@ -203,14 +203,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleGuildEventPresenceChange(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
-            packet.ReadInt32("VirtualRealmAddress");
+            packet.ReadInt32_Sanitize("VirtualRealmAddress");
 
             packet.ResetBitReader();
             var bits38 = packet.ReadBits(6);
             packet.ReadBit("LoggedOn");
             packet.ReadBit("Mobile");
 
-            packet.ReadWoWString("Name", bits38);
+            packet.ReadWoWString_Sanitize("Name", bits38);
         }
 
         [Parser(Opcode.SMSG_GUILD_KNOWN_RECIPES)]
@@ -269,7 +269,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleGuildInviteByName(Packet packet)
         {
             var bits16 = packet.ReadBits(9);
-            packet.ReadWoWString("Name", bits16);
+            packet.ReadWoWString_Sanitize("Name", bits16);
         }
 
         [Parser(Opcode.SMSG_GUILD_CRITERIA_UPDATE)]
@@ -326,10 +326,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bits216 = packet.ReadBits(7);
             var bits52 = packet.ReadBits(7);
 
-            packet.ReadInt32("InviterVirtualRealmAddress");
-            packet.ReadUInt32("GuildVirtualRealmAddress");
+            packet.ReadInt32_Sanitize("InviterVirtualRealmAddress");
+            packet.ReadUInt32_Sanitize("GuildVirtualRealmAddress");
             packet.ReadPackedGuid128("GuildGUID");
-            packet.ReadUInt32("OldGuildVirtualRealmAddress");
+            packet.ReadUInt32_Sanitize("OldGuildVirtualRealmAddress");
             packet.ReadPackedGuid128("OldGuildGUID");
             packet.ReadUInt32("EmblemStyle");
             packet.ReadUInt32("EmblemColor");
@@ -338,9 +338,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Background");
             packet.ReadUInt32("AchievementPoints");
 
-            packet.ReadWoWString("InviterName", bits149);
-            packet.ReadWoWString("OldGuildName", bits216);
-            packet.ReadWoWString("GuildName", bits52);
+            packet.ReadWoWString_Sanitize("InviterName", bits149);
+            packet.ReadWoWString_Sanitize("OldGuildName", bits216);
+            packet.ReadWoWString_Sanitize("GuildName", bits52);
         }
 
         [Parser(Opcode.SMSG_GUILD_BANK_QUERY_RESULTS)]
@@ -475,7 +475,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32E<GuildCommandError>("Result");
             packet.ReadUInt32E<GuildCommandType>("Command");
             var len = packet.ReadBits(8);
-            packet.ReadWoWString("Name", len);
+            packet.ReadWoWString_Sanitize("Name", len);
         }
 
         [Parser(Opcode.SMSG_GUILD_NAME_CHANGED)]
@@ -484,7 +484,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("GuildGUID");
 
             var len = packet.ReadBits(7);
-            packet.ReadWoWString("GuildName", len);
+            packet.ReadWoWString_Sanitize("GuildName", len);
         }
 
         [Parser(Opcode.CMSG_GUILD_BANK_QUERY_TAB)]
@@ -614,10 +614,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleGuildEventPlayerJoined(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
-            packet.ReadInt32("VirtualRealmAddress");
+            packet.ReadInt32_Sanitize("VirtualRealmAddress");
 
             var len = packet.ReadBits(6);
-            packet.ReadWoWString("Name", len);
+            packet.ReadWoWString_Sanitize("Name", len);
         }
 
         [Parser(Opcode.SMSG_GUILD_EVENT_PLAYER_LEFT)]
@@ -630,20 +630,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 var lenRemoverName = packet.ReadBits(6);
                 packet.ReadPackedGuid128("RemoverGUID");
-                packet.ReadInt32("RemoverVirtualRealmAddress");
-                packet.ReadWoWString("RemoverName", lenRemoverName);
+                packet.ReadInt32_Sanitize("RemoverVirtualRealmAddress");
+                packet.ReadWoWString_Sanitize("RemoverName", lenRemoverName);
             }
 
             packet.ReadPackedGuid128("LeaverGUID");
-            packet.ReadInt32("LeaverVirtualRealmAddress");
-            packet.ReadWoWString("LeaverName", lenLeaverName);
+            packet.ReadInt32_Sanitize("LeaverVirtualRealmAddress");
+            packet.ReadWoWString_Sanitize("LeaverName", lenLeaverName);
         }
 
         public static void ReadLFGuildRecruitData(Packet packet, params object[] indexes)
         {
             packet.ReadPackedGuid128("RecruitGUID", indexes);
 
-            packet.ReadUInt32("RecruitVirtualRealm", indexes);
+            packet.ReadUInt32_Sanitize("RecruitVirtualRealm", indexes);
 
             packet.ReadInt32("CharacterClass", indexes);
             packet.ReadInt32("CharacterGender", indexes);
@@ -660,14 +660,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var lenName = packet.ReadBits(6);
             var lenComment = packet.ReadBits(10);
 
-            packet.ReadWoWString("Name", lenName, indexes);
+            packet.ReadWoWString_Sanitize("Name", lenName, indexes);
             packet.ReadWoWString("Comment", lenComment, indexes);
         }
 
         public static void ReadLFGuildApplicationData(Packet packet, params object[] indexes)
         {
             packet.ReadPackedGuid128("GuildGUID", indexes);
-            packet.ReadUInt32("GuildVirtualRealm", indexes);
+            packet.ReadUInt32_Sanitize("GuildVirtualRealm", indexes);
 
             packet.ReadInt32("ClassRoles", indexes);
             packet.ReadInt32("PlayStyle", indexes);
@@ -679,7 +679,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var lenName = packet.ReadBits(7);
             var lenComment = packet.ReadBits(10);
 
-            packet.ReadWoWString("GuildName", lenName, indexes);
+            packet.ReadWoWString_Sanitize("GuildName", lenName, indexes);
             packet.ReadWoWString("Comment", lenComment, indexes);
         }
 
@@ -732,7 +732,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_QUERY_PETITION)]
         public static void HandleQueryPetition(Packet packet)
         {
-            packet.ReadUInt32("PetitionID");
+            packet.ReadUInt32_Sanitize("PetitionID");
             packet.ReadPackedGuid128("ItemGUID");
         }
 
@@ -770,7 +770,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Item");
             packet.ReadPackedGuid128("Owner");
             packet.ReadPackedGuid128("OwnerWoWAccount");
-            packet.ReadInt32("PetitionID");
+            packet.ReadInt32_Sanitize("PetitionID");
 
             var signaturesCount = packet.ReadInt32("SignaturesCount");
             for (int i = 0; i < signaturesCount; i++)
@@ -779,7 +779,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadPetitionInfo(Packet packet, params object[] indexes)
         {
-            packet.ReadInt32("PetitionID", indexes);
+            packet.ReadInt32_Sanitize("PetitionID", indexes);
             packet.ReadPackedGuid128("Petitioner", indexes);
 
             packet.ReadInt32("MinSignatures", indexes);
@@ -816,7 +816,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUERY_PETITION_RESPONSE)]
         public static void HandleQueryPetitionResponse(Packet packet)
         {
-            packet.ReadInt32("PetitionID");
+            packet.ReadInt32_Sanitize("PetitionID");
 
             packet.ResetBitReader();
             var hasAllow = packet.ReadBit("Allow");
@@ -848,7 +848,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
             var length = packet.ReadBits("NewGuildNameLength", 7);
 
-            packet.ReadWoWString("NewGuildName", length);
+            packet.ReadWoWString_Sanitize("NewGuildName", length);
         }
 
         [Parser(Opcode.SMSG_TURN_IN_PETITION_RESULT)]
@@ -865,8 +865,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadUInt32("VirtualRealmAddress");
-            packet.ReadWoWString("Name", nameLength);
+            packet.ReadUInt32_Sanitize("VirtualRealmAddress");
+            packet.ReadWoWString_Sanitize("Name", nameLength);
         }
 
         [Parser(Opcode.SMSG_GUILD_BANK_TEXT_QUERY_RESULT)]
@@ -901,7 +901,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadPackedGuid128("GuildGUID", idx);
 
-            packet.ReadUInt32("GuildVirtualRealm", idx);
+            packet.ReadUInt32_Sanitize("GuildVirtualRealm", idx);
             // packet.ReadInt32("GuildLevel", idx);
             packet.ReadInt32("GuildMembers", idx);
             packet.ReadInt32("GuildAchievementPoints", idx);
@@ -918,7 +918,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSByte("Cached", idx);
             packet.ReadSByte("MembershipRequested", idx);
 
-            packet.ReadWoWString("GuildName", guildNameLength);
+            packet.ReadWoWString_Sanitize("GuildName", guildNameLength);
             packet.ReadWoWString("CommentLength", commentLength);
         }
 

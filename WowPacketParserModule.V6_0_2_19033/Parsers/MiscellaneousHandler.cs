@@ -119,8 +119,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("ScrollOfResurrectionRequestsRemaining");
             packet.ReadInt32("ScrollOfResurrectionMaxRequestsPerDay");
-            packet.ReadInt32("CfgRealmID");
-            packet.ReadInt32("CfgRealmRecID");
+            packet.ReadInt32_Sanitize("CfgRealmID");
+            packet.ReadInt32_Sanitize("CfgRealmRecID");
 
             packet.ResetBitReader();
 
@@ -153,8 +153,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("ScrollOfResurrectionRequestsRemaining");
             packet.ReadInt32("ScrollOfResurrectionMaxRequestsPerDay");
-            packet.ReadInt32("CfgRealmID");
-            packet.ReadInt32("CfgRealmRecID");
+            packet.ReadInt32_Sanitize("CfgRealmID");
+            packet.ReadInt32_Sanitize("CfgRealmRecID");
             packet.ReadInt32("Int27");
             packet.ReadInt32("Int29");
 
@@ -200,8 +200,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("ScrollOfResurrectionRequestsRemaining");
             packet.ReadInt32("ScrollOfResurrectionMaxRequestsPerDay");
-            packet.ReadInt32("CfgRealmID");
-            packet.ReadInt32("CfgRealmRecID");
+            packet.ReadInt32_Sanitize("CfgRealmID");
+            packet.ReadInt32_Sanitize("CfgRealmRecID");
             packet.ReadInt32("TwitterPostThrottleLimit");
             packet.ReadInt32("TwitterPostThrottleCooldown");
             packet.ReadInt32("TokenPollTimeSeconds");
@@ -296,10 +296,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("ExactName");
             var bit708 = packet.ReadBit("HasServerInfo");
 
-            packet.ReadWoWString("Name", bits2);
-            packet.ReadWoWString("VirtualRealmName", bits57);
-            packet.ReadWoWString("Guild", bits314);
-            packet.ReadWoWString("GuildVirtualRealmName", bits411);
+            packet.ReadWoWString_Sanitize("Name", bits2);
+            packet.ReadWoWString_Sanitize("VirtualRealmName", bits57);
+            packet.ReadWoWString_Sanitize("Guild", bits314);
+            packet.ReadWoWString_Sanitize("GuildVirtualRealmName", bits411);
 
             for (var i = 0; i < bit169; ++i)
             {
@@ -313,7 +313,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 packet.ReadInt32("FactionGroup");
                 packet.ReadInt32("Locale");
-                packet.ReadInt32("RequesterVirtualRealmAddress");
+                packet.ReadInt32_Sanitize("RequesterVirtualRealmAddress");
             }
 
             for (var i = 0; i < bits728; ++i)
@@ -339,31 +339,31 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
 
                 for (var j = 0; j < 5; ++j)
-                    packet.ReadWoWString("DeclinedNames", declinedNamesLen[j], i, j);
+                    packet.ReadWoWString_Sanitize("DeclinedNames", declinedNamesLen[j], i, j);
 
                 packet.ReadPackedGuid128("AccountID", i);
                 packet.ReadPackedGuid128("BnetAccountID", i);
                 packet.ReadPackedGuid128("GuidActual", i);
 
-                packet.ReadInt32("VirtualRealmAddress", i);
+                packet.ReadInt32_Sanitize("VirtualRealmAddress", i);
 
                 packet.ReadByteE<Race>("Race", i);
                 packet.ReadByteE<Gender>("Sex", i);
                 packet.ReadByteE<Class>("ClassId", i);
                 packet.ReadByte("Level", i);
 
-                packet.ReadWoWString("Name", bits15, i);
+                packet.ReadWoWString_Sanitize("Name", bits15, i);
 
                 packet.ReadPackedGuid128("GuildGUID", i);
 
-                packet.ReadInt32("GuildVirtualRealmAddress", i);
+                packet.ReadInt32_Sanitize("GuildVirtualRealmAddress", i);
                 packet.ReadInt32<AreaId>("AreaID", i);
 
                 packet.ResetBitReader();
                 var bits460 = packet.ReadBits(7);
                 packet.ReadBit("IsGM", i);
 
-                packet.ReadWoWString("GuildName", bits460, i);
+                packet.ReadWoWString_Sanitize("GuildName", bits460, i);
             }
         }
 
@@ -675,8 +675,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var len1 = packet.ReadBits(12);
             var len2 = packet.ReadBits(10);
 
-            packet.ReadWoWString("DiagInfo", len1);
-            packet.ReadWoWString("Text", len2);
+            packet.ReadWoWString_Sanitize("DiagInfo", len1);
+            packet.ReadWoWString_Sanitize("Text", len2);
         }
 
         [Parser(Opcode.SMSG_RESURRECT_REQUEST)]
@@ -684,7 +684,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("ResurrectOffererGUID");
 
-            packet.ReadUInt32("ResurrectOffererVirtualRealmAddress");
+            packet.ReadUInt32_Sanitize("ResurrectOffererVirtualRealmAddress");
             packet.ReadUInt32("PetNumber");
             packet.ReadInt32<SpellId>("SpellID");
 
@@ -693,7 +693,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("UseTimer");
             packet.ReadBit("Sickness");
 
-            packet.ReadWoWString("Name", len);
+            packet.ReadWoWString_Sanitize("Name", len);
         }
 
         [Parser(Opcode.CMSG_RESURRECT_RESPONSE)]
@@ -823,7 +823,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleSummonRequest(Packet packet)
         {
             packet.ReadPackedGuid128("SummonerGUID");
-            packet.ReadUInt32("SummonerVirtualRealmAddress");
+            packet.ReadUInt32_Sanitize("SummonerVirtualRealmAddress");
             packet.ReadInt32<AreaId>("AreaID");
             packet.ReadBit("ConfirmSummon_NC");
         }
@@ -883,14 +883,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleWhoIsRequest(Packet packet)
         {
             var len = packet.ReadBits(6);
-            packet.ReadWoWString("CharName", len);
+            packet.ReadWoWString_Sanitize("CharName", len);
         }
 
         [Parser(Opcode.SMSG_WHO_IS)]
         public static void HandleWhoIsResponse(Packet packet)
         {
             var accNameLen = packet.ReadBits(11);
-            packet.ReadWoWString("AccountName", accNameLen);
+            packet.ReadWoWString_Sanitize("AccountName", accNameLen);
         }
 
         [Parser(Opcode.CMSG_COLLECTION_ITEM_SET_FAVORITE)]

@@ -330,7 +330,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES, ClientVersionBuild.V9_0_5_37503, ClientVersionBuild.V9_1_5_40772)]
         public static void HandleAvailableHotfixes905(Packet packet)
         {
-            packet.ReadInt32("VirtualRealmAddress");
+            packet.ReadInt32_Sanitize("VirtualRealmAddress");
             var hotfixCount = packet.ReadUInt32("HotfixCount");
             for (var i = 0u; i < hotfixCount; ++i)
                 packet.ReadInt32("HotfixID", i);
@@ -339,7 +339,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES, ClientVersionBuild.V9_1_5_40772)]
         public static void HandleAvailableHotfixes915(Packet packet)
         {
-            packet.ReadInt32("VirtualRealmAddress");
+            packet.ReadInt32_Sanitize("VirtualRealmAddress");
             var hotfixCount = packet.ReadUInt32("HotfixCount");
             for (var i = 0u; i < hotfixCount; ++i)
             {

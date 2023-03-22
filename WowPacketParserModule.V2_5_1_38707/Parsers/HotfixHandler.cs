@@ -149,7 +149,7 @@ namespace WowPacketParserModule.V2_5_1_38835.Parsers
         [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES)]
         public static void HandleAvailableHotfixes(Packet packet)
         {
-            packet.ReadUInt32("VirtualRealmAddress");
+            packet.ReadUInt32_Sanitize("VirtualRealmAddress");
 
             var uniqueIDCount = packet.ReadUInt32("UniqueIDCount");
             for (var i = 0; i < uniqueIDCount; ++i)

@@ -41,7 +41,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadInt32E<Language>("Language");
             var len = packet.ReadBits(9);
-            packet.ReadWoWString("Text", len);
+            packet.ReadWoWString_Sanitize("Text", len);
         }
 
         [Parser(Opcode.CMSG_CHAT_MESSAGE_CHANNEL)]
@@ -52,9 +52,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadPackedGuid128("ChannelGUID");
             var channelNameLen = packet.ReadBits(9);
             var msgLen = packet.ReadBits(9);
-
-            packet.ReadWoWString("Target", channelNameLen);
-            packet.ReadWoWString("Text", msgLen);
+            packet.ResetBitReader();
+            packet.ReadWoWString("Channel Name", channelNameLen);
+            packet.ReadWoWString_Sanitize("Message", msgLen);
         }
 
         [Parser(Opcode.CMSG_CHAT_MESSAGE_WHISPER)]
@@ -64,8 +64,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var recvName = packet.ReadBits(9);
             var msgLen = packet.ReadBits(9);
 
-            packet.ReadWoWString("Target", recvName);
-            packet.ReadWoWString("Text", msgLen);
+            packet.ReadWoWString_Sanitize("Target", recvName);
+            packet.ReadWoWString_Sanitize("Text", msgLen);
         }
 
         [Parser(Opcode.CMSG_CHAT_MESSAGE_DND)]

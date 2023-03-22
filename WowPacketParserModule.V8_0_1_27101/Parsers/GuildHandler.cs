@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (hasData)
             {
                 packet.ReadPackedGuid128("GuildGUID");
-                packet.ReadInt32("VirtualRealmAddress");
+                packet.ReadInt32_Sanitize("VirtualRealmAddress");
                 var rankCount = packet.ReadInt32("RankCount");
                 packet.ReadInt32("EmblemColor");
                 packet.ReadInt32("EmblemStyle");
@@ -35,10 +35,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                     packet.ResetBitReader();
                     var rankNameLen = packet.ReadBits(7);
-                    packet.ReadWoWString("Rank Name", rankNameLen, i);
+                    packet.ReadWoWString_Sanitize("Rank Name", rankNameLen, i);
                 }
 
-                packet.ReadWoWString("Guild Name", nameLen);
+                packet.ReadWoWString_Sanitize("Guild Name", nameLen);
             }
         }
 
@@ -76,7 +76,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     packet.ReadUInt32("Step", i, j);
                 }
 
-                packet.ReadUInt32("VirtualRealmAddress", i);
+                packet.ReadUInt32_Sanitize("VirtualRealmAddress", i);
 
                 packet.ReadByteE<GuildMemberFlag>("Status", i);
                 packet.ReadByte("Level", i);
@@ -92,13 +92,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadBit("Authenticated", i);
                 packet.ReadBit("SorEligible", i);
 
-                packet.ReadWoWString("Name", nameLen, i);
-                packet.ReadWoWString("Note", noteLen, i);
-                packet.ReadWoWString("OfficerNote", officersNoteLen, i);
+                packet.ReadWoWString_Sanitize("Name", nameLen, i);
+                packet.ReadWoWString_Sanitize("Note", noteLen, i);
+                packet.ReadWoWString_Sanitize("OfficerNote", officersNoteLen, i);
             }
 
-            packet.ReadWoWString("WelcomeText", welcomeTextLen);
-            packet.ReadWoWString("InfoText", infoTextLen);
+            packet.ReadWoWString_Sanitize("WelcomeText", welcomeTextLen);
+            packet.ReadWoWString_Sanitize("InfoText", infoTextLen);
         }
 
         [Parser(Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, ClientVersionBuild.V7_2_0_23826)]
@@ -180,7 +180,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void HandleEventMotd(Packet packet)
         {
             var motdLen = packet.ReadBits(11);
-            packet.ReadWoWString("MotdText", motdLen);
+            packet.ReadWoWString_Sanitize("MotdText", motdLen);
         }
 
         [Parser(Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS, ClientVersionBuild.V8_2_5_31921)]

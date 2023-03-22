@@ -15,7 +15,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (hasData)
             {
                 packet.ReadPackedGuid128("GuildGUID");
-                packet.ReadInt32("VirtualRealmAddress");
+                packet.ReadInt32_Sanitize("VirtualRealmAddress");
                 var rankCount = packet.ReadInt32("RankCount");
                 packet.ReadInt32("EmblemColor");
                 packet.ReadInt32("EmblemStyle");
@@ -33,10 +33,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                     packet.ResetBitReader();
                     var rankNameLen = packet.ReadBits(7);
-                    packet.ReadWoWString("Rank Name", rankNameLen, i);
+                    packet.ReadWoWString_Sanitize("Rank Name", rankNameLen, i);
                 }
 
-                packet.ReadWoWString("Guild Name", nameLen);
+                packet.ReadWoWString_Sanitize("Guild Name", nameLen);
             }
         }
 
@@ -70,7 +70,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadUInt32("Step", i, j);
                 }
 
-                packet.ReadUInt32("VirtualRealmAddress", i);
+                packet.ReadUInt32_Sanitize("VirtualRealmAddress", i);
 
                 packet.ReadByteE<GuildMemberFlag>("Status", i);
                 packet.ReadByte("Level", i);
@@ -86,9 +86,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadBit("Authenticated", i);
                 packet.ReadBit("SorEligible", i);
 
-                packet.ReadWoWString("Name", bits36, i);
-                packet.ReadWoWString("Note", bits92, i);
-                packet.ReadWoWString("OfficerNote", bits221, i);
+                packet.ReadWoWString_Sanitize("Name", bits36, i);
+                packet.ReadWoWString_Sanitize("Note", bits92, i);
+                packet.ReadWoWString_Sanitize("OfficerNote", bits221, i);
             }
 
             packet.ReadWoWString("WelcomeText", bits2037);

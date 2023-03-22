@@ -15,7 +15,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             if (hasData)
             {
                 packet.ReadPackedGuid128("GuildGUID");
-                packet.ReadInt32("VirtualRealmAddress");
+                packet.ReadInt32_Sanitize("VirtualRealmAddress");
                 var rankCount = packet.ReadUInt32("RankCount");
                 packet.ReadInt32("EmblemColor");
                 packet.ReadInt32("EmblemStyle");
@@ -58,7 +58,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                 packet.ReadUInt32("Step", idx, j);
             }
 
-            packet.ReadUInt32("VirtualRealmAddress", idx);
+            packet.ReadUInt32_Sanitize("VirtualRealmAddress", idx);
 
             packet.ReadByteE<GuildMemberFlag>("Status", idx);
             packet.ReadByte("Level", idx);
@@ -74,7 +74,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             packet.ReadBit("Authenticated", idx);
             packet.ReadBit("SorEligible", idx);
 
-            packet.ReadWoWString("Name", nameLen, idx);
+            packet.ReadWoWString_Sanitize("Name", nameLen, idx);
             packet.ReadWoWString("Note", noteLen, idx);
             packet.ReadWoWString("OfficerNote", officersNoteLen, idx);
         }

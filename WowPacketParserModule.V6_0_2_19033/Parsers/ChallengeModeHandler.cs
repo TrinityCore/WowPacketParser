@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         public static void ReadChallengeModeAttempt(Packet packet, params object[] indexes)
         {
-            packet.ReadUInt32("InstanceRealmAddress", indexes);
+            packet.ReadUInt32_Sanitize("InstanceRealmAddress", indexes);
             packet.ReadUInt32("AttemptID", indexes);
             packet.ReadInt32("CompletionTime", indexes);
             packet.ReadPackedTime("CompletionDate", indexes);
@@ -17,8 +17,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int12 = packet.ReadUInt32("MembersCount", indexes);
             for (int i = 0; i < int12; i++)
             {
-                packet.ReadUInt32("VirtualRealmAddress", indexes, i);
-                packet.ReadUInt32("NativeRealmAddress", indexes, i);
+                packet.ReadUInt32_Sanitize("VirtualRealmAddress", indexes, i);
+                packet.ReadUInt32_Sanitize("NativeRealmAddress", indexes, i);
                 packet.ReadPackedGuid128("Guid", indexes, i);
                 packet.ReadInt32("SpecializationID", indexes, i);
             }

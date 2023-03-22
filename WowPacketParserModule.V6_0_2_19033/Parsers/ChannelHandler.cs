@@ -63,11 +63,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("SenderGuid");
             packet.ReadPackedGuid128("BnetAccountID");
 
-            packet.ReadInt32("SenderVirtualRealm");
+            packet.ReadInt32_Sanitize("SenderVirtualRealm");
 
             packet.ReadPackedGuid128("TargetGuid");
 
-            packet.ReadUInt32("TargetVirtualRealm");
+            packet.ReadUInt32_Sanitize("TargetVirtualRealm");
             packet.ReadInt32("ChatChannelID");
 
             if (type == ChatNotificationType.ModeChange)
@@ -94,7 +94,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < int20; i++)
             {
                 packet.ReadPackedGuid128("Guid", i);
-                packet.ReadUInt32("VirtualRealmAddress", i);
+                packet.ReadUInt32_Sanitize("VirtualRealmAddress", i);
                 packet.ReadByte("Flags", i);
             }
         }

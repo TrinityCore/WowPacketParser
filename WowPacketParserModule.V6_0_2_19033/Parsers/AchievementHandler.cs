@@ -54,8 +54,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32<AchievementId>("Id", idx);
             packet.ReadPackedTime("Date", idx);
             packet.ReadPackedGuid128("Owner", idx);
-            packet.ReadInt32("VirtualRealmAddress", idx);
-            packet.ReadInt32("NativeRealmAddress", idx);
+            packet.ReadInt32_Sanitize("VirtualRealmAddress", idx);
+            packet.ReadInt32_Sanitize("NativeRealmAddress", idx);
         }
 
         [Parser(Opcode.SMSG_ALL_ACCOUNT_CRITERIA)]
@@ -92,8 +92,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Earner");
             packet.ReadUInt32<AchievementId>("AchievementID");
             packet.ReadPackedTime("Time");
-            packet.ReadUInt32("EarnerNativeRealm");
-            packet.ReadUInt32("EarnerVirtualRealm");
+            packet.ReadUInt32_Sanitize("EarnerNativeRealm");
+            packet.ReadUInt32_Sanitize("EarnerVirtualRealm");
             packet.ReadBit("Initial");
         }
 

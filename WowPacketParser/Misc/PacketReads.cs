@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using WowPacketParser.Enums;
+using WowPacketParser.Loading;
 
 namespace WowPacketParser.Misc
 {
@@ -33,8 +35,12 @@ namespace WowPacketParser.Misc
         {
             var guidLowMask = ReadByte();
             var guidHighMask = ReadByte();
+            WowGuid128 guid;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+                guid = new WowGuid128(ReadPackedUInt64_Sanitize(guidLowMask, true, true), ReadPackedUInt64_Sanitize(guidHighMask, true));
+            else
+                guid = new WowGuid128(ReadPackedUInt64(guidLowMask), ReadPackedUInt64(guidHighMask));
 
-            var guid = new WowGuid128(ReadPackedUInt64(guidLowMask), ReadPackedUInt64(guidHighMask));
             if (WriteToFile)
                 WriteToFile = Filters.CheckFilter(guid);
 
@@ -772,5 +778,358 @@ namespace WowPacketParser.Misc
                     return current + (s[0] + value.ToString() + s[1] + ' ');
                 });
         }
+
+#region Sanitizing
+        public byte ReadByte_Sanitize(string name, params object[] indexes)
+        {
+            byte val = 0;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadByte();
+            AddValue(name, FormatInteger(val), indexes);
+            return val;
+        }
+
+        public sbyte ReadSByte_Sanitize(string name, params object[] indexes)
+        {
+            sbyte val = 0;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadSByte();
+            AddValue(name, FormatInteger(val), indexes);
+            return val;
+        }
+
+        public short ReadInt16_Sanitize(string name, params object[] indexes)
+        {
+            short val = 0;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadInt16();
+            AddValue(name, FormatInteger(val), indexes);
+            return val;
+        }
+
+        public ushort ReadUInt16_Sanitize(string name, params object[] indexes)
+        {
+            ushort val = 0;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadUInt16();
+            AddValue(name, FormatInteger(val), indexes);
+            return val;
+        }
+
+        public float ReadSingle_Sanitize(string name, params object[] indexes)
+        {
+            float val = 0;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadSingle();
+            AddValue(name, FormatFloat(val), indexes);
+            return val;
+        }
+
+        public double ReadDouble_Sanitize(string name, params object[] indexes)
+        {
+            double val = 0;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadDouble();
+            AddValue(name, FormatFloat(val), indexes);
+            return val;
+        }
+
+        public int ReadInt32_Sanitize(string name, params object[] indexes)
+        {
+            int val = 0;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadInt32();
+            AddValue(name, FormatInteger(val), indexes);
+            return val;
+        }
+
+        public uint ReadUInt32_Sanitize(string name, params object[] indexes)
+        {
+            uint val = 0;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadUInt32();
+            AddValue(name, FormatInteger(val), indexes);
+            return val;
+        }
+
+        public long ReadInt64_Sanitize(string name, params object[] indexes)
+        {
+            long val = 0;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadInt64();
+            AddValue(name, FormatInteger(val), indexes);
+            return val;
+        }
+
+        public ulong ReadUInt64_Sanitize(string name, params object[] indexes)
+        {
+            ulong val = 0;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadUInt64();
+            AddValue(name, FormatInteger(val), indexes);
+            return val;
+        }
+
+        public WowGuid ReadGuid_Sanitize(string name, params object[] indexes)
+        {
+            // TODO: Create sanitize ReadGuid() function which generates a new guid an replaces all -> store original and replacement in a map
+            return AddValue(name, ReadGuid(), indexes);
+        }
+        public string ReadWoWString_Sanitize(int len)
+        {
+            Encoding encoding = Encoding.UTF8;
+            byte[] bytes;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                var str = new string('X', len);
+                BinaryWriter.Write(encoding.GetBytes(str));
+                return str;
+            }
+            else
+                bytes = ReadBytes(len).Where(b => b != 0).ToArray();
+
+            string s = encoding.GetString(bytes);
+            return s;
+        }
+
+        public string ReadWoWString_Sanitize(string name, int len, params object[] indexes)
+        {
+            return AddValue(name, ReadWoWString_Sanitize(len), indexes);
+        }
+
+        public string ReadWoWString_Sanitize(string name, uint len, params object[] indexes)
+        {
+            return AddValue(name, ReadWoWString_Sanitize((int)len), indexes);
+        }
+
+        public string ReadDynamicString_Sanitize(int len)
+        {
+            if (len == 1)
+                return string.Empty;
+
+            return ReadWoWString_Sanitize(len);
+        }
+
+        public string ReadDynamicString_Sanitize(string name, int len, params object[] indexes)
+        {
+            return AddValue(name, ReadDynamicString_Sanitize(len), indexes);
+        }
+
+        public string ReadDynamicString_Sanitize(string name, uint len, params object[] indexes)
+        {
+            return AddValue(name, ReadDynamicString_Sanitize((int)len), indexes);
+        }
+
+        public string ReadCString_Sanitize(Encoding encoding)
+        {
+            var bytes = new List<byte>();
+
+            byte b;
+            // store position of BaseStream so we can jump back when writing
+            var startPosition = BaseStream.Position;
+
+            while (CanRead() && (b = ReadByte()) != 0)  // CDataStore::GetCString calls CanRead too
+                bytes.Add(b);
+
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                // jump back before Read
+                BaseStream.Position = startPosition;
+                // replace CString by X with same length
+                var str = new string('X', bytes.Count);
+                BinaryWriter.Write(encoding.GetBytes(str));
+                return str;
+            }
+
+            return encoding.GetString(bytes.ToArray());
+        }
+
+        public string ReadCString_Sanitize()
+        {
+            return ReadCString_Sanitize(Encoding.UTF8);
+        }
+
+        public string ReadCString_Sanitize(string name, params object[] indexes)
+        {
+            return AddValue(name, ReadCString_Sanitize(), indexes);
+        }
+
+        public WowGuid ReadPackedGuid_Sanitize(string name, params object[] indexes)
+        {
+            // TODO: Create sanitize ReadPackedGuid() function which generates a new guid an replaces all -> store original and replacement in a map
+            return AddValue(name, ReadPackedGuid(), indexes);
+        }
+
+        private ulong ReadPackedUInt64_Sanitize(byte mask, bool guid = false, bool xor = false)
+        {
+            if (mask == 0)
+                return 0;
+
+            ulong res = 0;
+
+            int i = 0;
+            while (i < 8)
+            {
+                if ((mask & 1 << i) != 0)
+                {
+                    byte val = 0;
+                    if (guid)
+                    {
+                        // packed uint64 contains RealmID in this range
+                        if (!xor && (i >= 5 && i <= 6))
+                        {
+                            BinaryWriter.Write(val);
+                            res += (ulong)val << (i * 8);
+                        }
+                        else if (xor)
+                        {
+                            var position = BaseStream.Position;
+
+                            byte original = ReadByte();
+                            val = (byte)(original ^ SniffFile.GetXORSeed());
+                            res += (ulong)val << (i * 8);
+
+                            BaseStream.Position = position;
+                            BinaryWriter.Write(val);
+                        }
+                        else
+                            res += (ulong)ReadByte() << (i * 8);
+                    }
+                    else
+                    {
+                        BinaryWriter.Write(val);
+                        res += (ulong)val << (i * 8);
+                    }
+                }
+
+                i++;
+            }
+
+            return res;
+        }
+
+        public byte[] ReadBytesString_Sanitize(string name, int length, params object[] indexes)
+        {
+            byte[] val;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                var str = new string('X', length);
+                val = Encoding.UTF8.GetBytes(str);
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadBytes(length);
+
+            AddValue(name, Encoding.UTF8.GetString(val), indexes);
+            return val;
+        }
+
+        public byte[] ReadBytesTable_Sanitize(string name, int length, params object[] indexes)
+        {
+            byte[] val;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                val = new byte[length];
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadBytes(length);
+
+            AddValue(name, Utilities.ByteArrayToHexTable(val, true,
+                GetIndexString(indexes).Length + name.Length + ": ".Length),
+                indexes);
+            return val;
+        }
+
+        public byte[] ReadBytes_Sanitize(string name, int length, params object[] indexes)
+        {
+            byte[] val;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                val = new byte[length];
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadBytes(length);
+            AddValue(name, Convert.ToHexString(val), indexes);
+            return val;
+        }
+
+        public IPAddress ReadIPAddress_Sanitize()
+        {
+            byte[] val;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                val = new byte[4];
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadBytes(4);
+
+            return new IPAddress(val);
+        }
+
+        public IPAddress ReadIPv6Address_Sanitize()
+        {
+            byte[] val;
+            if (Settings.DumpFormat == DumpFormatType.SanitizedPkt)
+            {
+                val = new byte[16];
+                BinaryWriter.Write(val);
+            }
+            else
+                val = ReadBytes(16);
+            return new IPAddress(val);
+        }
+
+        public IPAddress ReadIPAddress_Sanitize(string name, params object[] indexes)
+        {
+            return AddValue(name, ReadIPAddress_Sanitize(), indexes);
+        }
+        public IPAddress ReadIPv6Address_Sanitize(string name, params object[] indexes)
+        {
+            return AddValue(name, ReadIPv6Address_Sanitize(), indexes);
+        }
+        #endregion
     }
 }

@@ -41,8 +41,8 @@ namespace WowPacketParserModule.Substructures
             packet.ReadUInt64("GuildClubMemberID", indexes);
             packet.ReadPackedGuid128("GUID", indexes);
             packet.ReadPackedGuid128("GuildGUID", indexes);
-            packet.ReadUInt32("NativeRealmAddress", indexes);
-            packet.ReadUInt32("VirtualRealmAddress", indexes);
+            packet.ReadUInt32_Sanitize("NativeRealmAddress", indexes);
+            packet.ReadUInt32_Sanitize("VirtualRealmAddress", indexes);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
                 packet.ReadInt32("ChrSpecializationID", indexes);
             else

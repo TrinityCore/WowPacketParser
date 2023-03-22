@@ -37,7 +37,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("Flags", indexes);
             packet.ReadInt32("TextureID", indexes);
 
-            packet.ReadUInt64("CommunityID", indexes);
+            packet.ReadUInt64_Sanitize("CommunityID", indexes);
             packet.ReadPackedGuid128("OwnerGUID", indexes);
 
             packet.ResetBitReader();

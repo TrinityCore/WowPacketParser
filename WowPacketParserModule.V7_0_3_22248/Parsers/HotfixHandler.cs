@@ -131,7 +131,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES)]
         public static void HandleHotfixList(Packet packet)
         {
-            packet.ReadInt32("VirtualRealmAddress");
+            packet.ReadInt32_Sanitize("VirtualRealmAddress");
             var hotfixCount = packet.ReadUInt32("HotfixCount");
             for (var i = 0u; i < hotfixCount; ++i)
             {

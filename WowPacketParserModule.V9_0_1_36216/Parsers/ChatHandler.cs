@@ -23,8 +23,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadPackedGuid128("SenderGuildGUID");
             packet.ReadPackedGuid128("WowAccountGUID");
             text.ReceiverGUID = packet.ReadPackedGuid128("TargetGUID");
-            packet.ReadUInt32("TargetVirtualAddress");
-            packet.ReadUInt32("SenderVirtualAddress");
+            packet.ReadUInt32_Sanitize("TargetVirtualAddress");
+            packet.ReadUInt32_Sanitize("SenderVirtualAddress");
             packet.ReadPackedGuid128("PartyGUID");
             packet.ReadInt32("AchievementID");
             packet.ReadSingle("DisplayTime");
@@ -43,23 +43,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
                 hasChannelGuid = packet.ReadBit("HasChannelGUID");
 
-            text.SenderName = packet.ReadWoWString("Sender Name", senderNameLen);
-            text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverNameLen);
-            packet.ReadWoWString("Addon Message Prefix", prefixLen);
-            packet.ReadWoWString("Channel Name", channelLen);
-
-            chatPacket.Text = text.Text = packet.ReadWoWString("Text", textLen);
-            chatPacket.Sender = text.SenderGUID.ToUniversalGuid();
-            chatPacket.Target = text.ReceiverGUID.ToUniversalGuid();
-            chatPacket.Language = (int) text.Language;
-            chatPacket.Type = (int) text.Type;
-            chatPacket.Flags = flags;
-
-            if (unk801bit)
-                packet.ReadUInt32("Unk801");
-
-            if (hasChannelGuid)
-                packet.ReadPackedGuid128("ChannelGUID");
+            text.SenderName = packet.ReadWoWString_Sanitize("Sender Name", senderNameLen);
+            text.ReceiverName = packet.ReadWoWString_Sanitize("Receiver Name", receiverNameLen);
+            packet.ReadWoWString_Sanitize("Addon Message Prefix", prefixLen);
+            packet.ReadWoWString_Sanitize("Channel Name", channelLen);
 
             uint entry = 0;
             if (text.SenderGUID.GetObjectType() == ObjectType.Unit)
@@ -68,7 +55,24 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 entry = text.ReceiverGUID.GetEntry();
 
             if (entry != 0)
+            {
+                chatPacket.Text = text.Text = packet.ReadWoWString("Text", textLen);
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
+            }
+            else
+                chatPacket.Text = text.Text = packet.ReadWoWString_Sanitize("Text", textLen);
+            chatPacket.Sender = text.SenderGUID.ToUniversalGuid();
+            chatPacket.Target = text.ReceiverGUID.ToUniversalGuid();
+            chatPacket.Language = (int)text.Language;
+            chatPacket.Type = (int)text.Type;
+            chatPacket.Flags = flags;
+
+            if (unk801bit)
+                packet.ReadUInt32("Unk801");
+
+            if (hasChannelGuid)
+                packet.ReadPackedGuid128("ChannelGUID");
+
         }
 
         [Parser(Opcode.SMSG_EMOTE)]

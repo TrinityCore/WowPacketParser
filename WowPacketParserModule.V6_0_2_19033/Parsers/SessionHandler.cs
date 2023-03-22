@@ -25,7 +25,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var queued = packet.ReadBit("Queued");
             if (ok)
             {
-                packet.ReadUInt32("VirtualRealmAddress");
+                packet.ReadUInt32_Sanitize("VirtualRealmAddress");
                 var realms = packet.ReadUInt32();
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_4_21315))
                 {
@@ -53,14 +53,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 for (var i = 0; i < realms; ++i)
                 {
-                    packet.ReadUInt32("VirtualRealmAddress", i);
+                    packet.ReadUInt32_Sanitize("VirtualRealmAddress", i);
                     packet.ResetBitReader();
                     packet.ReadBit("IsLocal", i);
                     packet.ReadBit("unk", i);
                     var nameLen1 = packet.ReadBits(8);
                     var nameLen2 = packet.ReadBits(8);
-                    packet.ReadWoWString("RealmNameActual", nameLen1, i);
-                    packet.ReadWoWString("RealmNameNormalized", nameLen2, i);
+                    packet.ReadWoWString_Sanitize("RealmNameActual", nameLen1, i);
+                    packet.ReadWoWString_Sanitize("RealmNameNormalized", nameLen2, i);
                 }
 
                 for (var i = 0; i < races; ++i)
@@ -145,22 +145,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleAuthSession(Packet packet)
         {
             var sha = new byte[20];
-            packet.ReadUInt32("Grunt ServerId");
+            packet.ReadUInt32_Sanitize("Grunt ServerId");
             packet.ReadInt16E<ClientVersionBuild>("Client Build");
             packet.ReadUInt32("Region");
             packet.ReadUInt32("Battlegroup");
-            packet.ReadUInt32("RealmIndex");
+            packet.ReadUInt32_Sanitize("RealmIndex");
             packet.ReadByte("Login Server Type");
             packet.ReadByte("Unk");
-            packet.ReadUInt32("Client Seed");
-            packet.ReadUInt64("DosResponse");
+            packet.ReadUInt32_Sanitize("Client Seed");
+            packet.ReadUInt64_Sanitize("DosResponse");
 
             for (uint i = 0; i < 20; ++i)
                 sha[i] = packet.ReadByte();
 
             var accountNameLength = packet.ReadBits("Account Name Length", 11);
             packet.ResetBitReader();
-            packet.ReadWoWString("Account Name", accountNameLength);
+            packet.ReadWoWString_Sanitize("Account Name", accountNameLength);
             packet.ReadBit("UseIPv6");
 
             var addonSize = packet.ReadInt32("Addons Size");
@@ -183,10 +183,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("BuildType");
             packet.ReadUInt32("RegionID");
             packet.ReadUInt32("BattlegroupID");
-            packet.ReadUInt32("RealmID");
-            packet.ReadBytes("LocalChallenge", 16);
-            packet.ReadBytes("Digest", 24);
-            packet.ReadUInt64("DosResponse");
+            packet.ReadUInt32_Sanitize("RealmID");
+            packet.ReadBytes_Sanitize("LocalChallenge", 16);
+            packet.ReadBytes_Sanitize("Digest", 24);
+            packet.ReadUInt64_Sanitize("DosResponse");
 
             var addonSize = packet.ReadInt32();
             if (addonSize > 0)
@@ -215,23 +215,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION)]
         public static void HandleRedirectAuthProof(Packet packet)
         {
-            packet.ReadInt64("DosResponse");
-            packet.ReadInt64("Key");
+            packet.ReadInt64_Sanitize("DosResponse");
+            packet.ReadInt64_Sanitize("Key");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
             {
-                packet.ReadBytes("LocalChallenge", 16);
-                packet.ReadBytes("Digest", 24);
+                packet.ReadBytes_Sanitize("LocalChallenge", 16);
+                packet.ReadBytes_Sanitize("Digest", 24);
             }
             else
-                packet.ReadBytes("Digest", 20);
+                packet.ReadBytes_Sanitize("Digest", 20);
         }
 
         [Parser(Opcode.SMSG_CONNECT_TO)]
         public static void HandleRedirectClient422(Packet packet)
         {
-            packet.ReadUInt64("Key");
+            packet.ReadUInt64_Sanitize("Key");
             packet.ReadUInt32("Serial");
-            packet.ReadBytes("Where (RSA encrypted)", 256);
+            packet.ReadBytes_Sanitize("Where (RSA encrypted)", 256);
             packet.ReadByte("Con");
         }
 
@@ -241,9 +241,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_4_21315))
                 packet.ReadUInt32("Challenge");
             for (uint i = 0; i < 8; ++i)
-                packet.ReadUInt32("DosChallenge", i);
+                packet.ReadUInt32_Sanitize("DosChallenge", i);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
-                packet.ReadBytes("Challenge", 16);
+                packet.ReadBytes_Sanitize("Challenge", 16);
             packet.ReadByte("DosZeroBits");
         }
 
@@ -290,13 +290,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_QUERY_REALM_NAME)]
         public static void HandleRealmQuery(Packet packet)
         {
-            packet.ReadInt32("VirtualRealmAddress");
+            packet.ReadInt32_Sanitize("VirtualRealmAddress");
         }
 
         [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
         public static void HandleRealmQueryResponse(Packet packet)
         {
-            packet.ReadUInt32("VirtualRealmAddress");
+            packet.ReadUInt32_Sanitize("VirtualRealmAddress");
 
             var state = packet.ReadByte("LookupState");
             if (state == 0)
@@ -310,8 +310,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var bits258 = packet.ReadBits(8);
                 packet.ReadBit();
 
-                packet.ReadWoWString("RealmNameActual", bits2);
-                packet.ReadWoWString("RealmNameNormalized", bits258);
+                packet.ReadWoWString_Sanitize("RealmNameActual", bits2);
+                packet.ReadWoWString_Sanitize("RealmNameNormalized", bits258);
             }
         }
 
@@ -325,21 +325,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_CONNECT_TO_FAILED)]
         public static void HandleRedirectFailed(Packet packet)
         {
-            packet.ReadUInt32("Serial");
+            packet.ReadUInt32_Sanitize("Serial");
             packet.ReadSByte("Con");
         }
 
         [Parser(Opcode.CMSG_SUSPEND_TOKEN_RESPONSE)]
         public static void HandleSuspendToken(Packet packet)
         {
-            packet.ReadUInt32("Sequence");
+            packet.ReadUInt32_Sanitize("Sequence");
         }
 
         [Parser(Opcode.SMSG_SUSPEND_TOKEN)]
         [Parser(Opcode.SMSG_RESUME_TOKEN)]
         public static void HandleResumeTokenPacket(Packet packet)
         {
-            packet.ReadUInt32("Sequence");
+            packet.ReadUInt32_Sanitize("Sequence");
             packet.ReadBits("Reason", 2);
         }
 
@@ -353,15 +353,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BATTLENET_CHALLENGE_START)]
         public static void HandleBattlenetChallengeStart(Packet packet)
         {
-            packet.ReadUInt32("Token");
+            packet.ReadUInt32_Sanitize("Token");
             var bits16 = packet.ReadBits(9);
-            packet.ReadWoWString("ChallengeURL", bits16);
+            packet.ReadWoWString_Sanitize("ChallengeURL", bits16);
         }
 
         [Parser(Opcode.CMSG_BATTLENET_CHALLENGE_RESPONSE)]
         public static void HandleBattlenetChallengeResponse(Packet packet)
         {
-            packet.ReadUInt32("Token");
+            packet.ReadUInt32_Sanitize("Token");
             var result = packet.ReadBits(3);
             if (result == 3)
             {
@@ -373,15 +373,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BATTLENET_CHALLENGE_ABORT)]
         public static void HandleBattlenetChallengeAbort(Packet packet)
         {
-            packet.ReadUInt32("Token");
+            packet.ReadUInt32_Sanitize("Token");
             packet.ReadBit("Timeout");
         }
 
         public static void ReadMethodCall(Packet packet, params object[] idx)
         {
             packet.ReadUInt64("Type", idx);
-            packet.ReadUInt64("ObjectId", idx);
-            packet.ReadUInt32("Token", idx);
+            packet.ReadUInt64_Sanitize("ObjectId", idx);
+            packet.ReadUInt32_Sanitize("Token", idx);
         }
 
         [Parser(Opcode.CMSG_BATTLENET_REQUEST)]
@@ -390,7 +390,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadMethodCall(packet, "Method");
 
             int protoSize = packet.ReadInt32();
-            packet.ReadBytesTable("Data", protoSize);
+            packet.ReadBytesTable_Sanitize("Data", protoSize);
         }
 
         [Parser(Opcode.SMSG_BATTLENET_NOTIFICATION)]
@@ -399,7 +399,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadMethodCall(packet, "Method");
 
             int protoSize = packet.ReadInt32();
-            packet.ReadBytesTable("Data", protoSize);
+            packet.ReadBytesTable_Sanitize("Data", protoSize);
         }
 
         [Parser(Opcode.SMSG_BATTLENET_RESPONSE)]
@@ -409,7 +409,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadMethodCall(packet, "Method");
 
             int protoSize = packet.ReadInt32();
-            packet.ReadBytesTable("Data", protoSize);
+            packet.ReadBytesTable_Sanitize("Data", protoSize);
         }
 
         [Parser(Opcode.SMSG_BATTLE_NET_CONNECTION_STATUS)]
@@ -427,18 +427,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_CHANGE_REALM_TICKET_RESPONSE)]
         public static void HandleChangeRealmTicketResponse(Packet packet)
         {
-            packet.ReadUInt32("Token");
+            packet.ReadUInt32_Sanitize("Token");
             packet.ResetBitReader();
             packet.ReadBit("Allow");
 
             int protoSize = packet.ReadInt32();
-            packet.ReadBytesTable("Data", protoSize);
+            packet.ReadBytesTable_Sanitize("Data", protoSize);
         }
 
         [Parser(Opcode.CMSG_CHANGE_REALM_TICKET)]
         public static void HandleChangeRealmTicket(Packet packet)
         {
-            packet.ReadUInt32("Token");
+            packet.ReadUInt32_Sanitize("Token");
             packet.ReadBytes("Secret", 32);
         }
     }

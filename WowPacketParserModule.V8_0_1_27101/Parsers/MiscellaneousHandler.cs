@@ -21,8 +21,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ReadUInt32("ScrollOfResurrectionRequestsRemaining");
             packet.ReadUInt32("ScrollOfResurrectionMaxRequestsPerDay");
-            packet.ReadUInt32("CfgRealmID");
-            packet.ReadInt32("CfgRealmRecID");
+            packet.ReadUInt32_Sanitize("CfgRealmID");
+            packet.ReadInt32_Sanitize("CfgRealmRecID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
             {
@@ -193,7 +193,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void HandleQueryPlayerNameByCommunityID(Packet packet)
         {
             packet.ReadPackedGuid128("BNetAccountGUID");
-            packet.ReadUInt64("CommunityDbID");
+            packet.ReadUInt64_Sanitize("CommunityDbID");
         }
 
         [Parser(Opcode.SMSG_UPDATE_EXPANSION_LEVEL)]
@@ -227,14 +227,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ReadPackedGuid128("GuildGUID", idx);
 
-            packet.ReadUInt32("GuildVirtualRealmAddress", idx);
+            packet.ReadUInt32_Sanitize("GuildVirtualRealmAddress", idx);
             packet.ReadInt32<AreaId>("AreaID", idx);
 
             packet.ResetBitReader();
             var guildNameLen = packet.ReadBits(7);
             packet.ReadBit("IsGM", idx);
 
-            packet.ReadWoWString("GuildName", guildNameLen, idx);
+            packet.ReadWoWString_Sanitize("GuildName", guildNameLen, idx);
         }
 
         [Parser(Opcode.SMSG_WHO)]

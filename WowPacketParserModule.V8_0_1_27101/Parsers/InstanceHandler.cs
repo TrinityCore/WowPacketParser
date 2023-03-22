@@ -59,7 +59,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadInt16("BottomOffset", i);
                 packet.ReadInt16("LeftOffset", i);
 
-                packet.ReadWoWString("Name", strlen, i);
+                packet.ReadWoWString_Sanitize("Name", strlen, i);
             }
         }
     }

@@ -11,14 +11,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             var sessionKeyLength = (int) packet.ReadBits(7);
 
-            packet.ReadBytes("Digest", 32);
-            packet.ReadBytes("SessionKey", sessionKeyLength);
+            packet.ReadBytes_Sanitize("Digest", 32);
+            packet.ReadBytes_Sanitize("SessionKey", sessionKeyLength);
         }
 
         [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE, ClientVersionBuild.V8_1_0_28724)]
         public static void HandleRealmQueryResponse(Packet packet)
         {
-            packet.ReadUInt32("VirtualRealmAddress");
+            packet.ReadUInt32_Sanitize("VirtualRealmAddress");
 
             var state = packet.ReadByte("LookupState");
             if (state == 0)
@@ -32,8 +32,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 var bits258 = packet.ReadBits(9);
                 packet.ReadBit();
 
-                packet.ReadWoWString("RealmNameActual", bits2);
-                packet.ReadWoWString("RealmNameNormalized", bits258);
+                packet.ReadWoWString_Sanitize("RealmNameActual", bits2);
+                packet.ReadWoWString_Sanitize("RealmNameNormalized", bits258);
             }
         }
 
@@ -47,7 +47,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_ENTER_ENCRYPTED_MODE, ClientVersionBuild.V8_2_0_30898)]
         public static void HandleEnterEncryptedMode(Packet packet)
         {
-            packet.ReadBytes("EncryptionKey (RSA encrypted)", 256);
+            packet.ReadBytes_Sanitize("EncryptionKey (RSA encrypted)", 256);
             packet.ResetBitReader();
             packet.ReadBit("Enabled");
         }
@@ -55,19 +55,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_CONNECT_TO, ClientVersionBuild.V8_2_0_30898)]
         public static void HandleRedirectClient(Packet packet)
         {
-            packet.ReadBytes("Where (RSA encrypted)", 256);
+            packet.ReadBytes_Sanitize("Where (RSA encrypted)", 256);
 
             AddressType type = packet.ReadByteE<AddressType>("Type");
             switch (type)
             {
                 case AddressType.IPv4:
-                    packet.ReadIPAddress("Address");
+                    packet.ReadIPAddress_Sanitize("Address");
                     break;
                 case AddressType.IPv6:
-                    packet.ReadIPv6Address("Address");
+                    packet.ReadIPv6Address_Sanitize("Address");
                     break;
                 case AddressType.NamedSocket:
-                    packet.ReadWoWString("Address", 128);
+                    packet.ReadWoWString_Sanitize("Address", 128);
                     break;
                 default:
                     break;
@@ -76,7 +76,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt16("Port");
             packet.ReadUInt32E<ConnectToSerial>("Serial");
             packet.ReadByte("Con");
-            packet.ReadUInt64("Key");
+            packet.ReadUInt64_Sanitize("Key");
         }
     }
 }

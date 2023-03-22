@@ -126,8 +126,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("ProductID", index);
 
             packet.ReadPackedGuid128("TargetPlayer", index);
-            packet.ReadInt32("TargetVirtualRealm", index);
-            packet.ReadInt32("TargetNativeRealm", index);
+            packet.ReadInt32_Sanitize("TargetVirtualRealm", index);
+            packet.ReadInt32_Sanitize("TargetNativeRealm", index);
 
             packet.ReadInt64("PurchaseID", index);
 

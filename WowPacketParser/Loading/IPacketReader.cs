@@ -9,5 +9,6 @@ namespace WowPacketParser.Loading
         Packet Read(int number, string fileName);
         long GetTotalSize();
         long GetCurrentSize();
+        byte[] GetFileHeader();
     }
 }

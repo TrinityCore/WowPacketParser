@@ -24,7 +24,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadMailListEntry(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("MailID", idx);
+            packet.ReadInt32_Sanitize("MailID", idx);
             packet.ReadByteE<MailType>("SenderType", idx);
 
             if (!ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
@@ -35,10 +35,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var bit12 = packet.ReadBit();
 
                 if (bit4)
-                    packet.ReadInt32("VirtualRealmAddress", idx);
+                    packet.ReadInt32_Sanitize("VirtualRealmAddress", idx);
 
                 if (bit12)
-                    packet.ReadInt32("NativeRealmAddress", idx);
+                    packet.ReadInt32_Sanitize("NativeRealmAddress", idx);
             }
 
             packet.ReadInt64("Cod", idx);
@@ -139,10 +139,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var bit12 = packet.ReadBit("HasNativeRealmAddress", i);
 
                 if (bit4)
-                    packet.ReadInt32("VirtualRealmAddress", i);
+                    packet.ReadInt32_Sanitize("VirtualRealmAddress", i);
 
                 if (bit12)
-                    packet.ReadInt32("NativeRealmAddress", i);
+                    packet.ReadInt32_Sanitize("NativeRealmAddress", i);
 
                 packet.ReadSingle("TimeLeft", i);
                 packet.ReadInt32("AltSenderID", i);
@@ -193,7 +193,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var itemCount = packet.ReadBits(5);
             packet.ResetBitReader();
 
-            packet.ReadWoWString("Target", nameLength);
+            packet.ReadWoWString_Sanitize("Target", nameLength);
             packet.ReadWoWString("Subject", subjectLength);
             packet.ReadWoWString("Body", bodyLength);
 

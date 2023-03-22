@@ -13,8 +13,8 @@ namespace WowPacketParserModule.V2_5_1_38835.Parsers
 
             packet.ReadUInt32("ScrollOfResurrectionRequestsRemaining");
             packet.ReadUInt32("ScrollOfResurrectionMaxRequestsPerDay");
-            packet.ReadUInt32("CfgRealmID");
-            packet.ReadInt32("CfgRealmRecID");
+            packet.ReadUInt32_Sanitize("CfgRealmID");
+            packet.ReadInt32_Sanitize("CfgRealmRecID");
             packet.ReadUInt32("MaxRecruits", "RAFSystem");
             packet.ReadUInt32("MaxRecruitMonths", "RAFSystem");
             packet.ReadUInt32("MaxRecruitmentUses", "RAFSystem");
