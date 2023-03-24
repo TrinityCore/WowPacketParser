@@ -1606,7 +1606,7 @@ namespace WowPacketParser.Enums.Version.V10_0_7_48676
             { Opcode.SMSG_MOVE_UPDATE_TELEPORT, 0x2DE1 },
             { Opcode.SMSG_MOVE_UPDATE_TURN_RATE, 0x2DDD },
             { Opcode.SMSG_MOVE_UPDATE_WALK_SPEED, 0x2DD8 },
-            { Opcode.SMSG_MULTIPLE_PACKETS, 0x3052 },
+            { Opcode.SMSG_MULTIPLE_PACKETS, 0x3051 },
             { Opcode.SMSG_MULTI_FLOOR_LEAVE_FLOOR, 0x27DB },
             { Opcode.SMSG_MULTI_FLOOR_NEW_FLOOR, 0x27DA },
             { Opcode.SMSG_MYTHIC_PLUS_ALL_MAP_STATS, 0x260B },
