@@ -14,12 +14,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MAIL_COMMAND_RESULT)]
         public static void HandleMailCommandResult(Packet packet)
         {
-            packet.ReadUInt32("MailID");
-            packet.ReadUInt32E<MailActionType>("Command");
-            packet.ReadUInt32E<MailErrorType>("ErrorCode");
-            packet.ReadUInt32("BagResult");
-            packet.ReadUInt32("AttachID");
-            packet.ReadUInt32("QtyInInventory");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_5_47777))
+                packet.ReadUInt64("MailID");
+            else
+                packet.ReadInt32("MailID");
+            packet.ReadInt32E<MailActionType>("Command");
+            packet.ReadInt32E<MailErrorType>("ErrorCode");
+            packet.ReadInt32("BagResult");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_5_47777))
+                packet.ReadUInt64("AttachID");
+            else
+                packet.ReadInt32("AttachID");
+            packet.ReadInt32("QtyInInventory");
         }
 
         public static void ReadMailListEntry(Packet packet, params object[] idx)
@@ -111,13 +118,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleMailCreateTextItem(Packet packet)
         {
             packet.ReadPackedGuid128("Mailbox");
-            packet.ReadUInt32("MailID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_5_47777))
+                packet.ReadUInt64("MailID");
+            else
+                packet.ReadInt32("MailID");
         }
 
         [Parser(Opcode.CMSG_MAIL_DELETE)]
         public static void HandleMailDelete(Packet packet)
         {
-            packet.ReadInt32("MailID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_5_47777))
+                packet.ReadUInt64("MailID");
+            else
+                packet.ReadInt32("MailID");
             packet.ReadInt32("DeleteReason");
         }
 
@@ -173,8 +187,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleMailTakeItem(Packet packet)
         {
             packet.ReadPackedGuid128("Mailbox");
-            packet.ReadInt32("MailID");
-            packet.ReadInt32("AttachID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_5_47777))
+            {
+                packet.ReadUInt64("MailID");
+                packet.ReadUInt64("AttachID");
+            }
+            else
+            {
+                packet.ReadInt32("MailID");
+                packet.ReadInt32("AttachID");
+            }
         }
 
         public static void ReadMailAttachment(Packet packet, params object[] idx)
@@ -219,8 +242,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleMailTakeMoney(Packet packet)
         {
             packet.ReadPackedGuid128("Mailbox");
-            packet.ReadInt32("MailID");
-            packet.ReadInt64("Money");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_5_47777))
+                packet.ReadUInt64("MailID");
+            else
+                packet.ReadInt32("MailID");
+            packet.ReadUInt64("Money");
         }
 
         [Parser(Opcode.CMSG_MAIL_GET_LIST)]
@@ -241,7 +267,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MAIL_RETURN_TO_SENDER)]
         public static void HandleMailReturnToSender(Packet packet)
         {
-            packet.ReadInt32("MailID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_5_47777))
+                packet.ReadUInt64("MailID");
+            else
+                packet.ReadInt32("MailID");
             packet.ReadPackedGuid128("SenderGUID");
         }
 

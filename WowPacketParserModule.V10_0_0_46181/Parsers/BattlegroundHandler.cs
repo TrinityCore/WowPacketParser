@@ -11,5 +11,34 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         {
             packet.ReadByteE<LfgRoleFlag>("RolesMask");
         }
+
+        public static void ReadRatedMatchDeserterPenalty(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("PersonalRatingChange");
+            packet.ReadInt32<SpellId>("QueuePenaltySpellID");
+            packet.ReadInt32("QueuePenaltyDuration");
+        }
+
+        [Parser(Opcode.SMSG_PVP_MATCH_INITIALIZE)]
+        public static void HandlePvpMatchInitialize(Packet packet)
+        {
+            packet.ReadUInt32<MapId>("MapID");
+            packet.ReadByteE<MatchState>("State");
+            packet.ReadInt64("StartTime");
+            packet.ReadInt64("Duration");
+            packet.ReadByte("ArenaFaction");
+            packet.ReadUInt32("BattlemasterListID");
+
+            packet.ResetBitReader();
+            packet.ReadBit("Registered");
+            packet.ReadBit("AffectsRating");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_5_47777))
+            {
+                var hasDeserterPenalty = packet.ReadBit("HasRatedMatchDeserterPenalty");
+                if (hasDeserterPenalty)
+                    ReadRatedMatchDeserterPenalty(packet, "RatedMatchDeserterPenalty");
+            }
+        }
     }
 }
