@@ -9,6 +9,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
     {
         public static void ReadVoiceChatManagerSettings(Packet packet, params object[] idx)
         {
+            packet.ResetBitReader();
             packet.ReadBit("IsSquelched", idx);
             packet.ReadPackedGuid128("BnetAccountID", idx);
             packet.ReadPackedGuid128("GuildGUID", idx);
@@ -137,7 +138,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     packet.ReadByte("RaceClassExpansionLevels", i);
             }
 
-            packet.ResetBitReader();
             ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 
             if (hasEuropaTicketSystemStatus)

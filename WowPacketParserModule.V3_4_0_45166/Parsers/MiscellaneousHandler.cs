@@ -109,7 +109,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             var gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
             packet.ReadInt16("MaxPlayerNameQueriesPerPacket");
             packet.ReadInt16("PlayerNameQueryTelemetryInterval");
-            
+
             for (var i = 0; i < gameRuleValuesCount; ++i)
                 ReadGameRuleValuePair(packet, "GameRuleValues");
 
@@ -194,7 +194,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                     packet.ReadByte("UnknownByte", "Unk340", i);
             }
 
-            packet.ResetBitReader();
             V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 
             if (hasEuropaTicketSystemStatus)

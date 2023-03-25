@@ -101,7 +101,6 @@ namespace WowPacketParserModule.V2_5_1_38835.Parsers
                     packet.ReadByte("RaceClassExpansionLevels", i);
             }
 
-            packet.ResetBitReader();
             V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 
             if (hasEuropaTicketSystemStatus)
