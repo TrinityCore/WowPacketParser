@@ -868,7 +868,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleGetMirrorImageData(Packet packet)
         {
             packet.ReadPackedGuid128("UnitGUID");
-            packet.ReadInt32("DisplayID");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_5_47777))
+                packet.ReadInt32("DisplayID");
         }
 
         [Parser(Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA)]

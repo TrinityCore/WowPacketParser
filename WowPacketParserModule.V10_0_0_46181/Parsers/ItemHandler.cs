@@ -54,5 +54,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             if (hasCraftingData)
                 CraftingHandler.ReadCraftingData(packet, "CraftingData");
         }
+
+        [Parser(Opcode.CMSG_LOOT_MONEY, ClientVersionBuild.V10_0_7_48676)]
+        public static void HandleLootMoney(Packet packet)
+        {
+            packet.ReadBit("IsSoftInteract");
+        }
     }
 }

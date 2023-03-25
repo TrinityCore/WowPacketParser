@@ -34,7 +34,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var prefixLen = packet.ReadBits(5);
             var channelLen = packet.ReadBits(7);
             var textLen = packet.ReadBits(12);
-            var flags = packet.ReadBits("ChatFlags", 14);
+            int flagLen = 14;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_7_48676))
+                flagLen = 15;
+            var flags = packet.ReadBits("ChatFlags", flagLen);
 
             packet.ReadBit("HideChatLog");
             packet.ReadBit("FakeSenderName");

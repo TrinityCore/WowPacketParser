@@ -14,7 +14,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         public static void ReadMailListEntry(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("MailID", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_5_47777))
+                packet.ReadUInt64("MailID");
+            else
+                packet.ReadInt32("MailID");
+
             packet.ReadByteE<MailType>("SenderType", idx);
             packet.ReadInt64("Cod", idx);
             packet.ReadInt32("StationeryID", idx);
@@ -48,7 +52,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void ReadMailAttachedItem(Packet packet, params object[] idx)
         {
             packet.ReadByte("Position", idx);
-            packet.ReadInt32("AttachID", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_5_47777))
+                packet.ReadUInt64("AttachID");
+            else
+                packet.ReadInt32("AttachID");
             packet.ReadInt32("Count", idx);
             packet.ReadInt32("Charges", idx);
             packet.ReadInt32("MaxDurability", idx);

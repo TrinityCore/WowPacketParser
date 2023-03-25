@@ -41,6 +41,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleLoot(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_7_48676))
+                packet.ReadBit("IsSoftInteract");
         }
 
         [Parser(Opcode.SMSG_LOOT_MONEY_NOTIFY)]

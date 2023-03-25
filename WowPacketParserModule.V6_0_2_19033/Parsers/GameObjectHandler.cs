@@ -99,6 +99,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
             use.GameObject = packet.ReadPackedGuid128("GameObjectGUID");
             use.Report = true;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_7_48676))
+                packet.ReadBit("IsSoftInteract");
         }
 
         [Parser(Opcode.CMSG_GAME_OBJ_USE)]
@@ -106,6 +108,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
             use.GameObject = packet.ReadPackedGuid128("GameObjectGUID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_7_48676))
+                packet.ReadBit("IsSoftInteract");
         }
 
         [Parser(Opcode.SMSG_PAGE_TEXT)]
