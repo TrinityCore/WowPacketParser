@@ -465,6 +465,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.Holder.SpellClick = new() { Target = guid };
             packet.ReadBit("TryAutoDismount");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_7_48676))
+                packet.ReadBit("IsSoftInteract");
+
             if (guid.GetObjectType() == ObjectType.Unit)
                 Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
         }

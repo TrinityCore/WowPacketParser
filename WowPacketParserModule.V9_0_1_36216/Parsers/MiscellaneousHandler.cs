@@ -15,6 +15,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("Value", indexes);
         }
 
+        public static void ReadDebugTimeInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadUInt32("TimeEvent", indexes);
+            packet.ResetBitReader();
+            var textLen = packet.ReadBits(7);
+            packet.ReadWoWString("Text", textLen);
+        }
+
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
@@ -28,8 +36,16 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadUInt32("MaxRecruitMonths", "RAFSystem");
             packet.ReadUInt32("MaxRecruitmentUses", "RAFSystem");
             packet.ReadUInt32("DaysInCycle", "RAFSystem");
-            packet.ReadUInt32("TwitterPostThrottleLimit");
-            packet.ReadUInt32("TwitterPostThrottleCooldown");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_7_48676))
+            {
+                packet.ReadUInt32("Unknown1007", "RAFSystem");
+            }
+            else
+            {
+                packet.ReadUInt32("TwitterPostThrottleLimit");
+                packet.ReadUInt32("TwitterPostThrottleCooldown");
+            }
+
             packet.ReadUInt32("TokenPollTimeSeconds");
             packet.ReadUInt32("KioskSessionMinutes");
             packet.ReadInt64("TokenBalanceAmount");
@@ -66,9 +82,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("RestrictedAccount");
             packet.ReadBit("CommerceSystemEnabled");
             packet.ReadBit("TutorialsEnabled");
-            packet.ReadBit("TwitterEnabled");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_7_48676))
+                packet.ReadBit("TwitterEnabled");
             packet.ReadBit("Unk67");
             packet.ReadBit("WillKickFromWorld");
+
             packet.ReadBit("KioskModeEnabled");
             packet.ReadBit("CompetitiveModeEnabled");
             packet.ReadBit("TokenBalanceEnabled");
@@ -77,6 +95,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("ClubsBattleNetClubTypeAllowed");
             packet.ReadBit("ClubsCharacterClubTypeAllowed");
             packet.ReadBit("ClubsPresenceUpdateEnabled");
+
             packet.ReadBit("VoiceChatDisabledByParentalControl");
             packet.ReadBit("VoiceChatMutedByParentalControl");
             packet.ReadBit("QuestSessionEnabled");
@@ -163,6 +182,12 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("AddonsDisabled");
             packet.ReadBit("Unused1000");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_7_48676))
+            {
+                packet.ReadBit("AccountSaveDataExportEnabled");
+                packet.ReadBit("AccountLockedByExport");
+            }
+
             packet.ResetBitReader();
 
             if (europaTicket)
@@ -194,11 +219,21 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
                 packet.ReadUInt32("PlayerNameQueryInterval");
 
+            uint debugTimeEventCount = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_7_48676))
+            {
+                debugTimeEventCount = packet.ReadUInt32("DebugTimeEventCount");
+                packet.ReadInt32("Unused1007");
+            }
+
             for (int i = 0; i < liveRegionCharacterCopySourceRegionsCount; i++)
                 packet.ReadUInt32("LiveRegionCharacterCopySourceRegion", i);
 
             for (var i = 0; i < gameRuleValuesCount; ++i)
-                ReadGameRuleValuePair(packet, "GameRuleValues");
+                ReadGameRuleValuePair(packet, "GameRuleValues", i);
+
+            for (var i = 0; i < debugTimeEventCount; ++i)
+                ReadDebugTimeInfo(packet, "DebugTimeEvent", i);
         }
 
         [Parser(Opcode.SMSG_SET_ALL_TASK_PROGRESS)]

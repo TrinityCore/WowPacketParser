@@ -199,6 +199,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("Object", i);
                 packet.ReadByte("LootListID", i);
             }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_7_48676))
+                packet.ReadBit("IsSoftInteract");
         }
 
         [Parser(Opcode.CMSG_AUTOBANK_ITEM)]

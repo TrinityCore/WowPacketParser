@@ -283,6 +283,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             LfgHandler.ReadCliRideTicket(packet, "RideTicket", idx);
             packet.ReadUInt32("GroupFinderActivityID", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_7_48676))
+                packet.ReadByte("Unknown1007", idx);
+
             packet.ReadPackedGuid128("LastTitleAuthorGuid", idx);
             packet.ReadPackedGuid128("LastDescriptionAuthorGuid", idx);
             packet.ReadPackedGuid128("LastVoiceChatAuthorGuid", idx);

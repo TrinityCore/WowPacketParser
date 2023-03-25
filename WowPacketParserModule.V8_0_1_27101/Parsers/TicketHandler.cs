@@ -114,5 +114,23 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (hasUnk910)
                 ReadUnused910(packet, "Unused910");
         }
+
+        public static void ReadSupportTicketHeader(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("MapID", indexes);
+            packet.ReadVector3("Position", indexes);
+            packet.ReadSingle("Facing", indexes);
+            packet.ReadInt32("Program", indexes);
+        }
+
+        [Parser(Opcode.CMSG_SUBMIT_USER_FEEDBACK)]
+        public static void HandleSubmitUserFeedback(Packet packet)
+        {
+            ReadSupportTicketHeader(packet, "Header");
+
+            var noteLen = packet.ReadBits(24);
+            packet.ReadBit("IsSuggestion");
+            packet.ReadWoWString("Note", noteLen);
+        }
     }
 }

@@ -177,6 +177,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("AttachID");
         }
 
+        public static void ReadMailAttachment(Packet packet, params object[] idx)
+        {
+            packet.ReadByte("AttachPosition", idx);
+            packet.ReadPackedGuid128("ItemGUID", idx);
+        }
+
         [Parser(Opcode.CMSG_SEND_MAIL)]
         public static void HandleSendMail(Packet packet)
         {
@@ -198,10 +204,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Body", bodyLength);
 
             for (var i = 0; i < itemCount; i++)
-            {
-                packet.ReadByte("AttachPosition", i);
-                packet.ReadPackedGuid128("ItemGUID", i);
-            }
+                ReadMailAttachment(packet, i, "Attachment");
         }
 
         [Parser(Opcode.CMSG_MAIL_MARK_AS_READ)]
