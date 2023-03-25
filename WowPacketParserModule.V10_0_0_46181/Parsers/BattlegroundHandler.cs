@@ -40,5 +40,34 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                     ReadRatedMatchDeserterPenalty(packet, "RatedMatchDeserterPenalty");
             }
         }
+        
+        public static void ReadBrawlInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("PvpBrawlId");
+            packet.ReadInt32("Time");
+            packet.ResetBitReader();
+            packet.ReadBit("Started");
+        }
+        
+        public static void ReadSpecialEventInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("PvpBrawlID");
+            packet.ReadInt32<AchievementId>("AchievementId");
+            packet.ResetBitReader();
+            packet.ReadBit("CanQueue");
+        }
+
+        [Parser(Opcode.SMSG_REQUEST_SCHEDULED_PVP_INFO_RESPONSE)]
+        public static void HandleRequestScheduledPvpInfoResponse(Packet packet)
+        {
+            var hasBrawlInfo = packet.ReadBit("HasBrawlInfo");
+            var hasSpecialEventInfo = packet.ReadBit("HasSpecialEventInfo");
+
+            if (hasBrawlInfo)
+                ReadBrawlInfo(packet, "BrawlInfo");
+
+            if (hasSpecialEventInfo)
+                ReadSpecialEventInfo(packet, "SpecialEventInfo");
+        }
     }
 }
