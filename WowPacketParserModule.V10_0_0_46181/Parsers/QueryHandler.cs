@@ -58,9 +58,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             quest.RewardArtifactCategoryID = (uint)packet.ReadInt32("RewardArtifactCategoryID");
 
             quest.StartItem = (uint)packet.ReadInt32("StartItem");
-            quest.Flags = packet.ReadInt32E<QuestFlags>("Flags");
-            quest.FlagsEx = packet.ReadInt32E<QuestFlagsEx>("FlagsEx");
-            quest.FlagsEx2 = packet.ReadInt32E<QuestFlagsEx2>("FlagsEx2");
+            quest.Flags = packet.ReadUInt32E<QuestFlags>("Flags");
+            quest.FlagsEx = packet.ReadUInt32E<QuestFlagsEx>("FlagsEx");
+            quest.FlagsEx2 = packet.ReadUInt32E<QuestFlagsEx2>("FlagsEx2");
 
             quest.RewardItem = new uint?[4];
             quest.RewardAmount = new uint?[4];
@@ -85,19 +85,18 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             }
 
             quest.POIContinent = (uint)packet.ReadInt32("POIContinent");
-
             quest.POIx = packet.ReadSingle("POIx");
             quest.POIy = packet.ReadSingle("POIy");
-
             quest.POIPriorityWod = packet.ReadInt32("POIPriority");
+
             quest.RewardTitle = (uint)packet.ReadInt32("RewardTitle");
             quest.RewardArenaPoints = (uint)packet.ReadInt32("RewardArenaPoints");
             quest.RewardSkillLineID = (uint)packet.ReadInt32("RewardSkillLineID");
             quest.RewardNumSkillUps = (uint)packet.ReadInt32("RewardNumSkillUps");
+
             quest.QuestGiverPortrait = (uint)packet.ReadInt32("PortraitGiver");
             quest.PortraitGiverMount = (uint)packet.ReadInt32("PortraitGiverMount");
             quest.PortraitGiverModelSceneID = packet.ReadInt32("PortraitGiverModelSceneID");
-
             quest.QuestTurnInPortrait = (uint)packet.ReadInt32("PortraitTurnIn");
 
             quest.RewardFactionID = new uint?[5];
@@ -124,9 +123,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             quest.SoundAccept = (uint)packet.ReadInt32("AcceptedSoundKitID");
             quest.SoundTurnIn = (uint)packet.ReadInt32("CompleteSoundKitID");
+
             quest.AreaGroupID = (uint)packet.ReadInt32("AreaGroupID");
             quest.TimeAllowed = (uint)packet.ReadInt32("TimeAllowed");
-            uint objectiveCount = packet.ReadUInt32("ObjectiveCount");
+
+            var objectiveCount = packet.ReadUInt32("ObjectiveCount");
             quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");
             quest.QuestRewardID = packet.ReadInt32("TreasurePickerID");
             quest.Expansion = packet.ReadInt32("Expansion");
@@ -177,11 +178,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 questInfoObjective.Order = i;
                 questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
                 questInfoObjective.Amount = packet.ReadInt32("Amount", i);
-                questInfoObjective.Flags = (uint)packet.ReadInt32("Flags", i);
+                questInfoObjective.Flags = packet.ReadUInt32("Flags", i);
                 questInfoObjective.Flags2 = packet.ReadUInt32("Flags2", i);
                 questInfoObjective.ProgressBarWeight = packet.ReadSingle("ProgressBarWeight", i);
 
-                var visualEffectsCount = packet.ReadUInt32("VisualEffects", i);
+                var visualEffectsCount = packet.ReadInt32("VisualEffects", i);
                 for (var j = 0; j < visualEffectsCount; ++j)
                 {
                     QuestVisualEffect questVisualEffect = new QuestVisualEffect
@@ -196,7 +197,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
                 packet.ResetBitReader();
 
-                uint descriptionLength = packet.ReadBits(8);
+                var descriptionLength = packet.ReadBits(8);
                 questInfoObjective.Description = packet.ReadWoWString("Description", descriptionLength, i);
 
                 if (ClientLocale.PacketLocale != LocaleConstant.enUS && questInfoObjective.Description != string.Empty)

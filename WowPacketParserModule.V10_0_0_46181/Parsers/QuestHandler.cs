@@ -16,6 +16,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         {
             packet.ReadInt32("PlayerConditionID", indexes);
             packet.ReadInt32("QuestGiverCreatureID", indexes);
+
+            packet.ResetBitReader();
             var textLength = packet.ReadBits(12);
             packet.ReadWoWString("Text", textLength, indexes);
         }
