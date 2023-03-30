@@ -205,8 +205,9 @@ namespace WowPacketParser.SQL.Builders
                     continue;
 
                 var scale = npc.ObjectData.Scale;
-                model.BoundingRadius = npc.UnitData.BoundingRadius / scale;
-                model.CombatReach = npc.UnitData.CombatReach / scale;
+                var displayScale = npc.UnitData.DisplayScale;
+                model.BoundingRadius = (npc.UnitData.BoundingRadius / scale) / displayScale;
+                model.CombatReach = (npc.UnitData.CombatReach / scale) / displayScale;
                 model.Gender = (Gender)npc.UnitData.Sex;
 
                 models.Add(model);
