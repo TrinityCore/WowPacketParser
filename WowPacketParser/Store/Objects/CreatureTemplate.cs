@@ -101,10 +101,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("gossip_menu_id")]
         public uint? GossipMenuId;
 
-        [DBFieldName("minlevel")]
+        [DBFieldName("minlevel", TargetedDatabaseFlag.TillShadowlands)]
         public int? MinLevel;
 
-        [DBFieldName("maxlevel")]
+        [DBFieldName("maxlevel", TargetedDatabaseFlag.TillShadowlands)]
         public int? MaxLevel;
 
         [DBFieldName("faction")]
