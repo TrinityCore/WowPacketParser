@@ -203,6 +203,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("Unused2", idx); // equal to SeasonWon
             packet.ReadInt32("WeeklyPlayed", idx);
             packet.ReadInt32("WeeklyWon", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+            {
+                packet.ReadInt32("RoundsSeasonPlayed", idx);
+                packet.ReadInt32("RoundsSeasonWon", idx);
+                packet.ReadInt32("RoundsWeeklyPlayed", idx);
+                packet.ReadInt32("RoundsWeeklyWon", idx);
+            }
             packet.ReadInt32("BestWeeklyRating", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_1_0_22900))
                 packet.ReadInt32("LastWeeksBestRating", idx);
@@ -214,7 +221,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_3_7_35249))
                 {
                     packet.ReadInt32("Unused3", idx);
-                    packet.ReadInt32("WeeklyBestWinPvpTierID", idx);
+                    if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_2_46479))
+                        packet.ReadInt32("WeeklyBestWinPvpTierID", idx);
                 }
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
                 {

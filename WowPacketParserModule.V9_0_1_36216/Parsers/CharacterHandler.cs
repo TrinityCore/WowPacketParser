@@ -15,26 +15,35 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadUInt32("ChrCustomizationChoiceID", indexes);
         }
 
+        public static void ReadVisualItemInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("DisplayID", idx);
+            packet.ReadUInt32("DisplayEnchantID", idx);
+            packet.ReadInt32("SecondaryItemModifiedAppearanceID", idx);
+            packet.ReadByteE<InventoryType>("InvType", idx);
+            packet.ReadByte("Subclass", idx);
+        }
+
+        public static void ReadRaceLimitDisableInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32E<Race>("RaceID", idx);
+            packet.ReadInt32("BlockReason", idx);
+        }
+
         public static void ReadCharactersListEntry(Packet packet, params object[] idx)
         {
             var playerGuid = packet.ReadPackedGuid128("Guid", idx);
-
             packet.ReadUInt64("GuildClubMemberID", idx);
-
             packet.ReadByte("ListPosition", idx);
             var race = packet.ReadByteE<Race>("RaceID", idx);
             var @class = packet.ReadByteE<Class>("ClassID", idx);
             packet.ReadByteE<Gender>("SexID", idx);
             var customizationCount = packet.ReadUInt32();
-
             var level = packet.ReadByte("ExperienceLevel", idx);
             var zone = packet.ReadInt32<ZoneId>("ZoneID", idx);
             var mapId = packet.ReadInt32<MapId>("MapID", idx);
-
             var pos = packet.ReadVector3("PreloadPos", idx);
-
             packet.ReadPackedGuid128("GuildGUID", idx);
-
             packet.ReadUInt32("Flags", idx);
             packet.ReadUInt32("Flags2", idx);
             packet.ReadUInt32("Flags3", idx);
@@ -45,14 +54,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             for (uint j = 0; j < 2; ++j)
                 packet.ReadInt32("ProfessionIDs", idx, j);
 
-            for (uint j = 0; j < 23; ++j)
-            {
-                packet.ReadUInt32("DisplayID", idx, "VisualItems", j);
-                packet.ReadUInt32("DisplayEnchantID", idx, "VisualItems", j);
-                packet.ReadInt32("SecondaryItemModifiedAppearanceID", idx, "VisualItems", j);
-                packet.ReadByteE<InventoryType>("InvType", idx, "VisualItems", j);
-                packet.ReadByte("Subclass", idx, "VisualItems", j);
-            }
+            for (uint j = 0; j < 35; ++j)
+                ReadVisualItemInfo(packet, idx, j);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
                 packet.ReadTime64("LastPlayedTime", idx);
@@ -61,7 +64,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             packet.ReadInt16("SpecID", idx);
             packet.ReadInt32("Unknown703", idx);
-            packet.ReadInt32("InterfaceVersion", idx);
+            packet.ReadInt32("LastLoginVersion", idx);
             packet.ReadUInt32("Flags4", idx);
             var mailSenderLengths = new uint[packet.ReadUInt32()];
             var mailSenderTypes = ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639) ? new uint[packet.ReadUInt32()] : Array.Empty<uint>();
@@ -161,6 +164,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadBit("IsNewPlayerRestricted");
 
             packet.ReadBit("IsNewPlayer");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+                packet.ReadBit("IsTrialAccountRestricted");
 
             var hasDisabledClassesMask = packet.ReadBit("HasDisabledClassesMask");
             packet.ReadBit("IsAlliedRacesCreationAllowed");
@@ -169,12 +174,18 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("MaxCharacterLevel");
             var raceUnlockCount = packet.ReadUInt32("RaceUnlockCount");
             var unlockedConditionalAppearanceCount = packet.ReadUInt32("UnlockedConditionalAppearanceCount");
+            uint raceLimitDisablesCount = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+                raceLimitDisablesCount = packet.ReadUInt32("RaceLimitDisablesCount");
 
             if (hasDisabledClassesMask)
                 packet.ReadUInt32("DisabledClassesMask");
 
             for (var i = 0u; i < unlockedConditionalAppearanceCount; ++i)
                 V8_0_1_27101.Parsers.CharacterHandler.ReadUnlockedConditionalAppearance(packet, "UnlockedConditionalAppearances", i);
+
+            for (var i = 0u; i < raceLimitDisablesCount; i++)
+                ReadRaceLimitDisableInfo(packet, "RaceLimitDisableInfo", i);
 
             for (var i = 0u; i < charsCount; ++i)
                 ReadCharactersListEntry(packet, i, "Characters");
@@ -258,6 +269,36 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         {
             packet.ReadUInt32("SequenceIndex");
             packet.ReadWoWString("Character Name", packet.ReadBits(6));
+        }
+
+        [Parser(Opcode.CMSG_CHAR_RACE_OR_FACTION_CHANGE)]
+        public static void HandleCharRaceOrFactionChange(Packet packet)
+        {
+            packet.ReadBit("FactionChange");
+
+            var nameLen = packet.ReadBits(6);
+
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadByte("SexID");
+            packet.ReadByteE<Race>("RaceID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+                packet.ReadByteE<Race>("InitialRaceID");
+
+            var customizationsCount = packet.ReadUInt32("CustomizationsCount");
+            packet.ReadWoWString("Name", nameLen);
+            for (var i = 0; i < customizationsCount; i++)
+                ReadChrCustomizationChoice(packet, "Customizations", i);
+        }
+
+        [Parser(Opcode.CMSG_ALTER_APPEARANCE)]
+        public static void HandleAlterAppearance(Packet packet)
+        {
+            var customizationsCount = packet.ReadUInt32("CustomizationsCount");
+            packet.ReadByte("NewSexID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+                packet.ReadByteE<Race>("CustomizedRace");
+            for (var i = 0; i < customizationsCount; i++)
+                ReadChrCustomizationChoice(packet, "Customizations", i);
         }
     }
 }

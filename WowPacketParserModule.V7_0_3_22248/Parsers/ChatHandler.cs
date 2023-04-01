@@ -51,7 +51,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
                 packet.ReadPackedGuid128("ChannelGUID");
             var channelNameLen = packet.ReadBits(9);
-            var msgLen = packet.ReadBits(9);
+
+            var msgBitsLen = 9;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+                msgBitsLen = 11;
+            var msgLen = packet.ReadBits(msgBitsLen);
 
             packet.ReadWoWString("Target", channelNameLen);
             packet.ReadWoWString("Text", msgLen);
@@ -73,7 +77,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_CHAT_MESSAGE_AFK)]
         public static void HandleMessageChat(Packet packet)
         {
-            var len = packet.ReadBits(9);
+            var msgBitsLen = 9;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+                msgBitsLen = 11;
+            var len = packet.ReadBits(msgBitsLen);
             packet.ReadWoWString("Message", len);
         }
     }

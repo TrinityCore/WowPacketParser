@@ -291,15 +291,25 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var hasWeeklyQuantity = packet.ReadBit("HasWeeklyQuantity");
             var hasTrackedQuantity = packet.ReadBit("HasTrackedQuantity");
             var hasMaxQuantity = packet.ReadBit("HasMaxQuantity");
+            var hasTotalEarned = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_1_36216))
+                hasTotalEarned = packet.ReadBit("HasTotalEarned");
             packet.ReadBit("SuppressChatLog");
             var hasQuantityChange = false;
             var hasQuantityGainSource = false;
             var hasQuantityLostSource = false;
+            var hasFirstCraftOperationID = false;
+            var hasLastSpendTime = false;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
             {
                 hasQuantityChange = packet.ReadBit("HasQuantityChange");
-                hasQuantityGainSource = packet.ReadBit("HasQuantityGainSource");
                 hasQuantityLostSource = packet.ReadBit("HasQuantityLostSource");
+                hasQuantityGainSource = packet.ReadBit("HasQuantityGainSource");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+                {
+                    hasFirstCraftOperationID = packet.ReadBit("HasFirstCraftOperationID");
+                    hasLastSpendTime = packet.ReadBit("HasLastSpendTime");
+                }
             }
 
             if (hasWeeklyQuantity)
@@ -311,16 +321,27 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (hasMaxQuantity)
                 packet.ReadInt32("MaxQuantity");
 
+            if (hasTotalEarned)
+                packet.ReadInt32("TotalEarned");
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
             {
                 if (hasQuantityChange)
                     packet.ReadInt32("QuantityChange");
 
-                if (hasQuantityGainSource)
-                    packet.ReadInt32("QuantityGainSource");
-
                 if (hasQuantityLostSource)
                     packet.ReadInt32("QuantityLostSource");
+
+                if (hasQuantityGainSource)
+                    packet.ReadInt32("QuantityGainSource");
+            }
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+            {
+                if (hasFirstCraftOperationID)
+                    packet.ReadUInt32("FirstCraftOperationID");
+
+                if (hasLastSpendTime)
+                    packet.ReadTime64("LastSpendTime");
             }
         }
 

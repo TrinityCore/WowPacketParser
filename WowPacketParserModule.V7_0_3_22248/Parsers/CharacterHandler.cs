@@ -314,11 +314,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadBit("FactionChange");
 
-            var bits20 = packet.ReadBits(6);
+            var nameLen = packet.ReadBits(6);
 
             packet.ReadPackedGuid128("Guid");
             packet.ReadByte("SexID");
-            packet.ReadByte("RaceID");
+            packet.ReadByteE<Race>("RaceID");
             packet.ReadByte("SkinID");
             packet.ReadByte("HairColorID");
             packet.ReadByte("HairStyleID");
@@ -326,7 +326,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("FaceID");
             for (uint i = 0; i < 3; ++i)
                 packet.ReadByte("CustomDisplay", i);
-            packet.ReadWoWString("Name", bits20);
+            packet.ReadWoWString("Name", nameLen);
         }
 
         [Parser(Opcode.SMSG_CHAR_FACTION_CHANGE_RESULT)]

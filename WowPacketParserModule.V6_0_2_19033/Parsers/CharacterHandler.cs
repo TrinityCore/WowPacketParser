@@ -356,7 +356,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Amount");
             packet.ReadSingle("GroupBonus");
 
-            packet.ReadBit("ReferAFriend");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_2_46479))
+                packet.ReadBit("ReferAFriend");
         }
 
         [Parser(Opcode.SMSG_XP_GAIN_ABORTED)]
