@@ -47,6 +47,7 @@ namespace WowPacketParser.Enums
         TillWarlordsOfDraenor             = TheBurningCrusade | WrathOfTheLichKing | Cataclysm | WarlordsOfDraenor,
         TillLegion                        = TheBurningCrusade | WrathOfTheLichKing | Cataclysm | WarlordsOfDraenor | Legion,
         TillBattleForAzeroth              = TheBurningCrusade | WrathOfTheLichKing | Cataclysm | WarlordsOfDraenor | Legion | BattleForAzeroth,
+        TillShadowlands                   = TheBurningCrusade | WrathOfTheLichKing | Cataclysm | WarlordsOfDraenor | Legion | BattleForAzeroth | Shadowlands,
 
         FromCataclysmTillBattleForAzeroth = Cataclysm | WarlordsOfDraenor | Legion | BattleForAzeroth,
 

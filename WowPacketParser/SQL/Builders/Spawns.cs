@@ -8,6 +8,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using WowPacketParser.Store.Objects.Comparer;
 using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
 
 namespace WowPacketParser.SQL.Builders
@@ -58,12 +59,14 @@ namespace WowPacketParser.SQL.Builders
             var rows = new RowList<Creature>();
             var addonRows = new RowList<CreatureAddon>();
 
-            foreach (var unit in units)
+            var unitList = Settings.SkipDuplicateSpawns
+                ? units.Values.GroupBy(u => u, new SpawnComparer()).Select(x => x.First())
+                : units.Values.ToList();
+
+            foreach (var creature in unitList)
             {
                 Row<Creature> row = new Row<Creature>();
                 bool badTransport = false;
-
-                Unit creature = unit.Value;
 
                 if (Settings.AreaFilters.Length > 0)
                     if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
@@ -181,7 +184,7 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.UnitFlag = 0;
                 row.Data.DynamicFlag = 0;
 
-                row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)entry, false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + " - ";
                 row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)creature.DifficultyID, false) + ")";
                 row.Comment += creature.CreateType == CreateObjectType.Spawn ? " CreateObject2" : " CreateObject1";
@@ -229,7 +232,7 @@ namespace WowPacketParser.SQL.Builders
                     if (addonDefault == null || !SQLUtil.AreDBFieldsEqual(addonDefault, addonRow.Data, dbFields))
                     {
                         addonRow.Data.GUID = $"@CGUID+{count}";
-                        addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                        addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)entry, false);
                         if (!string.IsNullOrWhiteSpace(auras))
                             addonRow.Comment += $" - {commentAuras}";
                         addonRows.Add(addonRow);
@@ -300,12 +303,14 @@ namespace WowPacketParser.SQL.Builders
             uint count = 0;
             var rows = new RowList<GameObjectModel>();
             var addonRows = new RowList<GameObjectAddon>();
-            foreach (var gameobject in gameObjects)
+
+            var gobList = Settings.SkipDuplicateSpawns
+                ? gameObjects.Values.GroupBy(g => g, new SpawnComparer()).Select(x => x.First())
+                : gameObjects.Values.ToList();
+
+            foreach (var go in gobList)
             {
                 Row<GameObjectModel> row = new Row<GameObjectModel>();
-
-                GameObject go = gameobject.Value;
-
                 if (Settings.AreaFilters.Length > 0)
                     if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
                         continue;
@@ -417,7 +422,7 @@ namespace WowPacketParser.SQL.Builders
                     if (go.WorldEffectID != null || go.AIAnimKitID != null)
                         add = true;
 
-                    addonRow.Comment += StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
+                    addonRow.Comment += StoreGetters.GetName(StoreNameType.GameObject, (int)entry, false);
 
                     if (add)
                         addonRows.Add(addonRow);
@@ -430,7 +435,7 @@ namespace WowPacketParser.SQL.Builders
                 // set some defaults
                 row.Data.PhaseGroup = 0;
 
-                row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
+                row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)entry, false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
                 row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
                 row.Comment += go.CreateType == CreateObjectType.Spawn ? " CreateObject2" : " CreateObject1";
