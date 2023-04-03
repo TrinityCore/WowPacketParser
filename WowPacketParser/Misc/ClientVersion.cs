@@ -1063,6 +1063,7 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_0_45264:
                 case ClientVersionBuild.V3_4_0_45327:
                 case ClientVersionBuild.V3_4_0_45435:
+                case ClientVersionBuild.V3_4_0_45506:
                 case ClientVersionBuild.V3_4_0_45572:
                 case ClientVersionBuild.V3_4_0_45613:
                 case ClientVersionBuild.V3_4_0_45704:
@@ -1470,6 +1471,7 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_0_45264:
                 case ClientVersionBuild.V3_4_0_45327:
                 case ClientVersionBuild.V3_4_0_45435:
+                case ClientVersionBuild.V3_4_0_45506:
                 case ClientVersionBuild.V3_4_0_45572:
                 case ClientVersionBuild.V3_4_0_45613:
                 case ClientVersionBuild.V3_4_0_45704:
