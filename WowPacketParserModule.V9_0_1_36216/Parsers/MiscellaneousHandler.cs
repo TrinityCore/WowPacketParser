@@ -324,5 +324,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_CONVERSATION_CINEMATIC_READY)]
+        public static void HandleConversationCinematicReady(Packet packet)
+        {
+            packet.ReadPackedGuid128("ConversationGUID");
+        }
     }
 }
