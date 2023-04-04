@@ -279,5 +279,14 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 packet.ReadPackedGuid128("QuestGiverGUID", i);
             }
         }
+
+        [Parser(Opcode.CMSG_QUERY_QUEST_ITEM_USABILITY)]
+        public static void QueryQuestItemUsability(Packet packet)
+        {
+            packet.ReadPackedGuid128("CreatureGUID");
+            var itemGuidCount = packet.ReadUInt32("ItemGuidCount");
+            for (var i = 0; i < itemGuidCount; ++i)
+                packet.ReadPackedGuid128("ItemGUID", i);
+        }
     }
 }
