@@ -98,7 +98,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("entry", true)]
         public uint? Entry;
 
-        [DBFieldName("gossip_menu_id")]
+        [DBFieldName("gossip_menu_id", TargetedDatabaseFlag.TillShadowlands)]
         public uint? GossipMenuId;
 
         [DBFieldName("minlevel", TargetedDatabaseFlag.TillShadowlands)]

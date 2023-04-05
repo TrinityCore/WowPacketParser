@@ -232,6 +232,20 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string CreatureTemplateGossip()
+        {
+            if (Storage.CreatureTemplateGossips.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template_gossip))
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateGossips);
+
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateGossips.OrderBy(x => x.Item1.CreatureID).ThenBy(y => y.Item1.MenuID) : Storage.CreatureTemplateGossips, templatesDb, StoreNameType.Unit);
+        }
+
+        [BuilderMethod]
         public static string NpcTrainer()
         {
             if (Storage.NpcTrainers.IsEmpty())
@@ -657,10 +671,13 @@ namespace WowPacketParser.SQL.Builders
                 var npc = unit.Value;
                 var minMaxLevel = getLevel(unit.Key.GetEntry());
 
+                uint gossipMenuId = 0;
+                Storage.CreatureDefaultGossips.TryGetValue(unit.Key.GetEntry(), out gossipMenuId);
+
                 var template = new CreatureTemplateNonWDB
                 {
                     Entry = unit.Key.GetEntry(),
-                    GossipMenuId = Storage.CreatureDefaultGossips.GetValueOrDefault(unit.Key.GetEntry()),
+                    GossipMenuId = gossipMenuId,
                     MinLevel = minMaxLevel.MinLevel,
                     MaxLevel = minMaxLevel.MaxLevel,
                     Faction = (uint)npc.UnitData.FactionTemplate,

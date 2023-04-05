@@ -19,7 +19,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             {
                 MenuID = menuId
             };
-            
+
             gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OptionID", idx);
             gossipOption.OptionNpc = (GossipOptionNpc?)packet.ReadByte("OptionNPC", idx);
             gossipMessageOption.OptionNpc = (int)gossipOption.OptionNpc;
@@ -56,7 +56,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
                 gossipOption.FillOptionType(npcGuid);
-            
+
             Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);
 
             return gossipMessageOption;
@@ -116,8 +116,13 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             if (guid.GetObjectType() == ObjectType.Unit)
             {
-                if (!Storage.CreatureDefaultGossips.ContainsKey(guid.GetEntry()))
-                    Storage.CreatureDefaultGossips.Add(guid.GetEntry(), (uint)menuId);
+                CreatureTemplateGossip creatureTemplateGossip = new()
+                {
+                    CreatureID = guid.GetEntry(),
+                    MenuID = (uint)menuId
+                };
+                Storage.CreatureTemplateGossips.Add(creatureTemplateGossip);
+                Storage.CreatureDefaultGossips.Add(guid.GetEntry(), (uint)menuId);
             }
 
             Storage.Gossips.Add(gossip, packet.TimeSpan);

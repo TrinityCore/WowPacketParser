@@ -46,6 +46,8 @@ namespace WowPacketParser.Store
         public static readonly DataBag<CreatureTemplateSpell> CreatureTemplateSpells = new DataBag<CreatureTemplateSpell>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureQuestStarter> CreatureQuestStarters = new DataBag<CreatureQuestStarter>(new List<SQLOutput> { SQLOutput.creature_queststarter });
         public static readonly DataBag<CreatureQuestEnder> CreatureQuestEnders = new DataBag<CreatureQuestEnder>(new List<SQLOutput> { SQLOutput.creature_questender });
+        public static readonly DataBag<CreatureTemplateGossip> CreatureTemplateGossips = new DataBag<CreatureTemplateGossip>(new List<SQLOutput> { SQLOutput.creature_template_gossip });
+
         // Vendor & trainer
         public static readonly DataBag<NpcTrainer> NpcTrainers = new DataBag<NpcTrainer>(new List<SQLOutput> { SQLOutput.npc_trainer }); // legacy 3.3.5 support
         public static readonly DataBag<NpcVendor> NpcVendors = new DataBag<NpcVendor>(new List<SQLOutput> { SQLOutput.npc_vendor });
@@ -79,7 +81,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<PlayerCreateInfo> StartPositions = new DataBag<PlayerCreateInfo>(new List<SQLOutput> { SQLOutput.playercreateinfo });
 
         // Gossips (MenuId, TextId)
-        public static readonly Dictionary<uint, uint> CreatureDefaultGossips = new Dictionary<uint, uint>();
+        public static readonly StoreDictionary<uint, uint> CreatureDefaultGossips = new(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<GossipMenu> Gossips = new DataBag<GossipMenu>(new List<SQLOutput> { SQLOutput.gossip_menu });
         public static readonly DataBag<GossipMenu925> Gossips925 = new DataBag<GossipMenu925>(new List<SQLOutput> { SQLOutput.gossip_menu });
         public static readonly DataBag<GossipMenuAddon> GossipMenuAddons = new DataBag<GossipMenuAddon>(new List<SQLOutput> { SQLOutput.gossip_menu_addon });
@@ -596,6 +598,7 @@ namespace WowPacketParser.Store
             CreatureTemplateScalings.Clear();
             CreatureTemplateModels.Clear();
             CreatureTemplateSpells.Clear();
+            CreatureTemplateGossips.Clear();
 
             NpcTrainers.Clear();
             NpcVendors.Clear();
