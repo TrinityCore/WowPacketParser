@@ -146,7 +146,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VehicleId")]
         public uint? VehicleID;
 
-        [DBFieldName("HoverHeight")]
+        [DBFieldName("HoverHeight", TargetedDatabaseFlag.TillShadowlands)]
         public float? HoverHeight;
 
     }
