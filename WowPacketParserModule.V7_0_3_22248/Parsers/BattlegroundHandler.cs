@@ -226,8 +226,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 }
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
                 {
-                    packet.ReadInt32("Unused4");
-                    packet.ReadInt32("Rank");
+                    packet.ReadInt32("Unused4", idx);
+                    packet.ReadInt32("Rank", idx);
                 }
                 packet.ResetBitReader();
                 packet.ReadBit("Disqualified", idx);
@@ -238,7 +238,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_RATED_PVP_INFO)]
         public static void HandleRatedBattlefieldInfo(Packet packet)
         {
-            for (int i = 0; i < 6; i++)
+            var bracketNum = 6;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+                bracketNum = 7;
+
+            for (int i = 0; i < bracketNum; i++)
                 ReadRatedPvpBracketInfo(packet, i);
         }
 
