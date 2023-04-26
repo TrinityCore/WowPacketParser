@@ -203,6 +203,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_MOVE_FEATHER_FALL_ACK)]
         [Parser(Opcode.CMSG_MOVE_SET_CAN_TURN_WHILE_FALLING_ACK)]
         [Parser(Opcode.CMSG_MOVE_ENABLE_DOUBLE_JUMP_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_ADV_FLY_ACK)]
         public static void HandleMovementAck(Packet packet)
         {
             var stats = V6_0_2_19033.Parsers.MovementHandler.ReadMovementAck(packet, "MovementAck");
@@ -230,6 +231,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_MOVE_FORCE_RUN_BACK_SPEED_CHANGE_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_SWIM_SPEED_CHANGE_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_WALK_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_ADD_IMPULSE_MAX_SPEED_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_AIR_FRICTION_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_DOUBLE_JUMP_VEL_MOD_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_LAUNCH_SPEED_COEFFICIENT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_GLIDE_START_MIN_HEIGHT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_LIFT_COEFFICIENT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_MAX_VEL_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_OVER_MAX_DECELERATION_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_SURFACE_FRICTION_ACK)]
         public static void HandleMovementSpeedAck(Packet packet)
         {
             var stats = V6_0_2_19033.Parsers.MovementHandler.ReadMovementAck(packet, "MovementAck");

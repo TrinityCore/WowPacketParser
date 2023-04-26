@@ -178,6 +178,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_STOP_SWIM)]
         [Parser(Opcode.CMSG_MOVE_STOP_TURN)]
         [Parser(Opcode.CMSG_MOVE_DOUBLE_JUMP)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLY)]
         public static void HandleClientPlayerMove(Packet packet)
         {
             var stats = Substructures.MovementHandler.ReadMovementStats(packet);
