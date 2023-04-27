@@ -15,8 +15,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             var stats = V6_0_2_19033.Parsers.MovementHandler.ReadMovementAck(packet, "MovementAck");
             packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.PositionAsVector4 };
 
-            packet.ReadSingle("UnkFloat");
-            packet.ReadSingle("UnkFloat");
+            packet.ReadSingle("SpeedMin");
+            packet.ReadSingle("SpeedMax");
         }
     }
 }
