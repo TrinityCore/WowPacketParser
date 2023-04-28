@@ -21,5 +21,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadPackedGuid128("WhisperTarget");
             packet.ReadInt32E<ChatWhisperTargetStatus>("Status");
         }
+
+        [Parser(Opcode.CMSG_SET_EXCLUDED_CHAT_CENSOR_SOURCES)]
+        public static void HandleSetExcludedChatCensorSources(Packet packet)
+        {
+            packet.ReadByte("UnkByte");
+        }
     }
 }
