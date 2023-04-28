@@ -95,8 +95,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             if (hasLastSpendTime)
                 packet.ReadTime64("LastSpendTime");
         }
-		
-		public static void ReadUnkStruct(Packet packet, params object[] idx)
+
+        public static void ReadUnkStruct(Packet packet, params object[] idx)
         {
             packet.ReadInt32("UnkInt32", idx);
             packet.ReadInt32("UnkInt32", idx);
