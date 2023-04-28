@@ -95,5 +95,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             if (hasLastSpendTime)
                 packet.ReadTime64("LastSpendTime");
         }
+
+        [Parser(Opcode.CMSG_REQUEST_WEEKLY_REWARDS)]
+        public static void HandleRequestWeeklyRewards(Packet packet) { }
     }
 }
