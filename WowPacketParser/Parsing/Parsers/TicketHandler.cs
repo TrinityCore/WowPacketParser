@@ -165,7 +165,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[4] = packet.ReadBit();
             guid[7] = packet.ReadBit();
 
-            packet.ReadBits("Unk bits", 4); // ##
+            packet.ReadBits("ComplaintType", 4);
 
             guid[6] = packet.ReadBit();
 
@@ -176,7 +176,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 0);
 
-            packet.ReadWoWString("Text", length);
+            packet.ReadWoWString("Note", length);
 
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 4);
@@ -184,25 +184,26 @@ namespace WowPacketParser.Parsing.Parsers
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
-            packet.ReadInt32("Unk Int32 1"); // ##
+            packet.ReadInt32("MapID");
             pos.O = packet.ReadSingle();
 
-            packet.ReadBit("Unk bit"); // ##
+            bool hasChatLogLineIndex = packet.ReadBit("hasChatLogLReportLineIndex");
 
-            var count = packet.ReadBits("Count", 22);
+            var count = packet.ReadBits("ChatLogLinesCount", 22);
             var strLength = new uint[count];
             for (int i = 0; i < count; ++i)
                 strLength[i] = packet.ReadBits(13);
 
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadTime("Time", i);
-                packet.ReadWoWString("Data", strLength[i], i);
+                packet.ReadTime("Timestamp", "ChatLog", "Lines", i);
+                packet.ReadWoWString("Text", strLength[i], "ChatLog", "Lines", i);
             }
 
-            packet.ReadInt32("Unk Int32 2");  // ##
+            if (hasChatLogLineIndex)
+                packet.ReadInt32("ReportLineIndex", "ChatLog");
 
-            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("TargetCharacterGUID", guid);
             packet.AddValue("Position", pos);
         }
     }
