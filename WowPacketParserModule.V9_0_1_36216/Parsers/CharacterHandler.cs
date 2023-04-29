@@ -152,10 +152,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         public static void HandleEmpty(Packet packet)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_7_48676)) // maybe this change is already present in an older build
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46924)) // maybe this change is already present in an older build
             {
-                packet.ReadInt32("UnkInt32");
-                packet.ReadBit("UnkBit");
+                packet.ReadInt32("ChoiceID");
+                packet.ReadBit("Clear");
             }
         }
 
