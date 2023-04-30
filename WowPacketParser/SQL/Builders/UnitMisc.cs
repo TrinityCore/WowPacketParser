@@ -146,7 +146,7 @@ namespace WowPacketParser.SQL.Builders
 
                 if (minLevel != 0 || maxLevel != 0 || contentTuningID != 0)
                 {
-                    Storage.CreatureTemplateScalings.Add(new CreatureTemplateScaling
+                    CreatureTemplateScaling creatureScaling = new CreatureTemplateScaling
                     {
                         Entry = unit.Key.GetEntry(),
                         DifficultyID = npc.DifficultyID,
@@ -155,7 +155,18 @@ namespace WowPacketParser.SQL.Builders
                         LevelScalingDeltaMin = scalingdeltalevels[unit.Key.GetEntry()].Item1,
                         LevelScalingDeltaMax = scalingdeltalevels[unit.Key.GetEntry()].Item2,
                         ContentTuningID = contentTuningID
-                    });
+                    };
+
+                    CreatureTemplate template;
+                    if (Storage.CreatureTemplates.TryGetValue(unit.Key.GetEntry(), out template))
+                    {
+                        creatureScaling.HealthScalingExpansion = template.HealthScalingExpansion;
+                        creatureScaling.HealthModifier = template.HealthModifier;
+                        creatureScaling.ManaModifier = template.ManaModifier;
+                        creatureScaling.CreatureDifficultyID = template.CreatureDifficultyID;
+                    }
+
+                    Storage.CreatureTemplateScalings.Add(creatureScaling);
                 }
             }
 
@@ -630,7 +641,7 @@ namespace WowPacketParser.SQL.Builders
             var levels = GetLevels(units);
             var usesCurrentExpansionLevels = new Dictionary<uint, long>();
             var expansionBaseLevel = 0;
-            if (Settings.TargetedDatabase >= TargetedDatabase.WarlordsOfDraenor && Settings.DBEnabled)
+            if (Settings.TargetedDatabase >= TargetedDatabase.WarlordsOfDraenor && Settings.TargetedDatabase != TargetedDatabase.Dragonflight && Settings.DBEnabled)
             {
                 usesCurrentExpansionLevels = SQLDatabase.GetDict<uint, long>($"SELECT entry, 1 FROM {Settings.TDBDatabase}.creature_template WHERE HealthScalingExpansion = -1");
                 switch (Settings.TargetedDatabase)

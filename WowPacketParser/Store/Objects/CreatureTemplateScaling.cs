@@ -29,6 +29,18 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ContentTuningID", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public int? ContentTuningID;
 
+        [DBFieldName("HealthScalingExpansion", TargetedDatabaseFlag.SinceDragonflight)]
+        public ClientType? HealthScalingExpansion;
+
+        [DBFieldName("HealthModifier", TargetedDatabaseFlag.SinceDragonflight)]
+        public float? HealthModifier;
+
+        [DBFieldName("ManaModifier", TargetedDatabaseFlag.SinceDragonflight)]
+        public float? ManaModifier;
+
+        [DBFieldName("CreatureDifficultyID", TargetedDatabaseFlag.SinceDragonflight)]
+        public int? CreatureDifficultyID;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
