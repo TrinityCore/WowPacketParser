@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         [Parser(Opcode.SMSG_PERKS_PROGRAM_ACTIVITY_COMPLETE)]
         public static void HandlePerksProgramActivityComplete(Packet packet)
         {
-            packet.ReadUInt32("ActivityID");
+            packet.ReadInt32("ActivityID");
         }
     }
 }
