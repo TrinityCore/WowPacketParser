@@ -26,4 +26,8 @@
             <HintPath>..\packages\DBFileReaderLib.1.0.0.0\lib\DBFileReaderLib.dll</HintPath>
         </Reference>
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="UpdateFields\V10_1_0_49318\" />
+    </ItemGroup>
 </Project>
