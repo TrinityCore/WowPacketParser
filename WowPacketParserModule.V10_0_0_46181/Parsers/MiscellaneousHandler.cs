@@ -24,7 +24,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 var hasTrackedQuantity = packet.ReadBit();
                 var hasMaxQuantity = packet.ReadBit();
                 var hasTotalEarned = packet.ReadBit();
-                var hasLastSpendTime = packet.ReadBit();
+                var hasHasNextRechargeTime = packet.ReadBit();
+                var hasRechargeCycleStartTime = false;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                    hasRechargeCycleStartTime = packet.ReadBit();
+
                 packet.ReadBits("Flags", 5, i);
 
                 if (hasWeeklyQuantity)
@@ -42,8 +46,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 if (hasTotalEarned)
                     packet.ReadInt32("TotalEarned", i);
 
-                if (hasLastSpendTime)
-                    packet.ReadTime64("LastSpendTime", i);
+                if (hasHasNextRechargeTime)
+                    packet.ReadTime64("NextRechargeTime", i);
+
+                if (hasRechargeCycleStartTime)
+                    packet.ReadTime64("RechargeCycleStartTime", i);
             }
         }
 
@@ -66,7 +73,10 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             var hasQuantityLostSource = packet.ReadBit("HasQuantityLostSource");
             var hasQuantityGainSource = packet.ReadBit("HasQuantityGainSource");
             var hasFirstCraftOperationID = packet.ReadBit("HasFirstCraftOperationID");
-            var hasLastSpendTime = packet.ReadBit("HasLastSpendTime");
+            var hasHasNextRechargeTime = packet.ReadBit("HasNextRechargeTime");
+            var hasRechargeCycleStartTime = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                hasRechargeCycleStartTime = packet.ReadBit("HasRechargeCycleStartTime");
 
             if (hasWeeklyQuantity)
                 packet.ReadInt32("WeeklyQuantity");
@@ -92,8 +102,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             if (hasFirstCraftOperationID)
                 packet.ReadUInt32("FirstCraftOperationID");
 
-            if (hasLastSpendTime)
-                packet.ReadTime64("LastSpendTime");
+            if (hasHasNextRechargeTime)
+                packet.ReadTime64("NextRechargeTime");
+
+            if (hasRechargeCycleStartTime)
+                packet.ReadTime64("RechargeCycleStartTime");
         }
     }
 }
