@@ -355,31 +355,37 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     moveInfo.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("Extra Movement Flags", 18, index);
                 }
 
+                var hasStandingOnGameObjectGUID = false;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                    hasStandingOnGameObjectGUID = packet.ReadBit("HasStandingOnGameObjectGUID", index);
                 var hasTransport = packet.ReadBit("Has Transport Data", index);
                 var hasFall = packet.ReadBit("Has Fall Data", index);
                 packet.ReadBit("HasSpline", index);
                 packet.ReadBit("HeightChangeFailed", index);
                 packet.ReadBit("RemoteTimeValid", index);
                 var hasInertia = ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423) && packet.ReadBit("HasInertia", index);
-                var hasUnk1000 = ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181) && packet.ReadBit("HasUnk1000", index);
+                var hasAdvFlying = ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181) && packet.ReadBit("HasAdvFlying", index);
 
                 if (hasTransport)
                     movementUpdate.Transport = ReadTransportData(moveInfo, guid, packet, index);
 
+                if (hasStandingOnGameObjectGUID)
+                    packet.ReadPackedGuid128("StandingOnGameObjectGUID", index);
+
                 if (hasInertia)
                 {
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
-                        packet.ReadInt32("field_AC", "Inertia");
+                        packet.ReadInt32("ID", "Inertia");
                     else
                         packet.ReadPackedGuid128("GUID", index, "Inertia");
                     packet.ReadVector3("Force", index, "Inertia");
                     packet.ReadUInt32("Lifetime", index, "Inertia");
                 }
 
-                if (hasUnk1000)
+                if (hasAdvFlying)
                 {
-                    packet.ReadSingle("field_C4", index, "Unk1000");
-                    packet.ReadSingle("field_C8", index, "Unk1000");
+                    packet.ReadSingle("ForwardVelocity", index, "AdvFlying");
+                    packet.ReadSingle("UpVelocity", index, "AdvFlying");
                 }
 
                 if (hasFall)
