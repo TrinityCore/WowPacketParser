@@ -11,6 +11,22 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 {
     public static class QueryHandler
     {
+        public static void ReadQuestCompleteDisplaySpell(Packet packet, uint questId, uint idx, params object[] indexes)
+        {
+            QuestRewardDisplaySpell questRewardDisplaySpell = new QuestRewardDisplaySpell
+            {
+                QuestID = questId,
+                Idx = idx,
+                SpellID = (uint)packet.ReadInt32<SpellId>("SpellID", indexes),
+                PlayerConditionID = (uint)packet.ReadInt32("PlayerConditionID", indexes),
+            };
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                questRewardDisplaySpell.Type = (int)packet.ReadInt32E<QuestCompleteSpellType>("Type", indexes);
+
+            Storage.QuestRewardDisplaySpells.Add(questRewardDisplaySpell, packet.TimeSpan);
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE)]
         public static void HandleQuestQueryResponse(Packet packet)
@@ -139,17 +155,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             var conditionalQuestCompletionLogCount = packet.ReadUInt32();
 
             for (uint i = 0; i < rewardDisplaySpellCount; ++i)
-            {
-                QuestRewardDisplaySpell questRewardDisplaySpell = new QuestRewardDisplaySpell
-                {
-                    QuestID = (uint)id.Key,
-                    Idx = i,
-                    SpellID = (uint)packet.ReadInt32<SpellId>("SpellID", i, "RewardDisplaySpell"),
-                    PlayerConditionID = (uint)packet.ReadInt32("PlayerConditionID", i, "RewardDisplaySpell")
-                };
-
-                Storage.QuestRewardDisplaySpells.Add(questRewardDisplaySpell, packet.TimeSpan);
-            }
+                ReadQuestCompleteDisplaySpell(packet, (uint)id.Key, i, i, "RewardDisplaySpell");
 
             packet.ResetBitReader();
 

@@ -19,6 +19,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("PlayerConditionID", TargetedDatabaseFlag.SinceShadowlands)]
         public uint? PlayerConditionID;
 
+        [DBFieldName("Type", TargetedDatabaseFlag.Dragonflight)]
+        public int? Type;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
