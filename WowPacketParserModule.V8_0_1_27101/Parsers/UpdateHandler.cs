@@ -651,7 +651,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 if (packet.ReadBit("Unk bit WoD62x", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk1;
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_1_0_49318))
                     packet.ReadBit("Unk1000", index);
 
                 if (packet.ReadBit("HasTargetRollPitchYaw", index))
