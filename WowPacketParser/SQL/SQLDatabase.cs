@@ -28,6 +28,7 @@ namespace WowPacketParser.SQL
         public static Dictionary<uint? /*CreatureId*/, List<CreatureEquipment>> CreatureEquipments { get; } = new();
         public static Dictionary<uint /*broadcastText*/, List<uint> /*npc_text ids*/> BroadcastToNPCTexts { get; } = new();
         public static Dictionary<int /*menuID*/, List<uint> /*npc_text ids*/> GossipMenuToNPCTexts { get; } = new();
+        public static Dictionary<int /*worldStateID*/, string> WorldStateNames { get; } = new();
         public static List<POIData> POIs { get; } = new List<POIData>();
 
         private static readonly StoreNameType[] ObjectTypes =
@@ -110,6 +111,7 @@ namespace WowPacketParser.SQL
             LoadCreatureEquipment();
             LoadNPCTexts();
             LoadGossipMenuNPCTexts();
+            LoadWorldStates();
             LoadNameData();
 
             var endTime = DateTime.Now;
@@ -319,6 +321,28 @@ namespace WowPacketParser.SQL
                             list.Add(npcTextId);
                         else
                             GossipMenuToNPCTexts.Add(menuId, new List<uint> { npcTextId });
+                    }
+                }
+            }
+        }
+
+        private static void LoadWorldStates()
+        {
+            string columns = "`ID`, `Comment`";
+            string query = $"SELECT {columns} FROM {Settings.TDBDatabase}.world_state";
+
+            using (var command = SQLConnector.CreateCommand(query))
+            {
+                if (command == null)
+                    return;
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var worldStateID = reader.GetInt32(0);
+                        var comment = reader.GetString(1);
+                        WorldStateNames.Add(worldStateID, comment);
                     }
                 }
             }
