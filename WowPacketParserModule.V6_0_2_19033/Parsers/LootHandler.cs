@@ -159,6 +159,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("LootObj");
             packet.ReadByte("LootListID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                packet.ReadInt32("DungeonEncounterID");
         }
 
         [Parser(Opcode.SMSG_START_LOOT_ROLL)]

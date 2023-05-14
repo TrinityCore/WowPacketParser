@@ -54,13 +54,24 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         [Parser(Opcode.CMSG_CHAT_MESSAGE_GUILD, ClientVersionBuild.V8_1_0_28724)]
         [Parser(Opcode.CMSG_CHAT_MESSAGE_YELL, ClientVersionBuild.V8_1_0_28724)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_SAY, ClientVersionBuild.V8_1_0_28724)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_PARTY, ClientVersionBuild.V8_1_0_28724)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_INSTANCE_CHAT, ClientVersionBuild.V8_1_0_28724)]
         public static void HandleClientChatMessage(Packet packet)
         {
             packet.ReadInt32E<Language>("Language");
             var len = packet.ReadBits(10);
+            packet.ReadWoWString("Text", len);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_SAY, ClientVersionBuild.V8_1_0_28724)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_PARTY, ClientVersionBuild.V8_1_0_28724)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID, ClientVersionBuild.V8_1_0_28724)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID_WARNING, ClientVersionBuild.V8_1_0_28724)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_INSTANCE_CHAT, ClientVersionBuild.V8_1_0_28724)]
+        public static void HandleClientChatMessageInstance(Packet packet)
+        {
+            packet.ReadInt32E<Language>("Language");
+            var len = packet.ReadBits(10);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                packet.ReadBit("IsSecure");
             packet.ReadWoWString("Text", len);
         }
 

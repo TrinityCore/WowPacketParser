@@ -23,6 +23,18 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 var hasMaxWeeklyQuantity = packet.ReadBit();
                 var hasTrackedQuantity = packet.ReadBit();
                 var hasMaxQuantity = packet.ReadBit();
+                var hasTotalEarned = false;
+                var hasNextRechargeTime = false;
+                var hasRechargeCyclicStartTime = false;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_1_36216))
+                    hasTotalEarned = packet.ReadBit("HasTotalEarned");
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+                    hasNextRechargeTime = packet.ReadBit("HasNextRechargeTime");
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                    hasRechargeCyclicStartTime = packet.ReadBit("HasRechargeCyclicStartTime");
+
                 packet.ReadBits("Flags", 5, i);
 
                 if (hasWeeklyQuantity)
@@ -36,6 +48,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 if (hasMaxQuantity)
                     packet.ReadUInt32("MaxQuantity", i);
+
+                if (hasTotalEarned)
+                    packet.ReadInt32("TotalEarned", i);
+
+                if (hasNextRechargeTime)
+                    packet.ReadTime64("NextRechargeTime", i);
+
+                if (hasRechargeCyclicStartTime)
+                    packet.ReadTime64("RechargeCyclicStartTime", i);
             }
         }
 

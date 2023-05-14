@@ -169,7 +169,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBattlePetSetFlags(Packet packet)
         {
             packet.ReadPackedGuid128("BattlePetGUID");
-            packet.ReadInt32("Flags");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                packet.ReadUInt16("Flags");
+            else
+                packet.ReadUInt32("Flags");
             packet.ReadBits("ControlType", 2);
         }
 

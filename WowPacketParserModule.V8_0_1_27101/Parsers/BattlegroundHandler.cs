@@ -42,6 +42,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var hasRatingChange = packet.ReadBit("HasRatingChange", idx);
             var hasPreMatchMMR = packet.ReadBit("HasPreMatchMMR", idx);
             var hasMmrChange = packet.ReadBit("HasMmrChange", idx);
+            var hasPostMatchMMR = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                hasPostMatchMMR = packet.ReadBit("HasPostMatchMMR", idx);
 
             packet.ResetBitReader();
 
@@ -59,6 +62,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             if (hasMmrChange)
                 packet.ReadInt32("MmrChange", idx);
+
+            if (hasPostMatchMMR)
+                packet.ReadUInt32("PostMatchMMR", idx);
         }
 
         public static void ReadRatingData820(Packet packet, params object[] idx)

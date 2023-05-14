@@ -45,25 +45,35 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             V6_0_2_19033.Parsers.SpellHandler.ReadMissileTrajectoryRequest(packet, idx, "MissileTrajectory");
 
-            packet.ReadPackedGuid128("Guid", idx);
+            packet.ReadPackedGuid128("CraftingNPC", idx);
 
-            var optionalReagentCount = packet.ReadUInt32("OptionalReagentCount", idx);
             var optionalCurrenciesCount = packet.ReadUInt32("OptionalCurrenciesCount", idx);
-
-            for (var i = 0; i < optionalReagentCount; ++i)
-                ReadOptionalReagent(packet, idx, "OptionalReagent", i);
+            var optionalReagentsCount = packet.ReadUInt32("OptionalReagentsCount", idx);
+            var removedModificationsCount = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                removedModificationsCount = packet.ReadUInt32("RemovedModificationsCount", idx);
 
             for (var j = 0; j < optionalCurrenciesCount; ++j)
                 ReadOptionalCurrency(packet, idx, "OptionalCurrency", j);
 
-
             packet.ResetBitReader();
             packet.ReadBits("SendCastFlags", 5, idx);
             var hasMoveUpdate = packet.ReadBit("HasMoveUpdate", idx);
-
             var weightCount = packet.ReadBits("WeightCount", 2, idx);
+            var hasCraftingOrderID = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+                hasCraftingOrderID = packet.ReadBit("HasCrafingOrderID", idx);
 
             V8_0_1_27101.Parsers.SpellHandler.ReadSpellTargetData(packet, null, spellId, idx, "Target");
+
+            if (hasCraftingOrderID)
+                packet.ReadUInt64("CraftingOrderID", idx);
+
+            for (var i = 0; i < optionalReagentsCount; ++i)
+                ReadOptionalReagent(packet, idx, "OptionalReagent", i);
+
+            for (var i = 0; i < removedModificationsCount; ++i)
+                ReadOptionalReagent(packet, idx, "RemovedModifications", i);
 
             if (hasMoveUpdate)
                 Substructures.MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");

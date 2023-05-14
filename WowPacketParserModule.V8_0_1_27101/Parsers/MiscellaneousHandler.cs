@@ -299,7 +299,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var hasQuantityGainSource = false;
             var hasQuantityLostSource = false;
             var hasFirstCraftOperationID = false;
-            var hasLastSpendTime = false;
+            var hasNextRechargeTime = false;
+            var hasRechargeCyclicStartTime = false;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
             {
                 hasQuantityChange = packet.ReadBit("HasQuantityChange");
@@ -308,8 +309,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
                 {
                     hasFirstCraftOperationID = packet.ReadBit("HasFirstCraftOperationID");
-                    hasLastSpendTime = packet.ReadBit("HasLastSpendTime");
+                    hasNextRechargeTime = packet.ReadBit("HasNextRechargeTime");
                 }
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                    hasRechargeCyclicStartTime = packet.ReadBit("HasRechargeCyclicStartTime");
             }
 
             if (hasWeeklyQuantity)
@@ -340,8 +343,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 if (hasFirstCraftOperationID)
                     packet.ReadUInt32("FirstCraftOperationID");
 
-                if (hasLastSpendTime)
-                    packet.ReadTime64("LastSpendTime");
+                if (hasNextRechargeTime)
+                    packet.ReadTime64("NextRechargeTime");
+
+                if (hasRechargeCyclicStartTime)
+                    packet.ReadTime64("RechargeCyclicStartTime");
             }
         }
 
