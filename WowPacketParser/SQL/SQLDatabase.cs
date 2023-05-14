@@ -328,6 +328,9 @@ namespace WowPacketParser.SQL
 
         private static void LoadWorldStates()
         {
+            if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands || Settings.TargetedDatabase >= TargetedDatabase.Classic)
+                return;
+
             string columns = "`ID`, `Comment`";
             string query = $"SELECT {columns} FROM {Settings.TDBDatabase}.world_state";
 
