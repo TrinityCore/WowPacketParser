@@ -85,11 +85,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             if ((timeSpan - TempGossipOptionPOI.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
             {
-                if (TempGossipOptionPOI.ActionMenuId == null)
-                    return;
-
-                Storage.GossipMenuOptions[(TempGossipOptionPOI.MenuId, TempGossipOptionPOI.OptionIndex)].Item1.ActionMenuID = TempGossipOptionPOI.ActionMenuId.GetValueOrDefault();
+                Storage.GossipMenuOptions[(TempGossipOptionPOI.MenuId, TempGossipOptionPOI.OptionIndex)].Item1.ActionMenuID = TempGossipOptionPOI.ActionMenuId.GetValueOrDefault(0);
                 Storage.GossipMenuOptions[(TempGossipOptionPOI.MenuId, TempGossipOptionPOI.OptionIndex)].Item1.ActionPoiID = gossipPOIID;
+
                 //clear temp
                 TempGossipOptionPOI.Reset();
             }
