@@ -4,8 +4,9 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("creature_template_scaling")]
-    public sealed record CreatureTemplateScaling : IDataModel
+    [DBTableName("creature_template_scaling", TargetedDatabaseFlag.TillShadowlands)]
+    [DBTableName("creature_template_difficulty", TargetedDatabaseFlag.SinceDragonflight)]
+    public sealed record CreatureTemplateDifficulty : IDataModel
     {
         [DBFieldName("Entry", true)]
         public uint? Entry;
@@ -40,6 +41,12 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("CreatureDifficultyID", TargetedDatabaseFlag.SinceDragonflight)]
         public int? CreatureDifficultyID;
+
+        [DBFieldName("TypeFlags", TargetedDatabaseFlag.SinceDragonflight)]
+        public CreatureTypeFlag? TypeFlags;
+
+        [DBFieldName("TypeFlags2", TargetedDatabaseFlag.SinceDragonflight)]
+        public uint? TypeFlags2;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

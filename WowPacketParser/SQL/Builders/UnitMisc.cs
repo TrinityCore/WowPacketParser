@@ -128,14 +128,14 @@ namespace WowPacketParser.SQL.Builders
             if (units.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template_scaling))
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template_difficulty))
                 return string.Empty;
 
             var scalingdeltalevels = GetScalingDeltaLevels(units);
 
             foreach (var unit in units)
             {
-                if (Storage.CreatureTemplateScalings.Any(creature => creature.Item1.Entry == unit.Key.GetEntry()))
+                if (Storage.CreatureTemplateDifficulties.Any(creature => creature.Item1.Entry == unit.Key.GetEntry()))
                     continue;
 
                 var npc = unit.Value;
@@ -146,7 +146,7 @@ namespace WowPacketParser.SQL.Builders
 
                 if (minLevel != 0 || maxLevel != 0 || contentTuningID != 0)
                 {
-                    CreatureTemplateScaling creatureScaling = new CreatureTemplateScaling
+                    CreatureTemplateDifficulty creatureDifficulty = new CreatureTemplateDifficulty
                     {
                         Entry = unit.Key.GetEntry(),
                         DifficultyID = npc.DifficultyID,
@@ -160,19 +160,21 @@ namespace WowPacketParser.SQL.Builders
                     CreatureTemplate template;
                     if (Storage.CreatureTemplates.TryGetValue(unit.Key.GetEntry(), out template))
                     {
-                        creatureScaling.HealthScalingExpansion = template.HealthScalingExpansion;
-                        creatureScaling.HealthModifier = template.HealthModifier;
-                        creatureScaling.ManaModifier = template.ManaModifier;
-                        creatureScaling.CreatureDifficultyID = template.CreatureDifficultyID;
+                        creatureDifficulty.HealthScalingExpansion = template.HealthScalingExpansion;
+                        creatureDifficulty.HealthModifier = template.HealthModifier;
+                        creatureDifficulty.ManaModifier = template.ManaModifier;
+                        creatureDifficulty.CreatureDifficultyID = template.CreatureDifficultyID;
+                        creatureDifficulty.TypeFlags = template.TypeFlags;
+                        creatureDifficulty.TypeFlags2 = template.TypeFlags2;
                     }
 
-                    Storage.CreatureTemplateScalings.Add(creatureScaling);
+                    Storage.CreatureTemplateDifficulties.Add(creatureDifficulty);
                 }
             }
 
-            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateScalings);
+            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateDifficulties);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateScalings.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateScalings.ToArray(), templatesDb, x => string.Empty);
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateDifficulties.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateDifficulties.ToArray(), templatesDb, x => string.Empty);
         }
 
         [BuilderMethod(Units = true)]
