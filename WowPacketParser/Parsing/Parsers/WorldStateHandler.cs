@@ -1,5 +1,6 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -22,9 +23,11 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadWorldStateBlock(Packet packet, params object[] indexes)
         {
-            var field = packet.ReadInt32();
+            var worldStateId = packet.ReadInt32();
             var val = packet.ReadInt32();
-            packet.AddValue("Field", field + " - Value: " + val, indexes);
+            var comment = "";
+            SQLDatabase.WorldStateNames.TryGetValue(worldStateId, out comment);
+            packet.AddValue("WorldStateID", $"{worldStateId} - Value: {val} - {comment}", indexes);
         }
 
         [Parser(Opcode.SMSG_UPDATE_WORLD_STATE)]

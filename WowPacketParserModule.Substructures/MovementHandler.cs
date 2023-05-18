@@ -132,6 +132,10 @@ namespace WowPacketParserModule.Substructures
 
             packet.ResetBitReader();
 
+            var hasStandingOnGameObjectGUID = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
+                hasStandingOnGameObjectGUID = packet.ReadBit("HasStandingOnGameObjectGUID", idx);
+
             var hasTransport = packet.ReadBit("HasTransportData", idx);
             var hasFall = packet.ReadBit("HasFallData", idx);
             packet.ReadBit("HasSpline", idx);
@@ -149,6 +153,9 @@ namespace WowPacketParserModule.Substructures
 
             if (hasTransport)
                 info.Transport = ReadTransportData(packet, idx, "TransportData");
+
+            if (hasStandingOnGameObjectGUID)
+                packet.ReadPackedGuid128("StandingOnGameObjectGUID", idx);
 
             if (hasInertia)
                 ReadInertiaData(packet, idx, "Inertia");
