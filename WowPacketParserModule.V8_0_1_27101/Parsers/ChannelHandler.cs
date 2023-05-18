@@ -70,7 +70,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ReadInt32E<Language>("Language");
             var len = packet.ReadBits(10);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 packet.ReadBit("IsSecure");
             packet.ReadWoWString("Text", len);
         }

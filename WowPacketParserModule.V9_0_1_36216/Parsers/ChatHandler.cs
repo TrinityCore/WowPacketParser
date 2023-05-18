@@ -25,11 +25,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             text.ReceiverGUID = packet.ReadPackedGuid128("TargetGUID");
             packet.ReadUInt32("TargetVirtualAddress");
             packet.ReadUInt32("SenderVirtualAddress");
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_1_0_49407))
                 packet.ReadPackedGuid128("PartyGUID");
             packet.ReadInt32("AchievementID");
             packet.ReadSingle("DisplayTime");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 packet.ReadInt32<SpellId>("SpellID");
 
             var senderNameLen = packet.ReadBits(11);

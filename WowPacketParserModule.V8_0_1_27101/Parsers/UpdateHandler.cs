@@ -356,7 +356,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 }
 
                 var hasStandingOnGameObjectGUID = false;
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                     hasStandingOnGameObjectGUID = packet.ReadBit("HasStandingOnGameObjectGUID", index);
                 var hasTransport = packet.ReadBit("Has Transport Data", index);
                 var hasFall = packet.ReadBit("Has Fall Data", index);
@@ -651,7 +651,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 if (packet.ReadBit("Unk bit WoD62x", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk1;
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_1_0_49318))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_1_0_49407))
                     packet.ReadBit("Unk1000", index);
 
                 if (packet.ReadBit("HasTargetRollPitchYaw", index))

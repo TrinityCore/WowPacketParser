@@ -26,7 +26,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 var hasTotalEarned = packet.ReadBit();
                 var hasHasNextRechargeTime = packet.ReadBit();
                 var hasRechargeCycleStartTime = false;
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                     hasRechargeCycleStartTime = packet.ReadBit();
 
                 packet.ReadBits("Flags", 5, i);
@@ -75,7 +75,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             var hasFirstCraftOperationID = packet.ReadBit("HasFirstCraftOperationID");
             var hasHasNextRechargeTime = packet.ReadBit("HasNextRechargeTime");
             var hasRechargeCycleStartTime = false;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 hasRechargeCycleStartTime = packet.ReadBit("HasRechargeCycleStartTime");
 
             if (hasWeeklyQuantity)

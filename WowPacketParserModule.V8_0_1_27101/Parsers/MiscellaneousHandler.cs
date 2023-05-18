@@ -311,7 +311,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     hasFirstCraftOperationID = packet.ReadBit("HasFirstCraftOperationID");
                     hasNextRechargeTime = packet.ReadBit("HasNextRechargeTime");
                 }
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                     hasRechargeCyclicStartTime = packet.ReadBit("HasRechargeCyclicStartTime");
             }
 

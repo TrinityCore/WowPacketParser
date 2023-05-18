@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
                     hasNextRechargeTime = packet.ReadBit("HasNextRechargeTime");
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                     hasRechargeCyclicStartTime = packet.ReadBit("HasRechargeCyclicStartTime");
 
                 packet.ReadBits("Flags", 5, i);

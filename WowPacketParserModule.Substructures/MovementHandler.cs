@@ -133,7 +133,7 @@ namespace WowPacketParserModule.Substructures
             packet.ResetBitReader();
 
             var hasStandingOnGameObjectGUID = false;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 hasStandingOnGameObjectGUID = packet.ReadBit("HasStandingOnGameObjectGUID", idx);
 
             var hasTransport = packet.ReadBit("HasTransportData", idx);

@@ -21,7 +21,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 PlayerConditionID = (uint)packet.ReadInt32("PlayerConditionID", indexes),
             };
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 questRewardDisplaySpell.Type = (int)packet.ReadInt32E<QuestCompleteSpellType>("Type", indexes);
 
             Storage.QuestRewardDisplaySpells.Add(questRewardDisplaySpell, packet.TimeSpan);

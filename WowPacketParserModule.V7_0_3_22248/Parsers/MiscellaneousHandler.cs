@@ -89,7 +89,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadInt32("MountSpellIDs", i);
 
                 var flagsLen = 2;
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                     flagsLen = 4;
 
                 packet.ResetBitReader();

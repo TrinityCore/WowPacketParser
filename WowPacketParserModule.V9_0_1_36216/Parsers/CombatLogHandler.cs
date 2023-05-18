@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadSingle("PlayerItemLevel", idx);
             packet.ReadSingle("TargetItemLevel", idx);
             packet.ReadInt16("PlayerLevelDelta", idx);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 packet.ReadUInt32("ScalingHealthItemLevelCurveID", idx);
             else
                 packet.ReadUInt16("ScalingHealthItemLevelCurveID", idx);
@@ -88,7 +88,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadSByte("TargetScalingLevelDelta", idx);
             packet.ReadSingle("PlayerItemLevel", idx);
             packet.ReadSingle("TargetItemLevel", idx);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 packet.ReadUInt32("ScalingHealthItemLevelCurveID", idx);
             else
                 packet.ReadUInt16("ScalingHealthItemLevelCurveID", idx);

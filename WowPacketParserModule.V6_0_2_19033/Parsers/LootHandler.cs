@@ -160,7 +160,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("LootObj");
             packet.ReadByte("LootListID");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 packet.ReadInt32("DungeonEncounterID");
         }
 

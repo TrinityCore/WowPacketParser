@@ -50,7 +50,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var optionalCurrenciesCount = packet.ReadUInt32("OptionalCurrenciesCount", idx);
             var optionalReagentsCount = packet.ReadUInt32("OptionalReagentsCount", idx);
             var removedModificationsCount = 0u;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 removedModificationsCount = packet.ReadUInt32("RemovedModificationsCount", idx);
 
             for (var j = 0; j < optionalCurrenciesCount; ++j)

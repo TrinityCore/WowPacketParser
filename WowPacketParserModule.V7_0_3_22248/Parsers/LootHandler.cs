@@ -63,7 +63,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadUInt32E<LootRollIneligibilityReason>("LootRollIneligibleReason");
             }
             packet.ReadByteE<LootMethod>("Method");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 packet.ReadInt32("DungeonEncounterID");
             ReadLootItem(packet, "LootItem");
         }
@@ -87,7 +87,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("Player");
             packet.ReadInt32("Roll");
             packet.ReadByte("RollType");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 packet.ReadInt32("DungeonEncounterID");
             ReadLootItem(packet, "LootItem");
             packet.ReadBit("MainSpec");
@@ -97,7 +97,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleLootAllPassed(Packet packet)
         {
             packet.ReadPackedGuid128("LootObj");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49318))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 packet.ReadInt32("DungeonEncounterID");
             ReadLootItem(packet, "LootItem");
         }
