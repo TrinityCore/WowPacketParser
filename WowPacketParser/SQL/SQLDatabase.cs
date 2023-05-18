@@ -328,7 +328,7 @@ namespace WowPacketParser.SQL
 
         private static void LoadWorldStates()
         {
-            if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands || Settings.TargetedDatabase >= TargetedDatabase.Classic)
+            if (Settings.TargetedDatabase != TargetedDatabase.Cataclysm && (Settings.TargetedDatabase < TargetedDatabase.Shadowlands || Settings.TargetedDatabase >= TargetedDatabase.Classic))
                 return;
 
             string columns = "`ID`, `Comment`";
