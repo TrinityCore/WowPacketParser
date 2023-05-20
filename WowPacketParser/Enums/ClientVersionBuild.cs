@@ -454,6 +454,7 @@ namespace WowPacketParser.Enums
         V10_0_7_49267 = 49267,
         V10_0_7_49343 = 49343,
 
+        V10_1_0_49318 = 49318, // dont use me for ClientVersion checks due to overlapping build with 10.0.7
         V10_1_0_49407 = 49407,
         V10_1_0_49426 = 49426,
         V10_1_0_49444 = 49444,
