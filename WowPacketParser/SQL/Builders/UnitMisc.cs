@@ -49,11 +49,14 @@ namespace WowPacketParser.SQL.Builders
                 var commentAuras = string.Empty;
                 if (npc.Auras != null && npc.Auras.Count != 0)
                 {
-                    foreach (var aura in npc.Auras.Where(aura =>
+                    var auraList = npc.Auras.Where(aura =>
                         aura != null &&
                         (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ?
                             aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) :
-                            aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster))))
+                            aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster)) &&
+                        aura.Duration <= 0);
+
+                    foreach (var aura in auraList)
                     {
                         auras += aura.SpellId + " ";
                         commentAuras += StoreGetters.GetName(StoreNameType.Spell, (int) aura.SpellId, false) + ", ";

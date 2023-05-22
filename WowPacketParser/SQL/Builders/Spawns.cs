@@ -202,6 +202,10 @@ namespace WowPacketParser.SQL.Builders
                         if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) : !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster))
                             continue;
 
+                        // skip temporary auras
+                        if (aura.Duration > 0)
+                            continue;
+
                         auras += aura.SpellId + " ";
                         commentAuras += aura.SpellId + " - " + StoreGetters.GetName(StoreNameType.Spell, (int)aura.SpellId, false) + ", ";
                     }
