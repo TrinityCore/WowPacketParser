@@ -8,7 +8,7 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("gossip_menu_option")]
     public sealed record GossipMenuOption : IDataModel
     {
-        [DBFieldName("GossipOptionID", TargetedDatabaseFlag.Dragonflight)]
+        [DBFieldName("GossipOptionID", TargetedDatabaseFlag.SinceDragonflight)]
         public int? GossipOptionID;
 
         [DBFieldName("MenuID", true)]
@@ -57,13 +57,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SpellID", TargetedDatabaseFlag.SinceShadowlands, false, false, true)]
         public int? SpellID;
 
-        [DBFieldName("Flags", TargetedDatabaseFlag.Dragonflight)]
+        [DBFieldName("Flags", TargetedDatabaseFlag.SinceDragonflight)]
         public int? Flags;
 
-        [DBFieldName("OverrideIconID", TargetedDatabaseFlag.Dragonflight, false, false, true)]
+        [DBFieldName("OverrideIconID", TargetedDatabaseFlag.SinceDragonflight, false, false, true)]
         public int? OverrideIconID;
 
-        [DBFieldName("GossipNpcOptionID", TargetedDatabaseFlag.Dragonflight, false, false, true)]
+        [DBFieldName("GossipNpcOptionID", TargetedDatabaseFlag.SinceDragonflight, false, false, true)]
         public int? GossipNpcOptionID;
 
         [DBFieldName("VerifiedBuild")]

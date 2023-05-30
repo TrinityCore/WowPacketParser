@@ -57,7 +57,8 @@ namespace WowPacketParser.Enums
         SinceLegion                       = Legion | BattleForAzeroth | Shadowlands | Dragonflight,
         SinceBattleForAzeroth             = BattleForAzeroth | Shadowlands | Dragonflight,
         SinceShadowlands                  = Shadowlands | Dragonflight,
+        SinceDragonflight                 = Dragonflight,
 
-        // Classic
+        SinceWarlordsOfDraenorTillShadowLands = WarlordsOfDraenor | Legion | BattleForAzeroth | Shadowlands
     }
 }

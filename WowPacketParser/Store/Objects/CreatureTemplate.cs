@@ -34,7 +34,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("IconName", nullable: true)]
         public string IconName;
 
-        [DBFieldName("HealthScalingExpansion", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("HealthScalingExpansion", TargetedDatabaseFlag.SinceWarlordsOfDraenorTillShadowLands | TargetedDatabaseFlag.AnyClassic)]
         public ClientType? HealthScalingExpansion;
 
         [DBFieldName("RequiredExpansion", TargetedDatabaseFlag.SinceCataclysm | TargetedDatabaseFlag.AnyClassic)]
@@ -64,19 +64,19 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("type")]
         public CreatureType? Type;
 
-        [DBFieldName("type_flags")]
+        [DBFieldName("type_flags", TargetedDatabaseFlag.TillShadowlands)]
         public CreatureTypeFlag? TypeFlags;
 
-        [DBFieldName("type_flags2", TargetedDatabaseFlag.SinceCataclysm)]
+        [DBFieldName("type_flags2", TargetedDatabaseFlag.Cataclysm | TargetedDatabaseFlag.SinceWarlordsOfDraenorTillShadowLands)]
         public uint? TypeFlags2;
 
         [DBFieldName("PetSpellDataId", TargetedDatabaseFlag.TillWrathOfTheLichKing | TargetedDatabaseFlag.AnyClassic)]
         public uint? PetSpellDataID;
 
-        [DBFieldName("HealthModifier")]
+        [DBFieldName("HealthModifier", TargetedDatabaseFlag.TillShadowlands)]
         public float? HealthModifier;
 
-        [DBFieldName("ManaModifier")]
+        [DBFieldName("ManaModifier", TargetedDatabaseFlag.TillShadowlands)]
         public float? ManaModifier;
 
         [DBFieldName("RacialLeader")]
@@ -85,7 +85,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("movementId")]
         public uint? MovementID;
 
-        [DBFieldName("CreatureDifficultyID", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("CreatureDifficultyID", TargetedDatabaseFlag.Shadowlands | TargetedDatabaseFlag.AnyClassic)]
         public int? CreatureDifficultyID;
 
         [DBFieldName("VerifiedBuild")]
@@ -156,6 +156,9 @@ namespace WowPacketParser.Store.Objects
     {
         [DBFieldName("CreatureEntry", true)]
         public uint? CreatureEntry;
+
+        [DBFieldName("DifficultyID", TargetedDatabaseFlag.SinceDragonflight, true)]
+        public uint? DifficultyID;
 
         [DBFieldName("Idx", true)]
         public uint? Idx;

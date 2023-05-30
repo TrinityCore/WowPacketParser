@@ -128,6 +128,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     ItemId = (uint)packet.ReadInt32<ItemId>("QuestItem", i)
                 };
 
+                questItem.DifficultyID = WowPacketParser.Parsing.Parsers.MovementHandler.CurrentDifficultyID;
+
                 Storage.CreatureTemplateQuestItems.Add(questItem, packet.TimeSpan);
                 response.QuestItems.Add(questItem.ItemId ?? 0);
             }
