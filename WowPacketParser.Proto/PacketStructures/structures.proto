@@ -79,6 +79,7 @@ message PacketHolder {
       PacketSpellFailure spellFailure = 43;
       PacketLoginSetTimeSpeed loginSetTimeSpeed = 44;
       PacketAuraUpdateAll auraUpdateAll = 45;
+      PacketAIReaction aiReaction = 46;
   }
 }
 
@@ -873,4 +874,17 @@ message PacketLoginSetTimeSpeed {
   float newSpeed = 3;
   int32 serverTimeHolidayOffset = 4;
   int32 gameTimeHolidayOffset = 5;
+}
+
+enum AIReaction {
+  Alert    = 0;
+  Friendly = 1;
+  Hostile  = 2;
+  Afraid   = 3;
+  Destroy  = 4;
+}
+
+message PacketAIReaction {
+    UniversalGuid unitGuid = 1;
+    AIReaction reaction = 2;
 }

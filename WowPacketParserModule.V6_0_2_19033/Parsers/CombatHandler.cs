@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Proto;
 using SpellParsers = WowPacketParserModule.V6_0_2_19033.Parsers.SpellHandler;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
@@ -136,8 +137,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_AI_REACTION)]
         public static void HandleAIReaction(Packet packet)
         {
-            packet.ReadPackedGuid128("UnitGUID");
-            packet.ReadInt32E<AIReaction>("Reaction");
+            PacketAIReaction aiReaction = packet.Holder.AiReaction = new();
+            aiReaction.UnitGuid = packet.ReadPackedGuid128("UnitGUID").ToUniversalGuid();
+            aiReaction.Reaction = (WowPacketParser.Proto.AIReaction)packet.ReadInt32E<WowPacketParser.Enums.AIReaction>("Reaction");
         }
 
         [Parser(Opcode.CMSG_ATTACK_SWING)]
