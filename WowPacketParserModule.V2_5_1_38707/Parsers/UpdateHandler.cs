@@ -334,6 +334,10 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                     moveInfo.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("Extra Movement Flags", 18, index);
                 }
 
+                var hasStandingOnGameObjectGUID = false;
+                //if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+                //    hasStandingOnGameObjectGUID = packet.ReadBit("HasStandingOnGameObjectGUID", index);
+
                 var hasTransport = packet.ReadBit("Has Transport Data", index);
                 var hasFall = packet.ReadBit("Has Fall Data", index);
                 packet.ReadBit("HasSpline", index);
@@ -344,12 +348,20 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                                   ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_0_45166)) &&
                                   packet.ReadBit("Has Inertia", index);
 
+                var hasAdvFlying = ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014) && packet.ReadBit("HasAdvFlying", index);
+
                 if (hasTransport)
                     V8_0_1_27101.Parsers.UpdateHandler.ReadTransportData(moveInfo, guid, packet, index);
 
+                if (hasStandingOnGameObjectGUID)
+                    packet.ReadPackedGuid128("StandingOnGameObjectGUID", index);
+
                 if (hasInertia)
                 {
-                    packet.ReadPackedGuid128("GUID", index, "Inertia");
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+                        packet.ReadInt32("ID", "Inertia");
+                    else
+                        packet.ReadPackedGuid128("GUID", index, "Inertia");
                     packet.ReadVector3("Force", index, "Inertia");
                     packet.ReadUInt32("Lifetime", index, "Inertia");
                 }
@@ -382,6 +394,27 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 var movementForceCount = packet.ReadInt32("MovementForceCount", index);
 
                 packet.ReadSingle("MovementForcesModMagnitude", index);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+                {
+                    packet.ReadSingle("AdvFlyingAirFriction", index);
+                    packet.ReadSingle("AdvFlyingMaxVel", index);
+                    packet.ReadSingle("AdvFlyingLiftCoefficient", index);
+                    packet.ReadSingle("AdvFlyingDoubleJumpVelMod", index);
+                    packet.ReadSingle("AdvFlyingGlideStartMinHeight", index);
+                    packet.ReadSingle("AdvFlyingAddImpulseMaxSpeed", index);
+                    packet.ReadSingle("AdvFlyingMinBankingRate", index);
+                    packet.ReadSingle("AdvFlyingMaxBankingRate", index);
+                    packet.ReadSingle("AdvFlyingMinPitchingRateDown", index);
+                    packet.ReadSingle("AdvFlyingMaxPitchingRateDown", index);
+                    packet.ReadSingle("AdvFlyingMinPitchingRateUp", index);
+                    packet.ReadSingle("AdvFlyingMaxPitchingRateUp", index);
+                    packet.ReadSingle("AdvFlyingMinTurnVelocityThreshold", index);
+                    packet.ReadSingle("AdvFlyingMaxTurnVelocityThreshold", index);
+                    packet.ReadSingle("AdvFlyingSurfaceFriction", index);
+                    packet.ReadSingle("AdvFlyingOverMaxDeceleration", index);
+                    packet.ReadSingle("AdvFlyingLaunchSpeedCoefficient", index);
+                }
 
                 packet.ResetBitReader();
 
@@ -791,6 +824,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                     for (int i = 0; i < 132; i++)
                         packet.ReadInt32("Action", index, i);
                 }
+                // TODO: Smth wrong here in 3.4.1.
             }
 
             if (hasConversation)

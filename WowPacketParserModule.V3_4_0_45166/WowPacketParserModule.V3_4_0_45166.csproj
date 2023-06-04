@@ -20,8 +20,4 @@
             <EmbedInteropTypes>false</EmbedInteropTypes>
         </ProjectReference>
     </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="UpdateFields\" />
-    </ItemGroup>
 </Project>

@@ -46,6 +46,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             var optionalReagentCount = packet.ReadUInt32("OptionalReagentCount", idx);
             var optionalCurrenciesCount = packet.ReadUInt32("OptionalCurrenciesCount", idx);
+            var removedModificationsCount = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+                removedModificationsCount = packet.ReadUInt32("RemovedModificationsCount", idx);
 
             for (var i = 0; i < optionalReagentCount; ++i)
                 ReadOptionalReagent(packet, idx, "OptionalReagent", i);
@@ -59,6 +62,10 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             var hasMoveUpdate = packet.ReadBit("HasMoveUpdate", idx);
 
             var weightCount = packet.ReadBits("WeightCount", 2, idx);
+
+            var hasCraftingOrderID = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+                hasCraftingOrderID = packet.ReadBit("HasCrafingOrderID", idx);
 
             V8_0_1_27101.Parsers.SpellHandler.ReadSpellTargetData(packet, null, spellId, idx, "Target");
 

@@ -1129,6 +1129,7 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V2_5_4_44833:
                     return ClientVersionBuild.V2_5_1_38707;
                 case ClientVersionBuild.V3_4_0_45166:
+                case ClientVersionBuild.V3_4_0_44832:
                 case ClientVersionBuild.V3_4_0_45189:
                 case ClientVersionBuild.V3_4_0_45264:
                 case ClientVersionBuild.V3_4_0_45327:
@@ -1147,6 +1148,19 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_0_46779:
                 case ClientVersionBuild.V3_4_0_46902:
                 case ClientVersionBuild.V3_4_0_47168:
+                case ClientVersionBuild.V3_4_1_47014:
+                case ClientVersionBuild.V3_4_1_47612:
+                case ClientVersionBuild.V3_4_1_47720:
+                case ClientVersionBuild.V3_4_1_47800:
+                case ClientVersionBuild.V3_4_1_47966:
+                case ClientVersionBuild.V3_4_1_48019:
+                case ClientVersionBuild.V3_4_1_48120:
+                case ClientVersionBuild.V3_4_1_48340:
+                case ClientVersionBuild.V3_4_1_48503:
+                case ClientVersionBuild.V3_4_1_48632:
+                case ClientVersionBuild.V3_4_1_49345:
+                case ClientVersionBuild.V3_4_1_49822:
+                case ClientVersionBuild.V3_4_1_49936:
                 case ClientVersionBuild.V3_4_3_51666:
                     return ClientVersionBuild.V3_4_0_45166;
                 case ClientVersionBuild.BattleNetV37165:
@@ -1540,6 +1554,7 @@ namespace WowPacketParser.Misc
             switch (build)
             {
                 case ClientVersionBuild.V3_4_0_45166:
+                case ClientVersionBuild.V3_4_0_44832:
                 case ClientVersionBuild.V3_4_0_45189:
                 case ClientVersionBuild.V3_4_0_45264:
                 case ClientVersionBuild.V3_4_0_45327:
@@ -1558,6 +1573,19 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_0_46779:
                 case ClientVersionBuild.V3_4_0_46902:
                 case ClientVersionBuild.V3_4_0_47168:
+                case ClientVersionBuild.V3_4_1_47014:
+                case ClientVersionBuild.V3_4_1_47612:
+                case ClientVersionBuild.V3_4_1_47720:
+                case ClientVersionBuild.V3_4_1_47800:
+                case ClientVersionBuild.V3_4_1_47966:
+                case ClientVersionBuild.V3_4_1_48019:
+                case ClientVersionBuild.V3_4_1_48120:
+                case ClientVersionBuild.V3_4_1_48340:
+                case ClientVersionBuild.V3_4_1_48503:
+                case ClientVersionBuild.V3_4_1_48632:
+                case ClientVersionBuild.V3_4_1_49345:
+                case ClientVersionBuild.V3_4_1_49822:
+                case ClientVersionBuild.V3_4_1_49936:
                 case ClientVersionBuild.V3_4_3_51666:
                     return true;
                 default:

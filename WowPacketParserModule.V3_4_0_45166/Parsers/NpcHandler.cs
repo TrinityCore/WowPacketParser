@@ -20,19 +20,31 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 MenuID = menuId
             };
 
-            gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OptionID", idx);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_4_1_47014))
+                gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OptionID", idx);
+            else
+                gossipOption.GossipOptionID = packet.ReadInt32("GossipOptionID", idx);
             gossipOption.OptionNpc = (GossipOptionNpc?)packet.ReadByte("OptionNPC", idx);
             gossipMessageOption.OptionNpc = (int)gossipOption.OptionNpc;
             gossipOption.BoxCoded = gossipMessageOption.BoxCoded = packet.ReadByte("OptionFlags", idx) != 0;
             gossipOption.BoxMoney = gossipMessageOption.BoxCost = (uint)packet.ReadInt32("OptionCost", idx);
             gossipOption.Language = packet.ReadUInt32E<Language>("Language", idx);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+            {
+                gossipOption.Flags = packet.ReadInt32("Flags", idx);
+                gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OrderIndex", idx);
+            }
+
             packet.ResetBitReader();
             uint textLen = packet.ReadBits(12);
             uint confirmLen = packet.ReadBits(12);
             bool hasSpellId = false;
+            bool hasOverrideIconId = false;
             packet.ReadBits("Status", 2, idx);
             hasSpellId = packet.ReadBit();
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+                hasOverrideIconId = packet.ReadBit();
 
             uint rewardsCount = packet.ReadUInt32();
             for (uint i = 0; i < rewardsCount; ++i)
@@ -52,11 +64,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             if (hasSpellId)
                 gossipOption.SpellID = packet.ReadInt32("SpellID", idx);
 
+            if (hasOverrideIconId)
+                gossipOption.OverrideIconID = packet.ReadInt32("OverrideIconID", idx);
+
             gossipOption.FillBroadcastTextIDs();
 
             if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
                 gossipOption.FillOptionType(npcGuid);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+                Storage.GossipOptionIdToOrderIndexMap.Add((gossipOption.MenuID.GetValueOrDefault(), gossipOption.GossipOptionID.GetValueOrDefault()), gossipOption.OptionID.GetValueOrDefault());
             Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);
 
             return gossipMessageOption;
@@ -103,13 +120,28 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             int friendshipFactionID = packet.ReadInt32("FriendshipFactionID");
             CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, friendshipFactionID, guid, packet.TimeSpan);
 
-            gossip.TextID = packetGossip.TextId = (uint)packet.ReadInt32("TextID");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_4_1_47014))
+                gossip.TextID = packetGossip.TextId = (uint)packet.ReadInt32("TextID");
 
             int optionsCount = packet.ReadInt32("GossipOptionsCount");
             int questsCount = packet.ReadInt32("GossipQuestsCount");
 
+            bool hasBroadcastTextID = false;
+            bool hasBroadcastTextID2 = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+            {
+                hasBroadcastTextID = packet.ReadBit("HasBroadcastTextID");
+                hasBroadcastTextID2 = packet.ReadBit("HasBroadcastTextID2");
+            }
+
             for (int i = 0; i < optionsCount; ++i)
                 packetGossip.Options.Add(ReadGossipOptionsData((uint)menuId, guid, packet, i, "GossipOptions"));
+
+            if (hasBroadcastTextID)
+                gossip.TextID = (uint)packet.ReadInt32("BroadcastTextID");
+
+            if (hasBroadcastTextID2)
+                gossip.TextID = (uint)packet.ReadInt32("BroadcastTextID2");
 
             for (int i = 0; i < questsCount; ++i)
                 packetGossip.Quests.Add(ReadGossipQuestTextData(packet, i, "GossipQuests"));
