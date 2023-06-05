@@ -1040,6 +1040,7 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V1_14_3_46575:
                 case ClientVersionBuild.V1_14_3_48611:
                 case ClientVersionBuild.V1_14_3_49229:
+                case ClientVersionBuild.V1_14_3_49821:
                 case ClientVersionBuild.V2_5_1_38598:
                 case ClientVersionBuild.V2_5_1_38644:
                 case ClientVersionBuild.V2_5_1_38707:
@@ -1430,6 +1431,7 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V1_14_3_46575:
                 case ClientVersionBuild.V1_14_3_48611:
                 case ClientVersionBuild.V1_14_3_49229:
+                case ClientVersionBuild.V1_14_3_49821:
                     return true;
                 default:
                     return false;
