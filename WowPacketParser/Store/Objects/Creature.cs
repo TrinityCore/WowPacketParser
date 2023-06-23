@@ -79,7 +79,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unit_flags")]
         public uint? UnitFlag;
 
-        [DBFieldName("dynamicflags")]
+        [DBFieldName("dynamicflags", TargetedDatabaseFlag.TillShadowlands | TargetedDatabaseFlag.AnyClassic)]
         public uint? DynamicFlag;
 
         [DBFieldName("VerifiedBuild")]

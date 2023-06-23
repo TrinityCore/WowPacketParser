@@ -140,7 +140,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("dynamicflags", TargetedDatabaseFlag.TillCataclysm)]
         public UnitDynamicFlags? DynamicFlags;
 
-        [DBFieldName("dynamicflags", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("dynamicflags", TargetedDatabaseFlag.TillShadowlands | TargetedDatabaseFlag.AnyClassic)]
         public UnitDynamicFlagsWOD? DynamicFlagsWod;
 
         [DBFieldName("VehicleId")]
