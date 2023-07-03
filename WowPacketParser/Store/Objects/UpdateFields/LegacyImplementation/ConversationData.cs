@@ -90,6 +90,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             public int UiCameraID { get; set; }
             public byte ActorIndex { get; set; }
             public byte Flags { get; set; }
+            public byte ChatType { get; set; }
         }
 
         public class Actor : IConversationActor

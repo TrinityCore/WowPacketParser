@@ -22,6 +22,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Flags")]
         public byte? Flags;
 
+        [DBFieldName("ChatType", TargetedDatabaseFlag.SinceShadowlands)]
+        public byte? ChatType;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }

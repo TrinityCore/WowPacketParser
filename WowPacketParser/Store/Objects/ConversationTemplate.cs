@@ -73,7 +73,8 @@ namespace WowPacketParser.Store.Objects
                     StartTime = lines[i].StartTime,
                     UiCameraID = (uint)lines[i].UiCameraID,
                     ActorIdx = lines[i].ActorIndex,
-                    Flags = lines[i].Flags
+                    Flags = lines[i].Flags,
+                    ChatType = lines[i].ChatType
                 };
 
                 if (i == 0)

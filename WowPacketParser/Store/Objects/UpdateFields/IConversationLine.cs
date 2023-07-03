@@ -8,5 +8,6 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         int UiCameraID { get; }
         byte ActorIndex { get; }
         byte Flags { get; }
+        byte ChatType { get; }
     }
 }

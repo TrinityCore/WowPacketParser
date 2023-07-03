@@ -12,6 +12,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
         public int UiCameraID { get; set; }
         public byte ActorIndex { get; set; }
         public byte Flags { get; set; }
+        public byte ChatType { get; set; }
     }
 }
 
