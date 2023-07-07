@@ -25,11 +25,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             text.ReceiverGUID = packet.ReadPackedGuid128("TargetGUID");
             packet.ReadUInt32("TargetVirtualAddress");
             packet.ReadUInt32("SenderVirtualAddress");
-            if (ClientVersion.Branch != ClientBranch.Retail || ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_1_0_49407))
+            if (ClientVersion.Branch != ClientBranch.Retail && ClientVersion.RemovedInVersion(ClientVersionBuild.V3_4_2_50129) || ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_1_0_49407))
                 packet.ReadPackedGuid128("PartyGUID");
             packet.ReadInt32("AchievementID");
             packet.ReadSingle("DisplayTime");
-            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_1_0_49407))
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_1_0_49407) || ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_2_50129))
                 packet.ReadInt32<SpellId>("SpellID");
 
             var senderNameLen = packet.ReadBits(11);
@@ -38,7 +38,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var channelLen = packet.ReadBits(7);
             var textLen = packet.ReadBits(12);
             int flagLen = 14;
-            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_0_7_48676))
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_0_7_48676) || ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_2_50129))
                 flagLen = 15;
             var flags = packet.ReadBits("ChatFlags", flagLen);
 
