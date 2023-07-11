@@ -23,12 +23,12 @@ namespace WowPacketParserModule.Substructures
         public static void ReadDungeonScoreSummary(Packet packet, params object[] indexes)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
-                packet.ReadSingle("CurrentSeasonScore", indexes);
+                packet.ReadSingle("OverallScoreCurrentSeason", indexes);
             else
-                packet.ReadInt32("CurrentSeasonScore", indexes);
+                packet.ReadInt32("OverallScoreCurrentSeason", indexes);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
-                packet.ReadSingle("LifetimeBestSeasonScore", indexes);
+                packet.ReadSingle("LadderScoreCurrentSeason", indexes);
 
             var runCount = packet.ReadUInt32("RunCount", indexes);
             for (var i = 0u; i < runCount; ++i)
@@ -108,7 +108,7 @@ namespace WowPacketParserModule.Substructures
             var runCount = packet.ReadUInt32("MapCount", indexes);
             var runCount2 = 0u;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
-                runCount2 = packet.ReadUInt32("Unknown920_MapCount", indexes);
+                runCount2 = packet.ReadUInt32("LadderMapCount", indexes);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
                 packet.ReadSingle("SeasonScore", indexes);
@@ -116,13 +116,13 @@ namespace WowPacketParserModule.Substructures
                 packet.ReadInt32("SeasonScore", indexes);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
-                packet.ReadSingle("Unknown920_1", indexes);
+                packet.ReadSingle("LadderScore", indexes);
 
             for (var i = 0u; i < runCount; ++i)
                 ReadDungeonScoreMapData(packet, indexes, i, "Map");
 
             for (var i = 0u; i < runCount2; ++i)
-                ReadDungeonScoreMapData(packet, indexes, i, "Unknown920_Map");
+                ReadDungeonScoreMapData(packet, indexes, i, "LadderMap");
         }
 
         public static void ReadDungeonScoreData(Packet packet, params object[] indexes)

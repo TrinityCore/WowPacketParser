@@ -4746,24 +4746,24 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_1_0_49318
             data.TimeToTarget = packet.ReadUInt32("TimeToTarget", indexes);
             data.TimeToTargetScale = packet.ReadUInt32("TimeToTargetScale", indexes);
             data.TimeToTargetExtraScale = packet.ReadUInt32("TimeToTargetExtraScale", indexes);
-            data.Field_B0 = packet.ReadUInt32("Field_B0", indexes);
+            data.TimeToTargetPos = packet.ReadUInt32("TimeToTargetPos", indexes);
             data.SpellID = packet.ReadInt32("SpellID", indexes);
             data.SpellForVisuals = packet.ReadInt32("SpellForVisuals", indexes);
             data.SpellVisual = ReadCreateSpellCastVisual(packet, indexes, "SpellVisual");
             data.BoundsRadius2D = packet.ReadSingle("BoundsRadius2D", indexes);
             data.DecalPropertiesID = packet.ReadUInt32("DecalPropertiesID", indexes);
             data.CreatingEffectGUID = packet.ReadPackedGuid128("CreatingEffectGUID", indexes);
-            data.Field_80 = packet.ReadUInt32("Field_80", indexes);
-            data.Field_84 = packet.ReadUInt32("Field_84", indexes);
-            data.Field_88 = packet.ReadPackedGuid128("Field_88", indexes);
-            data.Field_F8 = packet.ReadVector3("Field_F8", indexes);
+            data.NumUnitsInside = packet.ReadUInt32("NumUnitsInside", indexes);
+            data.NumPlayersInside = packet.ReadUInt32("NumPlayersInside", indexes);
+            data.OrbitPathTarget = packet.ReadPackedGuid128("OrbitPathTarget", indexes);
+            data.RollPitchYaw = packet.ReadVector3("RollPitchYaw", indexes);
             data.ExtraScaleCurve = ReadCreateScaleCurve(packet, indexes, "ExtraScaleCurve");
             packet.ResetBitReader();
-            data.Field_260 = packet.ReadBit("Field_260", indexes);
+            data.HeightIgnoresScale = packet.ReadBit("HeightIgnoresScale", indexes);
             data.Field_261 = packet.ReadBit("Field_261", indexes);
-            data.Field_C38 = ReadCreateScaleCurve(packet, indexes, "Field_C38");
-            data.Field_C54 = ReadCreateScaleCurve(packet, indexes, "Field_C54");
-            data.Field_C70 = ReadCreateScaleCurve(packet, indexes, "Field_C70");
+            data.OverrideMoveCurveX = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveX");
+            data.OverrideMoveCurveY = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveY");
+            data.OverrideMoveCurveZ = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveZ");
             data.VisualAnim = ReadCreateVisualAnim(packet, indexes, "VisualAnim");
             return data;
         }
@@ -4780,7 +4780,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_1_0_49318
             {
                 if (changesMask[1])
                 {
-                    data.Field_260 = packet.ReadBit("Field_260", indexes);
+                    data.HeightIgnoresScale = packet.ReadBit("HeightIgnoresScale", indexes);
                 }
                 if (changesMask[2])
                 {
@@ -4816,7 +4816,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_1_0_49318
                 }
                 if (changesMask[13])
                 {
-                    data.Field_B0 = packet.ReadUInt32("Field_B0", indexes);
+                    data.TimeToTargetPos = packet.ReadUInt32("TimeToTargetPos", indexes);
                 }
                 if (changesMask[14])
                 {
@@ -4844,19 +4844,19 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_1_0_49318
                 }
                 if (changesMask[20])
                 {
-                    data.Field_80 = packet.ReadUInt32("Field_80", indexes);
+                    data.NumUnitsInside = packet.ReadUInt32("NumUnitsInside", indexes);
                 }
                 if (changesMask[21])
                 {
-                    data.Field_84 = packet.ReadUInt32("Field_84", indexes);
+                    data.NumPlayersInside = packet.ReadUInt32("NumPlayersInside", indexes);
                 }
                 if (changesMask[22])
                 {
-                    data.Field_88 = packet.ReadPackedGuid128("Field_88", indexes);
+                    data.OrbitPathTarget = packet.ReadPackedGuid128("OrbitPathTarget", indexes);
                 }
                 if (changesMask[23])
                 {
-                    data.Field_F8 = packet.ReadVector3("Field_F8", indexes);
+                    data.RollPitchYaw = packet.ReadVector3("RollPitchYaw", indexes);
                 }
                 if (changesMask[4])
                 {
@@ -4864,15 +4864,15 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_1_0_49318
                 }
                 if (changesMask[5])
                 {
-                    data.Field_C38 = ReadUpdateScaleCurve(packet, data.Field_C38 as ScaleCurve, indexes, "Field_C38");
+                    data.OverrideMoveCurveX = ReadUpdateScaleCurve(packet, data.OverrideMoveCurveX as ScaleCurve, indexes, "OverrideMoveCurveX");
                 }
                 if (changesMask[6])
                 {
-                    data.Field_C54 = ReadUpdateScaleCurve(packet, data.Field_C54 as ScaleCurve, indexes, "Field_C54");
+                    data.OverrideMoveCurveY = ReadUpdateScaleCurve(packet, data.OverrideMoveCurveY as ScaleCurve, indexes, "OverrideMoveCurveY");
                 }
                 if (changesMask[7])
                 {
-                    data.Field_C70 = ReadUpdateScaleCurve(packet, data.Field_C70 as ScaleCurve, indexes, "Field_C70");
+                    data.OverrideMoveCurveZ = ReadUpdateScaleCurve(packet, data.OverrideMoveCurveZ as ScaleCurve, indexes, "OverrideMoveCurveZ");
                 }
                 if (changesMask[24])
                 {

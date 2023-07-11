@@ -12,22 +12,22 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
         public System.Nullable<uint> TimeToTarget { get; set; }
         public System.Nullable<uint> TimeToTargetScale { get; set; }
         public System.Nullable<uint> TimeToTargetExtraScale { get; set; }
-        public System.Nullable<uint> Field_B0 { get; set; }
+        public System.Nullable<uint> TimeToTargetPos { get; set; }
         public System.Nullable<int> SpellID { get; set; }
         public System.Nullable<int> SpellForVisuals { get; set; }
         public ISpellCastVisual SpellVisual { get; set; }
         public System.Nullable<float> BoundsRadius2D { get; set; }
         public System.Nullable<uint> DecalPropertiesID { get; set; }
         public WowGuid CreatingEffectGUID { get; set; }
-        public System.Nullable<uint> Field_80 { get; set; }
-        public System.Nullable<uint> Field_84 { get; set; }
-        public WowGuid Field_88 { get; set; }
-        public Vector3 Field_F8 { get; set; }
+        public System.Nullable<uint> NumUnitsInside { get; set; }
+        public System.Nullable<uint> NumPlayersInside { get; set; }
+        public WowGuid OrbitPathTarget { get; set; }
+        public Vector3 RollPitchYaw { get; set; }
         public IScaleCurve OverrideScaleCurve { get; set; }
         public IScaleCurve ExtraScaleCurve { get; set; }
-        public IScaleCurve Field_C38 { get; set; }
-        public IScaleCurve Field_C54 { get; set; }
-        public IScaleCurve Field_C70 { get; set; }
+        public IScaleCurve OverrideMoveCurveX { get; set; }
+        public IScaleCurve OverrideMoveCurveY { get; set; }
+        public IScaleCurve OverrideMoveCurveZ { get; set; }
         public IVisualAnim VisualAnim { get; set; }
     }
 }
