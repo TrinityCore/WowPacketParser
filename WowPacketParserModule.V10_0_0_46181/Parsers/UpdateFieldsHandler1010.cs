@@ -4758,13 +4758,13 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_1_0_49318
             data.Field_88 = packet.ReadPackedGuid128("Field_88", indexes);
             data.Field_F8 = packet.ReadVector3("Field_F8", indexes);
             data.ExtraScaleCurve = ReadCreateScaleCurve(packet, indexes, "ExtraScaleCurve");
+            packet.ResetBitReader();
             data.Field_260 = packet.ReadBit("Field_260", indexes);
             data.Field_261 = packet.ReadBit("Field_261", indexes);
             data.Field_C38 = ReadCreateScaleCurve(packet, indexes, "Field_C38");
             data.Field_C54 = ReadCreateScaleCurve(packet, indexes, "Field_C54");
             data.Field_C70 = ReadCreateScaleCurve(packet, indexes, "Field_C70");
             data.VisualAnim = ReadCreateVisualAnim(packet, indexes, "VisualAnim");
-            packet.ResetBitReader();
             return data;
         }
 
