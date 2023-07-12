@@ -14,6 +14,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IObjectData ReadCreateObjectData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new ObjectData();
+            packet.ResetBitReader();
             data.EntryID = packet.ReadInt32("EntryID", indexes);
             data.DynamicFlags = packet.ReadUInt32("DynamicFlags", indexes);
             data.Scale = packet.ReadSingle("Scale", indexes);
@@ -23,6 +24,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IObjectData ReadUpdateObjectData(Packet packet, params object[] indexes)
         {
             var data = new ObjectData();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(4);
             var changesMask = new BitArray(rawChangesMask);
@@ -49,6 +51,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IItemEnchantment ReadCreateItemEnchantment(Packet packet, params object[] indexes)
         {
             var data = new ItemEnchantment();
+            packet.ResetBitReader();
             data.ID = packet.ReadInt32("ID", indexes);
             data.Duration = packet.ReadUInt32("Duration", indexes);
             data.Charges = packet.ReadInt16("Charges", indexes);
@@ -59,6 +62,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IItemEnchantment ReadUpdateItemEnchantment(Packet packet, params object[] indexes)
         {
             var data = new ItemEnchantment();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(5);
             var changesMask = new BitArray(rawChangesMask);
@@ -89,6 +93,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IItemMod ReadCreateItemMod(Packet packet, params object[] indexes)
         {
             var data = new ItemMod();
+            packet.ResetBitReader();
             data.Value = packet.ReadInt32("Value", indexes);
             data.Type = packet.ReadByte("Type", indexes);
             return data;
@@ -97,6 +102,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IItemMod ReadUpdateItemMod(Packet packet, params object[] indexes)
         {
             var data = new ItemMod();
+            packet.ResetBitReader();
             data.Value = packet.ReadInt32("Value", indexes);
             data.Type = packet.ReadByte("Type", indexes);
             return data;
@@ -138,7 +144,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.Values.UpdateMask[i])
                         {
-                            data.Values[i] = ReadUpdateItemMod(packet, data.Values[i] as ItemMod, indexes, "Values", i);
+                            data.Values[i] = ReadUpdateItemMod(packet, indexes, "Values", i);
                         }
                     }
                 }
@@ -149,6 +155,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IArtifactPower ReadCreateArtifactPower(Packet packet, params object[] indexes)
         {
             var data = new ArtifactPower();
+            packet.ResetBitReader();
             data.ArtifactPowerID = packet.ReadInt16("ArtifactPowerID", indexes);
             data.PurchasedRank = packet.ReadByte("PurchasedRank", indexes);
             data.CurrentRankWithBonus = packet.ReadByte("CurrentRankWithBonus", indexes);
@@ -158,6 +165,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IArtifactPower ReadUpdateArtifactPower(Packet packet, params object[] indexes)
         {
             var data = new ArtifactPower();
+            packet.ResetBitReader();
             data.ArtifactPowerID = packet.ReadInt16("ArtifactPowerID", indexes);
             data.PurchasedRank = packet.ReadByte("PurchasedRank", indexes);
             data.CurrentRankWithBonus = packet.ReadByte("CurrentRankWithBonus", indexes);
@@ -167,6 +175,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ISocketedGem ReadCreateSocketedGem(Packet packet, params object[] indexes)
         {
             var data = new SocketedGem();
+            packet.ResetBitReader();
             data.ItemID = packet.ReadInt32("ItemID", indexes);
             for (var i = 0; i < 16; ++i)
             {
@@ -179,6 +188,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ISocketedGem ReadUpdateSocketedGem(Packet packet, params object[] indexes)
         {
             var data = new SocketedGem();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             var rawMaskMask = new int[1];
             rawMaskMask[0] = (int)packet.ReadBits(1);
@@ -215,6 +225,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IItemData ReadCreateItemData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new ItemData();
+            packet.ResetBitReader();
             data.Owner = packet.ReadPackedGuid128("Owner", indexes);
             data.ContainedIn = packet.ReadPackedGuid128("ContainedIn", indexes);
             data.Creator = packet.ReadPackedGuid128("Creator", indexes);
@@ -272,6 +283,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IItemData ReadUpdateItemData(Packet packet, params object[] indexes)
         {
             var data = new ItemData();
+            packet.ResetBitReader();
             var rawChangesMask = new int[2];
             var rawMaskMask = new int[1];
             rawMaskMask[0] = (int)packet.ReadBits(2);
@@ -301,7 +313,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.ArtifactPowers.UpdateMask[i])
                         {
-                            data.ArtifactPowers[i] = ReadUpdateArtifactPower(packet, data.ArtifactPowers[i] as ArtifactPower, indexes, "ArtifactPowers", i);
+                            data.ArtifactPowers[i] = ReadUpdateArtifactPower(packet, indexes, "ArtifactPowers", i);
                         }
                     }
                 }
@@ -311,7 +323,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.Gems.UpdateMask[i])
                         {
-                            data.Gems[i] = ReadUpdateSocketedGem(packet, data.Gems[i] as SocketedGem, indexes, "Gems", i);
+                            data.Gems[i] = ReadUpdateSocketedGem(packet, indexes, "Gems", i);
                         }
                     }
                 }
@@ -385,7 +397,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 }
                 if (changesMask[17])
                 {
-                    data.Modifiers = ReadUpdateItemModList(packet, data.Modifiers as ItemModList, indexes, "Modifiers");
+                    data.Modifiers = ReadUpdateItemModList(packet, indexes, "Modifiers");
                 }
             }
             if (changesMask[21])
@@ -404,7 +416,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 {
                     if (changesMask[28 + i])
                     {
-                        data.Enchantment[i] = ReadUpdateItemEnchantment(packet, data.Enchantment[i] as ItemEnchantment, indexes, "Enchantment", i);
+                        data.Enchantment[i] = ReadUpdateItemEnchantment(packet, indexes, "Enchantment", i);
                     }
                 }
             }
@@ -414,6 +426,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IContainerData ReadCreateContainerData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new ContainerData();
+            packet.ResetBitReader();
             for (var i = 0; i < 36; ++i)
             {
                 data.Slots[i] = packet.ReadPackedGuid128("Slots", indexes, i);
@@ -425,6 +438,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IContainerData ReadUpdateContainerData(Packet packet, params object[] indexes)
         {
             var data = new ContainerData();
+            packet.ResetBitReader();
             var rawChangesMask = new int[2];
             var rawMaskMask = new int[1];
             rawMaskMask[0] = (int)packet.ReadBits(2);
@@ -458,6 +472,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IAzeriteEmpoweredItemData ReadCreateAzeriteEmpoweredItemData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new AzeriteEmpoweredItemData();
+            packet.ResetBitReader();
             for (var i = 0; i < 5; ++i)
             {
                 data.Selections[i] = packet.ReadInt32("Selections", indexes, i);
@@ -468,6 +483,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IAzeriteEmpoweredItemData ReadUpdateAzeriteEmpoweredItemData(Packet packet, params object[] indexes)
         {
             var data = new AzeriteEmpoweredItemData();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             var rawMaskMask = new int[1];
             rawMaskMask[0] = (int)packet.ReadBits(1);
@@ -493,6 +509,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IUnlockedAzeriteEssence ReadCreateUnlockedAzeriteEssence(Packet packet, params object[] indexes)
         {
             var data = new UnlockedAzeriteEssence();
+            packet.ResetBitReader();
             data.AzeriteEssenceID = packet.ReadUInt32("AzeriteEssenceID", indexes);
             data.Rank = packet.ReadUInt32("Rank", indexes);
             return data;
@@ -501,6 +518,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IUnlockedAzeriteEssence ReadUpdateUnlockedAzeriteEssence(Packet packet, params object[] indexes)
         {
             var data = new UnlockedAzeriteEssence();
+            packet.ResetBitReader();
             data.AzeriteEssenceID = packet.ReadUInt32("AzeriteEssenceID", indexes);
             data.Rank = packet.ReadUInt32("Rank", indexes);
             return data;
@@ -629,7 +647,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.UnlockedEssences.UpdateMask[i])
                         {
-                            data.UnlockedEssences[i] = ReadUpdateUnlockedAzeriteEssence(packet, data.UnlockedEssences[i] as UnlockedAzeriteEssence, indexes, "UnlockedEssences", i);
+                            data.UnlockedEssences[i] = ReadUpdateUnlockedAzeriteEssence(packet, indexes, "UnlockedEssences", i);
                         }
                     }
                 }
@@ -649,7 +667,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.SelectedEssences.UpdateMask[i])
                         {
-                            data.SelectedEssences[i] = ReadUpdateSelectedAzeriteEssences(packet, data.SelectedEssences[i] as SelectedAzeriteEssences, indexes, "SelectedEssences", i);
+                            data.SelectedEssences[i] = ReadUpdateSelectedAzeriteEssences(packet, indexes, "SelectedEssences", i);
                         }
                     }
                 }
@@ -680,6 +698,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ISpellCastVisual ReadCreateSpellCastVisual(Packet packet, params object[] indexes)
         {
             var data = new SpellCastVisual();
+            packet.ResetBitReader();
             data.SpellXSpellVisualID = packet.ReadInt32("SpellXSpellVisualID", indexes);
             data.ScriptVisualID = packet.ReadInt32("ScriptVisualID", indexes);
             return data;
@@ -688,6 +707,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ISpellCastVisual ReadUpdateSpellCastVisual(Packet packet, params object[] indexes)
         {
             var data = new SpellCastVisual();
+            packet.ResetBitReader();
             data.SpellXSpellVisualID = packet.ReadInt32("SpellXSpellVisualID", indexes);
             data.ScriptVisualID = packet.ReadInt32("ScriptVisualID", indexes);
             return data;
@@ -696,6 +716,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IUnitChannel ReadCreateUnitChannel(Packet packet, params object[] indexes)
         {
             var data = new UnitChannel();
+            packet.ResetBitReader();
             data.SpellID = packet.ReadInt32("SpellID", indexes);
             data.SpellVisual = ReadCreateSpellCastVisual(packet, indexes, "SpellVisual");
             return data;
@@ -704,14 +725,16 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IUnitChannel ReadUpdateUnitChannel(Packet packet, params object[] indexes)
         {
             var data = new UnitChannel();
+            packet.ResetBitReader();
             data.SpellID = packet.ReadInt32("SpellID", indexes);
-            data.SpellVisual = ReadUpdateSpellCastVisual(packet, data.SpellVisual as SpellCastVisual, indexes, "SpellVisual");
+            data.SpellVisual = ReadUpdateSpellCastVisual(packet, indexes, "SpellVisual");
             return data;
         }
 
         public static IVisibleItem ReadCreateVisibleItem(Packet packet, params object[] indexes)
         {
             var data = new VisibleItem();
+            packet.ResetBitReader();
             data.ItemID = packet.ReadInt32("ItemID", indexes);
             data.SecondaryItemModifiedAppearanceID = packet.ReadInt32("SecondaryItemModifiedAppearanceID", indexes);
             data.ItemAppearanceModID = packet.ReadUInt16("ItemAppearanceModID", indexes);
@@ -722,6 +745,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IVisibleItem ReadUpdateVisibleItem(Packet packet, params object[] indexes)
         {
             var data = new VisibleItem();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(5);
             var changesMask = new BitArray(rawChangesMask);
@@ -752,6 +776,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IPassiveSpellHistory ReadCreatePassiveSpellHistory(Packet packet, params object[] indexes)
         {
             var data = new PassiveSpellHistory();
+            packet.ResetBitReader();
             data.SpellID = packet.ReadInt32("SpellID", indexes);
             data.AuraSpellID = packet.ReadInt32("AuraSpellID", indexes);
             return data;
@@ -760,6 +785,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IPassiveSpellHistory ReadUpdatePassiveSpellHistory(Packet packet, params object[] indexes)
         {
             var data = new PassiveSpellHistory();
+            packet.ResetBitReader();
             data.SpellID = packet.ReadInt32("SpellID", indexes);
             data.AuraSpellID = packet.ReadInt32("AuraSpellID", indexes);
             return data;
@@ -768,6 +794,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IUnitData ReadCreateUnitData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new UnitData();
+            packet.ResetBitReader();
             data.DisplayID = packet.ReadInt32("DisplayID", indexes);
             for (var i = 0; i < 2; ++i)
             {
@@ -973,6 +1000,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IUnitData ReadUpdateUnitData(Packet packet, params object[] indexes)
         {
             var data = new UnitData();
+            packet.ResetBitReader();
             var rawChangesMask = new int[7];
             var rawMaskMask = new int[1];
             rawMaskMask[0] = (int)packet.ReadBits(7);
@@ -1018,7 +1046,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.PassiveSpells.UpdateMask[i])
                         {
-                            data.PassiveSpells[i] = ReadUpdatePassiveSpellHistory(packet, data.PassiveSpells[i] as PassiveSpellHistory, indexes, "PassiveSpells", i);
+                            data.PassiveSpells[i] = ReadUpdatePassiveSpellHistory(packet, indexes, "PassiveSpells", i);
                         }
                     }
                 }
@@ -1112,7 +1140,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 }
                 if (changesMask[22])
                 {
-                    data.ChannelData = ReadUpdateUnitChannel(packet, data.ChannelData as UnitChannel, indexes, "ChannelData");
+                    data.ChannelData = ReadUpdateUnitChannel(packet, indexes, "ChannelData");
                 }
                 if (changesMask[23])
                 {
@@ -1550,7 +1578,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 {
                     if (changesMask[156 + i])
                     {
-                        data.VirtualItems[i] = ReadUpdateVisibleItem(packet, data.VirtualItems[i] as VisibleItem, indexes, "VirtualItems", i);
+                        data.VirtualItems[i] = ReadUpdateVisibleItem(packet, indexes, "VirtualItems", i);
                     }
                 }
             }
@@ -1606,6 +1634,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IChrCustomizationChoice ReadCreateChrCustomizationChoice(Packet packet, params object[] indexes)
         {
             var data = new ChrCustomizationChoice();
+            packet.ResetBitReader();
             data.ChrCustomizationOptionID = packet.ReadUInt32("ChrCustomizationOptionID", indexes);
             data.ChrCustomizationChoiceID = packet.ReadUInt32("ChrCustomizationChoiceID", indexes);
             return data;
@@ -1614,6 +1643,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IChrCustomizationChoice ReadUpdateChrCustomizationChoice(Packet packet, params object[] indexes)
         {
             var data = new ChrCustomizationChoice();
+            packet.ResetBitReader();
             data.ChrCustomizationOptionID = packet.ReadUInt32("ChrCustomizationOptionID", indexes);
             data.ChrCustomizationChoiceID = packet.ReadUInt32("ChrCustomizationChoiceID", indexes);
             return data;
@@ -1622,6 +1652,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IQuestLog ReadCreateQuestLog(Packet packet, params object[] indexes)
         {
             var data = new QuestLog();
+            packet.ResetBitReader();
             data.QuestID = packet.ReadInt32("QuestID", indexes);
             data.StateFlags = packet.ReadUInt32("StateFlags", indexes);
             data.EndTime = packet.ReadUInt32("EndTime", indexes);
@@ -1637,6 +1668,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IQuestLog ReadUpdateQuestLog(Packet packet, params object[] indexes)
         {
             var data = new QuestLog();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             var rawMaskMask = new int[1];
             rawMaskMask[0] = (int)packet.ReadBits(1);
@@ -1685,6 +1717,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IArenaCooldown ReadCreateArenaCooldown(Packet packet, params object[] indexes)
         {
             var data = new ArenaCooldown();
+            packet.ResetBitReader();
             data.SpellID = packet.ReadInt32("SpellID", indexes);
             data.Charges = packet.ReadInt32("Charges", indexes);
             data.Flags = packet.ReadUInt32("Flags", indexes);
@@ -1698,6 +1731,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IArenaCooldown ReadUpdateArenaCooldown(Packet packet, params object[] indexes)
         {
             var data = new ArenaCooldown();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(8);
             var changesMask = new BitArray(rawChangesMask);
@@ -1740,6 +1774,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ICTROptions ReadCreateCTROptions(Packet packet, params object[] indexes)
         {
             var data = new CTROptions();
+            packet.ResetBitReader();
             data.ContentTuningConditionMask = packet.ReadInt32("ContentTuningConditionMask", indexes);
             data.Field_4 = packet.ReadUInt32("Field_4", indexes);
             data.ExpansionLevelMask = packet.ReadUInt32("ExpansionLevelMask", indexes);
@@ -1749,6 +1784,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ICTROptions ReadUpdateCTROptions(Packet packet, params object[] indexes)
         {
             var data = new CTROptions();
+            packet.ResetBitReader();
             data.ContentTuningConditionMask = packet.ReadInt32("ContentTuningConditionMask", indexes);
             data.Field_4 = packet.ReadUInt32("Field_4", indexes);
             data.ExpansionLevelMask = packet.ReadUInt32("ExpansionLevelMask", indexes);
@@ -1884,7 +1920,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.Customizations.UpdateMask[i])
                         {
-                            data.Customizations[i] = ReadUpdateChrCustomizationChoice(packet, data.Customizations[i] as ChrCustomizationChoice, indexes, "Customizations", i);
+                            data.Customizations[i] = ReadUpdateChrCustomizationChoice(packet, indexes, "Customizations", i);
                         }
                     }
                 }
@@ -1897,7 +1933,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                             if (noQuestLogChangesMask)
                                 data.QuestSessionQuestLog[i] = ReadCreateQuestLog(packet, indexes, "QuestSessionQuestLog", i);
                             else
-                                data.QuestSessionQuestLog[i] = ReadUpdateQuestLog(packet, data.QuestSessionQuestLog[i] as QuestLog, indexes, "QuestSessionQuestLog", i);
+                                data.QuestSessionQuestLog[i] = ReadUpdateQuestLog(packet, indexes, "QuestSessionQuestLog", i);
                         }
                     }
                 }
@@ -1907,7 +1943,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.ArenaCooldowns.UpdateMask[i])
                         {
-                            data.ArenaCooldowns[i] = ReadUpdateArenaCooldown(packet, data.ArenaCooldowns[i] as ArenaCooldown, indexes, "ArenaCooldowns", i);
+                            data.ArenaCooldowns[i] = ReadUpdateArenaCooldown(packet, indexes, "ArenaCooldowns", i);
                         }
                     }
                 }
@@ -2026,7 +2062,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
             {
                 if (changesMask[33])
                 {
-                    data.CtrOptions = ReadUpdateCTROptions(packet, data.CtrOptions as CTROptions, indexes, "CtrOptions");
+                    data.CtrOptions = ReadUpdateCTROptions(packet, indexes, "CtrOptions");
                 }
                 if (changesMask[34])
                 {
@@ -2050,7 +2086,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                         if (noQuestLogChangesMask)
                             data.QuestLog[i] = ReadCreateQuestLog(packet, indexes, "QuestLog", i);
                         else
-                            data.QuestLog[i] = ReadUpdateQuestLog(packet, data.QuestLog[i] as QuestLog, indexes, "QuestLog", i);
+                            data.QuestLog[i] = ReadUpdateQuestLog(packet, indexes, "QuestLog", i);
                     }
                 }
             }
@@ -2060,7 +2096,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 {
                     if (changesMask[214 + i])
                     {
-                        data.VisibleItems[i] = ReadUpdateVisibleItem(packet, data.VisibleItems[i] as VisibleItem, indexes, "VisibleItems", i);
+                        data.VisibleItems[i] = ReadUpdateVisibleItem(packet, indexes, "VisibleItems", i);
                     }
                 }
             }
@@ -2080,6 +2116,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ISkillInfo ReadCreateSkillInfo(Packet packet, params object[] indexes)
         {
             var data = new SkillInfo();
+            packet.ResetBitReader();
             for (var i = 0; i < 256; ++i)
             {
                 data.SkillLineID[i] = packet.ReadUInt16("SkillLineID", indexes, i);
@@ -2096,6 +2133,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ISkillInfo ReadUpdateSkillInfo(Packet packet, params object[] indexes)
         {
             var data = new SkillInfo();
+            packet.ResetBitReader();
             var rawChangesMask = new int[57];
             var rawMaskMask = new int[2];
             for (var i = 0; i < 1; ++i)
@@ -2148,6 +2186,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IRestInfo ReadCreateRestInfo(Packet packet, params object[] indexes)
         {
             var data = new RestInfo();
+            packet.ResetBitReader();
             data.Threshold = packet.ReadUInt32("Threshold", indexes);
             data.StateID = packet.ReadByte("StateID", indexes);
             return data;
@@ -2156,6 +2195,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IRestInfo ReadUpdateRestInfo(Packet packet, params object[] indexes)
         {
             var data = new RestInfo();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(3);
             var changesMask = new BitArray(rawChangesMask);
@@ -2315,6 +2355,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ISpellPctModByLabel ReadCreateSpellPctModByLabel(Packet packet, params object[] indexes)
         {
             var data = new SpellPctModByLabel();
+            packet.ResetBitReader();
             data.ModIndex = packet.ReadInt32("ModIndex", indexes);
             data.ModifierValue = packet.ReadSingle("ModifierValue", indexes);
             data.LabelID = packet.ReadInt32("LabelID", indexes);
@@ -2324,6 +2365,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ISpellPctModByLabel ReadUpdateSpellPctModByLabel(Packet packet, params object[] indexes)
         {
             var data = new SpellPctModByLabel();
+            packet.ResetBitReader();
             data.ModIndex = packet.ReadInt32("ModIndex", indexes);
             data.ModifierValue = packet.ReadSingle("ModifierValue", indexes);
             data.LabelID = packet.ReadInt32("LabelID", indexes);
@@ -2333,6 +2375,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ISpellFlatModByLabel ReadCreateSpellFlatModByLabel(Packet packet, params object[] indexes)
         {
             var data = new SpellFlatModByLabel();
+            packet.ResetBitReader();
             data.ModIndex = packet.ReadInt32("ModIndex", indexes);
             data.ModifierValue = packet.ReadInt32("ModifierValue", indexes);
             data.LabelID = packet.ReadInt32("LabelID", indexes);
@@ -2342,6 +2385,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ISpellFlatModByLabel ReadUpdateSpellFlatModByLabel(Packet packet, params object[] indexes)
         {
             var data = new SpellFlatModByLabel();
+            packet.ResetBitReader();
             data.ModIndex = packet.ReadInt32("ModIndex", indexes);
             data.ModifierValue = packet.ReadInt32("ModifierValue", indexes);
             data.LabelID = packet.ReadInt32("LabelID", indexes);
@@ -2351,6 +2395,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IResearch ReadCreateResearch(Packet packet, params object[] indexes)
         {
             var data = new Research();
+            packet.ResetBitReader();
             data.ResearchProjectID = packet.ReadInt16("ResearchProjectID", indexes);
             return data;
         }
@@ -2358,6 +2403,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IResearch ReadUpdateResearch(Packet packet, params object[] indexes)
         {
             var data = new Research();
+            packet.ResetBitReader();
             data.ResearchProjectID = packet.ReadInt16("ResearchProjectID", indexes);
             return data;
         }
@@ -2365,6 +2411,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IMawPower ReadCreateMawPower(Packet packet, params object[] indexes)
         {
             var data = new MawPower();
+            packet.ResetBitReader();
             data.Field_0 = packet.ReadInt32("Field_0", indexes);
             data.Field_4 = packet.ReadInt32("Field_4", indexes);
             data.Field_8 = packet.ReadInt32("Field_8", indexes);
@@ -2374,6 +2421,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IMawPower ReadUpdateMawPower(Packet packet, params object[] indexes)
         {
             var data = new MawPower();
+            packet.ResetBitReader();
             data.Field_0 = packet.ReadInt32("Field_0", indexes);
             data.Field_4 = packet.ReadInt32("Field_4", indexes);
             data.Field_8 = packet.ReadInt32("Field_8", indexes);
@@ -2383,6 +2431,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IMultiFloorExplore ReadCreateMultiFloorExplore(Packet packet, params object[] indexes)
         {
             var data = new MultiFloorExplore();
+            packet.ResetBitReader();
             data.WorldMapOverlayIDs = new int[packet.ReadUInt32()];
             for (var i = 0; i < data.WorldMapOverlayIDs.Length; ++i)
             {
@@ -2394,6 +2443,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IMultiFloorExplore ReadUpdateMultiFloorExplore(Packet packet, params object[] indexes)
         {
             var data = new MultiFloorExplore();
+            packet.ResetBitReader();
             data.WorldMapOverlayIDs = new int[packet.ReadUInt32()];
             for (var i = 0; i < data.WorldMapOverlayIDs.Length; ++i)
             {
@@ -2406,6 +2456,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IRecipeProgressionInfo ReadCreateRecipeProgressionInfo(Packet packet, params object[] indexes)
         {
             var data = new RecipeProgressionInfo();
+            packet.ResetBitReader();
             data.RecipeProgressionGroupID = packet.ReadUInt16("RecipeProgressionGroupID", indexes);
             data.Experience = packet.ReadUInt16("Experience", indexes);
             return data;
@@ -2414,6 +2465,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IRecipeProgressionInfo ReadUpdateRecipeProgressionInfo(Packet packet, params object[] indexes)
         {
             var data = new RecipeProgressionInfo();
+            packet.ResetBitReader();
             data.RecipeProgressionGroupID = packet.ReadUInt16("RecipeProgressionGroupID", indexes);
             data.Experience = packet.ReadUInt16("Experience", indexes);
             return data;
@@ -2422,6 +2474,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IActivePlayerUnk901 ReadCreateActivePlayerUnk901(Packet packet, params object[] indexes)
         {
             var data = new ActivePlayerUnk901();
+            packet.ResetBitReader();
             data.Field_0 = packet.ReadPackedGuid128("Field_0", indexes);
             data.Field_10 = packet.ReadInt32("Field_10", indexes);
             return data;
@@ -2430,6 +2483,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IActivePlayerUnk901 ReadUpdateActivePlayerUnk901(Packet packet, params object[] indexes)
         {
             var data = new ActivePlayerUnk901();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(3);
             var changesMask = new BitArray(rawChangesMask);
@@ -2452,6 +2506,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IQuestSession ReadCreateQuestSession(Packet packet, params object[] indexes)
         {
             var data = new QuestSession();
+            packet.ResetBitReader();
             data.Owner = packet.ReadPackedGuid128("Owner", indexes);
             for (var i = 0; i < 875; ++i)
             {
@@ -2463,6 +2518,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IQuestSession ReadUpdateQuestSession(Packet packet, params object[] indexes)
         {
             var data = new QuestSession();
+            packet.ResetBitReader();
             var rawChangesMask = new int[28];
             var rawMaskMask = new int[1];
             rawMaskMask[0] = (int)packet.ReadBits(28);
@@ -2496,6 +2552,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IReplayedQuest ReadCreateReplayedQuest(Packet packet, params object[] indexes)
         {
             var data = new ReplayedQuest();
+            packet.ResetBitReader();
             data.QuestID = packet.ReadInt32("QuestID", indexes);
             data.ReplayTime = packet.ReadUInt32("ReplayTime", indexes);
             return data;
@@ -2504,6 +2561,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IReplayedQuest ReadUpdateReplayedQuest(Packet packet, params object[] indexes)
         {
             var data = new ReplayedQuest();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(3);
             var changesMask = new BitArray(rawChangesMask);
@@ -2526,6 +2584,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ITraitEntry ReadCreateTraitEntry(Packet packet, params object[] indexes)
         {
             var data = new TraitEntry();
+            packet.ResetBitReader();
             data.TraitNodeID = packet.ReadInt32("TraitNodeID", indexes);
             data.TraitNodeEntryID = packet.ReadInt32("TraitNodeEntryID", indexes);
             data.Rank = packet.ReadInt32("Rank", indexes);
@@ -2536,6 +2595,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ITraitEntry ReadUpdateTraitEntry(Packet packet, params object[] indexes)
         {
             var data = new TraitEntry();
+            packet.ResetBitReader();
             data.TraitNodeID = packet.ReadInt32("TraitNodeID", indexes);
             data.TraitNodeEntryID = packet.ReadInt32("TraitNodeEntryID", indexes);
             data.Rank = packet.ReadInt32("Rank", indexes);
@@ -2597,7 +2657,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.Entries.UpdateMask[i])
                         {
-                            data.Entries[i] = ReadUpdateTraitEntry(packet, data.Entries[i] as TraitEntry, indexes, "Entries", i);
+                            data.Entries[i] = ReadUpdateTraitEntry(packet, indexes, "Entries", i);
                         }
                     }
                 }
@@ -2650,6 +2710,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ICraftingOrderItem ReadCreateCraftingOrderItem(Packet packet, params object[] indexes)
         {
             var data = new CraftingOrderItem();
+            packet.ResetBitReader();
             data.Field_0 = packet.ReadUInt64("Field_0", indexes);
             data.ItemGUID = packet.ReadPackedGuid128("ItemGUID", indexes);
             data.OwnerGUID = packet.ReadPackedGuid128("OwnerGUID", indexes);
@@ -2657,6 +2718,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
             data.Quantity = packet.ReadUInt32("Quantity", indexes);
             data.ReagentQuality = packet.ReadInt32("ReagentQuality", indexes);
             var hasDataSlotIndex = packet.ReadBit("HasDataSlotIndex", indexes);
+            packet.ResetBitReader();
             if (hasDataSlotIndex)
             {
                 data.DataSlotIndex = packet.ReadByte("DataSlotIndex", indexes);
@@ -2667,6 +2729,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static ICraftingOrderItem ReadUpdateCraftingOrderItem(Packet packet, params object[] indexes)
         {
             var data = new CraftingOrderItem();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(7);
             var changesMask = new BitArray(rawChangesMask);
@@ -2697,6 +2760,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 data.ReagentQuality = packet.ReadInt32("ReagentQuality", indexes);
             }
             var hasDataSlotIndex = packet.ReadBit("HasDataSlotIndex", indexes);
+            packet.ResetBitReader();
             if (changesMask[6])
             {
                 if (hasDataSlotIndex)
@@ -2730,6 +2794,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
             data.CustomerNotes = new string('*', (int)packet.ReadBits(10));
             var hasOutputItem = packet.ReadBit("HasOutputItem", indexes);
             var hasOutputItemData = packet.ReadBit("HasOutputItemData", indexes);
+            packet.ResetBitReader();
             for (var i = 0; i < data.Reagents.Count; ++i)
             {
                 data.Reagents[i] = ReadCreateCraftingOrderItem(packet, indexes, "Reagents", i);
@@ -2770,7 +2835,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.Reagents.UpdateMask[i])
                         {
-                            data.Reagents[i] = ReadUpdateCraftingOrderItem(packet, data.Reagents[i] as CraftingOrderItem, indexes, "Reagents", i);
+                            data.Reagents[i] = ReadUpdateCraftingOrderItem(packet, indexes, "Reagents", i);
                         }
                     }
                 }
@@ -2853,11 +2918,12 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 }
                 var hasOutputItem = packet.ReadBit("HasOutputItem", indexes);
                 var hasOutputItemData = packet.ReadBit("HasOutputItemData", indexes);
+                packet.ResetBitReader();
                 if (changesMask[22])
                 {
                     if (hasOutputItem)
                     {
-                        data.OutputItem = ReadUpdateCraftingOrderItem(packet, data.OutputItem as CraftingOrderItem, indexes, "OutputItem");
+                        data.OutputItem = ReadUpdateCraftingOrderItem(packet, indexes, "OutputItem");
                     }
                 }
                 if (changesMask[23])
@@ -2879,6 +2945,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
             var hasRecraftItemInfo = packet.ReadBit("HasRecraftItemInfo", indexes);
             data.Enchantments.Resize(packet.ReadBits(4));
             data.Gems.Resize(packet.ReadBits(2));
+            packet.ResetBitReader();
             if (hasRecraftItemInfo)
             {
                 Substructures.ItemHandler.ReadItemInstance(packet, indexes, "RecraftItemInfo");
@@ -2933,9 +3000,10 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
             }
             if (changesMask[2])
             {
-                data.Data = ReadUpdateCraftingOrderData(packet, data.Data as CraftingOrderData, indexes, "Data");
+                data.Data = ReadUpdateCraftingOrderData(packet, indexes, "Data");
             }
             var hasRecraftItemInfo = packet.ReadBit("HasRecraftItemInfo", indexes);
+            packet.ResetBitReader();
             if (changesMask[3])
             {
                 if (hasRecraftItemInfo)
@@ -2949,6 +3017,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IPersonalCraftingOrderCount ReadCreatePersonalCraftingOrderCount(Packet packet, params object[] indexes)
         {
             var data = new PersonalCraftingOrderCount();
+            packet.ResetBitReader();
             data.ProfessionID = packet.ReadInt32("ProfessionID", indexes);
             data.Count = packet.ReadUInt32("Count", indexes);
             return data;
@@ -2957,6 +3026,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IPersonalCraftingOrderCount ReadUpdatePersonalCraftingOrderCount(Packet packet, params object[] indexes)
         {
             var data = new PersonalCraftingOrderCount();
+            packet.ResetBitReader();
             data.ProfessionID = packet.ReadInt32("ProfessionID", indexes);
             data.Count = packet.ReadUInt32("Count", indexes);
             return data;
@@ -3227,6 +3297,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
             data.InsertItemsLeftToRight = packet.ReadBit("InsertItemsLeftToRight", indexes);
             data.HasPerksProgramPendingReward = packet.ReadBit("HasPerksProgramPendingReward", indexes);
             var hasQuestSession = packet.ReadBit("HasQuestSession", indexes);
+            packet.ResetBitReader();
             Substructures.PerksProgramHandler.ReadPerksVendorItem(packet, indexes, "FrozenPerksVendorItem");
             if (hasQuestSession)
             {
@@ -3374,7 +3445,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                         {
                             if (data.Research[i].UpdateMask[j])
                             {
-                                data.Research[i][j] = ReadUpdateResearch(packet, data.Research[i][j] as Research, indexes, "Research", i, j);
+                                data.Research[i][j] = ReadUpdateResearch(packet, indexes, "Research", i, j);
                             }
                         }
                     }
@@ -3565,7 +3636,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.SpellPctModByLabel.UpdateMask[i])
                         {
-                            data.SpellPctModByLabel[i] = ReadUpdateSpellPctModByLabel(packet, data.SpellPctModByLabel[i] as SpellPctModByLabel, indexes, "SpellPctModByLabel", i);
+                            data.SpellPctModByLabel[i] = ReadUpdateSpellPctModByLabel(packet, indexes, "SpellPctModByLabel", i);
                         }
                     }
                 }
@@ -3575,7 +3646,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.SpellFlatModByLabel.UpdateMask[i])
                         {
-                            data.SpellFlatModByLabel[i] = ReadUpdateSpellFlatModByLabel(packet, data.SpellFlatModByLabel[i] as SpellFlatModByLabel, indexes, "SpellFlatModByLabel", i);
+                            data.SpellFlatModByLabel[i] = ReadUpdateSpellFlatModByLabel(packet, indexes, "SpellFlatModByLabel", i);
                         }
                     }
                 }
@@ -3585,7 +3656,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.MawPowers.UpdateMask[i])
                         {
-                            data.MawPowers[i] = ReadUpdateMawPower(packet, data.MawPowers[i] as MawPower, indexes, "MawPowers", i);
+                            data.MawPowers[i] = ReadUpdateMawPower(packet, indexes, "MawPowers", i);
                         }
                     }
                 }
@@ -3595,7 +3666,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.MultiFloorExploration.UpdateMask[i])
                         {
-                            data.MultiFloorExploration[i] = ReadUpdateMultiFloorExplore(packet, data.MultiFloorExploration[i] as MultiFloorExplore, indexes, "MultiFloorExploration", i);
+                            data.MultiFloorExploration[i] = ReadUpdateMultiFloorExplore(packet, indexes, "MultiFloorExploration", i);
                         }
                     }
                 }
@@ -3605,7 +3676,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.RecipeProgression.UpdateMask[i])
                         {
-                            data.RecipeProgression[i] = ReadUpdateRecipeProgressionInfo(packet, data.RecipeProgression[i] as RecipeProgressionInfo, indexes, "RecipeProgression", i);
+                            data.RecipeProgression[i] = ReadUpdateRecipeProgressionInfo(packet, indexes, "RecipeProgression", i);
                         }
                     }
                 }
@@ -3615,7 +3686,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.ReplayedQuests.UpdateMask[i])
                         {
-                            data.ReplayedQuests[i] = ReadUpdateReplayedQuest(packet, data.ReplayedQuests[i] as ReplayedQuest, indexes, "ReplayedQuests", i);
+                            data.ReplayedQuests[i] = ReadUpdateReplayedQuest(packet, indexes, "ReplayedQuests", i);
                         }
                     }
                 }
@@ -3635,7 +3706,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.PersonalCraftingOrderCounts.UpdateMask[i])
                         {
-                            data.PersonalCraftingOrderCounts[i] = ReadUpdatePersonalCraftingOrderCount(packet, data.PersonalCraftingOrderCounts[i] as PersonalCraftingOrderCount, indexes, "PersonalCraftingOrderCounts", i);
+                            data.PersonalCraftingOrderCounts[i] = ReadUpdatePersonalCraftingOrderCount(packet, indexes, "PersonalCraftingOrderCounts", i);
                         }
                     }
                 }
@@ -3645,7 +3716,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.PvpInfo.UpdateMask[i])
                         {
-                            data.PvpInfo[i] = ReadUpdatePVPInfo(packet, data.PvpInfo[i] as PVPInfo, indexes, "PvpInfo", i);
+                            data.PvpInfo[i] = ReadUpdatePVPInfo(packet, indexes, "PvpInfo", i);
                         }
                     }
                 }
@@ -3655,7 +3726,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.CharacterRestrictions.UpdateMask[i])
                         {
-                            data.CharacterRestrictions[i] = ReadUpdateCharacterRestriction(packet, data.CharacterRestrictions[i] as CharacterRestriction, indexes, "CharacterRestrictions", i);
+                            data.CharacterRestrictions[i] = ReadUpdateCharacterRestriction(packet, indexes, "CharacterRestrictions", i);
                         }
                     }
                 }
@@ -3665,7 +3736,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.TraitConfigs.UpdateMask[i])
                         {
-                            data.TraitConfigs[i] = ReadUpdateTraitConfig(packet, data.TraitConfigs[i] as TraitConfig, indexes, "TraitConfigs", i);
+                            data.TraitConfigs[i] = ReadUpdateTraitConfig(packet, indexes, "TraitConfigs", i);
                         }
                     }
                 }
@@ -3675,7 +3746,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.CraftingOrders.UpdateMask[i])
                         {
-                            data.CraftingOrders[i] = ReadUpdateCraftingOrder(packet, data.CraftingOrders[i] as CraftingOrder, indexes, "CraftingOrders", i);
+                            data.CraftingOrders[i] = ReadUpdateCraftingOrder(packet, indexes, "CraftingOrders", i);
                         }
                     }
                 }
@@ -3708,7 +3779,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 }
                 if (changesMask[41])
                 {
-                    data.Skill = ReadUpdateSkillInfo(packet, data.Skill as SkillInfo, indexes, "Skill");
+                    data.Skill = ReadUpdateSkillInfo(packet, indexes, "Skill");
                 }
                 if (changesMask[42])
                 {
@@ -4008,6 +4079,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
             if (changesMask[98])
             {
                 var hasQuestSession = packet.ReadBit("HasQuestSession", indexes);
+                packet.ResetBitReader();
                 if (changesMask[111])
                 {
                     Substructures.PerksProgramHandler.ReadPerksVendorItem(packet, indexes, "FrozenPerksVendorItem");
@@ -4016,12 +4088,12 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 {
                     if (hasQuestSession)
                     {
-                        data.QuestSession = ReadUpdateQuestSession(packet, data.QuestSession as QuestSession, indexes, "QuestSession");
+                        data.QuestSession = ReadUpdateQuestSession(packet, indexes, "QuestSession");
                     }
                 }
                 if (changesMask[113])
                 {
-                    data.Field_1410 = ReadUpdateActivePlayerUnk901(packet, data.Field_1410 as ActivePlayerUnk901, indexes, "Field_1410");
+                    data.Field_1410 = ReadUpdateActivePlayerUnk901(packet, indexes, "Field_1410");
                 }
                 if (changesMask[118])
                 {
@@ -4054,7 +4126,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 {
                     if (changesMask[581 + i])
                     {
-                        data.RestInfo[i] = ReadUpdateRestInfo(packet, data.RestInfo[i] as RestInfo, indexes, "RestInfo", i);
+                        data.RestInfo[i] = ReadUpdateRestInfo(packet, indexes, "RestInfo", i);
                     }
                 }
             }
@@ -4174,6 +4246,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IGameObjectData ReadCreateGameObjectData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new GameObjectData();
+            packet.ResetBitReader();
             data.DisplayID = packet.ReadInt32("DisplayID", indexes);
             data.SpellVisualID = packet.ReadUInt32("SpellVisualID", indexes);
             data.StateSpellVisualID = packet.ReadUInt32("StateSpellVisualID", indexes);
@@ -4216,6 +4289,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IGameObjectData ReadUpdateGameObjectData(Packet packet, params object[] indexes)
         {
             var data = new GameObjectData();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(25);
             var changesMask = new BitArray(rawChangesMask);
@@ -4357,6 +4431,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IDynamicObjectData ReadCreateDynamicObjectData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new DynamicObjectData();
+            packet.ResetBitReader();
             data.Caster = packet.ReadPackedGuid128("Caster", indexes);
             data.Type = packet.ReadByte("Type", indexes);
             data.SpellVisual = ReadCreateSpellCastVisual(packet, indexes, "SpellVisual");
@@ -4369,6 +4444,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IDynamicObjectData ReadUpdateDynamicObjectData(Packet packet, params object[] indexes)
         {
             var data = new DynamicObjectData();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(7);
             var changesMask = new BitArray(rawChangesMask);
@@ -4386,7 +4462,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 }
                 if (changesMask[3])
                 {
-                    data.SpellVisual = ReadUpdateSpellCastVisual(packet, data.SpellVisual as SpellCastVisual, indexes, "SpellVisual");
+                    data.SpellVisual = ReadUpdateSpellCastVisual(packet, indexes, "SpellVisual");
                 }
                 if (changesMask[4])
                 {
@@ -4407,6 +4483,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override ICorpseData ReadCreateCorpseData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new CorpseData();
+            packet.ResetBitReader();
             data.DynamicFlags = packet.ReadUInt32("DynamicFlags", indexes);
             data.Owner = packet.ReadPackedGuid128("Owner", indexes);
             data.PartyGUID = packet.ReadPackedGuid128("PartyGUID", indexes);
@@ -4433,6 +4510,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override ICorpseData ReadUpdateCorpseData(Packet packet, params object[] indexes)
         {
             var data = new CorpseData();
+            packet.ResetBitReader();
             var rawChangesMask = new int[2];
             var rawMaskMask = new int[1];
             rawMaskMask[0] = (int)packet.ReadBits(2);
@@ -4458,7 +4536,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.Customizations.UpdateMask[i])
                         {
-                            data.Customizations[i] = ReadUpdateChrCustomizationChoice(packet, data.Customizations[i] as ChrCustomizationChoice, indexes, "Customizations", i);
+                            data.Customizations[i] = ReadUpdateChrCustomizationChoice(packet, indexes, "Customizations", i);
                         }
                     }
                 }
@@ -4622,6 +4700,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IAreaTriggerData ReadCreateAreaTriggerData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new AreaTriggerData();
+            packet.ResetBitReader();
             data.OverrideScaleCurve = ReadCreateScaleCurve(packet, indexes, "OverrideScaleCurve");
             data.Caster = packet.ReadPackedGuid128("Caster", indexes);
             data.Duration = packet.ReadUInt32("Duration", indexes);
@@ -4650,6 +4729,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override IAreaTriggerData ReadUpdateAreaTriggerData(Packet packet, params object[] indexes)
         {
             var data = new AreaTriggerData();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(23);
             var changesMask = new BitArray(rawChangesMask);
@@ -4659,7 +4739,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
             {
                 if (changesMask[1])
                 {
-                    data.OverrideScaleCurve = ReadUpdateScaleCurve(packet, data.OverrideScaleCurve as ScaleCurve, indexes, "OverrideScaleCurve");
+                    data.OverrideScaleCurve = ReadUpdateScaleCurve(packet, indexes, "OverrideScaleCurve");
                 }
                 if (changesMask[6])
                 {
@@ -4695,7 +4775,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 }
                 if (changesMask[14])
                 {
-                    data.SpellVisual = ReadUpdateSpellCastVisual(packet, data.SpellVisual as SpellCastVisual, indexes, "SpellVisual");
+                    data.SpellVisual = ReadUpdateSpellCastVisual(packet, indexes, "SpellVisual");
                 }
                 if (changesMask[15])
                 {
@@ -4727,23 +4807,23 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                 }
                 if (changesMask[2])
                 {
-                    data.ExtraScaleCurve = ReadUpdateScaleCurve(packet, data.ExtraScaleCurve as ScaleCurve, indexes, "ExtraScaleCurve");
+                    data.ExtraScaleCurve = ReadUpdateScaleCurve(packet, indexes, "ExtraScaleCurve");
                 }
                 if (changesMask[3])
                 {
-                    data.OverrideMoveCurveX = ReadUpdateScaleCurve(packet, data.OverrideMoveCurveX as ScaleCurve, indexes, "OverrideMoveCurveX");
+                    data.OverrideMoveCurveX = ReadUpdateScaleCurve(packet, indexes, "OverrideMoveCurveX");
                 }
                 if (changesMask[4])
                 {
-                    data.OverrideMoveCurveY = ReadUpdateScaleCurve(packet, data.OverrideMoveCurveY as ScaleCurve, indexes, "OverrideMoveCurveY");
+                    data.OverrideMoveCurveY = ReadUpdateScaleCurve(packet, indexes, "OverrideMoveCurveY");
                 }
                 if (changesMask[5])
                 {
-                    data.OverrideMoveCurveZ = ReadUpdateScaleCurve(packet, data.OverrideMoveCurveZ as ScaleCurve, indexes, "OverrideMoveCurveZ");
+                    data.OverrideMoveCurveZ = ReadUpdateScaleCurve(packet, indexes, "OverrideMoveCurveZ");
                 }
                 if (changesMask[22])
                 {
-                    data.VisualAnim = ReadUpdateVisualAnim(packet, data.VisualAnim as VisualAnim, indexes, "VisualAnim");
+                    data.VisualAnim = ReadUpdateVisualAnim(packet, indexes, "VisualAnim");
                 }
             }
             return data;
@@ -4752,6 +4832,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override ISceneObjectData ReadCreateSceneObjectData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new SceneObjectData();
+            packet.ResetBitReader();
             data.ScriptPackageID = packet.ReadInt32("ScriptPackageID", indexes);
             data.RndSeedVal = packet.ReadUInt32("RndSeedVal", indexes);
             data.CreatedBy = packet.ReadPackedGuid128("CreatedBy", indexes);
@@ -4762,6 +4843,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public override ISceneObjectData ReadUpdateSceneObjectData(Packet packet, params object[] indexes)
         {
             var data = new SceneObjectData();
+            packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(5);
             var changesMask = new BitArray(rawChangesMask);
@@ -4792,6 +4874,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IConversationLine ReadCreateConversationLine(Packet packet, params object[] indexes)
         {
             var data = new ConversationLine();
+            packet.ResetBitReader();
             data.ConversationLineID = packet.ReadInt32("ConversationLineID", indexes);
             data.StartTime = packet.ReadUInt32("StartTime", indexes);
             data.UiCameraID = packet.ReadInt32("UiCameraID", indexes);
@@ -4804,6 +4887,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public static IConversationLine ReadUpdateConversationLine(Packet packet, params object[] indexes)
         {
             var data = new ConversationLine();
+            packet.ResetBitReader();
             data.ConversationLineID = packet.ReadInt32("ConversationLineID", indexes);
             data.StartTime = packet.ReadUInt32("StartTime", indexes);
             data.UiCameraID = packet.ReadInt32("UiCameraID", indexes);
@@ -4879,7 +4963,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     data.Lines = Enumerable.Range(0, (int)packet.ReadBits(32)).Select(x => new ConversationLine()).Cast<IConversationLine>().ToArray();
                     for (var i = 0; i < data.Lines.Length; ++i)
                     {
-                        data.Lines[i] = ReadUpdateConversationLine(packet, data.Lines[i] as ConversationLine, indexes, "Lines", i);
+                        data.Lines[i] = ReadUpdateConversationLine(packet, indexes, "Lines", i);
                     }
                 }
             }
@@ -4900,7 +4984,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
                     {
                         if (data.Actors.UpdateMask[i])
                         {
-                            data.Actors[i] = ReadUpdateConversationActor(packet, data.Actors[i] as ConversationActor, indexes, "Actors", i);
+                            data.Actors[i] = ReadUpdateConversationActor(packet, indexes, "Actors", i);
                         }
                     }
                 }
