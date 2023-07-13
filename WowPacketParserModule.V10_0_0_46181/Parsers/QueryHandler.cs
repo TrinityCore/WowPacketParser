@@ -142,9 +142,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             quest.AreaGroupID = (uint)packet.ReadInt32("AreaGroupID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
-                quest.TimeAllowed = (ulong)packet.ReadInt64("TimeAllowed");
+                quest.TimeAllowed = packet.ReadInt64("TimeAllowed");
             else
-                quest.TimeAllowed = (uint)packet.ReadInt32("TimeAllowed");
+                quest.TimeAllowed = packet.ReadInt32("TimeAllowed");
 
             var objectiveCount = packet.ReadUInt32("ObjectiveCount");
             quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");

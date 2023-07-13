@@ -182,7 +182,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             quest.SoundAccept = packet.ReadUInt32("AcceptedSoundKitID");
             quest.SoundTurnIn = packet.ReadUInt32("CompleteSoundKitID");
             quest.AreaGroupID = packet.ReadUInt32("AreaGroupID");
-            quest.TimeAllowed = packet.ReadUInt32("TimeAllowed");
+            quest.TimeAllowed = packet.ReadInt32("TimeAllowed");
             uint cliQuestInfoObjective = packet.ReadUInt32("CliQuestInfoObjective");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
                 quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");

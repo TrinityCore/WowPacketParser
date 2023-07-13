@@ -190,7 +190,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             quest.SoundAccept = (uint)packet.ReadInt32("AcceptedSoundKitID");
             quest.SoundTurnIn = (uint)packet.ReadInt32("CompleteSoundKitID");
             quest.AreaGroupID = (uint)packet.ReadInt32("AreaGroupID");
-            quest.TimeAllowed = (uint)packet.ReadInt32("TimeAllowed");
+            quest.TimeAllowed = packet.ReadInt32("TimeAllowed");
             uint objectiveCount = packet.ReadUInt32("ObjectiveCount");
             quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");
             quest.QuestRewardID = packet.ReadInt32("TreasurePickerID");
