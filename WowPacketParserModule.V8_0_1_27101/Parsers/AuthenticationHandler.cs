@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Text;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -108,11 +109,15 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                 if (hasNewBuildKeys)
                 {
+                    var newBuildKey = new byte[16];
+                    var someKey = new byte[16];
                     for (var i = 0; i < 16; i++)
                     {
-                        packet.ReadBytes("NewBuildKey", 16);
-                        packet.ReadBytes("SomeKey", 16);
+                        newBuildKey[i] = packet.ReadByte();
+                        someKey[i] = packet.ReadByte();
                     }
+                    packet.AddValue("NewBuildKey", Encoding.UTF8.GetString(newBuildKey));
+                    packet.AddValue("SomeKey", Encoding.UTF8.GetString(someKey));
                 }
 
                 for (var i = 0; i < realms; ++i)

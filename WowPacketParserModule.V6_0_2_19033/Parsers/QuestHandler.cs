@@ -490,11 +490,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int16 = packet.ReadInt32("QuestGiverStatusCount");
             for (var i = 0; i < int16; ++i)
             {
-                packet.ReadPackedGuid128("Guid");
+                packet.ReadPackedGuid128("Guid", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
-                    packet.ReadUInt64E<QuestGiverStatus4x>("Status");
+                    packet.ReadUInt64E<QuestGiverStatus4x>("Status", i);
                 else
-                    packet.ReadUInt32E<QuestGiverStatus4x>("Status");
+                    packet.ReadUInt32E<QuestGiverStatus4x>("Status", i);
             }
         }
 
