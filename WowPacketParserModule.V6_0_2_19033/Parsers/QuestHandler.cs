@@ -356,6 +356,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             quest.QuestTurnTargetName = packet.ReadWoWString("PortraitTurnInName", bits2365);
             quest.QuestCompletionLog = packet.ReadWoWString("QuestCompletionLog", bits2429);
 
+            ObjectName objectName = new ObjectName
+            {
+                ObjectType = StoreNameType.Quest,
+                ID = (int?)quest.ID,
+                Name = quest.LogTitle
+            };
+            Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+
             if (ClientLocale.PacketLocale != LocaleConstant.enUS)
             {
                 LocalesQuest localesQuest = new LocalesQuest

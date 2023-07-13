@@ -241,6 +241,14 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             for (int i = 0; i < conditionalQuestCompletionLogCount; i++)
                 QuestHandler.ReadConditionalQuestText(packet, "ConditionalQuestCompletionLog", i);
 
+            ObjectName objectName = new ObjectName
+            {
+                ObjectType = StoreNameType.Quest,
+                ID = (int?)quest.ID,
+                Name = quest.LogTitle
+            };
+            Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+
             if (ClientLocale.PacketLocale != LocaleConstant.enUS)
             {
                 LocalesQuest localesQuest = new LocalesQuest
