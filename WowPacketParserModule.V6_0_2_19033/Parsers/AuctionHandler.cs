@@ -17,7 +17,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleServerAuctionHello(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+            {
+                packet.ReadUInt32("PurchasedItemDeliveryDelay");
+                packet.ReadUInt32("CancelledItemDeliveryDelay");
+            }
+            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
                 packet.ReadUInt32("DeliveryDelay");
             packet.ReadBit("OpenForBusiness");
 

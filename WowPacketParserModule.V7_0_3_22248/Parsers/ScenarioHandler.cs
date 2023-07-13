@@ -53,6 +53,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_SCENARIO_VACATE)]
         public static void HandleScenarioVacate(Packet packet)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                packet.ReadPackedGuid128("ScenarioGUID");
             packet.ReadInt32("ScenarioID");
             packet.ReadInt32("Unk1");
             packet.ReadBits("Unk2", 2);

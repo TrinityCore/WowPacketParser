@@ -79,6 +79,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 var horde = packet.ReadBit(); // NumPlayersHorde
                 var alliance = packet.ReadBit(); // NumPlayersAlliance
                 var trialExpiration = packet.ReadBit(); // ExpansionTrialExpiration
+                var hasNewBuildKeys = false;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                    hasNewBuildKeys = packet.ReadBit();
 
                 packet.ResetBitReader();
                 packet.ReadUInt32("BillingPlan");
@@ -101,6 +104,15 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         packet.ReadInt64("ExpansionTrialExpiration");
                     else
                         packet.ReadInt32("ExpansionTrialExpiration");
+                }
+
+                if (hasNewBuildKeys)
+                {
+                    for (var i = 0; i < 16; i++)
+                    {
+                        packet.ReadBytes("NewBuildKey", 16);
+                        packet.ReadBytes("SomeKey", 16);
+                    }
                 }
 
                 for (var i = 0; i < realms; ++i)

@@ -21,7 +21,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt32("HealingDone", idx);
             var statsCount = packet.ReadUInt32("StatsCount", idx);
             packet.ReadInt32("PrimaryTalentTree", idx);
-            packet.ReadInt32E<Gender>("Sex", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                packet.ReadByteE<Gender>("Sex", idx);
+            else
+                packet.ReadInt32E<Gender>("Sex", idx);
             packet.ReadInt32E<Race>("Race", idx);
             packet.ReadInt32E<Class>("Class", idx);
             packet.ReadInt32("CreatureID", idx);

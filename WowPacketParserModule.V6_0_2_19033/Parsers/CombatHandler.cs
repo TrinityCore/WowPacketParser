@@ -211,6 +211,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("ArbiterGUID");
             packet.ReadPackedGuid128("RequestedByGUID");
             packet.ReadPackedGuid128("RequestedByWowAccount");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                packet.ReadBit("ToTheDeath");
         }
 
         [Parser(Opcode.CMSG_DUEL_RESPONSE)]
@@ -224,6 +226,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleCanDuel(Packet packet)
         {
             packet.ReadPackedGuid128("TargetGUID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                packet.ReadBit("ToTheDeath");
         }
 
         [Parser(Opcode.SMSG_PVP_CREDIT)]

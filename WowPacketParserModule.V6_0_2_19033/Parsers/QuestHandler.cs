@@ -470,7 +470,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleQuestgiverStatus(Packet packet)
         {
             packet.ReadPackedGuid128("QuestGiverGUID");
-            packet.ReadUInt32E<QuestGiverStatus4x>("StatusFlags");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                packet.ReadUInt64E<QuestGiverStatus4x>("Status");
+            else
+                packet.ReadUInt32E<QuestGiverStatus4x>("Status");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_STATUS_MULTIPLE)]
@@ -480,7 +483,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < int16; ++i)
             {
                 packet.ReadPackedGuid128("Guid");
-                packet.ReadUInt32E<QuestGiverStatus4x>("Status");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                    packet.ReadUInt64E<QuestGiverStatus4x>("Status");
+                else
+                    packet.ReadUInt32E<QuestGiverStatus4x>("Status");
             }
         }
 

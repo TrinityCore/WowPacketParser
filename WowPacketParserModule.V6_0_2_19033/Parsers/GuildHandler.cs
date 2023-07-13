@@ -284,6 +284,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadTime("DateUpdated", i);
                 packet.ReadUInt64("Quantity", i);
                 packet.ReadPackedGuid128("PlayerGUID", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                    packet.ReadInt32("Unused_10_1_5");
 
                 packet.ReadInt32("Flags", i);
             }

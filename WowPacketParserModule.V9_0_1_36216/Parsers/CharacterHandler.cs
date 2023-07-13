@@ -296,7 +296,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var customizationsCount = packet.ReadUInt32("CustomizationsCount");
             packet.ReadByte("NewSexID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
-                packet.ReadByteE<Race>("CustomizedRace");
+                packet.ReadInt32E<Race>("CustomizedRace");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                packet.ReadInt32("CustomizedChrModelID");
             for (var i = 0; i < customizationsCount; i++)
                 ReadChrCustomizationChoice(packet, "Customizations", i);
         }

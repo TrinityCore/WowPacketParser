@@ -127,6 +127,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadBit("Unused1000");
             }
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+            {
+                packet.ReadBit("ContentTrackingEnabled");
+            }
+
             {
                 packet.ResetBitReader();
                 packet.ReadBit("ToastsDisabled", "QuickJoinConfig");

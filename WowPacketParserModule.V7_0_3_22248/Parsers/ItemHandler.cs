@@ -71,12 +71,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32("Muid");
             packet.ReadUInt32("Slot");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                packet.ReadInt32("ItemType");
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
                 Substructures.ItemHandler.ReadItemInstance(packet, "ItemInstance");
 
             packet.ResetBitReader();
 
-            packet.ReadBits("ItemType", 2);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_1_5_50232))
+            {
+                var itemTypeBits = 2;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_1_36216))
+                    itemTypeBits = 3;
+                packet.ReadBits("ItemType", itemTypeBits);
+            }
         }
 
         [Parser(Opcode.SMSG_SOCKET_GEMS_SUCCESS)]

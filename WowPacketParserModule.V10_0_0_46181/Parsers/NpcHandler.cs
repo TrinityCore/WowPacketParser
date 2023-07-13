@@ -38,6 +38,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
                 packet.ReadInt64("Price", i);
                 vendor.Slot = packet.ReadInt32("Muid", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                    vendor.Type = (uint)packet.ReadInt32("Type", i);
                 packet.ReadInt32("Durability", i);
                 int buyCount = packet.ReadInt32("StackCount", i);
                 int maxCount = packet.ReadInt32("Quantity", i);
@@ -45,7 +47,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 vendor.PlayerConditionID = packet.ReadUInt32("PlayerConditionFailed", i);
 
                 packet.ResetBitReader();
-                vendor.Type = packet.ReadBits("Type", 3, i);
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_1_5_50232))
+                    vendor.Type = packet.ReadBits("Type", 3, i);
                 packet.ReadBit("Locked", i);
                 vendor.IgnoreFiltering = packet.ReadBit("DoNotFilterOnVendor", i);
                 packet.ReadBit("Refundable", i);

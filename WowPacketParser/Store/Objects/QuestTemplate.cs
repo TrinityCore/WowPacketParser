@@ -250,7 +250,7 @@ namespace WowPacketParser.Store.Objects
         public uint? AreaGroupID;
 
         [DBFieldName("TimeAllowed")]
-        public uint? TimeAllowed;
+        public ulong? TimeAllowed;
 
         [DBFieldName("AllowableRaces", TargetedDatabaseFlag.TillCataclysm)]
         public RaceMask? AllowableRaces;

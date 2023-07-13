@@ -108,5 +108,32 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             if (hasRechargeCycleStartTime)
                 packet.ReadTime64("RechargeCycleStartTime");
         }
+
+        [Parser(Opcode.SMSG_DISPLAY_TOAST)]
+        public static void HandleDisplayToast(Packet packet)
+        {
+            packet.ReadUInt64("Quantity");
+
+            packet.ReadByte("DisplayToastMethod");
+            packet.ReadUInt32("QuestID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Mailed");
+            var type = packet.ReadBits("Type", 2);
+            packet.ReadBit("IsSecondaryResult");
+
+            if (type == 0)
+            {
+                packet.ReadBit("BonusRoll");
+                Substructures.ItemHandler.ReadItemInstance(packet);
+                packet.ReadInt32("LootSpec");
+                packet.ReadSByte("Gender");
+                packet.ReadInt32("ItemQuantity?");
+            }
+
+            if (type == 1)
+                packet.ReadUInt32("CurrencyID");
+        }
     }
 }
