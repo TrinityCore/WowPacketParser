@@ -56,7 +56,7 @@ namespace WowPacketParser.SQL.Builders
                 templateDb,
                 x =>
                 {
-                    var comment = "SpellId : " + x.spellId.ToString();
+                    var comment = $"Spell: {StoreGetters.GetName(StoreNameType.Spell, (int)x.spellId)}";
                     if ((x.AreaTriggerCreatePropertiesId & 0x80000000) != 0)
                         comment += " CANNOT FIND PROPERTIES ID, USED SPELL ID AS KEY (NEEDS MANUAL CORRECTION)";
 
