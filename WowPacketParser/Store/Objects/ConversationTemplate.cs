@@ -35,7 +35,8 @@ namespace WowPacketParser.Store.Objects
         public override void LoadValuesFromUpdateFields()
         {
             Id = (uint)ObjectData.EntryID;
-            LastLineEndTime = (uint)ConversationData.LastLineEndTime;
+            if (ConversationData.LastLineEndTime.HasValue)
+                LastLineEndTime = (uint)ConversationData.LastLineEndTime;
 
             var actorTemplates = new List<ConversationActorTemplate>();
             var actors = ConversationData.Actors;
