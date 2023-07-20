@@ -177,7 +177,7 @@ namespace WowPacketParser.SQL.Builders
 
             var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateDifficulties);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateDifficulties.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateDifficulties.ToArray(), templatesDb, x => string.Empty);
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateDifficulties.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateDifficulties.ToArray(), templatesDb, StoreNameType.Unit);
         }
 
         [BuilderMethod(Units = true)]
