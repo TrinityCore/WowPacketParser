@@ -211,12 +211,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("BoostInProgress", idx);
             packet.ReadBits("UnkWod61x", 5, idx);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
-            {
-                packet.ReadBit("RPEUpgradeEligible", idx);
-                packet.ReadBit("QuestClearAvailable", idx);
-            }
-
             for (var j = 0; j < mailSenderLengths.Length; ++j)
                 mailSenderLengths[j] = packet.ReadBits(6);
 
