@@ -33,8 +33,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ResetBitReader();
 
             packet.ReadBit("Repeatable", idx);
+
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
-                packet.ReadBit("Ignored");
+                packet.ReadBit("Ignored", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                packet.ReadBit("Important", idx);
 
             int titleBits;
             if (ClientVersion.InVersion(ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683))
