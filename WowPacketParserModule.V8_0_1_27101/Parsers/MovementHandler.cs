@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -112,9 +113,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
 
             Vector3 endpos = new Vector3();
+
+            double overallDist = 0.0f;
             for (int i = 0; i < pointsCount; i++)
             {
                 var spot = packet.ReadVector3();
+
+                // euclidean distance
+                overallDist += Math.Sqrt(Math.Pow(spot.X - pos.X, 2) + Math.Pow(spot.Y - pos.Y, 2) + Math.Pow(spot.Z - pos.Z, 2));
 
                 // client always taking first point
                 if (i == 0)
@@ -177,6 +183,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 monsterMove.PackedPoints.Add(vec);
                 packet.AddValue("WayPoints", vec, indexes, i);
             }
+
+            float moveTimeInSec = (float)monsterMove.MoveTime / 1000;
+            float speedXY = (float)overallDist / moveTimeInSec;
+            packet.AddValue("CalculatedSpeedXY", speedXY, indexes);
         }
 
         public static void ReadMovementMonsterSpline(Packet packet, Vector3 pos, params object[] indexes)
