@@ -6,6 +6,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class BattlegroundHandler
     {
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN, ClientVersionBuild.V8_1_5_29683)]
+        public static void HandleBattlemasterJoin(Packet packet)
+        {
+            var queueCount = packet.ReadInt32();
+            packet.ReadByte("Roles");
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadInt32("BlacklistMap", i);
+
+            for (int i = 0; i < queueCount; i++)
+                V6_0_2_19033.Parsers.BattlegroundHandler.ReadPackedBattlegroundQueueTypeID(packet);
+        }
+
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA)]
         public static void HandleBattlemasterJoinArena(Packet packet)
         {
@@ -161,6 +174,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadInt32("Rank");
             }
             packet.ReadBit("Disqualified");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_INIT)]
+        public static void HandleBattlegroundInit(Packet packet)
+        {
+            packet.ReadInt32("ServerTime");
+            packet.ReadInt16("MaxPoints");
         }
     }
 }
