@@ -31,11 +31,40 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ResetBitReader();
             packet.ReadBit("field_24", indexes);
         }
-        
+
         [Parser(Opcode.SMSG_MYTHIC_PLUS_SEASON_DATA)]
         public static void HandleMythicPlusSeasonData(Packet packet)
         {
            packet.ReadBit("IsMythicPlusActive");
+        }
+
+        [Parser(Opcode.SMSG_CHALLENGE_MODE_COMPLETE, ClientVersionBuild.V9_1_0_39185)]
+        public static void HandleChallengeModeCompleted910(Packet packet)
+        {
+            Substructures.MythicPlusHandler.ReadMythicPlusRun(packet, "MythicPlusRun");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+                packet.ReadSingle("NewDungeonScore");
+            else
+                packet.ReadInt32("NewDungeonScore");
+
+            var memberCount = packet.ReadUInt32("MemberCount");
+
+            packet.ResetBitReader();
+            packet.ReadBit("IsPracticeRun");
+            packet.ReadBit("IsAffixRecorded");
+            packet.ReadBit("IsMapRecord");
+
+            for (var i = 0; i < memberCount; ++i)
+            {
+                packet.ReadPackedGuid128("PlayerGUID", i);
+
+                packet.ResetBitReader();
+                var nameLen = packet.ReadBits(6);
+                packet.ReadBit("IsEligibleForScore");
+
+                packet.ReadWoWString("PlayerName", nameLen, i);
+            }
         }
     }
 }
