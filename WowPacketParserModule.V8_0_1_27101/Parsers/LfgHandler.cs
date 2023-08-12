@@ -72,7 +72,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
                 bgQueueIdsCount = packet.ReadUInt32("BgQueueIDCount");
             else
-                packet.ReadUInt64("BgQueueID");
+                V6_0_2_19033.Parsers.BattlegroundHandler.ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadInt32("GroupFinderActivityID");
             var membersCount = packet.ReadUInt32("MembersCount");
 
@@ -80,7 +80,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadUInt32("JoinSlot", i);
 
             for (var i = 0; i < bgQueueIdsCount; i++)
-                packet.ReadUInt64("BgQueueID");
+                V6_0_2_19033.Parsers.BattlegroundHandler.ReadPackedBattlegroundQueueTypeID(packet);
 
             packet.ResetBitReader();
             packet.ReadBit("IsBeginning");

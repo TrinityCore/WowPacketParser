@@ -15,7 +15,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             packet.ReadByte("MinLevel");
             packet.ReadByte("MaxLevel");
             var battlefieldsCount = packet.ReadUInt32("BattlefieldsCount");
-            for (var i = 0; i < battlefieldsCount; ++i) 
+            for (var i = 0; i < battlefieldsCount; ++i)
                 packet.ReadInt32("Battlefield", i);
 
             packet.ResetBitReader();
@@ -26,7 +26,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN)]
         public static void HandleBattlemasterJoin(Packet packet)
         {
-            packet.ReadInt64("QueueID");
+            V6_0_2_19033.Parsers.BattlegroundHandler.ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadByte("Roles");
 
             for (int i = 0; i < 2; i++)

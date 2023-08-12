@@ -87,7 +87,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE)]
         public static void HandleBFMgrQueueInvite(Packet packet)
         {
-            packet.ReadInt64("QueueID");
+            V6_0_2_19033.Parsers.BattlegroundHandler.ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadByte("BattleState");
 
             packet.ReadInt32("Timeout");
@@ -103,7 +103,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_REQUEST_RESPONSE)]
         public static void HandleBFMgrQueueRequestResponse(Packet packet)
         {
-            packet.ReadInt64("QueueID");
+            V6_0_2_19033.Parsers.BattlegroundHandler.ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadInt32<AreaId>("AreaID");
             packet.ReadSByte("Result");
             packet.ReadPackedGuid128("FailedPlayerGUID");
@@ -118,7 +118,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("ClearedAFK");
             packet.ReadBit("Relocated");
             packet.ReadBit("OnOffense");
-            packet.ReadUInt64("QueueID");
+            V6_0_2_19033.Parsers.BattlegroundHandler.ReadPackedBattlegroundQueueTypeID(packet);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST)]

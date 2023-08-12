@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -373,7 +374,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("PartyIndex");
             packet.ReadByteE<LfgRoleCheckStatus>("RoleCheckStatus");
             var joinSlotsCount = packet.ReadInt32("JoinSlotsCount");
-            packet.ReadUInt64("BgQueueID");
+            BattlegroundHandler.ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadInt32("ActivityID"); // NC
             var membersCount = packet.ReadInt32("MembersCount");
 

@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -6,6 +7,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class BattlegroundHandler
     {
+        public static void ReadPackedBattlegroundQueueTypeID(Packet packet, params object[] indexes)
+        {
+            var packedQueueId = packet.ReadUInt64();
+            var battlemasterListId = packedQueueId & 0xFFFF;
+            var type = (packedQueueId >> 16) & 0xF;
+            var isRated = (packedQueueId >> 20) & 1;
+            var teamSize = (packedQueueId >> 24) & 0x3F;
+            packet.AddValue("PackedBattlegroundQueueTypeID", $"0x{packedQueueId:X} | BattlemasterListId={battlemasterListId} Type={type} ({(BattlegroundQueueIdType)type}) IsRated={isRated} TeamSize={teamSize}", indexes);
+        }
+
         public static void ReadBattlefieldStatus_Header(Packet packet, params object[] indexes)
         {
             LfgHandler.ReadCliRideTicket(packet, indexes);
@@ -14,14 +25,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
                 queueIdCount = packet.ReadUInt32();
             else
-                packet.ReadUInt64("QueueID", indexes);
+                ReadPackedBattlegroundQueueTypeID(packet, indexes);
 
             packet.ReadByte("RangeMin", indexes);
             packet.ReadByte("RangeMax", indexes);
             packet.ReadByte("TeamSize", indexes);
             packet.ReadInt32("InstanceID", indexes);
             for (var i = 0u; i < queueIdCount; ++i)
-                packet.ReadUInt64("QueueID", indexes, i);
+                ReadPackedBattlegroundQueueTypeID(packet, indexes);
 
             packet.ResetBitReader();
             packet.ReadBit("RegisteredMatch", indexes);
@@ -61,14 +72,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_BF_MGR_QUEUE_INVITE_RESPONSE)]
         public static void HandleBattlefieldMgrEntryOrQueueInviteResponse(Packet packet)
         {
-            packet.ReadInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadBit("AcceptedInvite");
         }
 
         [Parser(Opcode.CMSG_BF_MGR_QUEUE_EXIT_REQUEST)]
         public static void HandleBattlefieldMgrExitRequest(Packet packet)
         {
-            packet.ReadInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
@@ -82,7 +93,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN)]
         public static void HandleBattlemasterJoin(Packet packet)
         {
-            packet.ReadInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadByte("Roles");
 
             for (int i = 0; i < 2; i++)
@@ -344,7 +355,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBattlefieldStatus_Failed(Packet packet)
         {
             LfgHandler.ReadCliRideTicket(packet);
-            packet.ReadInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadInt32("Reason");
             packet.ReadPackedGuid128("ClientID");
         }
@@ -372,7 +383,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECTED)]
         public static void HandleBFMgrEjected(Packet packet)
         {
-            packet.ReadInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadByte("BattleState");
             packet.ReadByte("Reason");
             packet.ReadBit("Relocated");
@@ -381,7 +392,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_REQUEST_RESPONSE)]
         public static void HandleBFMgrQueueRequestResponse(Packet packet)
         {
-            packet.ReadInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadInt32<AreaId>("AreaID");
             packet.ReadSByte("BattleState");
             packet.ReadPackedGuid128("FailedPlayerGUID");
@@ -392,7 +403,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE)]
         public static void HandleBFMgrQueueInvite(Packet packet)
         {
-            packet.ReadInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadByte("BattleState");
 
             packet.ReadInt32("Timeout");        // unconfirmed order
@@ -435,7 +446,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
         public static void HandleBFMgrEjectPending(Packet packet)
         {
-            packet.ReadUInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadBit("Remove");
         }
 
@@ -449,13 +460,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadUInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE)]
         public static void HandleBFMgrEntryInvite(Packet packet)
         {
-            packet.ReadUInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadInt32<AreaId>("AreaID");
             packet.ReadTime("ExpireTime");
         }
@@ -463,7 +474,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGED)]
         public static void HandleBFMgrStateChanged(Packet packet)
         {
-            packet.ReadUInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadInt32("State");
         }
 
@@ -485,14 +496,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_DROP_TIMER_STARTED)]
         public static void HandleBFMgrDropTimerStarted(Packet packet)
         {
-            packet.ReadUInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
             packet.ReadInt32("Time");
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_DROP_TIMER_CANCELED)]
         public static void HandleBFMgrDropTimerCanceled(Packet packet)
         {
-            packet.ReadUInt64("QueueID");
+            ReadPackedBattlegroundQueueTypeID(packet);
         }
     }
 }
