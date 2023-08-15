@@ -42,5 +42,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid();
             packet.ReadUInt32<SpellId>("SpellID");
         }
+
+        [Parser(Opcode.SMSG_UPDATE_AURA_DURATION)] // 2.4.3
+        public static void HandleUpdateAuraDuration(Packet packet)
+        {
+            packet.ReadByte("Slot");
+            packet.ReadUInt32("Duration");
+        }
     }
 }
