@@ -21,7 +21,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("EmoteOnIncompleteDelay", TargetedDatabaseFlag.SinceWarlordsOfDraenor)]
         public uint? EmoteOnIncompleteDelay;
 
-        [DBFieldName("CompletionText")]
+        [DBFieldName("CompletionText", LocaleConstant.enUS)]
         public string CompletionText;
 
         [DBFieldName("VerifiedBuild")]

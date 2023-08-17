@@ -19,16 +19,16 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("modelid", TargetedDatabaseFlag.TillWarlordsOfDraenor, 4)]
         public uint?[] ModelIDs;
 
-        [DBFieldName("name")]
+        [DBFieldName("name", LocaleConstant.enUS, nullable: true)]
         public string Name;
 
-        [DBFieldName("femaleName", TargetedDatabaseFlag.SinceCataclysm | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("femaleName", TargetedDatabaseFlag.SinceCataclysm | TargetedDatabaseFlag.AnyClassic, LocaleConstant.enUS, nullable: true)]
         public string FemaleName;
 
-        [DBFieldName("subname", nullable: true)]
+        [DBFieldName("subname", LocaleConstant.enUS, nullable: true)]
         public string SubName;
 
-        [DBFieldName("TitleAlt", TargetedDatabaseFlag.SinceWarlordsOfDraenor /*Mists of Pandaria*/ | TargetedDatabaseFlag.AnyClassic, nullable: true)]
+        [DBFieldName("TitleAlt", TargetedDatabaseFlag.SinceWarlordsOfDraenor /*Mists of Pandaria*/ | TargetedDatabaseFlag.AnyClassic, LocaleConstant.enUS, nullable: true)]
         public string TitleAlt;
 
         [DBFieldName("IconName", nullable: true)]

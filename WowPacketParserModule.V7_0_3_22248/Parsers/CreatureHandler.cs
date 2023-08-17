@@ -130,8 +130,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 Storage.LocalesCreatures.Add(localesCreature, packet.TimeSpan);
             }
-            else
-                Storage.CreatureTemplates.Add(creature.Entry.Value, creature, packet.TimeSpan);
+
+            Storage.CreatureTemplates.Add(creature.Entry.Value, creature, packet.TimeSpan);
 
             ObjectName objectName = new ObjectName
             {

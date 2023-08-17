@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ID", true)]
         public uint? ID;
 
-        [DBFieldName("Text")]
+        [DBFieldName("Text", LocaleConstant.enUS)]
         public string Text;
 
         [DBFieldName("NextPageID")]

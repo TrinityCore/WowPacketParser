@@ -22,10 +22,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Duration", TargetedDatabaseFlag.SinceShadowlands)]
         public long? Duration;
 
-        [DBFieldName("Question")]
+        [DBFieldName("Question", LocaleConstant.enUS)]
         public string Question;
 
-        [DBFieldName("PendingChoiceText", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("PendingChoiceText", TargetedDatabaseFlag.SinceShadowlands, LocaleConstant.enUS)]
         public string PendingChoiceText;
 
         [DBFieldName("HideWarboardHeader", TargetedDatabaseFlag.SinceLegion)]
@@ -71,22 +71,22 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("GroupId", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public int? GroupId;
 
-        [DBFieldName("Header", TargetedDatabaseFlag.SinceLegion)]
+        [DBFieldName("Header", TargetedDatabaseFlag.SinceLegion, LocaleConstant.enUS)]
         public string Header;
 
         [DBFieldName("Subheader", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public string Subheader;
 
-        [DBFieldName("ButtonTooltip", TargetedDatabaseFlag.SinceBattleForAzeroth)]
+        [DBFieldName("ButtonTooltip", TargetedDatabaseFlag.SinceBattleForAzeroth, LocaleConstant.enUS)]
         public string ButtonTooltip;
 
-        [DBFieldName("Answer")]
+        [DBFieldName("Answer", LocaleConstant.enUS)]
         public string Answer;
 
-        [DBFieldName("Description")]
+        [DBFieldName("Description", LocaleConstant.enUS)]
         public string Description;
 
-        [DBFieldName("Confirmation", TargetedDatabaseFlag.SinceLegion)]
+        [DBFieldName("Confirmation", TargetedDatabaseFlag.SinceLegion, LocaleConstant.enUS)]
         public string Confirmation;
 
         [DBFieldName("RewardQuestID", TargetedDatabaseFlag.SinceBattleForAzeroth)]
