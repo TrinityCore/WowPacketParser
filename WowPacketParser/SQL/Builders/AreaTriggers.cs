@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using WowPacketParser.Store.Objects.Comparer;
 
 namespace WowPacketParser.SQL.Builders
 {
@@ -47,6 +50,9 @@ namespace WowPacketParser.SQL.Builders
 
             foreach (var spellareatrigger in spellareatriggers)
             {
+                if (spellareatrigger.Value.spellId == 0)
+                    continue;
+
                 spellareatriggersData.Add(spellareatrigger.Value);
             }
 
@@ -170,6 +176,104 @@ namespace WowPacketParser.SQL.Builders
 
                     return comment;
                 });
+        }
+
+        [BuilderMethod]
+        public static string AreaTriggerData()
+        {
+            var areaTriggers = Storage.Objects.IsEmpty()
+                ? new Dictionary<WowGuid, AreaTriggerCreateProperties>()                                        // empty dict if there are no objects
+                : Storage.Objects.Where(
+                    obj =>
+                        obj.Value.Item1.Type == ObjectType.AreaTrigger &&
+                        !obj.Value.Item1.IsTemporarySpawn())                                                    // remove temporary spawns
+                    .OrderBy(pair => pair.Value.Item2)                                                          // order by spawn time
+                    .ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as AreaTriggerCreateProperties);
+
+            if (areaTriggers.Count == 0)
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger))
+                return string.Empty;
+
+            var rows = new RowList<AreaTrigger>();
+
+            var areaTriggerList = Settings.SkipDuplicateSpawns
+                ? areaTriggers.Values.GroupBy(u => u, new SpawnComparer()).Select(x => x.First())
+                : areaTriggers.Values.ToList();
+
+            uint count = 0;
+            foreach (var at in areaTriggerList)
+            {
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(at.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(at.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
+
+                if (!Filters.CheckFilter(at.Guid))
+                    continue;
+
+                // only spawn ats without spawn spellid
+                if (at.spellId != 0)
+                    continue;
+
+                Row<AreaTrigger> row = new();
+
+                row.Data.SpawnId = $"@ATSPAWNID+{count}";
+                row.Data.AreaTriggerId = at.Guid.GetEntry();
+                row.Data.IsServerSide = 0;
+
+                row.Data.MapId = at.Map;
+
+                if (!at.IsOnTransport())
+                {
+                    row.Data.PosX = at.Movement.Position.X;
+                    row.Data.PosY = at.Movement.Position.Y;
+                    row.Data.PosZ = at.Movement.Position.Z;
+                    row.Data.Orientation = at.Movement.Orientation;
+                }
+                else
+                {
+                    row.Data.PosX = at.Movement.Transport.Offset.X;
+                    row.Data.PosY = at.Movement.Transport.Offset.Y;
+                    row.Data.PosZ = at.Movement.Transport.Offset.Z;
+                    row.Data.Orientation = at.Movement.Transport.Offset.O;
+                }
+
+                string phaseData = string.Join(" - ", at.Phases);
+                if (string.IsNullOrEmpty(phaseData) || Settings.ForcePhaseZero)
+                    phaseData = "0";
+                row.Data.PhaseId = phaseData;
+                row.Data.PhaseUseFlags = 0;
+                row.Data.PhaseGroup = 0;
+
+                row.Data.Shape = at.Shape;
+                row.Data.ShapeData = at.ShapeData;
+                row.Data.SpellForVisuals = at.SpellForVisuals;
+
+                row.Data.Comment = "";
+                row.Comment = StoreGetters.GetName(StoreNameType.Spell, (int)at.SpellForVisuals, true);
+                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, at.Area, false) + " - ";
+                row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)at.DifficultyID, false) + ")";
+
+                rows.Add(row);
+
+                count++;
+            }
+
+            if (count == 0)
+                return string.Empty;
+
+            StringBuilder result = new StringBuilder();
+            var delete = new SQLDelete<AreaTrigger>(Tuple.Create("@ATSPAWNID+0", "@ATSPAWNID+" + --count));
+            result.Append(delete.Build());
+            var sql = new SQLInsert<AreaTrigger>(rows, false);
+            result.Append(sql.Build());
+
+            return result.ToString();
         }
     }
 }

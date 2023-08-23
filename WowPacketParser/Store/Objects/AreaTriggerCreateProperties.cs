@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
@@ -57,6 +58,8 @@ namespace WowPacketParser.Store.Objects
         // Will be inserted as comment
         public uint spellId = 0;
 
+        public uint SpellForVisuals;
+
         public IAreaTriggerData AreaTriggerData;
 
         public AreaTriggerCreateProperties() : base()
@@ -67,6 +70,7 @@ namespace WowPacketParser.Store.Objects
         public override void LoadValuesFromUpdateFields()
         {
             spellId             = (uint)AreaTriggerData.SpellID;
+            SpellForVisuals     = (uint)AreaTriggerData.SpellForVisuals;
             DecalPropertiesId   = AreaTriggerData.DecalPropertiesID;
             TimeToTarget        = AreaTriggerData.TimeToTarget;
             TimeToTargetScale   = AreaTriggerData.TimeToTargetScale;

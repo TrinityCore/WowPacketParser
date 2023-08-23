@@ -51,7 +51,11 @@ namespace WowPacketParser.SQL
             if (genGameObjects)
                 _file.WriteLine("SET @OGUID := SET_VALUE_MANUALLY_HERE;");
 
-            if (genCreatures || genGameObjects)
+            var genAreaTriggers = Settings.SQLOutputFlag.HasAnyFlagBit(Enums.SQLOutput.areatrigger);
+            if (genAreaTriggers)
+                _file.WriteLine("SET @ATSPAWNID := SET_VALUE_MANUALLY_HERE;");
+
+            if (genCreatures || genGameObjects || genAreaTriggers)
                 _file.WriteLine();
 
             foreach (var sql in _sqls)
