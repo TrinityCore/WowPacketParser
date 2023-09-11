@@ -13,15 +13,17 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.SMSG_SPELL_START)]
         public static void HandleSpellStart(Packet packet)
         {
-            PacketSpellStart packetSpellStart = packet.Holder.SpellStart = new();
+            PacketSpellStart packetSpellStart = new();
             packetSpellStart.Data = ReadSpellCastData(packet, "Cast");
+            packet.Holder.SpellStart = packetSpellStart;
         }
 
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellGo(Packet packet)
         {
-            PacketSpellGo packetSpellGo = packet.Holder.SpellGo = new();
+            PacketSpellGo packetSpellGo = new();
             packetSpellGo.Data = ReadSpellCastData(packet, "Cast");
+            packet.Holder.SpellGo = packetSpellGo;
         }
 
         public static PacketSpellData ReadSpellCastData(Packet packet, params object[] idx)
