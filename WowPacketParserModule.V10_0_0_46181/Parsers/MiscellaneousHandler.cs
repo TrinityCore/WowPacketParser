@@ -135,5 +135,14 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             if (type == 1)
                 packet.ReadUInt32("CurrencyID");
         }
+
+        [Parser(Opcode.SMSG_GET_REMAINING_GAME_TIME_RESPONSE)]
+        public static void HandleGetRemainingGameTimeResponse(Packet packet)
+        {
+            packet.ReadInt32("UnkInt32");
+            packet.ReadInt32("UnkInt32");
+            
+            packet.ReadBit("UnkBit");
+        }
     }
 }
