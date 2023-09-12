@@ -135,5 +135,14 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             if (type == 1)
                 packet.ReadUInt32("CurrencyID");
         }
+
+        [Parser(Opcode.CMSG_REQUEST_LATEST_SPLASH_SCREEN)]
+        public static void HandleRequestLatestSplashScreen(Packet packet) { }
+
+        [Parser(Opcode.CMSG_OVERRIDE_SCREEN_FLASH)]
+        public static void HandleOverrideScreenFlash(Packet packet)
+        {
+            packet.ReadBit("UnkBit");
+        }
     }
 }
