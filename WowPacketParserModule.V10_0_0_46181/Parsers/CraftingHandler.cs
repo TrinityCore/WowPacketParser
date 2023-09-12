@@ -165,5 +165,13 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             for (var i = 0u; i < orderCount; ++i)
                 ReadCraftingOrder(packet, "Orders", i);
         }
+
+        [Parser(Opcode.CMSG_CRAFTING_ORDER_UPDATE_IGNORE_LIST)]
+        public static void HandleCraftingOrderUpdateIgnoreList(Packet packet)
+        {
+            var count = packet.ReadBits("UnkBits", 6);
+            for (int i = 0; i < count; ++i)
+                packet.ReadPackedGuid128("UnkGuid");
+        }
     }
 }
