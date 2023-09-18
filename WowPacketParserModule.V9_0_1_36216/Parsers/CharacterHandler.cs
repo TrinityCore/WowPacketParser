@@ -156,8 +156,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         }
 
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
-        public static void HandleEmpty(Packet packet)
+        public static void HandlePlayerChoiceClear(Packet packet)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_5_43903))
+            {
+                packet.ReadInt32("ChoiceID");
+                packet.ReadBit("Clear");
+            }
         }
 
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
