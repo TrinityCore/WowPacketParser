@@ -135,5 +135,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             if (type == 1)
                 packet.ReadUInt32("CurrencyID");
         }
+
+        [Parser(Opcode.CMSG_REQUEST_WEEKLY_REWARDS)]
+        public static void HandleRequestWeeklyRewards(Packet packet) { }
     }
 }
