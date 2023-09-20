@@ -135,5 +135,47 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             if (type == 1)
                 packet.ReadUInt32("CurrencyID");
         }
+
+        public static void ReadUnkStruct(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("UnkInt32", idx);
+            packet.ReadInt32("UnkInt32", idx);
+            packet.ReadInt32("UnkInt32", idx);
+            var count = packet.ReadInt32("UnkInt32", idx);
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadInt32("UnkInt32", idx, i);
+                packet.ReadInt32("UnkInt32", idx, i);
+            }
+
+            packet.ResetBitReader();
+            bool unkbool = packet.ReadBit("UnkBit", idx);
+            if (unkbool)
+                ReadUnkStruct2(packet, "ReadUnkStruct2", idx);
+        }
+
+        public static void ReadUnkStruct2(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("UnkInt32", idx);
+
+            packet.ResetBitReader();
+            bool unkbool = packet.ReadBit("UnkBit", idx);
+            if (unkbool)
+            {
+                var count = packet.ReadInt32("UnkInt32", idx);
+                for (int i = 0; i < count; i++)
+                    packet.ReadInt32("UnkInt32", idx, i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_WEEKLY_REWARDS_PROGRESS_RESULT)]
+        public static void HandleWeeklyRewardsProgressResult(Packet packet)
+        {
+            packet.ReadInt32("UnkInt32");
+            packet.ReadInt32("UnkInt32");
+            var count = packet.ReadInt32("UnkInt32");
+            for (int i = 0; i < count; i++)
+                ReadUnkStruct(packet, "ReadUnkStruct", i);
+        }
     }
 }
