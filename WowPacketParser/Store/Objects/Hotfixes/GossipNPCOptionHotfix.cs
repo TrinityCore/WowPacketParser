@@ -55,6 +55,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
     [Hotfix]
     [DBTableName("gossip_npc_option")]
     public sealed record GossipNpcOptionHotfix1002: IDataModel

@@ -188,6 +188,7 @@ namespace WowPacketParser.Enums
         CommunityIcon                     = 0x805D2025,
         ComponentModelFileData            = 0xBE6AED26,
         ComponentTextureFileData          = 0x82408B8D,
+        ConditionalChrModel               = 0x1B2419F3,
         ConditionalContentTuning          = 0x7214CB47,
         ConfigurationWarning              = 0x6C7910A2,
         ConsoleScripts                    = 0x948B11F0,

@@ -78,6 +78,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
     [Hotfix]
     [DBTableName("currency_types")]
     public sealed record CurrencyTypesHotfix1002: IDataModel

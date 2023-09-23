@@ -63,6 +63,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
     [Hotfix]
     [DBTableName("journal_instance")]
     public sealed record JournalInstanceHotfix1002: IDataModel
