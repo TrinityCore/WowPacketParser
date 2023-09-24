@@ -25,4 +25,30 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("movie")]
+    public sealed record MovieHotfix1010 : IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("Volume")]
+        public byte? Volume;
+
+        [DBFieldName("KeyID")]
+        public byte? KeyID;
+
+        [DBFieldName("AudioFileDataID")]
+        public uint? AudioFileDataID;
+
+        [DBFieldName("SubtitleFileDataID")]
+        public uint? SubtitleFileDataID;
+
+        [DBFieldName("SubtitleFileFormat")]
+        public int? SubtitleFileFormat;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }
