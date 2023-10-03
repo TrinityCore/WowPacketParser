@@ -4,6 +4,13 @@ namespace WowPacketParser.Proto.Processing
 {
     public abstract class PacketProcessor<T> : IPacketProcessor<T>
     {
+        protected ulong GameBuild { get; private set; }
+        
+        public virtual void Initialize(ulong gameBuild)
+        {
+            GameBuild = gameBuild;
+        }
+
         public virtual T? Process(PacketHolder packet)
         {
             switch (packet.KindCase)
