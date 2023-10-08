@@ -39,6 +39,10 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             packet.ReadBit("Pushed");
             packet.ReadBit("Created");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_7_51187))
+                packet.ReadBit("ReadBit_1017");
+
             packet.ReadBits("DisplayText", 3);
             packet.ReadBit("IsBonusRoll");
             packet.ReadBit("IsEncounterLoot");
@@ -59,6 +63,18 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         public static void HandleLootMoney(Packet packet)
         {
             packet.ReadBit("IsSoftInteract");
+        }
+
+        [Parser(Opcode.SMSG_SELL_RESPONSE, ClientVersionBuild.V10_1_7_51187)]
+        public static void HandleSellResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            var itemGuidCount = packet.ReadUInt32("ItemGuidCount");
+
+            packet.ReadInt32E<SellResult>("Reason");
+
+            for (var i = 0; i < itemGuidCount; ++i)
+                packet.ReadPackedGuid128("ItemGuid", i);
         }
     }
 }
