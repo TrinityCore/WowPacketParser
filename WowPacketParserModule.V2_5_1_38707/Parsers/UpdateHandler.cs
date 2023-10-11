@@ -335,8 +335,8 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 }
 
                 var hasStandingOnGameObjectGUID = false;
-                //if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
-                //    hasStandingOnGameObjectGUID = packet.ReadBit("HasStandingOnGameObjectGUID", index);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_3_51505))
+                    hasStandingOnGameObjectGUID = packet.ReadBit("HasStandingOnGameObjectGUID", index);
 
                 var hasTransport = packet.ReadBit("Has Transport Data", index);
                 var hasFall = packet.ReadBit("Has Fall Data", index);
@@ -458,7 +458,9 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                         var hasJumpExtraData = packet.ReadBit("HasJumpExtraData", index);
 
                         var hasAnimationTierTransition = packet.ReadBit("HasAnimationTierTransition", index);
-                        var hasUnknown901 = packet.ReadBit("Unknown901", index);
+                        var hasUnknown901 = false;
+                        if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_4_3_51505))
+                            hasUnknown901 = packet.ReadBit("Unknown901", index);
 
                         if (hasSplineFilterKey)
                         {
@@ -821,10 +823,10 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
 
                 if (hasActionButtons)
                 {
-                    for (int i = 0; i < 132; i++)
+                    var actionButtonCount = (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_3_51505) ? 180 : 132);
+                    for (int i = 0; i < actionButtonCount; i++)
                         packet.ReadInt32("Action", index, i);
                 }
-                // TODO: Smth wrong here in 3.4.1.
             }
 
             if (hasConversation)
