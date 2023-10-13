@@ -185,7 +185,9 @@ namespace WowPacketParserModule.Substructures
         {
             packet.ReadInt32("ItemID", indexes);
             var itemBonusListCount = packet.ReadUInt32();
-            var itemModifiersCount = packet.ReadUInt32();
+            var itemModifiersCount = 0u;
+            if (ClientVersion.Branch == ClientBranch.Retail)
+                itemModifiersCount = packet.ReadUInt32();
 
             for (var i = 0u; i < itemBonusListCount; ++i)
                 packet.ReadInt32("BonusListID", indexes, i);

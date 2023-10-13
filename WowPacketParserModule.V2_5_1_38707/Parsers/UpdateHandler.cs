@@ -366,6 +366,12 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                     packet.ReadUInt32("Lifetime", index, "Inertia");
                 }
 
+                if (hasAdvFlying)
+                {
+                    packet.ReadSingle("ForwardVelocity", index, "AdvFlying");
+                    packet.ReadSingle("UpVelocity", index, "AdvFlying");
+                }
+
                 if (hasFall)
                 {
                     packet.ResetBitReader();
@@ -668,10 +674,22 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 if (packet.ReadBit("HasAreaTriggerCylinder", index))
                     areaTriggerTemplate.Type = (byte)AreaTriggerType.Cylinder;
 
+                // no idea when added
+                if (packet.ReadBit("HasAreaTriggerDisk", index))
+                    areaTriggerTemplate.Type = (byte)AreaTriggerType.Disk;
+
+                // no idea when added
+                if (packet.ReadBit("HasAreaTriggerBoundedPlane", index))
+                    areaTriggerTemplate.Type = (byte)AreaTriggerType.BoundedPlane;
+
                 bool hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
 
                 if (packet.ReadBit("HasAreaTriggerOrbit", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasOrbit;
+
+                // no idea when added
+                if (packet.ReadBit("HasAreaTriggerMovementScript", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasMovementScript;
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk3) != 0)
                     packet.ReadBit();
@@ -750,6 +768,35 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                     areaTriggerTemplate.Data[3] = packet.ReadSingle("HeightTarget", index);
                     areaTriggerTemplate.Data[4] = packet.ReadSingle("LocationZOffset", index);
                     areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
+                }
+
+                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Disk)
+                {
+                    areaTriggerTemplate.Data[0] = packet.ReadSingle("InnerRadius", index);
+                    areaTriggerTemplate.Data[1] = packet.ReadSingle("InnerRadiusTarget", index);
+                    areaTriggerTemplate.Data[2] = packet.ReadSingle("OuterRadius", index);
+                    areaTriggerTemplate.Data[3] = packet.ReadSingle("OuterRadiusTarget", index);
+                    areaTriggerTemplate.Data[4] = packet.ReadSingle("Height", index);
+                    areaTriggerTemplate.Data[5] = packet.ReadSingle("HeightTarget", index);
+                    areaTriggerTemplate.Data[6] = packet.ReadSingle("LocationZOffset", index);
+                    areaTriggerTemplate.Data[7] = packet.ReadSingle("LocationZOffsetTarget", index);
+                }
+
+                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.BoundedPlane)
+                {
+                    Vector2 extents = packet.ReadVector2("Extents", index);
+                    Vector2 extentsTarget = packet.ReadVector2("ExtentsTarget", index);
+
+                    areaTriggerTemplate.Data[0] = extents.X;
+                    areaTriggerTemplate.Data[1] = extents.Y;
+                    areaTriggerTemplate.Data[2] = extentsTarget.X;
+                    areaTriggerTemplate.Data[3] = extentsTarget.Y;
+                }
+
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasMovementScript) != 0)
+                {
+                    packet.ReadInt32("SpellScriptID");
+                    packet.ReadVector3("Center");
                 }
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasOrbit) != 0)
