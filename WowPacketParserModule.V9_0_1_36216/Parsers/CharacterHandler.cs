@@ -54,7 +54,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             for (uint j = 0; j < 2; ++j)
                 packet.ReadInt32("ProfessionIDs", idx, j);
 
-            for (uint j = 0; j < 35; ++j)
+            var visualItemSize = ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_3_51505) ? 34 : 35;
+            for (uint j = 0; j < visualItemSize; ++j)
                 ReadVisualItemInfo(packet, idx, j);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
@@ -87,6 +88,12 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             {
                 packet.ReadBit("RPEUpgradeEligible", idx);
                 packet.ReadBit("QuestClearAvailable", idx);
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_3_51505))
+            {
+                packet.ReadBit("Unk343_1", idx);
+                packet.ReadBit("Unk343_2", idx);
             }
 
             for (var j = 0; j < mailSenderLengths.Length; ++j)
