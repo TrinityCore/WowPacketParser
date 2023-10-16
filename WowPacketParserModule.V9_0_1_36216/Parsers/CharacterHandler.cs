@@ -91,10 +91,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_3_51505))
-            {
-                packet.ReadBit("Unk343_1", idx);
-                packet.ReadBit("Unk343_2", idx);
-            }
+                packet.ReadByte("Unk343_1", idx);
 
             for (var j = 0; j < mailSenderLengths.Length; ++j)
                 mailSenderLengths[j] = packet.ReadBits(6);
