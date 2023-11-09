@@ -1331,7 +1331,7 @@ namespace WowPacketParser.Enums.Version.V3_4_3_51666
             { Opcode.SMSG_PET_UNLEARNED_SPELLS, 0x2C4D },
             { Opcode.SMSG_PHASE_SHIFT_CHANGE, 0x2578 },
             { Opcode.SMSG_PLAYED_TIME, 0x26D5 },
-            { Opcode.SMSG_PLAYER_ACKOWLEDGE_ARROW_CALLOUT, 0x3022 },
+            { Opcode.SMSG_PLAYER_ACKNOWLEDGE_ARROW_CALLOUT, 0x3022 },
             { Opcode.SMSG_PLAYER_BATTLEFIELD_AUTO_QUEUE, 0x301C },
             { Opcode.SMSG_PLAYER_BONUS_ROLL_FAILED, 0x3016 },
             { Opcode.SMSG_PLAYER_BOUND, 0x2FF8 },
