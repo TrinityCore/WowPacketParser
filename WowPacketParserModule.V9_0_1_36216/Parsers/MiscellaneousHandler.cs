@@ -124,13 +124,26 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
             {
                 packet.ReadBit("AddonsDisabled");
-                packet.ReadBit("Unused1000");
+                packet.ReadBit("WarGamesEnabled"); // classic only
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
             {
                 packet.ReadBit("ContentTrackingEnabled");
             }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_7_51187))
+                packet.ReadBit("IsSellAllJunkEnabled");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+            {
+                packet.ReadBit("IsGroupFinderEnabled"); // classic only
+                packet.ReadBit("IsLFDEnabled"); // classic only
+
+                packet.ReadBit("IsLFREnabled"); // classic only
+                packet.ReadBit("IsPremadeGroupEnabled"); // classic only
+            }
+
 
             {
                 packet.ResetBitReader();

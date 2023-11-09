@@ -16,6 +16,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadByte("InviteType", indexes);
 
             packet.ReadPackedGuid128("InviterGUID", indexes);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("IgnoreFriendAndGuildRestriction");
+            }
         }
 
         public static void ReadCalendarSendCalendarRaidLockoutInfo(Packet packet, params object[] indexes)
@@ -55,14 +61,28 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var eventsCount = packet.ReadUInt32("EventsCount");
             var raidLockoutsCount = packet.ReadUInt32("RaidLockoutsCount");
 
-            for (int i = 0; i < invitesCount; i++)
-                ReadCalendarSendCalendarInviteInfo(packet, "Invites", i);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+            {
+                for (int i = 0; i < raidLockoutsCount; i++)
+                    ReadCalendarSendCalendarRaidLockoutInfo(packet, "RaidLockouts", i);
 
-            for (int i = 0; i < raidLockoutsCount; i++)
-                ReadCalendarSendCalendarRaidLockoutInfo(packet, "RaidLockouts", i);
+                for (int i = 0; i < invitesCount; i++)
+                    ReadCalendarSendCalendarInviteInfo(packet, "Invites", i);
 
-            for (int i = 0; i < eventsCount; i++)
-                ReadCalendarSendCalendarEventInfo(packet, "Events", i);
+                for (int i = 0; i < eventsCount; i++)
+                    ReadCalendarSendCalendarEventInfo(packet, "Events", i);
+            }
+            else
+            {
+                for (int i = 0; i < invitesCount; i++)
+                    ReadCalendarSendCalendarInviteInfo(packet, "Invites", i);
+
+                for (int i = 0; i < raidLockoutsCount; i++)
+                    ReadCalendarSendCalendarRaidLockoutInfo(packet, "RaidLockouts", i);
+
+                for (int i = 0; i < eventsCount; i++)
+                    ReadCalendarSendCalendarEventInfo(packet, "Events", i);
+            }
         }
     }
 }

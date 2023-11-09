@@ -30,6 +30,15 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("BlockReason", idx);
         }
 
+        public static void ReadCustomTabardInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("EmblemStyle", idx);
+            packet.ReadInt32("EmblemColor", idx);
+            packet.ReadInt32("BorderStyle", idx);
+            packet.ReadInt32("BorderColor", idx);
+            packet.ReadInt32("BackgroundColor", idx);
+        }
+
         public static void ReadCharactersListEntry(Packet packet, params object[] idx)
         {
             var playerGuid = packet.ReadPackedGuid128("Guid", idx);
@@ -70,6 +79,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var mailSenderTypes = ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639) ? new uint[packet.ReadUInt32()] : Array.Empty<uint>();
             packet.ReadUInt32("OverrideSelectScreenFileDataID", idx);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+                ReadCustomTabardInfo(packet, "PersonalTabard", idx);
+
             for (var j = 0u; j < customizationCount; ++j)
                 ReadChrCustomizationChoice(packet, idx, "Customizations", j);
 
@@ -85,8 +97,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
             {
-                packet.ReadBit("RPEUpgradeEligible", idx);
-                packet.ReadBit("QuestClearAvailable", idx);
+                packet.ReadBit("RpeResetAvailable", idx);
+                packet.ReadBit("RpeResetQuestClearAvailable", idx);
             }
 
             for (var j = 0; j < mailSenderLengths.Length; ++j)
@@ -174,7 +186,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadBit("IsTrialAccountRestricted");
 
             var hasDisabledClassesMask = packet.ReadBit("HasDisabledClassesMask");
-            packet.ReadBit("IsAlliedRacesCreationAllowed");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_2_0_52038))
+                packet.ReadBit("IsAlliedRacesCreationAllowed");
 
             var charsCount = packet.ReadUInt32("CharactersCount");
             packet.ReadInt32("MaxCharacterLevel");

@@ -146,6 +146,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("WargameArenas");
             packet.ReadBit("RatedArenas");
             packet.ReadBit("ArenaSkirmish");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+            {
+                packet.ReadBit("SoloShuffle");
+                packet.ReadBit("RatedSoloShuffle");
+                packet.ReadBit("BattlegroundBlitz");
+                packet.ReadBit("RatedBattlegroundBlitz");
+            }
         }
 
         [Parser(Opcode.SMSG_REPORT_PVP_PLAYER_AFK_RESULT)]

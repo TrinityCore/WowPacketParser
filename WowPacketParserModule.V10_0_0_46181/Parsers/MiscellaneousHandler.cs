@@ -26,8 +26,12 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 var hasTotalEarned = packet.ReadBit();
                 var hasHasNextRechargeTime = packet.ReadBit();
                 var hasRechargeCycleStartTime = false;
+                var hasOverflownCurrencyID = false;
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                     hasRechargeCycleStartTime = packet.ReadBit();
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+                    hasOverflownCurrencyID = packet.ReadBit();
 
                 packet.ReadBits("Flags", 5, i);
 
@@ -51,6 +55,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
                 if (hasRechargeCycleStartTime)
                     packet.ReadTime64("RechargeCycleStartTime", i);
+
+                if (hasOverflownCurrencyID)
+                    packet.ReadInt32("OverflownCurrencyID", i);
             }
         }
 

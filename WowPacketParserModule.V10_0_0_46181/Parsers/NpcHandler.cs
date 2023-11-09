@@ -66,5 +66,12 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             CoreParsers.NpcHandler.LastGossipOption.Reset();
             CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
         }
+
+        [Parser(Opcode.CMSG_TABARD_VENDOR_ACTIVATE)]
+        public static void HandleTabardVendorActivate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vendor");
+            packet.ReadInt32("Type");
+        }
     }
 }

@@ -19,11 +19,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_ADD_FRIEND)]
         public static void HandleAddFriend(Packet packet)
         {
-            var bits16 = packet.ReadBits(9);
-            var bits10 = packet.ReadBits(10);
+            var nameLength = packet.ReadBits(9);
+            uint notesLength = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+                notesLength = packet.ReadBits(9);
+            else
+                notesLength = packet.ReadBits(10);
 
-            packet.ReadWoWString("Name", bits16);
-            packet.ReadWoWString("Notes", bits10);
+            packet.ReadWoWString("Name", nameLength);
+            packet.ReadWoWString("Notes", notesLength);
         }
 
         public static void ReadQualifiedGUID(Packet packet, params object[] indexes)

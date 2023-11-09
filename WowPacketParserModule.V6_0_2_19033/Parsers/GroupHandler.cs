@@ -90,6 +90,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        public static void ReadPartyMemberPhase(Packet packet, params object[] idx)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+                packet.ReadUInt32("PhaseFlags", idx);
+            else
+                packet.ReadUInt16("PhaseFlags", idx);
+            packet.ReadUInt16("Id", idx);
+        }
+
         public static void ReadPhaseInfos(Packet packet, params object[] index)
         {
             packet.ReadInt32("PhaseShiftFlags", index);
@@ -97,8 +106,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("PersonalGUID", index);
             for (int i = 0; i < int4; i++)
             {
-                packet.ReadUInt16("PhaseFlags", index, i);
-                packet.ReadUInt16("Id", index, i);
+                ReadPartyMemberPhase(packet, "PartyMemberPhase", index, i);
             }
         }
 

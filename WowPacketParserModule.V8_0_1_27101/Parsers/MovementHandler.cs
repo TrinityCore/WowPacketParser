@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
@@ -193,7 +194,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
             monsterMove.Id = packet.ReadUInt32("Id", indexes);
-            monsterMove.Destination = packet.ReadVector3("Destination", indexes);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_2_0_52038))
+                monsterMove.Destination = packet.ReadVector3("Destination", indexes);
 
             packet.ResetBitReader();
 
@@ -225,7 +227,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             phaseShift.PersonalGuid = packet.ReadPackedGuid128("PersonalGUID");
             for (var i = 0; i < count; ++i)
             {
-                var flags = packet.ReadUInt16E<PhaseFlags>("PhaseFlags", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+                    packet.ReadUInt32E<PhaseFlags>("PhaseFlags", i);
+                else
+                    packet.ReadUInt16E<PhaseFlags>("PhaseFlags", i);
+
                 var id = packet.ReadUInt16();
                 phaseShift.Phases.Add(id);
 

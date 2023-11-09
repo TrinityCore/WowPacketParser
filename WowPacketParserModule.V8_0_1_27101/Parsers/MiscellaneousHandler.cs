@@ -382,6 +382,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void HandleWhoRequest(Packet packet)
         {
             var areaCount = packet.ReadBits(4);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+                packet.ReadBit("IsFromAddon");
 
             packet.ReadInt32("MinLevel");
             packet.ReadInt32("MaxLevel");
@@ -423,6 +425,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
 
             packet.ReadUInt32("RequestID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+                packet.ReadByteE<WhoRequestOrigin>("Origin");
 
             for (var i = 0; i < areaCount; ++i)
                 packet.ReadUInt32<AreaId>("Area", i);

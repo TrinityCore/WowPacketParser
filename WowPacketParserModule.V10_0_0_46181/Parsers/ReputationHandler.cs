@@ -7,25 +7,31 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 {
     public static class ReputationHandler
     {
-        public const int FactionCount = 443;
+        public static int GetFactionCount()
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+                return 1000;
+            else
+                return 443;
+        }
 
         [Parser(Opcode.SMSG_FACTION_BONUS_INFO)]
         public static void HandleFactionBonusInfo(Packet packet)
         {
-            for (var i = 0; i < FactionCount; i++)
+            for (var i = 0; i < GetFactionCount(); i++)
                 packet.ReadBit("FactionHasBonus", i);
         }
 
         [Parser(Opcode.SMSG_INITIALIZE_FACTIONS)]
         public static void HandleInitializeFactions(Packet packet)
         {
-            for (var i = 0; i < FactionCount; i++)
+            for (var i = 0; i < GetFactionCount(); i++)
             {
                 packet.ReadUInt16E<FactionFlag>("FactionFlags", i);
                 packet.ReadInt32E<ReputationRank>("FactionStandings", i);
             }
 
-            for (var i = 0; i < FactionCount; i++)
+            for (var i = 0; i < GetFactionCount(); i++)
                 packet.ReadBit("FactionHasBonus", i);
         }
 
