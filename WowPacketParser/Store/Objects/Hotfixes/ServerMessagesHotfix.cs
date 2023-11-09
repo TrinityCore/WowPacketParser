@@ -4,28 +4,31 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [Hotfix]
-    [DBTableName("phase")]
-    public sealed record PhaseHotfix1000: IDataModel
+    [DBTableName("server_messages")]
+    public sealed record ServerMessagesHotfix1000: IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;
 
-        [DBFieldName("Flags")]
-        public ushort? Flags;
+        [DBFieldName("Text")]
+        public string Text;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 
     [Hotfix]
-    [DBTableName("phase")]
-    public sealed record PhaseHotfix1020 : IDataModel
+    [DBTableName("server_messages_locale")]
+    public sealed record ServerMessagesLocaleHotfix1000 : IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;
 
-        [DBFieldName("Flags")]
-        public int? Flags;
+        [DBFieldName("locale", true)]
+        public string Locale = ClientLocale.PacketLocaleString;
+
+        [DBFieldName("Text_lang")]
+        public string TextLang;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

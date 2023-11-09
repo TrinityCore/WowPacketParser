@@ -292,6 +292,7 @@ namespace WowPacketParser.Hotfix
                     case "azerite_essence_power":
                     case "barber_shop_style":
                     case "battlemaster_list":
+                    case "battle_pet_ability":
                     case "battle_pet_species":
                     case "broadcast_text":
                     case "char_titles":
@@ -344,6 +345,7 @@ namespace WowPacketParser.Hotfix
                     case "quest_sort":
                     case "scenario":
                     case "scenario_step":
+                    case "server_messages":
                     case "skill_line":
                     case "specialization_spells":
                     case "spell_category":

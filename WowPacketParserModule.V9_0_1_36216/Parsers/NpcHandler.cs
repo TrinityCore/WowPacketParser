@@ -125,40 +125,43 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, friendshipFactionID, guid, packet.TimeSpan);
 
             uint broadcastTextID = 0;
+            uint npcTextID = 0;
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
                 broadcastTextID = packet.ReadUInt32("BroadcastTextID");
 
             int optionsCount = packet.ReadInt32("GossipOptionsCount");
             int questsCount = packet.ReadInt32("GossipQuestsCount");
 
+            bool hasTextID = false;
             bool hasBroadcastTextID = false;
-            bool hasBroadcastTextID2 = false;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
             {
+                hasTextID = packet.ReadBit("HasTextID");
                 hasBroadcastTextID = packet.ReadBit("HasBroadcastTextID");
-                hasBroadcastTextID2 = packet.ReadBit("HasBroadcastTextID2");
             }
 
             for (int i = 0; i < optionsCount; ++i)
                 packetGossip.Options.Add(V6_0_2_19033.Parsers.NpcHandler.ReadGossipOptionsData((uint)menuId, guid, packet, i, "GossipOptions"));
 
+            if (hasTextID)
+                npcTextID = (uint)packet.ReadInt32("TextID");
+
             if (hasBroadcastTextID)
                 broadcastTextID = (uint)packet.ReadInt32("BroadcastTextID");
 
-            if (hasBroadcastTextID2)
-                broadcastTextID = (uint)packet.ReadInt32("BroadcastTextID2");
+            if (!hasTextID && hasBroadcastTextID)
+                npcTextID = SQLDatabase.GetNPCTextIDByMenuIDAndBroadcastText(menuId, broadcastTextID);
 
-            var npcTextId = SQLDatabase.GetNPCTextIDByMenuIDAndBroadcastText(menuId, broadcastTextID);
-            if (npcTextId != 0)
+            if (npcTextID != 0)
             {
                 GossipMenu gossip = new();
                 gossip.MenuID = packetGossip.MenuId;
-                gossip.TextID = packetGossip.TextId = npcTextId;
+                gossip.TextID = packetGossip.TextId = npcTextID;
                 gossip.ObjectType = guid.GetObjectType();
                 gossip.ObjectEntry = guid.GetEntry();
                 Storage.Gossips.Add(gossip, packet.TimeSpan);
             }
-            else
+            else if (hasBroadcastTextID)
                 AddBroadcastTextToGossip(packetGossip.MenuId, broadcastTextID, guid);
 
             for (int i = 0; i < questsCount; ++i)
