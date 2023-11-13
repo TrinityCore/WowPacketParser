@@ -19,5 +19,14 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadWoWString("GameTimeTZ", len2);
             packet.ReadWoWString("ServerRegionalTZ", len3);
         }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V3_4_3_51505)]
+        public static void HandlePlayerLogin(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("Guid");
+            packet.ReadSingle("FarClip");
+            packet.Holder.PlayerLogin = new() { PlayerGuid = guid };
+            WowPacketParser.Parsing.Parsers.SessionHandler.LoginGuid = guid;
+        }
     }
 }
