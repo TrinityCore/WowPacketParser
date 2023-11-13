@@ -20,4 +20,10 @@
             <EmbedInteropTypes>false</EmbedInteropTypes>
         </ProjectReference>
     </ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="DBFileReaderLib">
+			<HintPath>..\packages\DBFileReaderLib.1.0.0.0\lib\DBFileReaderLib.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 </Project>
