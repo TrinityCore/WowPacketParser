@@ -248,7 +248,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, ClientVersionBuild.V3_4_0_44832)]
+        [Parser(Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, ClientVersionBuild.V3_4_3_51505)]
         public static void HandleQuestQueryResponse343(Packet packet)
         {
             packet.ReadInt32("Entry");
