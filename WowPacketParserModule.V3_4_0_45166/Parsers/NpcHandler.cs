@@ -95,6 +95,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ReadBit("Repeatable", idx);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_3_51505)) // assumption
+                packet.ReadBit("Important", idx);
+
             uint questTitleLen = packet.ReadBits(9);
             gossipQuest.Title = packet.ReadWoWString("QuestTitle", questTitleLen, idx);
 
