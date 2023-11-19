@@ -30,7 +30,7 @@ namespace WowPacketParser.SQL.Builders
             if (transport.Type != ObjectType.GameObject)
                 return false;
 
-            if (SQLConnector.Enabled)
+            if (SQLConnector.Enabled && Settings.TargetedDatabase != TargetedDatabase.TheBurningCrusade)
             {
                 var transportTemplates = SQLDatabase.Get(new RowList<GameObjectTemplate> { new GameObjectTemplate { Entry = (uint)transport.ObjectData.EntryID } });
                 if (transportTemplates.Count == 0)
@@ -297,6 +297,11 @@ namespace WowPacketParser.SQL.Builders
             return result.ToString();
         }
 
+        public static bool FloatComparison(float x, float y, float precision)
+        {
+            return Math.Abs(x - y) < precision;
+        }
+
         [BuilderMethod(Gameobjects = true)]
         public static string GameObject(Dictionary<WowGuid, GameObject> gameObjects)
         {
@@ -313,6 +318,20 @@ namespace WowPacketParser.SQL.Builders
             var gobList = Settings.SkipDuplicateSpawns
                 ? gameObjects.Values.GroupBy(g => g, new SpawnComparer()).Select(x => x.First())
                 : gameObjects.Values.ToList();
+
+            if (!Settings.SaveExistingSpawns && SQLConnector.Enabled)
+            {
+                var templatesDb = SQLDatabase.GetGameObjects(new RowList<GameObjectDB>());
+                var precision = 0.000001f; // warning - some zones shifted by 0.2 in some cases between later expansions
+                foreach (var go in gobList)
+                {
+                    var staticRot = go.GetStaticRotation();
+                    var existingGo = templatesDb.Where(p => FloatComparison((float)p.Data.PosX, go.Movement.Position.X, precision) && FloatComparison((float)p.Data.PosY, go.Movement.Position.Y, precision) && FloatComparison((float)p.Data.PosZ, go.Movement.Position.Z, precision) && FloatComparison((float)p.Data.Ori, go.Movement.Orientation, precision) &&
+                                           FloatComparison((float)p.Data.Rot0, staticRot.X, precision) && FloatComparison((float)p.Data.Rot1, staticRot.Y, precision) && FloatComparison((float)p.Data.Rot2, staticRot.Z, precision) && FloatComparison((float)p.Data.Rot3, staticRot.W, precision)).SingleOrDefault();
+                    if (existingGo != null)
+                        go.ExistingDatabaseSpawn = true;
+                }
+            }
 
             foreach (var go in gobList)
             {
@@ -456,6 +475,16 @@ namespace WowPacketParser.SQL.Builders
                         addonRow.Comment += " - !!! might be temporary spawn !!!";
                     }
                 }
+                else if (go.ExistingDatabaseSpawn && !Settings.SaveExistingSpawns)
+                {
+                    row.CommentOut = true;
+                    row.Comment += " - !!! already present in database !!!";
+                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                    {
+                        addonRow.CommentOut = true;
+                        addonRow.Comment += " - !!! already present in database !!!";
+                    }
+                }
                 else if (go.IsTransport())
                 {
                     row.CommentOut = true;
@@ -482,7 +511,7 @@ namespace WowPacketParser.SQL.Builders
             }
 
             if (count == 0)
-                return String.Empty;
+                return string.Empty;
 
             StringBuilder result = new StringBuilder();
             // delete query for GUIDs

@@ -11,6 +11,7 @@ namespace WowPacketParser.Store.Objects
         public IGameObjectData GameObjectData;
         public uint? WorldEffectID;
         public uint? AIAnimKitID;
+        public bool ExistingDatabaseSpawn { get; set; }
 
         public GameObject() : base()
         {
@@ -25,6 +26,11 @@ namespace WowPacketParser.Store.Objects
             // If our gameobject got the following update field set,
             // it's probably a temporary spawn
             return !GameObjectData.CreatedBy.IsEmpty();
+        }
+
+        public override bool IsExistingSpawn()
+        {
+            return ExistingDatabaseSpawn;
         }
 
         public Quaternion GetStaticRotation()

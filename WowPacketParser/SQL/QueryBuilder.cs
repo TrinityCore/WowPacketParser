@@ -238,8 +238,16 @@ namespace WowPacketParser.SQL
 
             foreach (var field in fields)
             {
-                fieldNames.Append(field.Item1);
-                fieldNames.Append(SQLUtil.CommaSeparator);
+                if (field.Item2.FieldType == typeof(decimal))
+                {
+                    fieldNames.Append($"round({field.Item1}, 20)");
+                    fieldNames.Append(SQLUtil.CommaSeparator);
+                }
+                else
+                {
+                    fieldNames.Append(field.Item1);
+                    fieldNames.Append(SQLUtil.CommaSeparator);
+                }
             }
             fieldNames.Remove(fieldNames.Length - 2, 2); // remove last ", "
 
