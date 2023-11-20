@@ -327,7 +327,7 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var staticRot = go.GetStaticRotation();
                     var existingGo = templatesDb.Where(p => FloatComparison((float)p.Data.PosX, go.Movement.Position.X, precision) && FloatComparison((float)p.Data.PosY, go.Movement.Position.Y, precision) && FloatComparison((float)p.Data.PosZ, go.Movement.Position.Z, precision) && FloatComparison((float)p.Data.Ori, go.Movement.Orientation, precision) &&
-                                           FloatComparison((float)p.Data.Rot0, staticRot.X, precision) && FloatComparison((float)p.Data.Rot1, staticRot.Y, precision) && FloatComparison((float)p.Data.Rot2, staticRot.Z, precision) && FloatComparison((float)p.Data.Rot3, staticRot.W, precision)).SingleOrDefault();
+                                           FloatComparison((float)p.Data.Rot0, staticRot.X, precision) && FloatComparison((float)p.Data.Rot1, staticRot.Y, precision) && FloatComparison((float)p.Data.Rot2, staticRot.Z, precision) && FloatComparison((float)p.Data.Rot3, staticRot.W, precision)).FirstOrDefault();
                     if (existingGo != null)
                         go.ExistingDatabaseSpawn = true;
                 }
