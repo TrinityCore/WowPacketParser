@@ -272,5 +272,36 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         {
             ReadTalentInfoUpdate(packet);
         }
+
+        public static void ReadLearnedSpellInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32<SpellId>("SpellID", indexes);
+            packet.ReadBit("IsFavorite", indexes);
+            var hasField8 = packet.ReadBit();
+            var hasSuperceded = packet.ReadBit();
+            var hasTraitDefinition = packet.ReadBit();
+            packet.ResetBitReader();
+
+            if (hasField8)
+                packet.ReadInt32("field_8", indexes);
+
+            if (hasSuperceded)
+                packet.ReadInt32<SpellId>("Superceded", indexes);
+
+            if (hasTraitDefinition)
+                packet.ReadInt32("TraitDefinitionID", indexes);
+        }
+
+        [Parser(Opcode.SMSG_LEARNED_SPELLS, ClientVersionBuild.V3_4_3_51505)]
+        public static void HandleLearnedSpells(Packet packet)
+        {
+            var spellCount = packet.ReadUInt32();
+            packet.ReadUInt32("SpecializationID");
+            packet.ReadBit("SuppressMessaging");
+            packet.ResetBitReader();
+
+            for (var i = 0; i < spellCount; ++i)
+                ReadLearnedSpellInfo(packet, "ClientLearnedSpellData", i);
+        }
     }
 }
