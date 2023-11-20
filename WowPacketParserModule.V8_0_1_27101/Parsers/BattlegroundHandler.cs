@@ -175,12 +175,5 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
             packet.ReadBit("Disqualified");
         }
-
-        [Parser(Opcode.SMSG_BATTLEGROUND_INIT)]
-        public static void HandleBattlegroundInit(Packet packet)
-        {
-            packet.ReadInt32("ServerTime");
-            packet.ReadInt16("MaxPoints");
-        }
     }
 }
