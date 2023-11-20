@@ -298,5 +298,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("PlayerGuid");
             packet.ReadInt32("CrowdControlSpellID");
         }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_INIT)]
+        public static void HandleBattlegroundInit(Packet packet)
+        {
+            packet.ReadInt32("ServerTime");
+            packet.ReadInt16("MaxPoints");
+        }
     }
 }
