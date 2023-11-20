@@ -1700,7 +1700,7 @@ namespace WowPacketParser.Enums.Version.V10_1_7_51187
             { Opcode.SMSG_PET_UNLEARNED_SPELLS, 0x2C50 },
             { Opcode.SMSG_PHASE_SHIFT_CHANGE, 0x2578 },
             { Opcode.SMSG_PLAYED_TIME, 0x26D0 },
-            { Opcode.SMSG_PLAYER_ACKOWLEDGE_ARROW_CALLOUT, 0x3022 },
+            { Opcode.SMSG_PLAYER_ACKNOWLEDGE_ARROW_CALLOUT, 0x3022 },
             { Opcode.SMSG_PLAYER_AZERITE_ITEM_EQUIPPED_STATUS_CHANGED, 0x3014 },
             { Opcode.SMSG_PLAYER_AZERITE_ITEM_GAINS, 0x3013 },
             { Opcode.SMSG_PLAYER_BONUS_ROLL_FAILED, 0x3016 },
