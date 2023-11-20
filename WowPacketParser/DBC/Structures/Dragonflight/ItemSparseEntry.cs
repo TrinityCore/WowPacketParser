@@ -20,6 +20,8 @@ namespace WowPacketParser.DBC.Structures.Dragonflight
         public uint DurationInInventory;
         public float QualityModifier;
         public uint BagFamily;
+        public int StartQuestID;
+        public int LanguageID;
         public float ItemRange;
         [Cardinality(10)]
         public float[] StatPercentageOfSocket = new float[10];
