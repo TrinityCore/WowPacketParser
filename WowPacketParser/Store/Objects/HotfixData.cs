@@ -22,7 +22,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Deleted", TargetedDatabaseFlag.TillLegion)]
         public bool? Deleted;
 
-        [DBFieldName("Status", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("Status", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
         public HotfixStatus? Status;
 
         [DBFieldName("VerifiedBuild")]
