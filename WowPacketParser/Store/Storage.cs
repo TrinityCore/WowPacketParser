@@ -781,6 +781,9 @@ namespace WowPacketParser.Store
         public static readonly DataBag<RewardPackXItemHotfix340> RewardPackXItemHotfixes340 = new DataBag<RewardPackXItemHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ScenarioHotfix340> ScenarioHotfixes340 = new DataBag<ScenarioHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ScenarioStepHotfix340> ScenarioStepHotfixes340 = new DataBag<ScenarioStepHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<ScalingStatDistributionHotfix340> ScalingStatDistributionHotfixes340 = new DataBag<ScalingStatDistributionHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<ScalingStatDistributionHotfix341> ScalingStatDistributionHotfixes341 = new DataBag<ScalingStatDistributionHotfix341>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<ScalingStatValuesHotfix340> ScalingStatValuesHotfixes340 = new DataBag<ScalingStatValuesHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SceneScriptHotfix340> SceneScriptHotfixes340 = new DataBag<SceneScriptHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SceneScriptGlobalTextHotfix340> SceneScriptGlobalTextHotfixes340 = new DataBag<SceneScriptGlobalTextHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SceneScriptPackageHotfix340> SceneScriptPackageHotfixes340 = new DataBag<SceneScriptPackageHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -1856,6 +1859,9 @@ namespace WowPacketParser.Store
             RewardPackXItemHotfixes340.Clear();
             ScenarioHotfixes340.Clear();
             ScenarioStepHotfixes340.Clear();
+            ScalingStatDistributionHotfixes340.Clear();
+            ScalingStatDistributionHotfixes341.Clear();
+            ScalingStatValuesHotfixes340.Clear();
             SceneScriptHotfixes340.Clear();
             SceneScriptGlobalTextHotfixes340.Clear();
             SceneScriptPackageHotfixes340.Clear();

@@ -5506,6 +5506,68 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
         }
 
+        public static void ScalingStatDistributionHandler340(Packet packet, uint entry, params object[] indexes)
+        {
+            ScalingStatDistributionHotfix340 hotfix = new ScalingStatDistributionHotfix340();
+
+            hotfix.ID = entry;
+            hotfix.PlayerLevelToItemLevelCurveID = packet.ReadUInt16("PlayerLevelToItemLevelCurveID", indexes);
+            hotfix.MinLevel = packet.ReadInt32("MinLevel", indexes);
+            hotfix.MaxLevel = packet.ReadInt32("MaxLevel", indexes);
+
+            Storage.ScalingStatDistributionHotfixes340.Add(hotfix, packet.TimeSpan);
+        }
+
+        public static void ScalingStatDistributionHandler341(Packet packet, uint entry, params object[] indexes)
+        {
+            ScalingStatDistributionHotfix341 hotfix = new ScalingStatDistributionHotfix341();
+
+            hotfix.ID = entry;
+            hotfix.PlayerLevelToItemLevelCurveID = packet.ReadUInt16("PlayerLevelToItemLevelCurveID", indexes);
+            hotfix.MinLevel = packet.ReadInt32("MinLevel", indexes);
+            hotfix.MaxLevel = packet.ReadInt32("MaxLevel", indexes);
+            hotfix.Bonus = new int?[10];
+            for (int i = 0; i < 10; i++)
+                hotfix.Bonus[i] = packet.ReadInt32("Bonus", indexes, i);
+            hotfix.StatID = new int?[10];
+            for (int i = 0; i < 10; i++)
+                hotfix.StatID[i] = packet.ReadInt32("StatID", indexes, i);
+
+            Storage.ScalingStatDistributionHotfixes341.Add(hotfix, packet.TimeSpan);
+        }
+
+        public static void ScalingStatValuesHandler340(Packet packet, uint entry, params object[] indexes)
+        {
+            ScalingStatValuesHotfix340 hotfix = new ScalingStatValuesHotfix340();
+
+            hotfix.ID = entry;
+            hotfix.Charlevel = packet.ReadInt32("Charlevel", indexes);
+            hotfix.WeaponDPS1H = packet.ReadInt32("WeaponDPS1H", indexes);
+            hotfix.WeaponDPS2H = packet.ReadInt32("WeaponDPS2H", indexes);
+            hotfix.SpellcasterDPS1H = packet.ReadInt32("SpellcasterDPS1H", indexes);
+            hotfix.SpellcasterDPS2H = packet.ReadInt32("SpellcasterDPS2H", indexes);
+            hotfix.RangedDPS = packet.ReadInt32("RangedDPS", indexes);
+            hotfix.WandDPS = packet.ReadInt32("WandDPS", indexes);
+            hotfix.SpellPower = packet.ReadInt32("SpellPower", indexes);
+            hotfix.ShoulderBudget = packet.ReadInt32("ShoulderBudget", indexes);
+            hotfix.TrinketBudget = packet.ReadInt32("TrinketBudget", indexes);
+            hotfix.WeaponBudget1H = packet.ReadInt32("WeaponBudget1H", indexes);
+            hotfix.PrimaryBudget = packet.ReadInt32("PrimaryBudget", indexes);
+            hotfix.RangedBudget = packet.ReadInt32("RangedBudget", indexes);
+            hotfix.TertiaryBudget = packet.ReadInt32("TertiaryBudget", indexes);
+            hotfix.ClothShoulderArmor = packet.ReadInt32("ClothShoulderArmor", indexes);
+            hotfix.LeatherShoulderArmor = packet.ReadInt32("LeatherShoulderArmor", indexes);
+            hotfix.MailShoulderArmor = packet.ReadInt32("MailShoulderArmor", indexes);
+            hotfix.PlateShoulderArmor = packet.ReadInt32("PlateShoulderArmor", indexes);
+            hotfix.ClothCloakArmor = packet.ReadInt32("ClothCloakArmor", indexes);
+            hotfix.ClothChestArmor = packet.ReadInt32("ClothChestArmor", indexes);
+            hotfix.LeatherChestArmor = packet.ReadInt32("LeatherChestArmor", indexes);
+            hotfix.MailChestArmor = packet.ReadInt32("MailChestArmor", indexes);
+            hotfix.PlateChestArmor = packet.ReadInt32("PlateChestArmor", indexes);
+
+            Storage.ScalingStatValuesHotfixes340.Add(hotfix, packet.TimeSpan);
+        }
+
         public static void SceneScriptHandler340(Packet packet, uint entry, params object[] indexes)
         {
             SceneScriptHotfix340 hotfix = new SceneScriptHotfix340();
@@ -8929,6 +8991,19 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                             case DB2Hash.ScenarioStep:
                             {
                                 ScenarioStepHandler340(db2File, (uint)entry, count);
+                                break;
+                            }
+                            case DB2Hash.ScalingStatDistribution:
+                            {
+                                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+                                    ScalingStatDistributionHandler341(db2File, (uint)entry, count);
+                                else
+                                    ScalingStatDistributionHandler340(db2File, (uint)entry, count);
+                                break;
+                            }
+                            case DB2Hash.ScalingStatValues:
+                            {
+                                ScalingStatValuesHandler340(db2File, (uint)entry, count);
                                 break;
                             }
                             case DB2Hash.SceneScript:

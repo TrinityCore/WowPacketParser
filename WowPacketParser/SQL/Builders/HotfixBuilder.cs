@@ -5253,6 +5253,27 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ScenarioStepHotfixes340, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ScalingStatDistributionHotfixes340.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ScalingStatDistributionHotfixes340, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ScalingStatDistributionHotfixes340, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ScalingStatDistributionHotfixes341.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ScalingStatDistributionHotfixes341, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ScalingStatDistributionHotfixes341, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ScalingStatValuesHotfixes340.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ScalingStatValuesHotfixes340, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ScalingStatValuesHotfixes340, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.SceneScriptHotfixes340.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.SceneScriptHotfixes340, Settings.HotfixesDatabase);
