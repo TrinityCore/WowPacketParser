@@ -93,4 +93,30 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("content_tuning")]
+    public sealed record ContentTuningHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("MinLevel")]
+        public int? MinLevel;
+
+        [DBFieldName("MaxLevel")]
+        public int? MaxLevel;
+
+        [DBFieldName("Flags")]
+        public int? Flags;
+
+        [DBFieldName("ExpectedStatModID")]
+        public int? ExpectedStatModID;
+
+        [DBFieldName("DifficultyESMID")]
+        public int? DifficultyESMID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

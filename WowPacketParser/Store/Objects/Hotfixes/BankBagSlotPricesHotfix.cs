@@ -16,4 +16,18 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("bank_bag_slot_prices")]
+    public sealed record BankBagSlotPricesHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("Cost")]
+        public uint? Cost;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

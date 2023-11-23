@@ -16,4 +16,18 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("azerite_knowledge_multiplier")]
+    public sealed record AzeriteKnowledgeMultiplierHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("Multiplier")]
+        public float? Multiplier;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

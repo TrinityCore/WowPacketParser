@@ -22,4 +22,24 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("reward_pack_x_item")]
+    public sealed record RewardPackXItemHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("ItemID")]
+        public int? ItemID;
+
+        [DBFieldName("ItemQuantity")]
+        public int? ItemQuantity;
+
+        [DBFieldName("RewardPackID")]
+        public int? RewardPackID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

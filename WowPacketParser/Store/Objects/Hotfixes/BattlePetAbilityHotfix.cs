@@ -54,4 +54,36 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("battle_pet_ability")]
+    public sealed record BattlePetAbilityHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("Name")]
+        public string Name;
+
+        [DBFieldName("Description")]
+        public string Description;
+
+        [DBFieldName("IconFileDataID")]
+        public int? IconFileDataID;
+
+        [DBFieldName("PetTypeEnum")]
+        public sbyte? PetTypeEnum;
+
+        [DBFieldName("Cooldown")]
+        public uint? Cooldown;
+
+        [DBFieldName("BattlePetVisualID")]
+        public ushort? BattlePetVisualID;
+
+        [DBFieldName("Flags")]
+        public byte? Flags;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

@@ -57,4 +57,36 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("trait_definition")]
+    public sealed record TraitDefinitionHotfix341: IDataModel
+    {
+        [DBFieldName("OverrideName")]
+        public string OverrideName;
+
+        [DBFieldName("OverrideSubtext")]
+        public string OverrideSubtext;
+
+        [DBFieldName("OverrideDescription")]
+        public string OverrideDescription;
+
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("SpellID")]
+        public int? SpellID;
+
+        [DBFieldName("OverrideIcon")]
+        public int? OverrideIcon;
+
+        [DBFieldName("OverridesSpellID")]
+        public int? OverridesSpellID;
+
+        [DBFieldName("VisibleSpellID")]
+        public int? VisibleSpellID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

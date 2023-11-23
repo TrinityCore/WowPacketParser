@@ -60,4 +60,62 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("map_difficulty")]
+    public sealed record MapDifficultyHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("Message")]
+        public string Message;
+
+        [DBFieldName("ItemContextPickerID")]
+        public uint? ItemContextPickerID;
+
+        [DBFieldName("ContentTuningID")]
+        public int? ContentTuningID;
+
+        [DBFieldName("DifficultyID")]
+        public byte? DifficultyID;
+
+        [DBFieldName("LockID")]
+        public byte? LockID;
+
+        [DBFieldName("ResetInterval")]
+        public byte? ResetInterval;
+
+        [DBFieldName("MaxPlayers")]
+        public byte? MaxPlayers;
+
+        [DBFieldName("ItemContext")]
+        public byte? ItemContext;
+
+        [DBFieldName("Flags")]
+        public byte? Flags;
+
+        [DBFieldName("MapID")]
+        public int? MapID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+
+    [Hotfix]
+    [DBTableName("map_difficulty_locale")]
+    public sealed record MapDifficultyLocaleHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("locale", true)]
+        public string Locale = ClientLocale.PacketLocaleString;
+
+        [DBFieldName("Message_lang")]
+        public string MessageLang;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

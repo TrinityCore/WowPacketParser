@@ -22,4 +22,24 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("mount_type_x_capability")]
+    public sealed record MountTypeXCapabilityHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("MountTypeID")]
+        public ushort? MountTypeID;
+
+        [DBFieldName("MountCapabilityID")]
+        public ushort? MountCapabilityID;
+
+        [DBFieldName("OrderIndex")]
+        public byte? OrderIndex;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

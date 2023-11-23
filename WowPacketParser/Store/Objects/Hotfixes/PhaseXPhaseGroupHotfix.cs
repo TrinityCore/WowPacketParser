@@ -19,4 +19,21 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("phase_x_phase_group")]
+    public sealed record PhaseXPhaseGroupHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("PhaseID")]
+        public ushort? PhaseID;
+
+        [DBFieldName("PhaseGroupID")]
+        public int? PhaseGroupID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

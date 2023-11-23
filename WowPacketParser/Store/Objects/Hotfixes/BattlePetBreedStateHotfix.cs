@@ -22,4 +22,24 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("battle_pet_breed_state")]
+    public sealed record BattlePetBreedStateHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("BattlePetStateID")]
+        public byte? BattlePetStateID;
+
+        [DBFieldName("Value")]
+        public ushort? Value;
+
+        [DBFieldName("BattlePetBreedID")]
+        public int? BattlePetBreedID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

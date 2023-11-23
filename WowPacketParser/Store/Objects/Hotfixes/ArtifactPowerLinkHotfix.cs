@@ -19,4 +19,21 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("artifact_power_link")]
+    public sealed record ArtifactPowerLinkHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("PowerA")]
+        public ushort? PowerA;
+
+        [DBFieldName("PowerB")]
+        public ushort? PowerB;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

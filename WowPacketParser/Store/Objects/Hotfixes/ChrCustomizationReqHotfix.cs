@@ -103,4 +103,95 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("chr_customization_req")]
+    public sealed record ChrCustomizationReqHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("Flags")]
+        public int? Flags;
+
+        [DBFieldName("ClassMask")]
+        public int? ClassMask;
+
+        [DBFieldName("AchievementID")]
+        public int? AchievementID;
+
+        [DBFieldName("OverrideArchive")]
+        public int? OverrideArchive;
+
+        [DBFieldName("ItemModifiedAppearanceID")]
+        public int? ItemModifiedAppearanceID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+    [Hotfix]
+    [DBTableName("chr_customization_req")]
+    public sealed record ChrCustomizationReqHotfix341: IDataModel
+    {
+        [DBFieldName("ReqSource")]
+        public string ReqSource;
+
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("Flags")]
+        public int? Flags;
+
+        [DBFieldName("ClassMask")]
+        public int? ClassMask;
+
+        [DBFieldName("AchievementID")]
+        public int? AchievementID;
+
+        [DBFieldName("QuestID")]
+        public int? QuestID;
+
+        [DBFieldName("OverrideArchive")]
+        public int? OverrideArchive;
+
+        [DBFieldName("ItemModifiedAppearanceID")]
+        public int? ItemModifiedAppearanceID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+    [Hotfix]
+    [DBTableName("chr_customization_req")]
+    public sealed record ChrCustomizationReqHotfix343: IDataModel
+    {
+        [DBFieldName("RaceMask")]
+        public long? RaceMask;
+
+        [DBFieldName("ReqSource")]
+        public string ReqSource;
+
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("Flags")]
+        public int? Flags;
+
+        [DBFieldName("ClassMask")]
+        public int? ClassMask;
+
+        [DBFieldName("AchievementID")]
+        public int? AchievementID;
+
+        [DBFieldName("QuestID")]
+        public int? QuestID;
+
+        [DBFieldName("OverrideArchive")]
+        public int? OverrideArchive;
+
+        [DBFieldName("ItemModifiedAppearanceID")]
+        public int? ItemModifiedAppearanceID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

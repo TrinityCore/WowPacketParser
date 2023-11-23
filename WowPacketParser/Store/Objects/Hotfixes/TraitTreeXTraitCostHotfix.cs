@@ -19,4 +19,21 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("trait_tree_x_trait_cost")]
+    public sealed record TraitTreeXTraitCostHotfix341: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("TraitTreeID")]
+        public int? TraitTreeID;
+
+        [DBFieldName("TraitCostID")]
+        public int? TraitCostID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }
