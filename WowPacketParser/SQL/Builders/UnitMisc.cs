@@ -125,6 +125,28 @@ namespace WowPacketParser.SQL.Builders
             return result.Count == 0 ? null : result;
         }
 
+        //                               <entry, difficulty> <minlevel, maxlevel>
+        public static Dictionary<ValueTuple<uint, uint>, ValueTuple<int, int>> GetDifficutyLevels(Dictionary<WowGuid, Unit> units)
+        {
+            if (units.Count == 0)
+                return null;
+
+            var entries = units.GroupBy(unit => unit.Key.GetEntry());
+            var list = new Dictionary<(uint, uint), List<int>>();
+
+            foreach (var pair in entries.SelectMany(entry => entry))
+            {
+                if (list.ContainsKey((pair.Key.GetEntry(), pair.Value.DifficultyID)))
+                    list[(pair.Key.GetEntry(), pair.Value.DifficultyID)].Add(pair.Value.UnitData.Level ?? 0);
+                else
+                    list.Add((pair.Key.GetEntry(), pair.Value.DifficultyID), new List<int> { pair.Value.UnitData.Level ?? 0 });
+            }
+
+            var result = list.ToDictionary(pair => pair.Key, pair => ValueTuple.Create(pair.Value.Min(), pair.Value.Max()));
+
+            return result.Count == 0 ? null : result;
+        }
+
         [BuilderMethod(true, Units = true)]
         public static string CreatureTemplateScalingData(Dictionary<WowGuid, Unit> units)
         {
@@ -135,6 +157,7 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var scalingdeltalevels = GetScalingDeltaLevels(units);
+            var difficultyLevels = GetDifficutyLevels(units);
 
             foreach (var unit in units)
             {
@@ -143,21 +166,48 @@ namespace WowPacketParser.SQL.Builders
 
                 var npc = unit.Value;
 
-                var minLevel = (uint)npc.UnitData.ScalingLevelMin;
-                var maxLevel = (uint)npc.UnitData.ScalingLevelMax;
+                var scalingMinLevel = (uint)npc.UnitData.ScalingLevelMin;
+                var scalingMaxLevel = (uint)npc.UnitData.ScalingLevelMax;
                 var contentTuningID = npc.UnitData.ContentTuningID;
 
-                if (minLevel != 0 || maxLevel != 0 || contentTuningID != 0)
+                if (ClientVersion.RemovedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_0_44832))
+                {
+                    if (scalingMinLevel != 0 || scalingMaxLevel != 0 || contentTuningID != 0)
+                    {
+                        CreatureTemplateDifficulty creatureDifficulty = new CreatureTemplateDifficulty
+                        {
+                            Entry = unit.Key.GetEntry(),
+                            DifficultyID = npc.DifficultyID,
+                            LevelScalingMin = scalingMinLevel,
+                            LevelScalingMax = scalingMaxLevel,
+                            LevelScalingDeltaMin = scalingdeltalevels[unit.Key.GetEntry()].Item1,
+                            LevelScalingDeltaMax = scalingdeltalevels[unit.Key.GetEntry()].Item2,
+                            ContentTuningID = contentTuningID
+                        };
+
+                        CreatureTemplate template;
+                        if (Storage.CreatureTemplates.TryGetValue(unit.Key.GetEntry(), out template))
+                        {
+                            creatureDifficulty.HealthScalingExpansion = template.HealthScalingExpansion;
+                            creatureDifficulty.HealthModifier = template.HealthModifier;
+                            creatureDifficulty.ManaModifier = template.ManaModifier;
+                            creatureDifficulty.CreatureDifficultyID = template.CreatureDifficultyID;
+                            creatureDifficulty.TypeFlags = template.TypeFlags;
+                            creatureDifficulty.TypeFlags2 = template.TypeFlags2;
+                        }
+
+                        Storage.CreatureTemplateDifficulties.Add(creatureDifficulty);
+                    }
+                }
+
+                if (ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_0_44832))
                 {
                     CreatureTemplateDifficulty creatureDifficulty = new CreatureTemplateDifficulty
                     {
                         Entry = unit.Key.GetEntry(),
                         DifficultyID = npc.DifficultyID,
-                        LevelScalingMin = minLevel,
-                        LevelScalingMax = maxLevel,
-                        LevelScalingDeltaMin = scalingdeltalevels[unit.Key.GetEntry()].Item1,
-                        LevelScalingDeltaMax = scalingdeltalevels[unit.Key.GetEntry()].Item2,
-                        ContentTuningID = contentTuningID
+                        MinLevel = difficultyLevels[(unit.Key.GetEntry(), npc.DifficultyID)].Item1,
+                        MaxLevel = difficultyLevels[(unit.Key.GetEntry(), npc.DifficultyID)].Item2,
                     };
 
                     CreatureTemplate template;

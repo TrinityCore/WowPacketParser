@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("creature_template_scaling", TargetedDatabaseFlag.TillShadowlands)]
-    [DBTableName("creature_template_difficulty", TargetedDatabaseFlag.SinceDragonflight)]
+    [DBTableName("creature_template_difficulty", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
     public sealed record CreatureTemplateDifficulty : IDataModel
     {
         [DBFieldName("Entry", true)]
@@ -20,32 +20,38 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("LevelScalingMax", TargetedDatabaseFlag.Legion | TargetedDatabaseFlag.BattleForAzeroth)]
         public uint? LevelScalingMax;
 
-        [DBFieldName("LevelScalingDeltaMin")]
+        [DBFieldName("LevelScalingDeltaMin", TargetedDatabaseFlag.AnyRetail)]
         public int? LevelScalingDeltaMin;
 
-        [DBFieldName("LevelScalingDeltaMax")]
+        [DBFieldName("LevelScalingDeltaMax", TargetedDatabaseFlag.AnyRetail)]
         public int? LevelScalingDeltaMax;
+
+        [DBFieldName("MinLevel", TargetedDatabaseFlag.WotlkClassic)]
+        public int? MinLevel;
+
+        [DBFieldName("MaxLevel", TargetedDatabaseFlag.WotlkClassic)]
+        public int? MaxLevel;
 
         [DBFieldName("SandboxScalingID", TargetedDatabaseFlag.Legion)]
         [DBFieldName("ContentTuningID", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public int? ContentTuningID;
 
-        [DBFieldName("HealthScalingExpansion", TargetedDatabaseFlag.SinceDragonflight)]
+        [DBFieldName("HealthScalingExpansion", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
         public ClientType? HealthScalingExpansion;
 
-        [DBFieldName("HealthModifier", TargetedDatabaseFlag.SinceDragonflight)]
+        [DBFieldName("HealthModifier", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
         public float? HealthModifier;
 
-        [DBFieldName("ManaModifier", TargetedDatabaseFlag.SinceDragonflight)]
+        [DBFieldName("ManaModifier", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
         public float? ManaModifier;
 
-        [DBFieldName("CreatureDifficultyID", TargetedDatabaseFlag.SinceDragonflight)]
+        [DBFieldName("CreatureDifficultyID", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
         public int? CreatureDifficultyID;
 
-        [DBFieldName("TypeFlags", TargetedDatabaseFlag.SinceDragonflight)]
+        [DBFieldName("TypeFlags", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
         public CreatureTypeFlag? TypeFlags;
 
-        [DBFieldName("TypeFlags2", TargetedDatabaseFlag.SinceDragonflight)]
+        [DBFieldName("TypeFlags2", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
         public uint? TypeFlags2;
 
         [DBFieldName("VerifiedBuild")]
