@@ -412,5 +412,26 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
             }
         }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO, ClientVersionBuild.V3_4_3_51505)]
+        public static void HandleWorldServerInfo(Packet packet)
+        {
+            CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
+
+            packet.ReadBit("IsTournamentRealm");
+            packet.ReadBit("XRealmPvpAlert");
+            var hasRestrictedAccountMaxLevel = packet.ReadBit("HasRestrictedAccountMaxLevel");
+            var hasRestrictedAccountMaxMoney = packet.ReadBit("HasRestrictedAccountMaxMoney");
+            var hasInstanceGroupSize = packet.ReadBit("HasInstanceGroupSize");
+
+            if (hasRestrictedAccountMaxLevel)
+                packet.ReadUInt32("RestrictedAccountMaxLevel");
+
+            if (hasRestrictedAccountMaxMoney)
+                packet.ReadUInt64("RestrictedAccountMaxMoney");
+
+            if (hasInstanceGroupSize)
+                packet.ReadUInt32("InstanceGroupSize");
+        }
     }
 }
