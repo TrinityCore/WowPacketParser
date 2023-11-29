@@ -34,7 +34,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("IconName", nullable: true)]
         public string IconName;
 
-        [DBFieldName("HealthScalingExpansion", TargetedDatabaseFlag.SinceWarlordsOfDraenorTillShadowLands | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("HealthScalingExpansion", TargetedDatabaseFlag.SinceWarlordsOfDraenorTillShadowLands | TargetedDatabaseFlag.Classic)]
         public ClientType? HealthScalingExpansion;
 
         [DBFieldName("RequiredExpansion", TargetedDatabaseFlag.SinceCataclysm | TargetedDatabaseFlag.AnyClassic)]

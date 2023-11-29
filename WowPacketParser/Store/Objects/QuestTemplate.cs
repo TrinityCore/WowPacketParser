@@ -16,7 +16,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("QuestLevel", TargetedDatabaseFlag.TillBattleForAzeroth | TargetedDatabaseFlag.AnyClassic)]
         public int? QuestLevel;
 
-        [DBFieldName("ScalingFactionGroup", TargetedDatabaseFlag.BattleForAzeroth | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("ScalingFactionGroup", TargetedDatabaseFlag.BattleForAzeroth | TargetedDatabaseFlag.Classic)]
+        [DBFieldName("QuestScalingFactionGroup", TargetedDatabaseFlag.WotlkClassic)]
         public int? QuestScalingFactionGroup;
 
         [DBFieldName("MaxScalingLevel", TargetedDatabaseFlag.Legion | TargetedDatabaseFlag.BattleForAzeroth | TargetedDatabaseFlag.AnyClassic)]
