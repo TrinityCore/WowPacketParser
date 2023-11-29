@@ -67,16 +67,16 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("type_flags", TargetedDatabaseFlag.TillShadowlands)]
         public CreatureTypeFlag? TypeFlags;
 
-        [DBFieldName("type_flags2", TargetedDatabaseFlag.Cataclysm | TargetedDatabaseFlag.SinceWarlordsOfDraenorTillShadowLands)]
+        [DBFieldName("type_flags2", TargetedDatabaseFlag.Cataclysm | TargetedDatabaseFlag.SinceWarlordsOfDraenorTillShadowLands | TargetedDatabaseFlag.WotlkClassic)]
         public uint? TypeFlags2;
 
         [DBFieldName("PetSpellDataId", TargetedDatabaseFlag.TillWrathOfTheLichKing | TargetedDatabaseFlag.AnyClassic)]
         public uint? PetSpellDataID;
 
-        [DBFieldName("HealthModifier", TargetedDatabaseFlag.TillShadowlands)]
+        [DBFieldName("HealthModifier", TargetedDatabaseFlag.TillShadowlands | TargetedDatabaseFlag.WotlkClassic)]
         public float? HealthModifier;
 
-        [DBFieldName("ManaModifier", TargetedDatabaseFlag.TillShadowlands)]
+        [DBFieldName("ManaModifier", TargetedDatabaseFlag.TillShadowlands | TargetedDatabaseFlag.WotlkClassic)]
         public float? ManaModifier;
 
         [DBFieldName("RacialLeader")]

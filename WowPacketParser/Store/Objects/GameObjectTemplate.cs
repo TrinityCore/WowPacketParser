@@ -38,13 +38,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Data", TargetedDatabaseFlag.Cataclysm, 32, true)]
         [DBFieldName("Data", TargetedDatabaseFlag.WarlordsOfDraenor | TargetedDatabaseFlag.Legion, 33, true)]
         [DBFieldName("Data", TargetedDatabaseFlag.BattleForAzeroth, 34, true)]
-        [DBFieldName("Data", TargetedDatabaseFlag.SinceShadowlands, 35, true)]
+        [DBFieldName("Data", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic, 35, true)]
         public int?[] Data;
 
         [DBFieldName("RequiredLevel", TargetedDatabaseFlag.FromCataclysmTillBattleForAzeroth)]
         public int? RequiredLevel;
 
-        [DBFieldName("ContentTuningId", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("ContentTuningId", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
         public int? ContentTuningId;
 
         [DBFieldName("VerifiedBuild")]
@@ -63,7 +63,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ItemId")]
         public uint? ItemId;
 
-        [DBFieldName("VerifiedBuild", TargetedDatabaseFlag.SinceWarlordsOfDraenor)]
+        [DBFieldName("VerifiedBuild", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic)]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

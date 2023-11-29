@@ -207,10 +207,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             {
                 Entry = (uint)entry.Key
             };
+            var query = packet.Holder.QueryGameObjectResponse = new() { Entry = (uint)entry.Key };
 
             packet.ReadBit("Allow");
 
             int dataSize = packet.ReadInt32("DataSize");
+            query.HasData = dataSize > 0;
             if (dataSize == 0)
                 return;
 
@@ -243,10 +245,11 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                     ItemId = (uint)packet.ReadInt32<ItemId>("QuestItem", i)
                 };
 
+                query.Items.Add(questItem.ItemId.Value);
                 Storage.GameObjectTemplateQuestItems.Add(questItem, packet.TimeSpan);
             }
 
-            gameObject.ContentTuningId = packet.ReadInt32("ContentTuningId");
+            gameObject.ContentTuningId = query.ContentTuningId = packet.ReadInt32("ContentTuningId");
 
             packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
 
@@ -260,6 +263,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             };
 
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+
+            query.Type = (uint)gameObject.Type.Value;
+            query.Model = gameObject.DisplayID.Value;
+            query.Name = gameObject.Name;
+            query.IconName = gameObject.IconName;
+            query.CastCaption = gameObject.CastCaption;
+            query.Size = gameObject.Size.Value;
+            foreach (var data in gameObject.Data)
+                query.Data.Add(data.Value);
         }
     }
 }
