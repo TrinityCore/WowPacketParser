@@ -73,10 +73,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("PetSpellDataId", TargetedDatabaseFlag.TillWrathOfTheLichKing | TargetedDatabaseFlag.AnyClassic)]
         public uint? PetSpellDataID;
 
-        [DBFieldName("HealthModifier", TargetedDatabaseFlag.TillShadowlands | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("HealthModifier", TargetedDatabaseFlag.TillShadowlands)]
         public float? HealthModifier;
 
-        [DBFieldName("ManaModifier", TargetedDatabaseFlag.TillShadowlands | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("ManaModifier", TargetedDatabaseFlag.TillShadowlands)]
         public float? ManaModifier;
 
         [DBFieldName("RacialLeader")]
