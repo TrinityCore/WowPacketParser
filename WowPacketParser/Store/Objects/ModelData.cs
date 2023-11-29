@@ -1,4 +1,4 @@
-﻿using WowPacketParser.Enums;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -16,7 +16,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CombatReach")]
         public float? CombatReach;
 
-        [DBFieldName("Gender", TargetedDatabaseFlag.TillCataclysm | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("Gender", TargetedDatabaseFlag.TillCataclysm | TargetedDatabaseFlag.Classic)]
         public Gender? Gender;
 
         [DBFieldName("DisplayID_Other_Gender")]
