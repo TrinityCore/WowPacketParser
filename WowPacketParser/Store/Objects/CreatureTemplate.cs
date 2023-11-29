@@ -85,7 +85,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("movementId")]
         public uint? MovementID;
 
-        [DBFieldName("CreatureDifficultyID", TargetedDatabaseFlag.Shadowlands | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("CreatureDifficultyID", TargetedDatabaseFlag.Shadowlands)]
         public int? CreatureDifficultyID;
 
         [DBFieldName("VerifiedBuild")]
