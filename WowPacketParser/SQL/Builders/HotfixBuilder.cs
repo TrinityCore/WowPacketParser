@@ -6269,13 +6269,6 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ChrCustomizationOptionHotfixesLocale340, hotfixes, StoreNameType.None);
                     }
 
-                    if (!Storage.ChrCustomizationReqHotfixesLocale340.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationReqHotfixesLocale340, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ChrCustomizationReqHotfixesLocale340, hotfixes, StoreNameType.None);
-                    }
-
                     if (!Storage.ChrCustomizationReqHotfixesLocale341.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationReqHotfixesLocale341, Settings.HotfixesDatabase);
