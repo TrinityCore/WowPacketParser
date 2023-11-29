@@ -67,7 +67,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("type_flags", TargetedDatabaseFlag.TillShadowlands)]
         public CreatureTypeFlag? TypeFlags;
 
-        [DBFieldName("type_flags2", TargetedDatabaseFlag.Cataclysm | TargetedDatabaseFlag.SinceWarlordsOfDraenorTillShadowLands | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("type_flags2", TargetedDatabaseFlag.Cataclysm | TargetedDatabaseFlag.SinceWarlordsOfDraenorTillShadowLands)]
         public uint? TypeFlags2;
 
         [DBFieldName("PetSpellDataId", TargetedDatabaseFlag.TillWrathOfTheLichKing | TargetedDatabaseFlag.AnyClassic)]
