@@ -46,18 +46,18 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Flags")]
         public byte? Flags;
 
-        [DBFieldName("ChatBubbleDurationMs", TargetedDatabaseFlag.SinceBattleForAzeroth)]
+        [DBFieldName("ChatBubbleDurationMs", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.WotlkClassic)]
         public uint? ChatBubbleDurationMs;
 
-        [DBFieldName("VoiceOverPriorityID", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("VoiceOverPriorityID", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
         public uint? VoiceOverPriorityID;
 
         [DBFieldName("SoundEntriesID1", TargetedDatabaseFlag.TillBattleForAzeroth)]
-        [DBFieldName("SoundKitID1", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("SoundKitID1", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
         public uint? SoundEntriesID1;
 
         [DBFieldName("SoundEntriesID2", TargetedDatabaseFlag.TillBattleForAzeroth)]
-        [DBFieldName("SoundKitID2", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("SoundKitID2", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
         public uint? SoundEntriesID2;
 
         [DBFieldName("EmoteID1")]
