@@ -17,28 +17,28 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ItemID1")]
         public uint? ItemID1;
 
-        [DBFieldName("AppearanceModID1", TargetedDatabaseFlag.SinceLegion)]
+        [DBFieldName("AppearanceModID1", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic)]
         public ushort? AppearanceModID1;
 
-        [DBFieldName("ItemVisual1", TargetedDatabaseFlag.SinceLegion)]
+        [DBFieldName("ItemVisual1", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic)]
         public ushort? ItemVisual1;
 
         [DBFieldName("ItemID2")]
         public uint? ItemID2;
 
-        [DBFieldName("AppearanceModID2", TargetedDatabaseFlag.SinceLegion)]
+        [DBFieldName("AppearanceModID2", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic)]
         public ushort? AppearanceModID2;
 
-        [DBFieldName("ItemVisual2", TargetedDatabaseFlag.SinceLegion)]
+        [DBFieldName("ItemVisual2", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic)]
         public ushort? ItemVisual2;
 
         [DBFieldName("ItemID3")]
         public uint? ItemID3;
 
-        [DBFieldName("AppearanceModID3", TargetedDatabaseFlag.SinceLegion)]
+        [DBFieldName("AppearanceModID3", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic)]
         public ushort? AppearanceModID3;
 
-        [DBFieldName("ItemVisual3", TargetedDatabaseFlag.SinceLegion)]
+        [DBFieldName("ItemVisual3", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic)]
         public ushort? ItemVisual3;
 
         [DBFieldName("VerifiedBuild")]

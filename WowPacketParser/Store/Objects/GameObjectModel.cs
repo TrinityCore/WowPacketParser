@@ -25,16 +25,16 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("spawnMask", TargetedDatabaseFlag.TillBattleForAzeroth)]
         public uint? SpawnMask;
 
-        [DBFieldName("spawnDifficulties", TargetedDatabaseFlag.SinceLegion)]
+        [DBFieldName("spawnDifficulties", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic)]
         public string spawnDifficulties;
 
         [DBFieldName("phaseMask", TargetedDatabaseFlag.WrathOfTheLichKing)]
         public uint? PhaseMask;
 
-        [DBFieldName("PhaseId", TargetedDatabaseFlag.SinceCataclysm)]
+        [DBFieldName("PhaseId", TargetedDatabaseFlag.SinceCataclysm | TargetedDatabaseFlag.WotlkClassic)]
         public string PhaseID;
 
-        [DBFieldName("PhaseGroup", TargetedDatabaseFlag.SinceCataclysm)]
+        [DBFieldName("PhaseGroup", TargetedDatabaseFlag.SinceCataclysm | TargetedDatabaseFlag.WotlkClassic)]
         public uint? PhaseGroup;
 
         [DBFieldName("position_x")]
