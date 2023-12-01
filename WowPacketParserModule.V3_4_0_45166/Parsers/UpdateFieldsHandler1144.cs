@@ -1594,142 +1594,132 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V1_14_4_51146
                 }
                 if (changesMask[3])
                 {
-                    for (var i = 0; i < data.VisualItemReplacements.Count; ++i)
-                    {
-                        if (data.VisualItemReplacements.UpdateMask[i])
-                        {
-                            data.VisualItemReplacements[i] = packet.ReadInt32("VisualItemReplacements", indexes, i);
-                        }
-                    }
+                    data.DuelArbiter = packet.ReadPackedGuid128("DuelArbiter", indexes);
                 }
                 if (changesMask[4])
                 {
-                    data.DuelArbiter = packet.ReadPackedGuid128("DuelArbiter", indexes);
+                    data.WowAccount = packet.ReadPackedGuid128("WowAccount", indexes);
                 }
                 if (changesMask[5])
                 {
-                    data.WowAccount = packet.ReadPackedGuid128("WowAccount", indexes);
+                    data.LootTargetGUID = packet.ReadPackedGuid128("LootTargetGUID", indexes);
                 }
                 if (changesMask[6])
                 {
-                    data.LootTargetGUID = packet.ReadPackedGuid128("LootTargetGUID", indexes);
+                    data.PlayerFlags = packet.ReadUInt32("PlayerFlags", indexes);
                 }
                 if (changesMask[7])
                 {
-                    data.PlayerFlags = packet.ReadUInt32("PlayerFlags", indexes);
+                    data.PlayerFlagsEx = packet.ReadUInt32("PlayerFlagsEx", indexes);
                 }
                 if (changesMask[8])
                 {
-                    data.PlayerFlagsEx = packet.ReadUInt32("PlayerFlagsEx", indexes);
+                    data.GuildRankID = packet.ReadUInt32("GuildRankID", indexes);
                 }
                 if (changesMask[9])
                 {
-                    data.GuildRankID = packet.ReadUInt32("GuildRankID", indexes);
+                    data.GuildDeleteDate = packet.ReadUInt32("GuildDeleteDate", indexes);
                 }
                 if (changesMask[10])
                 {
-                    data.GuildDeleteDate = packet.ReadUInt32("GuildDeleteDate", indexes);
+                    data.GuildLevel = packet.ReadInt32("GuildLevel", indexes);
                 }
                 if (changesMask[11])
                 {
-                    data.GuildLevel = packet.ReadInt32("GuildLevel", indexes);
+                    data.NumBankSlots = packet.ReadByte("NumBankSlots", indexes);
                 }
                 if (changesMask[12])
                 {
-                    data.NumBankSlots = packet.ReadByte("NumBankSlots", indexes);
+                    data.NativeSex = packet.ReadByte("NativeSex", indexes);
                 }
                 if (changesMask[13])
                 {
-                    data.NativeSex = packet.ReadByte("NativeSex", indexes);
+                    data.Inebriation = packet.ReadByte("Inebriation", indexes);
                 }
                 if (changesMask[14])
                 {
-                    data.Inebriation = packet.ReadByte("Inebriation", indexes);
+                    data.PvpTitle = packet.ReadByte("PvpTitle", indexes);
                 }
                 if (changesMask[15])
                 {
-                    data.PvpTitle = packet.ReadByte("PvpTitle", indexes);
+                    data.ArenaFaction = packet.ReadByte("ArenaFaction", indexes);
                 }
                 if (changesMask[16])
                 {
-                    data.ArenaFaction = packet.ReadByte("ArenaFaction", indexes);
+                    data.PvpRank = packet.ReadByte("PvpRank", indexes);
                 }
                 if (changesMask[17])
                 {
-                    data.PvpRank = packet.ReadByte("PvpRank", indexes);
+                    data.Field_88 = packet.ReadInt32("Field_88", indexes);
                 }
                 if (changesMask[18])
                 {
-                    data.Field_88 = packet.ReadInt32("Field_88", indexes);
+                    data.DuelTeam = packet.ReadUInt32("DuelTeam", indexes);
                 }
                 if (changesMask[19])
                 {
-                    data.DuelTeam = packet.ReadUInt32("DuelTeam", indexes);
+                    data.GuildTimeStamp = packet.ReadInt32("GuildTimeStamp", indexes);
                 }
                 if (changesMask[20])
                 {
-                    data.GuildTimeStamp = packet.ReadInt32("GuildTimeStamp", indexes);
+                    data.PlayerTitle = packet.ReadInt32("PlayerTitle", indexes);
                 }
                 if (changesMask[21])
                 {
-                    data.PlayerTitle = packet.ReadInt32("PlayerTitle", indexes);
+                    data.FakeInebriation = packet.ReadInt32("FakeInebriation", indexes);
                 }
                 if (changesMask[22])
                 {
-                    data.FakeInebriation = packet.ReadInt32("FakeInebriation", indexes);
+                    data.VirtualPlayerRealm = packet.ReadUInt32("VirtualPlayerRealm", indexes);
                 }
                 if (changesMask[23])
                 {
-                    data.VirtualPlayerRealm = packet.ReadUInt32("VirtualPlayerRealm", indexes);
+                    data.CurrentSpecID = packet.ReadUInt32("CurrentSpecID", indexes);
                 }
                 if (changesMask[24])
                 {
-                    data.CurrentSpecID = packet.ReadUInt32("CurrentSpecID", indexes);
+                    data.TaxiMountAnimKitID = packet.ReadInt32("TaxiMountAnimKitID", indexes);
                 }
                 if (changesMask[25])
                 {
-                    data.TaxiMountAnimKitID = packet.ReadInt32("TaxiMountAnimKitID", indexes);
+                    data.CurrentBattlePetBreedQuality = packet.ReadByte("CurrentBattlePetBreedQuality", indexes);
                 }
                 if (changesMask[26])
                 {
-                    data.CurrentBattlePetBreedQuality = packet.ReadByte("CurrentBattlePetBreedQuality", indexes);
+                    data.HonorLevel = packet.ReadInt32("HonorLevel", indexes);
                 }
                 if (changesMask[27])
                 {
-                    data.HonorLevel = packet.ReadInt32("HonorLevel", indexes);
+                    data.LogoutTime = packet.ReadInt64("LogoutTime", indexes);
                 }
                 if (changesMask[28])
                 {
-                    data.LogoutTime = packet.ReadInt64("LogoutTime", indexes);
+                    data.CurrentBattlePetSpeciesID = packet.ReadInt32("CurrentBattlePetSpeciesID", indexes);
                 }
                 if (changesMask[29])
                 {
-                    data.CurrentBattlePetSpeciesID = packet.ReadInt32("CurrentBattlePetSpeciesID", indexes);
-                }
-                if (changesMask[30])
-                {
                     data.BnetAccount = packet.ReadPackedGuid128("BnetAccount", indexes);
                 }
-                if (changesMask[31])
+                if (changesMask[30])
                 {
                     Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");
                 }
             }
-            if (changesMask[32])
+            if (changesMask[31])
             {
-                for (var i = 0; i < 2; ++i)
+                for (var i = 0; i < 1; ++i)
                 {
-                    if (changesMask[33 + i])
+                    if (changesMask[32 + i])
                     {
                         data.PartyType[i] = packet.ReadByte("PartyType", indexes, i);
                     }
                 }
             }
-            if (changesMask[35])
+            if (changesMask[33])
             {
                 for (var i = 0; i < 25; ++i)
                 {
-                    if (changesMask[36 + i])
+                    if (changesMask[34 + i])
                     {
                         if (noQuestLogChangesMask)
                             data.QuestLog[i] = ReadCreateQuestLog(packet, indexes, "QuestLog", i);
@@ -1738,31 +1728,31 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V1_14_4_51146
                     }
                 }
             }
-            if (changesMask[61])
+            if (changesMask[59])
             {
                 for (var i = 0; i < 19; ++i)
                 {
-                    if (changesMask[62 + i])
+                    if (changesMask[60 + i])
                     {
                         data.VisibleItems[i] = ReadUpdateVisibleItem(packet, indexes, "VisibleItems", i);
                     }
                 }
             }
-            if (changesMask[81])
+            if (changesMask[79])
             {
                 for (var i = 0; i < 6; ++i)
                 {
-                    if (changesMask[82 + i])
+                    if (changesMask[80 + i])
                     {
                         data.AvgItemLevel[i] = packet.ReadSingle("AvgItemLevel", indexes, i);
                     }
                 }
             }
-            if (changesMask[88])
+            if (changesMask[86])
             {
                 for (var i = 0; i < 19; ++i)
                 {
-                    if (changesMask[89 + i])
+                    if (changesMask[87 + i])
                     {
                         data.Field_3120[i] = packet.ReadUInt32("Field_3120", indexes, i);
                     }
@@ -3072,9 +3062,14 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V1_14_4_51146
             data.ArtKit = packet.ReadUInt32("ArtKit", indexes);
             data.EnableDoodadSets.Resize(packet.ReadUInt32());
             data.CustomParam = packet.ReadUInt32("CustomParam", indexes);
+            data.WorldEffects.Resize(packet.ReadUInt32());
             for (var i = 0; i < data.EnableDoodadSets.Count; ++i)
             {
                 data.EnableDoodadSets[i] = packet.ReadInt32("EnableDoodadSets", indexes, i);
+            }
+            for (var i = 0; i < data.WorldEffects.Count; ++i)
+            {
+                data.WorldEffects[i] = packet.ReadInt32("WorldEffects", indexes, i);
             }
             return data;
         }
@@ -3083,7 +3078,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V1_14_4_51146
         {
             var data = new GameObjectData();
             var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(19);
+            rawChangesMask[0] = (int)packet.ReadBits(20);
             var changesMask = new BitArray(rawChangesMask);
 
             if (changesMask[0])
@@ -3120,65 +3115,75 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V1_14_4_51146
                 }
                 if (changesMask[3])
                 {
-                    data.DisplayID = packet.ReadInt32("DisplayID", indexes);
+                    for (var i = 0; i < data.WorldEffects.Count; ++i)
+                    {
+                        if (data.WorldEffects.UpdateMask[i])
+                        {
+                            data.WorldEffects[i] = packet.ReadInt32("WorldEffects", indexes, i);
+                        }
+                    }
                 }
                 if (changesMask[4])
                 {
-                    data.SpellVisualID = packet.ReadUInt32("SpellVisualID", indexes);
+                    data.DisplayID = packet.ReadInt32("DisplayID", indexes);
                 }
                 if (changesMask[5])
                 {
-                    data.StateSpellVisualID = packet.ReadUInt32("StateSpellVisualID", indexes);
+                    data.SpellVisualID = packet.ReadUInt32("SpellVisualID", indexes);
                 }
                 if (changesMask[6])
                 {
-                    data.SpawnTrackingStateAnimID = packet.ReadUInt32("SpawnTrackingStateAnimID", indexes);
+                    data.StateSpellVisualID = packet.ReadUInt32("StateSpellVisualID", indexes);
                 }
                 if (changesMask[7])
                 {
-                    data.SpawnTrackingStateAnimKitID = packet.ReadUInt32("SpawnTrackingStateAnimKitID", indexes);
+                    data.SpawnTrackingStateAnimID = packet.ReadUInt32("SpawnTrackingStateAnimID", indexes);
                 }
                 if (changesMask[8])
                 {
-                    data.CreatedBy = packet.ReadPackedGuid128("CreatedBy", indexes);
+                    data.SpawnTrackingStateAnimKitID = packet.ReadUInt32("SpawnTrackingStateAnimKitID", indexes);
                 }
                 if (changesMask[9])
                 {
-                    data.GuildGUID = packet.ReadPackedGuid128("GuildGUID", indexes);
+                    data.CreatedBy = packet.ReadPackedGuid128("CreatedBy", indexes);
                 }
                 if (changesMask[10])
                 {
-                    data.Flags = packet.ReadUInt32("Flags", indexes);
+                    data.GuildGUID = packet.ReadPackedGuid128("GuildGUID", indexes);
                 }
                 if (changesMask[11])
                 {
-                    data.ParentRotation = packet.ReadQuaternion("ParentRotation", indexes);
+                    data.Flags = packet.ReadUInt32("Flags", indexes);
                 }
                 if (changesMask[12])
                 {
-                    data.FactionTemplate = packet.ReadInt32("FactionTemplate", indexes);
+                    data.ParentRotation = packet.ReadQuaternion("ParentRotation", indexes);
                 }
                 if (changesMask[13])
                 {
-                    data.Level = packet.ReadInt32("Level", indexes);
+                    data.FactionTemplate = packet.ReadInt32("FactionTemplate", indexes);
                 }
                 if (changesMask[14])
                 {
-                    data.State = packet.ReadSByte("State", indexes);
+                    data.Level = packet.ReadInt32("Level", indexes);
                 }
                 if (changesMask[15])
                 {
-                    data.TypeID = packet.ReadSByte("TypeID", indexes);
+                    data.State = packet.ReadSByte("State", indexes);
                 }
                 if (changesMask[16])
                 {
-                    data.PercentHealth = packet.ReadByte("PercentHealth", indexes);
+                    data.TypeID = packet.ReadSByte("TypeID", indexes);
                 }
                 if (changesMask[17])
                 {
-                    data.ArtKit = packet.ReadUInt32("ArtKit", indexes);
+                    data.PercentHealth = packet.ReadByte("PercentHealth", indexes);
                 }
                 if (changesMask[18])
+                {
+                    data.ArtKit = packet.ReadUInt32("ArtKit", indexes);
+                }
+                if (changesMask[19])
                 {
                     data.CustomParam = packet.ReadUInt32("CustomParam", indexes);
                 }
