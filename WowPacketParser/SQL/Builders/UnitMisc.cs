@@ -170,7 +170,7 @@ namespace WowPacketParser.SQL.Builders
                 var scalingMaxLevel = (uint)npc.UnitData.ScalingLevelMax;
                 var contentTuningID = npc.UnitData.ContentTuningID;
 
-                if (ClientVersion.RemovedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_0_44832))
+                if (!ClientVersion.IsClassicClientVersionBuild(ClientVersion.Build))
                 {
                     if (scalingMinLevel != 0 || scalingMaxLevel != 0 || contentTuningID != 0)
                     {
@@ -199,8 +199,7 @@ namespace WowPacketParser.SQL.Builders
                         Storage.CreatureTemplateDifficulties.Add(creatureDifficulty);
                     }
                 }
-
-                if (ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_0_44832))
+                else
                 {
                     CreatureTemplateDifficulty creatureDifficulty = new CreatureTemplateDifficulty
                     {
