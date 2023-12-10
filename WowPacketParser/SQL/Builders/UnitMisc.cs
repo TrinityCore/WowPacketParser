@@ -147,6 +147,17 @@ namespace WowPacketParser.SQL.Builders
             return result.Count == 0 ? null : result;
         }
 
+        [BuilderMethod(true)]
+        public static string CreatureTemplateScalingDataWDB()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template_difficulty))
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateDifficultiesWDB);
+
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateDifficultiesWDB.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateDifficultiesWDB.ToArray(), templatesDb, StoreNameType.Unit);
+        }
+
         [BuilderMethod(true, Units = true)]
         public static string CreatureTemplateScalingData(Dictionary<WowGuid, Unit> units)
         {
@@ -184,18 +195,6 @@ namespace WowPacketParser.SQL.Builders
                             LevelScalingDeltaMax = scalingdeltalevels[unit.Key.GetEntry()].Item2,
                             ContentTuningID = contentTuningID
                         };
-
-                        CreatureTemplate template;
-                        if (Storage.CreatureTemplates.TryGetValue(unit.Key.GetEntry(), out template))
-                        {
-                            creatureDifficulty.HealthScalingExpansion = template.HealthScalingExpansion;
-                            creatureDifficulty.HealthModifier = template.HealthModifier;
-                            creatureDifficulty.ManaModifier = template.ManaModifier;
-                            creatureDifficulty.CreatureDifficultyID = template.CreatureDifficultyID;
-                            creatureDifficulty.TypeFlags = template.TypeFlags;
-                            creatureDifficulty.TypeFlags2 = template.TypeFlags2;
-                        }
-
                         Storage.CreatureTemplateDifficulties.Add(creatureDifficulty);
                     }
                 }
@@ -208,18 +207,6 @@ namespace WowPacketParser.SQL.Builders
                         MinLevel = difficultyLevels[(unit.Key.GetEntry(), npc.DifficultyID)].Item1,
                         MaxLevel = difficultyLevels[(unit.Key.GetEntry(), npc.DifficultyID)].Item2,
                     };
-
-                    CreatureTemplate template;
-                    if (Storage.CreatureTemplates.TryGetValue(unit.Key.GetEntry(), out template))
-                    {
-                        creatureDifficulty.HealthScalingExpansion = template.HealthScalingExpansion;
-                        creatureDifficulty.HealthModifier = template.HealthModifier;
-                        creatureDifficulty.ManaModifier = template.ManaModifier;
-                        creatureDifficulty.CreatureDifficultyID = template.CreatureDifficultyID;
-                        creatureDifficulty.TypeFlags = template.TypeFlags;
-                        creatureDifficulty.TypeFlags2 = template.TypeFlags2;
-                    }
-
                     Storage.CreatureTemplateDifficulties.Add(creatureDifficulty);
                 }
             }

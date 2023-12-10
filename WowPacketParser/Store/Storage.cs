@@ -42,6 +42,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<CreatureTemplateNonWDB> CreatureTemplatesNonWDB = new DataBag<CreatureTemplateNonWDB>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateQuestItem> CreatureTemplateQuestItems = new DataBag<CreatureTemplateQuestItem>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateDifficulty> CreatureTemplateDifficulties = new DataBag<CreatureTemplateDifficulty>(new List<SQLOutput> { SQLOutput.creature_template_difficulty });
+        public static readonly DataBag<CreatureTemplateDifficultyWDB> CreatureTemplateDifficultiesWDB = new DataBag<CreatureTemplateDifficultyWDB>(new List<SQLOutput> { SQLOutput.creature_template_difficulty });
         public static readonly DataBag<CreatureTemplateModel> CreatureTemplateModels = new DataBag<CreatureTemplateModel>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateSpell> CreatureTemplateSpells = new DataBag<CreatureTemplateSpell>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureQuestStarter> CreatureQuestStarters = new DataBag<CreatureQuestStarter>(new List<SQLOutput> { SQLOutput.creature_queststarter });
@@ -1160,6 +1161,7 @@ namespace WowPacketParser.Store
             CreatureTemplatesNonWDB.Clear();
             CreatureTemplateQuestItems.Clear();
             CreatureTemplateDifficulties.Clear();
+            CreatureTemplateDifficultiesWDB.Clear();
             CreatureTemplateModels.Clear();
             CreatureTemplateSpells.Clear();
             CreatureTemplateGossips.Clear();
