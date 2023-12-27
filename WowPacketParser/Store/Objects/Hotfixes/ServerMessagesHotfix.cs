@@ -47,4 +47,21 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("server_messages_locale")]
+    public sealed record ServerMessagesLocaleHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("locale", true)]
+        public string Locale = ClientLocale.PacketLocaleString;
+
+        [DBFieldName("Text_lang")]
+        public string TextLang;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

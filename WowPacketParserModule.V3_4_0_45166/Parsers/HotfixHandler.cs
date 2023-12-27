@@ -340,6 +340,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             hotfix.Flags = packet.ReadSByte("Flags", indexes);
 
             Storage.AreaTriggerHotfixes340.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                AreaTriggerLocaleHotfix340 hotfixLocale = new AreaTriggerLocaleHotfix340
+                {
+                    ID = hotfix.ID,
+                    MessageLang = hotfix.Message,
+                };
+                Storage.AreaTriggerHotfixesLocale340.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void ArmorLocationHandler340(Packet packet, uint entry, params object[] indexes)
@@ -792,6 +802,17 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             hotfix.Flags = packet.ReadByte("Flags", indexes);
 
             Storage.BattlePetAbilityHotfixes340.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                BattlePetAbilityLocaleHotfix340 hotfixLocale = new BattlePetAbilityLocaleHotfix340
+                {
+                    ID = hotfix.ID,
+                    NameLang = hotfix.Name,
+                    DescriptionLang = hotfix.Description,
+                };
+                Storage.BattlePetAbilityHotfixesLocale340.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void BattlePetBreedQualityHandler340(Packet packet, uint entry, params object[] indexes)
@@ -980,6 +1001,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             hotfix.Order = packet.ReadSByte("Order", indexes);
 
             Storage.CfgCategoriesHotfixes340.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                CfgCategoriesLocaleHotfix340 hotfixLocale = new CfgCategoriesLocaleHotfix340
+                {
+                    ID = hotfix.ID,
+                    NameLang = hotfix.Name,
+                };
+                Storage.CfgCategoriesHotfixesLocale340.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void CfgRegionsHandler340(Packet packet, uint entry, params object[] indexes)
@@ -1446,6 +1477,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             hotfix.ItemModifiedAppearanceID = packet.ReadInt32("ItemModifiedAppearanceID", indexes);
 
             Storage.ChrCustomizationReqHotfixes341.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                ChrCustomizationReqLocaleHotfix341 hotfixLocale = new ChrCustomizationReqLocaleHotfix341
+                {
+                    ID = hotfix.ID,
+                    ReqSourceLang = hotfix.ReqSource,
+                };
+                Storage.ChrCustomizationReqHotfixesLocale341.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void ChrCustomizationReqHandler343(Packet packet, uint entry, params object[] indexes)
@@ -1463,6 +1504,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             hotfix.ItemModifiedAppearanceID = packet.ReadInt32("ItemModifiedAppearanceID", indexes);
 
             Storage.ChrCustomizationReqHotfixes343.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                ChrCustomizationReqLocaleHotfix343 hotfixLocale = new ChrCustomizationReqLocaleHotfix343
+                {
+                    ID = hotfix.ID,
+                    ReqSourceLang = hotfix.ReqSource,
+                };
+                Storage.ChrCustomizationReqHotfixesLocale343.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void ChrCustomizationReqChoiceHandler340(Packet packet, uint entry, params object[] indexes)
@@ -3052,6 +3103,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             hotfix.UiTextureKitID = packet.ReadUInt16("UiTextureKitID", indexes);
 
             Storage.GarrTalentTreeHotfixes340.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                GarrTalentTreeLocaleHotfix340 hotfixLocale = new GarrTalentTreeLocaleHotfix340
+                {
+                    ID = hotfix.ID,
+                    NameLang = hotfix.Name,
+                };
+                Storage.GarrTalentTreeHotfixesLocale340.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void GemPropertiesHandler340(Packet packet, uint entry, params object[] indexes)
@@ -3808,6 +3869,55 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             hotfix.Weapon = packet.ReadSingle("Weapon", indexes);
 
             Storage.ItemPriceBaseHotfixes340.Add(hotfix, packet.TimeSpan);
+        }
+
+        public static void ItemRandomPropertiesHandler340(Packet packet, uint entry, params object[] indexes)
+        {
+            ItemRandomPropertiesHotfix340 hotfix = new ItemRandomPropertiesHotfix340();
+
+            hotfix.ID = entry;
+            hotfix.Name = packet.ReadCString("Name", indexes);
+            hotfix.Enchantment = new ushort?[5];
+            for (int i = 0; i < 5; i++)
+                hotfix.Enchantment[i] = packet.ReadUInt16("Enchantment", indexes, i);
+
+            Storage.ItemRandomPropertiesHotfixes340.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                ItemRandomPropertiesLocaleHotfix340 hotfixLocale = new ItemRandomPropertiesLocaleHotfix340
+                {
+                    ID = hotfix.ID,
+                    NameLang = hotfix.Name,
+                };
+                Storage.ItemRandomPropertiesHotfixesLocale340.Add(hotfixLocale, packet.TimeSpan);
+            }
+        }
+
+        public static void ItemRandomSuffixHandler340(Packet packet, uint entry, params object[] indexes)
+        {
+            ItemRandomSuffixHotfix340 hotfix = new ItemRandomSuffixHotfix340();
+
+            hotfix.ID = entry;
+            hotfix.Name = packet.ReadCString("Name", indexes);
+            hotfix.Enchantment = new ushort?[5];
+            for (int i = 0; i < 5; i++)
+                hotfix.Enchantment[i] = packet.ReadUInt16("Enchantment", indexes, i);
+            hotfix.AllocationPct = new ushort?[5];
+            for (int i = 0; i < 5; i++)
+                hotfix.AllocationPct[i] = packet.ReadUInt16("AllocationPct", indexes, i);
+
+            Storage.ItemRandomSuffixHotfixes340.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                ItemRandomSuffixLocaleHotfix340 hotfixLocale = new ItemRandomSuffixLocaleHotfix340
+                {
+                    ID = hotfix.ID,
+                    NameLang = hotfix.Name,
+                };
+                Storage.ItemRandomSuffixHotfixesLocale340.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void ItemSearchNameHandler342(Packet packet, uint entry, params object[] indexes)
@@ -4715,6 +4825,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             hotfix.MapDifficultyID = packet.ReadInt32("MapDifficultyID", indexes);
 
             Storage.MapDifficultyXConditionHotfixes340.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                MapDifficultyXConditionLocaleHotfix340 hotfixLocale = new MapDifficultyXConditionLocaleHotfix340
+                {
+                    ID = hotfix.ID,
+                    FailureDescriptionLang = hotfix.FailureDescription,
+                };
+                Storage.MapDifficultyXConditionHotfixesLocale340.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void ModifierTreeHandler340(Packet packet, uint entry, params object[] indexes)
@@ -5311,6 +5431,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             hotfix.Profession = packet.ReadUInt16("Profession", indexes);
 
             Storage.QuestInfoHotfixes340.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                QuestInfoLocaleHotfix340 hotfixLocale = new QuestInfoLocaleHotfix340
+                {
+                    ID = hotfix.ID,
+                    InfoNameLang = hotfix.InfoName,
+                };
+                Storage.QuestInfoHotfixesLocale340.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void QuestLineXQuestHandler340(Packet packet, uint entry, params object[] indexes)
@@ -5620,6 +5750,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             hotfix.Text = packet.ReadCString("Text", indexes);
 
             Storage.ServerMessagesHotfixes340.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                ServerMessagesLocaleHotfix340 hotfixLocale = new ServerMessagesLocaleHotfix340
+                {
+                    ID = hotfix.ID,
+                    TextLang = hotfix.Text,
+                };
+                Storage.ServerMessagesHotfixesLocale340.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void SkillLineHandler340(Packet packet, uint entry, params object[] indexes)
@@ -5680,6 +5820,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 hotfix.CharacterPoints[i] = packet.ReadInt32("CharacterPoints", indexes, i);
 
             Storage.SkillLineAbilityHotfixes340.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                SkillLineAbilityLocaleHotfix340 hotfixLocale = new SkillLineAbilityLocaleHotfix340
+                {
+                    ID = hotfix.ID,
+                };
+                Storage.SkillLineAbilityHotfixesLocale340.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void SkillLineXTraitTreeHandler341(Packet packet, uint entry, params object[] indexes)
@@ -6961,6 +7110,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             hotfix.OrderIndex = packet.ReadInt32("OrderIndex", indexes);
 
             Storage.TraitCurrencySourceHotfixes341.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                TraitCurrencySourceLocaleHotfix341 hotfixLocale = new TraitCurrencySourceLocaleHotfix341
+                {
+                    ID = hotfix.ID,
+                    RequirementLang = hotfix.Requirement,
+                };
+                Storage.TraitCurrencySourceHotfixesLocale341.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void TraitDefinitionHandler341(Packet packet, uint entry, params object[] indexes)
@@ -6977,6 +7136,18 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             hotfix.VisibleSpellID = packet.ReadInt32("VisibleSpellID", indexes);
 
             Storage.TraitDefinitionHotfixes341.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                TraitDefinitionLocaleHotfix341 hotfixLocale = new TraitDefinitionLocaleHotfix341
+                {
+                    ID = hotfix.ID,
+                    OverrideNameLang = hotfix.OverrideName,
+                    OverrideSubtextLang = hotfix.OverrideSubtext,
+                    OverrideDescriptionLang = hotfix.OverrideDescription,
+                };
+                Storage.TraitDefinitionHotfixesLocale341.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void TraitDefinitionEffectPointsHandler341(Packet packet, uint entry, params object[] indexes)

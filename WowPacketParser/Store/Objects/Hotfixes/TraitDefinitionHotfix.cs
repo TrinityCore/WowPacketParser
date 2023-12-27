@@ -89,4 +89,27 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("trait_definition_locale")]
+    public sealed record TraitDefinitionLocaleHotfix341: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("locale", true)]
+        public string Locale = ClientLocale.PacketLocaleString;
+
+        [DBFieldName("OverrideName_lang")]
+        public string OverrideNameLang;
+
+        [DBFieldName("OverrideSubtext_lang")]
+        public string OverrideSubtextLang;
+
+        [DBFieldName("OverrideDescription_lang")]
+        public string OverrideDescriptionLang;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

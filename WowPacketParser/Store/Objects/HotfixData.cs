@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Id", true)]
         public uint? ID;
 
-        [DBFieldName("UniqueID", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("UniqueID", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
         public uint? UniqueID;
 
         [DBFieldName("TableHash", true)]

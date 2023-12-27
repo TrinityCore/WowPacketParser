@@ -16,7 +16,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("PositionY")]
         public float? PositionY;
 
-        [DBFieldName("PositionZ", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("PositionZ", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
         public float? PositionZ;
 
         [DBFieldName("Icon")]
@@ -31,7 +31,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Name")]
         public string Name;
 
-        [DBFieldName("WMOGroupID", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("WMOGroupID", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
         public int? WMOGroupID;
 
         [DBFieldName("VerifiedBuild")]

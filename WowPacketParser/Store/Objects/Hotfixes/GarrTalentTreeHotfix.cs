@@ -162,4 +162,21 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("garr_talent_tree_locale")]
+    public sealed record GarrTalentTreeLocaleHotfix340: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("locale", true)]
+        public string Locale = ClientLocale.PacketLocaleString;
+
+        [DBFieldName("Name_lang")]
+        public string NameLang;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

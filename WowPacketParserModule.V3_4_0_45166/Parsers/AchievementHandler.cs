@@ -47,5 +47,28 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         {
             ReadAllAchievements(packet, "Data");
         }
+
+        [Parser(Opcode.SMSG_CRITERIA_UPDATE, ClientVersionBuild.V3_4_3_51505)]
+        public static void HandleCriteriaPlayer(Packet packet)
+        {
+            int criteriaId = packet.ReadInt32<CriteriaId>("CriteriaID");
+            ulong quantity = (ulong)packet.ReadInt64("Quantity");
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadInt32("Unused1015");
+            packet.ReadInt32("Flags");
+            packet.ReadPackedTime("CurrentTime");
+            packet.ReadTime64("ElapsedTime");
+            packet.ReadTime64("CreationTime");
+
+            var hasRafAcceptanceID = packet.ReadBit("HasRafAcceptanceID");
+
+            if (hasRafAcceptanceID)
+                packet.ReadUInt64("RafAcceptanceID");
+
+            if (Settings.UseDBC)
+                if (DBC.Criteria.ContainsKey(criteriaId))
+                    if (DBC.Criteria[criteriaId].Type == 46)
+                        CoreParsers.AchievementHandler.FactionReputationStore[DBC.Criteria[criteriaId].Asset] = quantity;
+        }
     }
 }

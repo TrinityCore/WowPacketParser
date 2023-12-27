@@ -22,7 +22,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Y")]
         public int? Y;
 
-        [DBFieldName("Z", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("Z", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
         public int? Z;
 
         [DBFieldName("VerifiedBuild")]

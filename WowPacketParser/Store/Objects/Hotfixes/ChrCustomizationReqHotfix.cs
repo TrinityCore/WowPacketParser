@@ -160,6 +160,23 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("chr_customization_req_locale")]
+    public sealed record ChrCustomizationReqLocaleHotfix341: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("locale", true)]
+        public string Locale = ClientLocale.PacketLocaleString;
+
+        [DBFieldName("ReqSource_lang")]
+        public string ReqSourceLang;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
     [Hotfix]
     [DBTableName("chr_customization_req")]
     public sealed record ChrCustomizationReqHotfix343: IDataModel
@@ -190,6 +207,23 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("ItemModifiedAppearanceID")]
         public int? ItemModifiedAppearanceID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+
+    [Hotfix]
+    [DBTableName("chr_customization_req_locale")]
+    public sealed record ChrCustomizationReqLocaleHotfix343: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("locale", true)]
+        public string Locale = ClientLocale.PacketLocaleString;
+
+        [DBFieldName("ReqSource_lang")]
+        public string ReqSourceLang;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

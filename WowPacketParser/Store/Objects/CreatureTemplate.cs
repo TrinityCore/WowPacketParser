@@ -34,7 +34,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("IconName", nullable: true)]
         public string IconName;
 
-        [DBFieldName("HealthScalingExpansion", TargetedDatabaseFlag.SinceWarlordsOfDraenorTillShadowLands | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("HealthScalingExpansion", TargetedDatabaseFlag.SinceWarlordsOfDraenorTillShadowLands | TargetedDatabaseFlag.Classic)]
         public ClientType? HealthScalingExpansion;
 
         [DBFieldName("RequiredExpansion", TargetedDatabaseFlag.SinceCataclysm | TargetedDatabaseFlag.AnyClassic)]
@@ -85,7 +85,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("movementId")]
         public uint? MovementID;
 
-        [DBFieldName("CreatureDifficultyID", TargetedDatabaseFlag.Shadowlands | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("CreatureDifficultyID", TargetedDatabaseFlag.Shadowlands)]
         public int? CreatureDifficultyID;
 
         [DBFieldName("VerifiedBuild")]
@@ -140,7 +140,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("dynamicflags", TargetedDatabaseFlag.TillCataclysm)]
         public UnitDynamicFlags? DynamicFlags;
 
-        [DBFieldName("dynamicflags", TargetedDatabaseFlag.SinceWarlordsOfDraenorTillShadowLands | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("dynamicflags", TargetedDatabaseFlag.SinceWarlordsOfDraenorTillShadowLands | TargetedDatabaseFlag.Classic)]
         public UnitDynamicFlagsWOD? DynamicFlagsWod;
 
         [DBFieldName("VehicleId")]

@@ -4,8 +4,8 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [Hotfix]
-    [DBTableName("cfg_categories")]
-    public sealed record CfgCategoriesHotfix340: IDataModel
+    [DBTableName("item_random_properties")]
+    public sealed record ItemRandomPropertiesHotfix340: IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;
@@ -13,28 +13,16 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Name")]
         public string Name;
 
-        [DBFieldName("LocaleMask")]
-        public ushort? LocaleMask;
-
-        [DBFieldName("CreateCharsetMask")]
-        public byte? CreateCharsetMask;
-
-        [DBFieldName("ExistingCharsetMask")]
-        public byte? ExistingCharsetMask;
-
-        [DBFieldName("Flags")]
-        public byte? Flags;
-
-        [DBFieldName("Order")]
-        public sbyte? Order;
+        [DBFieldName("Enchantment", 5)]
+        public ushort?[] Enchantment;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 
     [Hotfix]
-    [DBTableName("cfg_categories_locale")]
-    public sealed record CfgCategoriesLocaleHotfix340: IDataModel
+    [DBTableName("item_random_properties_locale")]
+    public sealed record ItemRandomPropertiesLocaleHotfix340: IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;

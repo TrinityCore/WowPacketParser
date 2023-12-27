@@ -25,10 +25,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("type", true)]
         public uint? Type;
 
-        [DBFieldName("PlayerConditionID", TargetedDatabaseFlag.SinceCataclysm)]
+        [DBFieldName("PlayerConditionID", TargetedDatabaseFlag.SinceCataclysm | TargetedDatabaseFlag.WotlkClassic)]
         public uint? PlayerConditionID;
 
-        [DBFieldName("IgnoreFiltering", TargetedDatabaseFlag.SinceWarlordsOfDraenor)]
+        [DBFieldName("IgnoreFiltering", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic)]
         public bool? IgnoreFiltering;
 
         [DBFieldName("VerifiedBuild")]

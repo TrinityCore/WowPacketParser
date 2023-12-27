@@ -155,6 +155,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             Storage.CreatureTemplates.Add(creature.Entry.Value, creature, packet.TimeSpan);
 
+            CreatureTemplateDifficultyWDB creatureTemplateDifficultyWDB = new CreatureTemplateDifficultyWDB
+            {
+                Entry = creature.Entry,
+                DifficultyID = WowPacketParser.Parsing.Parsers.MovementHandler.CurrentDifficultyID,
+                HealthScalingExpansion = creature.HealthScalingExpansion,
+                HealthModifier = creature.HealthModifier,
+                ManaModifier = creature.ManaModifier,
+                CreatureDifficultyID = creature.CreatureDifficultyID,
+                TypeFlags = creature.TypeFlags,
+                TypeFlags2 = creature.TypeFlags2
+            };
+            Storage.CreatureTemplateDifficultiesWDB.Add(creatureTemplateDifficultyWDB);
+
             ObjectName objectName = new ObjectName
             {
                 ObjectType = StoreNameType.Unit,
