@@ -44,6 +44,11 @@ namespace WowPacketParser.Store.Objects
             return ForceTemporarySpawn;
         }
 
+        public virtual bool IsExistingSpawn()
+        {
+            return false;
+        }
+
         public bool IsOnTransport()
         {
             return Movement.Transport != null && !Movement.Transport.Guid.IsEmpty();
