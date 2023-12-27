@@ -487,6 +487,45 @@ namespace WowPacketParser.SQL
             return result;
         }
 
+        public static RowList<CreatureDB> GetCreatures(RowList<CreatureDB> rowList = null, string database = null)
+        {
+            if (!SQLConnector.Enabled)
+                return null;
+
+            if (!SQLUtil.IsTableVisible<CreatureDB>())
+                return null;
+
+            var result = new RowList<CreatureDB>();
+
+            using (var command = SQLConnector.CreateCommand(new SQLSelect<CreatureDB>(rowList, database).Build()))
+            {
+                if (command == null)
+                    return null;
+
+                var fields = SQLUtil.GetFields<CreatureDB>();
+                var fieldsCount = fields.Select(f => f.Item3.First().Count).Sum();
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var creature = new CreatureDB();
+
+                        creature.DbGuid = reader.GetUInt32(0);
+                        creature.ID = reader.GetUInt32(1);
+                        creature.Map = reader.GetUInt32(2);
+                        creature.PosX = reader.GetDecimal(3);
+                        creature.PosY = reader.GetDecimal(4);
+                        creature.PosZ = reader.GetDecimal(5);
+                        creature.Orientation = reader.GetDecimal(6);
+
+                        result.Add(creature);
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static RowList<GameObjectDB> GetGameObjects(RowList<GameObjectDB> rowList = null, string database = null)
         {
             if (!SQLConnector.Enabled)
@@ -516,7 +555,7 @@ namespace WowPacketParser.SQL
                         go.PosX = reader.GetDecimal(3);
                         go.PosY = reader.GetDecimal(4);
                         go.PosZ = reader.GetDecimal(5);
-                        go.Ori = reader.GetDecimal(6);
+                        go.Orientation = reader.GetDecimal(6);
                         go.Rot0 = reader.GetDecimal(7);
                         go.Rot1 = reader.GetDecimal(8);
                         go.Rot2 = reader.GetDecimal(9);

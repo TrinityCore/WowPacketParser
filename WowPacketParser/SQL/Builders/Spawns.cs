@@ -16,6 +16,11 @@ namespace WowPacketParser.SQL.Builders
     [BuilderClass]
     public static class Spawns
     {
+        public static bool FloatComparison(float x, float y, float precision)
+        {
+            return Math.Abs(x - y) < precision;
+        }
+
         private static bool GetTransportMap(WoWObject @object, out int mapId)
         {
             mapId = -1;
@@ -62,6 +67,25 @@ namespace WowPacketParser.SQL.Builders
             var unitList = Settings.SkipDuplicateSpawns
                 ? units.Values.GroupBy(u => u, new SpawnComparer()).Select(x => x.First())
                 : units.Values.ToList();
+
+
+            if (!Settings.SaveExistingSpawns && SQLConnector.Enabled)
+            {
+                var spawnsDb = SQLDatabase.GetCreatures(new RowList<CreatureDB>());
+                var precision = 0.02f; // warning - some zones shifted by 0.2 in some cases between later expansions
+                foreach (var creature in unitList)
+                {
+                    var existingCreature = spawnsDb.Where(p => p.Data.ID == (uint)creature.ObjectData.EntryID
+                        && p.Data.Map == creature.Map
+                        && FloatComparison((float)p.Data.PosX, creature.Movement.Position.X, precision)
+                        && FloatComparison((float)p.Data.PosY, creature.Movement.Position.Y, precision)
+                        && FloatComparison((float)p.Data.PosZ, creature.Movement.Position.Z, precision)
+                        && FloatComparison((float)p.Data.Orientation, creature.Movement.Orientation, precision)).FirstOrDefault();
+
+                    if (existingCreature != null)
+                        creature.ExistingDatabaseSpawn = true;
+                }
+            }
 
             foreach (var creature in unitList)
             {
@@ -255,6 +279,16 @@ namespace WowPacketParser.SQL.Builders
                         addonRow.Comment += " - !!! might be temporary spawn !!!";
                     }
                 }
+                else if (creature.IsExistingSpawn() && !Settings.SaveExistingSpawns)
+                {
+                    row.CommentOut = true;
+                    row.Comment += " - !!! already present in database !!!";
+                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
+                    {
+                        addonRow.CommentOut = true;
+                        addonRow.Comment += " - !!! already present in database !!!";
+                    }
+                }
                 else if (creature.IsOnTransport() && badTransport)
                 {
                     row.CommentOut = true;
@@ -297,11 +331,6 @@ namespace WowPacketParser.SQL.Builders
             return result.ToString();
         }
 
-        public static bool FloatComparison(float x, float y, float precision)
-        {
-            return Math.Abs(x - y) < precision;
-        }
-
         [BuilderMethod(Gameobjects = true)]
         public static string GameObject(Dictionary<WowGuid, GameObject> gameObjects)
         {
@@ -321,13 +350,22 @@ namespace WowPacketParser.SQL.Builders
 
             if (!Settings.SaveExistingSpawns && SQLConnector.Enabled)
             {
-                var templatesDb = SQLDatabase.GetGameObjects(new RowList<GameObjectDB>());
-                var precision = 0.000001f; // warning - some zones shifted by 0.2 in some cases between later expansions
+                var spawnsDb = SQLDatabase.GetGameObjects(new RowList<GameObjectDB>());
+                var precision = 0.02f; // warning - some zones shifted by 0.2 in some cases between later expansions
                 foreach (var go in gobList)
                 {
                     var staticRot = go.GetStaticRotation();
-                    var existingGo = templatesDb.Where(p => FloatComparison((float)p.Data.PosX, go.Movement.Position.X, precision) && FloatComparison((float)p.Data.PosY, go.Movement.Position.Y, precision) && FloatComparison((float)p.Data.PosZ, go.Movement.Position.Z, precision) && FloatComparison((float)p.Data.Ori, go.Movement.Orientation, precision) &&
-                                           FloatComparison((float)p.Data.Rot0, staticRot.X, precision) && FloatComparison((float)p.Data.Rot1, staticRot.Y, precision) && FloatComparison((float)p.Data.Rot2, staticRot.Z, precision) && FloatComparison((float)p.Data.Rot3, staticRot.W, precision)).FirstOrDefault();
+                    var existingGo = spawnsDb.Where(p => p.Data.ID == (uint)go.ObjectData.EntryID
+                        && p.Data.Map == go.Map
+                        && FloatComparison((float)p.Data.PosX, go.Movement.Position.X, precision)
+                        && FloatComparison((float)p.Data.PosY, go.Movement.Position.Y, precision)
+                        && FloatComparison((float)p.Data.PosZ, go.Movement.Position.Z, precision)
+                        && FloatComparison((float)p.Data.Orientation, go.Movement.Orientation, precision)
+                        && FloatComparison((float)p.Data.Rot0, staticRot.X, precision)
+                        && FloatComparison((float)p.Data.Rot1, staticRot.Y, precision)
+                        && (FloatComparison((float)p.Data.Rot2, staticRot.Z, precision) || FloatComparison((float)p.Data.Rot2, -staticRot.Z, precision))
+                        && (FloatComparison((float)p.Data.Rot3, staticRot.W, precision) || FloatComparison((float)p.Data.Rot3, -staticRot.W, precision))).FirstOrDefault();
+
                     if (existingGo != null)
                         go.ExistingDatabaseSpawn = true;
                 }
@@ -475,7 +513,7 @@ namespace WowPacketParser.SQL.Builders
                         addonRow.Comment += " - !!! might be temporary spawn !!!";
                     }
                 }
-                else if (go.ExistingDatabaseSpawn && !Settings.SaveExistingSpawns)
+                else if (go.IsExistingSpawn() && !Settings.SaveExistingSpawns)
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! already present in database !!!";

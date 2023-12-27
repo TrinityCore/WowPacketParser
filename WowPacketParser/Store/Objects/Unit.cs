@@ -23,6 +23,7 @@ namespace WowPacketParser.Store.Objects
         public UnitDynamicFlagsWOD? DynamicFlagsWod;
 
         public IUnitData UnitData;
+        public bool ExistingDatabaseSpawn { get; set; }
 
         public Unit() : base()
         {
@@ -87,6 +88,11 @@ namespace WowPacketParser.Store.Objects
                 ItemVisual2 = equipment[1].ItemVisual,
                 ItemVisual3 = equipment[2].ItemVisual
             };
+        }
+
+        public override bool IsExistingSpawn()
+        {
+            return ExistingDatabaseSpawn;
         }
     }
 }

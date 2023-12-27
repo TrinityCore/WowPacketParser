@@ -2,8 +2,8 @@
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("gameobject")]
-    public sealed record GameObjectDB : IDataModel
+    [DBTableName("creature")]
+    public sealed record CreatureDB : IDataModel
     {
         [DBFieldName("guid", true)]
         public uint DbGuid;
@@ -19,13 +19,5 @@ namespace WowPacketParser.Store.Objects
         public decimal PosZ;
         [DBFieldName("orientation")]
         public decimal Orientation;
-        [DBFieldName("rotation0")]
-        public decimal Rot0;
-        [DBFieldName("rotation1")]
-        public decimal Rot1;
-        [DBFieldName("rotation2")]
-        public decimal Rot2;
-        [DBFieldName("rotation3")]
-        public decimal Rot3;
     }
 }
