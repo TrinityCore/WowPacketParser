@@ -8,11 +8,11 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("gossip_menu_option")]
     public sealed record GossipMenuOption : IDataModel
     {
-        [DBFieldName("GossipOptionID", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
-        public int? GossipOptionID;
-
         [DBFieldName("MenuID", true)]
         public uint? MenuID;
+
+        [DBFieldName("GossipOptionID", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
+        public int? GossipOptionID;
 
         [DBFieldName("OptionID", true)]
         public uint? OptionID;
@@ -24,7 +24,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("OptionText")]
         public string OptionText;
 
-        [DBFieldName("OptionBroadcastTextId")]
+        [DBFieldName("OptionBroadcastTextID")]
         public int? OptionBroadcastTextId;
 
         [DBFieldName("OptionType", TargetedDatabaseFlag.TillBattleForAzeroth)]
@@ -36,11 +36,17 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Language", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
         public Language? Language;
 
+        [DBFieldName("Flags", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
+        public int? Flags;
+
         [DBFieldName("ActionMenuID")]
         public uint? ActionMenuID = 0;
 
         [DBFieldName("ActionPoiID", false, true)]
         public object ActionPoiID = 0;
+
+        [DBFieldName("GossipNpcOptionID", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic, false, false, true)]
+        public int? GossipNpcOptionID;
 
         [DBFieldName("BoxCoded")]
         public bool? BoxCoded;
@@ -57,14 +63,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SpellID", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic, false, false, true)]
         public int? SpellID;
 
-        [DBFieldName("Flags", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
-        public int? Flags;
-
         [DBFieldName("OverrideIconID", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic, false, false, true)]
         public int? OverrideIconID;
-
-        [DBFieldName("GossipNpcOptionID", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic, false, false, true)]
-        public int? GossipNpcOptionID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
