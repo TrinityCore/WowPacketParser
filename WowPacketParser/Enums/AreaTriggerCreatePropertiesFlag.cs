@@ -3,7 +3,7 @@
 namespace WowPacketParser.Enums
 {
     [Flags]
-    public enum AreaTriggerFlags : uint
+    public enum AreaTriggerCreatePropertiesFlags : uint
     {
         HasAbsoluteOrientation  = 0x00001,
         HasDynamicShape         = 0x00002,

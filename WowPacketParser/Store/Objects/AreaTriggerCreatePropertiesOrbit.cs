@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -11,8 +12,11 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("areatrigger_create_properties_orbit")]
     public sealed record AreaTriggerCreatePropertiesOrbit : IDataModel
     {
-        [DBFieldName("AreaTriggerCreatePropertiesId", true)]
+        [DBFieldName("AreaTriggerCreatePropertiesId", true, true)]
         public uint? AreaTriggerCreatePropertiesId;
+
+        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight, true)]
+        public byte? IsCustom;
 
         [DBFieldName("StartDelay")]
         public uint? StartDelay;

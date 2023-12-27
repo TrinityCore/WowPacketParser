@@ -10,11 +10,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SpawnId", true, true)]
         public string SpawnId;
 
-        [DBFieldName("AreaTriggerId")]
-        public uint? AreaTriggerId;
+        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabaseFlag.SinceDragonflight, false, true)]
+        [DBFieldName("AreaTriggerId", TargetedDatabaseFlag.TillShadowlands, false, true)]
+        public string AreaTriggerCreatePropertiesId;
 
-        [DBFieldName("IsServerSide")]
-        public byte? IsServerSide;
+        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight)]
+        [DBFieldName("IsServerSide", TargetedDatabaseFlag.TillShadowlands)]
+        public byte? IsCustom;
 
         [DBFieldName("MapId")]
         public uint? MapId;
@@ -40,13 +42,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("PhaseGroup")]
         public uint? PhaseGroup;
 
-        [DBFieldName("Shape")]
+        [DBFieldName("Shape", TargetedDatabaseFlag.TillShadowlands)]
         public byte? Shape;
 
-        [DBFieldName("ShapeData", 8, true)] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
+        [DBFieldName("ShapeData", TargetedDatabaseFlag.TillShadowlands, 8, true)] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
         public float?[] ShapeData = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        [DBFieldName("SpellForVisuals")]
+        [DBFieldName("SpellForVisuals", false, false, true)]
         public uint? SpellForVisuals;
 
         [DBFieldName("Comment")]

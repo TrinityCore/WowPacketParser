@@ -8,9 +8,12 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("areatrigger_create_properties_spline_point", TargetedDatabaseFlag.SinceShadowlands)]
     public sealed record AreaTriggerCreatePropertiesSplinePoint : IDataModel
     {
-        [DBFieldName("SpellMiscId", TargetedDatabaseFlag.TillBattleForAzeroth, true)]
-        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabaseFlag.SinceShadowlands, true)]
+        [DBFieldName("SpellMiscId", TargetedDatabaseFlag.TillBattleForAzeroth, true, true)]
+        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabaseFlag.SinceShadowlands, true, true)]
         public uint? AreaTriggerCreatePropertiesId;
+
+        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight, true)]
+        public byte? IsCustom;
 
         [DBFieldName("Idx", true)]
         public uint? Idx;

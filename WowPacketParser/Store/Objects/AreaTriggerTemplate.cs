@@ -10,16 +10,17 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Id", true)]
         public uint? Id;
 
-        [DBFieldName("IsServerSide", TargetedDatabaseFlag.SinceShadowlands, true)]
-        public byte? IsServerSide = 0;
+        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight, true)]
+        [DBFieldName("IsServerSide", TargetedDatabaseFlag.Shadowlands, true)]
+        public byte? IsCustom;
 
-        [DBFieldName("Type")] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
+        [DBFieldName("Type", TargetedDatabaseFlag.Shadowlands)] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
         public byte? Type;
 
         [DBFieldName("Flags")]
         public uint? Flags;
 
-        [DBFieldName("Data", 8, true)] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
+        [DBFieldName("Data", TargetedDatabaseFlag.Shadowlands, 8, true)] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
         public float?[] Data = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
         [DBFieldName("VerifiedBuild")]
