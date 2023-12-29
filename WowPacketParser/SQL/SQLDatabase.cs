@@ -510,9 +510,9 @@ namespace WowPacketParser.SQL
                     {
                         var creature = new CreatureDB();
 
-                        creature.DbGuid = reader.GetUInt32(0);
+                        creature.DbGuid = reader.GetUInt64(0);
                         creature.ID = reader.GetUInt32(1);
-                        creature.Map = reader.GetUInt32(2);
+                        creature.Map = reader.GetUInt16(2);
                         creature.PosX = reader.GetDecimal(3);
                         creature.PosY = reader.GetDecimal(4);
                         creature.PosZ = reader.GetDecimal(5);
@@ -549,9 +549,9 @@ namespace WowPacketParser.SQL
                     {
                         var go = new GameObjectDB();
 
-                        go.DbGuid = reader.GetUInt32(0);
+                        go.DbGuid = reader.GetUInt64(0);
                         go.ID = reader.GetUInt32(1);
-                        go.Map = reader.GetUInt32(2);
+                        go.Map = reader.GetUInt16(2);
                         go.PosX = reader.GetDecimal(3);
                         go.PosY = reader.GetDecimal(4);
                         go.PosZ = reader.GetDecimal(5);

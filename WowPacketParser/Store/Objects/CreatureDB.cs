@@ -6,11 +6,11 @@ namespace WowPacketParser.Store.Objects
     public sealed record CreatureDB : IDataModel
     {
         [DBFieldName("guid", true)]
-        public uint DbGuid;
+        public ulong DbGuid;
         [DBFieldName("id")]
         public uint ID;
         [DBFieldName("map")]
-        public uint Map;
+        public ushort Map;
         [DBFieldName("position_x")]
         public decimal PosX;
         [DBFieldName("position_y")]
