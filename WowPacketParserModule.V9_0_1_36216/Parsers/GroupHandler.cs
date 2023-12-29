@@ -141,5 +141,12 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var len = packet.ReadBits(9);
             packet.ReadWoWString("Name", len);
         }
+
+        [Parser(Opcode.CMSG_DO_COUNTDOWN)]
+        public static void HandleDoCountdown(Packet packet)
+        {
+            packet.ReadInt32("TotalTime");
+            packet.ReadByte("PartyIndex");
+        }
     }
 }
