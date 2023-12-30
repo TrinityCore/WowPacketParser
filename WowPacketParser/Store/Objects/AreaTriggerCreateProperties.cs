@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
+using WowPacketParser.SQL.Builders;
 using WowPacketParser.Store.Objects.UpdateFields;
 using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
 
@@ -16,8 +17,17 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Id", TargetedDatabaseFlag.SinceShadowlands, true)]
         public uint? AreaTriggerCreatePropertiesId;
 
+        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight, true)]
+        public byte? IsCustom;
+
         [DBFieldName("AreaTriggerId")]
         public uint? AreaTriggerId;
+
+        [DBFieldName("IsAreatriggerCustom", TargetedDatabaseFlag.SinceDragonflight)]
+        public byte? IsAreatriggerCustom = 0;
+
+        [DBFieldName("Flags", TargetedDatabaseFlag.SinceDragonflight)]
+        public uint? Flags;
 
         [DBFieldName("MoveCurveId")]
         public int? MoveCurveId = 0;
@@ -60,6 +70,8 @@ namespace WowPacketParser.Store.Objects
 
         public uint SpellForVisuals;
 
+        public string CustomId;
+
         public IAreaTriggerData AreaTriggerData;
 
         public AreaTriggerCreateProperties() : base()
@@ -75,11 +87,9 @@ namespace WowPacketParser.Store.Objects
             TimeToTarget        = AreaTriggerData.TimeToTarget;
             TimeToTargetScale   = AreaTriggerData.TimeToTargetScale;
             AreaTriggerCreatePropertiesId = GetAreaTriggerCreatePropertiesIdFromSpellId(spellId);
+            IsCustom = 0;
             if (AreaTriggerCreatePropertiesId == null)
-            {
-                // this is a hack to allow generating statements
-                AreaTriggerCreatePropertiesId = 0x80000000 | spellId;
-            }
+                IsCustom = 1;
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
             {
@@ -122,5 +132,62 @@ namespace WowPacketParser.Store.Objects
 
             return areaTriggerCreatePropertiesId;
         }
+    }
+
+    [DBTableName("spell_areatrigger", TargetedDatabaseFlag.TillBattleForAzeroth)]
+    [DBTableName("areatrigger_create_properties", TargetedDatabaseFlag.SinceShadowlands)]
+    public sealed record AreaTriggerCreatePropertiesCustom : IDataModel
+    {
+        [DBFieldName("SpellMiscId", TargetedDatabaseFlag.TillBattleForAzeroth, true, true)]
+        [DBFieldName("Id", TargetedDatabaseFlag.SinceShadowlands, true, true)]
+        public string AreaTriggerCreatePropertiesId;
+
+        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight, true)]
+        public byte? IsCustom = 1;
+
+        [DBFieldName("AreaTriggerId")]
+        public uint? AreaTriggerId;
+
+        [DBFieldName("IsAreatriggerCustom", TargetedDatabaseFlag.SinceDragonflight)]
+        public byte? IsAreatriggerCustom;
+
+        [DBFieldName("Flags", TargetedDatabaseFlag.SinceDragonflight)]
+        public uint? Flags;
+
+        [DBFieldName("MoveCurveId")]
+        public int? MoveCurveId = 0;
+
+        [DBFieldName("ScaleCurveId")]
+        public int? ScaleCurveId = 0;
+
+        [DBFieldName("MorphCurveId")]
+        public int? MorphCurveId = 0;
+
+        [DBFieldName("FacingCurveId")]
+        public int? FacingCurveId = 0;
+
+        [DBFieldName("AnimId")]
+        public int? AnimId = ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772) ? -1 : 0;
+
+        [DBFieldName("AnimKitId")]
+        public int? AnimKitId = 0;
+
+        [DBFieldName("DecalPropertiesId")]
+        public uint? DecalPropertiesId = 0;
+
+        [DBFieldName("TimeToTarget")]
+        public uint? TimeToTarget = 0;
+
+        [DBFieldName("TimeToTargetScale")]
+        public uint? TimeToTargetScale = 0;
+
+        [DBFieldName("Shape", TargetedDatabaseFlag.SinceShadowlands)]
+        public byte? Shape;
+
+        [DBFieldName("ShapeData", TargetedDatabaseFlag.SinceShadowlands, 8, true)]
+        public float?[] ShapeData = { 0, 0, 0, 0, 0, 0, 0, 0 };
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

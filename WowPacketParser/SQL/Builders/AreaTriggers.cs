@@ -31,7 +31,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string AreaTriggerCreatePropertiesData()
         {
-            var spellareatriggers = Storage.Objects.IsEmpty()
+            var createPropertiesList = Storage.Objects.IsEmpty()
                 ? new Dictionary<WowGuid, AreaTriggerCreateProperties>()                                        // empty dict if there are no objects
                 : Storage.Objects.Where(
                     obj =>
@@ -40,32 +40,52 @@ namespace WowPacketParser.SQL.Builders
                     .OrderBy(pair => pair.Value.Item2)                                                          // order by spawn time
                     .ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as AreaTriggerCreateProperties);
 
-            if (spellareatriggers.Count == 0)
+            if (createPropertiesList.Count == 0)
                 return string.Empty;
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties))
                 return string.Empty;
 
-            var spellareatriggersData = new DataBag<AreaTriggerCreateProperties>();
+            var createPropertiesData = new DataBag<AreaTriggerCreateProperties>();
+            var customRows = new RowList<AreaTriggerCreatePropertiesCustom>();
 
-            foreach (var spellareatrigger in spellareatriggers)
+            foreach (var createProperties in createPropertiesList)
             {
-                if (spellareatrigger.Value.spellId == 0)
-                    continue;
+                // CreateProperties from spells
+                if (createProperties.Value.IsCustom == 0)
+                    createPropertiesData.Add(createProperties.Value);
+                else
+                {
+                    createPropertiesList[createProperties.Key].CustomId = $"@ATPROPERTIESID+{customRows.Count}";
 
-                spellareatriggersData.Add(spellareatrigger.Value);
+                    Row<AreaTriggerCreatePropertiesCustom> row = new();
+                    row.Data.AreaTriggerCreatePropertiesId = createProperties.Value.CustomId;
+                    row.Data.AreaTriggerId = createProperties.Value.AreaTriggerId;
+                    row.Data.IsAreatriggerCustom = createProperties.Value.IsAreatriggerCustom;
+                    row.Data.Flags = createProperties.Value.Flags;
+                    row.Data.AnimId = createProperties.Value.AnimId;
+                    row.Data.AnimKitId = createProperties.Value.AnimKitId;
+                    row.Data.DecalPropertiesId = createProperties.Value.DecalPropertiesId;
+                    row.Data.Shape = createProperties.Value.Shape;
+                    row.Data.ShapeData = createProperties.Value.ShapeData;
+                    customRows.Add(row);
+                }
             }
 
-            var templateDb = SQLDatabase.Get(spellareatriggersData);
+            StringBuilder result = new StringBuilder();
+            if (customRows.Count > 0) {
+                var sql = new SQLInsert<AreaTriggerCreatePropertiesCustom>(customRows, true);
+                result.Append(sql.Build());
+                result.Append(Environment.NewLine);
+            }
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? spellareatriggersData.OrderBy(x => x.Item1.AreaTriggerId).ToArray() : spellareatriggersData.ToArray(),
+            var templateDb = SQLDatabase.Get(createPropertiesData);
+
+            return result.ToString() + SQLUtil.Compare(Settings.SQLOrderByKey ? createPropertiesData.OrderBy(x => x.Item1.AreaTriggerId).ToArray() : createPropertiesData.ToArray(),
                 templateDb,
                 x =>
                 {
                     var comment = $"Spell: {StoreGetters.GetName(StoreNameType.Spell, (int)x.spellId)}";
-                    if ((x.AreaTriggerCreatePropertiesId & 0x80000000) != 0)
-                        comment += " CANNOT FIND PROPERTIES ID, USED SPELL ID AS KEY (NEEDS MANUAL CORRECTION)";
-
                     return comment;
                 });
         }
@@ -86,6 +106,7 @@ namespace WowPacketParser.SQL.Builders
 
                 orbit.Item1.spellId = areaTrigger.spellId;
                 orbit.Item1.AreaTriggerCreatePropertiesId = areaTrigger.AreaTriggerCreatePropertiesId;
+                orbit.Item1.IsCustom = areaTrigger.IsCustom;
             }
 
             var templateDb = SQLDatabase.Get(Storage.AreaTriggerCreatePropertiesOrbits);
@@ -95,9 +116,6 @@ namespace WowPacketParser.SQL.Builders
                 x =>
                 {
                     var comment = $"Spell: {StoreGetters.GetName(StoreNameType.Spell, (int)x.spellId)}";
-                    if ((x.AreaTriggerCreatePropertiesId & 0x80000000) != 0)
-                        comment += " CANNOT FIND PROPERTIES ID, USED SPELL ID AS KEY (NEEDS MANUAL CORRECTION)";
-
                     return comment;
                 });
         }
@@ -111,25 +129,48 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties_polygon_vertex))
                 return string.Empty;
 
+            var createPropertiesPolygonVertexData = new DataBag<AreaTriggerCreatePropertiesPolygonVertex>();
+            var customRows = new RowList<AreaTriggerCreatePropertiesPolygonVertexCustom>();
+
             foreach (var vertex in Storage.AreaTriggerCreatePropertiesPolygonVertices)
             {
                 var spellAreaTriggerTuple = Storage.Objects.Where(obj => obj.Key == vertex.Item1.areatriggerGuid).First();
-                AreaTriggerCreateProperties areaTrigger = (AreaTriggerCreateProperties)spellAreaTriggerTuple.Value.Item1;
+                AreaTriggerCreateProperties createProperties = (AreaTriggerCreateProperties)spellAreaTriggerTuple.Value.Item1;
 
-                vertex.Item1.spellId = areaTrigger.spellId;
-                vertex.Item1.AreaTriggerCreatePropertiesId = areaTrigger.AreaTriggerCreatePropertiesId;
+                vertex.Item1.spellId = createProperties.spellId;
+                vertex.Item1.AreaTriggerCreatePropertiesId = createProperties.AreaTriggerCreatePropertiesId;
+                vertex.Item1.IsCustom = createProperties.IsCustom;
+
+                // CreateProperties from spells
+                if (createProperties.IsCustom == 0)
+                    createPropertiesPolygonVertexData.Add(vertex.Item1);
+                else
+                {
+                    Row<AreaTriggerCreatePropertiesPolygonVertexCustom> row = new();
+                    row.Data.AreaTriggerCreatePropertiesId = createProperties.CustomId;
+                    row.Data.VerticeX = vertex.Item1.VerticeX;
+                    row.Data.VerticeY = vertex.Item1.VerticeY;
+                    row.Data.VerticeTargetX = vertex.Item1.VerticeTargetX;
+                    row.Data.VerticeTargetY = vertex.Item1.VerticeTargetY;
+                    customRows.Add(row);
+                }
             }
 
-            var templateDb = SQLDatabase.Get(Storage.AreaTriggerCreatePropertiesPolygonVertices);
+            StringBuilder result = new StringBuilder();
+            if (customRows.Count > 0)
+            {
+                var sql = new SQLInsert<AreaTriggerCreatePropertiesPolygonVertexCustom>(customRows, true);
+                result.Append(sql.Build());
+                result.Append(Environment.NewLine);
+            }
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesPolygonVertices.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesPolygonVertices.ToArray(),
+            var templateDb = SQLDatabase.Get(createPropertiesPolygonVertexData);
+
+            return result.ToString() + SQLUtil.Compare(Settings.SQLOrderByKey ? createPropertiesPolygonVertexData.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : createPropertiesPolygonVertexData.ToArray(),
                 templateDb,
                 x =>
                 {
                     var comment = $"Spell: {StoreGetters.GetName(StoreNameType.Spell, (int)x.spellId)}";
-                    if ((x.AreaTriggerCreatePropertiesId & 0x80000000) != 0)
-                        comment += " CANNOT FIND PROPERTIES ID, USED SPELL ID AS KEY (NEEDS MANUAL CORRECTION)";
-
                     return comment;
                 });
         }
@@ -150,6 +191,7 @@ namespace WowPacketParser.SQL.Builders
 
                 splinePoint.Item1.spellId = areaTrigger.spellId;
                 splinePoint.Item1.AreaTriggerCreatePropertiesId = areaTrigger.AreaTriggerCreatePropertiesId;
+                splinePoint.Item1.IsCustom = areaTrigger.IsCustom;
 
                 // convert points to offsets
                 splinePoint.Item1.X -= areaTrigger.Movement.Position.X;
@@ -171,9 +213,6 @@ namespace WowPacketParser.SQL.Builders
                 x =>
                 {
                     var comment = $"Spell: {StoreGetters.GetName(StoreNameType.Spell, (int)x.spellId)}";
-                    if ((x.AreaTriggerCreatePropertiesId & 0x80000000) != 0)
-                        comment += " CANNOT FIND PROPERTIES ID, USED SPELL ID AS KEY (NEEDS MANUAL CORRECTION)";
-
                     return comment;
                 });
         }
@@ -223,8 +262,8 @@ namespace WowPacketParser.SQL.Builders
                 Row<AreaTrigger> row = new();
 
                 row.Data.SpawnId = $"@ATSPAWNID+{count}";
-                row.Data.AreaTriggerId = at.Guid.GetEntry();
-                row.Data.IsServerSide = 0;
+                row.Data.AreaTriggerCreatePropertiesId = at.CustomId;
+                row.Data.IsCustom = at.IsCustom;
 
                 row.Data.MapId = at.Map;
 
@@ -252,7 +291,8 @@ namespace WowPacketParser.SQL.Builders
 
                 row.Data.Shape = at.Shape;
                 row.Data.ShapeData = at.ShapeData;
-                row.Data.SpellForVisuals = at.SpellForVisuals;
+                if (at.SpellForVisuals > 0)
+                    row.Data.SpellForVisuals = at.SpellForVisuals;
 
                 row.Data.Comment = "";
                 row.Comment = StoreGetters.GetName(StoreNameType.Spell, (int)at.SpellForVisuals, true);

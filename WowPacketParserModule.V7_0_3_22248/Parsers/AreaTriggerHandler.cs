@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class AreaTriggerHandler
     {
-        public static List<AreaTriggerCreatePropertiesSplinePoint> ReadAreaTriggerSpline(AreaTriggerCreateProperties areaTrigger, Packet packet, params object[] indexes)
+        public static List<AreaTriggerCreatePropertiesSplinePoint> ReadAreaTriggerSpline(AreaTriggerCreateProperties createProperties, Packet packet, params object[] indexes)
         {
             packet.ReadInt32("TimeToTarget", indexes);
             packet.ReadInt32("ElapsedTimeForMovement", indexes);
@@ -21,11 +21,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0u; i < pointCount; ++i)
             {
                 var point = packet.ReadVector3("Points", indexes, i);
-                if (areaTrigger != null)
+                if (createProperties != null)
                 {
                     points.Add(new AreaTriggerCreatePropertiesSplinePoint()
                     {
-                        areatriggerGuid = areaTrigger.Guid,
+                        areatriggerGuid = createProperties.Guid,
                         Idx = i,
                         X = point.X,
                         Y = point.Y,
