@@ -227,7 +227,7 @@ namespace WowPacketParser.PacketStructures
                 universal |= UniversalSplineFlag.UncompressedPath;
             return universal;
         }
-        
+
         public static CreateObjectType ToCreateObjectType(this UpdateTypeCataclysm updateTypeCataclysm)
         {
             if (updateTypeCataclysm == UpdateTypeCataclysm.CreateObject1)
