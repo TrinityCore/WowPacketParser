@@ -138,7 +138,7 @@ namespace WowPacketParser.SQL.Builders
             {
                 string creatureName = StoreGetters.GetName(StoreNameType.Unit, (int)x.CreatureID, false);
                 string questName = StoreGetters.GetName(StoreNameType.Quest, (int)x.QuestID, false);
-                return $"{questName} offered {creatureName}";
+                return $"{questName} offered by {creatureName}";
             });
         }
 
