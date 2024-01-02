@@ -55,7 +55,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("WidgetSetUnitConditionID", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.AnyClassic)]
         public int? WidgetSetUnitConditionID;
 
-        [DBFieldName("rank")]
+        [DBFieldName("rank", TargetedDatabaseFlag.TillShadowlands)]
+        [DBFieldName("Classification", TargetedDatabaseFlag.Dragonflight)]
         public CreatureRank? Rank;
 
         [DBFieldName("family")]
