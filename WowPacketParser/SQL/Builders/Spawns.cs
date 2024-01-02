@@ -352,10 +352,11 @@ namespace WowPacketParser.SQL.Builders
             {
                 var spawnsDb = SQLDatabase.GetGameObjects(new RowList<GameObjectDB>());
                 var precision = 0.02f; // warning - some zones shifted by 0.2 in some cases between later expansions
+                // TODO: Add loading of randomized entry ID from pools (TC) and random/spawn_group (TBC)
                 foreach (var go in gobList)
                 {
                     var staticRot = go.GetStaticRotation();
-                    var existingGo = spawnsDb.Where(p => p.Data.ID == (uint)go.ObjectData.EntryID
+                    var existingGo = spawnsDb.Where(p => (p.Data.ID == 0 || p.Data.ID == (uint)go.ObjectData.EntryID) // 0 is used when spawn has randomized entry in cMaNGOS
                         && p.Data.Map == go.Map
                         && FloatComparison((float)p.Data.PosX, go.Movement.Position.X, precision)
                         && FloatComparison((float)p.Data.PosY, go.Movement.Position.Y, precision)
