@@ -37,6 +37,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Protos.V10_2_0_52649
             var msg = parser.ParseFrom(val).ToString();
             var formattedMsg = JsonSerializer.Serialize(JsonDocument.Parse(msg), new JsonSerializerOptions
             {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 WriteIndented = true
             });
 
