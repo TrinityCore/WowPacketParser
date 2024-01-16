@@ -331,6 +331,14 @@ namespace WowPacketParser.SQL.Builders
             return result.ToString();
         }
 
+        private static float NormalizeOrientation(float originalOri)
+        {
+            if (originalOri > Math.PI) // later expansions used 0-2PI interval, whereas earlier used -PI-PI interval
+                return (float)(originalOri - 2 * Math.PI);
+
+            return originalOri;
+        }
+
         [BuilderMethod(Gameobjects = true)]
         public static string GameObject(Dictionary<WowGuid, GameObject> gameObjects)
         {
@@ -361,7 +369,7 @@ namespace WowPacketParser.SQL.Builders
                         && FloatComparison((float)p.Data.PosX, go.Movement.Position.X, precision)
                         && FloatComparison((float)p.Data.PosY, go.Movement.Position.Y, precision)
                         && FloatComparison((float)p.Data.PosZ, go.Movement.Position.Z, precision)
-                        && FloatComparison((float)p.Data.Orientation, go.Movement.Orientation, precision)
+                        && FloatComparison(NormalizeOrientation((float)p.Data.Orientation), NormalizeOrientation(go.Movement.Orientation), precision)
                         && FloatComparison((float)p.Data.Rot0, staticRot.X, precision)
                         && FloatComparison((float)p.Data.Rot1, staticRot.Y, precision)
                         && (FloatComparison((float)p.Data.Rot2, staticRot.Z, precision) || FloatComparison((float)p.Data.Rot2, -staticRot.Z, precision))
