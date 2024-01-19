@@ -21,10 +21,10 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadTime64("ElapsedTime");
             packet.ReadTime64("CreationTime");
 
-            var hasRafAcceptanceID = packet.ReadBit("HasRafAcceptanceID");
+            var hasPerksMonth = packet.ReadBit("HasPerksMonth");
 
-            if (hasRafAcceptanceID)
-                packet.ReadUInt64("RafAcceptanceID");
+            if (hasPerksMonth)
+                packet.ReadUInt64("PerksMonth");
 
             if (Settings.UseDBC)
                 if (DBC.Criteria.ContainsKey(criteriaId))
@@ -45,9 +45,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             packet.ResetBitReader();
 
-            var hasRafAcceptanceID = packet.ReadBit("HasRafAcceptanceID", indexes);
-            if (hasRafAcceptanceID)
-                packet.ReadUInt64("RafAcceptanceID", indexes);
+            var hasPerksMonth = packet.ReadBit("HasPerksMonth", indexes);
+            if (hasPerksMonth)
+                packet.ReadUInt64("PerksMonth", indexes);
 
             if (Settings.UseDBC)
                 if (DBC.Criteria.ContainsKey(criteriaId))
