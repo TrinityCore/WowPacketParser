@@ -98,6 +98,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             creature.ManaModifier = response.ManaMod = packet.ReadSingle("EnergyMulti");
 
             uint questItems = packet.ReadUInt32("QuestItems");
+            uint questCurrencies = 0;
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_2_5_52902))
+                questCurrencies = packet.ReadUInt32("QuestCurrencies");
             creature.MovementID = response.MovementId = (uint)packet.ReadInt32("CreatureMovementInfoID");
             creature.HealthScalingExpansion = packet.ReadInt32E<ClientType>("HealthScalingExpansion");
             response.HpScalingExp = (uint?) creature.HealthScalingExpansion ?? 0;
@@ -133,6 +136,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 Storage.CreatureTemplateQuestItems.Add(questItem, packet.TimeSpan);
                 response.QuestItems.Add(questItem.ItemId ?? 0);
             }
+
+            for (uint i = 0; i < questCurrencies; ++i)
+                packet.ReadInt32<CurrencyId>("QuestCurrency", i);
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
