@@ -9,7 +9,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("entry", true)]
         public uint? Entry;
 
-        [DBFieldName("path_id")]
+        [DBFieldName("path_id", TargetedDatabaseFlag.TillShadowlands)]
+        [DBFieldName("PathId", TargetedDatabaseFlag.SinceDragonflight)]
         public uint? PathID;
 
         [DBFieldName("mount")]

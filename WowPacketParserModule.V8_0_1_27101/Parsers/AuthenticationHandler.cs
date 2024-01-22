@@ -158,8 +158,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             {
                 packet.ReadUInt32("WaitCount");
                 packet.ReadUInt32("WaitTime");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_5_52902))
+                    packet.ReadUInt32("AllowedFactionGroupForCharacterCreate");
                 packet.ResetBitReader();
                 packet.ReadBit("HasFCM");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_5_52902))
+                    packet.ReadBit("CanCreateOnlyIfExisting");
             }
         }
     }

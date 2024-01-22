@@ -59,7 +59,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("ValidRolls");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
             {
-                for (var i = 0; i < 4; i++)
+                var lootRollIneligibilityReasonNum = 4;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_5_52902))
+                    lootRollIneligibilityReasonNum = 5;
+
+                for (var i = 0; i < lootRollIneligibilityReasonNum; i++)
                     packet.ReadUInt32E<LootRollIneligibilityReason>("LootRollIneligibleReason");
             }
             packet.ReadByteE<LootMethod>("Method");

@@ -138,7 +138,16 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
 
             for (uint i = 0; i < questCurrencies; ++i)
-                packet.ReadInt32<CurrencyId>("QuestCurrency", i);
+            {
+                int currencyId = packet.ReadInt32<CurrencyId>("QuestCurrency", i);
+
+                CreatureQuestCurrency creatureQuestCurrency = new CreatureQuestCurrency
+                {
+                    CreatureId = (uint)entry.Key,
+                    CurrencyId = (int)currencyId,
+                };
+                Storage.CreatureQuestCurrencys.Add(creatureQuestCurrency);
+            }
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 

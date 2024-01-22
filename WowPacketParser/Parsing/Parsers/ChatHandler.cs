@@ -396,7 +396,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CHAT_RESTRICTED)]
         public static void HandleChatRestricted(Packet packet)
         {
-            packet.ReadByteE<ChatRestrictionType>("Restriction");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_5_52902))
+                packet.ReadInt32E<ChatRestrictionType>("Restriction");
+            else
+                packet.ReadByteE<ChatRestrictionType>("Restriction");
         }
     }
 }
