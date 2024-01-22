@@ -41,11 +41,11 @@ namespace WowPacketParser.Store
         public static readonly DataBag<CreatureTemplateClassic> CreatureTemplatesClassic = new DataBag<CreatureTemplateClassic>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateNonWDB> CreatureTemplatesNonWDB = new DataBag<CreatureTemplateNonWDB>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateQuestItem> CreatureTemplateQuestItems = new DataBag<CreatureTemplateQuestItem>(new List<SQLOutput> { SQLOutput.creature_template });
+        public static readonly DataBag<CreatureTemplateQuestCurrency> CreatureTemplateQuestCurrencies = new DataBag<CreatureTemplateQuestCurrency>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateDifficulty> CreatureTemplateDifficulties = new DataBag<CreatureTemplateDifficulty>(new List<SQLOutput> { SQLOutput.creature_template_difficulty });
         public static readonly DataBag<CreatureTemplateDifficultyWDB> CreatureTemplateDifficultiesWDB = new DataBag<CreatureTemplateDifficultyWDB>(new List<SQLOutput> { SQLOutput.creature_template_difficulty });
         public static readonly DataBag<CreatureTemplateModel> CreatureTemplateModels = new DataBag<CreatureTemplateModel>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateSpell> CreatureTemplateSpells = new DataBag<CreatureTemplateSpell>(new List<SQLOutput> { SQLOutput.creature_template });
-        public static readonly DataBag<CreatureQuestCurrency> CreatureQuestCurrencys = new DataBag<CreatureQuestCurrency>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureQuestStarter> CreatureQuestStarters = new DataBag<CreatureQuestStarter>(new List<SQLOutput> { SQLOutput.creature_queststarter });
         public static readonly DataBag<CreatureQuestEnder> CreatureQuestEnders = new DataBag<CreatureQuestEnder>(new List<SQLOutput> { SQLOutput.creature_questender });
         public static readonly DataBag<CreatureTemplateGossip> CreatureTemplateGossips = new DataBag<CreatureTemplateGossip>(new List<SQLOutput> { SQLOutput.creature_template_gossip });
@@ -1161,12 +1161,12 @@ namespace WowPacketParser.Store
             CreatureTemplatesClassic.Clear();
             CreatureTemplatesNonWDB.Clear();
             CreatureTemplateQuestItems.Clear();
+            CreatureTemplateQuestCurrencies.Clear();
             CreatureTemplateDifficulties.Clear();
             CreatureTemplateDifficultiesWDB.Clear();
             CreatureTemplateModels.Clear();
             CreatureTemplateSpells.Clear();
             CreatureTemplateGossips.Clear();
-            CreatureQuestCurrencys.Clear();
 
             NpcTrainers.Clear();
             NpcVendors.Clear();

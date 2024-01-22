@@ -80,7 +80,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadUInt32("OverrideSelectScreenFileDataID", idx);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
-                ReadCustomTabardInfo(packet, "PersonalTabard", idx);
+                ReadCustomTabardInfo(packet, idx, "PersonalTabard");
 
             for (var j = 0u; j < customizationCount; ++j)
                 ReadChrCustomizationChoice(packet, idx, "Customizations", j);

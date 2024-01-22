@@ -171,6 +171,19 @@ namespace WowPacketParser.Store.Objects
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 
+    [DBTableName("creature_quest_currency")]
+    public sealed record CreatureTemplateQuestCurrency : IDataModel
+    {
+        [DBFieldName("CreatureId", true)]
+        public uint? CreatureId;
+
+        [DBFieldName("CurrencyId", true)]
+        public int? CurrencyId;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+
     [DBTableName("creature_template")]
     public sealed record CreatureTemplateClassic : IDataModel
     {

@@ -757,6 +757,7 @@ message PacketQueryCreatureResponse {
   float hpMod = 13;
   float manaMod = 14;
   repeated uint32 questItems = 115;
+  repeated int32 questCurrencies = 122;
   uint32 movementId = 16;
   uint32 hpScalingExp = 17;
   uint32 expansion = 18;

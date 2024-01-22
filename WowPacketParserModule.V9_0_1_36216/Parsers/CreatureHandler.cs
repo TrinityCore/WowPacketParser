@@ -139,14 +139,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             for (uint i = 0; i < questCurrencies; ++i)
             {
-                int currencyId = packet.ReadInt32<CurrencyId>("QuestCurrency", i);
-
-                CreatureQuestCurrency creatureQuestCurrency = new CreatureQuestCurrency
+                CreatureTemplateQuestCurrency questCurrency = new CreatureTemplateQuestCurrency
                 {
                     CreatureId = (uint)entry.Key,
-                    CurrencyId = (int)currencyId,
+                    CurrencyId = packet.ReadInt32<CurrencyId>("QuestCurrency", i)
                 };
-                Storage.CreatureQuestCurrencys.Add(creatureQuestCurrency);
+
+                Storage.CreatureTemplateQuestCurrencies.Add(questCurrency, packet.TimeSpan);
+                response.QuestCurrencies.Add(questCurrency.CurrencyId ?? 0);
             }
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");

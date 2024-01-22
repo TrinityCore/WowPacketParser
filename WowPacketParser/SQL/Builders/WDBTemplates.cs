@@ -132,6 +132,25 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.CreatureTemplateQuestItems, templatesDb, StoreNameType.Unit);
         }
 
+        [BuilderMethod(true)]
+        public static string CreatureTemplateQuestCurrencies()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+                return string.Empty;
+
+            if (Storage.CreatureTemplateQuestCurrencies.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateQuestCurrencies);
+
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateQuestCurrencies.OrderBy(x => x.Item1.CreatureId).ThenBy(y => y.Item1.CurrencyId) : Storage.CreatureTemplateQuestCurrencies, templatesDb, x =>
+            {
+                string creatureName = StoreGetters.GetName(StoreNameType.Unit, (int)x.CreatureId, false);
+                string currencyName = StoreGetters.GetName(StoreNameType.Currency, (int)x.CurrencyId, false);
+                return $"{creatureName} - {currencyName}";
+            });
+        }
+
         [BuilderMethod(true, Gameobjects = true)]
         public static string GameObjectTemplate(Dictionary<WowGuid, GameObject> gameobjects)
         {

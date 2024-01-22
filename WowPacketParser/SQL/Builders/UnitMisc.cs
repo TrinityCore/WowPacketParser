@@ -298,25 +298,6 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
-        public static string CreatureQuestCurrency()
-        {
-            if (Storage.CreatureQuestCurrencys.IsEmpty())
-                return string.Empty;
-
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
-                return string.Empty;
-
-            var templatesDb = SQLDatabase.Get(Storage.CreatureQuestCurrencys);
-
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureQuestCurrencys.OrderBy(x => x.Item1.CreatureId).ThenBy(y => y.Item1.CurrencyId) : Storage.CreatureQuestCurrencys, templatesDb, x =>
-            {
-                string creatureName = StoreGetters.GetName(StoreNameType.Unit, (int)x.CreatureId, false);
-                string currencyName = StoreGetters.GetName(StoreNameType.Currency, (int)x.CurrencyId, false);
-                return $"{creatureName} - {currencyName}";
-            });
-        }
-
-        [BuilderMethod]
         public static string NpcTrainer()
         {
             if (Storage.NpcTrainers.IsEmpty())
