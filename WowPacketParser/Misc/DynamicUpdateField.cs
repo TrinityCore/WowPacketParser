@@ -49,6 +49,9 @@ namespace WowPacketParser.Misc
                         rawMask[i] = packet.ReadInt32();
                 }
             }
+            else if (newSize == 32)
+                rawMask[0] = (int)packet.ReadBits(32);
+
             if ((newSize % 32) != 0)
                 rawMask[newSize / 32] = (int)packet.ReadBits((int)newSize % 32);
 
