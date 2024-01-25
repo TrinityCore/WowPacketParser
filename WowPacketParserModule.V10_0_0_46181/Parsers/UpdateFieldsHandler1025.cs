@@ -2781,7 +2781,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_2_5_52902
             var data = new QuestSession();
             packet.ResetBitReader();
             data.Owner = packet.ReadPackedGuid128("Owner", indexes);
-            for (var i = 0; i < 875; ++i)
+            for (var i = 0; i < 950; ++i)
             {
                 data.QuestCompleted[i] = packet.ReadUInt64("QuestCompleted", indexes, i);
             }
@@ -2792,11 +2792,11 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_2_5_52902
         {
             var data = new QuestSession();
             packet.ResetBitReader();
-            var rawChangesMask = new int[28];
+            var rawChangesMask = new int[30];
             var rawMaskMask = new int[1];
-            rawMaskMask[0] = (int)packet.ReadBits(28);
+            rawMaskMask[0] = (int)packet.ReadBits(30);
             var maskMask = new BitArray(rawMaskMask);
-            for (var i = 0; i < 28; ++i)
+            for (var i = 0; i < 30; ++i)
                 if (maskMask[i])
                     rawChangesMask[i] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
@@ -2811,7 +2811,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_2_5_52902
             }
             if (changesMask[2])
             {
-                for (var i = 0; i < 875; ++i)
+                for (var i = 0; i < 950; ++i)
                 {
                     if (changesMask[3 + i])
                     {
