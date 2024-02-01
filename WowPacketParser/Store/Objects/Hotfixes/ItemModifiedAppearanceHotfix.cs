@@ -49,7 +49,7 @@ namespace WowPacketParser.Store.Objects
         public int? OrderIndex;
 
         [DBFieldName("TransmogSourceTypeEnum")]
-        public sbyte? TransmogSourceTypeEnum;
+        public int? TransmogSourceTypeEnum;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
