@@ -125,9 +125,12 @@ namespace WowPacketParser.Store
         // Spell Target Position
         public static readonly DataBag<SpellTargetPosition> SpellTargetPositions = new DataBag<SpellTargetPosition>(new List<SQLOutput> { SQLOutput.spell_target_position });
 
+        // Hotfixes
         public static readonly DataBag<HotfixData> HotfixDatas = new DataBag<HotfixData>(new List<SQLOutput> { SQLOutput.hotfix_data });
         public static readonly DataBag<HotfixBlob> HotfixBlobs = new DataBag<HotfixBlob>(new List<SQLOutput> { SQLOutput.hotfix_blob });
         public static readonly DataBag<HotfixOptionalData> HotfixOptionalDatas = new DataBag<HotfixOptionalData>(new List<SQLOutput> { SQLOutput.hotfix_optional_data });
+        public static readonly DataBag<DbReplyData> DbReplyDatas = new DataBag<DbReplyData>(new List<SQLOutput> { SQLOutput.db_reply_data });
+
         // Scenes
         public static readonly DataBag<SceneTemplate> Scenes = new DataBag<SceneTemplate>(new List<SQLOutput> { SQLOutput.scene_template });
 
