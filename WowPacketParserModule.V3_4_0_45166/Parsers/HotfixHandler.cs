@@ -9943,15 +9943,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                     break;
                 }
             }
-
-            DbReplyData dbReplyData = new DbReplyData
-            {
-                TableHash = type,
-                RecordID = entry,
-                Status = status
-            };
-
-            Storage.DbReplyDatas.Add(dbReplyData);
         }
     }
 }
