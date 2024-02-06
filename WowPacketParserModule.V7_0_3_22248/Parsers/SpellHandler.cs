@@ -769,5 +769,34 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadSingle("UnkFloat");
             packet.ReadBit("UnkBool");
         }
+
+        [Parser(Opcode.SMSG_ADD_LOSS_OF_CONTROL)]
+        public static void HandleAddLossOfControl(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadPackedGuid128("Caster");
+
+            packet.ReadUInt32("Duration");
+            packet.ReadUInt32("DurationRemaining");
+            packet.ReadUInt32E<SpellSchoolMask>("LockoutSchoolMask");
+
+            packet.ReadByteE<SpellMechanic>("Mechanic");
+            packet.ReadByte("Type");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_HEAL_ABSORB_LOG)]
+        public static void HandleSpellHealAbsorbLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("AbsorbCaster");
+            packet.ReadPackedGuid128("Healer");
+            packet.ReadInt32<SpellId>("AbsorbSpellID");
+            packet.ReadInt32<SpellId>("AbsorbedSpellID");
+            packet.ReadInt32("Absorbed");
+            packet.ReadInt32("OriginalHeal");
+            packet.ReadInt32("Unk0");
+            packet.ReadInt32("Unk1");
+        }
     }
 }

@@ -386,5 +386,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (action == TutorialAction703.Update)
                 packet.ReadInt32E<Tutorial>("TutorialBit");
         }
+
+        [Parser(Opcode.SMSG_START_TIMER)]
+        public static void HandleStartTimer(Packet packet)
+        {
+            packet.ReadInt32("Time left (secs)");
+            packet.ReadInt32("Total time (secs)");
+            packet.ReadUInt32E<TimerType>("Timer type");
+        }
     }
 }
