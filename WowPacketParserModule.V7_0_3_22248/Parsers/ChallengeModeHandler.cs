@@ -23,7 +23,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("Affix3");
             packet.ReadInt32("Unk0");
             packet.ReadInt32("Unk1");
-            packet.ReadBit("IsKeyCharged");
+            packet.ReadBit("Unk2");
         }
 
         [Parser(Opcode.SMSG_CHALLENGE_MODE_REQUEST_LEADERS_RESULT)]
