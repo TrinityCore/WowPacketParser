@@ -12,6 +12,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("IsWeeklyRewardAvailable");
         }
 
+        [Parser(Opcode.SMSG_CHALLENGE_MODE_START)]
+        public static void HandleChallengeModeStart(Packet packet)
+        {
+            packet.ReadInt32("MapId");
+            packet.ReadInt32("ChallengeId");
+            packet.ReadInt32("StartedChallengeLevel");
+            packet.ReadInt32("Affix1");
+            packet.ReadInt32("Affix2");
+            packet.ReadInt32("Affix3");
+            packet.ReadInt32("Unk0");
+            packet.ReadInt32("Unk1");
+            packet.ReadBit("IsKeyCharged");
+        }
+
         [Parser(Opcode.SMSG_CHALLENGE_MODE_REQUEST_LEADERS_RESULT)]
         public static void HandleChallengeModeRequestLeadersResult(Packet packet)
         {
@@ -37,7 +51,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("MapId");
             packet.ReadTime("LastGuildUpdate");
             packet.ReadTime("LastRealmUpdate");
-            packet.ReadInt32("Unk");
+            packet.ReadTime("CompletionDate");
         }
 
         [Parser(Opcode.SMSG_MYTHIC_PLUS_NEW_WEEK_RECORD)]
@@ -52,6 +66,22 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void ChallengeModeUpdateDeathCount(Packet packet)
         {
             packet.ReadInt32("NewDeathCount");
+        }
+
+        [Parser(Opcode.SMSG_CHALLENGE_MODE_RESET)]
+        public static void HandleChallengeModeReset(Packet packet)
+        {
+            packet.ReadInt32("MapId");
+        }
+
+        [Parser(Opcode.SMSG_CHALLENGE_MODE_COMPLETE)]
+        public static void HandleChallengeModeComplete(Packet packet)
+        {
+            packet.ReadInt32("CompletionTime");
+            packet.ReadInt32("MapId");
+            packet.ReadInt32("ChallengeId");
+            packet.ReadInt32("RewardLevel");
+            packet.ReadBit("IsCompletedInTimer");
         }
     }
 }
