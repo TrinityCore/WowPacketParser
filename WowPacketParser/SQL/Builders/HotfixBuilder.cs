@@ -4,7 +4,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
@@ -2275,11 +2274,11 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.SummonPropertiesHotfixes1000, hotfixes, StoreNameType.None);
                     }
 
-                    if (!Storage.TactKeyHotfixes1000.IsEmpty())
+                    if (!Storage.TactKeyHotfixes.IsEmpty())
                     {
-                        var hotfixes = SQLDatabase.Get(Storage.TactKeyHotfixes1000, Settings.HotfixesDatabase);
+                        var hotfixes = SQLDatabase.Get(Storage.TactKeyHotfixes, Settings.HotfixesDatabase);
 
-                        sql += SQLUtil.Compare(Storage.TactKeyHotfixes1000, hotfixes, StoreNameType.None);
+                        sql += SQLUtil.Compare(Storage.TactKeyHotfixes, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.TalentHotfixes1000.IsEmpty())
@@ -4871,13 +4870,6 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.SummonPropertiesHotfixes340, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.SummonPropertiesHotfixes340, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TactKeyHotfixes340.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TactKeyHotfixes340, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TactKeyHotfixes340, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.TalentHotfixes340.IsEmpty())

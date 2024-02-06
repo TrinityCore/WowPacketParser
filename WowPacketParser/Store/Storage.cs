@@ -473,7 +473,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<SpellVisualKitHotfix1000> SpellVisualKitHotfixes1000 = new DataBag<SpellVisualKitHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SpellXSpellVisualHotfix1000> SpellXSpellVisualHotfixes1000 = new DataBag<SpellXSpellVisualHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SummonPropertiesHotfix1000> SummonPropertiesHotfixes1000 = new DataBag<SummonPropertiesHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
-        public static readonly DataBag<TactKeyHotfix1000> TactKeyHotfixes1000 = new DataBag<TactKeyHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<TactKeyHotfix> TactKeyHotfixes = new DataBag<TactKeyHotfix>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<TalentHotfix1000> TalentHotfixes1000 = new DataBag<TalentHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<TaxiNodesHotfix1000> TaxiNodesHotfixes1000 = new DataBag<TaxiNodesHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<TaxiNodesHotfix1017> TaxiNodesHotfixes1017 = new DataBag<TaxiNodesHotfix1017>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -846,7 +846,6 @@ namespace WowPacketParser.Store
         public static readonly DataBag<SpellVisualKitHotfix340> SpellVisualKitHotfixes340 = new DataBag<SpellVisualKitHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SpellXSpellVisualHotfix340> SpellXSpellVisualHotfixes340 = new DataBag<SpellXSpellVisualHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SummonPropertiesHotfix340> SummonPropertiesHotfixes340 = new DataBag<SummonPropertiesHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
-        public static readonly DataBag<TactKeyHotfix340> TactKeyHotfixes340 = new DataBag<TactKeyHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<TalentHotfix340> TalentHotfixes340 = new DataBag<TalentHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<TalentTabHotfix340> TalentTabHotfixes340 = new DataBag<TalentTabHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<TaxiNodesHotfix340> TaxiNodesHotfixes340 = new DataBag<TaxiNodesHotfix340>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -1570,7 +1569,7 @@ namespace WowPacketParser.Store
             SpellVisualKitHotfixes1000.Clear();
             SpellXSpellVisualHotfixes1000.Clear();
             SummonPropertiesHotfixes1000.Clear();
-            TactKeyHotfixes1000.Clear();
+            TactKeyHotfixes.Clear();
             TalentHotfixes1000.Clear();
             TaxiNodesHotfixes1000.Clear();
             TaxiNodesHotfixes1017.Clear();
@@ -1942,7 +1941,6 @@ namespace WowPacketParser.Store
             SpellVisualKitHotfixes340.Clear();
             SpellXSpellVisualHotfixes340.Clear();
             SummonPropertiesHotfixes340.Clear();
-            TactKeyHotfixes340.Clear();
             TalentHotfixes340.Clear();
             TalentTabHotfixes340.Clear();
             TaxiNodesHotfixes340.Clear();

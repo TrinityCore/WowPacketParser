@@ -4,7 +4,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -6994,14 +6993,14 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
         public static void TactKeyHandler1000(Packet packet, uint entry, params object[] indexes)
         {
-            TactKeyHotfix1000 hotfix = new TactKeyHotfix1000();
+            TactKeyHotfix hotfix = new TactKeyHotfix();
 
             hotfix.ID = entry;
             hotfix.Key = new byte?[16];
             for (int i = 0; i < 16; i++)
                 hotfix.Key[i] = packet.ReadByte("Key", indexes, i);
 
-            Storage.TactKeyHotfixes1000.Add(hotfix, packet.TimeSpan);
+            Storage.TactKeyHotfixes.Add(hotfix, packet.TimeSpan);
         }
 
         public static void TalentHandler1000(Packet packet, uint entry, params object[] indexes)

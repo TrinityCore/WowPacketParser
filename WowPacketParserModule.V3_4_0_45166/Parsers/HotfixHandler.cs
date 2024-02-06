@@ -2,7 +2,6 @@ using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
-using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
@@ -6790,14 +6789,14 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
         public static void TactKeyHandler340(Packet packet, uint entry, params object[] indexes)
         {
-            TactKeyHotfix340 hotfix = new TactKeyHotfix340();
+            TactKeyHotfix hotfix = new TactKeyHotfix();
 
             hotfix.ID = entry;
             hotfix.Key = new byte?[16];
             for (int i = 0; i < 16; i++)
                 hotfix.Key[i] = packet.ReadByte("Key", indexes, i);
 
-            Storage.TactKeyHotfixes340.Add(hotfix, packet.TimeSpan);
+            Storage.TactKeyHotfixes.Add(hotfix, packet.TimeSpan);
         }
 
         public static void TalentHandler340(Packet packet, uint entry, params object[] indexes)

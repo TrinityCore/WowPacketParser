@@ -122,6 +122,15 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                                 dbReply.BroadcastText.Emotes.Add(new BroadcastTextEmote() { EmoteId = bct.EmoteID[i] ?? 0, Delay = bct.EmoteDelay[i] ?? 0 });
                             break;
                         }
+                        case DB2Hash.TactKey:
+                            var hotfix = new TactKeyHotfix();
+                            hotfix.ID = (uint)entry;
+                            hotfix.Key = new byte?[16];
+                            for (int i = 0; i < 16; i++)
+                                hotfix.Key[i] = db2File.ReadByte("Key",  i);
+
+                            Storage.TactKeyHotfixes.Add(hotfix, packet.TimeSpan);
+                            break;
                         default:
                             HotfixStoreMgr.AddRecord(type, entry, db2File);
                             break;
