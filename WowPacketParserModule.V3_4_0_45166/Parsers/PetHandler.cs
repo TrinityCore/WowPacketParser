@@ -9,27 +9,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 {
     public static class PetHandler
     {
-        public static (uint, uint) ReadPetAction(Packet packet, WowGuid guid, params object[] indexes)
+        public static (uint, uint) ReadPetAction(Packet packet, params object[] indexes)
         {
-            bool isPet = guid.GetHighType() == HighGuidType.Pet;
-            bool isVehicle = guid.GetHighType() == HighGuidType.Vehicle;
-            bool isMinion = guid.GetHighType() == HighGuidType.Creature;
+            var action = packet.ReadUInt32();
+            var spellID = action & 0x7FFFFF;
+            var slot = (action >> 23);
 
-            var packedData = packet.ReadUInt32();
-            var spellId = packedData & 0x7FFFFF;
-            var slot = ((packedData >> 23) & 0x1F) - 8;
+            packet.AddValue("Action", slot, indexes);
+            packet.AddValue("SpellID", StoreGetters.GetName(StoreNameType.Spell, (int)spellID), indexes);
 
-            packet.AddValue("Slot", slot, indexes);
-
-            if (spellId <= 4)
-                packet.AddValue("Action", spellId, indexes);
-            else
-                packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, (int)spellId), indexes);
-
-            if (!isPet && (isVehicle || (isMinion && slot >= 8)))
-                return (slot, spellId);
-
-            return (0, 0);
+            return (slot, spellID);
         }
 
         public static void ReadPetFlags(Packet packet, params object[] idx)
@@ -74,7 +63,10 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             const int maxCreatureSpells = 10;
             for (var i = 0; i < maxCreatureSpells; i++) // Read pet / vehicle spell ids
             {
-                var (slot, spellId) = ReadPetAction(packet, petGuid, "ActionButtons", i);
+                var (slot, spellId) = ReadPetAction(packet, "ActionButtons", i);
+
+                if (i == 0)
+                    continue;
 
                 if (spellId == 0)
                     continue;
@@ -82,7 +74,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 var creatureTemplateSpell = new CreatureTemplateSpell
                 {
                     CreatureID = petGuid.GetEntry(),
-                    Index = (byte)slot,
+                    Index = (byte)(i - 1),
                     Spell = spellId
                 };
                 Storage.CreatureTemplateSpells.Add(creatureTemplateSpell);
