@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Buffers;
-using System.Xml.Linq;
 
 namespace WowPacketParser.Enums
 {
