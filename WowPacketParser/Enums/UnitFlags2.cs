@@ -3,8 +3,9 @@
 namespace WowPacketParser.Enums
 {
     [Flags]
-    public enum UnitFlags2 // 4.x
+    public enum UnitFlags2 : uint // 4.x
     {
+        None                                      = 0x00000000,
         FeignDeath                                = 0x00000001,
         HideBody                                  = 0x00000002,
         IgnoreReputation                          = 0x00000004,
@@ -34,6 +35,18 @@ namespace WowPacketParser.Enums
         UntargetableByClient                      = 0x04000000,
         AttackerIgnoresMinimumRanges              = 0x08000000,
         UninteractibleIfHostile                   = 0x10000000,
+        Unused11                                  = 0x20000000,
         InfiniteAOI                               = 0x40000000,
+        Unused13                                  = 0x80000000,
+
+        Disallowed                                = (FeignDeath | IgnoreReputation | ComprehendLang |
+                                                     MirrorImage | ForceMovement | DisarmOffhand |
+                                                     DisablePredStats | AllowChangingTalents | DisarmRanged |
+                                                     /* RegeneratePower | */ RestrictPartyInteraction |
+                                                     PreventSpellClick | /* InteractWhileHostile | */ /* Unk2 | */
+                                                     /* PlayDeathAnim | */ AllowCheatSpells | SuppressHighlightWhenTargetedOrMousedOver |
+                                                     TreatAsRaidUnitForHelpfulSpells | LargeAOI | GiganticAOI | NoActions |
+                                                     AiWillOnlySwimIfTargetSwims | DontGenerateCombatLogWhenEngagedWithNpcs | AttackerIgnoresMinimumRanges |
+                                                     UninteractibleIfHostile | Unused11 | InfiniteAOI | Unused13)
     }
 }

@@ -764,11 +764,16 @@ namespace WowPacketParser.SQL.Builders
                     template.Faction == 2395 || template.Faction == 2401 || template.Faction == 2402) // player factions
                     template.Faction = 35;
 
-                template.UnitFlags &= ~UnitFlags.IsInCombat;
-                template.UnitFlags &= ~UnitFlags.PetIsAttackingTarget;
-                template.UnitFlags &= ~UnitFlags.PlayerControlled;
-                template.UnitFlags &= ~UnitFlags.Silenced;
-                template.UnitFlags &= ~UnitFlags.PossessedByPlayer;
+                if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+                    template.UnitFlags &= ~UnitFlags.DisallowedShadowlands;
+                else
+                    template.UnitFlags &= ~UnitFlags.Disallowed;
+
+                if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
+                    template.UnitFlags2 &= ~UnitFlags2.Disallowed;
+
+                if (ClientVersion.AddedInVersion(ClientType.Legion))
+                    template.UnitFlags3 &= ~UnitFlags3.Disallowed;
 
                 if (!ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor))
                 {
