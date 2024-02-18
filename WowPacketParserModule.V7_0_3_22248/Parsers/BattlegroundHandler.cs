@@ -302,7 +302,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_BATTLEGROUND_INIT)]
         public static void HandleBattlegroundInit(Packet packet)
         {
-            packet.ReadInt32("ServerTime");
+            packet.ReadUInt32("ServerTime");
             packet.ReadInt16("MaxPoints");
         }
     }
