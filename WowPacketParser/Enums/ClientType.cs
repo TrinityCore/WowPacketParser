@@ -15,6 +15,7 @@ namespace WowPacketParser.Enums
         Shadowlands        = 8,
         ClassicSoM         = 8,
         ClassicHardcore    = 8,
+        ClassicSoD         = 8,
         BurningCrusadeClassic = 8,
         WotLKClassic       = 8,
         Dragonflight       = 9,

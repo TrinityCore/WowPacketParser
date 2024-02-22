@@ -1230,6 +1230,9 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_3_51831:
                 case ClientVersionBuild.V3_4_3_51943:
                 case ClientVersionBuild.V3_4_3_52237:
+                case ClientVersionBuild.V1_15_0_52302:
+                case ClientVersionBuild.V1_15_0_52610:
+                case ClientVersionBuild.V1_15_0_53247:
                     return ClientVersionBuild.V3_4_0_45166;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
@@ -1292,6 +1295,8 @@ namespace WowPacketParser.Misc
                 return ClientType.WotLKClassic;
             if (IsClassicHardcoreClientVersionBuild(build))
                 return ClientType.ClassicHardcore;
+            if (IsSeasonOfDiscoveryClientVersionBuild(build))
+                return ClientType.ClassicSoD;
 
             if (build >= ClientVersionBuild.V10_0_0_46181)
                 return ClientType.Dragonflight;
@@ -1319,7 +1324,7 @@ namespace WowPacketParser.Misc
 
         private static ClientBranch GetBranch(ClientVersionBuild build)
         {
-            if (IsClassicVanillaClientVersionBuild(build) || IsClassicSeasonOfMasteryClientVersionBuild(build) || IsClassicHardcoreClientVersionBuild(build))
+            if (IsClassicVanillaClientVersionBuild(build) || IsClassicSeasonOfMasteryClientVersionBuild(build) || IsClassicHardcoreClientVersionBuild(build) || IsSeasonOfDiscoveryClientVersionBuild(build))
                 return ClientBranch.Classic;
             if (IsBurningCrusadeClassicClientVersionBuild(build))
                 return ClientBranch.TBC;
@@ -1571,6 +1576,19 @@ namespace WowPacketParser.Misc
             {
                 case ClientVersionBuild.V1_14_4_51146:
                 case ClientVersionBuild.V1_14_4_51535:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsSeasonOfDiscoveryClientVersionBuild(ClientVersionBuild build)
+        {
+            switch (build)
+            {
+                case ClientVersionBuild.V1_15_0_52302:
+                case ClientVersionBuild.V1_15_0_52610:
+                case ClientVersionBuild.V1_15_0_53247:
                     return true;
                 default:
                     return false;
