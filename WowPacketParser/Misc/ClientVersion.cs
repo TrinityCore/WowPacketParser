@@ -1453,6 +1453,8 @@ namespace WowPacketParser.Misc
         {
             return IsClassicVanillaClientVersionBuild(build) ||
                    IsClassicSeasonOfMasteryClientVersionBuild(build) ||
+                   IsClassicHardcoreClientVersionBuild(build) ||
+                   IsSeasonOfDiscoveryClientVersionBuild(build) ||
                    IsBurningCrusadeClassicClientVersionBuild(build) ||
                    IsWotLKClientVersionBuild(build);
         }
