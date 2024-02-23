@@ -209,17 +209,14 @@ namespace WowPacketParser.DBC
 
             foreach (var phaseGroup in Phases)
             {
-                bool valid = true;
-
                 foreach (var phase in phaseGroup.Value)
                 {
-                    if (!phases.Contains(phase))
-                        valid = false;
+                    if (phases.Contains(phase))
+                    {
+                        phaseGroups.Add(phaseGroup.Key);
+                        break;
+                    }
                 }
-
-                if (valid)
-                    phaseGroups.Add(phaseGroup.Key);
-
             }
 
             return phaseGroups;
