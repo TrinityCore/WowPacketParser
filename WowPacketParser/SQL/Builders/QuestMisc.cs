@@ -127,6 +127,62 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string QuestDescriptionConditional()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
+            if (Storage.QuestDescriptionConditional.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.QuestDescriptionConditional);
+
+            return SQLUtil.Compare(Storage.QuestDescriptionConditional, templatesDb, StoreNameType.Quest);
+        }
+
+        [BuilderMethod]
+        public static string QuestCompletionLogConditional()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
+            if (Storage.QuestCompletionLogConditional.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.QuestCompletionLogConditional);
+
+            return SQLUtil.Compare(Storage.QuestCompletionLogConditional, templatesDb, StoreNameType.Quest);
+        }
+
+        [BuilderMethod]
+        public static string QuestOfferRewardConditional()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
+            if (Storage.QuestOfferRewardConditional.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.QuestOfferRewardConditional);
+
+            return SQLUtil.Compare(Storage.QuestOfferRewardConditional, templatesDb, StoreNameType.Quest);
+        }
+
+        [BuilderMethod]
+        public static string QuestRequestItemsConditional()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
+            if (Storage.QuestRequestItemsConditional.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.QuestRequestItemsConditional);
+
+            return SQLUtil.Compare(Storage.QuestRequestItemsConditional, templatesDb, StoreNameType.Quest);
+        }
+
+        [BuilderMethod]
         public static string CreatureQuestStarters()
         {
             if (Storage.CreatureQuestStarters.IsEmpty())

@@ -1,5 +1,4 @@
 ﻿
-using Org.BouncyCastle.Crypto.Operators;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -12,14 +11,49 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 {
     public static class QuestHandler
     {
-        public static void ReadConditionalQuestText(Packet packet, params object[] indexes)
+        public enum ConditionalTextType
         {
-            packet.ReadInt32("PlayerConditionID", indexes);
-            packet.ReadInt32("QuestGiverCreatureID", indexes);
+            Description    = 0,
+            CompletionLog  = 1,
+            OfferReward    = 2,
+            RequestItems   = 3
+        }
+
+        public static void ReadConditionalQuestText(Packet packet, int questId, int idx, ConditionalTextType type, params object[] indexes)
+        {
+            var playerConditionId = packet.ReadInt32("PlayerConditionID", indexes);
+            var questgiverCreatureId = packet.ReadInt32("QuestGiverCreatureID", indexes);
 
             packet.ResetBitReader();
             var textLength = packet.ReadBits(12);
-            packet.ReadWoWString("Text", textLength, indexes);
+            var text = packet.ReadWoWString("Text", textLength, indexes);
+
+            QuestTextConditional questTextConditional = new QuestTextConditional
+            {
+                QuestId = questId,
+                PlayerConditionId = playerConditionId,
+                QuestgiverCreatureId = questgiverCreatureId,
+                Text = text,
+                OrderIndex = idx
+        };
+
+            switch (type)
+            {
+                case ConditionalTextType.Description:
+                    Storage.QuestDescriptionConditional.Add(new QuestDescriptionConditional(questTextConditional), packet.TimeSpan);
+                    break;
+                case ConditionalTextType.CompletionLog:
+                    Storage.QuestCompletionLogConditional.Add(new QuestCompletionLogConditional(questTextConditional), packet.TimeSpan);
+                    break;
+                case ConditionalTextType.OfferReward:
+                    Storage.QuestOfferRewardConditional.Add(new QuestOfferRewardConditional(questTextConditional), packet.TimeSpan);
+                    break;
+                case ConditionalTextType.RequestItems:
+                    Storage.QuestRequestItemsConditional.Add(new QuestRequestItemsConditional(questTextConditional), packet.TimeSpan);
+                    break;
+                default:
+                    break;
+            }
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS)]
@@ -100,7 +134,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadWoWString("PortraitTurnInName", portraitTurnInNameLen);
 
             for (int i = 0; i < conditionalDescriptionTextCount; i++)
-                ReadConditionalQuestText(packet, "ConditionalDescriptionText");
+                ReadConditionalQuestText(packet, id, i, ConditionalTextType.Description, i, "ConditionalDescriptionText");
 
             Storage.QuestDetails.Add(questDetails, packet.TimeSpan);
         }
@@ -177,7 +211,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             completionTextLen = packet.ReadBits(12);
 
             for (int i = 0; i < conditionalCompletionTextCount; i++)
-                ReadConditionalQuestText(packet, "ConditionalCompletionText");
+                ReadConditionalQuestText(packet, id, i, ConditionalTextType.RequestItems, i, "ConditionalCompletionText");
 
             requestItems.QuestTitle = packet.ReadWoWString("QuestTitle", questTitleLen);
             string completionText = requestItems.CompletionText = packet.ReadWoWString("CompletionText", completionTextLen);
@@ -258,7 +292,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             uint portraitTurnInNameLen = packet.ReadBits(8);
 
             for (int i = 0; i < conditionalRewardTextCount; i++)
-                ReadConditionalQuestText(packet, "ConditionalRewardText");
+                ReadConditionalQuestText(packet, (int)questOfferReward.ID, i, ConditionalTextType.OfferReward, i, "ConditionalRewardText");
 
             packet.ReadWoWString("QuestTitle", questTitleLen);
             questOfferReward.RewardText = packet.ReadWoWString("RewardText", rewardTextLen);

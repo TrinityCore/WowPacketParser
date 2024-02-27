@@ -236,10 +236,10 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             quest.QuestCompletionLog = packet.ReadWoWString("QuestCompletionLog", questCompletionLogLen);
 
             for (int i = 0; i < conditionalQuestDescriptionCount; i++)
-                QuestHandler.ReadConditionalQuestText(packet, "ConditionalQuestDescription", i);
+                QuestHandler.ReadConditionalQuestText(packet, id.Key, i, QuestHandler.ConditionalTextType.Description, i, "ConditionalDescriptionText");
 
             for (int i = 0; i < conditionalQuestCompletionLogCount; i++)
-                QuestHandler.ReadConditionalQuestText(packet, "ConditionalQuestCompletionLog", i);
+                QuestHandler.ReadConditionalQuestText(packet, id.Key, i, QuestHandler.ConditionalTextType.CompletionLog, i, "ConditionalCompletionLogText");
 
             ObjectName objectName = new ObjectName
             {
