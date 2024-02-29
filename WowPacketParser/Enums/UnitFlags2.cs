@@ -42,7 +42,7 @@ namespace WowPacketParser.Enums
         Disallowed                                = (FeignDeath | IgnoreReputation | ComprehendLang |
                                                      MirrorImage | ForceMovement | DisarmOffhand |
                                                      DisablePredStats | AllowChangingTalents | DisarmRanged |
-                                                     /* RegeneratePower | */ RestrictPartyInteraction |
+                                                     /* RegeneratePower | */ RestrictPartyInteraction | CannotTurn |
                                                      PreventSpellClick | /* InteractWhileHostile | */ /* Unk2 | */
                                                      /* PlayDeathAnim | */ AllowCheatSpells | SuppressHighlightWhenTargetedOrMousedOver |
                                                      TreatAsRaidUnitForHelpfulSpells | LargeAOI | GiganticAOI | NoActions |

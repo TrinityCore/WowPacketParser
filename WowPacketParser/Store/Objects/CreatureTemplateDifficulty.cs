@@ -65,6 +65,30 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ContentTuningID", TargetedDatabaseFlag.SinceBattleForAzeroth)]
         public int? ContentTuningID;
 
+        [DBFieldName("StaticFlags1", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
+        public CreatureStaticFlags? StaticFlags1 = 0;
+
+        [DBFieldName("StaticFlags2", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
+        public CreatureStaticFlags2? StaticFlags2 = 0;
+
+        [DBFieldName("StaticFlags3", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
+        public CreatureStaticFlags3? StaticFlags3 = 0;
+
+        [DBFieldName("StaticFlags4", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
+        public CreatureStaticFlags4? StaticFlags4 = 0;
+
+        [DBFieldName("StaticFlags5", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
+        public CreatureStaticFlags5? StaticFlags5 = 0;
+
+        [DBFieldName("StaticFlags6", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
+        public CreatureStaticFlags6? StaticFlags6 = 0;
+
+        [DBFieldName("StaticFlags7", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
+        public CreatureStaticFlags7? StaticFlags7 = 0;
+
+        [DBFieldName("StaticFlags8", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
+        public CreatureStaticFlags8? StaticFlags8 = 0;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
