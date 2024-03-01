@@ -161,20 +161,20 @@ namespace WowPacketParser.SQL.Builders
         public static void UpdateCreatureStaticFlags(ref Unit npc, ref CreatureTemplateDifficulty creatureDifficulty)
         {
             if ((npc.UnitData.Flags & (uint)UnitFlags.CanSwim) != 0)
-                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.CREATURE_STATIC_FLAG_CAN_SWIM;
+                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.CanSwim;
             if ((npc.UnitData.Flags & (uint)UnitFlags.CantSwim) != 0)
-                creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.CREATURE_STATIC_FLAG_3_CANNOT_SWIM;
+                creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.CannotSwim;
 
             if ((npc.UnitData.Flags2 & (uint)UnitFlags2.CannotTurn) != 0)
-                creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.CREATURE_STATIC_FLAG_3_CANNOT_TURN;
+                creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.CannotTurn;
 
             if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && npc.Movement.Flags.HasAnyFlag(MovementFlag.DisableGravity)) ||
                 (ClientVersion.Expansion >= ClientType.Cataclysm && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.DisableGravity)))
-                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.CREATURE_STATIC_FLAG_FLOATING; // Not 100% reliable
+                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Floating; // Not 100% reliable
 
             if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && npc.Movement.Flags.HasAnyFlag(MovementFlag.Root)) ||
                 (ClientVersion.Expansion >= ClientType.Cataclysm && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.Root)))
-                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.CREATURE_STATIC_FLAG_SESSILE; // Not 100% reliable
+                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Sessile; // Not 100% reliable
         }
 
         [BuilderMethod(true, Units = true)]
