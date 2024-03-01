@@ -99,6 +99,10 @@ namespace WowPacketParser.Store
         public static readonly DataBag<QuestGreeting> QuestGreetings = new DataBag<QuestGreeting>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestDetails> QuestDetails = new DataBag<QuestDetails>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestRequestItems> QuestRequestItems = new DataBag<QuestRequestItems>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly DataBag<QuestDescriptionConditional> QuestDescriptionConditional = new DataBag<QuestDescriptionConditional>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly DataBag<QuestCompletionLogConditional> QuestCompletionLogConditional = new DataBag<QuestCompletionLogConditional>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly DataBag<QuestOfferRewardConditional> QuestOfferRewardConditional = new DataBag<QuestOfferRewardConditional>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly DataBag<QuestRequestItemsConditional> QuestRequestItemsConditional = new DataBag<QuestRequestItemsConditional>(new List<SQLOutput> { SQLOutput.quest_template });
 
         // Names
         public static readonly DataBag<ObjectName> ObjectNames = new DataBag<ObjectName>();
@@ -1206,6 +1210,10 @@ namespace WowPacketParser.Store
             QuestGreetings.Clear();
             QuestDetails.Clear();
             QuestRequestItems.Clear();
+            QuestDescriptionConditional.Clear();
+            QuestCompletionLogConditional.Clear();
+            QuestOfferRewardConditional.Clear();
+            QuestRequestItemsConditional.Clear();
 
             ObjectNames.Clear();
 
