@@ -35,7 +35,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 QuestgiverCreatureId = questgiverCreatureId,
                 Text = text,
                 OrderIndex = idx
-        };
+            };
 
             switch (type)
             {
