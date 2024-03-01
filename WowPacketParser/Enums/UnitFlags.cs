@@ -44,7 +44,7 @@ namespace WowPacketParser.Enums
         Disallowed                       = (ServerControlled | NotAttackable | RemoveClientControl |
                                             PlayerControlled | Rename | Preparation | /* Unk6 | */
                                             NotAttackable | Looting | PetIsAttackingTarget | PVP |
-                                            Silenced | NotAttackable2 | Pacified | Stunned |
+                                            Silenced | CantSwim | CanSwim | NotAttackable2 | Pacified | Stunned |
                                             AffectingCombat | OnTaxi | Disarmed | Confused | Fleeing |
                                             Possessed | Skinnable | Mount | PreventKneelingWhenLooting |
                                             PreventEmotes | Sheath | Immune),

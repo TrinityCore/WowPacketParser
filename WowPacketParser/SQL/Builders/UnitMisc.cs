@@ -158,6 +158,25 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateDifficultiesWDB.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateDifficultiesWDB.ToArray(), templatesDb, StoreNameType.Unit);
         }
 
+        public static void UpdateCreatureStaticFlags(ref Unit npc, ref CreatureTemplateDifficulty creatureDifficulty)
+        {
+            if ((npc.UnitData.Flags & (uint)UnitFlags.CanSwim) != 0)
+                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.CanSwim;
+            if ((npc.UnitData.Flags & (uint)UnitFlags.CantSwim) != 0)
+                creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.CannotSwim;
+
+            if ((npc.UnitData.Flags2 & (uint)UnitFlags2.CannotTurn) != 0)
+                creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.CannotTurn;
+
+            if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && npc.Movement.Flags.HasAnyFlag(MovementFlag.DisableGravity)) ||
+                (ClientVersion.Expansion >= ClientType.Cataclysm && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.DisableGravity)))
+                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Floating; // Not 100% reliable
+
+            if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && npc.Movement.Flags.HasAnyFlag(MovementFlag.Root)) ||
+                (ClientVersion.Expansion >= ClientType.Cataclysm && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.Root)))
+                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Sessile; // Not 100% reliable
+        }
+
         [BuilderMethod(true, Units = true)]
         public static string CreatureTemplateScalingData(Dictionary<WowGuid, Unit> units)
         {
@@ -195,6 +214,7 @@ namespace WowPacketParser.SQL.Builders
                             LevelScalingDeltaMax = scalingdeltalevels[unit.Key.GetEntry()].Item2,
                             ContentTuningID = contentTuningID
                         };
+                        UpdateCreatureStaticFlags(ref npc, ref creatureDifficulty);
                         Storage.CreatureTemplateDifficulties.Add(creatureDifficulty);
                     }
                 }
@@ -207,6 +227,7 @@ namespace WowPacketParser.SQL.Builders
                         MinLevel = difficultyLevels[(unit.Key.GetEntry(), npc.DifficultyID)].Item1,
                         MaxLevel = difficultyLevels[(unit.Key.GetEntry(), npc.DifficultyID)].Item2,
                     };
+                    UpdateCreatureStaticFlags(ref npc, ref creatureDifficulty);
                     Storage.CreatureTemplateDifficulties.Add(creatureDifficulty);
                 }
             }
