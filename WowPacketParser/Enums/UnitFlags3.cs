@@ -26,7 +26,7 @@ namespace WowPacketParser.Enums
         AlreadySkinned                         = 0x00020000,
         SuppressAllNpcSounds                   = 0x00040000,
         SuppressNpcSounds                      = 0x00080000,
-        Unk20                                  = 0x00100000,
+        AllowInteractionWhileInCombat          = 0x00100000,
         Unk21                                  = 0x00200000,
         DontFadeOut                            = 0x00400000,
         Unk23                                  = 0x00800000,

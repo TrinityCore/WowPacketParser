@@ -168,6 +168,9 @@ namespace WowPacketParser.SQL.Builders
             if ((npc.UnitData.Flags2 & (uint)UnitFlags2.CannotTurn) != 0)
                 creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.CannotTurn;
 
+            if ((npc.UnitData.Flags3 & (uint)UnitFlags3.AllowInteractionWhileInCombat) != 0)
+                creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.AllowInteractionWhileInCombat;
+
             if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && npc.Movement.Flags.HasAnyFlag(MovementFlag.DisableGravity)) ||
                 (ClientVersion.Expansion >= ClientType.Cataclysm && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.DisableGravity)))
                 creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Floating; // Not 100% reliable
