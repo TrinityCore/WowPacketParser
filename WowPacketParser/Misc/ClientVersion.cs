@@ -524,7 +524,7 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V10_2_5_53212, new DateTime(2024, 02, 07)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V10_2_5_53262, new DateTime(2024, 02, 08)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V10_2_5_53441, new DateTime(2024, 02, 24)),
-            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V10_2_5_53584, new DateTime(2024, 03, 02)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V10_2_5_53584, new DateTime(2024, 03, 05)),
 
             // no classic info, pkt contain build in header
         };
