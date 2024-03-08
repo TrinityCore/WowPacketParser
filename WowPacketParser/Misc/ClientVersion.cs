@@ -1225,6 +1225,8 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_2_50250:
                 case ClientVersionBuild.V3_4_2_50375:
                 case ClientVersionBuild.V3_4_2_50664:
+                case ClientVersionBuild.V1_14_4_51146:
+                case ClientVersionBuild.V1_14_4_51535:
                 case ClientVersionBuild.V3_4_3_51505:
                 case ClientVersionBuild.V3_4_3_51572:
                 case ClientVersionBuild.V3_4_3_51666:
@@ -1232,6 +1234,10 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_3_51831:
                 case ClientVersionBuild.V3_4_3_51943:
                 case ClientVersionBuild.V3_4_3_52237:
+                case ClientVersionBuild.V1_15_0_52302:
+                case ClientVersionBuild.V1_15_0_52610:
+                case ClientVersionBuild.V1_15_1_53247:
+                case ClientVersionBuild.V1_15_1_53495:
                     return ClientVersionBuild.V3_4_0_45166;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
@@ -1292,6 +1298,10 @@ namespace WowPacketParser.Misc
                 return ClientType.BurningCrusadeClassic;
             if (IsWotLKClientVersionBuild(build))
                 return ClientType.WotLKClassic;
+            if (IsClassicHardcoreClientVersionBuild(build))
+                return ClientType.ClassicHardcore;
+            if (IsSeasonOfDiscoveryClientVersionBuild(build))
+                return ClientType.ClassicSoD;
 
             if (build >= ClientVersionBuild.V10_0_0_46181)
                 return ClientType.Dragonflight;
@@ -1319,7 +1329,7 @@ namespace WowPacketParser.Misc
 
         private static ClientBranch GetBranch(ClientVersionBuild build)
         {
-            if (IsClassicVanillaClientVersionBuild(build) || IsClassicSeasonOfMasteryClientVersionBuild(build))
+            if (IsClassicVanillaClientVersionBuild(build) || IsClassicSeasonOfMasteryClientVersionBuild(build) || IsClassicHardcoreClientVersionBuild(build) || IsSeasonOfDiscoveryClientVersionBuild(build))
                 return ClientBranch.Classic;
             if (IsBurningCrusadeClassicClientVersionBuild(build))
                 return ClientBranch.TBC;
@@ -1448,6 +1458,8 @@ namespace WowPacketParser.Misc
         {
             return IsClassicVanillaClientVersionBuild(build) ||
                    IsClassicSeasonOfMasteryClientVersionBuild(build) ||
+                   IsClassicHardcoreClientVersionBuild(build) ||
+                   IsSeasonOfDiscoveryClientVersionBuild(build) ||
                    IsBurningCrusadeClassicClientVersionBuild(build) ||
                    IsWotLKClientVersionBuild(build);
         }
@@ -1558,6 +1570,33 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V1_14_3_48611:
                 case ClientVersionBuild.V1_14_3_49229:
                 case ClientVersionBuild.V1_14_3_49821:
+
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsClassicHardcoreClientVersionBuild(ClientVersionBuild build)
+        {
+            switch (build)
+            {
+                case ClientVersionBuild.V1_14_4_51146:
+                case ClientVersionBuild.V1_14_4_51535:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsSeasonOfDiscoveryClientVersionBuild(ClientVersionBuild build)
+        {
+            switch (build)
+            {
+                case ClientVersionBuild.V1_15_0_52302:
+                case ClientVersionBuild.V1_15_0_52610:
+                case ClientVersionBuild.V1_15_1_53247:
+                case ClientVersionBuild.V1_15_1_53495:
                     return true;
                 default:
                     return false;

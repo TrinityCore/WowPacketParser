@@ -1,8 +1,8 @@
 ﻿using WowPacketParser.Misc;
 
-namespace WowPacketParser.Enums.Version.V3_4_2_50129
+namespace WowPacketParser.Enums.Version.V1_14_4_51146
 {
-    public static class Opcodes_3_4_2
+    public static class Opcodes_1_14_4
     {
         public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
@@ -702,13 +702,11 @@ namespace WowPacketParser.Enums.Version.V3_4_2_50129
             { Opcode.SMSG_SPELL_GO, 0x2C36 },
             { Opcode.SMSG_SPELL_START, 0x2C37 },
             { Opcode.SMSG_ON_MONSTER_MOVE, 0x2DD4 },
-            { Opcode.SMSG_UPDATE_OBJECT, 0x27D1 },
+            { Opcode.SMSG_UPDATE_OBJECT, 0x27C8 },
             { Opcode.SMSG_EMOTE, 0x27CF },
             { Opcode.SMSG_CHAT, 0x2BAD },
             { Opcode.SMSG_GOSSIP_COMPLETE, 0x2A97 },
             { Opcode.SMSG_GOSSIP_MESSAGE, 0x2A98 },
-            { Opcode.SMSG_QUERY_CREATURE_RESPONSE, 0x2914 },
-            { Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, 0x2915 },
             { Opcode.SMSG_TEXT_EMOTE, 0x2677 },
         };
 
