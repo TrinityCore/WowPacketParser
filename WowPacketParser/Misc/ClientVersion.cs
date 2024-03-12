@@ -1233,6 +1233,8 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_3_51943:
                 case ClientVersionBuild.V3_4_3_52237:
                     return ClientVersionBuild.V3_4_0_45166;
+                case ClientVersionBuild.V4_4_0_53627:
+                    return ClientVersionBuild.V4_4_0_53627;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
                 case ClientVersionBuild.Zero:
@@ -1242,17 +1244,11 @@ namespace WowPacketParser.Misc
             }
         }
 
-        public static ClientVersionBuild VersionDefiningBuild
-        {
-            get
-            {
-                return GetVersionDefiningBuild(Build);
-            }
-        }
+        public static ClientVersionBuild VersionDefiningBuild => GetVersionDefiningBuild(Build);
 
-        public static ClientVersionBuild FallbackVersionDefiningBuild(ClientVersionBuild definingbuild, ClientVersionBuild originalDefiningBuild)
+        public static ClientVersionBuild FallbackVersionDefiningBuild(ClientVersionBuild definingBuild, ClientVersionBuild originalDefiningBuild)
         {
-            switch (definingbuild)
+            switch (definingBuild)
             {
                 case ClientVersionBuild.V1_13_2_31446:
                     return ClientVersionBuild.V8_0_1_27101;
@@ -1260,15 +1256,15 @@ namespace WowPacketParser.Misc
                     return ClientVersionBuild.V9_0_1_36216;
                 case ClientVersionBuild.V3_4_0_45166:
                     return ClientVersionBuild.V2_5_1_38707;
+                case ClientVersionBuild.V4_4_0_53627:
+                    return ClientVersionBuild.V3_4_0_45166;
 
                 case ClientVersionBuild.V7_0_3_22248:
                     return ClientVersionBuild.V6_0_2_19033;
                 case ClientVersionBuild.V8_0_1_27101:
                     return ClientVersionBuild.V7_0_3_22248;
                 case ClientVersionBuild.V9_0_1_36216:
-                    if (IsClassicClientVersionBuild(originalDefiningBuild))
-                        return ClientVersionBuild.V1_13_2_31446;
-                    return ClientVersionBuild.V8_0_1_27101;
+                    return IsClassicClientVersionBuild(originalDefiningBuild) ? ClientVersionBuild.V1_13_2_31446 : ClientVersionBuild.V8_0_1_27101;
                 case ClientVersionBuild.V10_0_0_46181:
                     return ClientVersionBuild.V9_0_1_36216;
                 default:
@@ -1292,6 +1288,8 @@ namespace WowPacketParser.Misc
                 return ClientType.BurningCrusadeClassic;
             if (IsWotLKClientVersionBuild(build))
                 return ClientType.WotLKClassic;
+            if (IsCataClientVersionBuild(build))
+                return ClientType.CataClassic;
 
             if (build >= ClientVersionBuild.V10_0_0_46181)
                 return ClientType.Dragonflight;
@@ -1325,6 +1323,8 @@ namespace WowPacketParser.Misc
                 return ClientBranch.TBC;
             if (IsWotLKClientVersionBuild(build))
                 return ClientBranch.WotLK;
+            if (IsCataClientVersionBuild(build))
+                return ClientBranch.Cata;
 
             return ClientBranch.Retail;
         }
@@ -1449,7 +1449,8 @@ namespace WowPacketParser.Misc
             return IsClassicVanillaClientVersionBuild(build) ||
                    IsClassicSeasonOfMasteryClientVersionBuild(build) ||
                    IsBurningCrusadeClassicClientVersionBuild(build) ||
-                   IsWotLKClientVersionBuild(build);
+                   IsWotLKClientVersionBuild(build) ||
+                   IsCataClientVersionBuild(build);
         }
 
         public static bool IsClassicVanillaClientVersionBuild(ClientVersionBuild build)
@@ -1669,6 +1670,17 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_3_51831:
                 case ClientVersionBuild.V3_4_3_51943:
                 case ClientVersionBuild.V3_4_3_52237:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsCataClientVersionBuild(ClientVersionBuild build)
+        {
+            switch (build)
+            {
+                case ClientVersionBuild.V4_4_0_53627:
                     return true;
                 default:
                     return false;

@@ -17,5 +17,6 @@ namespace WowPacketParser.Enums
         BurningCrusadeClassic = 8,
         WotLKClassic       = 8,
         Dragonflight       = 9,
+        CataClassic        = 9,
     }
 }

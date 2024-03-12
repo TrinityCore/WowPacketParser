@@ -12,5 +12,6 @@ namespace WowPacketParser.Misc
         Classic = 1,
         TBC     = 2,
         WotLK   = 3,
+        Cata    = 4,
     }
 }
