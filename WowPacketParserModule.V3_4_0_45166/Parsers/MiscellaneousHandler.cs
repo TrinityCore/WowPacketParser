@@ -90,8 +90,8 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ReadBit("KioskModeEnabled");
             packet.ReadBit("IsCompetitiveModeEnabled");
+            packet.ReadBit("IsBoostEnabled");
             packet.ReadBit("TrialBoostEnabled");
-            packet.ReadBit("Unk");
             packet.ReadBit("TokenBalanceEnabled");
             packet.ReadBit("LiveRegionCharacterListEnabled");
             packet.ReadBit("LiveRegionCharacterCopyEnabled");
@@ -99,20 +99,37 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ReadBit("LiveRegionKeyBindingsCopyEnabled");
             packet.ReadBit("Unknown901CheckoutRelated");
-            packet.ReadBit("Unused");
+            packet.ReadBit("SoftTargetEnabled");
             var europaTicket = packet.ReadBit("IsEuropaTicketSystemStatusEnabled");
-            packet.ReadBit("NameReservationOnly");
+            packet.ReadBit("IsNameReservationEnabled");
             bool launchETA = packet.ReadBit("IsLaunchETA");
-            packet.ReadBit("AddonsDisabled");
-            packet.ReadBit("Unk");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
+            {
+                packet.ReadBit("Field_09C");
+                packet.ReadBit("Field_09D");
+            }
 
-            packet.ReadBit("Unk");
-            packet.ReadBit("SoMNotificationEnabled");
-            packet.ReadBit("AccountSaveDataExportEnabled");
-            packet.ReadBit("AccountLockedByExport");
-            packet.ReadBit("Unk");
-            bool realmHiddenAlert = packet.ReadBit("IsRealmHiddenAlert");
-
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_0_53627))
+            {
+                packet.ReadBit("AddonsDisabled");
+                packet.ReadBit("Unk");
+                packet.ReadBit("Unk");
+                packet.ReadBit("SoMNotificationEnabled");
+                packet.ReadBit("AccountSaveDataExportEnabled");
+                packet.ReadBit("AccountLockedByExport");
+                packet.ReadBit("Unk");
+            }
+            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
+            {
+                packet.ReadBit("Field_09E");
+                packet.ReadBit("IsSoMNotificationEnabled");
+                packet.ReadBit("AddonsDisabled");
+                packet.ReadBit("Unused_10_0");
+                packet.ReadBit("AccountSaveEnabled");
+                packet.ReadBit("AccountLockedPostSave");
+            }
+            
+            var realmHiddenAlert = packet.ReadBit("IsRealmHiddenAlert");
             if (realmHiddenAlert)
                 packet.ReadBits("RealmHiddenAlert", 11);
 
@@ -139,6 +156,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt32("PlayerNameQueryInterval");
             var debugTimeEventsCount = packet.ReadInt32("DebugTimeEventsSize");
             packet.ReadInt32("Unused1007");
+            
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
+                packet.ReadInt32("Field_108");
 
             if (launchETA)
                 packet.ReadPackedTime("LaunchETA");
@@ -363,8 +383,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ReadBit("IsGroupFinderEnabled");
             packet.ReadBit("IsLFDEnabled");
-            packet.ReadBit("IsPremadeGroupEnabled");
             packet.ReadBit("IsLFREnabled");
+            packet.ReadBit("IsPremadeGroupEnabled");
+
+            var stringLength = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
+                stringLength = packet.ReadBits("Field_16F_Length", 8);
 
             {
                 packet.ResetBitReader();
@@ -403,6 +427,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 for (var i = 0; i < count; ++i)
                     packet.ReadByte("UnkByte", i);
             }
+
+            if (stringLength > 0 && ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
+                packet.ReadWoWString("Field_16F", stringLength);
 
             V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 

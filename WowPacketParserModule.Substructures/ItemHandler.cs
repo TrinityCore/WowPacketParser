@@ -152,7 +152,8 @@ namespace WowPacketParserModule.Substructures
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_1_38835) &&
                (ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build) ||
                 ClientVersion.IsClassicSeasonOfMasteryClientVersionBuild(ClientVersion.Build) ||
-                ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build)))
+                ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build) ||
+                ClientVersion.IsCataClientVersionBuild(ClientVersion.Build)))
                 return ReadItemInstance251(packet, indexes);
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683) || ClientVersion.IsClassicVanillaClientVersionBuild(ClientVersion.Build))
                 return ReadItemInstance602(packet, indexes);
@@ -186,7 +187,7 @@ namespace WowPacketParserModule.Substructures
             packet.ReadInt32("ItemID", indexes);
             var itemBonusListCount = packet.ReadUInt32();
             var itemModifiersCount = 0u;
-            if (ClientVersion.Branch == ClientBranch.Retail)
+            if (ClientVersion.Branch == ClientBranch.Retail && ClientVersion.Branch != ClientBranch.Cata)
                 itemModifiersCount = packet.ReadUInt32();
 
             for (var i = 0u; i < itemBonusListCount; ++i)
