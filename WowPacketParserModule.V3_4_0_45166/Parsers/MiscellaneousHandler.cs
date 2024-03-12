@@ -383,8 +383,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ReadBit("IsGroupFinderEnabled");
             packet.ReadBit("IsLFDEnabled");
-            packet.ReadBit("IsPremadeGroupEnabled");
             packet.ReadBit("IsLFREnabled");
+            packet.ReadBit("IsPremadeGroupEnabled");
+
+            var stringLength = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
+                stringLength = packet.ReadBits("Field_16F_Length", 8);
 
             {
                 packet.ResetBitReader();
@@ -423,6 +427,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 for (var i = 0; i < count; ++i)
                     packet.ReadByte("UnkByte", i);
             }
+
+            if (stringLength > 0 && ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
+                packet.ReadWoWString("Field_16F", stringLength);
 
             V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 
