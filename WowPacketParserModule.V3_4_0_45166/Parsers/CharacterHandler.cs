@@ -75,6 +75,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             var mailSenderTypes = new uint[packet.ReadUInt32()];
             packet.ReadUInt32("OverrideSelectScreenFileDataID", idx);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
+                ReadCustomTabardInfo(packet, idx, "PersonalTabard");
+
             for (var j = 0u; j < customizationCount; ++j)
                 ReadChrCustomizationChoice(packet, idx, "Customizations", j);
 
@@ -120,7 +123,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadBit("HasExpansion", idx);
             packet.ReadBit("HasAchievement", idx);
             packet.ReadBit("HasHeritageArmor", idx);
-            packet.ReadBit("IsLocked");
+            packet.ReadBit("IsLocked", idx);
         }
 
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT, ClientVersionBuild.V3_4_3_51505)]
