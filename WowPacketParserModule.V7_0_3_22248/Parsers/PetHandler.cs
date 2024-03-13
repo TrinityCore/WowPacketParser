@@ -1,8 +1,10 @@
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
@@ -52,19 +54,31 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             {
                 var (slot, spellId) = V6_0_2_19033.Parsers.PetHandler.ReadPetAction(packet, "ActionButtons", i);
 
-                if (i == 0)
-                    continue;
-
                 if (spellId == 0)
                     continue;
 
-                var creatureTemplateSpell = new CreatureTemplateSpell
-                {
-                    CreatureID = petGuid.GetEntry(),
-                    Index = (byte)(i - 1),
-                    Spell = spellId
-                };
-                Storage.CreatureTemplateSpells.Add(creatureTemplateSpell);
+                if (slot == 7 && spellId != 2 || slot == 6 && spellId < 10)
+                    continue;
+
+                // pets do not have npc entry available in sniff - skip
+                if (petGuid.GetHighType() == HighGuidType.Pet)
+                    continue;
+
+                var operationName = "";
+                if (slot == 7 && spellId == 2)
+                    operationName = "Attack";
+                else
+                    operationName = StoreGetters.GetName(StoreNameType.Spell, (int)spellId, false);
+
+                var potentialKey = (int)(petGuid.GetEntry() * 100 + 5 + CoreParsers.MovementHandler.CurrentDifficultyID);
+                if (Storage.CreatureSpellLists.Where(p => p.Item1.Id == potentialKey && p.Item1.SpellId == spellId).SingleOrDefault() == null)
+                    Storage.CreatureSpellLists.Add(new CreatureSpellList
+                    {
+                        Id = potentialKey,
+                        Position = i,
+                        SpellId = (int)spellId,
+                        Comments = StoreGetters.GetName(StoreNameType.Unit, (int)petGuid.GetEntry(), false) + " - " + operationName
+                    });
             }
 
             var actionsCount = packet.ReadInt32("ActionsCount");

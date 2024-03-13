@@ -259,4 +259,26 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [DBTableName("creature_template")]
+    public sealed record CreatureTemplateCmangosWotlk : IDataModel
+    {
+        [DBFieldName("Entry", true)]
+        public uint? Entry;
+        [DBFieldName("DifficultyEntry1")]
+        public uint? DifficultyEntry1;
+        [DBFieldName("DifficultyEntry2")]
+        public uint? DifficultyEntry2;
+        [DBFieldName("DifficultyEntry3")]
+        public uint? DifficultyEntry3;
+    }
+
+    [DBTableName("creature_template")]
+    public sealed record CreatureTemplateCmangosTbc : IDataModel
+    {
+        [DBFieldName("Entry", true)]
+        public uint Entry;
+        [DBFieldName("HeroicEntry")]
+        public uint DifficultyEntry1;
+    }
 }

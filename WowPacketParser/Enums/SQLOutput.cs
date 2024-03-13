@@ -27,6 +27,7 @@
         creature_template_gossip,
         creature_template_locale,
         creature_text,
+        creature_spell_list,
         gameobject,
         gameobject_addon,
         gameobject_queststarter,

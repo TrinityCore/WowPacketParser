@@ -133,7 +133,7 @@ namespace WowPacketParser.SQL
                 query = "SELECT ID, LanguageID, Text, Text1, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, SoundEntriesID, EmotesID, Flags " +
                 $"FROM {Settings.TDBDatabase}.broadcast_text;";
 
-            if (Settings.TargetedDatabase == TargetedDatabase.TheBurningCrusade)
+            if (Settings.TargetedProject == TargetedProject.Cmangos)
                 return;
 
             using (var command = SQLConnector.CreateCommand(query))
@@ -207,7 +207,7 @@ namespace WowPacketParser.SQL
                 "SELECT ID, PositionX, PositionY, Icon, Flags, Importance, Name " +
                 $"FROM {Settings.TDBDatabase}.points_of_interest ORDER BY ID;";
 
-            if (Settings.TargetedDatabase == TargetedDatabase.TheBurningCrusade)
+            if (Settings.TargetedProject == TargetedProject.Cmangos)
                 query = $"SELECT entry AS ID, x AS PositionX, y AS PositionY, icon AS Icon, flags AS Flags, data AS Importance, icon_name AS Name FROM {Settings.TDBDatabase}.points_of_interest ORDER BY entry;";
 
             using (var command = SQLConnector.CreateCommand(query))
@@ -237,7 +237,7 @@ namespace WowPacketParser.SQL
 
         private static void LoadCreatureEquipment()
         {
-            if (Settings.TargetedDatabase == TargetedDatabase.TheBurningCrusade)
+            if (Settings.TargetedProject == TargetedProject.Cmangos)
                 return;
 
             string columns = "CreatureID, ID, ItemID1, ItemID2, ItemID3, VerifiedBuild";
@@ -287,7 +287,7 @@ namespace WowPacketParser.SQL
 
         private static void LoadNPCTexts()
         {
-            if (Settings.TargetedDatabase == TargetedDatabase.TheBurningCrusade)
+            if (Settings.TargetedProject == TargetedProject.Cmangos)
                 return;
 
             string columns = "ID, BroadcastTextID0, BroadcastTextID1, BroadcastTextID2, BroadcastTextID3, BroadcastTextID4, BroadcastTextID5, BroadcastTextID6, BroadcastTextID7";
@@ -317,7 +317,7 @@ namespace WowPacketParser.SQL
 
         private static void LoadGossipMenuNPCTexts()
         {
-            if (Settings.TargetedDatabase == TargetedDatabase.TheBurningCrusade)
+            if (Settings.TargetedProject == TargetedProject.Cmangos)
                 return;
 
             string columns = "MenuID, TextID";
@@ -376,7 +376,7 @@ namespace WowPacketParser.SQL
         private static void LoadNameData()
         {
             string questQuery = $"SELECT `ID`, `LogTitle` FROM {Settings.TDBDatabase}.quest_template;";
-            if (Settings.TargetedDatabase == TargetedDatabase.TheBurningCrusade)
+            if (Settings.TargetedProject == TargetedProject.Cmangos)
             {
                 questQuery = $"SELECT `entry`, `Title` FROM {Settings.TDBDatabase}.quest_template;";
             }

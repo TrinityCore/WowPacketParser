@@ -6,6 +6,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
+using WowPacketParser.SQL.Builders;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -497,15 +498,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_SPELL_COOLDOWN, ClientVersionBuild.V7_1_0_22900)]
         public static void HandleSpellCooldown(Packet packet)
         {
-            packet.ReadPackedGuid128("Caster");
+            var guid = packet.ReadPackedGuid128("Caster");
             packet.ReadByte("Flags");
 
             var count = packet.ReadInt32("SpellCooldownsCount");
             for (int i = 0; i < count; i++)
             {
-                packet.ReadInt32("SrecID", i);
-                packet.ReadInt32("ForcedCooldown", i);
+                var spellId = packet.ReadInt32("SrecID", i);
+                var time = packet.ReadInt32("ForcedCooldown", i);
                 packet.ReadSingle("ModRate", i);
+                WowPacketParser.Parsing.Parsers.SpellHandler.FillSpellListCooldown((uint)spellId, time, guid.GetEntry());
             }
         }
 
