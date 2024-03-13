@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.SQL.Builders;
 using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V5_4_7_17898.Parsers
@@ -1130,10 +1131,12 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 7);
 
+            var spellCooldowns = new List<(uint spellId, int time)>();
             for (var i = 0; i < bits10; ++i)
             {
-                packet.ReadUInt32<SpellId>("Spell ID");
-                packet.ReadInt32("Time");
+                var spellId = packet.ReadUInt32<SpellId>("Spell ID");
+                var time = packet.ReadInt32("Time");
+                spellCooldowns.Add((spellId, time));
             }
 
             packet.ReadXORByte(guid, 3);
@@ -1146,7 +1149,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 6);
 
-            packet.WriteGuid("Guid", guid);
+            var finalGuid = packet.WriteGuid("Guid", guid);
+            foreach (var spell in spellCooldowns)
+                WowPacketParser.Parsing.Parsers.SpellHandler.FillSpellListCooldown(spell.spellId, spell.time, finalGuid.GetEntry());
         }
 
         [Parser(Opcode.SMSG_CATEGORY_COOLDOWN)]
