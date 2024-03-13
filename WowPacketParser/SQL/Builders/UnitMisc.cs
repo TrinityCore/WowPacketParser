@@ -334,6 +334,84 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string CreatureSpellLists()
+        {
+            if (Storage.CreatureSpellLists.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_spell_list))
+                return string.Empty;
+
+            // TODO: Implement spell lists in TC and add support for this there
+            var templatesDb = SQLDatabase.Get(Storage.CreatureSpellLists);
+            if (Settings.TargetedProject == TargetedProject.Cmangos)
+            {
+                if (Settings.TargetedDatabase == TargetedDatabase.TheBurningCrusade)
+                {
+                    var creatureTemplatesDb = SQLDatabase.Get<CreatureTemplateCmangosTbc>();
+                    foreach (var spellList in Storage.CreatureSpellLists)
+                    {
+                        if (spellList.Item1.Id % 10 == 6)
+                        {
+                            var creatureTemplate = creatureTemplatesDb.Where(p => p.Data.Entry == (spellList.Item1.Id / 100)).SingleOrDefault();
+                            if (creatureTemplate != null && creatureTemplate.Data.DifficultyEntry1 != 0)
+                            {
+                                spellList.Item1.Id = (int)creatureTemplate.Data.DifficultyEntry1 * 100 + 5;
+                                var split = spellList.Item1.Comments.Split('-');
+                                spellList.Item1.Comments = split[0] + "(Heroic)" + " - " + split[1];
+                            }
+                        }
+                    }
+                }
+                else if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing)
+                {
+                    var creatureTemplatesDb = SQLDatabase.Get<CreatureTemplateCmangosWotlk>();
+                    foreach (var spellList in Storage.CreatureSpellLists)
+                    {
+                        var modulo = spellList.Item1.Id % 10;
+                        if (modulo > 5)
+                        {
+                            var creatureTemplate = creatureTemplatesDb.Where(p => p.Data.Entry == (spellList.Item1.Id / 100)).SingleOrDefault();
+                            if (creatureTemplate == null)
+                                continue;
+                            var difficultyEntry = 0;
+                            var stringAddition = "";
+                            switch (modulo)
+                            {
+                                case 6:
+                                    if (creatureTemplate.Data.DifficultyEntry1 == 0)
+                                        continue;
+                                    difficultyEntry = (int)creatureTemplate.Data.DifficultyEntry1 * 100 + 5;
+                                    stringAddition = "(Heroic)";
+                                    break;
+                                case 7:
+                                    if (creatureTemplate.Data.DifficultyEntry2 == 0)
+                                        continue;
+                                    difficultyEntry = (int)creatureTemplate.Data.DifficultyEntry2 * 100 + 5;
+                                    stringAddition = "(Heroic(10))";
+                                    break;
+                                case 8:
+                                    if (creatureTemplate.Data.DifficultyEntry3 == 0)
+                                        continue;
+                                    difficultyEntry = (int)creatureTemplate.Data.DifficultyEntry3 * 100 + 5;
+                                    stringAddition = "(Heroic(25))";
+                                    break;
+                            }
+                            if (difficultyEntry > 0)
+                            {
+                                spellList.Item1.Id = (int)creatureTemplate.Data.DifficultyEntry1 * 100 + 5;
+                                var split = spellList.Item1.Comments.Split('-');
+                                spellList.Item1.Comments = split[0] + stringAddition + " - " + split[1];
+                            }
+                        }                        
+                    }
+                }
+            }
+
+            return SQLUtil.Compare(Storage.CreatureSpellLists, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod]
         public static string CreatureTemplateGossip()
         {
             if (Storage.CreatureTemplateGossips.IsEmpty())

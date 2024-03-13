@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -8,6 +10,7 @@ using WowPacketParser.PacketStructures;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -324,7 +327,7 @@ namespace WowPacketParser.Parsing.Parsers
                         unit.AddedAuras.Add(auras);
                 }
             }
-            
+
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_AURA_UPDATE, Direction.ServerToClient))
             {
                 PacketAuraUpdate packetAuraUpdate = new();
@@ -1213,15 +1216,40 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        public static void FillSpellListCooldown(uint spellId, int time, uint entry)
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_spell_list))
+                return;
+
+            var existingEntry = Storage.CreatureSpellLists.Where(p => p.Item1.SpellId == spellId && p.Item1.Id == (entry * 100 + 5 + CoreParsers.MovementHandler.CurrentDifficultyID)).SingleOrDefault();
+            if (existingEntry != null)
+            {
+                // can be min max, not just fixed
+                if (existingEntry.Item1.RepeatMin == 0)
+                {
+                    existingEntry.Item1.RepeatMin = time;
+                    existingEntry.Item1.RepeatMax = time;
+                }
+                else
+                {
+                    if (existingEntry.Item1.RepeatMin > time)
+                        existingEntry.Item1.RepeatMin = time;
+                    if (existingEntry.Item1.RepeatMax < time)
+                        existingEntry.Item1.RepeatMax = time;
+                }
+            }
+        }
+
         [Parser(Opcode.SMSG_SPELL_COOLDOWN)]
         public static void HandleSpellCooldown(Packet packet)
         {
-            packet.ReadGuid("GUID");
+            var guid = packet.ReadGuid("GUID");
             packet.ReadByte("Unk mask");
             while (packet.CanRead())
             {
-                packet.ReadUInt32<SpellId>("Spell ID");
-                packet.ReadInt32("Time");
+                var spellId = packet.ReadUInt32<SpellId>("Spell ID");
+                var time = packet.ReadInt32("Time");
+                FillSpellListCooldown(spellId, time, guid.GetEntry());
             }
         }
 
