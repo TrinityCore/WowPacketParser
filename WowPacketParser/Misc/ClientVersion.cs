@@ -1234,6 +1234,7 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_3_52237:
                     return ClientVersionBuild.V3_4_0_45166;
                 case ClientVersionBuild.V4_4_0_53627:
+                case ClientVersionBuild.V4_4_0_53750:
                     return ClientVersionBuild.V4_4_0_53627;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
@@ -1256,6 +1257,8 @@ namespace WowPacketParser.Misc
                     return ClientVersionBuild.V9_0_1_36216;
                 case ClientVersionBuild.V3_4_0_45166:
                     return ClientVersionBuild.V2_5_1_38707;
+                // Cata Classic itself has no Fallback (see below HasFallback function)
+                // just for completeness and future fallbacks
                 case ClientVersionBuild.V4_4_0_53627:
                     return ClientVersionBuild.V3_4_0_45166;
 
@@ -1269,6 +1272,18 @@ namespace WowPacketParser.Misc
                     return ClientVersionBuild.V9_0_1_36216;
                 default:
                     return ClientVersionBuild.Zero;
+            }
+        }
+
+        public static bool HasFallback(ClientVersionBuild definingBuild)
+        {
+            switch (definingBuild)
+            {
+                // Cata Classic gets complete own module
+                case ClientVersionBuild.V4_4_0_53627:
+                    return false;
+                default:
+                    return true; ;
             }
         }
 
@@ -1356,19 +1371,24 @@ namespace WowPacketParser.Misc
 
                 ClientVersionBuild tmpFallback = FallbackVersionDefiningBuild(VersionDefiningBuild, VersionDefiningBuild);
 
-                while (tmpFallback != ClientVersionBuild.Zero)
+                if (HasFallback(VersionDefiningBuild))
                 {
-                    try
-                    {
-                        var asm = Assembly.LoadFrom(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + $"/Parsers/WowPacketParserModule.{tmpFallback}.dll");
-                        Trace.WriteLine($"Loading module WowPacketParserModule.{tmpFallback}.dll (fallback)");
+                    Handler.LoadDefaultHandlers();
 
-                        Handler.LoadHandlers(asm, tmpFallback);
-                    }
-                    catch (FileNotFoundException)
+                    while (tmpFallback != ClientVersionBuild.Zero)
                     {
+                        try
+                        {
+                            var asm = Assembly.LoadFrom(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + $"/Parsers/WowPacketParserModule.{tmpFallback}.dll");
+                            Trace.WriteLine($"Loading module WowPacketParserModule.{tmpFallback}.dll (fallback)");
+
+                            Handler.LoadHandlers(asm, tmpFallback);
+                        }
+                        catch (FileNotFoundException)
+                        {
+                        }
+                        tmpFallback = FallbackVersionDefiningBuild(tmpFallback, VersionDefiningBuild);
                     }
-                    tmpFallback = FallbackVersionDefiningBuild(tmpFallback, VersionDefiningBuild);
                 }
 
                 try
@@ -1681,6 +1701,7 @@ namespace WowPacketParser.Misc
             switch (build)
             {
                 case ClientVersionBuild.V4_4_0_53627:
+                case ClientVersionBuild.V4_4_0_53750:
                     return true;
                 default:
                     return false;
