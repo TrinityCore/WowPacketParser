@@ -7,7 +7,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -18,7 +18,7 @@
 --
 -- Create database `wpp`
 --
-CREATE DATABASE `wpp`;
+CREATE DATABASE `wpp` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `object_names`
@@ -26,13 +26,13 @@ CREATE DATABASE `wpp`;
 
 DROP TABLE IF EXISTS `wpp`.`object_names`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `wpp`.`object_names` (
   `ObjectType` enum('None','Spell','Map','LFGDungeon','Battleground','Unit','GameObject','CreatureDifficulty','Item','Quest','Opcode','PageText','NpcText','BroadcastText','Gossip','Zone','Area','AreaTrigger','Phase','Player','Achievement','Sound') NOT NULL DEFAULT 'None',
   `Id` int(10) NOT NULL,
   `Name` text NOT NULL,
   PRIMARY KEY (`ObjectType`,`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='WPP''s ObjectTypes Names DataBase';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='WPP''s ObjectTypes Names DataBase';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `wpp`.`object_names` (
 
 DROP TABLE IF EXISTS `wpp`.`sniff_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `wpp`.`sniff_data` (
   `Build` int(10) unsigned NOT NULL DEFAULT '0',
   `SniffName` text NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE `wpp`.`sniff_data` (
   `Id` int(10) NOT NULL DEFAULT '0',
   `Data` text NOT NULL,
   UNIQUE KEY `SniffName` (`ObjectType`,`Id`,`Data`(255))
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
