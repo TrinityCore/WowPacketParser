@@ -2245,11 +2245,11 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_2_6_53840
                 {
                     data.SoulbindID = packet.ReadInt32("SoulbindID", indexes);
                 }
-                if (changesMask[40])
+                if (changesMask[41])
                 {
                     data.Field_1F0 = packet.ReadPackedGuid128("Field_1F0", indexes);
                 }
-                if (changesMask[41])
+                if (changesMask[42])
                 {
                     data.Field_200 = packet.ReadInt32("Field_200", indexes);
                 }
@@ -2263,7 +2263,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_2_6_53840
                 }
                 hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
             packet.ResetBitReader();
-                if (changesMask[42])
+                if (changesMask[40])
                 {
                     Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");
                 }
