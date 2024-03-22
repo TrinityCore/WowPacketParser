@@ -517,6 +517,8 @@ namespace WowPacketParser.Enums
         V10_2_5_53441 = 53441,
         V10_2_5_53584 = 53584,
 
+        V10_2_6_53840 = 53840,
+
         // Classic
         V1_13_2_31446 = 31446,
         V1_13_2_31650 = 31650,
@@ -721,7 +723,7 @@ namespace WowPacketParser.Enums
         V3_4_3_51831 = 51831, // both live and ptr
         V3_4_3_51943 = 51943, // both live and ptr
         V3_4_3_52237 = 52237, // both live and ptr
-        
+
         V4_4_0_53627 = 53627, // beta
         V4_4_0_53750 = 53750, // beta
 
