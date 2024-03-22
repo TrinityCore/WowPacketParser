@@ -42,7 +42,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_2_6_53840
         public ICTROptions CtrOptions { get; set; }
         public System.Nullable<int> CovenantID { get; set; }
         public System.Nullable<int> SoulbindID { get; set; }
-        public WowGuid Field_1F0 { get; set; }
+        public WowGuid SpectateTarget { get; set; }
         public System.Nullable<int> Field_200 { get; set; }
         public ItemInstance[] VisibleEquipableSpells { get; } = new ItemInstance[16];
         public System.Nullable<uint>[] Field_3120 { get; } = new System.Nullable<uint>[19];

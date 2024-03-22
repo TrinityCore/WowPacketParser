@@ -1968,7 +1968,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_2_6_53840
             data.CtrOptions = ReadCreateCTROptions(packet, indexes, "CtrOptions");
             data.CovenantID = packet.ReadInt32("CovenantID", indexes);
             data.SoulbindID = packet.ReadInt32("SoulbindID", indexes);
-            data.Field_1F0 = packet.ReadPackedGuid128("Field_1F0", indexes);
+            data.SpectateTarget = packet.ReadPackedGuid128("SpectateTarget", indexes);
             data.Field_200 = packet.ReadInt32("Field_200", indexes);
             data.VisualItemReplacements.Resize(packet.ReadUInt32());
             for (var i = 0; i < 19; ++i)
@@ -2247,7 +2247,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_2_6_53840
                 }
                 if (changesMask[41])
                 {
-                    data.Field_1F0 = packet.ReadPackedGuid128("Field_1F0", indexes);
+                    data.SpectateTarget = packet.ReadPackedGuid128("SpectateTarget", indexes);
                 }
                 if (changesMask[42])
                 {
