@@ -585,22 +585,22 @@ namespace WowPacketParserModule.V4_4_0_53627.Parsers
                 bool hasFacingCurveID = packet.ReadBit("HasFacingCurveID", index);
                 bool hasMoveCurveID = packet.ReadBit("HasMoveCurveID", index);
                 bool hasAnimProgress = false;
-                bool hasUnk440 = false;
+                bool hasPositionalSoundKitID = false;
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53863))
                 {
+                    hasPositionalSoundKitID = packet.ReadBit("HasPositionalSoundKitID", index);
+
                     if (packet.ReadBit("HasAnimID", index))
                         areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAnimId;
 
                     if (packet.ReadBit("HasAnimKitID", index))
                         areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAnimKitId;
 
-                    hasAnimProgress = packet.ReadBit("HasAnimProgress", index);
-
                     if (packet.ReadBit("unkbit50", index))
                         areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.Unk3;
 
-                    hasUnk440 = packet.ReadBit("HasUnk440_53863", index);
+                    hasAnimProgress = packet.ReadBit("HasAnimProgress", index);
                 }
 
                 if (packet.ReadBit("HasAreaTriggerSphere", index))
@@ -656,19 +656,22 @@ namespace WowPacketParserModule.V4_4_0_53627.Parsers
                 if (hasMoveCurveID)
                     spellAreaTrigger.MoveCurveId = (int)packet.ReadUInt32("MoveCurveID", index);
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53863))
+                {
+                    if (hasPositionalSoundKitID)
+                        packet.ReadUInt32("PositionalSoundKitID", index);
+                }
+
                 if ((areaTriggerTemplate.Flags & (int)AreaTriggerCreatePropertiesFlags.HasAnimId) != 0)
                     spellAreaTrigger.AnimId = packet.ReadInt32("AnimId", index);
 
                 if ((areaTriggerTemplate.Flags & (int)AreaTriggerCreatePropertiesFlags.HasAnimKitId) != 0)
                     spellAreaTrigger.AnimKitId = packet.ReadInt32("AnimKitId", index);
 
-                if (hasAnimProgress)
-                    packet.ReadUInt32("AnimProgress", index);
-
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53863))
                 {
-                    if (hasUnk440)
-                        packet.ReadUInt32("Un440_53863", index);
+                    if (hasAnimProgress)
+                        packet.ReadUInt32("AnimProgress", index);
                 }
 
                 if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Sphere)
