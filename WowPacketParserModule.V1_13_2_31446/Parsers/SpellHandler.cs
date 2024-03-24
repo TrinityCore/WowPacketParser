@@ -36,12 +36,12 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             packet.ReadPackedGuid128("Item", idx);
 
             if (hasSrcLoc)
-                V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, "SrcLocation");
+                V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, idx, "SrcLocation");
 
             Vector3? dstLocation = null;
             if (hasDstLoc)
             {
-                dstLocation = V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, "DstLocation");
+                dstLocation = V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, idx, "DstLocation");
                 if (packetSpellData != null)
                     packetSpellData.DstLocation = dstLocation;
             }
