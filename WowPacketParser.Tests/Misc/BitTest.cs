@@ -11,36 +11,36 @@ namespace WowPacketParser.Tests.Misc
         {
             var bit = new Bit();
 
-            Assert.IsNotNull(bit);
-            Assert.IsFalse(bit);
+            Assert.That(bit, Is.Not.Null);
+            Assert.That<bool>(bit, Is.False);
         }
 
         [Test]
         public void TestOperators()
         {
             Bit bit = true;
-            Assert.IsTrue(bit);
-            Assert.IsTrue(1 == bit);
+            Assert.That<bool>(bit, Is.True);
+            Assert.That(1 == bit, Is.True);
 
             bit = false;
-            Assert.IsFalse(bit);
-            Assert.IsTrue(0 == bit);
+            Assert.That<bool>(bit, Is.False);
+            Assert.That(0 == bit, Is.True);
 
             bit = 1;
-            Assert.IsTrue(bit);
+            Assert.That<bool>(bit, Is.True);
 
             bit = 0;
-            Assert.IsFalse(bit);
+            Assert.That<bool>(bit, Is.False);
         }
 
         [Test]
         public void TestToString()
         {
             Bit bit = false;
-            Assert.AreEqual("False", bit.ToString());
+            Assert.That("False", Is.EqualTo(bit.ToString()));
 
             bit = true;
-            Assert.AreEqual("True", bit.ToString());
+            Assert.That("True", Is.EqualTo(bit.ToString()));
         }
     }
 }

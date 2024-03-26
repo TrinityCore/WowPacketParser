@@ -27,12 +27,12 @@ namespace WowPacketParser.Tests.Store.Objects.UpdateFields.LegacyImplementation
         {
             var updateFields = new Dictionary<int, UpdateField>();
 
-            Assert.AreEqual(0, updateFields.GetValue<ObjectField, int>(ObjectField.OBJECT_FIELD_ENTRY));
-            Assert.AreEqual(0u, updateFields.GetValue<ObjectField, uint>(ObjectField.OBJECT_FIELD_ENTRY));
-            Assert.AreEqual(0.0f, updateFields.GetValue<ObjectField, float>(ObjectField.OBJECT_FIELD_ENTRY));
-            Assert.AreEqual(null, updateFields.GetValue<ObjectField, int?>(ObjectField.OBJECT_FIELD_ENTRY));
-            Assert.AreEqual(null, updateFields.GetValue<ObjectField, uint?>(ObjectField.OBJECT_FIELD_ENTRY));
-            Assert.AreEqual(null, updateFields.GetValue<ObjectField, float?>(ObjectField.OBJECT_FIELD_ENTRY));
+            Assert.That(0, Is.EqualTo(updateFields.GetValue<ObjectField, int>(ObjectField.OBJECT_FIELD_ENTRY)));
+            Assert.That(0u, Is.EqualTo(updateFields.GetValue<ObjectField, uint>(ObjectField.OBJECT_FIELD_ENTRY)));
+            Assert.That(0.0f, Is.EqualTo(updateFields.GetValue<ObjectField, float>(ObjectField.OBJECT_FIELD_ENTRY)));
+            Assert.That(null, Is.EqualTo(updateFields.GetValue<ObjectField, int?>(ObjectField.OBJECT_FIELD_ENTRY)));
+            Assert.That(null, Is.EqualTo(updateFields.GetValue<ObjectField, uint?>(ObjectField.OBJECT_FIELD_ENTRY)));
+            Assert.That(null, Is.EqualTo(updateFields.GetValue<ObjectField, float?>(ObjectField.OBJECT_FIELD_ENTRY)));
         }
     }
 }

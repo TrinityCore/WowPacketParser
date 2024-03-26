@@ -6,12 +6,12 @@
 
     <ItemGroup>
         <PackageReference Include="DotNetZip" Version="1.16.0" />
-        <PackageReference Include="MySql.Data" Version="8.0.31" />
+        <PackageReference Include="MySql.Data" Version="8.3.0" />
         <PackageReference Include="RawScape.Wintellect.PowerCollections" Version="1.0.1" />
         <PackageReference Include="Sigil" Version="5.0.0" />
-        <PackageReference Include="SSH.NET" Version="2020.0.2" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
-        <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
+        <PackageReference Include="SSH.NET" Version="2024.0.0" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+        <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
     </ItemGroup>
 
     <ItemGroup>

@@ -12,9 +12,9 @@ namespace WowPacketParser.Tests.Misc
         {
             var guid = new WowGuid64(1);
 
-            Assert.IsNotNull(guid);
-            Assert.AreEqual(1, guid.Low);
-            Assert.AreEqual(0, guid.High);
+            Assert.That(guid, Is.Not.Null);
+            Assert.That(1, Is.EqualTo(guid.Low));
+            Assert.That(0, Is.EqualTo(guid.High));
         }
 
         [Test]
@@ -24,9 +24,9 @@ namespace WowPacketParser.Tests.Misc
             var guid2 = new WowGuid64(0x600000002B2D7C9);
             var guid3 = new WowGuid64(0);
 
-            Assert.IsTrue(guid1.HasEntry());
-            Assert.IsFalse(guid2.HasEntry());
-            Assert.IsFalse(guid3.HasEntry());
+            Assert.That(guid1.HasEntry(), Is.True);
+            Assert.That(guid2.HasEntry(), Is.False);
+            Assert.That(guid3.HasEntry(), Is.False);
         }
 
         [Test]
@@ -36,9 +36,9 @@ namespace WowPacketParser.Tests.Misc
             var guid2 = new WowGuid64(0x600000002B2D7C9);
             var guid3 = new WowGuid64(0);
 
-            Assert.AreEqual(0x105F, guid1.GetLow());
-            Assert.AreEqual(0x2B2D7C9, guid2.GetLow());
-            Assert.AreEqual(0, guid3.GetLow());
+            Assert.That(0x105F, Is.EqualTo(guid1.GetLow()));
+            Assert.That(0x2B2D7C9, Is.EqualTo(guid2.GetLow()));
+            Assert.That(0, Is.EqualTo(guid3.GetLow()));
         }
 
         [Test]
@@ -50,9 +50,9 @@ namespace WowPacketParser.Tests.Misc
             var guid2 = new WowGuid64(0x600000002B2D7C9);
             var guid3 = new WowGuid64(0);
 
-            Assert.AreEqual(0x5C05, guid1.GetEntry());
-            Assert.AreEqual(0, guid2.GetEntry());
-            Assert.AreEqual(0, guid3.GetEntry());
+            Assert.That(0x5C05, Is.EqualTo(guid1.GetEntry()));
+            Assert.That(0, Is.EqualTo(guid2.GetEntry()));
+            Assert.That(0, Is.EqualTo(guid3.GetEntry()));
         }
 
         [Test]
@@ -62,9 +62,9 @@ namespace WowPacketParser.Tests.Misc
             var guid2 = new WowGuid64(0x600000002B2D7C9);
             var guid3 = new WowGuid64(0);
 
-            Assert.AreEqual(HighGuidType.Creature, guid1.GetHighType());
-            Assert.AreEqual(HighGuidType.Player, guid2.GetHighType());
-            Assert.AreEqual(HighGuidType.Null, guid3.GetHighType());
+            Assert.That(HighGuidType.Creature, Is.EqualTo(guid1.GetHighType()));
+            Assert.That(HighGuidType.Player, Is.EqualTo(guid2.GetHighType()));
+            Assert.That(HighGuidType.Null, Is.EqualTo(guid3.GetHighType()));
         }
 
         [Test]
@@ -74,9 +74,9 @@ namespace WowPacketParser.Tests.Misc
             var guid2 = new WowGuid64(0x600000002B2D7C9);
             var guid3 = new WowGuid64(0);
 
-            Assert.AreEqual(ObjectType.Unit, guid1.GetObjectType());
-            Assert.AreEqual(ObjectType.Player, guid2.GetObjectType());
-            Assert.AreEqual(ObjectType.Object, guid3.GetObjectType());
+            Assert.That(ObjectType.Unit, Is.EqualTo(guid1.GetObjectType()));
+            Assert.That(ObjectType.Player, Is.EqualTo(guid2.GetObjectType()));
+            Assert.That(ObjectType.Object, Is.EqualTo(guid3.GetObjectType()));
         }
 
         [Test]
@@ -86,12 +86,12 @@ namespace WowPacketParser.Tests.Misc
             var guid2 = new WowGuid64(0x600000002B2D7C9);
             var guid3 = new WowGuid64(0);
 
-            Assert.IsFalse(guid1 == guid2);
-            Assert.IsTrue(guid1 != guid2);
+            Assert.That(guid1 == guid2, Is.False);
+            Assert.That(guid1 != guid2, Is.True);
 
 #pragma warning disable 1718
             // ReSharper disable once EqualExpressionComparison
-            Assert.IsTrue(guid3 == guid3);
+            Assert.That(guid3 == guid3, Is.True);
 #pragma warning restore 1718
         }
 
@@ -103,11 +103,11 @@ namespace WowPacketParser.Tests.Misc
             var guid25 = new WowGuid64(0x600000002B2D7C9);
             var guid3 = new WowGuid64(0);
 
-            Assert.IsFalse(guid1.Equals(guid2));
-            Assert.IsTrue(guid2.Equals(guid25));
-            Assert.IsTrue(guid2.Equals((object) guid25));
-            Assert.IsFalse(guid2.Equals(new object()));
-            Assert.IsTrue(guid3.Equals(guid3));
+            Assert.That(guid1.Equals(guid2), Is.False);
+            Assert.That(guid2.Equals(guid25), Is.True);
+            Assert.That(guid2.Equals((object) guid25), Is.True);
+            Assert.That(guid2.Equals(new object()), Is.False);
+            Assert.That(guid3.Equals(guid3), Is.True);
         }
 
         [Test]
@@ -117,8 +117,8 @@ namespace WowPacketParser.Tests.Misc
             var guid15 = new WowGuid64(0xF130005C0500105F);
             var guid2 = new WowGuid64(0x600000002B2D7C9);
 
-            Assert.AreEqual(guid1.GetHashCode(), guid15.GetHashCode());
-            Assert.AreNotEqual(guid1.GetHashCode(), guid2.GetHashCode());
+            Assert.That(guid1.GetHashCode(), Is.EqualTo(guid15.GetHashCode()));
+            Assert.That(guid1.GetHashCode(), Is.Not.EqualTo(guid2.GetHashCode()));
         }
 
         [Test, Ignore("Nothing to test")]

@@ -1,10 +1,10 @@
 <Project>
     <PropertyGroup>
         <OutputPath>bin/$(Configuration)/</OutputPath>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Company>TrinityCore</Company>
-        <Copyright>Copyright © 2010-2022</Copyright>
+        <Copyright>Copyright © 2010-2024</Copyright>
         <PackageProjectUrl>https://www.trinitycore.org/</PackageProjectUrl>
         <NeutralLanguage>en</NeutralLanguage>
         <RepositoryUrl>https://github.com/TrinityCore/WowPacketParser</RepositoryUrl>

@@ -48,14 +48,14 @@ namespace WowPacketParser.Tests.SQL
         public void TestAdd()
         {
             _condList.Add(new TestDataModel());
-            Assert.AreEqual(2, _condList.Count);
+            Assert.That(2, Is.EqualTo(_condList.Count));
 
             _condList.Add(new TestDataModel {ID = 3, TestInt1 = 5});
             _condList.Add(new TestDataModel {ID = 4, TestInt1 = 6});
-            Assert.AreEqual(4, _condList.Count);
+            Assert.That(4, Is.EqualTo(_condList.Count));
 
             _condList.Add(new TestDataModel {ID = 3, TestInt1 = 5});
-            Assert.AreEqual(4, _condList.Count);
+            Assert.That(4, Is.EqualTo(_condList.Count));
         }
 
         [Test]
@@ -63,22 +63,22 @@ namespace WowPacketParser.Tests.SQL
         {
             _condList.Clear();
 
-            Assert.AreEqual(0, _condList.Count);
+            Assert.That(0, Is.EqualTo(_condList.Count));
         }
 
         [Test]
         public void TestCount()
         {
-            Assert.AreEqual(2, _condList.Count);
+            Assert.That(2, Is.EqualTo(_condList.Count));
         }
 
         [Test]
         public void TestEnumerator()
         {
-            Assert.IsNotNull(_condList.GetEnumerator());
+            Assert.That(_condList.GetEnumerator(), Is.Not.Null);
 
             foreach (Row<TestDataModel> c in _condList)
-                Assert.IsNotNull(c);
+                Assert.That(c, Is.Not.Null);
         }
     }
 }

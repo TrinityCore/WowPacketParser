@@ -12,8 +12,8 @@ namespace WowPacketParser.Tests.Misc
         {
             var lfg = new LfgEntry(1);
 
-            Assert.IsNotNull(lfg);
-            Assert.AreEqual(1, lfg.Full);
+            Assert.That(lfg, Is.Not.Null);
+            Assert.That(1, Is.EqualTo(lfg.Full));
         }
 
         [Test]
@@ -22,8 +22,8 @@ namespace WowPacketParser.Tests.Misc
             var lfg1 = new LfgEntry(0x10000CA);
             var lfg2 = new LfgEntry(0);
 
-            Assert.AreEqual(LfgType.Dungeon, lfg1.LfgType);
-            Assert.AreEqual(LfgType.None, lfg2.LfgType);
+            Assert.That(LfgType.Dungeon, Is.EqualTo(lfg1.LfgType));
+            Assert.That(LfgType.None, Is.EqualTo(lfg2.LfgType));
         }
 
         [Test]
@@ -32,8 +32,8 @@ namespace WowPacketParser.Tests.Misc
             var lfg1 = new LfgEntry(0x10000CA);
             var lfg2 = new LfgEntry(0);
 
-            Assert.AreEqual(0xCA, lfg1.InstanceId);
-            Assert.AreEqual(0, lfg2.InstanceId);
+            Assert.That(0xCA, Is.EqualTo(lfg1.InstanceId));
+            Assert.That(0, Is.EqualTo(lfg2.InstanceId));
         }
 
         [Test]
@@ -43,15 +43,15 @@ namespace WowPacketParser.Tests.Misc
             var lfg15 = new LfgEntry(0x10000CA);
             var lfg2 = new LfgEntry(0);
 
-            Assert.IsFalse(lfg1 == lfg2);
-            Assert.IsTrue(lfg1 != lfg2);
+            Assert.That(lfg1 == lfg2, Is.False);
+            Assert.That(lfg1 != lfg2, Is.True);
 
 #pragma warning disable 1718
             // ReSharper disable once EqualExpressionComparison
-            Assert.IsTrue(lfg1 == lfg1);
+            Assert.That(lfg1 == lfg1, Is.True);
 #pragma warning restore 1718
 
-            Assert.IsTrue(lfg1 == lfg15);
+            Assert.That(lfg1 == lfg15, Is.True);
         }
 
         [Test]
@@ -61,10 +61,10 @@ namespace WowPacketParser.Tests.Misc
             var lfg15 = new LfgEntry(0x10000CA);
             var lfg2 = new LfgEntry(0);
 
-            Assert.IsFalse(lfg1.Equals(lfg2));
-            Assert.IsTrue(lfg1.Equals((object) lfg15));
-            Assert.IsTrue(lfg1.Equals(lfg1));
-            Assert.IsTrue(lfg1.Equals(lfg15));
+            Assert.That(lfg1.Equals(lfg2), Is.False);
+            Assert.That(lfg1.Equals((object) lfg15), Is.True);
+            Assert.That(lfg1.Equals(lfg1), Is.True);
+            Assert.That(lfg1.Equals(lfg15), Is.True);
         }
 
         [Test]
@@ -74,8 +74,8 @@ namespace WowPacketParser.Tests.Misc
             var lfg15 = new LfgEntry(0x10000CA);
             var lfg2 = new LfgEntry(0);
 
-            Assert.AreEqual(lfg1.GetHashCode(), lfg15.GetHashCode());
-            Assert.AreNotEqual(lfg1.GetHashCode(), lfg2.GetHashCode());
+            Assert.That(lfg1.GetHashCode(), Is.EqualTo(lfg15.GetHashCode()));
+            Assert.That(lfg1.GetHashCode(), Is.Not.EqualTo(lfg2.GetHashCode()));
         }
 
         [Test, Ignore("Nothing to test")]
