@@ -21,13 +21,13 @@ namespace WowPacketParser.Tests.Misc
         {
             var updateField = new UpdateField(uint.MaxValue);
 
-            Assert.AreEqual(uint.MaxValue, updateField.UInt32Value);
-            Assert.AreEqual(Int32ToFloatBits(uint.MaxValue), updateField.FloatValue, float.Epsilon);
+            Assert.That(uint.MaxValue, Is.EqualTo(updateField.UInt32Value));
+            Assert.That(Int32ToFloatBits(uint.MaxValue), Is.EqualTo(updateField.FloatValue).Within(float.Epsilon));
 
             updateField = new UpdateField(float.MaxValue);
 
-            Assert.AreEqual(float.MaxValue, updateField.FloatValue);
-            Assert.AreEqual(FloatToInt32Bits(float.MaxValue), updateField.UInt32Value);
+            Assert.That(float.MaxValue, Is.EqualTo(updateField.FloatValue));
+            Assert.That(FloatToInt32Bits(float.MaxValue), Is.EqualTo(updateField.UInt32Value));
         }
 
         [Test]
@@ -37,11 +37,11 @@ namespace WowPacketParser.Tests.Misc
             var uf15 = new UpdateField(uint.MaxValue);
             var uf2 = new UpdateField(float.MaxValue);
 
-            Assert.IsTrue(uf1.Equals(uf15));
-            Assert.IsFalse(uf1.Equals(uf2));
+            Assert.That(uf1.Equals(uf15), Is.True);
+            Assert.That(uf1.Equals(uf2), Is.False);
             // ReSharper disable once SuspiciousTypeConversion.Global
-            Assert.IsFalse(uf1.Equals(uint.MaxValue));
-            Assert.IsTrue(uf1.Equals(uf1));
+            Assert.That(uf1.Equals(uint.MaxValue), Is.False);
+            Assert.That(uf1.Equals(uf1), Is.True);
         }
 
         [Test]
@@ -51,13 +51,13 @@ namespace WowPacketParser.Tests.Misc
             var uf15 = new UpdateField(uint.MaxValue);
             var uf2 = new UpdateField(float.MaxValue);
 
-            Assert.IsTrue(uf1 == uf15);
-            Assert.IsFalse(uf1 != uf15);
-            Assert.IsFalse(uf1 == uf2);
-            Assert.IsTrue(uf1 != uf2);
+            Assert.That(uf1 == uf15, Is.True);
+            Assert.That(uf1 != uf15, Is.False);
+            Assert.That(uf1 == uf2, Is.False);
+            Assert.That(uf1 != uf2, Is.True);
 #pragma warning disable 1718
             // ReSharper disable once EqualExpressionComparison
-            Assert.IsTrue(uf1 == uf1);
+            Assert.That(uf1 == uf1, Is.True);
 #pragma warning restore 1718
         }
     }
