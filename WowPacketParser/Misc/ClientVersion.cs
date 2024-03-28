@@ -1710,6 +1710,7 @@ namespace WowPacketParser.Misc
             {
                 case ClientVersionBuild.V4_4_0_53627:
                 case ClientVersionBuild.V4_4_0_53750:
+                case ClientVersionBuild.V4_4_0_53863:
                     return true;
                 default:
                     return false;
