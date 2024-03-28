@@ -52,7 +52,10 @@ Nightly Builds
   - [Debug](https://nightly.link/TrinityCore/WowPacketParser/workflows/gh-build/master/WPP-ubuntu-latest-Debug.zip)
   - [Release](https://nightly.link/TrinityCore/WowPacketParser/workflows/gh-build/master/WPP-ubuntu-latest-Release.zip)
   
-##### macOS (currently not supported)
+##### macOS (Arm64)
+  - [Debug](https://nightly.link/TrinityCore/WowPacketParser/workflows/gh-build/master/WPP-macos-14-Debug.zip)
+  - [Release](https://nightly.link/TrinityCore/WowPacketParser/workflows/gh-build/master/WPP-macos-14-Release.zip)
+  
   
 Docker (experimental)
 ---------------------
