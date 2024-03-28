@@ -98,23 +98,23 @@ namespace WowPacketParser.Tests.SQL
         [Test]
         public void TestSQLSelectNoCond()
         {
-            Assert.AreEqual("SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1`, `NoQuotes` FROM world.`test_data_one_p_k`",
-                new SQLSelect<TestDataOnePK>().Build());
+            Assert.That("SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1`, `NoQuotes` FROM world.`test_data_one_p_k`",
+                Is.EqualTo(new SQLSelect<TestDataOnePK>().Build()));
 
-            Assert.AreEqual("SELECT `ID`, `TestInt1`, `TestInts1`, `TestInts2`, `TestString1` FROM world.`test_data_two_p_k`",
-                new SQLSelect<TestDataTwoPK>().Build());
+            Assert.That("SELECT `ID`, `TestInt1`, `TestInts1`, `TestInts2`, `TestString1` FROM world.`test_data_two_p_k`",
+                Is.EqualTo(new SQLSelect<TestDataTwoPK>().Build()));
         }
 
         [Test]
         public void TestSQLSelectWithCond()
         {
-            Assert.AreEqual(
+            Assert.That(
                 "SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1`, `NoQuotes` FROM world.`test_data_one_p_k` WHERE (`ID`=1 AND `TestInt1`=2 AND `TestString1`='string1') OR (`ID`=2 AND `TestInt1`=3)",
-                new SQLSelect<TestDataOnePK>(_conditionsOnePk, onlyPrimaryKeys: false).Build());
+                Is.EqualTo(new SQLSelect<TestDataOnePK>(_conditionsOnePk, onlyPrimaryKeys: false).Build()));
 
-            Assert.AreEqual(
+            Assert.That(
                 "SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1`, `NoQuotes` FROM world.`test_data_one_p_k` WHERE `ID` IN (1, 2)",
-                new SQLSelect<TestDataOnePK>(_conditionsOnePk).Build());
+                Is.EqualTo(new SQLSelect<TestDataOnePK>(_conditionsOnePk).Build()));
         }
 
         [Test]
@@ -122,25 +122,25 @@ namespace WowPacketParser.Tests.SQL
         {
             var whereOnePk = new SQLWhere<TestDataOnePK>(_conditionsOnePk);
 
-            Assert.AreEqual(
+            Assert.That(
                 "(`ID`=1 AND `TestInt1`=2 AND `TestString1`='string1') OR (`ID`=2 AND `TestInt1`=3)",
-                whereOnePk.Build());
+                Is.EqualTo(whereOnePk.Build()));
 
             var whereTwoPk = new SQLWhere<TestDataTwoPK>(_conditionsTwoPk);
 
-            Assert.AreEqual(
+            Assert.That(
                 "(`ID`=10 AND `TestInt1`=20 AND `TestString1`='string10') OR (`ID`=20 AND `TestInt1`=30) OR (`ID`=30 AND `TestInt1`=40) OR (`ID`=30 AND `TestInt1`=50)",
-                whereTwoPk.Build());
+                Is.EqualTo(whereTwoPk.Build()));
         }
 
         [Test]
         public void TestSQLWhereOnlyPrimaryKey()
         {
             var whereOnePk = new SQLWhere<TestDataOnePK>(_conditionsOnePk, true);
-            Assert.AreEqual("`ID` IN (1, 2)", whereOnePk.Build());
+            Assert.That("`ID` IN (1, 2)", Is.EqualTo(whereOnePk.Build()));
 
             var whereTwoPk = new SQLWhere<TestDataTwoPK>(_conditionsTwoPk, true);
-            Assert.AreEqual("(`ID`=10 AND `TestInt1`=20) OR (`ID`=20 AND `TestInt1`=30) OR (`ID`=30 AND `TestInt1` IN (40,50))", whereTwoPk.Build());
+            Assert.That("(`ID`=10 AND `TestInt1`=20) OR (`ID`=20 AND `TestInt1`=30) OR (`ID`=30 AND `TestInt1` IN (40,50))", Is.EqualTo(whereTwoPk.Build()));
         }
 
         [Test]
@@ -154,18 +154,18 @@ namespace WowPacketParser.Tests.SQL
             };
 
             var update = new SQLUpdate<TestDataOnePK>(values);
-            Assert.AreEqual("UPDATE `test_data_one_p_k` SET `ID`=4, `TestInt1`=5, `TestString1`='string2', `NoQuotes`=@CGUID WHERE `ID` IN (1, 2);" + Environment.NewLine +
+            Assert.That("UPDATE `test_data_one_p_k` SET `ID`=4, `TestInt1`=5, `TestString1`='string2', `NoQuotes`=@CGUID WHERE `ID` IN (1, 2);" + Environment.NewLine +
                             "UPDATE `test_data_one_p_k` SET `ID`=6, `TestInt1`=7, `NoQuotes`=@CGUID+1 WHERE `ID` IN (1, 2);" + Environment.NewLine,
-                update.Build());
+                Is.EqualTo(update.Build()));
         }
 
         [Test]
         public void TestSQLInsert()
         {
-            Assert.AreEqual("INSERT INTO `test_data_one_p_k` (`ID`, `TestInt1`, `TestInt2`, `TestString1`, `NoQuotes`) VALUES" + Environment.NewLine +
+            Assert.That("INSERT INTO `test_data_one_p_k` (`ID`, `TestInt1`, `TestInt2`, `TestString1`, `NoQuotes`) VALUES" + Environment.NewLine +
                             "(4, 5, UNKNOWN, 'string2', @CGUID)," + Environment.NewLine +
                             "(6, 7, UNKNOWN, UNKNOWN, @CGUID+1);" + Environment.NewLine,
-                            new SQLInsert<TestDataOnePK>(_valuesOnePk, false).Build());
+                            Is.EqualTo(new SQLInsert<TestDataOnePK>(_valuesOnePk, false).Build()));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using WowPacketParser.Enums;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
@@ -585,6 +585,23 @@ namespace WowPacketParserModule.V4_4_0_53627.Parsers
                 bool hasFacingCurveID = packet.ReadBit("HasFacingCurveID", index);
                 bool hasMoveCurveID = packet.ReadBit("HasMoveCurveID", index);
                 bool hasAnimProgress = false;
+                bool hasPositionalSoundKitID = false;
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53863))
+                {
+                    hasPositionalSoundKitID = packet.ReadBit("HasPositionalSoundKitID", index);
+
+                    if (packet.ReadBit("HasAnimID", index))
+                        areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAnimId;
+
+                    if (packet.ReadBit("HasAnimKitID", index))
+                        areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAnimKitId;
+
+                    if (packet.ReadBit("unkbit50", index))
+                        areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.Unk3;
+
+                    hasAnimProgress = packet.ReadBit("HasAnimProgress", index);
+                }
 
                 if (packet.ReadBit("HasAreaTriggerSphere", index))
                     areaTriggerTemplate.Type = (byte)AreaTriggerType.Sphere;
@@ -615,6 +632,12 @@ namespace WowPacketParserModule.V4_4_0_53627.Parsers
                 if (packet.ReadBit("HasAreaTriggerMovementScript", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasMovementScript;
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53863))
+                {
+                    if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesFlags.Unk3) != 0)
+                        packet.ReadBit("Unk3");
+                }
+
                 if (hasAreaTriggerSpline)
                     V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerSpline(spellAreaTrigger, packet, index);
 
@@ -633,14 +656,23 @@ namespace WowPacketParserModule.V4_4_0_53627.Parsers
                 if (hasMoveCurveID)
                     spellAreaTrigger.MoveCurveId = (int)packet.ReadUInt32("MoveCurveID", index);
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53863))
+                {
+                    if (hasPositionalSoundKitID)
+                        packet.ReadUInt32("PositionalSoundKitID", index);
+                }
+
                 if ((areaTriggerTemplate.Flags & (int)AreaTriggerCreatePropertiesFlags.HasAnimId) != 0)
                     spellAreaTrigger.AnimId = packet.ReadInt32("AnimId", index);
 
                 if ((areaTriggerTemplate.Flags & (int)AreaTriggerCreatePropertiesFlags.HasAnimKitId) != 0)
                     spellAreaTrigger.AnimKitId = packet.ReadInt32("AnimKitId", index);
 
-                if (hasAnimProgress)
-                    packet.ReadUInt32("AnimProgress", index);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53863))
+                {
+                    if (hasAnimProgress)
+                        packet.ReadUInt32("AnimProgress", index);
+                }
 
                 if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Sphere)
                 {

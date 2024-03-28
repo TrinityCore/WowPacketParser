@@ -30,16 +30,16 @@ namespace WowPacketParser.Tests.Misc
             "| 42                                              | B                               |" + Environment.NewLine +
             "|-------------------------------------------------|---------------------------------|" + Environment.NewLine;
 
-            Assert.AreEqual(expected, actual);
+            Assert.That(expected, Is.EqualTo(actual));
             packet.ClosePacket();
         }
 
         [Test]
         public void TestHasAnyFlag()
         {
-            Assert.IsTrue(0x30.HasAnyFlag(0x10));
-            Assert.IsFalse(0x20.HasAnyFlag(0x10));
-            Assert.IsTrue(InhabitType.Anywhere.HasAnyFlag(InhabitType.Water));
+            Assert.That(0x30.HasAnyFlag(0x10), Is.True);
+            Assert.That(0x20.HasAnyFlag(0x10), Is.False);
+            Assert.That(InhabitType.Anywhere.HasAnyFlag(InhabitType.Water), Is.True);
         }
 
         [Test]
@@ -47,33 +47,33 @@ namespace WowPacketParser.Tests.Misc
         {
             var list = new List<string> {"Foo", "Bar", "FooBar"};
 
-            Assert.IsTrue("bar".MatchesFilters(list));
-            Assert.IsFalse("baz".MatchesFilters(list));
+            Assert.That("bar".MatchesFilters(list), Is.True);
+            Assert.That("baz".MatchesFilters(list), Is.False);
 
             var list2 = new List<string> { " Foo", " Bar ", "FooBar " };
             for (var i = 0; i < list2.Count; i++)
                 list2[i] = list2[i].Trim();
 
 
-            Assert.IsTrue("bar".MatchesFilters(list2));
-            Assert.IsTrue("Foo".MatchesFilters(list2));
-            Assert.IsTrue("FooBaz".MatchesFilters(list2)); // matches Foo
-            Assert.IsFalse("baz".MatchesFilters(list2));
+            Assert.That("bar".MatchesFilters(list2), Is.True);
+            Assert.That("Foo".MatchesFilters(list2), Is.True);
+            Assert.That("FooBaz".MatchesFilters(list2), Is.True); // matches Foo
+            Assert.That("baz".MatchesFilters(list2), Is.False);
         }
 
         [Test]
         public void TestToByte()
         {
-            Assert.AreEqual(1, true.ToByte());
-            Assert.AreEqual(0, false.ToByte());
+            Assert.That(1, Is.EqualTo(true.ToByte()));
+            Assert.That(0, Is.EqualTo(false.ToByte()));
         }
 
         [Test]
         public void TestToFormattedString()
         {
             // 42 hours = 1 day + 18 hours
-            Assert.AreEqual("18:42:42.042", new TimeSpan(0, 42, 42, 42, 42).ToFormattedString());
-            Assert.AreEqual("00:00:00.000", new TimeSpan(0, 0, 0, 0, 0).ToFormattedString());
+            Assert.That("18:42:42.042", Is.EqualTo(new TimeSpan(0, 42, 42, 42, 42).ToFormattedString()));
+            Assert.That("00:00:00.000", Is.EqualTo(new TimeSpan(0, 0, 0, 0, 0).ToFormattedString()));
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace WowPacketParser.Tests.Misc
             var dummy = new List<int> {1, 2, 3};
             dummy.AsParallel().SetCulture();
 
-            Assert.AreEqual(CultureInfo.InvariantCulture, Thread.CurrentThread.CurrentCulture);
+            Assert.That(CultureInfo.InvariantCulture, Is.EqualTo(Thread.CurrentThread.CurrentCulture));
 
             Thread.CurrentThread.CurrentCulture = oldCulture;
         }
@@ -95,17 +95,17 @@ namespace WowPacketParser.Tests.Misc
         {
             object[] arr = { 1, 2, new object[] { 3, new object[] {4} }, 5 };
 
-            Assert.AreEqual(new object[] { 1, 2, 3, 4, 5 }, arr.Flatten());
+            Assert.That(new object[] { 1, 2, 3, 4, 5 }, Is.EqualTo(arr.Flatten()));
 
             var list = new List<object> { "a", new[] {"b", "c"}, 2 };
 
-            Assert.AreEqual(new object[] { "a", "b", "c", 2}, list.Flatten());
+            Assert.That(new object[] { "a", "b", "c", 2}, Is.EqualTo(list.Flatten()));
 
             int[] simple = {1, 2, 3};
-            Assert.AreEqual(new[] { 1, 2, 3 }, simple.Flatten());
+            Assert.That(new[] { 1, 2, 3 }, Is.EqualTo(simple.Flatten()));
 
             int[] empty = {};
-            Assert.AreEqual(new int[] {}, empty.Flatten());
+            Assert.That(new int[] {}, Is.EqualTo(empty.Flatten()));
         }
     }
 }

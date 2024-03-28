@@ -526,6 +526,10 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V10_2_5_53441, new DateTime(2024, 02, 24)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V10_2_5_53584, new DateTime(2024, 03, 05)),
 
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V10_2_6_53840, new DateTime(2024, 03, 20)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V10_2_6_53877, new DateTime(2024, 03, 22)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V10_2_6_53913, new DateTime(2024, 03, 25)),
+
             // no classic info, pkt contain build in header
         };
 
@@ -1045,6 +1049,9 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V10_2_5_53262:
                 case ClientVersionBuild.V10_2_5_53441:
                 case ClientVersionBuild.V10_2_5_53584:
+                case ClientVersionBuild.V10_2_6_53840:
+                case ClientVersionBuild.V10_2_6_53877:
+                case ClientVersionBuild.V10_2_6_53913:
                     return ClientVersionBuild.V10_0_0_46181;
                 //Classic
                 case ClientVersionBuild.V1_13_2_31446:
@@ -1237,6 +1244,7 @@ namespace WowPacketParser.Misc
                     return ClientVersionBuild.V3_4_0_45166;
                 case ClientVersionBuild.V4_4_0_53627:
                 case ClientVersionBuild.V4_4_0_53750:
+                case ClientVersionBuild.V4_4_0_53863:
                     return ClientVersionBuild.V4_4_0_53627;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
@@ -1706,6 +1714,7 @@ namespace WowPacketParser.Misc
             {
                 case ClientVersionBuild.V4_4_0_53627:
                 case ClientVersionBuild.V4_4_0_53750:
+                case ClientVersionBuild.V4_4_0_53863:
                     return true;
                 default:
                     return false;

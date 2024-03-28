@@ -12,9 +12,9 @@ namespace WowPacketParser.Tests.Misc
         public void TestConstructor()
         {
             var vect = new Vector2(1.0f, 2.0f);
-            Assert.IsNotNull(vect);
-            Assert.AreEqual(1.0f, vect.X);
-            Assert.AreEqual(2.0f, vect.Y);
+            Assert.That(vect, Is.Not.Null);
+            Assert.That(1.0f, Is.EqualTo(vect.X));
+            Assert.That(2.0f, Is.EqualTo(vect.Y));
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace WowPacketParser.Tests.Misc
 
             var quat = new Vector2(1.1f, 2.0f);
 
-            Assert.AreEqual("X: 1.1 Y: 2", quat.ToString());
+            Assert.That("X: 1.1 Y: 2", Is.EqualTo(quat.ToString()));
         }
 
         [Test]
@@ -34,12 +34,12 @@ namespace WowPacketParser.Tests.Misc
             var vect15 = new Vector2(1.1f, 2.0f);
             var vect2 = new Vector2(1.1f, 2.00001f);
 
-            Assert.IsTrue(vect1 == vect15);
+            Assert.That(vect1 == vect15, Is.True);
 #pragma warning disable 1718
             // ReSharper disable once EqualExpressionComparison
-            Assert.IsTrue(vect1 == vect1);
+            Assert.That(vect1 == vect1, Is.True);
 #pragma warning restore 1718
-            Assert.IsFalse(vect1 == vect2);
+            Assert.That(vect1 == vect2, Is.False);
         }
 
         [Test]
@@ -49,9 +49,9 @@ namespace WowPacketParser.Tests.Misc
             var vect15 = new Vector2(1.1f, 2.0f);
             var vect2 = new Vector2(1.1f, 2.0001f);
 
-            Assert.IsTrue(vect1.Equals(vect15));
-            Assert.IsTrue(vect1.Equals(vect1));
-            Assert.IsFalse(vect1.Equals(vect2));
+            Assert.That(vect1.Equals(vect15), Is.True);
+            Assert.That(vect1.Equals(vect1), Is.True);
+            Assert.That(vect1.Equals(vect2), Is.False);
         }
 
         [Test]
@@ -61,8 +61,8 @@ namespace WowPacketParser.Tests.Misc
             var vect15 = new Vector2(1.1f, 0.0f);
             var vect2 = new Vector2(1.1f, 0.0001f);
 
-            Assert.AreEqual(vect1.GetHashCode(), vect15.GetHashCode());
-            Assert.AreNotEqual(vect1.GetHashCode(), vect2.GetHashCode());
+            Assert.That(vect1.GetHashCode(), Is.EqualTo(vect15.GetHashCode()));
+            Assert.That(vect1.GetHashCode(), Is.Not.EqualTo(vect2.GetHashCode()));
         }
     }
 }

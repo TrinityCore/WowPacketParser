@@ -121,12 +121,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("Item", idx);
 
             if (hasSrcLoc)
-                V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, "SrcLocation");
+                V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, idx, "SrcLocation");
 
             Vector3? dstLocation = null;
             if (hasDstLoc)
             {
-                dstLocation = V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, "DstLocation");
+                dstLocation = V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, idx, "DstLocation");
                 if (packetSpellData != null)
                     packetSpellData.DstLocation = dstLocation;
             }

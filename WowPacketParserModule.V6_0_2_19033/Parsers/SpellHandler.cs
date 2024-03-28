@@ -51,11 +51,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Item", idx);
 
             if (hasSrcLoc)
-                ReadLocation(packet, "SrcLocation");
+                ReadLocation(packet, idx, "SrcLocation");
 
             if (hasDstLoc)
             {
-                var dstLocation = ReadLocation(packet, "DstLocation");
+                var dstLocation = ReadLocation(packet, idx, "DstLocation");
                 if (spellData != null)
                     spellData.DstLocation = dstLocation;
             }

@@ -44,43 +44,43 @@ namespace WowPacketParser.Tests.Misc
         [Test]
         public void TestGetString()
         {
-            Assert.AreEqual("salsa",      _config.GetString("tequilla", string.Empty));
-            Assert.AreEqual(string.Empty, _config.GetString("gringo", "test"));
-            Assert.AreEqual("1",          _config.GetString("mariachi", string.Empty));
-            Assert.AreEqual("test",       _config.GetString("si", "test"));
+            Assert.That("salsa",      Is.EqualTo(_config.GetString("tequilla", string.Empty)));
+            Assert.That(string.Empty, Is.EqualTo(_config.GetString("gringo", "test")));
+            Assert.That("1",          Is.EqualTo(_config.GetString("mariachi", string.Empty)));
+            Assert.That("test",       Is.EqualTo(_config.GetString("si", "test")));
         }
 
         [Test]
         public void TestGetStringList()
         {
-            Assert.AreEqual(new[] { "salsa" }, _config.GetStringList("tequilla", new[] { "test" }));
-            Assert.AreEqual(new[] { "bacalao", "gasolina", "macarena" }, _config.GetStringList("enchilada", new[] { "test" }));
-            Assert.AreEqual(new[] { "test" }, _config.GetStringList("si", new[] { "test" }));
+            Assert.That(new[] { "salsa" }, Is.EqualTo(_config.GetStringList("tequilla", new[] { "test" })));
+            Assert.That(new[] { "bacalao", "gasolina", "macarena" }, Is.EqualTo(_config.GetStringList("enchilada", new[] { "test" })));
+            Assert.That(new[] { "test" }, Is.EqualTo(_config.GetStringList("si", new[] { "test" })));
         }
 
         [Test]
         public void TestGetBoolean()
         {
-            Assert.AreEqual(true, _config.GetBoolean("ronaldo", false));
-            Assert.AreEqual(false, _config.GetBoolean("nein", true));
-            Assert.AreEqual(true, _config.GetBoolean("si", true));
-            Assert.AreEqual(false, _config.GetBoolean("banderas", false));
+            Assert.That(true, Is.EqualTo(_config.GetBoolean("ronaldo", false)));
+            Assert.That(false, Is.EqualTo(_config.GetBoolean("nein", true)));
+            Assert.That(true, Is.EqualTo(_config.GetBoolean("si", true)));
+            Assert.That(false, Is.EqualTo(_config.GetBoolean("banderas", false)));
         }
 
         [Test]
         public void TestGetInt()
         {
-            Assert.AreEqual(3, _config.GetInt("banderas", 1));
-            Assert.AreEqual(-1, _config.GetInt("si", -1));
-            Assert.AreEqual(1, _config.GetInt("tequilla", 1));
+            Assert.That(3, Is.EqualTo(_config.GetInt("banderas", 1)));
+            Assert.That(-1, Is.EqualTo(_config.GetInt("si", -1)));
+            Assert.That(1, Is.EqualTo(_config.GetInt("tequilla", 1)));
         }
 
         [Test]
         public void TestGetEnum()
         {
-            Assert.AreEqual(TestEnum.Porque, _config.GetEnum("mariachi", TestEnum.Corazon));
-            Assert.AreEqual(TestEnum.Corazon, _config.GetEnum("si", TestEnum.Corazon));
-            Assert.AreEqual(TestEnum.Uno | TestEnum.Porque, _config.GetEnum("banderas", TestEnum.Corazon));
+            Assert.That(TestEnum.Porque, Is.EqualTo(_config.GetEnum("mariachi", TestEnum.Corazon)));
+            Assert.That(TestEnum.Corazon, Is.EqualTo(_config.GetEnum("si", TestEnum.Corazon)));
+            Assert.That(TestEnum.Uno | TestEnum.Porque, Is.EqualTo(_config.GetEnum("banderas", TestEnum.Corazon)));
         }
     }
 }

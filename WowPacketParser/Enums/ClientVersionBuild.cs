@@ -517,6 +517,10 @@ namespace WowPacketParser.Enums
         V10_2_5_53441 = 53441,
         V10_2_5_53584 = 53584,
 
+        V10_2_6_53840 = 53840,
+        V10_2_6_53877 = 53877,
+        V10_2_6_53913 = 53913,
+
         // Classic
         V1_13_2_31446 = 31446,
         V1_13_2_31650 = 31650,
@@ -726,6 +730,7 @@ namespace WowPacketParser.Enums
 
         V4_4_0_53627 = 53627, // beta
         V4_4_0_53750 = 53750, // beta
+        V4_4_0_53863 = 53863, // beta
 
         // Battle.net - should probably not mix this but oh well
         BattleNetV37165 = 37165,
