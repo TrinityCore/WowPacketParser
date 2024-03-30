@@ -2510,9 +2510,9 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_1_5_50232
         {
             var data = new MawPower();
             packet.ResetBitReader();
-            data.Field_0 = packet.ReadInt32("Field_0", indexes);
-            data.Field_4 = packet.ReadInt32("Field_4", indexes);
-            data.Field_8 = packet.ReadInt32("Field_8", indexes);
+            data.SpellID = packet.ReadInt32("SpellID", indexes);
+            data.MawPowerID = packet.ReadInt32("MawPowerID", indexes);
+            data.Stacks = packet.ReadInt32("Stacks", indexes);
             return data;
         }
 
@@ -2520,9 +2520,9 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_1_5_50232
         {
             var data = new MawPower();
             packet.ResetBitReader();
-            data.Field_0 = packet.ReadInt32("Field_0", indexes);
-            data.Field_4 = packet.ReadInt32("Field_4", indexes);
-            data.Field_8 = packet.ReadInt32("Field_8", indexes);
+            data.SpellID = packet.ReadInt32("SpellID", indexes);
+            data.MawPowerID = packet.ReadInt32("MawPowerID", indexes);
+            data.Stacks = packet.ReadInt32("Stacks", indexes);
             return data;
         }
 

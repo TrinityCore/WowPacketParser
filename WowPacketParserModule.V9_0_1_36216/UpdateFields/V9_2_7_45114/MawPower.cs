@@ -7,9 +7,9 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_2_7_45114
 {
     public class MawPower : IMawPower
     {
-        public int Field_0 { get; set; }
-        public int Field_4 { get; set; }
-        public int Field_8 { get; set; }
+        public int SpellID { get; set; }
+        public int MawPowerID { get; set; }
+        public int Stacks { get; set; }
     }
 }
 

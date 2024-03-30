@@ -2317,9 +2317,9 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_1_36216
         public static IMawPower ReadCreateMawPower(Packet packet, params object[] indexes)
         {
             var data = new MawPower();
-            data.Field_0 = packet.ReadInt32("Field_0", indexes);
-            data.Field_4 = packet.ReadInt32("Field_4", indexes);
-            data.Field_8 = packet.ReadInt32("Field_8", indexes);
+            data.SpellID = packet.ReadInt32("SpellID", indexes);
+            data.MawPowerID = packet.ReadInt32("MawPowerID", indexes);
+            data.Stacks = packet.ReadInt32("Stacks", indexes);
             return data;
         }
 
@@ -2328,9 +2328,9 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_1_36216
             var data = existingData as MawPower;
             if (data == null)
                 data = new MawPower();
-            data.Field_0 = packet.ReadInt32("Field_0", indexes);
-            data.Field_4 = packet.ReadInt32("Field_4", indexes);
-            data.Field_8 = packet.ReadInt32("Field_8", indexes);
+            data.SpellID = packet.ReadInt32("SpellID", indexes);
+            data.MawPowerID = packet.ReadInt32("MawPowerID", indexes);
+            data.Stacks = packet.ReadInt32("Stacks", indexes);
             return data;
         }
 
