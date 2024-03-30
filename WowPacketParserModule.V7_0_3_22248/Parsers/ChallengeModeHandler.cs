@@ -53,6 +53,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadInt32("NewDeathCount");
         }
+
+        [Parser(Opcode.SMSG_CHALLENGE_MODE_RESET)]
+        public static void HandleChallengeModeReset(Packet packet)
+        {
+            packet.ReadUInt32<MapId>("MapID");
+        }
     }
 }
 
