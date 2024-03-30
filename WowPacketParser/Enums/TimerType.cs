@@ -3,6 +3,6 @@
     public enum TimerType : uint
     {
         Pvp            = 0,
-        ChallengerMode = 1
+        ChallengeMode  = 1
     }
 }

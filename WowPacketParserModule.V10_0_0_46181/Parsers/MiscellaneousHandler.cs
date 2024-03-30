@@ -142,5 +142,13 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             if (type == 1)
                 packet.ReadUInt32("CurrencyID");
         }
+
+        [Parser(Opcode.SMSG_START_TIMER)]
+        public static void HandleStartTimer(Packet packet)
+        {
+            packet.ReadInt64("TotalTime");
+            packet.ReadInt64("TimeRemaining");
+            packet.ReadUInt32E<TimerType>("Type");
+        }
     }
 }
