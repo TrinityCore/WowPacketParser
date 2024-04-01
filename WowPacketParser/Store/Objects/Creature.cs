@@ -64,10 +64,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("currentwaypoint")]
         public uint? CurrentWaypoint;
 
-        [DBFieldName("curhealth")]
+        [DBFieldName("curhealth", TargetedDatabaseFlag.TillShadowlands)]
         public uint? CurHealth;
 
-        [DBFieldName("curmana")]
+        [DBFieldName("curHealthPct", TargetedDatabaseFlag.Dragonflight | TargetedDatabaseFlag.WotlkClassic)]
+        public uint? CurHealthPct;
+
+        [DBFieldName("curmana", TargetedDatabaseFlag.TillShadowlands)]
         public uint? CurMana;
 
         [DBFieldName("MovementType")]
