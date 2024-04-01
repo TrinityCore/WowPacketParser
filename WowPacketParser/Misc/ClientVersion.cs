@@ -1247,6 +1247,7 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V4_4_0_53627:
                 case ClientVersionBuild.V4_4_0_53750:
                 case ClientVersionBuild.V4_4_0_53863:
+                case ClientVersionBuild.V4_4_0_54027:
                     return ClientVersionBuild.V4_4_0_53627;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
@@ -1293,6 +1294,9 @@ namespace WowPacketParser.Misc
             {
                 // Cata Classic gets complete own module
                 case ClientVersionBuild.V4_4_0_53627:
+                case ClientVersionBuild.V4_4_0_53750:
+                case ClientVersionBuild.V4_4_0_53863:
+                case ClientVersionBuild.V4_4_0_54027:
                     return false;
                 default:
                     return true; ;
@@ -1717,6 +1721,7 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V4_4_0_53627:
                 case ClientVersionBuild.V4_4_0_53750:
                 case ClientVersionBuild.V4_4_0_53863:
+                case ClientVersionBuild.V4_4_0_54027:
                     return true;
                 default:
                     return false;
