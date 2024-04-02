@@ -139,9 +139,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         [Parser(Opcode.SMSG_MULTI_FLOOR_NEW_FLOOR)]
         public static void HandleMultiFloorNewFloor(Packet packet)
         {
-            packet.ReadInt32("Unk1");
-            packet.ReadInt32("Floor");
-            packet.ReadInt32("Unk2");
+            packet.ReadInt32("GeneratedFloorID");
+            packet.ReadInt32("FloorID");
+            packet.ReadInt32("FloorIndex");
             var count = packet.ReadUInt32();
 
             for (var i = 0; i < count; i++)
