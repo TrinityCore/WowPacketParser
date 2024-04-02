@@ -114,8 +114,8 @@ namespace WowPacketParserModule.V4_4_0_53627.UpdateFields.V4_4_0_53863
         public IResearchHistory ResearchHistory { get; set; }
         public System.Nullable<int> TransportServerTime { get; set; }
         public System.Nullable<uint> ActiveCombatTraitConfigID { get; set; }
-        public System.Nullable<uint>[] GlyphSlots { get; } = new System.Nullable<uint>[6];
-        public System.Nullable<uint>[] Glyphs { get; } = new System.Nullable<uint>[6];
+        public System.Nullable<uint>[] GlyphSlots { get; } = new System.Nullable<uint>[9];
+        public System.Nullable<uint>[] Glyphs { get; } = new System.Nullable<uint>[9];
         public System.Nullable<ushort> GlyphsEnabled { get; set; }
         public System.Nullable<byte> LfgRoles { get; set; }
         public IStableInfo PetStable { get; set; }

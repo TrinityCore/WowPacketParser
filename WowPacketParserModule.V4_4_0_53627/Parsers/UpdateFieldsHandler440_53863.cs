@@ -2660,6 +2660,10 @@ namespace WowPacketParserModule.V4_4_0_53627.UpdateFields.V4_4_0_53863
             for (var i = 0; i < 8; ++i)
             {
                 data.DataFlags[i].Resize(packet.ReadUInt32());
+                for (var j = 0; j < data.DataFlags[i].Count; ++j)
+                {
+                    data.DataFlags[i][j] = packet.ReadUInt64("DataFlags", indexes, i, j);
+                }
             }
             for (var i = 0; i < 2; ++i)
             {
@@ -2788,7 +2792,7 @@ namespace WowPacketParserModule.V4_4_0_53627.UpdateFields.V4_4_0_53863
             data.TransportServerTime = packet.ReadInt32("TransportServerTime", indexes);
             data.TraitConfigs.Resize(packet.ReadUInt32());
             data.ActiveCombatTraitConfigID = packet.ReadUInt32("ActiveCombatTraitConfigID", indexes);
-            for (var i = 0; i < 6; ++i)
+            for (var i = 0; i < 9; ++i)
             {
                 data.GlyphSlots[i] = packet.ReadUInt32("GlyphSlots", indexes, i);
                 data.Glyphs[i] = packet.ReadUInt32("Glyphs", indexes, i);
@@ -2798,13 +2802,6 @@ namespace WowPacketParserModule.V4_4_0_53627.UpdateFields.V4_4_0_53863
             data.CategoryCooldownMods.Resize(packet.ReadUInt32());
             data.WeeklySpellUses.Resize(packet.ReadUInt32());
             data.NumStableSlots = packet.ReadByte("NumStableSlots", indexes);
-            for (var i = 0; i < 8; ++i)
-            {
-                for (var j = 0; j < data.DataFlags[i].Count; ++j)
-                {
-                    data.DataFlags[i][j] = packet.ReadUInt64("DataFlags", indexes, i, j);
-                }
-            }
             for (var i = 0; i < data.KnownTitles.Count; ++i)
             {
                 data.KnownTitles[i] = packet.ReadUInt64("KnownTitles", indexes, i);
