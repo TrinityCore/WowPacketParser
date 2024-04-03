@@ -203,12 +203,16 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.ModelID = 0;
                 row.Data.CurrentWaypoint = 0;
                 row.Data.CurHealth = (uint)creature.UnitData.MaxHealth;
+                row.Data.CurHealthPct = 100;
                 row.Data.CurMana = (uint)creature.UnitData.MaxPower[0];
                 row.Data.NpcFlag = null;
                 row.Data.UnitFlags = null;
                 row.Data.UnitFlags2 = null;
                 row.Data.UnitFlags3 = null;
                 row.Data.DynamicFlag = 0;
+
+                if (creature.UnitData.Health > 1 && (creature.UnitData.Flags & (uint)UnitFlags.IsInCombat) == 0)
+                    row.Data.CurHealthPct = (uint)(creature.UnitData.Health / creature.UnitData.MaxHealth * 100);
 
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)entry, false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + " - ";
