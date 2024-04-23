@@ -329,10 +329,10 @@ namespace WowPacketParser.SQL
             // entry with same difficulty already exists
             if (CreatureTemplateDifficultyWDBData.TryGetValue((sniffData.Entry.Value, difficulty), out var dbData))
             {
-                // data is equal, return sniffData to update VerifiedBuild
-                if (sniffData.EqualsSkipDifficultySkipVerifiedBuild(dbData))
+                // data is equal, return sniffData to update
+                if (sniffData.WDBEqualsSkipDifficultySkipHealthScalingExpansion(dbData))
                 {
-                    Console.WriteLine($"Entry={sniffData.Entry}, DifficultyID={sniffData.DifficultyID} is equal, skipping.");
+                    sniffData.DifficultyID = dbData.DifficultyID;
                     return sniffData;
                 }
 
