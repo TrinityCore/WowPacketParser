@@ -144,6 +144,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 TypeFlags = creature.TypeFlags,
                 TypeFlags2 = creature.TypeFlags2
             };
+            creatureTemplateDifficultyWDB = WowPacketParser.SQL.SQLDatabase.CheckCreatureTemplateDifficultyWDBFallbacks(creatureTemplateDifficultyWDB, creatureTemplateDifficultyWDB.DifficultyID.Value);
             Storage.CreatureTemplateDifficultiesWDB.Add(creatureTemplateDifficultyWDB);
 
             ObjectName objectName = new ObjectName

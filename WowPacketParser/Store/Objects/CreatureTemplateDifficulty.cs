@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
@@ -31,6 +33,20 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("TypeFlags2", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic)]
         public uint? TypeFlags2;
+
+        public bool EqualsSkipDifficultySkipVerifiedBuild(CreatureTemplateDifficultyWDB rhs)
+        {
+            if (rhs == null)
+                return false;
+
+            return Entry == rhs.Entry &&
+                HealthScalingExpansion == rhs.HealthScalingExpansion &&
+                Math.Abs(HealthModifier.Value - rhs.HealthModifier.Value) < 0.01f &&
+                Math.Abs(ManaModifier.Value - rhs.ManaModifier.Value) < 0.01f &&
+                CreatureDifficultyID == rhs.CreatureDifficultyID &&
+                TypeFlags == rhs.TypeFlags &&
+                TypeFlags2 == rhs.TypeFlags2;
+        }
     }
 
     [DBTableName("creature_template_scaling", TargetedDatabaseFlag.TillShadowlands)]
