@@ -358,8 +358,19 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadSingle("Facing");
             packet.ReadByte("PreloadWorld");
 
-            var hasVehicleTeleport = packet.ReadBit("HasVehicleTeleport");
-            var hasTransport = packet.ReadBit("HasTransport");
+            var hasVehicleTeleport = false;
+            var hasTransport = false;
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+            {
+                hasTransport = packet.ReadBit("HasTransport");
+                hasVehicleTeleport = packet.ReadBit("HasVehicleTeleport");
+            }
+            else
+            {
+                hasVehicleTeleport = packet.ReadBit("HasVehicleTeleport");
+                hasTransport = packet.ReadBit("HasTransport");
+            }
 
             // VehicleTeleport
             if (hasVehicleTeleport)
