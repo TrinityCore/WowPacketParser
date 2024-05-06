@@ -3,6 +3,7 @@ namespace WowPacketParser.Enums
     public enum ClientVersionBuild
     {
         // ReSharper disable InconsistentNaming
+        None = -1,
         Zero = 0,
 
         V1_12_1_5875 = 5875,

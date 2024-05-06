@@ -12,6 +12,14 @@ namespace WowPacketParser.Parsing
             Opcode = opcode;
         }
 
+        /// <param name="opcode"></param>
+        /// <param name="onlyForSpecificBuild"></param>
+        public ParserAttribute(Opcode opcode, bool onlyForSpecificBuild)
+        {
+            Opcode = opcode;
+            OnlyForSpecificBuild = onlyForSpecificBuild;
+        }
+
         /// <summary>
         /// [addedInVersion, +inf[
         /// </summary>
@@ -61,5 +69,6 @@ namespace WowPacketParser.Parsing
         }
 
         public Opcode Opcode { get; private set; }
+        public bool OnlyForSpecificBuild { get; private set; }
     }
 }
