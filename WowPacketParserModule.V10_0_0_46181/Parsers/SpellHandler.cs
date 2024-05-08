@@ -60,12 +60,12 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadPackedGuid128("CastGUID");
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadInt32("TimeRemaining");
-            var stageCount = packet.ReadUInt32("RemainingStageCount");
+            var stageCount = packet.ReadUInt32("StageDurationsCount");
             packet.ResetBitReader();
-            packet.ReadBit("UnkBit");
+            packet.ReadByte("Status");
 
             for (int i = 0; i < stageCount; i++)
-                packet.ReadUInt32("Duration", "Stage", i);
+                packet.ReadUInt32("StageDuration", i);
         }
 
         [Parser(Opcode.CMSG_SPELL_EMPOWER_RELEASE)]
@@ -87,15 +87,15 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             V9_0_1_36216.Parsers.SpellHandler.ReadSpellCastVisual(packet, "Visual");
 
             packet.ReadUInt32("Duration");
-            packet.ReadUInt32("FirstStageDuration");
-            packet.ReadUInt32("FinalStageDuration");
-            var stageCount = packet.ReadUInt32("StageCount");
+            packet.ReadUInt32("MinHoldTime");
+            packet.ReadUInt32("HoldAtMaxTime");
+            var stageCount = packet.ReadUInt32("StageDurationsCount");
 
             for (var i = 0; i < targetsCount; ++i)
-                packet.ReadPackedGuid128("Guid", "Targets", i);
+                packet.ReadPackedGuid128("Target", i);
 
             for (var i = 0; i < stageCount; ++i)
-                packet.ReadUInt32("Duration", "Stage", i);
+                packet.ReadUInt32("StageDuration", i);
 
             packet.ResetBitReader();
             var hasInterruptImmunities = packet.ReadBit("HasInterruptImmunities");
