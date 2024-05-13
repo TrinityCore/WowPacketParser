@@ -161,7 +161,7 @@ namespace WowPacketParser.Misc
                 if (GetHighType() == HighGuidType.Cast)
                     type = StoreNameType.Spell;
                 else
-                    Utilities.ObjectTypeToStore(GetObjectType());
+                    type = Utilities.ObjectTypeToStore(GetObjectType());
 
                 // ReSharper disable once UseStringInterpolation
                 return string.Format("Full: 0x{0}{1} {2}/{3} R{4}/S{5} Map: {6} Entry: {7} Low: {8}", High.ToString("X16"), Low.ToString("X16"),
