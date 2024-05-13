@@ -20,6 +20,7 @@ namespace WowPacketParser.Misc
                 case HighGuidType.Pet:
                 case HighGuidType.Vehicle:
                 case HighGuidType.AreaTrigger:
+                case HighGuidType.Cast:
                     return true;
                 default:
                     return false;
