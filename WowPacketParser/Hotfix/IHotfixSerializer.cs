@@ -279,8 +279,8 @@ namespace WowPacketParser.Hotfix
             {
                 switch (tableName)
                 {
-                    case "achievement":
                     case "achievement_category":
+                    case "achievement":
                     case "adventure_journal":
                     case "adventure_map_poi":
                     case "area_table":
@@ -291,15 +291,17 @@ namespace WowPacketParser.Hotfix
                     case "azerite_essence":
                     case "azerite_essence_power":
                     case "barber_shop_style":
-                    case "battlemaster_list":
                     case "battle_pet_ability":
                     case "battle_pet_species":
+                    case "battlemaster_list":
                     case "broadcast_text":
+                    case "cfg_categories":
                     case "char_titles":
                     case "chat_channels":
                     case "chr_classes":
                     case "chr_customization_choice":
                     case "chr_customization_option":
+                    case "chr_customization_req":
                     case "chr_races":
                     case "chr_specialization":
                     case "creature_family":
@@ -318,6 +320,7 @@ namespace WowPacketParser.Hotfix
                     case "garr_class_spec":
                     case "garr_follower":
                     case "garr_mission":
+                    case "garr_talent_tree":
                     case "heirloom":
                     case "item_bag_family":
                     case "item_class":
@@ -336,16 +339,20 @@ namespace WowPacketParser.Hotfix
                     case "mail_template":
                     case "map_challenge_mode":
                     case "map_difficulty":
+                    case "map_difficulty_x_condition":
                     case "map":
                     case "mount":
                     case "player_condition":
                     case "prestige_level_info":
+                    case "pvp_stat":
                     case "pvp_talent":
                     case "pvp_tier":
+                    case "quest_info":
                     case "quest_sort":
                     case "scenario":
                     case "scenario_step":
                     case "server_messages":
+                    case "skill_line_ability":
                     case "skill_line":
                     case "specialization_spells":
                     case "spell_category":
@@ -358,10 +365,14 @@ namespace WowPacketParser.Hotfix
                     case "taxi_nodes":
                     case "totem_category":
                     case "toy":
+                    case "trait_currency_source":
+                    case "trait_definition":
                     case "transmog_set_group":
                     case "transmog_set":
                     case "ui_map":
+                    case "ui_splash_screen":
                     case "unit_power_bar":
+                    case "vignette":
                     case "wmo_area_table":
                         break;
                     default:

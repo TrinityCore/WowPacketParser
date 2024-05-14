@@ -27,6 +27,20 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.AchievementHotfixes1000, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.AchievementHotfixes1026.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AchievementHotfixes1026, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AchievementHotfixes1026, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AchievementHotfixes1027.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AchievementHotfixes1027, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AchievementHotfixes1027, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.AchievementCategoryHotfixes1000.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.AchievementCategoryHotfixes1000, Settings.HotfixesDatabase);
@@ -39,6 +53,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.AdventureJournalHotfixes1000, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.AdventureJournalHotfixes1000, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AdventureJournalHotfixes1026.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AdventureJournalHotfixes1026, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AdventureJournalHotfixes1026, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.AdventureMapPoiHotfixes1000.IsEmpty())
@@ -363,6 +384,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.BroadcastTextDurationHotfixes1000, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.CfgCategoriesHotfixes1000.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CfgCategoriesHotfixes1000, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CfgCategoriesHotfixes1000, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.CfgRegionsHotfixes1000.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.CfgRegionsHotfixes1000, Settings.HotfixesDatabase);
@@ -375,6 +403,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ChallengeModeItemBonusOverrideHotfixes1007, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ChallengeModeItemBonusOverrideHotfixes1007, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CharBaseInfoHotfixes1000.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CharBaseInfoHotfixes1000, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CharBaseInfoHotfixes1000, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.CharTitlesHotfixes1000.IsEmpty())
@@ -559,6 +594,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ConditionalChrModelHotfixes1015, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ConditionalChrModelHotfixes1025.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ConditionalChrModelHotfixes1025, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ConditionalChrModelHotfixes1025, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ConditionalContentTuningHotfixes1000.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ConditionalContentTuningHotfixes1000, Settings.HotfixesDatabase);
@@ -578,6 +620,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ContentTuningHotfixes1010, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ContentTuningHotfixes1010, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ContentTuningHotfixes1027.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ContentTuningHotfixes1027, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ContentTuningHotfixes1027, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ContentTuningXExpectedHotfixes1000.IsEmpty())
@@ -1322,6 +1371,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ItemModifiedAppearanceHotfixes1000, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ItemModifiedAppearanceHotfixes1027.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemModifiedAppearanceHotfixes1027, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemModifiedAppearanceHotfixes1027, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ItemModifiedAppearanceExtraHotfixes1000.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ItemModifiedAppearanceExtraHotfixes1000, Settings.HotfixesDatabase);
@@ -1742,6 +1798,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.PvpSeasonHotfixes1000, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.PvpStatHotfixes1000.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PvpStatHotfixes1000, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PvpStatHotfixes1000, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.PvpTalentHotfixes1000.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.PvpTalentHotfixes1000, Settings.HotfixesDatabase);
@@ -2048,6 +2111,20 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.SpellEffectHotfixes1000, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.SpellEffectHotfixes1000, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellEmpowerHotfixes1000.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellEmpowerHotfixes1000, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellEmpowerHotfixes1000, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellEmpowerStageHotfixes1000.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellEmpowerStageHotfixes1000, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellEmpowerStageHotfixes1000, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.SpellEquippedItemsHotfixes1000.IsEmpty())
@@ -2636,6 +2713,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.VehicleSeatHotfixes1000, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.VehicleSeatHotfixes1000, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.VignetteHotfixes1000.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.VignetteHotfixes1000, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.VignetteHotfixes1000, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.WmoAreaTableHotfixes1000.IsEmpty())
@@ -5252,6 +5336,20 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.AchievementHotfixesLocale1000, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.AchievementHotfixesLocale1026.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AchievementHotfixesLocale1026, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AchievementHotfixesLocale1026, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AchievementHotfixesLocale1027.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AchievementHotfixesLocale1027, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AchievementHotfixesLocale1027, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.AchievementCategoryHotfixesLocale1000.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.AchievementCategoryHotfixesLocale1000, Settings.HotfixesDatabase);
@@ -5264,6 +5362,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.AdventureJournalHotfixesLocale1000, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.AdventureJournalHotfixesLocale1000, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AdventureJournalHotfixesLocale1026.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AdventureJournalHotfixesLocale1026, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AdventureJournalHotfixesLocale1026, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.AdventureMapPoiHotfixesLocale1000.IsEmpty())
@@ -5805,6 +5910,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.PrestigeLevelInfoHotfixesLocale1000, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.PvpStatHotfixesLocale1000.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PvpStatHotfixesLocale1000, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PvpStatHotfixesLocale1000, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.PvpTalentHotfixesLocale1000.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.PvpTalentHotfixesLocale1000, Settings.HotfixesDatabase);
@@ -6041,6 +6153,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.UnitPowerBarHotfixesLocale1000, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.UnitPowerBarHotfixesLocale1000, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.VignetteHotfixesLocale1000.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.VignetteHotfixesLocale1000, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.VignetteHotfixesLocale1000, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.WmoAreaTableHotfixesLocale1000.IsEmpty())

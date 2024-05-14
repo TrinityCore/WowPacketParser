@@ -156,8 +156,11 @@ namespace WowPacketParser.Store
 
         // Hotfixes
         public static readonly DataBag<AchievementHotfix1000> AchievementHotfixes1000 = new DataBag<AchievementHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<AchievementHotfix1026> AchievementHotfixes1026 = new DataBag<AchievementHotfix1026>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<AchievementHotfix1027> AchievementHotfixes1027 = new DataBag<AchievementHotfix1027>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AchievementCategoryHotfix1000> AchievementCategoryHotfixes1000 = new DataBag<AchievementCategoryHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AdventureJournalHotfix1000> AdventureJournalHotfixes1000 = new DataBag<AdventureJournalHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<AdventureJournalHotfix1026> AdventureJournalHotfixes1026 = new DataBag<AdventureJournalHotfix1026>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AdventureMapPoiHotfix1000> AdventureMapPoiHotfixes1000 = new DataBag<AdventureMapPoiHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AnimationDataHotfix1000> AnimationDataHotfixes1000 = new DataBag<AnimationDataHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AnimKitHotfix1000> AnimKitHotfixes1000 = new DataBag<AnimKitHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -204,8 +207,10 @@ namespace WowPacketParser.Store
         public static readonly DataBag<BattlemasterListHotfix1000> BattlemasterListHotfixes1000 = new DataBag<BattlemasterListHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<BroadcastTextHotfix1000> BroadcastTextHotfixes1000 = new DataBag<BroadcastTextHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<BroadcastTextDurationHotfix1000> BroadcastTextDurationHotfixes1000 = new DataBag<BroadcastTextDurationHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<CfgCategoriesHotfix1000> CfgCategoriesHotfixes1000 = new DataBag<CfgCategoriesHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<CfgRegionsHotfix1000> CfgRegionsHotfixes1000 = new DataBag<CfgRegionsHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ChallengeModeItemBonusOverrideHotfix1007> ChallengeModeItemBonusOverrideHotfixes1007 = new DataBag<ChallengeModeItemBonusOverrideHotfix1007>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<CharBaseInfoHotfix1000> CharBaseInfoHotfixes1000 = new DataBag<CharBaseInfoHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<CharTitlesHotfix1000> CharTitlesHotfixes1000 = new DataBag<CharTitlesHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<CharacterLoadoutHotfix1000> CharacterLoadoutHotfixes1000 = new DataBag<CharacterLoadoutHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<CharacterLoadoutItemHotfix1000> CharacterLoadoutItemHotfixes1000 = new DataBag<CharacterLoadoutItemHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -232,9 +237,11 @@ namespace WowPacketParser.Store
         public static readonly DataBag<CinematicCameraHotfix1000> CinematicCameraHotfixes1000 = new DataBag<CinematicCameraHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<CinematicSequencesHotfix1000> CinematicSequencesHotfixes1000 = new DataBag<CinematicSequencesHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ConditionalChrModelHotfix1015> ConditionalChrModelHotfixes1015 = new DataBag<ConditionalChrModelHotfix1015>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<ConditionalChrModelHotfix1025> ConditionalChrModelHotfixes1025 = new DataBag<ConditionalChrModelHotfix1025>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ConditionalContentTuningHotfix1000> ConditionalContentTuningHotfixes1000 = new DataBag<ConditionalContentTuningHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ContentTuningHotfix1000> ContentTuningHotfixes1000 = new DataBag<ContentTuningHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ContentTuningHotfix1010> ContentTuningHotfixes1010 = new DataBag<ContentTuningHotfix1010>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<ContentTuningHotfix1027> ContentTuningHotfixes1027 = new DataBag<ContentTuningHotfix1027>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ContentTuningXExpectedHotfix1000> ContentTuningXExpectedHotfixes1000 = new DataBag<ContentTuningXExpectedHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ContentTuningXLabelHotfix1000> ContentTuningXLabelHotfixes1000 = new DataBag<ContentTuningXLabelHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ConversationLineHotfix1000> ConversationLineHotfixes1000 = new DataBag<ConversationLineHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -341,6 +348,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<ItemLimitCategoryHotfix1000> ItemLimitCategoryHotfixes1000 = new DataBag<ItemLimitCategoryHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ItemLimitCategoryConditionHotfix1000> ItemLimitCategoryConditionHotfixes1000 = new DataBag<ItemLimitCategoryConditionHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ItemModifiedAppearanceHotfix1000> ItemModifiedAppearanceHotfixes1000 = new DataBag<ItemModifiedAppearanceHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<ItemModifiedAppearanceHotfix1027> ItemModifiedAppearanceHotfixes1027 = new DataBag<ItemModifiedAppearanceHotfix1027>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ItemModifiedAppearanceExtraHotfix1000> ItemModifiedAppearanceExtraHotfixes1000 = new DataBag<ItemModifiedAppearanceExtraHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ItemNameDescriptionHotfix1000> ItemNameDescriptionHotfixes1000 = new DataBag<ItemNameDescriptionHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ItemPriceBaseHotfix1000> ItemPriceBaseHotfixes1000 = new DataBag<ItemPriceBaseHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -401,6 +409,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<PvpDifficultyHotfix1000> PvpDifficultyHotfixes1000 = new DataBag<PvpDifficultyHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PvpItemHotfix1000> PvpItemHotfixes1000 = new DataBag<PvpItemHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PvpSeasonHotfix1000> PvpSeasonHotfixes1000 = new DataBag<PvpSeasonHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<PvpStatHotfix1000> PvpStatHotfixes1000 = new DataBag<PvpStatHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PvpTalentHotfix1000> PvpTalentHotfixes1000 = new DataBag<PvpTalentHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PvpTalentHotfix1002> PvpTalentHotfixes1002 = new DataBag<PvpTalentHotfix1002>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PvpTalentCategoryHotfix1000> PvpTalentCategoryHotfixes1000 = new DataBag<PvpTalentCategoryHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -445,6 +454,8 @@ namespace WowPacketParser.Store
         public static readonly DataBag<SpellCooldownsHotfix1000> SpellCooldownsHotfixes1000 = new DataBag<SpellCooldownsHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SpellDurationHotfix1000> SpellDurationHotfixes1000 = new DataBag<SpellDurationHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SpellEffectHotfix1000> SpellEffectHotfixes1000 = new DataBag<SpellEffectHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<SpellEmpowerHotfix1000> SpellEmpowerHotfixes1000 = new DataBag<SpellEmpowerHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<SpellEmpowerStageHotfix1000> SpellEmpowerStageHotfixes1000 = new DataBag<SpellEmpowerStageHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SpellEquippedItemsHotfix1000> SpellEquippedItemsHotfixes1000 = new DataBag<SpellEquippedItemsHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SpellFocusObjectHotfix1000> SpellFocusObjectHotfixes1000 = new DataBag<SpellFocusObjectHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SpellInterruptsHotfix1000> SpellInterruptsHotfixes1000 = new DataBag<SpellInterruptsHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -529,6 +540,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<VehicleHotfix1000> VehicleHotfixes1000 = new DataBag<VehicleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<VehicleHotfix1010> VehicleHotfixes1010 = new DataBag<VehicleHotfix1010>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<VehicleSeatHotfix1000> VehicleSeatHotfixes1000 = new DataBag<VehicleSeatHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<VignetteHotfix1000> VignetteHotfixes1000 = new DataBag<VignetteHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<WmoAreaTableHotfix1000> WmoAreaTableHotfixes1000 = new DataBag<WmoAreaTableHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<WorldEffectHotfix1000> WorldEffectHotfixes1000 = new DataBag<WorldEffectHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<WorldMapOverlayHotfix1000> WorldMapOverlayHotfixes1000 = new DataBag<WorldMapOverlayHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -906,8 +918,11 @@ namespace WowPacketParser.Store
 
         // HotfixesLocales
         public static readonly DataBag<AchievementLocaleHotfix1000> AchievementHotfixesLocale1000 = new DataBag<AchievementLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<AchievementLocaleHotfix1026> AchievementHotfixesLocale1026 = new DataBag<AchievementLocaleHotfix1026>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<AchievementLocaleHotfix1027> AchievementHotfixesLocale1027 = new DataBag<AchievementLocaleHotfix1027>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AchievementCategoryLocaleHotfix1000> AchievementCategoryHotfixesLocale1000 = new DataBag<AchievementCategoryLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AdventureJournalLocaleHotfix1000> AdventureJournalHotfixesLocale1000 = new DataBag<AdventureJournalLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<AdventureJournalLocaleHotfix1026> AdventureJournalHotfixesLocale1026 = new DataBag<AdventureJournalLocaleHotfix1026>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AdventureMapPoiLocaleHotfix1000> AdventureMapPoiHotfixesLocale1000 = new DataBag<AdventureMapPoiLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AreaTableLocaleHotfix1000> AreaTableHotfixesLocale1000 = new DataBag<AreaTableLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AreaTableLocaleHotfix1015> AreaTableHotfixesLocale1015 = new DataBag<AreaTableLocaleHotfix1015>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -986,6 +1001,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<PlayerConditionLocaleHotfix1000> PlayerConditionHotfixesLocale1000 = new DataBag<PlayerConditionLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PlayerConditionLocaleHotfix1020> PlayerConditionHotfixesLocale1020 = new DataBag<PlayerConditionLocaleHotfix1020>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PrestigeLevelInfoLocaleHotfix1000> PrestigeLevelInfoHotfixesLocale1000 = new DataBag<PrestigeLevelInfoLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<PvpStatLocaleHotfix1000> PvpStatHotfixesLocale1000 = new DataBag<PvpStatLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PvpTalentLocaleHotfix1000> PvpTalentHotfixesLocale1000 = new DataBag<PvpTalentLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PvpTalentLocaleHotfix1002> PvpTalentHotfixesLocale1002 = new DataBag<PvpTalentLocaleHotfix1002>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PvpTierLocaleHotfix1000> PvpTierHotfixesLocale1000 = new DataBag<PvpTierLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -1020,6 +1036,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<UiMapLocaleHotfix1020> UiMapHotfixesLocale1020 = new DataBag<UiMapLocaleHotfix1020>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<UiSplashScreenLocaleHotfix1000> UiSplashScreenHotfixesLocale1000 = new DataBag<UiSplashScreenLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<UnitPowerBarLocaleHotfix1000> UnitPowerBarHotfixesLocale1000 = new DataBag<UnitPowerBarLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<VignetteLocaleHotfix1000> VignetteHotfixesLocale1000 = new DataBag<VignetteLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<WmoAreaTableLocaleHotfix1000> WmoAreaTableHotfixesLocale1000 = new DataBag<WmoAreaTableLocaleHotfix1000>(new List<SQLOutput> { SQLOutput.hotfixes });
 
         // WotLK Classic HotfixLocales
@@ -1256,8 +1273,11 @@ namespace WowPacketParser.Store
             PlayerChoiceResponseRewardItems.Clear();
 
             AchievementHotfixes1000.Clear();
+            AchievementHotfixes1026.Clear();
+            AchievementHotfixes1027.Clear();
             AchievementCategoryHotfixes1000.Clear();
             AdventureJournalHotfixes1000.Clear();
+            AdventureJournalHotfixes1026.Clear();
             AdventureMapPoiHotfixes1000.Clear();
             AnimationDataHotfixes1000.Clear();
             AnimKitHotfixes1000.Clear();
@@ -1304,8 +1324,10 @@ namespace WowPacketParser.Store
             BattlemasterListHotfixes1000.Clear();
             BroadcastTextHotfixes1000.Clear();
             BroadcastTextDurationHotfixes1000.Clear();
+            CfgCategoriesHotfixes1000.Clear();
             CfgRegionsHotfixes1000.Clear();
             ChallengeModeItemBonusOverrideHotfixes1007.Clear();
+            CharBaseInfoHotfixes1000.Clear();
             CharTitlesHotfixes1000.Clear();
             CharacterLoadoutHotfixes1000.Clear();
             CharacterLoadoutItemHotfixes1000.Clear();
@@ -1332,9 +1354,11 @@ namespace WowPacketParser.Store
             CinematicCameraHotfixes1000.Clear();
             CinematicSequencesHotfixes1000.Clear();
             ConditionalChrModelHotfixes1015.Clear();
+            ConditionalChrModelHotfixes1025.Clear();
             ConditionalContentTuningHotfixes1000.Clear();
             ContentTuningHotfixes1000.Clear();
             ContentTuningHotfixes1010.Clear();
+            ContentTuningHotfixes1027.Clear();
             ContentTuningXExpectedHotfixes1000.Clear();
             ContentTuningXLabelHotfixes1000.Clear();
             ConversationLineHotfixes1000.Clear();
@@ -1441,6 +1465,7 @@ namespace WowPacketParser.Store
             ItemLimitCategoryHotfixes1000.Clear();
             ItemLimitCategoryConditionHotfixes1000.Clear();
             ItemModifiedAppearanceHotfixes1000.Clear();
+            ItemModifiedAppearanceHotfixes1027.Clear();
             ItemModifiedAppearanceExtraHotfixes1000.Clear();
             ItemNameDescriptionHotfixes1000.Clear();
             ItemPriceBaseHotfixes1000.Clear();
@@ -1501,6 +1526,7 @@ namespace WowPacketParser.Store
             PvpDifficultyHotfixes1000.Clear();
             PvpItemHotfixes1000.Clear();
             PvpSeasonHotfixes1000.Clear();
+            PvpStatHotfixes1000.Clear();
             PvpTalentHotfixes1000.Clear();
             PvpTalentHotfixes1002.Clear();
             PvpTalentCategoryHotfixes1000.Clear();
@@ -1545,6 +1571,8 @@ namespace WowPacketParser.Store
             SpellCooldownsHotfixes1000.Clear();
             SpellDurationHotfixes1000.Clear();
             SpellEffectHotfixes1000.Clear();
+            SpellEmpowerHotfixes1000.Clear();
+            SpellEmpowerStageHotfixes1000.Clear();
             SpellEquippedItemsHotfixes1000.Clear();
             SpellFocusObjectHotfixes1000.Clear();
             SpellInterruptsHotfixes1000.Clear();
@@ -1629,6 +1657,7 @@ namespace WowPacketParser.Store
             VehicleHotfixes1000.Clear();
             VehicleHotfixes1010.Clear();
             VehicleSeatHotfixes1000.Clear();
+            VignetteHotfixes1000.Clear();
             WmoAreaTableHotfixes1000.Clear();
             WorldEffectHotfixes1000.Clear();
             WorldMapOverlayHotfixes1000.Clear();
@@ -2004,8 +2033,11 @@ namespace WowPacketParser.Store
             WorldStateExpressionHotfixes340.Clear();
 
             AchievementHotfixesLocale1000.Clear();
+            AchievementHotfixesLocale1026.Clear();
+            AchievementHotfixesLocale1027.Clear();
             AchievementCategoryHotfixesLocale1000.Clear();
             AdventureJournalHotfixesLocale1000.Clear();
+            AdventureJournalHotfixesLocale1026.Clear();
             AdventureMapPoiHotfixesLocale1000.Clear();
             AreaTableHotfixesLocale1000.Clear();
             AreaTableHotfixesLocale1015.Clear();
@@ -2084,6 +2116,7 @@ namespace WowPacketParser.Store
             PlayerConditionHotfixesLocale1000.Clear();
             PlayerConditionHotfixesLocale1020.Clear();
             PrestigeLevelInfoHotfixesLocale1000.Clear();
+            PvpStatHotfixesLocale1000.Clear();
             PvpTalentHotfixesLocale1000.Clear();
             PvpTalentHotfixesLocale1002.Clear();
             PvpTierHotfixesLocale1000.Clear();
@@ -2118,6 +2151,7 @@ namespace WowPacketParser.Store
             UiMapHotfixesLocale1020.Clear();
             UiSplashScreenHotfixesLocale1000.Clear();
             UnitPowerBarHotfixesLocale1000.Clear();
+            VignetteHotfixesLocale1000.Clear();
             WmoAreaTableHotfixesLocale1000.Clear();
 
             AchievementHotfixesLocale340.Clear();
