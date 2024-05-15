@@ -1186,6 +1186,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             hotfix.ItemBonusTreeGroupID = packet.ReadInt32("ItemBonusTreeGroupID", indexes);
             hotfix.DstItemBonusTreeID = packet.ReadInt32("DstItemBonusTreeID", indexes);
             hotfix.Type = packet.ReadSByte("Type", indexes);
+            hotfix.Value = packet.ReadInt32("Value", indexes);
             hotfix.MythicPlusSeasonID = packet.ReadInt32("MythicPlusSeasonID", indexes);
             hotfix.PvPSeasonID = packet.ReadInt32("PvPSeasonID", indexes);
             hotfix.SrcItemBonusTreeID = packet.ReadUInt32("SrcItemBonusTreeID", indexes);
