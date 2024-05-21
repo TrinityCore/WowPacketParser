@@ -1270,11 +1270,15 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_3_53788:
                 case ClientVersionBuild.V3_4_3_54261:
                     return ClientVersionBuild.V3_4_0_45166;
-                case ClientVersionBuild.V4_4_0_53627:
-                case ClientVersionBuild.V4_4_0_53750:
-                case ClientVersionBuild.V4_4_0_53863:
-                case ClientVersionBuild.V4_4_0_54027:
-                    return ClientVersionBuild.V4_4_0_53627;
+                case ClientVersionBuild.V4_4_0_54481:
+                case ClientVersionBuild.V4_4_0_54500:
+                case ClientVersionBuild.V4_4_0_54501:
+                case ClientVersionBuild.V4_4_0_54525:
+                case ClientVersionBuild.V4_4_0_54558:
+                case ClientVersionBuild.V4_4_0_54647:
+                case ClientVersionBuild.V4_4_0_54670:
+                case ClientVersionBuild.V4_4_0_54737:
+                    return ClientVersionBuild.V4_4_0_54481;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
                 case ClientVersionBuild.Zero:
@@ -1298,7 +1302,7 @@ namespace WowPacketParser.Misc
                     return ClientVersionBuild.V2_5_1_38707;
                 // Cata Classic itself has no Fallback (see below HasFallback function)
                 // just for completeness and future fallbacks
-                case ClientVersionBuild.V4_4_0_53627:
+                case ClientVersionBuild.V4_4_0_54481:
                     return ClientVersionBuild.V3_4_0_45166;
 
                 case ClientVersionBuild.V7_0_3_22248:
@@ -1316,17 +1320,10 @@ namespace WowPacketParser.Misc
 
         public static bool HasFallback(ClientVersionBuild definingBuild)
         {
-            switch (definingBuild)
-            {
-                // Cata Classic gets complete own module
-                case ClientVersionBuild.V4_4_0_53627:
-                case ClientVersionBuild.V4_4_0_53750:
-                case ClientVersionBuild.V4_4_0_53863:
-                case ClientVersionBuild.V4_4_0_54027:
-                    return false;
-                default:
-                    return true; ;
-            }
+            if (IsCataClientVersionBuild(definingBuild))
+                return false;
+
+            return true;
         }
 
         public static int BuildInt => (int) Build;
@@ -1745,10 +1742,14 @@ namespace WowPacketParser.Misc
         {
             switch (build)
             {
-                case ClientVersionBuild.V4_4_0_53627:
-                case ClientVersionBuild.V4_4_0_53750:
-                case ClientVersionBuild.V4_4_0_53863:
-                case ClientVersionBuild.V4_4_0_54027:
+                case ClientVersionBuild.V4_4_0_54481:
+                case ClientVersionBuild.V4_4_0_54500:
+                case ClientVersionBuild.V4_4_0_54501:
+                case ClientVersionBuild.V4_4_0_54525:
+                case ClientVersionBuild.V4_4_0_54558:
+                case ClientVersionBuild.V4_4_0_54647:
+                case ClientVersionBuild.V4_4_0_54670:
+                case ClientVersionBuild.V4_4_0_54737:
                     return true;
                 default:
                     return false;

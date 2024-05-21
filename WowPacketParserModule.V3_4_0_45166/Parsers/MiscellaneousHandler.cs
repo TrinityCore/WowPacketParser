@@ -103,32 +103,14 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             var europaTicket = packet.ReadBit("IsEuropaTicketSystemStatusEnabled");
             packet.ReadBit("IsNameReservationEnabled");
             bool launchETA = packet.ReadBit("IsLaunchETA");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
-            {
-                packet.ReadBit("Field_09C");
-                packet.ReadBit("Field_09D");
-            }
+            packet.ReadBit("AddonsDisabled");
+            packet.ReadBit("Unk");
 
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_0_53627))
-            {
-                packet.ReadBit("AddonsDisabled");
-                packet.ReadBit("Unk");
-                packet.ReadBit("Unk");
-                packet.ReadBit("SoMNotificationEnabled");
-                packet.ReadBit("AccountSaveDataExportEnabled");
-                packet.ReadBit("AccountLockedByExport");
-                packet.ReadBit("Unk");
-            }
-            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
-            {
-                packet.ReadBit("Field_09E");
-                packet.ReadBit("IsSoMNotificationEnabled");
-                packet.ReadBit("AddonsDisabled");
-                packet.ReadBit("Unused_10_0");
-                packet.ReadBit("AccountSaveEnabled");
-                packet.ReadBit("AccountLockedPostSave");
-            }
-            
+            packet.ReadBit("Unk");
+            packet.ReadBit("SoMNotificationEnabled");
+            packet.ReadBit("AccountSaveDataExportEnabled");
+            packet.ReadBit("AccountLockedByExport");
+            packet.ReadBit("Unk");
             var realmHiddenAlert = packet.ReadBit("IsRealmHiddenAlert");
             if (realmHiddenAlert)
                 packet.ReadBits("RealmHiddenAlert", 11);
@@ -156,9 +138,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt32("PlayerNameQueryInterval");
             var debugTimeEventsCount = packet.ReadInt32("DebugTimeEventsSize");
             packet.ReadInt32("Unused1007");
-            
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
-                packet.ReadInt32("Field_108");
 
             if (launchETA)
                 packet.ReadPackedTime("LaunchETA");
@@ -325,13 +304,13 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadUInt32("ClubsPresenceUpdateTimer");
             packet.ReadUInt32("HiddenUIClubsPresenceUpdateTimer");
             packet.ReadInt32("ActiveSeason");
-            
+
             var gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
-            
+
             packet.ReadInt16("MaxPlayerNameQueriesPerPacket");
             packet.ReadInt16("PlayerNameQueryTelemetryInterval");
             packet.ReadUInt32("PlayerNameQueryInterval");
-            
+
             for (var i = 0; i < gameRuleValuesCount; ++i)
                 ReadGameRuleValuePair(packet, "GameRuleValues");
 
@@ -385,11 +364,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadBit("IsLFDEnabled");
             packet.ReadBit("IsLFREnabled");
             packet.ReadBit("IsPremadeGroupEnabled");
-
-            var stringLength = 0u;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
-                stringLength = packet.ReadBits("Field_16F_Length", 8);
-
             {
                 packet.ResetBitReader();
                 packet.ReadBit("ToastsDisabled", "QuickJoinConfig");
@@ -427,9 +401,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 for (var i = 0; i < count; ++i)
                     packet.ReadByte("UnkByte", i);
             }
-
-            if (stringLength > 0 && ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
-                packet.ReadWoWString("Field_16F", stringLength);
 
             V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 

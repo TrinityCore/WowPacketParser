@@ -75,9 +75,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             var mailSenderTypes = new uint[packet.ReadUInt32()];
             packet.ReadUInt32("OverrideSelectScreenFileDataID", idx);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_53627))
-                ReadCustomTabardInfo(packet, idx, "PersonalTabard");
-
             for (var j = 0u; j < customizationCount; ++j)
                 ReadChrCustomizationChoice(packet, idx, "Customizations", j);
 

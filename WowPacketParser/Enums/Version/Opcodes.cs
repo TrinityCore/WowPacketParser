@@ -24,10 +24,7 @@ using WowPacketParser.Enums.Version.V4_3_0_15005;
 using WowPacketParser.Enums.Version.V4_3_2_15211;
 using WowPacketParser.Enums.Version.V4_3_3_15354;
 using WowPacketParser.Enums.Version.V4_3_4_15595;
-using WowPacketParser.Enums.Version.V4_4_0_53627;
-using WowPacketParser.Enums.Version.V4_4_0_53750;
-using WowPacketParser.Enums.Version.V4_4_0_53863;
-using WowPacketParser.Enums.Version.V4_4_0_54027;
+using WowPacketParser.Enums.Version.V4_4_0_54481;
 using WowPacketParser.Enums.Version.V5_0_4_16016;
 using WowPacketParser.Enums.Version.V5_0_5_16048;
 using WowPacketParser.Enums.Version.V5_1_0_16309;
@@ -893,14 +890,15 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V3_4_3_53788:
                 case ClientVersionBuild.V3_4_3_54261:
                     return ClientVersionBuild.V3_4_3_51666;
-                case ClientVersionBuild.V4_4_0_53627:
-                    return ClientVersionBuild.V4_4_0_53627;
-                case ClientVersionBuild.V4_4_0_53750:
-                    return ClientVersionBuild.V4_4_0_53750;
-                case ClientVersionBuild.V4_4_0_53863:
-                    return ClientVersionBuild.V4_4_0_53863;
-                case ClientVersionBuild.V4_4_0_54027:
-                    return ClientVersionBuild.V4_4_0_54027;
+                case ClientVersionBuild.V4_4_0_54481:
+                case ClientVersionBuild.V4_4_0_54500:
+                case ClientVersionBuild.V4_4_0_54501:
+                case ClientVersionBuild.V4_4_0_54525:
+                case ClientVersionBuild.V4_4_0_54558:
+                case ClientVersionBuild.V4_4_0_54647:
+                case ClientVersionBuild.V4_4_0_54670:
+                case ClientVersionBuild.V4_4_0_54737:
+                    return ClientVersionBuild.V4_4_0_54481;
                 default:
                     return ClientVersionBuild.V3_3_5a_12340;
             }
@@ -1069,14 +1067,8 @@ namespace WowPacketParser.Enums.Version
                     return Opcodes_3_4_2.Opcodes(direction);
                 case ClientVersionBuild.V3_4_3_51666:
                     return Opcodes_3_4_3.Opcodes(direction);
-                case ClientVersionBuild.V4_4_0_53627:
-                    return Opcodes_4_4_0_53627.Opcodes(direction);
-                case ClientVersionBuild.V4_4_0_53750:
-                    return Opcodes_4_4_0_53750.Opcodes(direction);
-                case ClientVersionBuild.V4_4_0_53863:
-                    return Opcodes_4_4_0_53863.Opcodes(direction);
-                case ClientVersionBuild.V4_4_0_54027:
-                    return Opcodes_4_4_0_54027.Opcodes(direction);
+                case ClientVersionBuild.V4_4_0_54481:
+                    return Opcodes_4_4_0.Opcodes(direction);
                 default:
                     return Opcodes_3_3_5.Opcodes(direction);
             }
