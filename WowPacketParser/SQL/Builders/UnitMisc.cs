@@ -237,7 +237,33 @@ namespace WowPacketParser.SQL.Builders
 
             var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateDifficulties);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateDifficulties.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateDifficulties.ToArray(), templatesDb, StoreNameType.Unit);
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateDifficulties.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateDifficulties.ToArray(),
+                templatesDb,
+                x =>
+                {
+                    StringBuilder sb = new();
+                    if (x.StaticFlags1 != 0)
+                        sb.Append($"{x.StaticFlags1} - ");
+                    if (x.StaticFlags2 != 0)
+                        sb.Append($"{x.StaticFlags2} - ");
+                    if (x.StaticFlags3 != 0)
+                        sb.Append($"{x.StaticFlags3} - ");
+                    if (x.StaticFlags4 != 0)
+                        sb.Append($"{x.StaticFlags4} - ");
+                    if (x.StaticFlags5 != 0)
+                        sb.Append($"{x.StaticFlags5} - ");
+                    if (x.StaticFlags6 != 0)
+                        sb.Append($"{x.StaticFlags6} - ");
+                    if (x.StaticFlags7 != 0)
+                        sb.Append($"{x.StaticFlags7} - ");
+                    if (x.StaticFlags8 != 0)
+                        sb.Append($"{x.StaticFlags8} - ");
+
+                    if (sb.Length >= 3)
+                        sb.Remove(sb.Length - 3, 3);
+
+                    return $"{StoreGetters.GetName(StoreNameType.Unit, (int)x.Entry)} - {sb}";
+                });
         }
 
         [BuilderMethod(Units = true)]
