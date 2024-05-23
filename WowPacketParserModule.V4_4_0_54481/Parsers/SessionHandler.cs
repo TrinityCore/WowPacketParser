@@ -195,7 +195,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadWoWString("ServerRegionalTZ", len3);
         }
 
-        [Parser(Opcode.SMSG_ENTER_ENCRYPTED_MODE)]
+        [Parser(Opcode.SMSG_UPDATE_BNET_SESSION_KEY)]
+        public static void HandleUpdateBnetSessionKey(Packet packet)
+        {
+            var sessionKeyLength = (int)packet.ReadBits(7);
+
+            packet.ReadBytes("Digest", 32);
+            packet.ReadBytes("SessionKey", sessionKeyLength);
+        }
+
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK)]
         public static void HandleSessionZero(Packet packet)
         {
