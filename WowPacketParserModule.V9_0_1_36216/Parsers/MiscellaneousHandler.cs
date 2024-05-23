@@ -70,6 +70,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
                     packet.ReadUInt32("PlayerNameQueryInterval");
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                {
+                    packet.ReadInt32("AddonChatThrottle.MaxTries");
+                    packet.ReadInt32("AddonChatThrottle.TriesRestoredPerSecond");
+                    packet.ReadInt32("AddonChatThrottle.UsedTriesPerMessage");
+                }
+
                 for (var i = 0; i < gameRuleValuesCount; ++i)
                     ReadGameRuleValuePair(packet, "GameRuleValues");
             }
@@ -111,6 +118,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("QuestSessionEnabled");
             packet.ReadBit("IsMuted");
             packet.ReadBit("ClubFinderEnabled");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                packet.ReadBit("CommunityFinderEnabled");
             packet.ReadBit("Unknown901CheckoutRelated");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
@@ -144,6 +153,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadBit("IsPremadeGroupEnabled"); // classic only
             }
 
+            var unknown1027StrLen = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+            {
+                packet.ReadBit("CanShowSetRoleButton");
+                packet.ReadBit("Unused1027_1");
+                packet.ReadBit("Unused1027_2");
+                unknown1027StrLen = packet.ReadBits(7);
+            }
 
             {
                 packet.ResetBitReader();
@@ -174,6 +191,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             if (hasSessionAlert)
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadClientSessionAlertConfig(packet, "SessionAlert");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                packet.ReadWoWString("Unknown1027", unknown1027StrLen);
 
             V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 
@@ -219,6 +239,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
                 packet.ReadBit("IsNameReservationEnabled");
             var launchEta = packet.ReadBit();
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                packet.ReadBit("TimerunningEnabled");
             packet.ReadBit("AddonsDisabled");
             packet.ReadBit("Unused1000");
 
@@ -248,8 +270,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
             {
-                packet.ReadInt32("GameRuleUnknown1");
+                packet.ReadInt32("ActiveSeason");
                 gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                {
+                    packet.ReadInt32("ActiveTimerunningSeasonID");
+                    packet.ReadInt32("RemainingTimerunningSeasonSeconds");
+                }
                 packet.ReadInt16("MaxPlayerNameQueriesPerPacket");
             }
 

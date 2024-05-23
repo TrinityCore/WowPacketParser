@@ -124,6 +124,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
                 packet.ReadByte("Unused915", idx);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                packet.ReadInt32("TimerunningSeasonID", idx);
+
             data.Name = packet.ReadWoWString("Name", bits15, idx);
 
             return data;

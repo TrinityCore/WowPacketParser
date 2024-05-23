@@ -82,6 +82,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
                 ReadCustomTabardInfo(packet, idx, "PersonalTabard");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                packet.ReadInt32("TimerunningSeasonID");
+
             for (var j = 0u; j < customizationCount; ++j)
                 ReadChrCustomizationChoice(packet, idx, "Customizations", j);
 
@@ -268,6 +271,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadByteE<Gender>("SexID");
 
             var customizationCount = packet.ReadUInt32();
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                packet.ReadInt32("TimerunningSeasonID");
 
             packet.ReadWoWString("Name", nameLen);
 

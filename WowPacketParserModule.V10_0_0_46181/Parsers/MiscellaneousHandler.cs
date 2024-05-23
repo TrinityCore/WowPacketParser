@@ -147,8 +147,17 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         public static void HandleStartTimer(Packet packet)
         {
             packet.ReadInt64("TotalTime");
-            packet.ReadInt64("TimeRemaining");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_2_7_54577))
+                packet.ReadInt64("TimeLeft");
             packet.ReadUInt32E<TimerType>("Type");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+            {
+                packet.ReadInt64("TimeLeft");
+                var hasPlayerGUID = packet.ReadBit("HasPlayerGUID");
+                if (hasPlayerGUID)
+                    packet.ReadPackedGuid128("PlayerGUID");
+            }
         }
     }
 }

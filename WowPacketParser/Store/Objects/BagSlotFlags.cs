@@ -1,7 +1,7 @@
 ﻿
 namespace WowPacketParser.Store.Objects
 {
-    enum BagSlotFlags : uint
+    public enum BagSlotFlags : uint
     {
         None                = 0x00,
         DisableAutoSort     = 0x01,

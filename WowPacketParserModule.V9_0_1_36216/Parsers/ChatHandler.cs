@@ -28,6 +28,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.Branch != ClientBranch.Retail && ClientVersion.RemovedInVersion(ClientVersionBuild.V3_4_2_50129) || ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_1_0_49407))
                 packet.ReadPackedGuid128("PartyGUID");
             packet.ReadInt32("AchievementID");
+            var chatFlags = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                chatFlags = packet.ReadUInt16("ChatFlags");
             packet.ReadSingle("DisplayTime");
             if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_1_0_49407) || ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_2_50129))
                 packet.ReadInt32<SpellId>("SpellID");
@@ -37,10 +40,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var prefixLen = packet.ReadBits(5);
             var channelLen = packet.ReadBits(7);
             var textLen = packet.ReadBits(12);
-            int flagLen = 14;
-            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_0_7_48676) || ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_2_50129))
-                flagLen = 15;
-            var flags = packet.ReadBits("ChatFlags", flagLen);
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_2_7_54577))
+            {
+                int flagLen = 14;
+                if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_0_7_48676) || ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_2_50129))
+                    flagLen = 15;
+                chatFlags = packet.ReadBits("ChatFlags", flagLen);
+            }
 
             packet.ReadBit("HideChatLog");
             packet.ReadBit("FakeSenderName");
@@ -59,7 +66,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             chatPacket.Target = text.ReceiverGUID.ToUniversalGuid();
             chatPacket.Language = (int) text.Language;
             chatPacket.Type = (int) text.Type;
-            chatPacket.Flags = flags;
+            chatPacket.Flags = chatFlags;
 
             if (unk801bit)
                 packet.ReadUInt32("Unk801");

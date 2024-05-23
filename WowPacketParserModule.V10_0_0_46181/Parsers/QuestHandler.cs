@@ -119,6 +119,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             uint portraitTurnInNameLen = packet.ReadBits(8);
 
             packet.ReadBit("AutoLaunched");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                packet.ReadBit("FromContentPush");
             packet.ReadBit("Unused");
             packet.ReadBit("StartCheat");
             packet.ReadBit("DisplayPopup");

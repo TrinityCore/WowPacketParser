@@ -17,7 +17,16 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("PreviousArenaSeason");
             packet.ReadInt32("ConquestWeeklyProgressCurrencyID");
             packet.ReadInt32("PvpSeasonID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                packet.ReadInt32("Unknown1027_1");
+
             packet.ReadBit("WeeklyRewardChestsEnabled");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+            {
+                packet.ReadBit("Unknown1027_2");
+                packet.ReadBit("Unknown1027_3");
+            }
         }
     }
 }
