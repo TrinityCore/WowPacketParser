@@ -366,6 +366,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_MAIL_RETURN_TO_SENDER, 0x3654 },
             { Opcode.CMSG_MAIL_TAKE_ITEM, 0x353A },
             { Opcode.CMSG_MAIL_TAKE_MONEY, 0x3539 },
+            { Opcode.CMSG_MAKE_CONTITIONAL_APPEARANCE_PERMANENT, 0x322A },
             { Opcode.CMSG_MASTER_LOOT_ITEM, 0x3214 },
             { Opcode.CMSG_MERGE_GUILD_BANK_ITEM_WITH_GUILD_BANK_ITEM, 0x34C0 },
             { Opcode.CMSG_MERGE_GUILD_BANK_ITEM_WITH_ITEM, 0x34BD },
