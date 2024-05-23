@@ -250,6 +250,12 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadBit("AccountLockedByExport");
             }
 
+            var realmHiddenAlertLen = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+            {
+                realmHiddenAlertLen = packet.ReadBits(11);
+            }
+
             packet.ResetBitReader();
 
             if (europaTicket)
@@ -299,6 +305,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             if (launchEta)
                 packet.ReadInt32("LaunchETA");
+
+            if (realmHiddenAlertLen > 0)
+                packet.ReadWoWString("RealmHiddenAlert", realmHiddenAlertLen);
 
             for (int i = 0; i < liveRegionCharacterCopySourceRegionsCount; i++)
                 packet.ReadUInt32("LiveRegionCharacterCopySourceRegion", i);
