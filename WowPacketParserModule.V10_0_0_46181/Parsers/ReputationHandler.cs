@@ -35,6 +35,14 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 packet.ReadBit("FactionHasBonus", i);
         }
 
+        public static void ReadFactionStandingData(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("Index", indexes);
+            packet.ReadInt32("Standing", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_6_53840))
+                packet.ReadInt32("FactionID", indexes);
+        }
+
         [Parser(Opcode.SMSG_SET_FACTION_STANDING)]
         public static void HandleSetFactionStanding(Packet packet)
         {
@@ -42,10 +50,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             var count = packet.ReadInt32();
             for (int i = 0; i < count; i++)
-            {
-                packet.ReadInt32("Index");
-                packet.ReadInt32("Standing");
-            }
+                ReadFactionStandingData(packet, i);
 
             packet.ResetBitReader();
             packet.ReadBit("ShowVisual");

@@ -44,6 +44,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             var knownPetsSize = packet.ReadUInt32();
             packet.ReadByte("MaxPetLevel");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_6_53840))
+                packet.ReadUInt32("Unused1026");
+
             for (var i = 0; i < knownPetsSize; i++)
                 packet.ReadByte("KnownPetMask", i);
 

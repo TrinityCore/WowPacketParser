@@ -25,8 +25,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadTime64("Time");
 
             var decompCount = packet.ReadInt32();
-            packet.ResetBitReader();
-            packet.ReadBitsE<AccountDataType>("Data Type", 4);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_6_53840))
+                packet.ReadInt32E<AccountDataType>("DataType");
+            else
+                packet.ReadBitsE<AccountDataType>("Data Type", 4);
             var compCount = packet.ReadInt32();
 
             var pkt = packet.Inflate(compCount, decompCount, false);
@@ -40,7 +42,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static void HandleRequestAccountData(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
-            packet.ReadBitsE<AccountDataType>("Data Type", 4);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_6_53840))
+                packet.ReadInt32E<AccountDataType>("DataType");
+            else
+                packet.ReadBitsE<AccountDataType>("Data Type", 4);
         }
 
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA, ClientVersionBuild.V9_1_5_40772)]
@@ -50,8 +55,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadTime64("Time");
 
             var decompCount = packet.ReadInt32();
-            packet.ResetBitReader();
-            packet.ReadBitsE<AccountDataType>("Data Type", 4);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_6_53840))
+                packet.ReadInt32E<AccountDataType>("DataType");
+            else
+                packet.ReadBitsE<AccountDataType>("Data Type", 4);
             var compCount = packet.ReadInt32();
 
             var pkt = packet.Inflate(compCount, decompCount, false);

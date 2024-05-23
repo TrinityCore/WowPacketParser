@@ -9,11 +9,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     public static class SceneHandler
     {
         [Parser(Opcode.SMSG_CANCEL_SCENE)]
-        [Parser(Opcode.CMSG_SCENE_PLAYBACK_COMPLETE)]
-        [Parser(Opcode.CMSG_SCENE_PLAYBACK_CANCELED)]
         public static void HandleMiscScene(Packet packet)
         {
             packet.ReadUInt32("SceneInstanceID");
+        }
+
+        [Parser(Opcode.CMSG_SCENE_PLAYBACK_COMPLETE)]
+        [Parser(Opcode.CMSG_SCENE_PLAYBACK_CANCELED)]
+        public static void HandlScenePlayback(Packet packet)
+        {
+            packet.ReadUInt32("SceneInstanceID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_6_53840))
+                packet.ReadInt32("TimePassed");
         }
 
         [Parser(Opcode.SMSG_PLAY_SCENE)]

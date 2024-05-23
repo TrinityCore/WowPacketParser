@@ -260,6 +260,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var hasTemplateSet = packet.ReadBit("HasTemplateSet");
             packet.ReadBit("IsTrialBoost");
             packet.ReadBit("UseNPE");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_6_53840))
+                packet.ReadBit("Unused1026");
 
             packet.ReadByteE<Race>("RaceID");
             packet.ReadByteE<Class>("ClassID");

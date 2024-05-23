@@ -204,7 +204,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("KioskModeEnabled");
             packet.ReadBit("IsCompetitiveModeEnabled");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
-                packet.ReadBit("Unused1002_1");
+                packet.ReadBit("IsBoostEnabled");
             packet.ReadBit("TrialBoostEnabled");
             packet.ReadBit("TokenBalanceEnabled");
             packet.ReadBit("LiveRegionCharacterListEnabled");
@@ -216,6 +216,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
                 packet.ReadBit("Unused1002_2");
             var europaTicket = packet.ReadBit("IsEuropaTicketSystemStatusEnabled");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+                packet.ReadBit("IsNameReservationEnabled");
             var launchEta = packet.ReadBit();
             packet.ReadBit("AddonsDisabled");
             packet.ReadBit("Unused1000");
@@ -263,6 +265,12 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 debugTimeEventCount = packet.ReadUInt32("DebugTimeEventCount");
                 packet.ReadInt32("Unused1007");
             }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_6_53840))
+                packet.ReadUInt32("EventRealmQueues");
+
+            if (launchEta)
+                packet.ReadInt32("LaunchETA");
 
             for (int i = 0; i < liveRegionCharacterCopySourceRegionsCount; i++)
                 packet.ReadUInt32("LiveRegionCharacterCopySourceRegion", i);
