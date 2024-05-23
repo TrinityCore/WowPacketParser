@@ -76,5 +76,22 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             for (var i = 0; i < itemGuidCount; ++i)
                 packet.ReadPackedGuid128("ItemGuid", i);
         }
+
+        [Parser(Opcode.CMSG_CHANGE_BAG_SLOT_FLAG)]
+        [Parser(Opcode.CMSG_CHANGE_BANK_BAG_SLOT_FLAG)]
+        public static void HandleChangeBagSlotFlag(Packet packet)
+        {
+            packet.ReadUInt32("BagIndex");
+            packet.ReadUInt32E<BagSlotFlags>("BagSlotFlag");
+            packet.ReadBit("On");
+        }
+
+        [Parser(Opcode.CMSG_SET_BACKPACK_AUTOSORT_DISABLED)]
+        [Parser(Opcode.CMSG_SET_BACKPACK_SELL_JUNK_DISABLED)]
+        [Parser(Opcode.CMSG_SET_BANK_AUTOSORT_DISABLED)]
+        public static void HandleBackpackAutosortDisabled(Packet packet)
+        {
+            packet.ReadBit("Disable");
+        }
     }
 }
