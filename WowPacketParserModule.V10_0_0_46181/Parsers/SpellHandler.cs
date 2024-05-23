@@ -51,7 +51,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         {
             packet.ReadPackedGuid128("CastGUID");
             packet.ReadPackedGuid128("CasterGUID");
-            packet.ReadUInt32("StageID");
+            packet.ReadUInt32("Stage");
         }
 
         [Parser(Opcode.SMSG_SPELL_EMPOWER_UPDATE)]
@@ -86,7 +86,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             V9_0_1_36216.Parsers.SpellHandler.ReadSpellCastVisual(packet, "Visual");
 
-            packet.ReadUInt32("Duration");
+            packet.ReadUInt32("EmpowerDuration");
             packet.ReadUInt32("MinHoldTime");
             packet.ReadUInt32("HoldAtMaxTime");
             var stageCount = packet.ReadUInt32("StageDurationsCount");
