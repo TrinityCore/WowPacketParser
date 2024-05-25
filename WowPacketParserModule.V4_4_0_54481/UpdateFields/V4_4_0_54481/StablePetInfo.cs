@@ -13,6 +13,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_0_54481
         public System.Nullable<uint> DisplayID { get; set; }
         public System.Nullable<uint> ExperienceLevel { get; set; }
         public System.Nullable<byte> PetFlags { get; set; }
+        public System.Nullable<byte> Unk440 { get; set; }
         public string Name { get; set; }
     }
 }

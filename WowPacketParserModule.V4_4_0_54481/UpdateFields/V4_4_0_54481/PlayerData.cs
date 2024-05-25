@@ -38,6 +38,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_0_54481
         public System.Nullable<byte> CurrentBattlePetBreedQuality { get; set; }
         public System.Nullable<int> HonorLevel { get; set; }
         public System.Nullable<long> LogoutTime { get; set; }
+        public System.Nullable<int> Field_13C { get; set; }
+        public System.Nullable<int> Field_140 { get; set; }
         public System.Nullable<int> CurrentBattlePetSpeciesID { get; set; }
         public System.Nullable<uint>[] Field_3120 { get; } = new System.Nullable<uint>[19];
         public IDeclinedNames DeclinedNames { get; set; }
