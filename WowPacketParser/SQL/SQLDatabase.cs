@@ -351,6 +351,32 @@ namespace WowPacketParser.SQL
             return sniffData;
         }
 
+        public static void CheckCreatureTemplateDifficultyNonWDBFallbacks(ref CreatureTemplateDifficulty sniffData, uint difficulty)
+        {
+            // if db disabled/empty simply return sniff data
+            if (CreatureTemplateDifficultyWDBData.Count == 0)
+                return;
+
+            // entry with same difficulty already exists (wdb)
+            if (CreatureTemplateDifficultyWDBData.TryGetValue((sniffData.Entry.Value, difficulty), out var dbData))
+                sniffData.DifficultyID = dbData.DifficultyID;
+            // entry with same difficulty does not exist, check fallback difficulties recursively
+            else
+            {
+                if (!Settings.UseDBC || DBC.DBC.Difficulty == null)
+                    return;
+
+                if (DBC.DBC.Difficulty.TryGetValue((int)difficulty, out var difficultyEntry))
+                {
+                    // only allow fallbacks for FallbackDifficultyID = 0
+                    if (difficultyEntry.FallbackDifficultyID != 0)
+                        return;
+
+                    CheckCreatureTemplateDifficultyNonWDBFallbacks(ref sniffData, difficultyEntry.FallbackDifficultyID);
+                }
+            }
+        }
+
         private static void LoadNPCTexts()
         {
             if (Settings.TargetedProject == TargetedProject.Cmangos)

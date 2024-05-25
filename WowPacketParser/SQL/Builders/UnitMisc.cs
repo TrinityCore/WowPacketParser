@@ -218,6 +218,7 @@ namespace WowPacketParser.SQL.Builders
                             ContentTuningID = contentTuningID
                         };
                         UpdateCreatureStaticFlags(ref npc, ref creatureDifficulty);
+                        WowPacketParser.SQL.SQLDatabase.CheckCreatureTemplateDifficultyNonWDBFallbacks(ref creatureDifficulty, creatureDifficulty.DifficultyID.Value);
                         Storage.CreatureTemplateDifficulties.Add(creatureDifficulty);
                     }
                 }
@@ -231,6 +232,7 @@ namespace WowPacketParser.SQL.Builders
                         MaxLevel = difficultyLevels[(unit.Key.GetEntry(), npc.DifficultyID)].Item2,
                     };
                     UpdateCreatureStaticFlags(ref npc, ref creatureDifficulty);
+                    WowPacketParser.SQL.SQLDatabase.CheckCreatureTemplateDifficultyNonWDBFallbacks(ref creatureDifficulty, creatureDifficulty.DifficultyID.Value);
                     Storage.CreatureTemplateDifficulties.Add(creatureDifficulty);
                 }
             }
@@ -403,7 +405,7 @@ namespace WowPacketParser.SQL.Builders
                                 var split = spellList.Item1.Comments.Split('-');
                                 spellList.Item1.Comments = split[0] + stringAddition + " - " + split[1];
                             }
-                        }                        
+                        }
                     }
                 }
             }
