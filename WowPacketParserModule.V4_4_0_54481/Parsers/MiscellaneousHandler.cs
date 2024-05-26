@@ -126,6 +126,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadByte("TutorialData", i);
         }
 
+        [Parser(Opcode.SMSG_DISPLAY_PROMOTION)]
+        public static void HandleDisplayPromotion(Packet packet)
+        {
+            packet.ReadUInt32("PromotionID");
+        }
+
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
