@@ -119,6 +119,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadDebugTimeInfo(packet, "DebugTimeEvent", i);
         }
 
+        [Parser(Opcode.SMSG_TUTORIAL_FLAGS)]
+        public static void HandleTutorialFlags(Packet packet)
+        {
+            for (var i = 0; i < 32; i++)
+                packet.ReadByte("TutorialData", i);
+        }
+
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
         public static void HandleZeroLengthPackets(Packet packet)
         {

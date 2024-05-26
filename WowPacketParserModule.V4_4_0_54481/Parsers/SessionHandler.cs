@@ -56,35 +56,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 var classes = packet.ReadUInt32("AvailableClasses");
                 var templates = packet.ReadUInt32("Templates");
                 packet.ReadUInt32("AccountCurrency");
+                packet.ReadTime64("Time");
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503) &&
-                    ClientVersion.Expansion != ClientType.Classic)
-                    packet.ReadTime64("Time");
-                else
-                    packet.ReadTime("Time");
-
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_3_0_33062))
+                for (var i = 0; i < classes; ++i)
                 {
-                    for (var i = 0; i < classes; ++i)
+                    packet.ReadByteE<Race>("RaceID", "AvailableClasses", i);
+                    var classesForRace = packet.ReadUInt32();
+                    for (var j = 0u; j < classesForRace; ++j)
                     {
-                        packet.ReadByteE<Race>("RaceID", "AvailableClasses", i);
-                        var classesForRace = packet.ReadUInt32();
-                        for (var j = 0u; j < classesForRace; ++j)
-                        {
-                            packet.ReadByteE<Class>("ClassID", "AvailableClasses", i, "Classes", j);
-                            packet.ReadByteE<ClientType>("ActiveExpansionLevel", "AvailableClasses", i, "Classes", j);
-                            packet.ReadByteE<ClientType>("AccountExpansionLevel", "AvailableClasses", i, "Classes", j);
-                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
-                                packet.ReadByte("MinActiveExpansionLevel", "AvailableClasses", i, "Classes", j);
-                        }
-                    }
-                }
-                else
-                {
-                    for (var i = 0; i < classes; ++i)
-                    {
-                        packet.ReadByteE<Class>("Class", "AvailableClasses", i);
-                        packet.ReadByteE<ClientType>("RequiredExpansion", "AvailableClasses", i);
+                        packet.ReadByteE<Class>("ClassID", "AvailableClasses", i, "Classes", j);
+                        packet.ReadByteE<ClientType>("ActiveExpansionLevel", "AvailableClasses", i, "Classes", j);
+                        packet.ReadByteE<ClientType>("AccountExpansionLevel", "AvailableClasses", i, "Classes", j);
+                        packet.ReadByte("MinActiveExpansionLevel", "AvailableClasses", i, "Classes", j);
                     }
                 }
 
@@ -94,9 +77,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 var horde = packet.ReadBit(); // NumPlayersHorde
                 var alliance = packet.ReadBit(); // NumPlayersAlliance
                 var trialExpiration = packet.ReadBit(); // ExpansionTrialExpiration
-                var hasNewBuildKeys = false;
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
-                    hasNewBuildKeys = packet.ReadBit();
+                var hasNewBuildKeys = packet.ReadBit();
 
                 packet.ResetBitReader();
                 packet.ReadUInt32("BillingPlan");
@@ -114,12 +95,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     packet.ReadUInt16("NumPlayersAlliance");
 
                 if (trialExpiration)
-                {
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
                         packet.ReadInt64("ExpansionTrialExpiration");
-                    else
-                        packet.ReadInt32("ExpansionTrialExpiration");
-                }
 
                 if (hasNewBuildKeys)
                 {
@@ -141,13 +117,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     packet.ReadBit("IsLocal", "VirtualRealms", i);
                     packet.ReadBit("IsInternalRealm", "VirtualRealms", i);
 
-                    var bitsCount = 8;
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724) && ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683))
-                        bitsCount = 9;
-
-                    var nameLen1 = packet.ReadBits(bitsCount);
-                    var nameLen2 = packet.ReadBits(bitsCount);
+                    var nameLen1 = packet.ReadBits(8);
+                    var nameLen2 = packet.ReadBits(8);
                     packet.ReadWoWString("RealmNameActual", nameLen1, "VirtualRealms", i);
                     packet.ReadWoWString("RealmNameNormalized", nameLen2, "VirtualRealms", i);
                 }
@@ -174,12 +145,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             {
                 packet.ReadUInt32("WaitCount");
                 packet.ReadUInt32("WaitTime");
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_5_52902))
-                    packet.ReadUInt32("AllowedFactionGroupForCharacterCreate");
+                packet.ReadUInt32("AllowedFactionGroupForCharacterCreate");
                 packet.ResetBitReader();
                 packet.ReadBit("HasFCM");
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_5_52902))
-                    packet.ReadBit("CanCreateOnlyIfExisting");
+                packet.ReadBit("CanCreateOnlyIfExisting");
             }
         }
 
@@ -202,6 +171,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ReadBytes("Digest", 32);
             packet.ReadBytes("SessionKey", sessionKeyLength);
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_NET_CONNECTION_STATUS)]
+        public static void HandleBattleNetConnectionStatus(Packet packet)
+        {
+            packet.ReadBits("State", 2); // TODO: enum
+            packet.ReadBit("SuppressNotification");
         }
 
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK)]
