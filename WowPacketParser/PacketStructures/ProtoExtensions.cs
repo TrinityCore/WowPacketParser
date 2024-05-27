@@ -54,6 +54,26 @@ namespace WowPacketParser.PacketStructures
             return universal;
         }
 
+        public static UniversalAuraFlag ToUniversal(this AuraFlagClassic flags)
+        {
+            UniversalAuraFlag universal = UniversalAuraFlag.None;
+            if (flags.HasFlag(AuraFlagClassic.NoCaster))
+                universal |= UniversalAuraFlag.NoCaster;
+            if (flags.HasFlag(AuraFlagClassic.Positive))
+                universal |= UniversalAuraFlag.Positive;
+            if (flags.HasFlag(AuraFlagClassic.Duration))
+                universal |= UniversalAuraFlag.Duration;
+            if (flags.HasFlag(AuraFlagClassic.Scalable))
+                universal |= UniversalAuraFlag.Scalable;
+            if (flags.HasFlag(AuraFlagClassic.Negative))
+                universal |= UniversalAuraFlag.Negative;
+            //if (flags.HasFlag(AuraFlagClassic.Cancelable))
+            //    universal |= UniversalAuraFlag.Cancelable;
+            //if (flags.HasFlag(AuraFlagClassic.Passive))
+            //    universal |= UniversalAuraFlag.Passive;
+            return universal;
+        }
+
         public static UniversalAuraFlag ToUniversal(this AuraFlag flags)
         {
             UniversalAuraFlag universal = UniversalAuraFlag.None;
