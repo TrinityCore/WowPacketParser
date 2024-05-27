@@ -1916,7 +1916,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_0_54481
             {
                 for (var i = 0; i < 2; ++i)
                 {
-                    if (changesMask[34 + i])
+                    if (changesMask[40 + i])
                     {
                         data.PartyType[i] = packet.ReadByte("PartyType", indexes, i);
                     }
