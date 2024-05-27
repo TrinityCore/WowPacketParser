@@ -164,6 +164,33 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadRaceUnlockData(packet, i, "RaceUnlockData");
         }
 
+        [Parser(Opcode.SMSG_UNDELETE_COOLDOWN_STATUS_RESPONSE)]
+        public static void HandleUndeleteCooldownStatusResponse(Packet packet)
+        {
+            packet.ReadBit("OnCooldown");
+            packet.ReadUInt32("MaxCooldown"); // In Sec
+            packet.ReadUInt32("CurrentCooldown"); // In Sec
+        }
+
+        [Parser(Opcode.CMSG_CHAR_DELETE)]
+        public static void HandleClientCharDelete(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+        }
+
+        [Parser(Opcode.SMSG_DELETE_CHAR)]
+        public static void HandleDeleteChar(Packet packet)
+        {
+            packet.ReadByteE<ResponseCode>("Response");
+        }
+
+        [Parser(Opcode.SMSG_CREATE_CHAR)]
+        public static void HandleCreateChar(Packet packet)
+        {
+            packet.ReadByteE<ResponseCode>("Response");
+            packet.ReadPackedGuid128("GUID");
+        }
+
         [Parser(Opcode.CMSG_ENUM_CHARACTERS)]
         [Parser(Opcode.CMSG_GET_UNDELETE_CHARACTER_COOLDOWN_STATUS)]
         public static void HandleCharacterNull(Packet packet)

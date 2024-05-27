@@ -180,6 +180,48 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("SuppressNotification");
         }
 
+        [Parser(Opcode.SMSG_CONNECT_TO)]
+        public static void HandleRedirectClient(Packet packet)
+        {
+            packet.ReadBytes("Where (RSA encrypted)", 256);
+
+            AddressType type = packet.ReadByteE<AddressType>("Type");
+            switch (type)
+            {
+                case AddressType.IPv4:
+                    packet.ReadIPAddress("Address");
+                    break;
+                case AddressType.IPv6:
+                    packet.ReadIPv6Address("Address");
+                    break;
+                case AddressType.NamedSocket:
+                    packet.ReadWoWString("Address", 128);
+                    break;
+                default:
+                    break;
+            }
+
+            packet.ReadUInt16("Port");
+            packet.ReadUInt32E<ConnectToSerial>("Serial");
+            packet.ReadByte("Con");
+            packet.ReadUInt64("Key");
+        }
+
+        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION)]
+        public static void HandleRedirectAuthProof(Packet packet)
+        {
+            packet.ReadInt64("DosResponse");
+            packet.ReadInt64("Key");
+            packet.ReadBytes("LocalChallenge", 16);
+            packet.ReadBytes("Digest", 24);
+        }
+
+        [Parser(Opcode.CMSG_QUEUED_MESSAGES_END)]
+        public static void HandleQueuedMessagesEnd(Packet packet)
+        {
+            packet.ReadInt32("Timestamp");
+        }
+
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK)]
         public static void HandleSessionZero(Packet packet)
         {

@@ -132,6 +132,53 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("PromotionID");
         }
 
+        [Parser(Opcode.SMSG_SOCIAL_CONTRACT_REQUEST_RESPONSE)]
+        public static void HandleSocialContractRequestResponse(Packet packet)
+        {
+            packet.ReadBit("ShowSocialContract");
+        }
+
+        [Parser(Opcode.CMSG_PING)]
+        public static void HandleClientPing(Packet packet)
+        {
+            packet.ReadInt32("Serial");
+            packet.ReadInt32("Latency");
+        }
+
+        [Parser(Opcode.SMSG_PONG)]
+        public static void HandleServerPong(Packet packet)
+        {
+            packet.ReadInt32("Serial");
+        }
+
+        [Parser(Opcode.CMSG_OVERRIDE_SCREEN_FLASH)]
+        public static void HandleOverrideScreenFlash(Packet packet)
+        {
+            packet.ReadBit("CVar overrideScreenFlash");
+        }
+
+        [Parser(Opcode.CMSG_VIOLENCE_LEVEL)]
+        public static void HandleSetViolenceLevel(Packet packet)
+        {
+            packet.ReadByte("Level");
+        }
+
+        [Parser(Opcode.SMSG_TRIGGER_CINEMATIC)]
+        [Parser(Opcode.SMSG_TRIGGER_MOVIE)]
+        public static void HandleTriggerSequence(Packet packet)
+        {
+            packet.ReadInt32("CinematicID");
+        }
+
+        [Parser(Opcode.SMSG_EXPLORATION_EXPERIENCE)]
+        public static void HandleExplorationExperience(Packet packet)
+        {
+            packet.ReadUInt32<AreaId>("AreaID");
+            packet.ReadUInt32("Experience");
+        }
+
+        [Parser(Opcode.SMSG_RESUME_COMMS)]
+        [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
         public static void HandleZeroLengthPackets(Packet packet)
         {

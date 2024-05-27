@@ -182,5 +182,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             ReadMovementMonsterSpline(packet, pos, "MovementMonsterSpline");
         }
+
+        [Parser(Opcode.SMSG_BIND_POINT_UPDATE)]
+        public static void HandleBindPointUpdate(Packet packet)
+        {
+            packet.ReadVector3("Position");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadUInt32<MapId>("Map");
+            packet.ReadInt32<AreaId>("AreaId");
+
+        }
     }
 }
