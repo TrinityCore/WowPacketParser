@@ -16,7 +16,8 @@ namespace WowPacketParser.Enums
 
         // chose higher value to have some room for future
         Classic             = 20,
-        WotlkClassic        = 21
+        WotlkClassic        = 21,
+        CataClassic         = 22
     }
 
     [Flags]
@@ -37,7 +38,8 @@ namespace WowPacketParser.Enums
         // Classic
         Classic                           = 1 << TargetedDatabase.Classic,
         WotlkClassic                      = 1 << TargetedDatabase.WotlkClassic,
-        AnyClassic                        = Classic | WotlkClassic,
+        CataClassic                       = 1 << TargetedDatabase.CataClassic,
+        AnyClassic                        = Classic | WotlkClassic | CataClassic,
 
         Any                               = AnyRetail | AnyClassic,
 
