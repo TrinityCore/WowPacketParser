@@ -23,6 +23,30 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadWoWString("Text", textLen);
         }
 
+        [Parser(Opcode.CMSG_REQUEST_WEEKLY_REWARDS)]
+        [Parser(Opcode.CMSG_REQUEST_LATEST_SPLASH_SCREEN)]
+        public static void HandleEmptyPacket(Packet packet)
+        {
+        }
+
+        [Parser(Opcode.CMSG_SET_EXCLUDED_CHAT_CENSOR_SOURCES)]
+        public static void HandleSetExcludedChatCensorSources(Packet packet)
+        {
+            packet.ReadBit("Exclude");
+        }
+
+        [Parser(Opcode.CMSG_OVERRIDE_SCREEN_FLASH)]
+        public static void HandleOverrideScreenFlash(Packet packet)
+        {
+            packet.ReadBit("Override");
+        }
+        
+        [Parser(Opcode.SMSG_SPLASH_SCREEN_SHOW_LATEST)]
+        public static void HandleSplashScreenShowLastest(Packet packet)
+        {
+            packet.ReadInt32("SplashScreenID");
+        }
+
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
