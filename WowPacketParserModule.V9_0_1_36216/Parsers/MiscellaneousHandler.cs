@@ -23,8 +23,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadWoWString("Text", textLen);
         }
 
+        [Parser(Opcode.CMSG_REQUEST_WEEKLY_REWARDS)]
+        [Parser(Opcode.CMSG_REQUEST_LATEST_SPLASH_SCREEN)]
+        public static void HandleEmptyPacket(Packet packet)
+        {
+        }
+
         [Parser(Opcode.CMSG_SET_EXCLUDED_CHAT_CENSOR_SOURCES)]
-        public static void HandleSetExludedChatCensorSources(Packet packet)
+        public static void HandleSetExcludedChatCensorSources(Packet packet)
         {
             packet.ReadBit("Exclude");
         }
@@ -34,21 +40,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         {
             packet.ReadBit("Override");
         }
-
-        [Parser(Opcode.CMSG_REQUEST_WEEKLY_REWARDS)]
-        public static void HandleRequestWeeklyRewards(Packet packet)
-        {
-        }
-
-        [Parser(Opcode.CMSG_REQUEST_LATEST_SPLASH_SCREEN)]
-        public static void HandleRequestLastestSplashScreen(Packet packet)
-        {
-        }
-
+        
         [Parser(Opcode.SMSG_SPLASH_SCREEN_SHOW_LATEST)]
         public static void HandleSplashScreenShowLastest(Packet packet)
         {
-            packet.ReadInt32("SplashScreenId");
+            packet.ReadInt32("SplashScreenID");
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
