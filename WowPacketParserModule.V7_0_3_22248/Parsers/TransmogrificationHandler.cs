@@ -52,7 +52,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_ADD_ACCOUNT_COSMETIC)]
         public static void HandleAddAccountCosmetic(Packet packet)
         {
-            packet.ReadPackedGuid128("ItemGuid");
+            packet.ReadPackedGuid128("ItemGUID");
         }
     }
 }
