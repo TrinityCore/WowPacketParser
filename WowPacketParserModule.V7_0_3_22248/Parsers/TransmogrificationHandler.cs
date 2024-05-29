@@ -42,5 +42,17 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadPackedGuid128("Guid");
         }
+
+        [Parser(Opcode.SMSG_ACCOUNT_COSMETIC_ADDED)]
+        public static void HandleAccountCosmeticAdded(Packet packet)
+        {
+            packet.ReadInt32("ItemModifiedAppearanceID");
+        }
+
+        [Parser(Opcode.CMSG_ADD_ACCOUNT_COSMETIC)]
+        public static void HandleAddAccountCosmetic(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+        }
     }
 }
