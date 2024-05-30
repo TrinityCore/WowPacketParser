@@ -54,6 +54,78 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadInt32("TraitDefinitionID", indexes);
         }
 
+        public static void ReadSpellMissStatus(Packet packet, params object[] idx)
+        {
+            var reason = packet.ReadByte("Reason", idx); // TODO enum
+            if (reason == 11)
+                packet.ReadByte("ReflectStatus", idx);
+        }
+
+        public static PacketSpellData ReadSpellCastData(Packet packet, params object[] idx)
+        {
+            var packetSpellData = new PacketSpellData();
+            packet.ReadPackedGuid128("CasterGUID", idx);
+            packetSpellData.Caster = packet.ReadPackedGuid128("CasterUnit", idx);
+
+            packetSpellData.CastGuid = packet.ReadPackedGuid128("CastID", idx);
+            packet.ReadPackedGuid128("OriginalCastID", idx);
+
+            var spellID = packetSpellData.Spell = packet.ReadUInt32<SpellId>("SpellID", idx);
+            packet.ReadUInt32("SpellXSpellVisualID", idx);
+
+            packetSpellData.Flags = packet.ReadUInt32("CastFlags", idx);
+            packetSpellData.Flags2 = packet.ReadUInt32("CastFlagsEx", idx);
+            packetSpellData.CastTime = packet.ReadUInt32("CastTime", idx);
+
+            V6_0_2_19033.Parsers.SpellHandler.ReadMissileTrajectoryResult(packet, idx, "MissileTrajectory");
+
+            packet.ReadByte("DestLocSpellCastIndex", idx);
+
+            V6_0_2_19033.Parsers.SpellHandler.ReadCreatureImmunities(packet, idx, "Immunities");
+
+            V6_0_2_19033.Parsers.SpellHandler.ReadSpellHealPrediction(packet, idx, "Predict");
+
+            packet.ResetBitReader();
+
+            var hitTargetsCount = packet.ReadBits("HitTargetsCount", 16, idx);
+            var missTargetsCount = packet.ReadBits("MissTargetsCount", 16, idx);
+            var missStatusCount = packet.ReadBits("MissStatusCount", 16, idx);
+            var remainingPowerCount = packet.ReadBits("RemainingPowerCount", 9, idx);
+
+            var hasRuneData = packet.ReadBit("HasRuneData", idx);
+            var targetPointsCount = packet.ReadBits("TargetPointsCount", 16, idx);
+            var hasAmmoDisplayId = packet.ReadBit("HasAmmoDisplayId", idx);
+            var hasAmmoInventoryType = packet.ReadBit("HasAmmoInventoryType", idx);
+
+            V8_0_1_27101.Parsers.SpellHandler.ReadSpellTargetData(packet, packetSpellData, spellID, idx, "Target");
+
+            for (var i = 0; i < hitTargetsCount; ++i)
+                packetSpellData.HitTargets.Add(packet.ReadPackedGuid128("HitTarget", idx, i));
+
+            for (var i = 0; i < missTargetsCount; ++i)
+                packetSpellData.MissedTargets.Add(packet.ReadPackedGuid128("MissTarget", idx, i));
+
+            for (var i = 0; i < missStatusCount; ++i)
+                ReadSpellMissStatus(packet, idx, "MissStatus", i);
+
+            for (var i = 0; i < remainingPowerCount; ++i)
+                V6_0_2_19033.Parsers.SpellHandler.ReadSpellPowerData(packet, idx, "RemainingPower", i);
+
+            if (hasRuneData)
+                V7_0_3_22248.Parsers.SpellHandler.ReadRuneData(packet, idx, "RemainingRunes");
+
+            for (var i = 0; i < targetPointsCount; ++i)
+                packetSpellData.TargetPoints.Add(V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, idx, "TargetPoints", i));
+
+            if (hasAmmoDisplayId)
+                packetSpellData.AmmoDisplayId = packet.ReadInt32("AmmoDisplayId", idx);
+
+            if (hasAmmoInventoryType)
+                packetSpellData.AmmoInventoryType = (uint)packet.ReadInt32E<InventoryType>("InventoryType", idx);
+
+            return packetSpellData;
+        }
+
         [Parser(Opcode.SMSG_SPELL_CHANNEL_START)]
         public static void HandleSpellChannelStart(Packet packet)
         {
@@ -284,6 +356,25 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                         unit.AddedAuras.Add(auras);
                 }
             }
+        }
+
+        [Parser(Opcode.SMSG_SPELL_START)]
+        public static void HandleSpellStart(Packet packet)
+        {
+            ReadSpellCastData(packet, "Cast");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_GO)]
+        public static void HandleSpellGo(Packet packet)
+        {
+            PacketSpellGo packetSpellGo = new();
+            packetSpellGo.Data = ReadSpellCastData(packet, "Cast");
+            packet.Holder.SpellGo = packetSpellGo;
+
+            packet.ResetBitReader();
+            var hasLog = packet.ReadBit();
+            if (hasLog)
+                V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet, "LogData");
         }
     }
 }
