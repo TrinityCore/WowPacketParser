@@ -15,5 +15,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32E<UnknownFlags>("ProficiencyMask");
             packet.ReadByteE<ItemClass>("ProficiencyClass");
         }
+
+        [Parser(Opcode.CMSG_REFORGE_ITEM)]
+        public static void HandleReforgeItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("ReforgerGUID");
+            packet.ReadInt32("ContainerId");
+            packet.ReadInt32("SlotNum");
+            packet.ReadInt32("ItemReforgeRecId");
+        }
     }
 }
