@@ -6568,6 +6568,1664 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             public HotfixStatus Status;
         }
 
+
+        static void ReadHotfix(Packet packet, DB2Hash type, int entry, HotfixStatus status, Packet db2File, params object[] indexes)
+        {
+            switch (status)
+            {
+                case HotfixStatus.Valid:
+                {
+                    packet.AddSniffData(StoreNameType.None, entry, type.ToString());
+
+                    switch (type)
+                    {
+                        case DB2Hash.Achievement:
+                        {
+                            AchievementHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AchievementCategory:
+                        {
+                            AchievementCategoryHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AdventureJournal:
+                        {
+                            AdventureJournalHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AdventureMapPoi:
+                        {
+                            AdventureMapPOIHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AnimationData:
+                        {
+                            AnimationDataHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AnimKit:
+                        {
+                            AnimKitHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AreaGroupMember:
+                        {
+                            AreaGroupMemberHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AreaTable:
+                        {
+                            AreaTableHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AreaTrigger:
+                        {
+                            AreaTriggerHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ArmorLocation:
+                        {
+                            ArmorLocationHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Artifact:
+                        {
+                            ArtifactHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ArtifactAppearance:
+                        {
+                            ArtifactAppearanceHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ArtifactAppearanceSet:
+                        {
+                            ArtifactAppearanceSetHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ArtifactCategory:
+                        {
+                            ArtifactCategoryHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ArtifactPower:
+                        {
+                            ArtifactPowerHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ArtifactPowerLink:
+                        {
+                            ArtifactPowerLinkHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ArtifactPowerPicker:
+                        {
+                            ArtifactPowerPickerHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ArtifactPowerRank:
+                        {
+                            ArtifactPowerRankHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ArtifactQuestXp:
+                        {
+                            ArtifactQuestXpHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ArtifactTier:
+                        {
+                            ArtifactTierHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ArtifactUnlock:
+                        {
+                            ArtifactUnlockHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AuctionHouse:
+                        {
+                            AuctionHouseHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AzeriteEmpoweredItem:
+                        {
+                            AzeriteEmpoweredItemHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AzeriteEssence:
+                        {
+                            AzeriteEssenceHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AzeriteEssencePower:
+                        {
+                            AzeriteEssencePowerHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AzeriteItem:
+                        {
+                            AzeriteItemHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AzeriteItemMilestonePower:
+                        {
+                            AzeriteItemMilestonePowerHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AzeriteKnowledgeMultiplier:
+                        {
+                            AzeriteKnowledgeMultiplierHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AzeriteLevelInfo:
+                        {
+                            AzeriteLevelInfoHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AzeritePower:
+                        {
+                            AzeritePowerHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AzeritePowerSetMember:
+                        {
+                            AzeritePowerSetMemberHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AzeriteTierUnlock:
+                        {
+                            AzeriteTierUnlockHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.AzeriteTierUnlockSet:
+                        {
+                            AzeriteTierUnlockSetHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.BankBagSlotPrices:
+                        {
+                            BankBagSlotPricesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.BannedAddons:
+                        {
+                            BannedAddonsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.BarberShopStyle:
+                        {
+                            BarberShopStyleHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.BattlePetAbility:
+                        {
+                            BattlePetAbilityHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.BattlePetBreedQuality:
+                        {
+                            BattlePetBreedQualityHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.BattlePetBreedState:
+                        {
+                            BattlePetBreedStateHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.BattlePetSpecies:
+                        {
+                            BattlePetSpeciesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.BattlePetSpeciesState:
+                        {
+                            BattlePetSpeciesStateHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.BattlemasterList:
+                        {
+                            BattlemasterListHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.BroadcastText:
+                        {
+                            BroadcastTextHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CfgCategories:
+                        {
+                            CfgCategoriesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CfgRegions:
+                        {
+                            CfgRegionsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CharTitles:
+                        {
+                            CharTitlesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CharacterLoadout:
+                        {
+                            CharacterLoadoutHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CharacterLoadoutItem:
+                        {
+                            CharacterLoadoutItemHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChatChannels:
+                        {
+                            ChatChannelsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrClassUiDisplay:
+                        {
+                            ChrClassUiDisplayHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrClasses:
+                        {
+                            ChrClassesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrClassesXPowerTypes:
+                        {
+                            ChrClassesXPowerTypesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrCustomizationChoice:
+                        {
+                            ChrCustomizationChoiceHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrCustomizationDisplayInfo:
+                        {
+                            ChrCustomizationDisplayInfoHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrCustomizationElement:
+                        {
+                            ChrCustomizationElementHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrCustomizationOption:
+                        {
+                            ChrCustomizationOptionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrCustomizationReq:
+                        {
+                            ChrCustomizationReqHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrCustomizationReqChoice:
+                        {
+                            ChrCustomizationReqChoiceHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrModel:
+                        {
+                            ChrModelHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrRaceXChrModel:
+                        {
+                            ChrRaceXChrModelHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrRaces:
+                        {
+                            ChrRacesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ChrSpecialization:
+                        {
+                            ChrSpecializationHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CinematicCamera:
+                        {
+                            CinematicCameraHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CinematicSequences:
+                        {
+                            CinematicSequencesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ConditionalChrModel:
+                        {
+                            ConditionalChrModelHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ConditionalContentTuning:
+                        {
+                            ConditionalContentTuningHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ContentTuning:
+                        {
+                            ContentTuningHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ConversationLine:
+                        {
+                            ConversationLineHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CreatureDisplayInfo:
+                        {
+                            CreatureDisplayInfoHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CreatureDisplayInfoExtra:
+                        {
+                            CreatureDisplayInfoExtraHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CreatureFamily:
+                        {
+                            CreatureFamilyHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CreatureModelData:
+                        {
+                            CreatureModelDataHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CreatureType:
+                        {
+                            CreatureTypeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Criteria:
+                        {
+                            CriteriaHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CriteriaTree:
+                        {
+                            CriteriaTreeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CurrencyContainer:
+                        {
+                            CurrencyContainerHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CurrencyTypes:
+                        {
+                            CurrencyTypesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Curve:
+                        {
+                            CurveHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CurvePoint:
+                        {
+                            CurvePointHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.DestructibleModelData:
+                        {
+                            DestructibleModelDataHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Difficulty:
+                        {
+                            DifficultyHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.DungeonEncounter:
+                        {
+                            DungeonEncounterHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.DurabilityCosts:
+                        {
+                            DurabilityCostsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.DurabilityQuality:
+                        {
+                            DurabilityQualityHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Emotes:
+                        {
+                            EmotesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.EmotesText:
+                        {
+                            EmotesTextHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.EmotesTextSound:
+                        {
+                            EmotesTextSoundHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ExpectedStat:
+                        {
+                            ExpectedStatHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ExpectedStatMod:
+                        {
+                            ExpectedStatModHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Faction:
+                        {
+                            FactionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.FactionTemplate:
+                        {
+                            FactionTemplateHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.FriendshipRepReaction:
+                        {
+                            FriendshipRepReactionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.FriendshipReputation:
+                        {
+                            FriendshipReputationHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GameobjectArtKit:
+                        {
+                            GameobjectArtKitHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GameobjectDisplayInfo:
+                        {
+                            GameobjectDisplayInfoHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Gameobjects:
+                        {
+                            GameobjectsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrAbility:
+                        {
+                            GarrAbilityHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrBuilding:
+                        {
+                            GarrBuildingHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrBuildingPlotInst:
+                        {
+                            GarrBuildingPlotInstHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrClassSpec:
+                        {
+                            GarrClassSpecHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrFollower:
+                        {
+                            GarrFollowerHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrFollowerXAbility:
+                        {
+                            GarrFollowerXAbilityHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrMission:
+                        {
+                            GarrMissionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrPlot:
+                        {
+                            GarrPlotHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrPlotBuilding:
+                        {
+                            GarrPlotBuildingHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrPlotInstance:
+                        {
+                            GarrPlotInstanceHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrSiteLevel:
+                        {
+                            GarrSiteLevelHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrSiteLevelPlotInst:
+                        {
+                            GarrSiteLevelPlotInstHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GarrTalentTree:
+                        {
+                            GarrTalentTreeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GemProperties:
+                        {
+                            GemPropertiesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GlyphBindableSpell:
+                        {
+                            GlyphBindableSpellHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GlyphProperties:
+                        {
+                            GlyphPropertiesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GlyphRequiredSpec:
+                        {
+                            GlyphRequiredSpecHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GossipNpcOption:
+                        {
+                            GossipNPCOptionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GuildColorBackground:
+                        {
+                            GuildColorBackgroundHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GuildColorBorder:
+                        {
+                            GuildColorBorderHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GuildColorEmblem:
+                        {
+                            GuildColorEmblemHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.GuildPerkSpells:
+                        {
+                            GuildPerkSpellsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Heirloom:
+                        {
+                            HeirloomHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Holidays:
+                        {
+                            HolidaysHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ImportPriceArmor:
+                        {
+                            ImportPriceArmorHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ImportPriceQuality:
+                        {
+                            ImportPriceQualityHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ImportPriceShield:
+                        {
+                            ImportPriceShieldHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ImportPriceWeapon:
+                        {
+                            ImportPriceWeaponHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Item:
+                        {
+                            ItemHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemAppearance:
+                        {
+                            ItemAppearanceHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemArmorQuality:
+                        {
+                            ItemArmorQualityHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemArmorShield:
+                        {
+                            ItemArmorShieldHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemArmorTotal:
+                        {
+                            ItemArmorTotalHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemBagFamily:
+                        {
+                            ItemBagFamilyHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemBonus:
+                        {
+                            ItemBonusHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemBonusListLevelDelta:
+                        {
+                            ItemBonusListLevelDeltaHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemBonusTreeNode:
+                        {
+                            ItemBonusTreeNodeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemChildEquipment:
+                        {
+                            ItemChildEquipmentHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemClass:
+                        {
+                            ItemClassHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemContextPickerEntry:
+                        {
+                            ItemContextPickerEntryHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemCurrencyCost:
+                        {
+                            ItemCurrencyCostHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemDamageAmmo:
+                        {
+                            ItemDamageAmmoHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemDamageOneHand:
+                        {
+                            ItemDamageOneHandHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemDamageOneHandCaster:
+                        {
+                            ItemDamageOneHandCasterHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemDamageTwoHand:
+                        {
+                            ItemDamageTwoHandHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemDamageTwoHandCaster:
+                        {
+                            ItemDamageTwoHandCasterHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemDisenchantLoot:
+                        {
+                            ItemDisenchantLootHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemEffect:
+                        {
+                            ItemEffectHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemExtendedCost:
+                        {
+                            ItemExtendedCostHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemLevelSelector:
+                        {
+                            ItemLevelSelectorHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemLevelSelectorQuality:
+                        {
+                            ItemLevelSelectorQualityHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemLevelSelectorQualitySet:
+                        {
+                            ItemLevelSelectorQualitySetHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemLimitCategory:
+                        {
+                            ItemLimitCategoryHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemLimitCategoryCondition:
+                        {
+                            ItemLimitCategoryConditionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemModifiedAppearance:
+                        {
+                            ItemModifiedAppearanceHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemModifiedAppearanceExtra:
+                        {
+                            ItemModifiedAppearanceExtraHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemNameDescription:
+                        {
+                            ItemNameDescriptionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemPriceBase:
+                        {
+                            ItemPriceBaseHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemSearchName:
+                        {
+                            ItemSearchNameHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemSet:
+                        {
+                            ItemSetHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemSetSpell:
+                        {
+                            ItemSetSpellHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemSparse:
+                        {
+                            ItemSparseHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemSpec:
+                        {
+                            ItemSpecHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemSpecOverride:
+                        {
+                            ItemSpecOverrideHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ItemXBonusTree:
+                        {
+                            ItemXBonusTreeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.JournalEncounter:
+                        {
+                            JournalEncounterHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.JournalEncounterSection:
+                        {
+                            JournalEncounterSectionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.JournalInstance:
+                        {
+                            JournalInstanceHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.JournalTier:
+                        {
+                            JournalTierHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Keychain:
+                        {
+                            KeychainHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.KeystoneAffix:
+                        {
+                            KeystoneAffixHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.LanguageWords:
+                        {
+                            LanguageWordsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Languages:
+                        {
+                            LanguagesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.LfgDungeons:
+                        {
+                            LfgDungeonsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Light:
+                        {
+                            LightHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.LiquidType:
+                        {
+                            LiquidTypeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Lock:
+                        {
+                            LockHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.MailTemplate:
+                        {
+                            MailTemplateHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Map:
+                        {
+                            MapHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.MapChallengeMode:
+                        {
+                            MapChallengeModeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.MapDifficulty:
+                        {
+                            MapDifficultyHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.MapDifficultyXCondition:
+                        {
+                            MapDifficultyXConditionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ModifierTree:
+                        {
+                            ModifierTreeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Mount:
+                        {
+                            MountHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.MountCapability:
+                        {
+                            MountCapabilityHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.MountTypeXCapability:
+                        {
+                            MountTypeXCapabilityHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.MountXDisplay:
+                        {
+                            MountXDisplayHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Movie:
+                        {
+                            MovieHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.MythicPlusSeason:
+                        {
+                            MythicPlusSeasonHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.NameGen:
+                        {
+                            NameGenHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.NamesProfanity:
+                        {
+                            NamesProfanityHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.NamesReserved:
+                        {
+                            NamesReservedHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.NamesReservedLocale:
+                        {
+                            NamesReservedLocaleHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.NumTalentsAtLevel:
+                        {
+                            NumTalentsAtLevelHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.OverrideSpellData:
+                        {
+                            OverrideSpellDataHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ParagonReputation:
+                        {
+                            ParagonReputationHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Phase:
+                        {
+                            PhaseHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.PhaseXPhaseGroup:
+                        {
+                            PhaseXPhaseGroupHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.PlayerCondition:
+                        {
+                            PlayerConditionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.PowerDisplay:
+                        {
+                            PowerDisplayHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.PowerType:
+                        {
+                            PowerTypeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.PrestigeLevelInfo:
+                        {
+                            PrestigeLevelInfoHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.PvpDifficulty:
+                        {
+                            PvpDifficultyHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.PvpItem:
+                        {
+                            PvpItemHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.PvpSeason:
+                        {
+                            PvpSeasonHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.PvpTalent:
+                        {
+                            PvpTalentHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.PvpTalentCategory:
+                        {
+                            PvpTalentCategoryHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.PvpTalentSlotUnlock:
+                        {
+                            PvpTalentSlotUnlockHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.PvpTier:
+                        {
+                            PvpTierHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.QuestFactionReward:
+                        {
+                            QuestFactionRewardHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.QuestInfo:
+                        {
+                            QuestInfoHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.QuestLineXQuest:
+                        {
+                            QuestLineXQuestHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.QuestMoneyReward:
+                        {
+                            QuestMoneyRewardHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.QuestPackageItem:
+                        {
+                            QuestPackageItemHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.QuestSort:
+                        {
+                            QuestSortHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.QuestV2:
+                        {
+                            QuestV2Handler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.QuestXp:
+                        {
+                            QuestXpHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.RandPropPoints:
+                        {
+                            RandPropPointsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.RewardPack:
+                        {
+                            RewardPackHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.RewardPackXCurrencyType:
+                        {
+                            RewardPackXCurrencyTypeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.RewardPackXItem:
+                        {
+                            RewardPackXItemHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Scenario:
+                        {
+                            ScenarioHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ScenarioStep:
+                        {
+                            ScenarioStepHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SceneScript:
+                        {
+                            SceneScriptHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SceneScriptGlobalText:
+                        {
+                            SceneScriptGlobalTextHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SceneScriptPackage:
+                        {
+                            SceneScriptPackageHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SceneScriptText:
+                        {
+                            SceneScriptTextHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.ServerMessages:
+                        {
+                            ServerMessagesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SkillLine:
+                        {
+                            SkillLineHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SkillLineAbility:
+                        {
+                            SkillLineAbilityHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SkillLineXTraitTree:
+                        {
+                            SkillLineXTraitTreeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SkillRaceClassInfo:
+                        {
+                            SkillRaceClassInfoHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SoundKit:
+                        {
+                            SoundKitHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpecializationSpells:
+                        {
+                            SpecializationSpellsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpecSetMember:
+                        {
+                            SpecSetMemberHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellAuraOptions:
+                        {
+                            SpellAuraOptionsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellAuraRestrictions:
+                        {
+                            SpellAuraRestrictionsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellCastTimes:
+                        {
+                            SpellCastTimesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellCastingRequirements:
+                        {
+                            SpellCastingRequirementsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellCategories:
+                        {
+                            SpellCategoriesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellCategory:
+                        {
+                            SpellCategoryHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellClassOptions:
+                        {
+                            SpellClassOptionsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellCooldowns:
+                        {
+                            SpellCooldownsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellDuration:
+                        {
+                            SpellDurationHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellEffect:
+                        {
+                            SpellEffectHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellEquippedItems:
+                        {
+                            SpellEquippedItemsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellFocusObject:
+                        {
+                            SpellFocusObjectHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellInterrupts:
+                        {
+                            SpellInterruptsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellItemEnchantment:
+                        {
+                            SpellItemEnchantmentHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellItemEnchantmentCondition:
+                        {
+                            SpellItemEnchantmentConditionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellKeyboundOverride:
+                        {
+                            SpellKeyboundOverrideHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellLabel:
+                        {
+                            SpellLabelHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellLearnSpell:
+                        {
+                            SpellLearnSpellHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellLevels:
+                        {
+                            SpellLevelsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellMisc:
+                        {
+                            SpellMiscHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellName:
+                        {
+                            SpellNameHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellPower:
+                        {
+                            SpellPowerHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellPowerDifficulty:
+                        {
+                            SpellPowerDifficultyHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellProcsPerMinute:
+                        {
+                            SpellProcsPerMinuteHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellProcsPerMinuteMod:
+                        {
+                            SpellProcsPerMinuteModHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellRadius:
+                        {
+                            SpellRadiusHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellRange:
+                        {
+                            SpellRangeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellReagents:
+                        {
+                            SpellReagentsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellReagentsCurrency:
+                        {
+                            SpellReagentsCurrencyHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellScaling:
+                        {
+                            SpellScalingHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellShapeshift:
+                        {
+                            SpellShapeshiftHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellShapeshiftForm:
+                        {
+                            SpellShapeshiftFormHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellTargetRestrictions:
+                        {
+                            SpellTargetRestrictionsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellTotems:
+                        {
+                            SpellTotemsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellVisual:
+                        {
+                            SpellVisualHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellVisualEffectName:
+                        {
+                            SpellVisualEffectNameHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellVisualMissile:
+                        {
+                            SpellVisualMissileHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellVisualKit:
+                        {
+                            SpellVisualKitHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SpellXSpellVisual:
+                        {
+                            SpellXSpellVisualHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.SummonProperties:
+                        {
+                            SummonPropertiesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TactKey:
+                        {
+                            TactKeyHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Talent:
+                        {
+                            TalentHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TaxiNodes:
+                        {
+                            TaxiNodesHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TaxiPath:
+                        {
+                            TaxiPathHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TaxiPathNode:
+                        {
+                            TaxiPathNodeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TotemCategory:
+                        {
+                            TotemCategoryHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Toy:
+                        {
+                            ToyHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TransmogHoliday:
+                        {
+                            TransmogHolidayHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitCond:
+                        {
+                            TraitCondHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitCost:
+                        {
+                            TraitCostHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitCurrency:
+                        {
+                            TraitCurrencyHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitCurrencySource:
+                        {
+                            TraitCurrencySourceHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitDefinition:
+                        {
+                            TraitDefinitionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitDefinitionEffectPoints:
+                        {
+                            TraitDefinitionEffectPointsHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitEdge:
+                        {
+                            TraitEdgeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitNode:
+                        {
+                            TraitNodeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitNodeEntry:
+                        {
+                            TraitNodeEntryHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitNodeEntryXTraitCond:
+                        {
+                            TraitNodeEntryXTraitCondHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitNodeEntryXTraitCost:
+                        {
+                            TraitNodeEntryXTraitCostHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitNodeGroup:
+                        {
+                            TraitNodeGroupHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitNodeGroupXTraitCond:
+                        {
+                            TraitNodeGroupXTraitCondHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitNodeGroupXTraitCost:
+                        {
+                            TraitNodeGroupXTraitCostHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitNodeGroupXTraitNode:
+                        {
+                            TraitNodeGroupXTraitNodeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitNodeXTraitCond:
+                        {
+                            TraitNodeXTraitCondHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitNodeXTraitCost:
+                        {
+                            TraitNodeXTraitCostHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitNodeXTraitNodeEntry:
+                        {
+                            TraitNodeXTraitNodeEntryHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitTree:
+                        {
+                            TraitTreeHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitTreeLoadout:
+                        {
+                            TraitTreeLoadoutHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitTreeLoadoutEntry:
+                        {
+                            TraitTreeLoadoutEntryHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitTreeXTraitCost:
+                        {
+                            TraitTreeXTraitCostHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TraitTreeXTraitCurrency:
+                        {
+                            TraitTreeXTraitCurrencyHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TransmogSet:
+                        {
+                            TransmogSetHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TransmogSetGroup:
+                        {
+                            TransmogSetGroupHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TransmogSetItem:
+                        {
+                            TransmogSetItemHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TransportAnimation:
+                        {
+                            TransportAnimationHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TransportRotation:
+                        {
+                            TransportRotationHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.UiMap:
+                        {
+                            UiMapHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.UiMapAssignment:
+                        {
+                            UiMapAssignmentHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.UiMapLink:
+                        {
+                            UiMapLinkHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.UiMapXMapArt:
+                        {
+                            UiMapXMapArtHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.UnitCondition:
+                        {
+                            UnitConditionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.UnitPowerBar:
+                        {
+                            UnitPowerBarHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Vehicle:
+                        {
+                            VehicleHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.VehicleSeat:
+                        {
+                            VehicleSeatHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Vignette:
+                        {
+                            VignetteHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.WmoAreaTable:
+                        {
+                            WmoAreaTableHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.WorldEffect:
+                        {
+                            WorldEffectHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.WorldMapOverlay:
+                        {
+                            WorldMapOverlayHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.WorldStateExpression:
+                        {
+                            WorldStateExpressionHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        default:
+                        {
+                            db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has missing structure. HotfixBlob entry generated!", indexes);
+                            db2File.AsHex();
+                            db2File.ReadToEnd();
+
+                            HotfixBlob hotfixBlob = new HotfixBlob
+                            {
+                                TableHash = type,
+                                RecordID = entry,
+                                Blob = new Blob(db2File.GetStream(0))
+                            };
+
+                            Storage.HotfixBlobs.Add(hotfixBlob);
+                            break;
+                        }
+                    }
+
+                    if (db2File.Position != db2File.Length)
+                        HandleHotfixOptionalData(packet, type, entry, db2File);
+
+                    db2File.ClosePacket(false);
+                    break;
+                }
+                case HotfixStatus.RecordRemoved:
+                {
+                    packet.AddLine($"Row {entry} has been removed.", indexes);
+                    break;
+                }
+                case HotfixStatus.Invalid:
+                {
+                    packet.AddLine($"Row {entry} is invalid.", indexes);
+                    break;
+                }
+                case HotfixStatus.NotPublic:
+                {
+                    packet.AddLine($"Row {entry} is not public.", indexes);
+                    break;
+                }
+                default:
+                {
+                    packet.AddLine($"Unhandled status: {status}", indexes);
+                    break;
+                }
+            }
+        }
+
         static void ReadHotfixData(Packet packet, List<HotfixRecord> records, params object[] indexes)
         {
             int count = 0;
@@ -6582,1656 +8240,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 var data = packet.ReadBytes(dataSize);
                 var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
-                switch (status)
-                {
-                    case HotfixStatus.Valid:
-                    {
-                        packet.AddSniffData(StoreNameType.None, entry, type.ToString());
-
-                        switch (type)
-                        {
-                            case DB2Hash.Achievement:
-                            {
-                                AchievementHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AchievementCategory:
-                            {
-                                AchievementCategoryHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AdventureJournal:
-                            {
-                                AdventureJournalHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AdventureMapPoi:
-                            {
-                                AdventureMapPOIHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AnimationData:
-                            {
-                                AnimationDataHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AnimKit:
-                            {
-                                AnimKitHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AreaGroupMember:
-                            {
-                                AreaGroupMemberHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AreaTable:
-                            {
-                                AreaTableHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AreaTrigger:
-                            {
-                                AreaTriggerHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ArmorLocation:
-                            {
-                                ArmorLocationHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Artifact:
-                            {
-                                ArtifactHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ArtifactAppearance:
-                            {
-                                ArtifactAppearanceHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ArtifactAppearanceSet:
-                            {
-                                ArtifactAppearanceSetHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ArtifactCategory:
-                            {
-                                ArtifactCategoryHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ArtifactPower:
-                            {
-                                ArtifactPowerHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ArtifactPowerLink:
-                            {
-                                ArtifactPowerLinkHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ArtifactPowerPicker:
-                            {
-                                ArtifactPowerPickerHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ArtifactPowerRank:
-                            {
-                                ArtifactPowerRankHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ArtifactQuestXp:
-                            {
-                                ArtifactQuestXpHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ArtifactTier:
-                            {
-                                ArtifactTierHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ArtifactUnlock:
-                            {
-                                ArtifactUnlockHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AuctionHouse:
-                            {
-                                AuctionHouseHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AzeriteEmpoweredItem:
-                            {
-                                AzeriteEmpoweredItemHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AzeriteEssence:
-                            {
-                                AzeriteEssenceHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AzeriteEssencePower:
-                            {
-                                AzeriteEssencePowerHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AzeriteItem:
-                            {
-                                AzeriteItemHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AzeriteItemMilestonePower:
-                            {
-                                AzeriteItemMilestonePowerHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AzeriteKnowledgeMultiplier:
-                            {
-                                AzeriteKnowledgeMultiplierHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AzeriteLevelInfo:
-                            {
-                                AzeriteLevelInfoHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AzeritePower:
-                            {
-                                AzeritePowerHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AzeritePowerSetMember:
-                            {
-                                AzeritePowerSetMemberHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AzeriteTierUnlock:
-                            {
-                                AzeriteTierUnlockHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.AzeriteTierUnlockSet:
-                            {
-                                AzeriteTierUnlockSetHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.BankBagSlotPrices:
-                            {
-                                BankBagSlotPricesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.BannedAddons:
-                            {
-                                BannedAddonsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.BarberShopStyle:
-                            {
-                                BarberShopStyleHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.BattlePetAbility:
-                            {
-                                BattlePetAbilityHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.BattlePetBreedQuality:
-                            {
-                                BattlePetBreedQualityHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.BattlePetBreedState:
-                            {
-                                BattlePetBreedStateHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.BattlePetSpecies:
-                            {
-                                BattlePetSpeciesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.BattlePetSpeciesState:
-                            {
-                                BattlePetSpeciesStateHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.BattlemasterList:
-                            {
-                                BattlemasterListHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.BroadcastText:
-                            {
-                                BroadcastTextHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CfgCategories:
-                            {
-                                CfgCategoriesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CfgRegions:
-                            {
-                                CfgRegionsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CharTitles:
-                            {
-                                CharTitlesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CharacterLoadout:
-                            {
-                                CharacterLoadoutHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CharacterLoadoutItem:
-                            {
-                                CharacterLoadoutItemHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChatChannels:
-                            {
-                                ChatChannelsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrClassUiDisplay:
-                            {
-                                ChrClassUiDisplayHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrClasses:
-                            {
-                                ChrClassesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrClassesXPowerTypes:
-                            {
-                                ChrClassesXPowerTypesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrCustomizationChoice:
-                            {
-                                ChrCustomizationChoiceHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrCustomizationDisplayInfo:
-                            {
-                                ChrCustomizationDisplayInfoHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrCustomizationElement:
-                            {
-                                ChrCustomizationElementHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrCustomizationOption:
-                            {
-                                ChrCustomizationOptionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrCustomizationReq:
-                            {
-                                ChrCustomizationReqHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrCustomizationReqChoice:
-                            {
-                                ChrCustomizationReqChoiceHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrModel:
-                            {
-                                ChrModelHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrRaceXChrModel:
-                            {
-                                ChrRaceXChrModelHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrRaces:
-                            {
-                                ChrRacesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ChrSpecialization:
-                            {
-                                ChrSpecializationHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CinematicCamera:
-                            {
-                                CinematicCameraHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CinematicSequences:
-                            {
-                                CinematicSequencesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ConditionalChrModel:
-                            {
-                                ConditionalChrModelHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ConditionalContentTuning:
-                            {
-                                ConditionalContentTuningHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ContentTuning:
-                            {
-                                ContentTuningHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ConversationLine:
-                            {
-                                ConversationLineHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CreatureDisplayInfo:
-                            {
-                                CreatureDisplayInfoHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CreatureDisplayInfoExtra:
-                            {
-                                CreatureDisplayInfoExtraHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CreatureFamily:
-                            {
-                                CreatureFamilyHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CreatureModelData:
-                            {
-                                CreatureModelDataHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CreatureType:
-                            {
-                                CreatureTypeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Criteria:
-                            {
-                                CriteriaHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CriteriaTree:
-                            {
-                                CriteriaTreeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CurrencyContainer:
-                            {
-                                CurrencyContainerHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CurrencyTypes:
-                            {
-                                CurrencyTypesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Curve:
-                            {
-                                CurveHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.CurvePoint:
-                            {
-                                CurvePointHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.DestructibleModelData:
-                            {
-                                DestructibleModelDataHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Difficulty:
-                            {
-                                DifficultyHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.DungeonEncounter:
-                            {
-                                DungeonEncounterHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.DurabilityCosts:
-                            {
-                                DurabilityCostsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.DurabilityQuality:
-                            {
-                                DurabilityQualityHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Emotes:
-                            {
-                                EmotesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.EmotesText:
-                            {
-                                EmotesTextHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.EmotesTextSound:
-                            {
-                                EmotesTextSoundHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ExpectedStat:
-                            {
-                                ExpectedStatHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ExpectedStatMod:
-                            {
-                                ExpectedStatModHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Faction:
-                            {
-                                FactionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.FactionTemplate:
-                            {
-                                FactionTemplateHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.FriendshipRepReaction:
-                            {
-                                FriendshipRepReactionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.FriendshipReputation:
-                            {
-                                FriendshipReputationHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GameobjectArtKit:
-                            {
-                                GameobjectArtKitHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GameobjectDisplayInfo:
-                            {
-                                GameobjectDisplayInfoHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Gameobjects:
-                            {
-                                GameobjectsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrAbility:
-                            {
-                                GarrAbilityHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrBuilding:
-                            {
-                                GarrBuildingHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrBuildingPlotInst:
-                            {
-                                GarrBuildingPlotInstHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrClassSpec:
-                            {
-                                GarrClassSpecHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrFollower:
-                            {
-                                GarrFollowerHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrFollowerXAbility:
-                            {
-                                GarrFollowerXAbilityHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrMission:
-                            {
-                                GarrMissionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrPlot:
-                            {
-                                GarrPlotHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrPlotBuilding:
-                            {
-                                GarrPlotBuildingHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrPlotInstance:
-                            {
-                                GarrPlotInstanceHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrSiteLevel:
-                            {
-                                GarrSiteLevelHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrSiteLevelPlotInst:
-                            {
-                                GarrSiteLevelPlotInstHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GarrTalentTree:
-                            {
-                                GarrTalentTreeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GemProperties:
-                            {
-                                GemPropertiesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GlyphBindableSpell:
-                            {
-                                GlyphBindableSpellHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GlyphProperties:
-                            {
-                                GlyphPropertiesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GlyphRequiredSpec:
-                            {
-                                GlyphRequiredSpecHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GossipNpcOption:
-                            {
-                                GossipNPCOptionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GuildColorBackground:
-                            {
-                                GuildColorBackgroundHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GuildColorBorder:
-                            {
-                                GuildColorBorderHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GuildColorEmblem:
-                            {
-                                GuildColorEmblemHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.GuildPerkSpells:
-                            {
-                                GuildPerkSpellsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Heirloom:
-                            {
-                                HeirloomHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Holidays:
-                            {
-                                HolidaysHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ImportPriceArmor:
-                            {
-                                ImportPriceArmorHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ImportPriceQuality:
-                            {
-                                ImportPriceQualityHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ImportPriceShield:
-                            {
-                                ImportPriceShieldHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ImportPriceWeapon:
-                            {
-                                ImportPriceWeaponHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Item:
-                            {
-                                ItemHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemAppearance:
-                            {
-                                ItemAppearanceHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemArmorQuality:
-                            {
-                                ItemArmorQualityHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemArmorShield:
-                            {
-                                ItemArmorShieldHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemArmorTotal:
-                            {
-                                ItemArmorTotalHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemBagFamily:
-                            {
-                                ItemBagFamilyHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemBonus:
-                            {
-                                ItemBonusHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemBonusListLevelDelta:
-                            {
-                                ItemBonusListLevelDeltaHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemBonusTreeNode:
-                            {
-                                ItemBonusTreeNodeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemChildEquipment:
-                            {
-                                ItemChildEquipmentHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemClass:
-                            {
-                                ItemClassHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemContextPickerEntry:
-                            {
-                                ItemContextPickerEntryHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemCurrencyCost:
-                            {
-                                ItemCurrencyCostHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemDamageAmmo:
-                            {
-                                ItemDamageAmmoHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemDamageOneHand:
-                            {
-                                ItemDamageOneHandHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemDamageOneHandCaster:
-                            {
-                                ItemDamageOneHandCasterHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemDamageTwoHand:
-                            {
-                                ItemDamageTwoHandHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemDamageTwoHandCaster:
-                            {
-                                ItemDamageTwoHandCasterHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemDisenchantLoot:
-                            {
-                                ItemDisenchantLootHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemEffect:
-                            {
-                                ItemEffectHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemExtendedCost:
-                            {
-                                ItemExtendedCostHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemLevelSelector:
-                            {
-                                ItemLevelSelectorHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemLevelSelectorQuality:
-                            {
-                                ItemLevelSelectorQualityHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemLevelSelectorQualitySet:
-                            {
-                                ItemLevelSelectorQualitySetHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemLimitCategory:
-                            {
-                                ItemLimitCategoryHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemLimitCategoryCondition:
-                            {
-                                ItemLimitCategoryConditionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemModifiedAppearance:
-                            {
-                                ItemModifiedAppearanceHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemModifiedAppearanceExtra:
-                            {
-                                ItemModifiedAppearanceExtraHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemNameDescription:
-                            {
-                                ItemNameDescriptionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemPriceBase:
-                            {
-                                ItemPriceBaseHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemSearchName:
-                            {
-                                ItemSearchNameHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemSet:
-                            {
-                                ItemSetHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemSetSpell:
-                            {
-                                ItemSetSpellHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemSparse:
-                            {
-                                ItemSparseHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemSpec:
-                            {
-                                ItemSpecHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemSpecOverride:
-                            {
-                                ItemSpecOverrideHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ItemXBonusTree:
-                            {
-                                ItemXBonusTreeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.JournalEncounter:
-                            {
-                                JournalEncounterHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.JournalEncounterSection:
-                            {
-                                JournalEncounterSectionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.JournalInstance:
-                            {
-                                JournalInstanceHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.JournalTier:
-                            {
-                                JournalTierHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Keychain:
-                            {
-                                KeychainHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.KeystoneAffix:
-                            {
-                                KeystoneAffixHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.LanguageWords:
-                            {
-                                LanguageWordsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Languages:
-                            {
-                                LanguagesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.LfgDungeons:
-                            {
-                                LfgDungeonsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Light:
-                            {
-                                LightHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.LiquidType:
-                            {
-                                LiquidTypeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Lock:
-                            {
-                                LockHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.MailTemplate:
-                            {
-                                MailTemplateHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Map:
-                            {
-                                MapHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.MapChallengeMode:
-                            {
-                                MapChallengeModeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.MapDifficulty:
-                            {
-                                MapDifficultyHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.MapDifficultyXCondition:
-                            {
-                                MapDifficultyXConditionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ModifierTree:
-                            {
-                                ModifierTreeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Mount:
-                            {
-                                MountHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.MountCapability:
-                            {
-                                MountCapabilityHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.MountTypeXCapability:
-                            {
-                                MountTypeXCapabilityHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.MountXDisplay:
-                            {
-                                MountXDisplayHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Movie:
-                            {
-                                MovieHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.MythicPlusSeason:
-                            {
-                                MythicPlusSeasonHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.NameGen:
-                            {
-                                NameGenHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.NamesProfanity:
-                            {
-                                NamesProfanityHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.NamesReserved:
-                            {
-                                NamesReservedHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.NamesReservedLocale:
-                            {
-                                NamesReservedLocaleHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.NumTalentsAtLevel:
-                            {
-                                NumTalentsAtLevelHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.OverrideSpellData:
-                            {
-                                OverrideSpellDataHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ParagonReputation:
-                            {
-                                ParagonReputationHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Phase:
-                            {
-                                PhaseHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.PhaseXPhaseGroup:
-                            {
-                                PhaseXPhaseGroupHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.PlayerCondition:
-                            {
-                                PlayerConditionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.PowerDisplay:
-                            {
-                                PowerDisplayHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.PowerType:
-                            {
-                                PowerTypeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.PrestigeLevelInfo:
-                            {
-                                PrestigeLevelInfoHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.PvpDifficulty:
-                            {
-                                PvpDifficultyHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.PvpItem:
-                            {
-                                PvpItemHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.PvpSeason:
-                            {
-                                PvpSeasonHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.PvpTalent:
-                            {
-                                PvpTalentHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.PvpTalentCategory:
-                            {
-                                PvpTalentCategoryHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.PvpTalentSlotUnlock:
-                            {
-                                PvpTalentSlotUnlockHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.PvpTier:
-                            {
-                                PvpTierHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.QuestFactionReward:
-                            {
-                                QuestFactionRewardHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.QuestInfo:
-                            {
-                                QuestInfoHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.QuestLineXQuest:
-                            {
-                                QuestLineXQuestHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.QuestMoneyReward:
-                            {
-                                QuestMoneyRewardHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.QuestPackageItem:
-                            {
-                                QuestPackageItemHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.QuestSort:
-                            {
-                                QuestSortHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.QuestV2:
-                            {
-                                QuestV2Handler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.QuestXp:
-                            {
-                                QuestXpHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.RandPropPoints:
-                            {
-                                RandPropPointsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.RewardPack:
-                            {
-                                RewardPackHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.RewardPackXCurrencyType:
-                            {
-                                RewardPackXCurrencyTypeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.RewardPackXItem:
-                            {
-                                RewardPackXItemHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Scenario:
-                            {
-                                ScenarioHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ScenarioStep:
-                            {
-                                ScenarioStepHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SceneScript:
-                            {
-                                SceneScriptHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SceneScriptGlobalText:
-                            {
-                                SceneScriptGlobalTextHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SceneScriptPackage:
-                            {
-                                SceneScriptPackageHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SceneScriptText:
-                            {
-                                SceneScriptTextHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.ServerMessages:
-                            {
-                                ServerMessagesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SkillLine:
-                            {
-                                SkillLineHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SkillLineAbility:
-                            {
-                                SkillLineAbilityHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SkillLineXTraitTree:
-                            {
-                                SkillLineXTraitTreeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SkillRaceClassInfo:
-                            {
-                                SkillRaceClassInfoHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SoundKit:
-                            {
-                                SoundKitHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpecializationSpells:
-                            {
-                                SpecializationSpellsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpecSetMember:
-                            {
-                                SpecSetMemberHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellAuraOptions:
-                            {
-                                SpellAuraOptionsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellAuraRestrictions:
-                            {
-                                SpellAuraRestrictionsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellCastTimes:
-                            {
-                                SpellCastTimesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellCastingRequirements:
-                            {
-                                SpellCastingRequirementsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellCategories:
-                            {
-                                SpellCategoriesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellCategory:
-                            {
-                                SpellCategoryHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellClassOptions:
-                            {
-                                SpellClassOptionsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellCooldowns:
-                            {
-                                SpellCooldownsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellDuration:
-                            {
-                                SpellDurationHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellEffect:
-                            {
-                                SpellEffectHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellEquippedItems:
-                            {
-                                SpellEquippedItemsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellFocusObject:
-                            {
-                                SpellFocusObjectHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellInterrupts:
-                            {
-                                SpellInterruptsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellItemEnchantment:
-                            {
-                                SpellItemEnchantmentHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellItemEnchantmentCondition:
-                            {
-                                SpellItemEnchantmentConditionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellKeyboundOverride:
-                            {
-                                SpellKeyboundOverrideHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellLabel:
-                            {
-                                SpellLabelHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellLearnSpell:
-                            {
-                                SpellLearnSpellHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellLevels:
-                            {
-                                SpellLevelsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellMisc:
-                            {
-                                SpellMiscHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellName:
-                            {
-                                SpellNameHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellPower:
-                            {
-                                SpellPowerHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellPowerDifficulty:
-                            {
-                                SpellPowerDifficultyHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellProcsPerMinute:
-                            {
-                                SpellProcsPerMinuteHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellProcsPerMinuteMod:
-                            {
-                                SpellProcsPerMinuteModHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellRadius:
-                            {
-                                SpellRadiusHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellRange:
-                            {
-                                SpellRangeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellReagents:
-                            {
-                                SpellReagentsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellReagentsCurrency:
-                            {
-                                SpellReagentsCurrencyHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellScaling:
-                            {
-                                SpellScalingHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellShapeshift:
-                            {
-                                SpellShapeshiftHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellShapeshiftForm:
-                            {
-                                SpellShapeshiftFormHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellTargetRestrictions:
-                            {
-                                SpellTargetRestrictionsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellTotems:
-                            {
-                                SpellTotemsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellVisual:
-                            {
-                                SpellVisualHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellVisualEffectName:
-                            {
-                                SpellVisualEffectNameHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellVisualMissile:
-                            {
-                                SpellVisualMissileHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellVisualKit:
-                            {
-                                SpellVisualKitHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SpellXSpellVisual:
-                            {
-                                SpellXSpellVisualHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.SummonProperties:
-                            {
-                                SummonPropertiesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TactKey:
-                            {
-                                TactKeyHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Talent:
-                            {
-                                TalentHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TaxiNodes:
-                            {
-                                TaxiNodesHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TaxiPath:
-                            {
-                                TaxiPathHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TaxiPathNode:
-                            {
-                                TaxiPathNodeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TotemCategory:
-                            {
-                                TotemCategoryHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Toy:
-                            {
-                                ToyHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TransmogHoliday:
-                            {
-                                TransmogHolidayHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitCond:
-                            {
-                                TraitCondHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitCost:
-                            {
-                                TraitCostHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitCurrency:
-                            {
-                                TraitCurrencyHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitCurrencySource:
-                            {
-                                TraitCurrencySourceHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitDefinition:
-                            {
-                                TraitDefinitionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitDefinitionEffectPoints:
-                            {
-                                TraitDefinitionEffectPointsHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitEdge:
-                            {
-                                TraitEdgeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitNode:
-                            {
-                                TraitNodeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitNodeEntry:
-                            {
-                                TraitNodeEntryHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitNodeEntryXTraitCond:
-                            {
-                                TraitNodeEntryXTraitCondHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitNodeEntryXTraitCost:
-                            {
-                                TraitNodeEntryXTraitCostHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitNodeGroup:
-                            {
-                                TraitNodeGroupHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitNodeGroupXTraitCond:
-                            {
-                                TraitNodeGroupXTraitCondHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitNodeGroupXTraitCost:
-                            {
-                                TraitNodeGroupXTraitCostHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitNodeGroupXTraitNode:
-                            {
-                                TraitNodeGroupXTraitNodeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitNodeXTraitCond:
-                            {
-                                TraitNodeXTraitCondHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitNodeXTraitCost:
-                            {
-                                TraitNodeXTraitCostHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitNodeXTraitNodeEntry:
-                            {
-                                TraitNodeXTraitNodeEntryHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitTree:
-                            {
-                                TraitTreeHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitTreeLoadout:
-                            {
-                                TraitTreeLoadoutHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitTreeLoadoutEntry:
-                            {
-                                TraitTreeLoadoutEntryHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitTreeXTraitCost:
-                            {
-                                TraitTreeXTraitCostHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TraitTreeXTraitCurrency:
-                            {
-                                TraitTreeXTraitCurrencyHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TransmogSet:
-                            {
-                                TransmogSetHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TransmogSetGroup:
-                            {
-                                TransmogSetGroupHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TransmogSetItem:
-                            {
-                                TransmogSetItemHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TransportAnimation:
-                            {
-                                TransportAnimationHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.TransportRotation:
-                            {
-                                TransportRotationHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.UiMap:
-                            {
-                                UiMapHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.UiMapAssignment:
-                            {
-                                UiMapAssignmentHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.UiMapLink:
-                            {
-                                UiMapLinkHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.UiMapXMapArt:
-                            {
-                                UiMapXMapArtHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.UnitCondition:
-                            {
-                                UnitConditionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.UnitPowerBar:
-                            {
-                                UnitPowerBarHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Vehicle:
-                            {
-                                VehicleHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.VehicleSeat:
-                            {
-                                VehicleSeatHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.Vignette:
-                            {
-                                VignetteHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.WmoAreaTable:
-                            {
-                                WmoAreaTableHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.WorldEffect:
-                            {
-                                WorldEffectHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.WorldMapOverlay:
-                            {
-                                WorldMapOverlayHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            case DB2Hash.WorldStateExpression:
-                            {
-                                WorldStateExpressionHandler440(db2File, (uint)entry, count);
-                                break;
-                            }
-                            default:
-                            {
-                                db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has missing structure. HotfixBlob entry generated!");
-                                db2File.AsHex();
-                                db2File.ReadToEnd();
-
-                                HotfixBlob hotfixBlob = new HotfixBlob
-                                {
-                                    TableHash = type,
-                                    RecordID = entry,
-                                    Blob = new Blob(data)
-                                };
-
-                                Storage.HotfixBlobs.Add(hotfixBlob);
-                                break;
-                            }
-                        }
-
-                        if (db2File.Position != db2File.Length)
-                            HandleHotfixOptionalData(packet, type, entry, db2File);
-
-                        db2File.ClosePacket(false);
-                        break;
-                    }
-                    case HotfixStatus.RecordRemoved:
-                    {
-                        packet.WriteLine($"Row {entry} has been removed.");
-                        HotfixStoreMgr.RemoveRecord(type, entry);
-                        break;
-                    }
-                    case HotfixStatus.Invalid:
-                    {
-                        // sniffs from others may have the data
-                        packet.WriteLine($"Row {entry} is invalid.");
-                        break;
-                    }
-                    default:
-                    {
-                        packet.WriteLine($"Unhandled status: {status}");
-                        break;
-                    }
-                }
+                ReadHotfix(packet, type, entry, status, db2File, count, indexes);
 
                 HotfixData hotfixData = new HotfixData
                 {
@@ -8327,6 +8336,44 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var hotfixData = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
             ReadHotfixData(hotfixData, hotfixRecords, "HotfixData");
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_DB_REPLY)]
+        public static void HandleDBReply(Packet packet)
+        {
+            var dbReply = packet.Holder.DbReply = new();
+            var type = packet.ReadUInt32E<DB2Hash>("TableHash");
+            dbReply.TableHash = (uint)type;
+            var entry = dbReply.RecordId = packet.ReadInt32("RecordID");
+            var timeStamp = packet.ReadUInt32();
+            var time = packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
+            dbReply.Time = Timestamp.FromDateTime(DateTime.SpecifyKind(time, DateTimeKind.Utc));
+            int statusBits = ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185) ? 3 : 2;
+            var status = packet.ReadBitsE<HotfixStatus>("Status", statusBits);
+            switch (status)
+            {
+                case HotfixStatus.Valid:
+                    dbReply.Status = PacketDbReplyRecordStatus.RecordStatusValid;
+                    break;
+                case HotfixStatus.RecordRemoved:
+                    dbReply.Status = PacketDbReplyRecordStatus.RecordStatusRecordRemoved;
+                    break;
+                case HotfixStatus.Invalid:
+                    dbReply.Status = PacketDbReplyRecordStatus.RecordStatusInvalid;
+                    break;
+                case HotfixStatus.NotPublic:
+                    dbReply.Status = PacketDbReplyRecordStatus.RecordStatusNotPublic;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            var size = packet.ReadInt32("Size");
+            var data = packet.ReadBytes(size);
+            var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+
+            ReadHotfix(packet, type, entry, status, db2File);
         }
 
         [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES)]

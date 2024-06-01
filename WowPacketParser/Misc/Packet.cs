@@ -318,5 +318,14 @@ namespace WowPacketParser.Misc
 
             return obj;
         }
+
+        public void AddLine(string value, params object[] indexes)
+        {
+            if (!Settings.DumpFormatWithText())
+                return;
+
+            Writer ??= new StringBuilder();
+            Writer.AppendLine($"{GetIndexString(indexes)}{value}");
+        }
     }
 }
