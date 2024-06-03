@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf.WellKnownTypes;
+using System;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using WowPacketParser.DBC;
@@ -190,6 +191,116 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadUInt32<MapId>("Map");
             packet.ReadInt32<AreaId>("AreaId");
 
+        }
+
+        [Parser(Opcode.SMSG_VIGNETTE_UPDATE)]
+        public static void HandleVignetteUpdate(Packet packet)
+        {
+            packet.ReadBit("ForceUpdate");
+            packet.ReadBit("Unk_Bit_901");
+
+            // VignetteInstanceIDList
+            var int1 = packet.ReadUInt32("RemovedCount");
+            for (var i = 0; i < int1; ++i)
+                packet.ReadPackedGuid128("IDs", i);
+
+            // Added
+            var int2 = packet.ReadUInt32("AddedCount");
+            for (var i = 0; i < int2; ++i)
+                packet.ReadPackedGuid128("IDs", i);
+
+            // Added VignetteClientData
+            var int3 = packet.ReadUInt32("VignetteClientDataCount");
+            for (var i = 0; i < int3; ++i)
+            {
+                packet.ReadVector3("Position", i);
+                packet.ReadPackedGuid128("ObjGUID", i);
+                packet.ReadInt32("VignetteID", i);
+                packet.ReadUInt32<AreaId>("AreaID", i);
+                packet.ReadUInt32("Unk901_1", i);
+                packet.ReadUInt32("Unk901_2", i);
+            }
+
+            // Updated
+            var int4 = packet.ReadUInt32("UpdatedCount");
+            for (var i = 0; i < int4; ++i)
+                packet.ReadPackedGuid128("IDs", i);
+
+            // Updated VignetteClientData
+            var int5 = packet.ReadUInt32("VignetteClientDataCount");
+            for (var i = 0; i < int5; ++i)
+            {
+                packet.ReadVector3("Position", i);
+                packet.ReadPackedGuid128("ObjGUID", i);
+                packet.ReadInt32("VignetteID", i);
+                packet.ReadUInt32<AreaId>("AreaID", i);
+                packet.ReadUInt32("Unk901_1", i);
+                packet.ReadUInt32("Unk901_2", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
+        public static void HandleLoginVerifyWorld(Packet packet)
+        {
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
+            packet.ReadVector4("Position");
+            packet.ReadUInt32("Reason");
+        }
+
+        [Parser(Opcode.SMSG_LOGIN_SET_TIME_SPEED)]
+        public static void HandleLoginSetTimeSpeed(Packet packet)
+        {
+            PacketLoginSetTimeSpeed setTime = packet.Holder.LoginSetTimeSpeed = new();
+            setTime.ServerTime = packet.ReadPackedTime("ServerTime").ToUniversalTime().ToTimestamp();
+            setTime.GameTime = packet.ReadPackedTime("GameTime").ToUniversalTime().ToTimestamp();
+            setTime.NewSpeed = packet.ReadSingle("NewSpeed");
+            setTime.ServerTimeHolidayOffset = packet.ReadInt32("ServerTimeHolidayOffset");
+            setTime.GameTimeHolidayOffset = packet.ReadInt32("GameTimeHolidayOffset");
+        }
+
+        [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
+        public static void HandlePhaseShift(Packet packet)
+        {
+            var phaseShift = packet.Holder.PhaseShift = new PacketPhaseShift();
+            CoreParsers.MovementHandler.ClearPhases();
+            phaseShift.Client = packet.ReadPackedGuid128("Client");
+            // PhaseShiftData
+            packet.ReadInt32E<PhaseShiftFlags>("PhaseShiftFlags");
+            var count = packet.ReadInt32("PhaseShiftCount");
+            phaseShift.PersonalGuid = packet.ReadPackedGuid128("PersonalGUID");
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadUInt32E<PhaseFlags>("PhaseFlags", i);
+
+                var id = packet.ReadUInt16();
+                phaseShift.Phases.Add(id);
+
+                if (Settings.UseDBC && DBC.Phase.ContainsKey(id))
+                {
+                    packet.WriteLine($"[{i}] ID: {id} ({StoreGetters.GetName(StoreNameType.PhaseId, id, false)}) Flags: {(DBCPhaseFlags)DBC.Phase[id].Flags}");
+                }
+                else
+                    packet.AddValue($"ID", id, i);
+
+                CoreParsers.MovementHandler.ActivePhases.Add(id, true);
+            }
+
+            if (DBC.Phases.Any())
+            {
+                foreach (var phaseGroup in DBC.GetPhaseGroups(CoreParsers.MovementHandler.ActivePhases.Keys))
+                    packet.WriteLine($"PhaseGroup: {phaseGroup} Phases: {string.Join(" - ", DBC.Phases[phaseGroup])}");
+            }
+            var visibleMapIDsCount = packet.ReadInt32("VisibleMapIDsCount") / 2;
+            for (var i = 0; i < visibleMapIDsCount; ++i)
+                phaseShift.VisibleMaps.Add((uint)packet.ReadInt16<MapId>("VisibleMapID", i));
+            var preloadMapIDCount = packet.ReadInt32("PreloadMapIDsCount") / 2;
+            for (var i = 0; i < preloadMapIDCount; ++i)
+                phaseShift.PreloadMaps.Add((uint)packet.ReadInt16<MapId>("PreloadMapID", i));
+            var uiMapPhaseIdCount = packet.ReadInt32("UiMapPhaseIDsCount") / 2;
+            for (var i = 0; i < uiMapPhaseIdCount; ++i)
+                phaseShift.UiMapPhase.Add((uint)packet.ReadInt16("UiMapPhaseId", i));
+
+            CoreParsers.MovementHandler.WritePhaseChanges(packet);
         }
     }
 }

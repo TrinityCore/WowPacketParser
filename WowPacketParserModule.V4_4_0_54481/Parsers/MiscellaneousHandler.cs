@@ -1,6 +1,9 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
@@ -175,6 +178,80 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadUInt32<AreaId>("AreaID");
             packet.ReadUInt32("Experience");
+        }
+
+        [Parser(Opcode.SMSG_TIME_SYNC_REQUEST)]
+        public static void HandleTimeSyncReq(Packet packet)
+        {
+            packet.ReadInt32("Count");
+        }
+
+        [Parser(Opcode.SMSG_WEATHER)]
+        public static void HandleWeatherStatus(Packet packet)
+        {
+            WeatherState state = packet.ReadInt32E<WeatherState>("State");
+            float grade = packet.ReadSingle("Intensity");
+            Bit unk = packet.ReadBit("Abrupt"); // Type
+
+            Storage.WeatherUpdates.Add(new WeatherUpdate
+            {
+                MapId = CoreParsers.MovementHandler.CurrentMapId,
+                ZoneId = 0, // fixme
+                State = state,
+                Grade = grade,
+                Unk = unk
+            }, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_START_LIGHTNING_STORM)]
+        [Parser(Opcode.SMSG_END_LIGHTNING_STORM)]
+        public static void HandleLightningStorm(Packet packet)
+        {
+            packet.ReadUInt32("LightningStormId");
+        }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
+        public static void HandleWorldServerInfo(Packet packet)
+        {
+            CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
+
+            packet.ReadBit("IsTournamentRealm");
+            packet.ReadBit("XRealmPvpAlert");
+            var hasRestrictedAccountMaxLevel = packet.ReadBit("HasRestrictedAccountMaxLevel");
+            var hasRestrictedAccountMaxMoney = packet.ReadBit("HasRestrictedAccountMaxMoney");
+            var hasInstanceGroupSize = packet.ReadBit("HasInstanceGroupSize");
+
+            if (hasRestrictedAccountMaxLevel)
+                packet.ReadUInt32("RestrictedAccountMaxLevel");
+
+            if (hasRestrictedAccountMaxMoney)
+                packet.ReadUInt64("RestrictedAccountMaxMoney");
+
+            if (hasInstanceGroupSize)
+                packet.ReadUInt32("InstanceGroupSize");
+        }
+
+        [Parser(Opcode.SMSG_ACCOUNT_MOUNT_UPDATE)]
+        public static void HandleAccountMountUpdate(Packet packet)
+        {
+            packet.ReadBit("IsFullUpdate");
+
+            var mountSpellIDsCount = packet.ReadInt32("MountSpellIDsCount");
+
+            for (int i = 0; i < mountSpellIDsCount; i++)
+            {
+                packet.ReadInt32("MountSpellIDs", i);
+
+                packet.ResetBitReader();
+                packet.ReadBits("Flags", 4, i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_INITIAL_SETUP)]
+        public static void HandleInitialSetup(Packet packet)
+        {
+            packet.ReadByte("ServerExpansionLevel");
+            packet.ReadByte("ServerExpansionTier");
         }
 
         [Parser(Opcode.SMSG_RESUME_COMMS)]

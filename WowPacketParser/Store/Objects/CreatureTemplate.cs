@@ -56,7 +56,7 @@ namespace WowPacketParser.Store.Objects
         public int? WidgetSetUnitConditionID;
 
         [DBFieldName("rank", TargetedDatabaseFlag.TillShadowlands)]
-        [DBFieldName("Classification", TargetedDatabaseFlag.Dragonflight)]
+        [DBFieldName("Classification", TargetedDatabaseFlag.Dragonflight | TargetedDatabaseFlag.CataClassic)]
         public CreatureRank? Rank;
 
         [DBFieldName("family")]
@@ -158,7 +158,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CreatureEntry", true)]
         public uint? CreatureEntry;
 
-        [DBFieldName("DifficultyID", TargetedDatabaseFlag.SinceDragonflight, true)]
+        [DBFieldName("DifficultyID", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, true)]
         public uint? DifficultyID;
 
         [DBFieldName("Idx", true)]

@@ -222,6 +222,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("Timestamp");
         }
 
+        [Parser(Opcode.SMSG_SUSPEND_TOKEN)]
+        [Parser(Opcode.SMSG_RESUME_TOKEN)]
+        public static void HandleResumeTokenPacket(Packet packet)
+        {
+            packet.ReadUInt32("Sequence");
+            packet.ReadBits("Reason", 2);
+        }
+
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK)]
         public static void HandleSessionZero(Packet packet)
         {

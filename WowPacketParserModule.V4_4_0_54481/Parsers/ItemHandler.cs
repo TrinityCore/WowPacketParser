@@ -24,5 +24,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("SlotNum");
             packet.ReadInt32("ItemReforgeRecId");
         }
+
+        [Parser(Opcode.SMSG_ITEM_EXPIRE_PURCHASE_REFUND)]
+        public static void HandleItemExpirePurchaseRefund(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+        }
     }
 }
