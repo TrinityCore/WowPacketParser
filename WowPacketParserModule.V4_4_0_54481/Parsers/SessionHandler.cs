@@ -230,6 +230,37 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBits("Reason", 2);
         }
 
+        [Parser(Opcode.SMSG_SUSPEND_COMMS)]
+        public static void HandleSuspendCommsPackets(Packet packet)
+        {
+            packet.ReadInt32("Serial");
+        }
+
+        [Parser(Opcode.CMSG_SUSPEND_COMMS_ACK)]
+        public static void HandleSuspendCommsAck(Packet packet)
+        {
+            packet.ReadInt32("Serial");
+            packet.ReadInt32("Timestamp");
+        }
+
+        [Parser(Opcode.CMSG_LOG_DISCONNECT)]
+        public static void HandleLogDisconnect(Packet packet)
+        {
+            packet.ReadUInt32("Reason");
+            // 4 is inability for client to decrypt RSA
+            // 3 is not receiving "WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"
+            // 11 is sent on receiving opcode 0x140 with some specific data
+        }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN)]
+        public static void HandlePlayerLogin(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("Guid");
+            packet.ReadSingle("FarClip");
+            packet.Holder.PlayerLogin = new() { PlayerGuid = guid };
+            WowPacketParser.Parsing.Parsers.SessionHandler.LoginGuid = guid;
+        }
+
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK)]
         public static void HandleSessionZero(Packet packet)
         {

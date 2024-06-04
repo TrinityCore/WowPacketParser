@@ -254,6 +254,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByte("ServerExpansionTier");
         }
 
+        [HasSniffData]
+        [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY)]
+        public static void HandleClientEnterWorld(Packet packet)
+        {
+            var mapId = packet.ReadInt32<MapId>("MapID");
+            packet.ReadBit("Showing");
+
+            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
