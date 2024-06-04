@@ -113,5 +113,20 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         {
             packet.ReadSingle("MinHoldStagePct");
         }
+
+        [Parser(Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE)]
+        public static void HandleLossOfControlAuraUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("AffectedGUID");
+            var count = packet.ReadInt32("LossOfControlInfoCount");
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadUInt32("Remaining", i);
+                packet.ReadByte("AuraSlot", i);
+                packet.ReadByte("EffectIndex", i);
+                packet.ReadByte("LossControlType", i);
+                packet.ReadByte("EffectMechanic", i);
+            }
+        }
     }
 }
