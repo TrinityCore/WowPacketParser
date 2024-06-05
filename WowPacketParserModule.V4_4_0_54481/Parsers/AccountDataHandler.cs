@@ -64,5 +64,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ReadWoWString("Signature", signatureLen);
         }
+
+        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES)]
+        public static void HandleAccountDataTimes(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadTime64("ServerTime");
+
+            for (var i = 0; i < 15; ++i)
+                packet.ReadTime64($"[{(AccountDataType)i}] Time", i);
+        }
     }
 }

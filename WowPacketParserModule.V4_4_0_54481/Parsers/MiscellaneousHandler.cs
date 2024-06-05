@@ -264,6 +264,152 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
         }
 
+        [Parser(Opcode.CMSG_TIME_SYNC_RESPONSE)]
+        public static void HandleTimeSyncResp(Packet packet)
+        {
+            packet.ReadUInt32("Counter");
+            packet.ReadUInt32("Ticks");
+        }
+
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
+        public static void HandleFeatureSystemStatus(Packet packet)
+        {
+            packet.ReadByte("ComplaintStatus");
+            packet.ReadUInt32("CfgRealmID");
+            packet.ReadInt32("CfgRealmRecID");
+
+            packet.ReadUInt32("MaxRecruits", "RAFSystem");
+            packet.ReadUInt32("MaxRecruitMonths", "RAFSystem");
+            packet.ReadUInt32("MaxRecruitmentUses", "RAFSystem");
+            packet.ReadUInt32("DaysInCycle", "RAFSystem");
+            packet.ReadUInt32("Unknown1007", "RAFSystem");
+            packet.ReadUInt32("TokenPollTimeSeconds");
+            packet.ReadUInt32("KioskSessionMinutes");
+            packet.ReadInt64("TokenBalanceAmount");
+            packet.ReadUInt32("BpayStoreProductDeliveryDelay");
+            packet.ReadUInt32("ClubsPresenceUpdateTimer");
+            packet.ReadUInt32("HiddenUIClubsPresenceUpdateTimer");
+            packet.ReadInt32("ActiveSeason");
+
+            var gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
+
+            packet.ReadInt16("MaxPlayerNameQueriesPerPacket");
+            packet.ReadInt16("PlayerNameQueryTelemetryInterval");
+            packet.ReadUInt32("PlayerNameQueryInterval");
+            packet.ReadInt32("MaxTries", "AddonChatThrottle");
+            packet.ReadInt32("TriesRestoredPerSecond", "AddonChatThrottle");
+            packet.ReadInt32("UsedTriesPerMessage", "AddonChatThrottle");
+
+            for (var i = 0; i < gameRuleValuesCount; ++i)
+                ReadGameRuleValuePair(packet, "GameRuleValues");
+
+            packet.ResetBitReader();
+            packet.ReadBit("VoiceEnabled");
+            var hasEuropaTicketSystemStatus = packet.ReadBit("HasEuropaTicketSystemStatus");
+            packet.ReadBit("StoreEnabled", "BattlePay");
+            packet.ReadBit("StoreAvailable", "BattlePay");
+            packet.ReadBit("StoreDisabledByParentalControls", "BattlePay");
+            packet.ReadBit("ItemRestorationButtonEnabled");
+            packet.ReadBit("BrowserEnabled");
+            var hasSessionAlert = packet.ReadBit("HasSessionAlert");
+
+            packet.ReadBit("Enabled", "RAFSystem");
+            packet.ReadBit("RecruitingEnabled", "RAFSystem");
+            packet.ReadBit("CharUndeleteEnabled");
+            packet.ReadBit("RestrictedAccount");
+            packet.ReadBit("CommerceSystemEnabled");
+            packet.ReadBit("TutorialsEnabled");
+            packet.ReadBit("Unk67");
+            packet.ReadBit("WillKickFromWorld");
+
+            packet.ReadBit("KioskModeEnabled");
+            packet.ReadBit("CompetitiveModeEnabled");
+            packet.ReadBit("TokenBalanceEnabled");
+            packet.ReadBit("WarModeFeatureEnabled");
+            packet.ReadBit("ClubsEnabled");
+            packet.ReadBit("ClubsBattleNetClubTypeAllowed");
+            packet.ReadBit("ClubsCharacterClubTypeAllowed");
+            packet.ReadBit("ClubsPresenceUpdateEnabled");
+
+            packet.ReadBit("VoiceChatDisabledByParentalControl");
+            packet.ReadBit("VoiceChatMutedByParentalControl");
+            packet.ReadBit("QuestSessionEnabled");
+            packet.ReadBit("IsMuted");
+            packet.ReadBit("ClubFinderEnabled");
+            packet.ReadBit("IsCommunityFinderEnabled");
+            packet.ReadBit("Unknown901CheckoutRelated");
+            packet.ReadBit("TextToSpeechFeatureEnabled");
+
+            packet.ReadBit("ChatDisabledByDefault");
+            packet.ReadBit("ChatDisabledByPlayer");
+            packet.ReadBit("LFGListCustomRequiresAuthenticator");
+            packet.ReadBit("AddonsDisabled");
+            packet.ReadBit("WarGamesEnabled");
+            var unk = packet.ReadBit("Unk440_1");
+            packet.ReadBit("Unused");
+            packet.ReadBit("ContentTrackingEnabled");
+
+            packet.ReadBit("IsSellAllJunkEnabled");
+            packet.ReadBit("GroupFinderEnabled");
+            packet.ReadBit("IsLFDREnabled");
+            packet.ReadBit("IsLFREnabled");
+            packet.ReadBit("IsPremadeGroupEnabled");
+            packet.ReadBit("CanShowSetRoleButton");
+            packet.ReadBit("PetHappinessEnabled");
+            packet.ReadBit("CanEditGuildEvent");
+
+            packet.ReadBit("IsGuildTradeSkillsEnabled");
+            var unknown1027StrLen = packet.ReadBits(7);
+
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("ToastsDisabled", "QuickJoinConfig");
+                packet.ReadSingle("ToastDuration", "QuickJoinConfig");
+                packet.ReadSingle("DelayDuration", "QuickJoinConfig");
+                packet.ReadSingle("QueueMultiplier", "QuickJoinConfig");
+                packet.ReadSingle("PlayerMultiplier", "QuickJoinConfig");
+                packet.ReadSingle("PlayerFriendValue", "QuickJoinConfig");
+                packet.ReadSingle("PlayerGuildValue", "QuickJoinConfig");
+                packet.ReadSingle("ThrottleInitialThreshold", "QuickJoinConfig");
+                packet.ReadSingle("ThrottleDecayTime", "QuickJoinConfig");
+                packet.ReadSingle("ThrottlePrioritySpike", "QuickJoinConfig");
+                packet.ReadSingle("ThrottleMinThreshold", "QuickJoinConfig");
+                packet.ReadSingle("ThrottlePvPPriorityNormal", "QuickJoinConfig");
+                packet.ReadSingle("ThrottlePvPPriorityLow", "QuickJoinConfig");
+                packet.ReadSingle("ThrottlePvPHonorThreshold", "QuickJoinConfig");
+                packet.ReadSingle("ThrottleLfgListPriorityDefault", "QuickJoinConfig");
+                packet.ReadSingle("ThrottleLfgListPriorityAbove", "QuickJoinConfig");
+                packet.ReadSingle("ThrottleLfgListPriorityBelow", "QuickJoinConfig");
+                packet.ReadSingle("ThrottleLfgListIlvlScalingAbove", "QuickJoinConfig");
+                packet.ReadSingle("ThrottleLfgListIlvlScalingBelow", "QuickJoinConfig");
+                packet.ReadSingle("ThrottleRfPriorityAbove", "QuickJoinConfig");
+                packet.ReadSingle("ThrottleRfIlvlScalingAbove", "QuickJoinConfig");
+                packet.ReadSingle("ThrottleDfMaxItemLevel", "QuickJoinConfig");
+                packet.ReadSingle("ThrottleDfBestPriority", "QuickJoinConfig");
+            }
+
+            if (hasSessionAlert)
+                V6_0_2_19033.Parsers.MiscellaneousHandler.ReadClientSessionAlertConfig(packet, "SessionAlert");
+
+            if (unk)
+            {
+                var count = packet.ReadUInt32("UnkCount");
+
+                for (var i = 0; i < count; ++i)
+                    packet.ReadByte("UnkByte", i);
+            }
+
+            packet.ReadWoWString("Unknown1027", unknown1027StrLen);
+
+            V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
+
+            if (hasEuropaTicketSystemStatus)
+            {
+                packet.ResetBitReader();
+                V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
+            }
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
