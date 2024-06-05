@@ -163,7 +163,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 // SpecID 0 and 1 = Index 0 (SpecGroup)
                 // SpecID 2 = Index 1 (SpecGroup)
                 packet.ReadByte("SpecID", idx, i);
-                packet.ReadUInt32("Unk440", idx, i);
+                packet.ReadUInt32("PrimarySpecialization", idx, i);
 
                 for (var j = 0; j < talentCount; ++j)
                 {
