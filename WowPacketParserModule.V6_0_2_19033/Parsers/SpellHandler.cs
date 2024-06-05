@@ -784,13 +784,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE)]
         public static void HandleLossOfControlAuraUpdate(Packet packet)
         {
-            var count = packet.ReadInt32("LossOfControlInfoCount");
+            var count = packet.ReadInt32();
             for (int i = 0; i < count; i++)
             {
                 packet.ReadByte("AuraSlot", i);
                 packet.ReadByte("EffectIndex", i);
-                packet.ReadBits("Type", 8, i);
-                packet.ReadBits("Mechanic", 8, i);
+                packet.ReadBitsE<LossOfControlType>("LocType", 8, i);
+                packet.ReadBitsE<SpellMechanic>("Mechanic", 8, i);
             }
         }
 
