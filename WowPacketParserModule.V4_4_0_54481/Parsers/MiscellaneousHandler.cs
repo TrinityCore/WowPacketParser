@@ -410,9 +410,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_QUERY_COUNTDOWN_TIMER)]
+        public static void HandleQueryCountdownTimer(Packet packet)
+        {
+            packet.ReadInt32("TimerType");
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
+        [Parser(Opcode.CMSG_QUERY_TIME)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

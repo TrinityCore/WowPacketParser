@@ -27,5 +27,22 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (var i = 0; i < FactionCount; i++)
                 packet.ReadBit("FactionHasBonus", i);
         }
+
+        [Parser(Opcode.SMSG_SET_FORCED_REACTIONS)]
+        public static void HandleForcedReactions(Packet packet)
+        {
+            var counter = packet.ReadUInt32("ForcedReactionCount");
+
+            for (var i = 0; i < counter; i++)
+            {
+                packet.ReadUInt32("Faction");
+                packet.ReadUInt32("Reaction");
+            }
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_FORCED_REACTIONS)]
+        public static void HandleReputationZero(Packet packet)
+        {
+        }
     }
 }

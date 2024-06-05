@@ -212,5 +212,20 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("NumNewTalents");
             packet.ReadInt32("NumNewPvpTalentSlots");
         }
+
+        [Parser(Opcode.CMSG_REQUEST_PLAYED_TIME)]
+        public static void HandleClientPlayedTime(Packet packet)
+        {
+            packet.ReadBit("TriggerScriptEvent");
+        }
+
+        [Parser(Opcode.SMSG_PLAYED_TIME)]
+        public static void HandleServerPlayedTime(Packet packet)
+        {
+            packet.ReadInt32("TotalTime");
+            packet.ReadInt32("LevelTime");
+
+            packet.ReadBit("TriggerEvent");
+        }
     }
 }

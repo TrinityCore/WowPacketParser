@@ -302,5 +302,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             CoreParsers.MovementHandler.WritePhaseChanges(packet);
         }
+
+        [Parser(Opcode.CMSG_MOVE_INIT_ACTIVE_MOVER_COMPLETE)]
+        public static void HandleMoveInitActiveMoverComplete(Packet packet)
+        {
+            packet.ReadUInt32("Ticks");
+        }
     }
 }

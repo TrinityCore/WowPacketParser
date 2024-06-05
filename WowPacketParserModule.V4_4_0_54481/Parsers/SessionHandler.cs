@@ -261,6 +261,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             WowPacketParser.Parsing.Parsers.SessionHandler.LoginGuid = guid;
         }
 
+        [Parser(Opcode.SMSG_QUERY_TIME_RESPONSE)]
+        public static void HandleQueryTimeResponse(Packet packet)
+        {
+            packet.ReadTime64("CurrentTime");
+        }
+
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK)]
         public static void HandleSessionZero(Packet packet)
         {
