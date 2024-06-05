@@ -308,5 +308,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadUInt32("Ticks");
         }
+
+        [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
+        public static void HandleMoveTimeSkipped(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadInt32("Time");
+        }
     }
 }

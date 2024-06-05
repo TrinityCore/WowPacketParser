@@ -74,5 +74,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (var i = 0; i < 15; ++i)
                 packet.ReadTime64($"[{(AccountDataType)i}] Time", i);
         }
+
+        [Parser(Opcode.CMSG_REQUEST_ACCOUNT_DATA)]
+        public static void HandleRequestAccountData(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32E<AccountDataType>("DataType");
+        }
     }
 }

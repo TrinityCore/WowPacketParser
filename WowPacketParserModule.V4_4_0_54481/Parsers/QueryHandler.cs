@@ -292,5 +292,20 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             foreach (var data in gameObject.Data)
                 query.Data.Add(data.Value);
         }
+
+        [Parser(Opcode.CMSG_QUERY_PLAYER_NAMES)]
+        public static void HandleNameQuery(Packet packet)
+        {
+            var count = packet.ReadUInt32();
+            for (var i = 0; i < count; ++i)
+                packet.ReadPackedGuid128("Players", i);
+        }
+
+        [Parser(Opcode.CMSG_QUERY_QUEST_INFO)]
+        public static void HandleQuestQuery(Packet packet)
+        {
+            packet.ReadInt32("Entry");
+            packet.ReadPackedGuid128("Guid");
+        }
     }
 }

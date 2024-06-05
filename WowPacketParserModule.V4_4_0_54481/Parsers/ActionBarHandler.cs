@@ -63,5 +63,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.AddValue("ID", data & 0x00FFFFFF);
             packet.ReadByte("Button");
         }
+
+        [Parser(Opcode.CMSG_SET_ACTION_BAR_TOGGLES)]
+        public static void HandleSetActionBarToggles(Packet packet)
+        {
+            packet.ReadByte("ActionBar");
+        }
     }
 }
