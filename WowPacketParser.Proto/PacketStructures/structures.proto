@@ -80,6 +80,8 @@ message PacketHolder {
       PacketLoginSetTimeSpeed loginSetTimeSpeed = 44;
       PacketAuraUpdateAll auraUpdateAll = 45;
       PacketAIReaction aiReaction = 46;
+      PacketInitWorldStates initWorldStates = 47;
+      PacketUpdateWorldState updateWorldState = 48;
   }
 }
 
@@ -888,4 +890,21 @@ enum AIReaction {
 message PacketAIReaction {
     UniversalGuid unitGuid = 1;
     AIReaction reaction = 2;
+}
+
+message PacketInitWorldStates {
+  int32 mapId = 1;
+  int32 zoneId = 2;
+  int32 areaId = 3;
+  repeated WorldState worldStates = 4;
+}
+
+message PacketUpdateWorldState {
+  WorldState worldState = 1;
+  bool hidden = 2;
+}
+
+message WorldState {
+  int32 id = 1;
+  int32 value = 2;
 }
