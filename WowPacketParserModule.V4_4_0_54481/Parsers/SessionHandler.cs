@@ -267,6 +267,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadTime64("CurrentTime");
         }
 
+        [Parser(Opcode.CMSG_SUSPEND_TOKEN_RESPONSE)]
+        public static void HandleSuspendToken(Packet packet)
+        {
+            packet.ReadUInt32("Sequence");
+        }
+
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK)]
         public static void HandleSessionZero(Packet packet)
         {
