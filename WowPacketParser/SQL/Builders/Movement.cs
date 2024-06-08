@@ -18,7 +18,7 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_movement))
                 return string.Empty;
 
-            string output = "SET @MOVID = 0;";
+            string output = "SET @MOVID = 0;\n";
             int pathIdCounter = 0;
             if (Settings.TargetedProject == TargetedProject.Cmangos)
             {
