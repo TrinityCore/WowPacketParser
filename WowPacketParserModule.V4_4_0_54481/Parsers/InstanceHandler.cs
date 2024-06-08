@@ -58,5 +58,23 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadWoWString("Name", strlen, i);
             }
         }
+
+        [Parser(Opcode.SMSG_INSTANCE_INFO)]
+        public static void HandleInstanceInfo(Packet packet)
+        {
+            var int16 = packet.ReadInt32("LocksCount");
+            for (int i = 0; i < int16; i++)
+            {
+                packet.ReadInt32<MapId>("MapID", i);
+                packet.ReadInt32<DifficultyId>("DifficultyID", i);
+                packet.ReadInt64("InstanceID", i);
+                packet.ReadInt32("TimeRemaining", i);
+                packet.ReadInt32("Completed_mask", i);
+
+                packet.ResetBitReader();
+                packet.ReadBit("Locked", i);
+                packet.ReadBit("Extended", i);
+            }
+        }
     }
 }
