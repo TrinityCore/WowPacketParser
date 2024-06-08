@@ -256,5 +256,101 @@ namespace WowPacketParser.PacketStructures
                 return CreateObjectType.Spawn;
             throw new ArgumentOutOfRangeException();
         }
+
+        public static ObjectType ToObjectType(this UniversalHighGuid highGuid)
+        {
+            switch (highGuid)
+            {
+                case UniversalHighGuid.Player:
+                    return ObjectType.Player;
+                case UniversalHighGuid.DynamicObject:
+                    return ObjectType.DynamicObject;
+                case UniversalHighGuid.Item:
+                    return ObjectType.Item;
+                case UniversalHighGuid.GameObject:
+                case UniversalHighGuid.Transport:
+                    return ObjectType.GameObject;
+                case UniversalHighGuid.Vehicle:
+                case UniversalHighGuid.Creature:
+                case UniversalHighGuid.Pet:
+                    return ObjectType.Unit;
+                case UniversalHighGuid.AreaTrigger:
+                    return ObjectType.AreaTrigger;
+                default:
+                    return ObjectType.Object;
+            }
+        }
+
+        public static string ToWowParserString(this UniversalGuid guid)
+        {
+            if (guid.KindCase == UniversalGuid.KindOneofCase.Guid128 && (guid.Guid128.High != 0 || guid.Guid128.Low != 0))
+            {
+                var guid128 = new WowGuid128(guid.Guid128.Low, guid.Guid128.High);
+                return guid128.ToString();
+            }
+            else if (guid.KindCase == UniversalGuid.KindOneofCase.Guid64 && (guid.Guid64.High != 0 || guid.Guid64.Low != 0))
+            {
+                var guid64 = new WowGuid64(guid.Guid64.Low);
+                return guid64.ToString();
+            }
+
+            return "Full: 0x0";
+        }
+
+        public static uint GetLow(this UniversalGuid guid)
+        {
+            if (guid.KindCase == UniversalGuid.KindOneofCase.Guid128)
+                return (uint)(guid.Guid128.Low & 0xFFFFFFFFFF);
+            else if (guid.KindCase == UniversalGuid.KindOneofCase.Guid64)
+            {
+                switch (guid.Type)
+                {
+                    case UniversalHighGuid.Player:
+                    case UniversalHighGuid.DynamicObject:
+                    case UniversalHighGuid.RaidGroup:
+                    case UniversalHighGuid.Item:
+                        return (uint)(guid.Guid64.Low & 0x000FFFFFFFFFFFFF);
+                    case UniversalHighGuid.GameObject:
+                    case UniversalHighGuid.Transport:
+                    //case HighGuidType.MOTransport: ??
+                    case UniversalHighGuid.Vehicle:
+                    case UniversalHighGuid.Creature:
+                    case UniversalHighGuid.Pet:
+                        return (uint)(guid.Guid64.Low & 0x00000000FFFFFFFFul);
+                }
+
+                return (uint)(guid.Guid64.Low & 0x00000000FFFFFFFFul);
+            }
+
+            return 0;
+        }
+
+        public static uint GetEntry(this UniversalGuid128 guid)
+        {
+            return (uint)((guid.High >> 6) & 0x7FFFFF);
+        }
+
+        public static byte GetSubType(this UniversalGuid128 guid) => (byte)(guid.High & 0x3F);
+
+        public static ushort GetRealmId(this UniversalGuid128 guid) => (ushort)((guid.High >> 42) & 0x1FFF);
+
+        public static uint GetServerId(this UniversalGuid128 guid) => (uint)((guid.Low >> 40) & 0xFFFFFF);
+
+        public static ushort GetMapId(this UniversalGuid128 guid) => (ushort)((guid.High >> 29) & 0x1FFF);
+
+        public static bool HasEntry(this UniversalGuid guid)
+        {
+            switch (guid.Type)
+            {
+                case UniversalHighGuid.Creature:
+                case UniversalHighGuid.GameObject:
+                case UniversalHighGuid.Pet:
+                case UniversalHighGuid.Vehicle:
+                case UniversalHighGuid.AreaTrigger:
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }
