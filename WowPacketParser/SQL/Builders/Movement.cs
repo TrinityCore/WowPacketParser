@@ -13,9 +13,6 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string MovementData()
         {
-            if (Storage.CreatureMovement.IsEmpty())
-                return string.Empty;
-
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_movement))
                 return string.Empty;
 
