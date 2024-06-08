@@ -81,5 +81,20 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt32E<AccountDataType>("DataType");
         }
+
+        [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA)]
+        public static void HandleServerUpdateAccountData(Packet packet)
+        {
+            packet.ReadTime64("Time");
+            var decompCount = packet.ReadInt32();
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32E<AccountDataType>("DataType");
+            var compCount = packet.ReadInt32();
+
+            var pkt = packet.Inflate(compCount, decompCount, false);
+            var data = pkt.ReadWoWString(decompCount);
+
+            packet.AddValue("Account Data", data);
+        }
     }
 }
