@@ -57,6 +57,24 @@ namespace WowPacketParser.Misc
         }
 
         /// <summary>
+        /// Returns true if bit is set in value (&)
+        /// </summary>
+        /// <param name="value">An enum, int, ...</param>
+        /// <param name="bit">An int</param>
+        /// <returns>A boolean</returns>
+        public static bool HasAnyFlagBit(this UInt128 value, IConvertible bit) // uint128 doesnt implement IConvertible
+        {
+            var uBit = bit.ToInt32(null);
+
+            Contract.Assert(uBit >= 0 && uBit <= 127);
+
+            var uFlag = ((UInt128)1) << uBit;
+            var uThis = value;
+
+            return (uThis & uFlag) != 0;
+        }
+
+        /// <summary>
         /// Return true if our string is a substring of any filter (case insensitive)
         /// </summary>
         /// <param name="value">String</param>
