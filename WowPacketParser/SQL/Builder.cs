@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Parsing.Proto;
+using WowPacketParser.Proto;
 using WowPacketParser.SQL.Builders;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -63,16 +65,39 @@ namespace WowPacketParser.SQL
             }
         }
 
-        public static void DumpFile(string prefix, string fileName, string header, List<MethodInfo> builderMethods, Dictionary<WowGuid, Unit> units, Dictionary<WowGuid, GameObject> gameObjects)
+        public static void DumpFile(IReadOnlyList<Packets> packets, string prefix, string fileName, string header, List<Type> protoBuilders, List<MethodInfo> builderMethods, Dictionary<WowGuid, Unit> units, Dictionary<WowGuid, GameObject> gameObjects)
         {
             var startTime = DateTime.Now;
             using (var store = new SQLFile(fileName))
             {
                 store.WriteData(UnitMisc.CreatureEquip(units)); // ensure this is run before spawns
 
-                for (int i = 1; i <= builderMethods.Count; i++)
+                var currentBuilder = 0;
+                var totalCount = protoBuilders.Count + builderMethods.Count;
+
+                foreach (var builderType in protoBuilders)
                 {
-                    var method = builderMethods[i - 1];
+                    currentBuilder++;
+                    var builder = (IProtoQueryBuilder)Activator.CreateInstance(builderType);
+
+                    if (!builder.IsEnabled())
+                        continue;
+
+                    Trace.WriteLine($"{currentBuilder}/{totalCount} - Write {builderType}");
+                    try
+                    {
+                        store.WriteData(builder.Process(packets));
+                    }
+                    catch (TargetInvocationException e)
+                    {
+                        Trace.WriteLine($"{currentBuilder}/{totalCount} - Error: Failed writing {builderType}");
+                        Trace.TraceError(e.InnerException?.ToString() ?? e.ToString());
+                    }
+                }
+
+                foreach (var method in builderMethods)
+                {
+                    currentBuilder++;
                     var attr = method.GetCustomAttribute<BuilderMethodAttribute>();
 
                     if (attr.CheckVersionMismatch)
@@ -80,7 +105,7 @@ namespace WowPacketParser.SQL
                         if (!GetExpectedTargetDatabasesForExpansion(ClientVersion.Expansion).Contains(Settings.TargetedDatabase))
                         {
                             Trace.WriteLine(
-                                $"{i}/{builderMethods.Count} - Error: Couldn't generate SQL output of {method.Name} since the targeted database and the sniff version don't match.");
+                                $"{currentBuilder}/{totalCount} - Error: Couldn't generate SQL output of {method.Name} since the targeted database and the sniff version don't match.");
                             continue;
                         }
                     }
@@ -92,14 +117,14 @@ namespace WowPacketParser.SQL
                     if (attr.Gameobjects)
                         parameters.Add(gameObjects);
 
-                    Trace.WriteLine($"{i}/{builderMethods.Count} - Write {method.Name}");
+                    Trace.WriteLine($"{currentBuilder}/{totalCount} - Write {method.Name}");
                     try
                     {
                         store.WriteData(method.Invoke(null, parameters.ToArray()).ToString());
                     }
                     catch (TargetInvocationException e)
                     {
-                        Trace.WriteLine($"{i}/{builderMethods.Count} - Error: Failed writing {method.Name}");
+                        Trace.WriteLine($"{currentBuilder}/{totalCount} - Error: Failed writing {method.Name}");
                         Trace.TraceError(e.InnerException?.ToString() ?? e.ToString());
                     }
                 }
@@ -113,7 +138,7 @@ namespace WowPacketParser.SQL
             }
         }
 
-        public static void DumpSQL(string prefix, string fileName, string header)
+        public static void DumpSQL(IReadOnlyList<Packets> packets, string prefix, string fileName, string header)
         {
             var startTime = DateTime.Now;
 
@@ -140,23 +165,33 @@ namespace WowPacketParser.SQL
                     .SelectMany(x => x.GetMethods());
             var allMethods = methods.Select(y => new { Method = y, Attributes = y.GetCustomAttributes().OfType<BuilderMethodAttribute>()}).Where(y => y.Attributes.Any()).ToList();
 
+            var allProtoBuilders = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Select(type => (Type: type, Attributes: type.GetCustomAttributes(typeof(ProtoBuilderClassAttribute), true).OfType<ProtoBuilderClassAttribute>().ToList()))
+                .Where(pair => pair.Attributes.Count > 0)
+                .ToList();
+
             if (Settings.SplitSQLFile)
             {
                 fileName = System.IO.Path.ChangeExtension(fileName, null); // remove .sql
 
                 var hotfixMethods = allMethods.Where(x => x.Attributes.First().Database == TargetSQLDatabase.Hotfixes).Select(x => x.Method).ToList();
-                DumpFile(prefix, $"{fileName}_hotfixes.sql", header, hotfixMethods, units, gameObjects);
+                var hotfixProtoBuilders = allProtoBuilders.Where(x => x.Attributes.First().Database == TargetSQLDatabase.Hotfixes).Select(x => x.Type).ToList();
+                DumpFile(packets, prefix, $"{fileName}_hotfixes.sql", header, hotfixProtoBuilders, hotfixMethods, units, gameObjects);
 
                 var worldMethods = allMethods.Where(x => x.Attributes.First().Database == TargetSQLDatabase.World).Select(x => x.Method).ToList();
-                DumpFile(prefix, $"{fileName}_world.sql", header, worldMethods, units, gameObjects);
+                var worldProtoBuilders = allProtoBuilders.Where(x => x.Attributes.First().Database == TargetSQLDatabase.World).Select(x => x.Type).ToList();
+                DumpFile(packets, prefix, $"{fileName}_world.sql", header, worldProtoBuilders, worldMethods, units, gameObjects);
 
                 var wppMethods = allMethods.Where(x => x.Attributes.First().Database == TargetSQLDatabase.WPP).Select(x => x.Method).ToList();
-                DumpFile(prefix, $"{fileName}_wpp.sql", header, wppMethods, units, gameObjects);
+                var wppProtoBuilders = allProtoBuilders.Where(x => x.Attributes.First().Database == TargetSQLDatabase.WPP).Select(x => x.Type).ToList();
+                DumpFile(packets, prefix, $"{fileName}_wpp.sql", header, wppProtoBuilders, wppMethods, units, gameObjects);
             }
             else
             {
+                var protoBuilderTypes = allProtoBuilders.Select(x => x.Type).ToList();
                 var builderMethods = allMethods.Select(x => x.Method).ToList();
-                DumpFile(prefix, fileName, header, builderMethods, units, gameObjects);
+                DumpFile(packets, prefix, fileName, header, protoBuilderTypes, builderMethods, units, gameObjects);
             }
         }
 
