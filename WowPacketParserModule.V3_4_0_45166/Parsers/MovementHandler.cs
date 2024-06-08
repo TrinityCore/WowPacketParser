@@ -1,17 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Google.Protobuf.WellKnownTypes;
-using WowPacketParser.DBC;
 using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
-using WowPacketParser.SQL.Builders;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using WowPacketParser.Store.Objects.Movement;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
 using MovementFlag2 = WowPacketParser.Enums.v4.MovementFlag2;
@@ -57,13 +52,13 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             return jump;
         }
 
-        public static void ReadMovementSpline(Packet packet, Vector3 pos, CreatureMovement movement, params object[] indexes)
+        public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
             var splineFlag = packet.ReadUInt32E<SplineFlag>("Flags", indexes);
             monsterMove.Flags = splineFlag.ToUniversal();
 
-            CreatureMovementFlags moveType = CreatureMovementFlags.None;
+            CreatureMovementFlags moveType = CreatureMovementFlags.NormalPathfinding;
 
             if (splineFlag.HasFlag(SplineFlag.EnterCicle) || splineFlag.HasFlag(SplineFlag.Cyclic))
                 moveType = CreatureMovementFlags.ExactPathFlyingCyclic;
@@ -122,7 +117,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                     SplineLookTarget lookTarget = monsterMove.LookTarget = new();
                     lookTarget.Orientation = packet.ReadSingle("FaceDirection", indexes);
                     lookTarget.Target = packet.ReadPackedGuid128("FacingGUID", indexes);
-                    moveType = CreatureMovementFlags.Invalid;
+                    moveType = CreatureMovementFlags.CombatMovement;
                     break;
                 case SplineFacingType.Angle:
                     monsterMove.LookOrientation = packet.ReadSingle("FaceDirection", indexes);
@@ -165,12 +160,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                     monsterMove.PackedPoints.Add(vec);
                     distance += Vector3.GetDistance(prevpos, vec);
                     prevpos = vec;
-                    if (moveType != CreatureMovementFlags.Invalid)
-                        movement.Waypoints.Add(new CreatureMovementNode
-                        {
-                            Position = vec,
-                            Point = false
-                        });
                 }
                 distance += Vector3.GetDistance(prevpos, endpos);
             }
@@ -210,34 +199,13 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 packet.AddValue("Computed Speed", (distance / monsterMove.MoveTime) * 1000, indexes);
             }
 
-            if (moveType != CreatureMovementFlags.Invalid)
-                foreach (var point in monsterMove.Points)
-                    movement.Waypoints.Add(new CreatureMovementNode
-                    {
-                        Position = point,
-                        Point = true
-                    });
-
-            if (moveType != CreatureMovementFlags.Invalid)
-                movement.Type |= moveType;
+            monsterMove.CreatureMovementFlags = moveType;
         }
 
         public static void ReadMovementMonsterSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
             monsterMove.Id = packet.ReadUInt32("Id", indexes);
-
-            var guid = new WowGuid128(monsterMove.Mover.Guid128.Low, monsterMove.Mover.Guid128.High);
-            CreatureMovement movement = Storage.CreatureMovement.Where(p => p.Item1.GUID == guid).SingleOrDefault()?.Item1;
-            bool add = false;
-            if (movement == null)
-            {
-                movement = new CreatureMovement()
-                {
-                    GUID = guid
-                };
-                add = true;
-            }
 
             if (ClientVersion.RemovedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_0_52146) || ClientVersion.Branch != ClientBranch.Classic)
                 monsterMove.Destination = packet.ReadVector3("Destination", indexes);
@@ -247,10 +215,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadBit("CrzTeleport", indexes);
             packet.ReadBits("StopDistanceTolerance", 3, indexes);
 
-            ReadMovementSpline(packet, pos, movement, indexes, "MovementSpline");
-
-            if (movement.Type != CreatureMovementFlags.Invalid && add)
-                Storage.CreatureMovement.Add(movement);
+            ReadMovementSpline(packet, pos, indexes, "MovementSpline");
         }
 
         [Parser(Opcode.SMSG_LOGIN_SET_TIME_SPEED)]

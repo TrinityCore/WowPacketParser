@@ -344,6 +344,15 @@ enum UniversalSplineFlag {
   Steering            = 0x40000000;
 }
 
+enum CreatureMovementFlags {
+  NormalPathfinding       = 0; // pathfinding
+  ExactPath               = 1; // sent fully
+  ExactPathFlying         = 2; // sent fully + flying flag
+  ExactPathFlyingCyclic   = 3; // sent fully + flying flag + cyclic flag
+  ExactPathAndJump        = 4; // sent fully + parabolic movement at the end
+  CombatMovement          = 100;
+}
+
 message PacketMonsterMove {
   UniversalGuid mover = 1;
   Vec3 position = 2;
@@ -362,6 +371,8 @@ message PacketMonsterMove {
   repeated Vec3 points = 13;
   repeated Vec3 packedPoints = 14;
   optional SplineJump jump = 15;
+  optional CreatureMovementFlags creatureMovementFlags = 16;
+  bool creationSpline = 17;
 }
 
 message SplineJump {
