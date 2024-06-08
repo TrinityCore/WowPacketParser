@@ -83,18 +83,19 @@ namespace WowPacketParser.Loading
             }
         }
 
-        public void ProcessFile()
+        public Packets ProcessFile()
         {
 
             try
             {
-                ProcessFileImpl();
+                return ProcessFileImpl();
             }
             catch (Exception ex)
             {
                 Trace.WriteLine(_logPrefix + " " + ex.GetType());
                 Trace.WriteLine(_logPrefix + " " + ex.Message);
                 Trace.WriteLine(_logPrefix + " " + ex.StackTrace);
+                return new Packets();
             }
             finally
             {
@@ -106,7 +107,7 @@ namespace WowPacketParser.Loading
             }
         }
 
-        private void ProcessFileImpl()
+        private Packets ProcessFileImpl()
         {
             if (_compression != FileCompression.None)
                 _tempName = Decompress();
@@ -184,9 +185,9 @@ namespace WowPacketParser.Loading
 
                     var written = false;
 
+                    Packets packets = new() { Version = StructureVersion.ProtobufStructureVersion, DumpType = (uint)Settings.DumpFormat };
                     using (var writer = (Settings.DumpFormatWithTextToFile() ? new StreamWriter(outFileName, true) : null))
                     {
-                        Packets packets = new() { Version = StructureVersion.ProtobufStructureVersion, DumpType = (uint)Settings.DumpFormat };
                         var firstRead = true;
                         var firstWrite = true;
 
@@ -285,7 +286,7 @@ namespace WowPacketParser.Loading
                             // Close Writer, Stream - Dispose
                             packet.ClosePacket();
 
-                            if (_dumpFormat.IsUniversalProtobufType())
+                            if (_dumpFormat.IsUniversalProtobufType() || Settings.SQLOutputFlag != 0 || HotfixSettings.Instance.ShouldLog())
                                 packets.Packets_.Add(packet.Holder);
                         }, threadCount);
 
@@ -316,14 +317,14 @@ namespace WowPacketParser.Loading
                     Trace.WriteLine($"{_logPrefix}: {_stats}");
 
                     if (Settings.SQLOutputFlag != 0 || HotfixSettings.Instance.ShouldLog())
-                        WriteSQLs();
+                        WriteSQLs(packets);
 
                     if (Settings.LogPacketErrors)
                         WritePacketErrors();
 
                     GC.Collect(); // Force a GC collect after parsing a file. It seems to help.
 
-                    break;
+                    return packets;
                 }
                 case DumpFormatType.Pkt:
                 {
@@ -478,6 +479,8 @@ namespace WowPacketParser.Loading
                     break;
                 }
             }
+
+            return new Packets();
         }
 
         public static string GetHeader(string fileName)
@@ -560,14 +563,14 @@ namespace WowPacketParser.Loading
             BinaryPacketWriter.Write(SniffType.Pkt, fileName, Encoding.ASCII, packets);
         }
 
-        private void WriteSQLs()
+        private void WriteSQLs(Packets packets)
         {
             var sqlFileName = string.IsNullOrWhiteSpace(Settings.SQLFileName) ? $"{Utilities.FormattedDateTimeForFiles()}_{Path.GetFileName(FileName)}.sql" : Settings.SQLFileName;
 
             if (!string.IsNullOrWhiteSpace(Settings.SQLFileName))
                 return;
 
-            Builder.DumpSQL($"{_logPrefix}: Dumping sql", sqlFileName, GetHeader(FileName));
+            Builder.DumpSQL(new []{packets}, $"{_logPrefix}: Dumping sql", sqlFileName, GetHeader(FileName));
             Storage.ClearContainers();
         }
 
