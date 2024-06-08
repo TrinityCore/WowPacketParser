@@ -55,4 +55,39 @@ namespace WowPacketParser.SQL.Builders
     public sealed class BuilderClassAttribute : Attribute
     {
     }
+
+    [AttributeUsage(AttributeTargets.Class)]
+    public sealed class ProtoBuilderClassAttribute : Attribute
+    {
+        public ProtoBuilderClassAttribute()
+        {
+            Database = TargetSQLDatabase.World;
+        }
+        public ProtoBuilderClassAttribute(TargetSQLDatabase database)
+        {
+            Database = database;
+        }
+
+        public ProtoBuilderClassAttribute(bool checkVersionMissmatch)
+        {
+            Database = TargetSQLDatabase.World;
+            CheckVersionMismatch = checkVersionMissmatch;
+        }
+
+        public ProtoBuilderClassAttribute(bool checkVersionMissmatch, TargetSQLDatabase database)
+        {
+            Database = database;
+            CheckVersionMismatch = checkVersionMissmatch;
+        }
+
+        /// <summary>
+        /// True if mismatch between targeted database and sniff version should be checked
+        /// </summary>
+        public bool CheckVersionMismatch { get; private set; }
+
+        // <summary>
+        // Defines the targeted database
+        // </summary>
+        public TargetSQLDatabase Database;
+    }
 }
