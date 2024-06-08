@@ -17,11 +17,11 @@ namespace WowPacketParser.Store.Objects
         public int? QuestLevel;
 
         [DBFieldName("ScalingFactionGroup", TargetedDatabaseFlag.BattleForAzeroth | TargetedDatabaseFlag.Classic)]
-        [DBFieldName("QuestScalingFactionGroup", TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("QuestScalingFactionGroup", TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public int? QuestScalingFactionGroup;
 
         [DBFieldName("MaxScalingLevel", TargetedDatabaseFlag.Legion | TargetedDatabaseFlag.BattleForAzeroth | TargetedDatabaseFlag.Classic)]
-        [DBFieldName("QuestMaxScalingLevel", TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("QuestMaxScalingLevel", TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public int? QuestMaxScalingLevel;
 
         [DBFieldName("QuestPackageID", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.AnyClassic)]
@@ -324,19 +324,19 @@ namespace WowPacketParser.Store.Objects
         public uint?[] RequiredCurrencyCount;
 
         [DBFieldName("QuestGiverTextWindow", TargetedDatabaseFlag.Cataclysm)]
-        [DBFieldName("PortraitGiverText", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic, LocaleConstant.enUS)]
+        [DBFieldName("PortraitGiverText", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic, LocaleConstant.enUS)]
         public string QuestGiverTextWindow;
 
         [DBFieldName("QuestGiverTargetName", TargetedDatabaseFlag.Cataclysm)]
-        [DBFieldName("PortraitGiverName", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic, LocaleConstant.enUS)]
+        [DBFieldName("PortraitGiverName", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic, LocaleConstant.enUS)]
         public string QuestGiverTargetName;
 
         [DBFieldName("QuestTurnTextWindow", TargetedDatabaseFlag.Cataclysm)]
-        [DBFieldName("PortraitTurnInText", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic, LocaleConstant.enUS)]
+        [DBFieldName("PortraitTurnInText", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic, LocaleConstant.enUS)]
         public string QuestTurnTextWindow;
 
         [DBFieldName("QuestTurnTargetName", TargetedDatabaseFlag.Cataclysm)]
-        [DBFieldName("PortraitTurnInName", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic, LocaleConstant.enUS)]
+        [DBFieldName("PortraitTurnInName", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic, LocaleConstant.enUS)]
         public string QuestTurnTargetName;
 
         [DBFieldName("SoundAccept", TargetedDatabaseFlag.Cataclysm)]
