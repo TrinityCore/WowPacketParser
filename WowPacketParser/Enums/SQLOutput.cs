@@ -19,6 +19,7 @@
         creature_addon,
         creature_equip_template,
         creature_model_info,
+        creature_movement,
         creature_queststarter,
         creature_questender,
         creature_template,
