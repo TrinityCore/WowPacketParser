@@ -430,6 +430,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadSingle("Speed");
         }
 
+        [Parser(Opcode.SMSG_FLIGHT_SPLINE_SYNC)]
+        public static void HandleFlightSplineSync(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadSingle("SplineDist");
+        }
+
         [Parser(Opcode.CMSG_MOVE_CHANGE_TRANSPORT)]
         [Parser(Opcode.CMSG_MOVE_DISMISS_VEHICLE)]
         [Parser(Opcode.CMSG_MOVE_FALL_LAND)]

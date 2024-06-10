@@ -34,5 +34,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (var i = 0; i < numFields; i++)
                 ReadWorldStateBlock(packet);
         }
+
+        [Parser(Opcode.SMSG_UPDATE_WORLD_STATE)]
+        public static void HandleUpdateWorldState(Packet packet)
+        {
+            ReadWorldStateBlock(packet);
+            packet.ReadBit("Hidden");
+        }
     }
 }

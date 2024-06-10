@@ -273,6 +273,34 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("Sequence");
         }
 
+        [Parser(Opcode.CMSG_QUERY_REALM_NAME)]
+        public static void HandleRealmQuery(Packet packet)
+        {
+            packet.ReadInt32("VirtualRealmAddress");
+        }
+
+        [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE, ClientVersionBuild.V8_1_0_28724)]
+        public static void HandleRealmQueryResponse(Packet packet)
+        {
+            packet.ReadUInt32("VirtualRealmAddress");
+
+            var state = packet.ReadByte("LookupState");
+            if (state == 0)
+            {
+                packet.ResetBitReader();
+
+                packet.ReadBit("IsLocal");
+                packet.ReadBit("Unk bit");
+
+                var bits2 = packet.ReadBits(9);
+                var bits258 = packet.ReadBits(9);
+                packet.ReadBit();
+
+                packet.ReadWoWString("RealmNameActual", bits2);
+                packet.ReadWoWString("RealmNameNormalized", bits258);
+            }
+        }
+
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK)]
         public static void HandleSessionZero(Packet packet)
         {

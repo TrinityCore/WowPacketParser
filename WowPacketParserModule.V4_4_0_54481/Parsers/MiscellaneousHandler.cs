@@ -416,10 +416,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("TimerType");
         }
 
+        [Parser(Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE)]
+        public static void HandleRequestCemeteryListResponse(Packet packet)
+        {
+            packet.ReadBit("IsTriggered");
+
+            var count = packet.ReadUInt32("Count");
+            for (int i = 0; i < count; ++i)
+                packet.ReadInt32("CemeteryID", i);
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
         [Parser(Opcode.CMSG_QUERY_TIME)]
+        [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

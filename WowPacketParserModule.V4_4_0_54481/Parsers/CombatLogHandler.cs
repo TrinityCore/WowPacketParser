@@ -85,7 +85,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ReadUInt16("PlayerItemLevel", idx);
             packet.ReadInt16("PlayerLevelDelta", idx);
-            packet.ReadUInt16("TargetItemLevel", idx);
+            packet.ReadUInt32("TargetItemLevel", idx);
             packet.ReadByte("TargetLevel", idx);
             packet.ReadByte("Expansion", idx);
             packet.ReadByte("TargetMinScalingLevel", idx);
@@ -93,6 +93,41 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadSByte("TargetScalingLevelDelta", idx);
             packet.ReadBits("Type", 4, idx);
             packet.ReadBit("ScalesWithItemLevel", idx);
+        }
+
+        public static void ReadSpellSupportInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("CasterGUID", idx);
+            packet.ReadInt32<SpellId>("SpellID", idx);
+            packet.ReadInt32("Amount", idx);
+            packet.ReadSingle("Percentage", idx);
+        }
+
+        public static void ReadPeriodicAuraLogEffectData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Effect", idx);
+            packet.ReadInt32("Amount", idx);
+            packet.ReadInt32("OriginalDamage", idx);
+            packet.ReadInt32("OverHealOrKill", idx);
+            packet.ReadInt32("SchoolMaskOrPower", idx);
+            packet.ReadInt32("AbsorbedOrAmplitude", idx);
+            packet.ReadInt32("Resisted", idx);
+            var supportInfosCount = packet.ReadUInt32("SupportInfosCount", idx);
+            for (var i = 0; i < supportInfosCount; i++)
+                ReadSpellSupportInfo(packet, "SupportInfo", i, idx);
+
+            packet.ResetBitReader();
+            packet.ReadBit("Crit", idx);
+            var hasDebugData = packet.ReadBit("HasDebugInfo", idx);
+            var hasContentTuning = packet.ReadBit("HasContentTuning", idx);
+            if (hasContentTuning)
+                ReadContentTuningParams(packet, idx, "ContentTuning");
+
+            if (hasDebugData)
+            {
+                packet.ReadSingle("CritRollMade", idx);
+                packet.ReadSingle("CritRollNeeded", idx);
+            }
         }
 
         [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE)]
@@ -145,6 +180,26 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             if (hasContentTuning)
                 ReadContentTuningParams(packet, "ContentTuning");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
+        public static void HandleSpellPeriodicAuraLog720(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadPackedGuid128("CasterGUID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+
+            var periodicAuraLogEffectCount = packet.ReadUInt32("PeriodicAuraLogEffectCount");
+
+            packet.ResetBitReader();
+            var hasLogData = packet.ReadBit("HasLogData");
+
+            for (var i = 0; i < periodicAuraLogEffectCount; i++)
+                ReadPeriodicAuraLogEffectData(packet, "PeriodicAuraLogEffectData", i);
+
+            if (hasLogData)
+                V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
         }
     }
 }
