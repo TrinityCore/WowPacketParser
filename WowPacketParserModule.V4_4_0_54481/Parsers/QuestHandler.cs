@@ -313,5 +313,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             Storage.QuestTemplates.Add(quest, packet.TimeSpan);
         }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_STATUS_MULTIPLE)]
+        public static void HandleQuestgiverStatusMultiple(Packet packet)
+        {
+            var int16 = packet.ReadInt32("QuestGiverStatusCount");
+            for (var i = 0; i < int16; ++i)
+            {
+                packet.ReadPackedGuid128("Guid", i);
+                packet.ReadUInt64E<QuestGiverStatus4x>("Status", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_MULTIPLE_QUERY)]
+        public static void HandleQuestZeroLengthPackets(Packet packet)
+        {
+        }
     }
 }

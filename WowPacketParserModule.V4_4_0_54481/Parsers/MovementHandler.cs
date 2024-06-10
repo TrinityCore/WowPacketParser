@@ -429,5 +429,42 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             ReadMovementStats(packet, "MovementStats");
             packet.ReadSingle("Speed");
         }
+
+        [Parser(Opcode.CMSG_MOVE_CHANGE_TRANSPORT)]
+        [Parser(Opcode.CMSG_MOVE_DISMISS_VEHICLE)]
+        [Parser(Opcode.CMSG_MOVE_FALL_LAND)]
+        [Parser(Opcode.CMSG_MOVE_FALL_RESET)]
+        [Parser(Opcode.CMSG_MOVE_HEARTBEAT)]
+        [Parser(Opcode.CMSG_MOVE_JUMP)]
+        [Parser(Opcode.CMSG_MOVE_REMOVE_MOVEMENT_FORCES)]
+        [Parser(Opcode.CMSG_MOVE_SET_FACING)]
+        [Parser(Opcode.CMSG_MOVE_SET_FACING_HEARTBEAT)]
+        [Parser(Opcode.CMSG_MOVE_SET_FLY)]
+        [Parser(Opcode.CMSG_MOVE_SET_PITCH)]
+        [Parser(Opcode.CMSG_MOVE_SET_RUN_MODE)]
+        [Parser(Opcode.CMSG_MOVE_SET_WALK_MODE)]
+        [Parser(Opcode.CMSG_MOVE_START_ASCEND)]
+        [Parser(Opcode.CMSG_MOVE_START_BACKWARD)]
+        [Parser(Opcode.CMSG_MOVE_START_DESCEND)]
+        [Parser(Opcode.CMSG_MOVE_START_FORWARD)]
+        [Parser(Opcode.CMSG_MOVE_START_PITCH_DOWN)]
+        [Parser(Opcode.CMSG_MOVE_START_PITCH_UP)]
+        [Parser(Opcode.CMSG_MOVE_START_SWIM)]
+        [Parser(Opcode.CMSG_MOVE_START_TURN_LEFT)]
+        [Parser(Opcode.CMSG_MOVE_START_TURN_RIGHT)]
+        [Parser(Opcode.CMSG_MOVE_START_STRAFE_LEFT)]
+        [Parser(Opcode.CMSG_MOVE_START_STRAFE_RIGHT)]
+        [Parser(Opcode.CMSG_MOVE_STOP)]
+        [Parser(Opcode.CMSG_MOVE_STOP_ASCEND)]
+        [Parser(Opcode.CMSG_MOVE_STOP_PITCH)]
+        [Parser(Opcode.CMSG_MOVE_STOP_STRAFE)]
+        [Parser(Opcode.CMSG_MOVE_STOP_SWIM)]
+        [Parser(Opcode.CMSG_MOVE_STOP_TURN)]
+        [Parser(Opcode.CMSG_MOVE_DOUBLE_JUMP)]
+        public static void HandleClientPlayerMove(Packet packet)
+        {
+            var stats = ReadMovementStats(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.PositionAsVector4 };
+        }
     }
 }
