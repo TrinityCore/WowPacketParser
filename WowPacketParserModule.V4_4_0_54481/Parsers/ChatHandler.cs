@@ -68,5 +68,26 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             if (entry != 0)
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_DND)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_EMOTE)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_AFK)]
+        public static void HandleMessageChat(Packet packet)
+        {
+            var len = packet.ReadBits(11);
+            packet.ReadWoWString("Message", len);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_CHANNEL)]
+        public static void HandleChatAddonMessageChannel(Packet packet)
+        {
+            packet.ReadInt32E<Language>("Language");
+            packet.ReadPackedGuid128("ChannelGUID");
+            var channelNameLen = packet.ReadBits(9);
+            var msgLen = packet.ReadBits(11);
+
+            packet.ReadWoWString("Target", channelNameLen);
+            packet.ReadWoWString("Text", msgLen);
+        }
     }
 }

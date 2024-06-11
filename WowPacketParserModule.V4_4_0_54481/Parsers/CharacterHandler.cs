@@ -267,5 +267,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("AnimKitID");
             packet.ReadByteE<StandState>("State");
         }
+
+        [Parser(Opcode.CMSG_STAND_STATE_CHANGE)]
+        public static void HandleStandStateChange(Packet packet)
+        {
+            packet.ReadInt32E<StandState>("StandState");
+        }
     }
 }

@@ -504,5 +504,29 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("AckIndex");
             packet.ReadInt32("MoveTime");
         }
+
+        [Parser(Opcode.SMSG_MOVE_SET_ACTIVE_MOVER)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_ROOT)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_UNROOT)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_DISABLE_GRAVITY)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_ENABLE_GRAVITY)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_DISABLE_COLLISION)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_ENABLE_COLLISION)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FEATHER_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_NORMAL_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_HOVER)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_UNSET_HOVER)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WATER_WALK)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_START_SWIM)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_STOP_SWIM)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_MODE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_MODE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLYING)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_UNSET_FLYING)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_LAND_WALK)]
+        public static void HandleSplineMoveGravityDisable(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+        }
     }
 }
