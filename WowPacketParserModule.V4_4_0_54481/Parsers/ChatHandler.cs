@@ -89,5 +89,24 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadWoWString("Target", channelNameLen);
             packet.ReadWoWString("Text", msgLen);
         }
+
+        [Parser(Opcode.SMSG_EMOTE)]
+        public static void HandleEmote(Packet packet)
+        {
+            PacketEmote packetEmote = packet.Holder.Emote = new PacketEmote();
+            var guid = packet.ReadPackedGuid128("GUID");
+            var emote = packet.ReadInt32E<EmoteType>("Emote ID");
+            var count = packet.ReadUInt32("SpellVisualKitCount");
+            packet.ReadInt32("SequenceVariation");
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt32("SpellVisualKitID", i);
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.Emotes.Add(guid, emote, packet.TimeSpan);
+
+            packetEmote.Emote = (int)emote;
+            packetEmote.Sender = guid.ToUniversalGuid();
+        }
     }
 }

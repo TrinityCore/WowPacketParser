@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
@@ -11,9 +12,24 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class SpellHandler
     {
-        public static void ReadSpellCastVisual(Packet packet, params object[] indexes)
+        public static void ReadSpellCastLogData(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("SpellXSpellVisualID", indexes);
+            packet.ReadInt64("Health", idx);
+            packet.ReadInt32("AttackPower", idx);
+            packet.ReadInt32("SpellPower", idx);
+            packet.ReadInt32("Armor", idx);
+
+            packet.ResetBitReader();
+
+            var spellLogPowerDataCount = packet.ReadBits("SpellLogPowerData", 9, idx);
+
+            // SpellLogPowerData
+            for (var i = 0; i < spellLogPowerDataCount; ++i)
+            {
+                packet.ReadInt32("PowerType", idx, i);
+                packet.ReadInt32("Amount", idx, i);
+                packet.ReadInt32("Cost", idx, i);
+            }
         }
 
         public static void ReadSpellHealPrediction(Packet packet, params object[] idx)
@@ -286,7 +302,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 {
                     packet.ReadPackedGuid128("CastID", i);
                     aura.SpellId = auraEntry.Spell = (uint)packet.ReadInt32<SpellId>("SpellID", i);
-                    ReadSpellCastVisual(packet, i, "Visual");
+                    packet.ReadInt32("SpellXSpellVisualID", i);
                     var flags = packet.ReadUInt16E<AuraFlagClassic>("Flags", i);
                     aura.AuraFlags = flags;
                     auraEntry.Flags = flags.ToUniversal();
@@ -374,7 +390,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ResetBitReader();
             var hasLog = packet.ReadBit();
             if (hasLog)
-                V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet, "LogData");
+                ReadSpellCastLogData(packet, "LogData");
         }
 
         [Parser(Opcode.SMSG_SPELL_CHANNEL_UPDATE)]
@@ -382,6 +398,69 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadInt32("TimeRemaining");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
+        public static void HandleSpellFailedOther(Packet packet)
+        {
+            var spellFail = packet.Holder.SpellFailure = new();
+            spellFail.Caster = packet.ReadPackedGuid128("CasterUnit");
+            spellFail.CastGuid = packet.ReadPackedGuid128("CastID");
+            spellFail.Spell = packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisualID");
+            spellFail.Success = packet.ReadByte("Reason") == 0;
+        }
+
+        [Parser(Opcode.SMSG_SPELL_FAILURE)]
+        public static void HandleSpellFailure(Packet packet)
+        {
+            var spellFail = packet.Holder.SpellFailure = new();
+            spellFail.Caster = packet.ReadPackedGuid128("CasterUnit");
+            spellFail.CastGuid = packet.ReadPackedGuid128("CastID");
+            spellFail.Spell = (uint)packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisualID");
+            spellFail.Success = packet.ReadInt16("Reason") == 0;
+        }
+
+        [Parser(Opcode.SMSG_SPELL_DISPELL_LOG)]
+        public static void HandleSpellDispelLog(Packet packet)
+        {
+            packet.ReadBit("IsSteal");
+            packet.ReadBit("IsBreak");
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadUInt32<SpellId>("DispelledBySpellID");
+            var dataSize = packet.ReadUInt32("DispelCount");
+            for (var i = 0; i < dataSize; ++i)
+            {
+                packet.ResetBitReader();
+                packet.ReadUInt32<SpellId>("SpellID", i);
+                packet.ReadBit("Harmful", i);
+                var hasRolled = packet.ReadBit("HasRolled", i);
+                var hasNeeded = packet.ReadBit("HasNeeded", i);
+                if (hasRolled)
+                    packet.ReadUInt32("Rolled", i);
+                if (hasNeeded)
+                    packet.ReadUInt32("Needed", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)]
+        public static void HandleCastVisualKit(Packet packet)
+        {
+            var playSpellVisualKit = packet.Holder.PlaySpellVisualKit = new();
+            playSpellVisualKit.Unit = packet.ReadPackedGuid128("Unit");
+            playSpellVisualKit.KitRecId = packet.ReadInt32("KitRecID");
+            playSpellVisualKit.KitType = packet.ReadInt32("KitType");
+            playSpellVisualKit.Duration = packet.ReadUInt32("Duration");
+            packet.ReadBit("MountedVisual");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_DELAYED)]
+        public static void HandleSpellDelayed(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadInt32("ActualDelay");
         }
     }
 }

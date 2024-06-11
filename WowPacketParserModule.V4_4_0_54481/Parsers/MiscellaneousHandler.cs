@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -424,6 +425,25 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var count = packet.ReadUInt32("Count");
             for (int i = 0; i < count; ++i)
                 packet.ReadInt32("CemeteryID", i);
+        }
+
+        [Parser(Opcode.SMSG_PLAY_OBJECT_SOUND)]
+        public static void HandlePlayObjectSound(Packet packet)
+        {
+            PacketPlayObjectSound packetSound = packet.Holder.PlayObjectSound = new PacketPlayObjectSound();
+            uint sound = packetSound.Sound = packet.ReadUInt32<SoundId>("SoundId");
+            packetSound.Source = packet.ReadPackedGuid128("SourceObjectGUID");
+            packetSound.Target = packet.ReadPackedGuid128("TargetObjectGUID");
+            packet.ReadVector3("Position");
+            packet.ReadInt32("BroadcastTextID");
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
+        public static void HandleZoneUpdate(Packet packet)
+        {
+            packet.ReadInt32<AreaId>("AreaID");
         }
 
         [Parser(Opcode.SMSG_RESUME_COMMS)]
