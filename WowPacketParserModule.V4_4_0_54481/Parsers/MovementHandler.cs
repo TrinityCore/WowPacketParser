@@ -473,5 +473,36 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var stats = ReadMovementStats(packet);
             packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.PositionAsVector4 };
         }
+
+        [Parser(Opcode.SMSG_MOVE_TELEPORT)]
+        public static void HandleMoveTeleport(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+            packet.ReadVector3("Position");
+            packet.ReadSingle("Facing");
+            packet.ReadByte("PreloadWorld");
+            var hasTransport = packet.ReadBit("HasTransport");
+            var hasVehicleTeleport = packet.ReadBit("HasVehicleTeleport");
+
+            // VehicleTeleport
+            if (hasVehicleTeleport)
+            {
+                packet.ReadByte("VehicleSeatIndex");
+                packet.ReadBit("VehicleExitVoluntary");
+                packet.ReadBit("VehicleExitTeleport");
+            }
+
+            if (hasTransport)
+                packet.ReadPackedGuid128("TransportGUID");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_TELEPORT_ACK)]
+        public static void HandleMoveTeleportAck(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("AckIndex");
+            packet.ReadInt32("MoveTime");
+        }
     }
 }

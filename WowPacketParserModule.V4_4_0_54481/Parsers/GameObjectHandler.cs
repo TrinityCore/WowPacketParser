@@ -15,5 +15,20 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("Entry");
             packet.ReadPackedGuid128("GUID");
         }
+
+        [Parser(Opcode.CMSG_GAME_OBJ_USE)]
+        public static void HandleGoUse(Packet packet)
+        {
+            var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
+            use.GameObject = packet.ReadPackedGuid128("GameObjectGUID");
+        }
+
+        [Parser(Opcode.CMSG_GAME_OBJ_REPORT_USE)]
+        public static void HandleGoReportUse(Packet packet)
+        {
+            var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
+            use.GameObject = packet.ReadPackedGuid128("GameObjectGUID");
+            use.Report = true;
+        }
     }
 }

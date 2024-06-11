@@ -260,5 +260,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ReadBit("TriggerEvent");
         }
+
+        [Parser(Opcode.SMSG_STAND_STATE_UPDATE)]
+        public static void HandleStandStateUpdate(Packet packet)
+        {
+            packet.ReadInt32("AnimKitID");
+            packet.ReadByteE<StandState>("State");
+        }
     }
 }

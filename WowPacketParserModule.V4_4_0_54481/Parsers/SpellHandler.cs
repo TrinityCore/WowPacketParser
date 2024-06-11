@@ -376,5 +376,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             if (hasLog)
                 V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet, "LogData");
         }
+
+        [Parser(Opcode.SMSG_SPELL_CHANNEL_UPDATE)]
+        public static void HandleSpellChannelUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadInt32("TimeRemaining");
+        }
     }
 }

@@ -15,5 +15,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("PetID");
         }
+
+        [Parser(Opcode.SMSG_PET_STABLE_RESULT)]
+        public static void HandlePetStableResult(Packet packet)
+        {
+            packet.ReadByteE<PetStableResult>("Result");
+        }
     }
 }
