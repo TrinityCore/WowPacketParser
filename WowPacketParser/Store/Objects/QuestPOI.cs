@@ -10,26 +10,26 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("QuestID", true)]
         public int? QuestID;
 
-        [DBFieldName("BlobIndex", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic, true)]
+        [DBFieldName("BlobIndex", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic, true)]
         public int? BlobIndex;
 
         [DBFieldName("id", TargetedDatabaseFlag.TillCataclysm, true)]
-        [DBFieldName("Idx1", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic, true)]
+        [DBFieldName("Idx1", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic, true)]
         public int? ID;
 
         [DBFieldName("ObjectiveIndex")]
         public int? ObjectiveIndex;
 
-        [DBFieldName("QuestObjectiveID", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("QuestObjectiveID", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public int? QuestObjectiveID;
 
-        [DBFieldName("QuestObjectID", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("QuestObjectID", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public int? QuestObjectID;
 
         [DBFieldName("MapID")]
         public int? MapID;
 
-        [DBFieldName("UiMapID", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("UiMapID", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public int? UiMapID;
 
         [DBFieldName("WorldMapAreaId", TargetedDatabaseFlag.TillLegion)]
@@ -44,19 +44,19 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Flags")]
         public int? Flags;
 
-        [DBFieldName("WorldEffectID", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("WorldEffectID", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public int? WorldEffectID;
 
-        [DBFieldName("PlayerConditionID", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("PlayerConditionID", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public int? PlayerConditionID;
 
-        [DBFieldName("NavigationPlayerConditionID", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("NavigationPlayerConditionID", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public int? NavigationPlayerConditionID;
 
-        [DBFieldName("SpawnTrackingID", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("SpawnTrackingID", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public int? SpawnTrackingID;
 
-        [DBFieldName("AlwaysAllowMergingBlobs", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("AlwaysAllowMergingBlobs", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public bool? AlwaysAllowMergingBlobs;
 
         [DBFieldName("VerifiedBuild")]
