@@ -30,5 +30,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("ItemGUID");
         }
+
+        [Parser(Opcode.CMSG_USE_TOY)]
+        public static void HandleUseToy(Packet packet)
+        {
+            SpellHandler.ReadSpellCastRequest(packet, "Cast");
+        }
     }
 }

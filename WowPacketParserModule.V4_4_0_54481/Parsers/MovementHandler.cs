@@ -528,5 +528,20 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("MoverGUID");
         }
+
+        [Parser(Opcode.SMSG_MOVE_UPDATE_WALK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_SWIM_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_TURN_RATE)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_FLIGHT_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_PITCH_RATE)]
+        public static void HandleMovementUpdateSpeed(Packet packet)
+        {
+            ReadMovementStats(packet, "MovementStats");
+            packet.ReadSingle("Speed");
+        }
     }
 }

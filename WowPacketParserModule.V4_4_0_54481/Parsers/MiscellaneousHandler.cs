@@ -446,6 +446,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32<AreaId>("AreaID");
         }
 
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        public static void HandleSetSelection(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]

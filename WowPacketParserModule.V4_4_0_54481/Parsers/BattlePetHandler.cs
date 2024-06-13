@@ -56,6 +56,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadClientBattlePet(packet, i);
         }
 
+        [Parser(Opcode.CMSG_BATTLE_PET_SUMMON)]
+        public static void HandleBattlePetDeletePet(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
         [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL)]
         public static void HandleBattlePetZero(Packet packet)
