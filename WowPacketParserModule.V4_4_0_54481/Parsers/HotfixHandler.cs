@@ -2515,7 +2515,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             hotfix.Unk341_6 = packet.ReadInt32("Unk341_6", indexes);
             hotfix.Unk341_7 = packet.ReadInt32("Unk341_7", indexes);
             hotfix.Unk341_8 = packet.ReadInt32("Unk341_8", indexes);
-            hotfix.GossipIndex = packet.ReadInt32("GossipIndex", indexes);
+            hotfix.GossipOptionID = packet.ReadInt32("GossipOptionID", indexes);
 
             Storage.GossipNPCOptionHotfixes440.Add(hotfix, packet.TimeSpan);
         }

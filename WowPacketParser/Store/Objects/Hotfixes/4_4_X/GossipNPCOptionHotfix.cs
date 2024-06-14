@@ -43,8 +43,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Unk341_8")]
         public int? Unk341_8;
 
-        [DBFieldName("GossipIndex")]
-        public int? GossipIndex;
+        [DBFieldName("GossipOptionID")]
+        public int? GossipOptionID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
