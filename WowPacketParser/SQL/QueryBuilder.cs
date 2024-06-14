@@ -347,7 +347,7 @@ namespace WowPacketParser.SQL
 
                         query.Append(SQLUtil.AddBackQuotes(field.Item3.First().Name + (field.Item3.First().StartAtZero ? i : i+1)));
                         query.Append("=");
-                        query.Append(SQLUtil.ToSQLValue(v, noQuotes: field.Item3.Any(a => a.NoQuotes)));
+                        query.Append(SQLUtil.ToSQLValue(v, v.GetType().GetCustomAttribute<FlagsAttribute>() != null, field.Item3.Any(a => a.NoQuotes)));
                         query.Append(SQLUtil.CommaSeparator);
 
                         hasValues = true;
@@ -363,7 +363,7 @@ namespace WowPacketParser.SQL
 
                 query.Append(field.Item1);
                 query.Append("=");
-                query.Append(SQLUtil.ToSQLValue(value, noQuotes: field.Item3.Any(a => a.NoQuotes)));
+                query.Append(SQLUtil.ToSQLValue(value, value.GetType().GetCustomAttribute<FlagsAttribute>() != null, field.Item3.Any(a => a.NoQuotes)));
                 query.Append(SQLUtil.CommaSeparator);
             }
             if (!hasValues)
@@ -566,14 +566,14 @@ namespace WowPacketParser.SQL
                                     query.Append("UNKNOWN");
                             }
                             else
-                                query.Append(SQLUtil.ToSQLValue(v, noQuotes: field.Item3.Any(a => a.NoQuotes)));
+                                query.Append(SQLUtil.ToSQLValue(v, v.GetType().GetCustomAttribute<FlagsAttribute>() != null, field.Item3.Any(a => a.NoQuotes)));
 
                             query.Append(SQLUtil.CommaSeparator);
                         }
                     }
                     else
                     {
-                        query.Append(SQLUtil.ToSQLValue(value, noQuotes: field.Item3.Any(a => a.NoQuotes == true)));
+                        query.Append(SQLUtil.ToSQLValue(value, value.GetType().GetCustomAttribute<FlagsAttribute>() != null, field.Item3.Any(a => a.NoQuotes == true)));
                         query.Append(SQLUtil.CommaSeparator);
                     }
                 }
