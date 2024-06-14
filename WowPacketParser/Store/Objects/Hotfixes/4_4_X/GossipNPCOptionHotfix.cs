@@ -16,6 +16,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("LFGDungeonsID")]
         public int? LFGDungeonsID;
 
+        [DBFieldName("TrainerID")]
+        public int? TrainerID;
+
         [DBFieldName("Unk341_1")]
         public int? Unk341_1;
 
@@ -39,9 +42,6 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("Unk341_8")]
         public int? Unk341_8;
-
-        [DBFieldName("Unk341_9")]
-        public int? Unk341_9;
 
         [DBFieldName("GossipIndex")]
         public int? GossipIndex;

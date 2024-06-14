@@ -2506,6 +2506,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             hotfix.ID = entry;
             hotfix.GossipNpcOption = packet.ReadInt32("GossipNpcOption", indexes);
             hotfix.LFGDungeonsID = packet.ReadInt32("LFGDungeonsID", indexes);
+            hotfix.TrainerID = packet.ReadInt32("TrainerID", indexes);
             hotfix.Unk341_1 = packet.ReadInt32("Unk341_1", indexes);
             hotfix.Unk341_2 = packet.ReadInt32("Unk341_2", indexes);
             hotfix.Unk341_3 = packet.ReadInt32("Unk341_3", indexes);
@@ -2514,7 +2515,6 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             hotfix.Unk341_6 = packet.ReadInt32("Unk341_6", indexes);
             hotfix.Unk341_7 = packet.ReadInt32("Unk341_7", indexes);
             hotfix.Unk341_8 = packet.ReadInt32("Unk341_8", indexes);
-            hotfix.Unk341_9 = packet.ReadInt32("Unk341_9", indexes);
             hotfix.GossipIndex = packet.ReadInt32("GossipIndex", indexes);
 
             Storage.GossipNPCOptionHotfixes440.Add(hotfix, packet.TimeSpan);
