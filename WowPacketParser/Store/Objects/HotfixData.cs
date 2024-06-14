@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Id", true)]
         public uint? ID;
 
-        [DBFieldName("UniqueID", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("UniqueID", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public uint? UniqueID;
 
         [DBFieldName("TableHash", true)]
@@ -22,7 +22,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Deleted", TargetedDatabaseFlag.TillLegion)]
         public bool? Deleted;
 
-        [DBFieldName("Status", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("Status", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public HotfixStatus? Status;
 
         [DBFieldName("VerifiedBuild")]
