@@ -31,6 +31,7 @@ namespace WowPacketParser.Misc
         public static readonly bool ForcePhaseZero = Conf.GetBoolean("ForcePhaseZero", false);
         public static readonly bool GenerateCreateObject2SpawnsOnly = Conf.GetBoolean("GenerateCreateObject2SpawnsOnly", false);
         public static readonly bool SkipDuplicateSpawns = Conf.GetBoolean("SkipDuplicateSpawns", false);
+        public static readonly bool SkipIntermediatePoints = Conf.GetBoolean("SkipDuplicateSpawns", false);
         public static readonly string SQLFileName = Conf.GetString("SQLFileName", string.Empty);
         public static readonly bool SplitSQLFile = Conf.GetBoolean("SplitSQLFile", false);
         public static readonly bool ShowEndPrompt = Conf.GetBoolean("ShowEndPrompt", false);
