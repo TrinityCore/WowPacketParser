@@ -1135,6 +1135,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             hotfix.ID = packet.ReadUInt32("ID", indexes);
             hotfix.SecondaryID = packet.ReadUInt16("SecondaryID", indexes);
             hotfix.Flags = packet.ReadInt32("Flags", indexes);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_0_55141))
+            {
+                hotfix.ChrRacesID = packet.ReadInt32("ChrRacesID", indexes);
+                hotfix.Sex = packet.ReadInt32("Sex", indexes);
+            }
+
             hotfix.ChrModelID = packet.ReadInt32("ChrModelID", indexes);
             hotfix.SortIndex = packet.ReadInt32("SortIndex", indexes);
             hotfix.ChrCustomizationCategoryID = packet.ReadInt32("ChrCustomizationCategoryID", indexes);

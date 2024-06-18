@@ -22,6 +22,12 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ChrModelID")]
         public int? ChrModelID;
 
+        [DBFieldName("ChrRacesID")]
+        public int? ChrRacesID;
+
+        [DBFieldName("Sex")]
+        public int? Sex;
+
         [DBFieldName("SortIndex")]
         public int? SortIndex;
 
