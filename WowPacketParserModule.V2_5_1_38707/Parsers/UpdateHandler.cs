@@ -387,8 +387,8 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                     }
                 }
 
-                moveInfo.WalkSpeed = packet.ReadSingle("WalkSpeed", index);
-                moveInfo.RunSpeed = packet.ReadSingle("RunSpeed", index);
+                moveInfo.WalkSpeed = packet.ReadSingle("WalkSpeed", index) / 2.5f;
+                moveInfo.RunSpeed = packet.ReadSingle("RunSpeed", index) / 7.0f;
                 packet.ReadSingle("RunBackSpeed", index);
                 packet.ReadSingle("SwimSpeed", index);
                 packet.ReadSingle("SwimBackSpeed", index);
