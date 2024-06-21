@@ -19,7 +19,7 @@ namespace WowPacketParser.Misc
         public static readonly TargetedDatabase TargetedDatabase = Conf.GetEnum("TargetedDatabase", TargetedDatabase.WrathOfTheLichKing);
         public static readonly TargetedProject TargetedProject = Conf.GetEnum("TargetedProject", TargetedProject.TrinityCore);
         public static readonly DumpFormatType DumpFormat = Conf.GetEnum("DumpFormat", DumpFormatType.Text);
-        public static readonly ulong SQLOutputFlag = GetSQLOutputFlag();
+        public static readonly UInt128 SQLOutputFlag = GetSQLOutputFlag();
         public static readonly bool SQLOrderByKey = Conf.GetBoolean("SqlOrderByKey", false);
         public static readonly bool SaveTempSpawns = Conf.GetBoolean("SaveTempSpawns", false);
         public static readonly bool SaveExistingSpawns = Conf.GetBoolean("SaveExistingSpawns", false);
@@ -67,17 +67,17 @@ namespace WowPacketParser.Misc
         public static readonly bool UseDBC = Conf.GetBoolean("UseDBC", false);
         public static readonly bool ParseSpellInfos = Conf.GetBoolean("ParseSpellInfos", false);
 
-        private static ulong GetSQLOutputFlag()
+        private static UInt128 GetSQLOutputFlag()
         {
             var names = Enum.GetNames(typeof(SQLOutput));
             var values = Enum.GetValues(typeof(SQLOutput));
 
-            var result = 0ul;
+            UInt128 result = 0;
 
             for (var i = 0; i < names.Length; ++i)
             {
                 if (Conf.GetBoolean(names[i], false))
-                    result += (1ul << (int)values.GetValue(i));
+                    result += (((UInt128)1) << (int)values.GetValue(i));
             }
 
             return result;
