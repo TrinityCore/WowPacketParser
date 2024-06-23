@@ -1,5 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -99,7 +101,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOOT_RESPONSE)]
         public static void HandleLootResponse(Packet packet)
         {
-            packet.ReadGuid("GUID");
+            var guid = packet.ReadGuid("GUID");
             var lootType = packet.ReadByteE<LootType>("AcquireReason");
             if (lootType == LootType.None)
             {
@@ -107,7 +109,21 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
             }
 
-            packet.ReadUInt32("Coins");
+            var coins = packet.ReadUInt32("Coins");
+
+            Storage.Objects.TryGetValue(guid, out WoWObject creature);
+            var npc = creature as Unit;
+
+            if (npc != null)
+            {
+                Storage.CreatureCoins.Add(new CreatureCoins
+                {
+                    WowGuid = guid,
+                    Coins = coins,
+                    Level = npc.UnitData.Level
+                });
+            }
+
             var itemsCount = packet.ReadByte("Drop Count");
 
             byte currenciesCount = 0;

@@ -29,6 +29,7 @@
         creature_template_locale,
         creature_text,
         creature_spell_list,
+        coins,
         gameobject,
         gameobject_addon,
         gameobject_queststarter,

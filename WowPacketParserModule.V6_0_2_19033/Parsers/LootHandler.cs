@@ -1,6 +1,10 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Drawing;
+using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -87,14 +91,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleLootResponse(Packet packet) // 6.0.3.19342 sub_6179EA, sub_83C6C7
         {
             //! TODO Doublecheck the fields for this whole packet. I didn't have many different sniffs to name fields.
-            packet.ReadPackedGuid128("Owner");
+            var guid = packet.ReadPackedGuid128("Owner");
             packet.ReadPackedGuid128("LootObj");
             packet.ReadByteE<LootError>("FailureReason");
             packet.ReadByteE<LootType>("AcquireReason");
             packet.ReadByteE<LootMethod>("LootMethod");
             packet.ReadByteE<ItemQuality>("Threshold");
 
-            packet.ReadUInt32("Coins");
+            var coins = packet.ReadUInt32("Coins");
+
+            Storage.Objects.TryGetValue(guid, out WoWObject creature);
+            var npc = creature as Unit;
+
+            Storage.CreatureCoins.Add(new CreatureCoins
+            {
+                WowGuid = guid,
+                Coins = coins,
+                Level = npc.UnitData.Level
+            });
 
             var itemCount = packet.ReadUInt32("ItemCount");
             var currencyCount = packet.ReadUInt32("CurrencyCount");

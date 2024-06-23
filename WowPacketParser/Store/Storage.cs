@@ -68,6 +68,9 @@ namespace WowPacketParser.Store
         // Creature text (says, yells, etc.)
         public static readonly StoreMulti<uint, CreatureText> CreatureTexts = new StoreMulti<uint, CreatureText>(new List<SQLOutput> { SQLOutput.creature_text });
 
+        // Coins
+        public static readonly StoreBag<CreatureCoins> CreatureCoins = new StoreBag<CreatureCoins>(new List<SQLOutput> { SQLOutput.coins });
+
         // Points of Interest
         public static readonly DataBag<PointsOfInterest> GossipPOIs = new DataBag<PointsOfInterest>(new List<SQLOutput> { SQLOutput.points_of_interest });
 

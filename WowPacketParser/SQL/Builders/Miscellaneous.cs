@@ -167,5 +167,36 @@ namespace WowPacketParser.SQL.Builders
 
             return SQLUtil.Compare(Storage.Scenes, templateDb, StoreNameType.None);
         }
+
+        [BuilderMethod]
+        public static string Coins()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.coins))
+                return string.Empty;
+
+            var outputDict = new Dictionary<uint, (uint min, uint max)>();
+            string output = "";
+
+            foreach (var spawn in Storage.CreatureCoins)
+            {
+                // output += $"Guid: {spawn.Item1.WowGuid} Coins: {spawn.Item1.Coins} Level: {spawn.Item1.Level}\n";
+                if (outputDict.ContainsKey(spawn.Item1.WowGuid.GetEntry()))
+                {
+                    var data = outputDict[spawn.Item1.WowGuid.GetEntry()];
+                    var coins = spawn.Item1.Coins;
+                    if (coins > data.max)
+                        data.max = coins;
+                    if (coins < data.min)
+                        data.min = coins;
+                }
+                else
+                    outputDict.Add(spawn.Item1.WowGuid.GetEntry(), (spawn.Item1.Coins, spawn.Item1.Coins));
+            }
+
+            foreach (var coins in outputDict)
+                output += $"{coins.Key};{coins.Value.min};{coins.Value.max}\n";
+
+            return output;
+        }
     }
 }
