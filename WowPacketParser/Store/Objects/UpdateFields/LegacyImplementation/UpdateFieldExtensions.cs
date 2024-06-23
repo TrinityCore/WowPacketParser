@@ -118,7 +118,10 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             for (var i = 0; i < count; i++)
             {
                 UpdateField uf;
-                if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
+                var updateField = Enums.Version.UpdateFields.GetUpdateField(firstUpdateField);
+                if (updateField == -1)
+                    continue;
+                if (dict.TryGetValue(updateField + i, out uf))
                 {
                     switch (type)
                     {
