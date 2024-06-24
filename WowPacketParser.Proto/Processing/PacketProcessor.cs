@@ -107,6 +107,10 @@ namespace WowPacketParser.Proto.Processing
                     return Process(packet.BaseData, packet.AuraUpdateAll);
                 case PacketHolder.KindOneofCase.AiReaction:
                     return Process(packet.BaseData, packet.AiReaction);
+                case PacketHolder.KindOneofCase.InitWorldStates:
+                    return Process(packet.BaseData, packet.InitWorldStates);
+                case PacketHolder.KindOneofCase.UpdateWorldState:
+                    return Process(packet.BaseData, packet.UpdateWorldState);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -157,5 +161,7 @@ namespace WowPacketParser.Proto.Processing
         protected virtual T? Process(PacketBase basePacket, PacketLoginSetTimeSpeed packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketAuraUpdateAll packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketAIReaction packet) => default;
+        protected virtual T? Process(PacketBase basePacket, PacketInitWorldStates packet) => default;
+        protected virtual T? Process(PacketBase basePacket, PacketUpdateWorldState packet) => default;
     }
 }
