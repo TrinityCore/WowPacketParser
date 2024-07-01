@@ -918,7 +918,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             update.Destroyed.Add(new DestroyedObject()
             {
                 Guid = destroyed,
-                Text = packet.Writer.ToString()
+                Text = packet.Writer?.ToString() ?? ""
             });
         }
 

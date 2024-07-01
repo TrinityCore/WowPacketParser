@@ -3104,7 +3104,7 @@ namespace WowPacketParser.Parsing.Parsers
             update.Destroyed.Add(new DestroyedObject()
             {
                 Guid = guid,
-                Text = packet.Writer.ToString()
+                Text = packet.Writer?.ToString() ?? ""
             });
         }
 
