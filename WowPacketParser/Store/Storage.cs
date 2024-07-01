@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
+using WowPacketParser.Store.Objects.Movement;
 
 namespace WowPacketParser.Store
 {
@@ -67,6 +68,9 @@ namespace WowPacketParser.Store
         // Creature text (says, yells, etc.)
         public static readonly StoreMulti<uint, CreatureText> CreatureTexts = new StoreMulti<uint, CreatureText>(new List<SQLOutput> { SQLOutput.creature_text });
 
+        // Coins
+        public static readonly StoreBag<CreatureCoins> CreatureCoins = new StoreBag<CreatureCoins>(new List<SQLOutput> { SQLOutput.coins });
+
         // Points of Interest
         public static readonly DataBag<PointsOfInterest> GossipPOIs = new DataBag<PointsOfInterest>(new List<SQLOutput> { SQLOutput.points_of_interest });
 
@@ -113,6 +117,9 @@ namespace WowPacketParser.Store
 
         // Weather updates
         public static readonly DataBag<WeatherUpdate> WeatherUpdates = new DataBag<WeatherUpdate>(new List<SQLOutput> { SQLOutput.weather_updates });
+
+        // Movement
+        public static readonly StoreBag<CreatureMovement> CreatureMovement = new StoreBag<CreatureMovement>(new List<SQLOutput> { SQLOutput.creature_movement });
 
         // Npc Spell Click
         public static readonly StoreBag<WowGuid> NpcSpellClicks = new StoreBag<WowGuid>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
