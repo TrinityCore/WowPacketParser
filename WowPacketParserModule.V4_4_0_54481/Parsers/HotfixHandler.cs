@@ -272,6 +272,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        public static void AreaTriggerActionSetHandler440(Packet packet, uint entry, params object[] indexes)
+        {
+            AreaTriggerActionSetHotfix440 hotfix = new AreaTriggerActionSetHotfix440();
+
+            hotfix.ID = entry;
+            hotfix.Flags = packet.ReadInt16("Flags", indexes);
+
+            Storage.AreaTriggerActionSetHotfixes440.Add(hotfix, packet.TimeSpan);
+        }
+
         public static void ArmorLocationHandler440(Packet packet, uint entry, params object[] indexes)
         {
             ArmorLocationHotfix440 hotfix = new ArmorLocationHotfix440();
@@ -6629,6 +6639,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                         case DB2Hash.AreaTrigger:
                         {
                             AreaTriggerHandler440(db2File, (uint)entry, indexes);
+                            break;
+                        } 
+                        case DB2Hash.AreaTriggerActionSet:
+                        {
+                            AreaTriggerActionSetHandler440(db2File, (uint)entry, indexes);
                             break;
                         }
                         case DB2Hash.ArmorLocation:

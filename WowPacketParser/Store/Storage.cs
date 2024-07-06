@@ -926,6 +926,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<AreaGroupMemberHotfix440> AreaGroupMemberHotfixes440 = new DataBag<AreaGroupMemberHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AreaTableHotfix440> AreaTableHotfixes440 = new DataBag<AreaTableHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AreaTriggerHotfix440> AreaTriggerHotfixes440 = new DataBag<AreaTriggerHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<AreaTriggerActionSetHotfix440> AreaTriggerActionSetHotfixes440 = new DataBag<AreaTriggerActionSetHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ArmorLocationHotfix440> ArmorLocationHotfixes440 = new DataBag<ArmorLocationHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ArtifactHotfix440> ArtifactHotfixes440 = new DataBag<ArtifactHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ArtifactAppearanceHotfix440> ArtifactAppearanceHotfixes440 = new DataBag<ArtifactAppearanceHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -2462,6 +2463,7 @@ namespace WowPacketParser.Store
             AreaGroupMemberHotfixes440.Clear();
             AreaTableHotfixes440.Clear();
             AreaTriggerHotfixes440.Clear();
+            AreaTriggerActionSetHotfixes440.Clear();
             ArmorLocationHotfixes440.Clear();
             ArtifactHotfixes440.Clear();
             ArtifactAppearanceHotfixes440.Clear();

@@ -5391,6 +5391,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.AreaTriggerHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.AreaTriggerActionSetHotfixes440.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AreaTriggerActionSetHotfixes440, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AreaTriggerActionSetHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ArmorLocationHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ArmorLocationHotfixes440, Settings.HotfixesDatabase);
