@@ -173,6 +173,20 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             CoreParsers.NpcHandler.TempGossipOptionPOI.GossipSelectOption(menuID, optionID, packet.TimeSpan);
         }
 
+        [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
+        public static void HandleGossipComplete(Packet packet)
+        {
+            packet.ReadBit("SuppressSound");
+        }
+
+        [Parser(Opcode.CMSG_CLOSE_INTERACTION)] // trigger in CGGameUI::CloseInteraction
+        public static void HandleCloseInteraction(Packet packet)
+        {
+            var packetGossip = packet.Holder.GossipClose = new PacketGossipClose();
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            packetGossip.GossipSource = packet.ReadPackedGuid128("Guid");
+        }
+
         [Parser(Opcode.SMSG_TRAINER_LIST)]
         public static void HandleServerTrainerList(Packet packet)
         {

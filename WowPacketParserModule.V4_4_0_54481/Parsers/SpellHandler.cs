@@ -646,5 +646,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadBit("IsPet");
         }
+
+        [Parser(Opcode.CMSG_CAST_SPELL)]
+        public static void HandleCastSpell(Packet packet)
+        {
+            ReadSpellCastRequest(packet, "Cast");
+        }
     }
 }
