@@ -505,6 +505,27 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("MoveTime");
         }
 
+        [Parser(Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT)]
+        public static void HandleSetCollisionHeight(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+            packet.ReadSingle("Height");
+            packet.ReadSingle("Scale");
+            packet.ReadByte("Reason");
+            packet.ReadUInt32("MountDisplayID");
+            packet.ReadInt32("ScaleDuration");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
+        public static void HandleMoveSetCollisionHeightAck(Packet packet)
+        {
+            V6_0_2_19033.Parsers.MovementHandler.ReadMovementAck(packet, "MovementAck");
+            packet.ReadSingle("Height");
+            packet.ReadInt32("MountDisplayID");
+            packet.ReadByte("Reason");
+        }
+
         [Parser(Opcode.SMSG_MOVE_SET_ACTIVE_MOVER)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_ROOT)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_UNROOT)]
@@ -542,6 +563,41 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             ReadMovementStats(packet, "MovementStats");
             packet.ReadSingle("Speed");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED)]
+        public static void HandleMovementIndexSpeed(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+
+            packet.ReadSingle("Speed");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_ENABLE_GRAVITY)]
+        [Parser(Opcode.SMSG_MOVE_DISABLE_GRAVITY)]
+        [Parser(Opcode.SMSG_MOVE_SET_LAND_WALK)]
+        [Parser(Opcode.SMSG_MOVE_ROOT)]
+        [Parser(Opcode.SMSG_MOVE_SET_CAN_FLY)]
+        [Parser(Opcode.SMSG_MOVE_ENABLE_TRANSITION_BETWEEN_SWIM_AND_FLY)]
+        [Parser(Opcode.SMSG_MOVE_SET_HOVERING)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_CAN_FLY)]
+        [Parser(Opcode.SMSG_MOVE_DISABLE_TRANSITION_BETWEEN_SWIM_AND_FLY)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_HOVERING)]
+        [Parser(Opcode.SMSG_MOVE_UNROOT)]
+        [Parser(Opcode.SMSG_MOVE_SET_WATER_WALK)]
+        [Parser(Opcode.SMSG_MOVE_SET_FEATHER_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SET_NORMAL_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_IGNORE_MOVEMENT_FORCES)]
+        public static void HandleMovementIndex(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
         }
     }
 }
