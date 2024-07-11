@@ -293,6 +293,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             return packetSpellData;
         }
 
+        public static void ReadRuneData(Packet packet, params object[] indexes)
+        {
+            packet.ReadByte("Start", indexes);
+            packet.ReadByte("Count", indexes);
+
+            var cooldownCount = packet.ReadUInt32("CooldownCount", indexes);
+            for (var i = 0; i < cooldownCount; ++i)
+                packet.ReadByte("Cooldown", indexes);
+        }
+
         [Parser(Opcode.SMSG_SPELL_CHANNEL_START)]
         public static void HandleSpellChannelStart(Packet packet)
         {
@@ -651,6 +661,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         public static void HandleCastSpell(Packet packet)
         {
             ReadSpellCastRequest(packet, "Cast");
+        }
+
+        [Parser(Opcode.SMSG_RESYNC_RUNES)]
+        public static void HandleResyncRunes(Packet packet)
+        {
+            ReadRuneData(packet, "RuneData");
+        }
+
+        [Parser(Opcode.SMSG_CONVERT_RUNE)]
+        public static void HandleConvertRune(Packet packet)
+        {
+            ReadRuneData(packet, "RuneData");
+
+            packet.ReadUInt32("Index");
+            packet.ReadUInt32("Rune");
         }
     }
 }
