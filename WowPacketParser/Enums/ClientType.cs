@@ -20,5 +20,6 @@ namespace WowPacketParser.Enums
         WotLKClassic       = 8,
         Dragonflight       = 9,
         CataClassic        = 9,
+        TheWarWithin       = 10,
     }
 }

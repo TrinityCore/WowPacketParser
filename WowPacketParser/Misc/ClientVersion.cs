@@ -552,6 +552,8 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V10_2_7_55461, new DateTime(2024, 07, 09)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V10_2_7_55664, new DateTime(2024, 07, 16)),
 
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V11_0_0_55666, new DateTime(2024, 07, 23)),
+
             // no classic info, pkt contain build in header
         };
 
@@ -1096,6 +1098,8 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V10_2_7_55461:
                 case ClientVersionBuild.V10_2_7_55664:
                     return ClientVersionBuild.V10_0_0_46181;
+                case ClientVersionBuild.V11_0_0_55666:
+                    return ClientVersionBuild.V11_0_0_55666;
                 //Classic
                 case ClientVersionBuild.V1_13_2_31446:
                 case ClientVersionBuild.V1_13_2_31650:
@@ -1344,6 +1348,8 @@ namespace WowPacketParser.Misc
                     return IsClassicClientVersionBuild(originalDefiningBuild) ? ClientVersionBuild.V1_13_2_31446 : ClientVersionBuild.V8_0_1_27101;
                 case ClientVersionBuild.V10_0_0_46181:
                     return ClientVersionBuild.V9_0_1_36216;
+                case ClientVersionBuild.V11_0_0_55666:
+                    return ClientVersionBuild.V10_0_0_46181;
                 default:
                     return ClientVersionBuild.Zero;
             }
@@ -1379,6 +1385,8 @@ namespace WowPacketParser.Misc
                 return ClientType.ClassicSoD;
             if (IsCataClientVersionBuild(build))
                 return ClientType.CataClassic;
+            if (build >= ClientVersionBuild.V11_0_0_55666)
+                return ClientType.TheWarWithin;
             if (build >= ClientVersionBuild.V10_0_0_46181)
                 return ClientType.Dragonflight;
             if (build >= ClientVersionBuild.V9_0_1_36216)

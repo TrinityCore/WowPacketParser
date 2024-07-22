@@ -30,6 +30,10 @@
             <EmbedInteropTypes>false</EmbedInteropTypes>
             <Private>false</Private>
         </ProjectReference>
+        <ProjectReference Include="..\WowPacketParserModule.V10_0_0_46181\WowPacketParserModule.V10_0_0_46181.csproj">
+            <EmbedInteropTypes>false</EmbedInteropTypes>
+            <Private>false</Private>
+        </ProjectReference>
         <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
             <Private>false</Private>
             <EmbedInteropTypes>false</EmbedInteropTypes>
