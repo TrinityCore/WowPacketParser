@@ -63,7 +63,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             for (uint j = 0; j < 2; ++j)
                 packet.ReadInt32("ProfessionIDs", idx, j);
 
-            for (uint j = 0; j < 35; ++j)
+            var visualItemCount = 19;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_2_7_55261))
+                visualItemCount = 35;
+
+            for (var j = 0; j < visualItemCount; ++j)
                 ReadVisualItemInfo(packet, idx, j);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))

@@ -83,6 +83,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("HasHeritageArmor", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
                 packet.ReadBit("IsLocked", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                packet.ReadBit("Unused1027", idx);
         }
 
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
