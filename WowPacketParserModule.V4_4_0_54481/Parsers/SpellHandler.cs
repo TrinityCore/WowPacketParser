@@ -677,5 +677,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("Index");
             packet.ReadUInt32("Rune");
         }
+
+        [Parser(Opcode.CMSG_SET_PRIMARY_TALENT_TREE)]
+        public static void HandleSetPrimaryTalentTree(Packet packet)
+        {
+            packet.ReadInt32("TabIndex");
+        }
+
+        [Parser(Opcode.CMSG_LEARN_TALENT)]
+        public static void HandleLearnTalent(Packet packet)
+        {
+            packet.ReadUInt32("TalentID");
+            packet.ReadUInt16("Rank");
+        }
     }
 }
