@@ -1663,7 +1663,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_ZONE_UNDER_ATTACK, 0x2BB5 },
 
                 // Opcodes that are not generated automatically
-            //{ Opcode.SMSG_ACCOUNT_HEIRLOOM_UPDATE, 0x25B0 }, // no client handler
+            { Opcode.SMSG_ACCOUNT_HEIRLOOM_UPDATE, 0x25B3 }, // no client handler
             { Opcode.SMSG_COMPRESSED_PACKET, 0x3052 },
             { Opcode.SMSG_MULTIPLE_PACKETS, 0x3051 },
         };

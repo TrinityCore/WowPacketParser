@@ -248,6 +248,23 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_ACCOUNT_HEIRLOOM_UPDATE)]
+        public static void HandleAccountHeirloomUpdate(Packet packet)
+        {
+            packet.ReadBit("IsFullUpdate");
+
+            packet.ReadInt32("Unk");
+
+            uint itemCount = packet.ReadUInt32("ItemCount");
+            uint flagCount = packet.ReadUInt32("FlagsCount");
+
+            for (uint i = 0u; i < itemCount; i++)
+                packet.ReadInt32<ItemId>("ItemID", i);
+
+            for (uint i = 0u; i < flagCount; i++)
+                packet.ReadUInt32("Flags", i);
+        }
+
         [Parser(Opcode.SMSG_INITIAL_SETUP)]
         public static void HandleInitialSetup(Packet packet)
         {
