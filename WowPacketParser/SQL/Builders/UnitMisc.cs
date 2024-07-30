@@ -832,6 +832,9 @@ namespace WowPacketParser.SQL.Builders
                     case TargetedDatabase.Dragonflight:
                         expansionBaseLevel = 70;
                         break;
+                    case TargetedDatabase.TheWarWithin:
+                        expansionBaseLevel = 80;
+                        break;
                 }
             }
 

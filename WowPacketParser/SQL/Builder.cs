@@ -180,6 +180,8 @@ namespace WowPacketParser.SQL
                     return new List<TargetedDatabase> { TargetedDatabase.Shadowlands, TargetedDatabase.Classic, TargetedDatabase.WotlkClassic, TargetedDatabase.TheBurningCrusade };
                 case ClientType.Dragonflight:
                     return new List<TargetedDatabase> { TargetedDatabase.Dragonflight, TargetedDatabase.WotlkClassic, TargetedDatabase.CataClassic };
+                case ClientType.TheWarWithin:
+                    return new List<TargetedDatabase> { TargetedDatabase.TheWarWithin, TargetedDatabase.CataClassic /*maybe?*/ };
                 default:
                     return new List<TargetedDatabase>();
             }
