@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using WowPacketParser.DBC.Structures.Dragonflight;
+using WowPacketParser.DBC.Structures.TheWarWithin;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
