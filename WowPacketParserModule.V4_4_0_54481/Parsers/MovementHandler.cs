@@ -274,6 +274,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             ReadMovementSpline(packet, pos, indexes, "MovementSpline");
         }
 
+        [Parser(Opcode.SMSG_ADJUST_SPLINE_DURATION)]
+        public static void HandleAdjustSplineDuration(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadSingle("Scale");
+        }
+
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleOnMonsterMove(Packet packet)
         {
@@ -598,6 +605,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("MoverGUID");
             packet.ReadInt32("SequenceIndex");
+        }
+
+        [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
+        public static void HandleAbortNewWorld(Packet packet)
+        {
         }
     }
 }

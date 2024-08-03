@@ -10,6 +10,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class MiscellaneousHandler
     {
+        public static void ReadAreaPoiData(Packet packet, params object[] idx)
+        {
+            packet.ReadTime64("StartTime", idx);
+            packet.ReadInt32("AreaPoiID", idx);
+            packet.ReadInt32("DurationSec", idx);
+            packet.ReadUInt32("WorldStateVariableID", idx);
+            packet.ReadUInt32("WorldStateValue", idx);
+        }
+
         public static void ReadGameRuleValuePair(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("Rule", indexes);
@@ -22,6 +31,22 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ResetBitReader();
             var textLen = packet.ReadBits(7);
             packet.ReadWoWString("Text", textLen);
+        }
+
+        [Parser(Opcode.SMSG_ALLIED_RACE_DETAILS)]
+        public static void HandleAlliedRaceDetails(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID"); // Creature or GameObject
+            packet.ReadInt32("RaceID");
+        }
+
+        [Parser(Opcode.SMSG_AREA_POI_UPDATE_RESPONSE)]
+        public static void HandleAreaPOIUpdateResponse(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+
+            for (var i = 0; i < count; i++)
+                ReadAreaPoiData(packet, i);
         }
 
         [Parser(Opcode.SMSG_CACHE_VERSION)]

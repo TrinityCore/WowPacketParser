@@ -44,12 +44,24 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             var earnedCount = packet.ReadUInt32("EarnedCount", idx);
             var progressCount = packet.ReadUInt32("ProgressCount", idx);
-        
+
             for (var i = 0; i < earnedCount; ++i)
                 ReadEarnedAchievement(packet, idx, "Earned", i);
-        
+
             for (var i = 0; i < progressCount; ++i)
                 ReadCriteriaProgress(packet, idx, "Progress", i);
+        }
+
+        [Parser(Opcode.SMSG_ACHIEVEMENT_EARNED)]
+        public static void HandleAchievementEarned(Packet packet)
+        {
+            packet.ReadPackedGuid128("Sender");
+            packet.ReadPackedGuid128("Earner");
+            packet.ReadUInt32<AchievementId>("AchievementID");
+            packet.ReadPackedTime("Time");
+            packet.ReadUInt32("EarnerNativeRealm");
+            packet.ReadUInt32("EarnerVirtualRealm");
+            packet.ReadBit("Initial");
         }
 
         [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
@@ -81,7 +93,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             ReadAllAchievements(packet, "Data");
         }
-        
+
         [Parser(Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE)]
         public static void HandleCriteriaUpdateAccount(Packet packet)
         {

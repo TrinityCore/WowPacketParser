@@ -6,6 +6,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class GuildHandler
     {
+        [Parser(Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS)]
+        public static void HandleGuildAchievementData(Packet packet)
+        {
+            var earnedAchievementCount = packet.ReadUInt32("EarnedAchievementCount");
+            for (var i = 0; i < earnedAchievementCount; ++i)
+                AchievementHandler.ReadEarnedAchievement(packet, "Earned", i);
+        }
+
         [Parser(Opcode.CMSG_GUILD_SET_ACHIEVEMENT_TRACKING)]
         public static void HandleGuildSetAchievementTracking(Packet packet)
         {
