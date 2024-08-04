@@ -9,6 +9,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class BattlegroundHandler
     {
+        [Parser(Opcode.SMSG_AREA_SPIRIT_HEALER_TIME)]
+        public static void HandleAreaSpiritHealerTime(Packet packet)
+        {
+            packet.ReadPackedGuid128("HealerGuid");
+            packet.ReadUInt32("TimeLeft");
+        }
+
         [Parser(Opcode.CMSG_ARENA_TEAM_ROSTER)]
         public static void HandleArenaTeamQuery(Packet packet)
         {

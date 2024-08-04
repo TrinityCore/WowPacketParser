@@ -31,6 +31,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("NowDead");
         }
 
+        [Parser(Opcode.SMSG_ATTACK_SWING_ERROR)]
+        public static void HandleAttackSwingError(Packet packet)
+        {
+            packet.ReadBitsE<AttackSwingErr>("Reason", 3);
+        }
+
         [Parser(Opcode.SMSG_CANCEL_AUTO_REPEAT)]
         public static void HandleCancelAutoRepeat(Packet packet)
         {
