@@ -812,7 +812,8 @@ namespace WowPacketParser.SQL.Builders
             var levels = GetLevels(units);
             var usesCurrentExpansionLevels = new Dictionary<uint, long>();
             var expansionBaseLevel = 0;
-            if (Settings.TargetedDatabase >= TargetedDatabase.WarlordsOfDraenor && Settings.TargetedDatabase != TargetedDatabase.Dragonflight && Settings.TargetedDatabase < TargetedDatabase.WotlkClassic && Settings.DBEnabled)
+            if (Settings.DBEnabled && ((Settings.TargetedDatabase >= TargetedDatabase.WarlordsOfDraenor && Settings.TargetedDatabase < TargetedDatabase.Dragonflight) ||
+                Settings.TargetedDatabase == TargetedDatabase.Classic))
             {
                 usesCurrentExpansionLevels = SQLDatabase.GetDict<uint, long>($"SELECT entry, 1 FROM {Settings.TDBDatabase}.creature_template WHERE HealthScalingExpansion = -1");
                 switch (Settings.TargetedDatabase)
