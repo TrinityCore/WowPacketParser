@@ -10,7 +10,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         {
             packet.ReadUInt32("GarrPlotInstanceID", indexes);
             packet.ReadVector4("PlotPos", indexes);
-            packet.ReadUInt32("PlotType", indexes);
+            if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
+                packet.ReadUInt32("PlotType", indexes);
+            else
+                packet.ReadByte("PlotType", indexes);
         }
 
         public static void ReadGarrisonBuildingInfo(Packet packet, params object[] indexes)
@@ -260,7 +263,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             for (int i = 0; i < garrisonCount; i++)
             {
-                packet.ReadInt32E<GarrisonType>("GarrTypeID", i);
+                if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
+                    packet.ReadInt32E<GarrisonType>("GarrTypeID", i);
+                else
+                    packet.ReadByteE<GarrisonType>("GarrTypeID", i);
                 packet.ReadInt32E<GarrisonSite>("GarrSiteID", i);
                 packet.ReadInt32E<GarrisonSiteLevel>("GarrSiteLevelID", i);
 

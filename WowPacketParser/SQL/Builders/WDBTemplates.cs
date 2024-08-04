@@ -77,6 +77,23 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.QuestRewardDisplaySpells, templatesDb, StoreNameType.None);
         }
 
+        [BuilderMethod(true)]
+        public static string QuestTreasurePickers()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
+            if (Settings.TargetedDatabase < TargetedDatabase.TheWarWithin)
+                return string.Empty;
+
+            if (Storage.QuestTreasurePickersStorage.IsEmpty())
+                return string.Empty;
+
+            var templateDb = SQLDatabase.Get(Storage.QuestTreasurePickersStorage);
+
+            return SQLUtil.Compare(Storage.QuestTreasurePickersStorage, templateDb, StoreNameType.Quest);
+        }
+
         [BuilderMethod(true, Units = true)]
         public static string CreatureTemplate(Dictionary<WowGuid, Unit> units)
         {

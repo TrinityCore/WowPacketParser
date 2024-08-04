@@ -66,6 +66,7 @@ namespace WowPacketParser.Enums
         SinceWarlordsOfDraenor            = WarlordsOfDraenor | SinceLegion,
         SinceCataclysm                    = Cataclysm | SinceWarlordsOfDraenor,
 
-        SinceWarlordsOfDraenorTillShadowLands = WarlordsOfDraenor | Legion | BattleForAzeroth | Shadowlands
+        SinceWarlordsOfDraenorTillShadowLands = WarlordsOfDraenor | Legion | BattleForAzeroth | Shadowlands,
+        SinceBattleForAzerothTillDragonflight = BattleForAzeroth | Shadowlands | Dragonflight
     }
 }

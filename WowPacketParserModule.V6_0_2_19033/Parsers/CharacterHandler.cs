@@ -154,8 +154,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int32 = packet.ReadInt32("Count");
             for (var i = 0; i < int32; i++)
             {
-                packet.ReadInt32("Power", i);
+                if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
+                    packet.ReadInt32("Power", i);
+
                 packet.ReadByteE<PowerType>("PowerType", i);
+
+                if (ClientVersion.AddedInVersion(ClientType.TheWarWithin))
+                    packet.ReadInt32("Power", i);
             }
         }
 

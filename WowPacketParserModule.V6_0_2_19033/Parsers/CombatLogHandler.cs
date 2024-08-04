@@ -164,7 +164,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     packet.ReadPackedGuid128("Victim");
                     packet.ReadInt32("Points");
-                    packet.ReadInt32("PowerType");
+                    if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
+                        packet.ReadUInt32E<Powers>("PowerType");
+                    else
+                        packet.ReadByteE<Powers>("PowerType");
                     packet.ReadSingle("Amplitude");
                 }
 

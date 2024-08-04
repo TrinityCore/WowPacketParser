@@ -16,6 +16,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static void HandleAreaTriggerReShape(Packet packet)
         {
             packet.ReadPackedGuid128("TriggerGUID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+                packet.ReadPackedGuid128("Unused_1100");
 
             packet.ResetBitReader();
             var hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline");

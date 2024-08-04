@@ -439,7 +439,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_INTERRUPT_POWER_REGEN)]
         public static void HandleInterruptPowerRegen(Packet packet)
         {
-            packet.ReadUInt32E<PowerType>("PowerType");
+            if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
+                packet.ReadUInt32E<PowerType>("PowerType");
+            else
+                packet.ReadByteE<PowerType>("PowerType");
         }
 
         [Parser(Opcode.SMSG_SPELL_HEAL_ABSORB_LOG)]

@@ -201,7 +201,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             // SpellLogPowerData
             for (var i = 0; i < spellLogPowerDataCount; ++i)
             {
-                packet.ReadInt32("PowerType", idx, i);
+                if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
+                    packet.ReadInt32E<PowerType>("PowerType", idx, i);
+                else
+                    packet.ReadByteE<PowerType>("PowerType");
                 packet.ReadInt32("Amount", idx, i);
                 packet.ReadInt32("Cost", idx, i);
             }

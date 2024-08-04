@@ -148,7 +148,12 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             var objectiveCount = packet.ReadUInt32("ObjectiveCount");
             quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");
-            quest.QuestRewardID = packet.ReadInt32("TreasurePickerID");
+            var treasurePickerCount = 0u;
+            if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
+                quest.QuestRewardID = packet.ReadInt32("TreasurePickerID");
+            else
+                treasurePickerCount = packet.ReadUInt32();
+
             quest.Expansion = packet.ReadInt32("Expansion");
             quest.ManagedWorldStateID = packet.ReadInt32("ManagedWorldStateID");
             quest.QuestSessionBonus = packet.ReadInt32("QuestSessionBonus");
@@ -160,6 +165,17 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             for (uint i = 0; i < rewardDisplaySpellCount; ++i)
                 ReadQuestCompleteDisplaySpell(packet, (uint)id.Key, i, i, "RewardDisplaySpell");
 
+            for (uint i = 0; i < treasurePickerCount; ++i)
+            {
+                var treasurePickerID = packet.ReadInt32("TreasurePickerID");
+                QuestTreasurePickers pickers = new()
+                {
+                    QuestID = quest.ID,
+                    TreasurePickerID = treasurePickerID,
+                    OrderIndex = (int)i
+                };
+                Storage.QuestTreasurePickersStorage.Add(pickers);
+            }
             packet.ResetBitReader();
 
             uint logTitleLen = packet.ReadBits("logTitleLen", 9);
@@ -172,6 +188,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             uint questTurnTargetNameLen = packet.ReadBits("questTurnTargetNameLen", 8);
             uint questCompletionLogLen = packet.ReadBits("questCompletionLogLen", 11);
             packet.ReadBit("ReadyForTranslation");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+                packet.ReadBit("ResetByScheduler");
 
             for (uint i = 0; i < objectiveCount; ++i)
             {
@@ -182,7 +200,12 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                     ID = (uint)objectiveId.Key,
                     QuestID = (uint)id.Key
                 };
-                questInfoObjective.Type = packet.ReadByteE<QuestRequirementType>("Quest Requirement Type", i);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+                    questInfoObjective.Type = packet.ReadUInt32E<QuestRequirementType>("QuestRequirementType", i);
+                else
+                    questInfoObjective.Type = packet.ReadByteE<QuestRequirementType>("QuestRequirementType", i);
+
                 questInfoObjective.StorageIndex = packet.ReadSByte("StorageIndex", i);
                 questInfoObjective.Order = i;
                 questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
@@ -270,5 +293,37 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             Storage.QuestTemplates.Add(quest, packet.TimeSpan);
         }
+
+         [Parser(Opcode.CMSG_SPAWN_TRACKING_UPDATE)]
+         public static void HandleSpawnTrackingVignette(Packet packet)
+         {
+             var count = packet.ReadUInt32("SpawnTrackingCount");
+
+             for (var i = 0; i < count; i++)
+             {
+                 packet.ReadUInt32("SpawnTrackingID", i);
+                 packet.ReadInt32("ObjectID", i);
+                 packet.ReadInt32("ObjectTypeMask", i);
+             }
+         }
+
+         [Parser(Opcode.SMSG_QUEST_POI_UPDATE_RESPONSE)]
+         public static void HandleQuestPOIUpdateResponse(Packet packet)
+         {
+             var count = packet.ReadUInt32("SpawnTrackingCount");
+
+             for (var i = 0; i < count; i++)
+             {
+                 var spawnTrackingId = packet.ReadUInt32("SpawnTrackingID", i);
+                 packet.ReadInt32("ObjectID", i);
+                 var phaseId = packet.ReadInt32("PhaseID", i);
+                 var phaseGroup = packet.ReadInt32("PhaseGroupID", i);
+                 var phaseUseFlags = packet.ReadInt32("PhaseUseFlags", i);
+
+                 packet.ResetBitReader();
+
+                 packet.ReadBit("Visible", i);
+             }
+         }
     }
 }
