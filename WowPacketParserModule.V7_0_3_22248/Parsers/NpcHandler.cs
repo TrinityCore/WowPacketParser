@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -30,6 +29,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (int j = 0; j < 2; ++j)
                 packet.ReadInt32("QuestFlags", idx, j);
 
+            if (ClientVersion.AddedInVersion(ClientType.TheWarWithin))
+                packet.ReadInt32("QuestFlags", idx, 2);
+
             packet.ResetBitReader();
 
             packet.ReadBit("Repeatable", idx);
@@ -37,8 +39,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
                 packet.ReadBit("Ignored", idx);
 
+            if (ClientVersion.AddedInVersion(ClientType.TheWarWithin))
+                packet.ReadBit("ResetByScheduler", idx);
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
                 packet.ReadBit("Important", idx);
+
+            if (ClientVersion.AddedInVersion(ClientType.TheWarWithin))
+                packet.ReadBit("Meta", idx);
 
             int titleBits;
             if (ClientVersion.InVersion(ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683))
@@ -69,7 +77,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             gossip.MenuID = packetGossip.MenuId = (uint)menuId;
 
             int friendshipFactionID = packet.ReadInt32("FriendshipFactionID");
-            CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, friendshipFactionID, guid, packet.TimeSpan);
+            CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, friendshipFactionID, 0, guid, packet.TimeSpan);
 
             gossip.TextID = packetGossip.TextId = (uint)packet.ReadInt32("TextID");
 

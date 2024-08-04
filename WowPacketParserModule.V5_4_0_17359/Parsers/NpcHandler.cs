@@ -184,7 +184,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             Storage.Gossips.Add(gossip, packet.TimeSpan);
 
-            CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, (int)friendshipFactionID, guid, packet.TimeSpan);
+            CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, (int)friendshipFactionID, 0, guid, packet.TimeSpan);
 
             CoreParsers.NpcHandler.UpdateLastGossipOptionActionMessage(packet.TimeSpan, menuId);
 

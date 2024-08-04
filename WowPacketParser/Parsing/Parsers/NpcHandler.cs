@@ -128,17 +128,18 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static void AddGossipAddon(uint menuID, int friendshipFactionID, WowGuid guid, TimeSpan timeSpan)
+        public static void AddGossipAddon(uint menuID, int friendshipFactionID, int lfgDungeonsID, WowGuid guid, TimeSpan timeSpan)
         {
-            if (friendshipFactionID > 0)
-            {
-                GossipMenuAddon gossipMenuAddon = new();
-                gossipMenuAddon.MenuID = menuID;
-                gossipMenuAddon.FriendshipFactionID = friendshipFactionID;
-                gossipMenuAddon.ObjectType = guid.GetObjectType();
-                gossipMenuAddon.ObjectEntry = guid.GetEntry();
-                Storage.GossipMenuAddons.Add(gossipMenuAddon, timeSpan);
-            }
+            if (friendshipFactionID <= 0 && lfgDungeonsID <= 0)
+                return;
+
+            GossipMenuAddon gossipMenuAddon = new();
+            gossipMenuAddon.MenuID = menuID;
+            gossipMenuAddon.FriendshipFactionID = friendshipFactionID;
+            gossipMenuAddon.LfgDungeonsID = lfgDungeonsID;
+            gossipMenuAddon.ObjectType = guid.GetObjectType();
+            gossipMenuAddon.ObjectEntry = guid.GetEntry();
+            Storage.GossipMenuAddons.Add(gossipMenuAddon, timeSpan);
         }
 
         public static void AddGossipOptionAddon(int? garrTalentTreeID, TimeSpan timeSpan, bool checkDelay = false)
@@ -537,9 +538,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria))
             {
-                uint friendshipFactionID = packet.ReadUInt32("Friendship Faction");
-                AddGossipAddon(packetGossip.MenuId, (int)friendshipFactionID, guid, packet.TimeSpan);
-
+                var friendshipFactionID = packet.ReadInt32("Friendship Faction");
+                AddGossipAddon(packetGossip.MenuId, friendshipFactionID, 0, guid, packet.TimeSpan);
             }
 
             gossip.TextID = packetGossip.TextId = packet.ReadUInt32("Text Id");

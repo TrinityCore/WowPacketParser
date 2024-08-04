@@ -13,6 +13,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("FriendshipFactionID")]
         public int? FriendshipFactionID;
 
+        [DBFieldName("LfgDungeonsID", TargetedDatabaseFlag.SinceTheWarWithin)]
+        public int? LfgDungeonsID;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
 
