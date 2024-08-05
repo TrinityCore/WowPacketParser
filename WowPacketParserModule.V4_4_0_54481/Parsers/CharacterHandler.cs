@@ -164,6 +164,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 Storage.Objects.Add(playerGuid, playerInfo, packet.TimeSpan);
         }
 
+        [Parser(Opcode.SMSG_BARBER_SHOP_RESULT)]
+        public static void HandleBarberShopResult(Packet packet)
+        {
+            packet.ReadInt32E<BarberShopResult>("Result");
+            packet.ReadBit("IgnoreChair");
+        }
+
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
         public static void HandleEnumCharactersResult(Packet packet)
         {

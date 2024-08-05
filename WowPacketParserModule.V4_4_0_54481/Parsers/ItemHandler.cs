@@ -36,5 +36,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             SpellHandler.ReadSpellCastRequest(packet, "Cast");
         }
+
+        [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
+        public static void HandleItemZero(Packet packet)
+        {
+        }
     }
 }

@@ -7,6 +7,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class LfgHandler
     {
+        public static void ReadCliRideTicket(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("RequesterGuid", idx);
+            packet.ReadInt32("Id", idx);
+            packet.ReadInt32("Type", idx);
+            packet.ReadTime64("Time", idx);
+            packet.ResetBitReader();
+            packet.ReadBit("Unknown925", idx);
+        }
+
         public static void ReadLFGListBlacklistEntry(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("ActivityID", indexes);
