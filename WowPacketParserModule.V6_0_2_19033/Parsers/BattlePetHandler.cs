@@ -206,7 +206,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Speed", idx);
             packet.ReadInt32("NpcTeamMemberID", idx);
 
-            packet.ReadInt16("BreedQuality", idx);
+            if (ClientVersion.AddedInVersion(ClientType.TheWarWithin))
+                packet.ReadByte("BreedQuality", idx);
+            else
+                packet.ReadInt16("BreedQuality", idx);
+
             packet.ReadInt16("StatusFlags", idx);
 
             packet.ReadSByte("Slot", idx);

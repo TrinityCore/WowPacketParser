@@ -16,6 +16,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("Unused901_2");
             packet.ReadUInt32("Reason");
             packet.ReadVector3("MovementOffset");
+            if (ClientVersion.AddedInVersion(ClientType.TheWarWithin))
+                packet.ReadInt32("Counter");
 
             packet.AddSniffData(StoreNameType.Map, (int)WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
