@@ -37,6 +37,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBitsE<AttackSwingErr>("Reason", 3);
         }
 
+        [Parser(Opcode.SMSG_BREAK_TARGET)]
+        public static void HandleBreakTarget(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+        }
+
         [Parser(Opcode.SMSG_CANCEL_AUTO_REPEAT)]
         public static void HandleCancelAutoRepeat(Packet packet)
         {
@@ -70,6 +76,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadPackedGuid128("TargetGUID", i);
                 packet.ReadInt64("Threat", i);
             }
+        }
+
+        [Parser(Opcode.SMSG_CANCEL_COMBAT)]
+        public static void HandleCombatNull(Packet packet)
+        {
         }
     }
 }

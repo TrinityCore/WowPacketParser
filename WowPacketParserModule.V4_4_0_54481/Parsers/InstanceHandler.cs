@@ -6,6 +6,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class InstanceHandler
     {
+        [Parser(Opcode.SMSG_BOSS_KILL)]
+        public static void HandleBossKill(Packet packet)
+        {
+            packet.ReadUInt32("DungeonEncounterID");
+        }
+
         [Parser(Opcode.CMSG_SAVE_CUF_PROFILES)]
         [Parser(Opcode.SMSG_LOAD_CUF_PROFILES)]
         public static void HandleCUFProfiles(Packet packet)

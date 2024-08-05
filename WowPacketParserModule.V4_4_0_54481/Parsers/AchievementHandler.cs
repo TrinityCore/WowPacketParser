@@ -108,5 +108,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (var i = 0; i < count; ++i)
                 ReadCriteriaProgress(packet, "Progress", i);
         }
+
+        [Parser(Opcode.SMSG_BROADCAST_ACHIEVEMENT)]
+        public static void HandleBroadcastAchievement(Packet packet)
+        {
+            var nameLength = packet.ReadBits(7);
+            packet.ReadBit("GuildAchievement");
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadUInt32("AchievementID");
+            packet.ReadWoWString("Name", nameLength);
+        }
     }
 }

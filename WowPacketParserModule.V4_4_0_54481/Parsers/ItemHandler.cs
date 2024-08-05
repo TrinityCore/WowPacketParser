@@ -9,6 +9,23 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class ItemHandler
     {
+        [Parser(Opcode.SMSG_BUY_FAILED)]
+        public static void HandleBuyFailed(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            packet.ReadUInt32<ItemId>("Muid");
+            packet.ReadByteE<BuyResult>("Reason");
+        }
+
+        [Parser(Opcode.SMSG_BUY_SUCCEEDED)]
+        public static void HandleBuyItemResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            packet.ReadUInt32("Muid");
+            packet.ReadInt32("NewQuantity");
+            packet.ReadUInt32("QuantityBought");
+        }
+
         [Parser(Opcode.SMSG_SET_PROFICIENCY)]
         public static void HandleSetProficency(Packet packet)
         {

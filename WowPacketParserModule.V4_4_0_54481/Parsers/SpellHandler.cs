@@ -228,6 +228,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadByte("ReflectStatus", idx);
         }
 
+        public static void ReadCreatureImmunities(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("School", idx);
+            packet.ReadUInt32("Value", idx);
+        }
+
+        public static void ReadMissileTrajectoryResult(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("TravelTime", idx);
+            packet.ReadSingle("Pitch", idx);
+        }
+
         public static PacketSpellData ReadSpellCastData(Packet packet, params object[] idx)
         {
             var packetSpellData = new PacketSpellData();
@@ -244,13 +256,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packetSpellData.Flags2 = packet.ReadUInt32("CastFlagsEx", idx);
             packetSpellData.CastTime = packet.ReadUInt32("CastTime", idx);
 
-            V6_0_2_19033.Parsers.SpellHandler.ReadMissileTrajectoryResult(packet, idx, "MissileTrajectory");
+            ReadMissileTrajectoryResult(packet, idx, "MissileTrajectory");
 
             packet.ReadByte("DestLocSpellCastIndex", idx);
 
-            V6_0_2_19033.Parsers.SpellHandler.ReadCreatureImmunities(packet, idx, "Immunities");
+            ReadCreatureImmunities(packet, idx, "Immunities");
 
-            V6_0_2_19033.Parsers.SpellHandler.ReadSpellHealPrediction(packet, idx, "Predict");
+            ReadSpellHealPrediction(packet, idx, "Predict");
 
             packet.ResetBitReader();
 
@@ -264,7 +276,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var hasAmmoDisplayId = packet.ReadBit("HasAmmoDisplayId", idx);
             var hasAmmoInventoryType = packet.ReadBit("HasAmmoInventoryType", idx);
 
-            V8_0_1_27101.Parsers.SpellHandler.ReadSpellTargetData(packet, packetSpellData, spellID, idx, "Target");
+            ReadSpellTargetData(packet, packetSpellData, spellID, idx, "Target");
 
             for (var i = 0; i < hitTargetsCount; ++i)
                 packetSpellData.HitTargets.Add(packet.ReadPackedGuid128("HitTarget", idx, i));
@@ -276,13 +288,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadSpellMissStatus(packet, idx, "MissStatus", i);
 
             for (var i = 0; i < remainingPowerCount; ++i)
-                V6_0_2_19033.Parsers.SpellHandler.ReadSpellPowerData(packet, idx, "RemainingPower", i);
+                ReadSpellPowerData(packet, idx, "RemainingPower", i);
 
             if (hasRuneData)
-                V7_0_3_22248.Parsers.SpellHandler.ReadRuneData(packet, idx, "RemainingRunes");
+                ReadRuneData(packet, idx, "RemainingRunes");
 
             for (var i = 0; i < targetPointsCount; ++i)
-                packetSpellData.TargetPoints.Add(V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, idx, "TargetPoints", i));
+                packetSpellData.TargetPoints.Add(ReadLocation(packet, idx, "TargetPoints", i));
 
             if (hasAmmoDisplayId)
                 packetSpellData.AmmoDisplayId = packet.ReadInt32("AmmoDisplayId", idx);
@@ -293,6 +305,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             return packetSpellData;
         }
 
+        public static void ReadSpellPowerData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Cost", idx);
+            packet.ReadByteE<PowerType>("Type", idx);
+        }
+
         public static void ReadRuneData(Packet packet, params object[] indexes)
         {
             packet.ReadByte("Start", indexes);
@@ -301,6 +319,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var cooldownCount = packet.ReadUInt32("CooldownCount", indexes);
             for (var i = 0; i < cooldownCount; ++i)
                 packet.ReadByte("Cooldown", indexes);
+        }
+
+        [Parser(Opcode.SMSG_CANCEL_ORPHAN_SPELL_VISUAL)]
+        public static void HandleCancelOrphanSpellVisual(Packet packet)
+        {
+            packet.ReadInt32("SpellVisualID");
         }
 
         [Parser(Opcode.SMSG_SPELL_CHANNEL_START)]
