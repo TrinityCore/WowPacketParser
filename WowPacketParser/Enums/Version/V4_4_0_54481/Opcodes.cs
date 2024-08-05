@@ -715,18 +715,18 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_ABORT_NEW_WORLD, 0x259A },
             { Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE, 0x286A },
             { Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x270E },
-            { Opcode.SMSG_ACCOUNT_EXPORT_RESPONSE, 0x28AB },
-            { Opcode.SMSG_ACCOUNT_MOUNT_REMOVED, 0x25B1 },
+            { Opcode.SMSG_ACCOUNT_EXPORT_RESPONSE, 0x28AB }, // NYI
+            { Opcode.SMSG_ACCOUNT_MOUNT_REMOVED, 0x25B1 }, // NYI
             { Opcode.SMSG_ACCOUNT_MOUNT_UPDATE, 0x25B0 },
-            { Opcode.SMSG_ACCOUNT_NOTIFICATIONS_RESPONSE, 0x2885 },
+            { Opcode.SMSG_ACCOUNT_NOTIFICATIONS_RESPONSE, 0x2885 }, // NYI
             { Opcode.SMSG_ACCOUNT_TOY_UPDATE, 0x25B2 },
-            { Opcode.SMSG_ACHIEVEMENT_DELETED, 0x26EC },
+            { Opcode.SMSG_ACHIEVEMENT_DELETED, 0x26EC }, // NYI
             { Opcode.SMSG_ACHIEVEMENT_EARNED, 0x2645 },
             { Opcode.SMSG_ACTIVATE_TAXI_REPLY, 0x2681 },
             { Opcode.SMSG_ACTIVE_GLYPHS, 0x2C53 },
-            { Opcode.SMSG_ADDON_LIST_REQUEST, 0x2644 },
-            { Opcode.SMSG_ADD_BATTLENET_FRIEND_RESPONSE, 0x263F },
-            { Opcode.SMSG_ADD_ITEM_PASSIVE, 0x25AC },
+            { Opcode.SMSG_ADDON_LIST_REQUEST, 0x2644 }, // NYI
+            { Opcode.SMSG_ADD_BATTLENET_FRIEND_RESPONSE, 0x263F }, // NYI
+            { Opcode.SMSG_ADD_ITEM_PASSIVE, 0x25AC }, // NYI
             { Opcode.SMSG_ADD_LOSS_OF_CONTROL, 0x2675 },
             { Opcode.SMSG_ADD_RUNE_POWER, 0x26BC },
             { Opcode.SMSG_ADJUST_SPLINE_DURATION, 0x25D2 },
@@ -741,27 +741,27 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_AREA_POI_UPDATE_RESPONSE, 0x3010 },
             { Opcode.SMSG_AREA_SPIRIT_HEALER_TIME, 0x2744 },
             { Opcode.SMSG_AREA_TRIGGER_DENIED, 0x2903 },
-            { Opcode.SMSG_AREA_TRIGGER_FORCE_SET_POSITION_AND_FACING, 0x2900 },
+            { Opcode.SMSG_AREA_TRIGGER_FORCE_SET_POSITION_AND_FACING, 0x2900 }, // NYI
             { Opcode.SMSG_AREA_TRIGGER_MESSAGE, 0x2882 },
             { Opcode.SMSG_AREA_TRIGGER_NO_CORPSE, 0x271A },
             { Opcode.SMSG_AREA_TRIGGER_RE_PATH, 0x28FD },
-            { Opcode.SMSG_AREA_TRIGGER_RE_SHAPE, 0x2902 },
-            { Opcode.SMSG_AREA_TRIGGER_UNATTACH, 0x2901 },
-            { Opcode.SMSG_ARENA_CROWD_CONTROL_SPELL_RESULT, 0x2634 },
-            { Opcode.SMSG_ARENA_PREP_OPPONENT_SPECIALIZATIONS, 0x264A },
-            { Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, 0x2767 },
-            { Opcode.SMSG_ARENA_TEAM_EVENT, 0x2766 },
-            { Opcode.SMSG_ARENA_TEAM_INVITE, 0x2765 },
-            { Opcode.SMSG_ARENA_TEAM_ROSTER, 0x2764 },
-            { Opcode.SMSG_ARENA_TEAM_STATS, 0x2768 },
+            { Opcode.SMSG_AREA_TRIGGER_RE_SHAPE, 0x2902 }, // NYI
+            { Opcode.SMSG_AREA_TRIGGER_UNATTACH, 0x2901 }, // NYI
+            { Opcode.SMSG_ARENA_CROWD_CONTROL_SPELL_RESULT, 0x2634 }, // NYI
+            { Opcode.SMSG_ARENA_PREP_OPPONENT_SPECIALIZATIONS, 0x264A }, // NYI
+            { Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, 0x2767 }, // NYI
+            { Opcode.SMSG_ARENA_TEAM_EVENT, 0x2766 }, // NYI
+            { Opcode.SMSG_ARENA_TEAM_INVITE, 0x2765 }, // NYI
+            { Opcode.SMSG_ARENA_TEAM_ROSTER, 0x2764 }, // NYI
+            { Opcode.SMSG_ARENA_TEAM_STATS, 0x2768 }, // NYI
             { Opcode.SMSG_ATTACKER_STATE_UPDATE, 0x2952 },
             { Opcode.SMSG_ATTACK_START, 0x293D },
             { Opcode.SMSG_ATTACK_STOP, 0x293E },
             { Opcode.SMSG_ATTACK_SWING_ERROR, 0x294C },
-            { Opcode.SMSG_ATTACK_SWING_LANDED_LOG, 0x294D },
-            { Opcode.SMSG_AUCTIONABLE_TOKEN_AUCTION_SOLD, 0x27DA },
-            { Opcode.SMSG_AUCTIONABLE_TOKEN_SELL_AT_MARKET_PRICE_RESPONSE, 0x27D9 },
-            { Opcode.SMSG_AUCTIONABLE_TOKEN_SELL_CONFIRM_REQUIRED, 0x27D8 },
+            { Opcode.SMSG_ATTACK_SWING_LANDED_LOG, 0x294D }, // NYI
+            { Opcode.SMSG_AUCTIONABLE_TOKEN_AUCTION_SOLD, 0x27DA }, // NYI
+            { Opcode.SMSG_AUCTIONABLE_TOKEN_SELL_AT_MARKET_PRICE_RESPONSE, 0x27D9 }, // NYI
+            { Opcode.SMSG_AUCTIONABLE_TOKEN_SELL_CONFIRM_REQUIRED, 0x27D8 }, // NYI
             { Opcode.SMSG_AUCTION_CLOSED_NOTIFICATION, 0x26F7 },
             { Opcode.SMSG_AUCTION_COMMAND_RESULT, 0x26F4 },
             { Opcode.SMSG_AUCTION_HELLO_RESPONSE, 0x26F2 },
@@ -773,15 +773,15 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_AUCTION_OWNER_BID_NOTIFICATION, 0x26F8 },
             { Opcode.SMSG_AUCTION_REPLICATE_RESPONSE, 0x26F3 },
             { Opcode.SMSG_AUCTION_WON_NOTIFICATION, 0x26F5 },
-            { Opcode.SMSG_AURA_POINTS_DEPLETED, 0x2C22 },
+            { Opcode.SMSG_AURA_POINTS_DEPLETED, 0x2C22 }, // NYI
             { Opcode.SMSG_AURA_UPDATE, 0x2C21 },
             { Opcode.SMSG_AUTH_CHALLENGE, 0x3048 },
-            { Opcode.SMSG_AUTH_FAILED, 0x256C },
+            { Opcode.SMSG_AUTH_FAILED, 0x256C }, // NYI
             { Opcode.SMSG_AUTH_RESPONSE, 0x256D },
             { Opcode.SMSG_AVAILABLE_HOTFIXES, 0x290F },
             { Opcode.SMSG_BAG_CLEANUP_FINISHED, 0x2DA7 },
             { Opcode.SMSG_BARBER_SHOP_RESULT, 0x26C2 },
-            { Opcode.SMSG_BATCH_PRESENCE_SUBSCRIPTION, 0x2848 },
+            { Opcode.SMSG_BATCH_PRESENCE_SUBSCRIPTION, 0x2848 }, // NYI
             { Opcode.SMSG_BATTLEFIELD_LIST, 0x2927 },
             { Opcode.SMSG_BATTLEFIELD_PORT_DENIED, 0x292D },
             { Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE, 0x2923 },
@@ -789,15 +789,15 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_BATTLEFIELD_STATUS_NEED_CONFIRMATION, 0x2922 },
             { Opcode.SMSG_BATTLEFIELD_STATUS_NONE, 0x2925 },
             { Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED, 0x2924 },
-            { Opcode.SMSG_BATTLEFIELD_STATUS_WAIT_FOR_GROUPS, 0x292F },
-            { Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED, 0x292E },
-            { Opcode.SMSG_BATTLEGROUND_INIT, 0x294F },
+            { Opcode.SMSG_BATTLEFIELD_STATUS_WAIT_FOR_GROUPS, 0x292F }, // NYI
+            { Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED, 0x292E }, // NYI
+            { Opcode.SMSG_BATTLEGROUND_INIT, 0x294F }, // NYI
             { Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED, 0x292B },
             { Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT, 0x292C },
             { Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS, 0x2928 },
-            { Opcode.SMSG_BATTLEGROUND_POINTS, 0x294E },
-            { Opcode.SMSG_BATTLENET_CHALLENGE_ABORT, 0x2793 },
-            { Opcode.SMSG_BATTLENET_CHALLENGE_START, 0x2792 },
+            { Opcode.SMSG_BATTLEGROUND_POINTS, 0x294E }, // NYI
+            { Opcode.SMSG_BATTLENET_CHALLENGE_ABORT, 0x2793 }, // NYI
+            { Opcode.SMSG_BATTLENET_CHALLENGE_START, 0x2792 }, // NYI
             { Opcode.SMSG_BATTLENET_NOTIFICATION, 0x280A },
             { Opcode.SMSG_BATTLENET_RESPONSE, 0x2809 },
             { Opcode.SMSG_BATTLE_NET_CONNECTION_STATUS, 0x280B },
@@ -819,16 +819,16 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_BATTLE_PAY_START_DISTRIBUTION_ASSIGN_TO_TARGET_RESPONSE, 0x2788 },
             { Opcode.SMSG_BATTLE_PAY_START_PURCHASE_RESPONSE, 0x2787 },
             { Opcode.SMSG_BATTLE_PAY_VALIDATE_PURCHASE_RESPONSE, 0x281A },
-            { Opcode.SMSG_BATTLE_PETS_HEALED, 0x25F5 },
-            { Opcode.SMSG_BATTLE_PET_CAGE_DATE_ERROR, 0x267C },
+            { Opcode.SMSG_BATTLE_PETS_HEALED, 0x25F5 }, // NYI
+            { Opcode.SMSG_BATTLE_PET_CAGE_DATE_ERROR, 0x267C }, // NYI
             { Opcode.SMSG_BATTLE_PET_DELETED, 0x25F2 },
             { Opcode.SMSG_BATTLE_PET_ERROR, 0x263A },
             { Opcode.SMSG_BATTLE_PET_JOURNAL, 0x25F1 },
             { Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED, 0x25EF },
             { Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED, 0x25F0 },
-            { Opcode.SMSG_BATTLE_PET_RESTORED, 0x25F4 },
-            { Opcode.SMSG_BATTLE_PET_REVOKED, 0x25F3 },
-            { Opcode.SMSG_BATTLE_PET_TRAP_LEVEL, 0x25ED },
+            { Opcode.SMSG_BATTLE_PET_RESTORED, 0x25F4 }, // NYI
+            { Opcode.SMSG_BATTLE_PET_REVOKED, 0x25F3 }, // NYI
+            { Opcode.SMSG_BATTLE_PET_TRAP_LEVEL, 0x25ED }, // NYI
             { Opcode.SMSG_BATTLE_PET_UPDATES, 0x25EC },
             { Opcode.SMSG_BIND_POINT_UPDATE, 0x257D },
             { Opcode.SMSG_BLACK_MARKET_BID_ON_ITEM_RESULT, 0x262A },
