@@ -1,6 +1,11 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Drawing;
+using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store.Objects;
+using WowPacketParser.Store;
+using WowPacketParser.SQL.Builders;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
@@ -24,14 +29,24 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_LOOT_RESPONSE)]
         public static void HandleLootResponse(Packet packet)
         {
-            packet.ReadPackedGuid128("Owner");
+            var guid = packet.ReadPackedGuid128("Owner");
             packet.ReadPackedGuid128("LootObj");
             packet.ReadByteE<LootError>("FailureReason");
             packet.ReadByteE<LootType>("AcquireReason");
             packet.ReadByteE<LootMethod>("LootMethod");
             packet.ReadByteE<ItemQuality>("Threshold");
 
-            packet.ReadUInt32("Coins");
+            var coins = packet.ReadUInt32("Coins");
+
+            Storage.Objects.TryGetValue(guid, out WoWObject creature);
+            var npc = creature as Unit;
+
+            Storage.CreatureCoins.Add(new CreatureCoins
+            {
+                WowGuid = guid,
+                Coins = coins,
+                Level = npc.UnitData.Level
+            });
 
             var itemCount = packet.ReadUInt32("ItemCount");
             var currencyCount = packet.ReadUInt32("CurrencyCount");
