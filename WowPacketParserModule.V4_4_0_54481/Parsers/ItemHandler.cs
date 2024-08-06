@@ -54,6 +54,20 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             SpellHandler.ReadSpellCastRequest(packet, "Cast");
         }
 
+        [Parser(Opcode.SMSG_COIN_REMOVED)]
+        public static void HandleCoinRemoved(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+        }
+
+        [Parser(Opcode.SMSG_CROSSED_INEBRIATION_THRESHOLD)]
+        public static void HandleCrossedInebriationThreshold(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32("Threshold");
+            packet.ReadInt32<ItemId>("ItemID");
+        }
+
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
         public static void HandleItemZero(Packet packet)
         {

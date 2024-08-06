@@ -31,6 +31,23 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBytes("RealmJoinTicket", realmJoinTicketSize);
         }
 
+        [Parser(Opcode.SMSG_CHANGE_REALM_TICKET_RESPONSE)]
+        public static void HandleChangeRealmTicketResponse(Packet packet)
+        {
+            packet.ReadUInt32("Token");
+            packet.ResetBitReader();
+            packet.ReadBit("Allow");
+
+            int protoSize = packet.ReadInt32();
+            packet.ReadBytesTable("Ticket", protoSize);
+        }
+
+        [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]
+        public static void HandleLoginFailed(Packet packet)
+        {
+            packet.ReadByteE<ResponseCode>("Code");
+        }
+
         [Parser(Opcode.SMSG_ENTER_ENCRYPTED_MODE)]
         public static void HandleEnterEncryptedMode(Packet packet)
         {

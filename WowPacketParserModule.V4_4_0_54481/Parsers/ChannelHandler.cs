@@ -6,16 +6,51 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class ChannelHandler
     {
-        [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL)]
-        public static void HandleChannelJoin(Packet packet)
+        [Parser(Opcode.SMSG_CHANNEL_LIST)]
+        public static void HandleChannelSendList(Packet packet)
         {
-            packet.ReadInt32("ChatChannelId");
-
+            packet.ReadBit("Display");
             var channelLength = packet.ReadBits(7);
-            var passwordLength = packet.ReadBits(7);
 
-            packet.ReadWoWString("ChannelName", channelLength);
-            packet.ReadWoWString("Password", passwordLength);
+            packet.ReadUInt32E<ChannelFlag>("ChannelFlags");
+
+            var membersCount = packet.ReadInt32("MembersCount");
+
+            packet.ReadWoWString("Channel", channelLength);
+
+            for (var i = 0; i < membersCount; i++)
+            {
+                packet.ReadPackedGuid128("Guid", i);
+                packet.ReadUInt32("VirtualRealmAddress", i);
+                packet.ReadByte("Flags", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
+        public static void HandleChannelNotify(Packet packet)
+        {
+            var type = packet.ReadBitsE<ChatNotificationType>("Type", 6);
+            var channelLength = packet.ReadBits(7);
+            var senderLength = packet.ReadBits(6);
+
+            packet.ReadPackedGuid128("SenderGuid");
+            packet.ReadPackedGuid128("BnetAccountID");
+
+            packet.ReadInt32("SenderVirtualRealm");
+
+            packet.ReadPackedGuid128("TargetGuid");
+
+            packet.ReadUInt32("TargetVirtualRealm");
+            packet.ReadInt32("ChatChannelID");
+
+            if (type == ChatNotificationType.ModeChange)
+            {
+                packet.ReadByteE<ChannelMemberFlag>("OldFlags");
+                packet.ReadByteE<ChannelMemberFlag>("NewFlags");
+            }
+
+            packet.ReadWoWString("Channel", channelLength);
+            packet.ReadWoWString("Sender", senderLength);
         }
 
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY_JOINED)]
@@ -30,6 +65,27 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("ChannelGUID");
             packet.ReadWoWString("Channel", channelLen);
             packet.ReadWoWString("ChannelWelcomeMsg", channelWelcomeMsgLen);
+        }
+
+        [Parser(Opcode.SMSG_CHANNEL_NOTIFY_LEFT)]
+        public static void HandleChannelNotifyLeft(Packet packet)
+        {
+            var bits20 = packet.ReadBits(7);
+            packet.ReadBit("Suspended");
+            packet.ReadInt32("ChatChannelID");
+            packet.ReadWoWString("Channel", bits20);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL)]
+        public static void HandleChannelJoin(Packet packet)
+        {
+            packet.ReadInt32("ChatChannelId");
+
+            var channelLength = packet.ReadBits(7);
+            var passwordLength = packet.ReadBits(7);
+
+            packet.ReadWoWString("ChannelName", channelLength);
+            packet.ReadWoWString("Password", passwordLength);
         }
     }
 }

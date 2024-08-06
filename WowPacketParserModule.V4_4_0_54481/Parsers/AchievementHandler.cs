@@ -118,5 +118,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("AchievementID");
             packet.ReadWoWString("Name", nameLength);
         }
+
+        [Parser(Opcode.SMSG_CRITERIA_DELETED)]
+        public static void HandleDeleted(Packet packet)
+        {
+            packet.ReadInt32("CriteriaID");
+        }
     }
 }

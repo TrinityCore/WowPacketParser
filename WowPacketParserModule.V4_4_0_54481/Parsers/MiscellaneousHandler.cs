@@ -494,11 +494,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Guid");
         }
 
+        [Parser(Opcode.SMSG_CUSTOM_LOAD_SCREEN)]
+        public static void HandleCustomLoadScreen(Packet packet)
+        {
+            packet.ReadUInt32("TeleportSpellID");
+            packet.ReadUInt32("LoadingScreenID");
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
         [Parser(Opcode.CMSG_QUERY_TIME)]
         [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
+        [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

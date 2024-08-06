@@ -280,5 +280,66 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadInt32E<StandState>("StandState");
         }
+
+        [Parser(Opcode.SMSG_CHARACTER_RENAME_RESULT)]
+        public static void HandleServerCharRename(Packet packet)
+        {
+            packet.ReadByte("Result");
+
+            packet.ResetBitReader();
+            var hasGuid = packet.ReadBit("HasGuid");
+            var nameLength = packet.ReadBits(6);
+
+            if (hasGuid)
+                packet.ReadPackedGuid128("Guid");
+
+            packet.ReadWoWString("Name", nameLength);
+        }
+
+        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE_FAILURE)]
+        public static void HandleServerCharCustomizeResult(Packet packet)
+        {
+            packet.ReadByte("Result");
+            packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE_SUCCESS)]
+        public static void HandleServerCharCustomize(Packet packet)
+        {
+            packet.ReadPackedGuid128("CharGUID");
+            packet.ReadByte("SexID");
+
+            var customizationCount = packet.ReadUInt32();
+            for (var j = 0u; j < customizationCount; ++j)
+                ReadChrCustomizationChoice(packet, "Customizations", j);
+
+            packet.ResetBitReader();
+            var bits55 = packet.ReadBits(6);
+            packet.ReadWoWString("Name", bits55);
+        }
+
+        [Parser(Opcode.SMSG_CHAR_FACTION_CHANGE_RESULT)]
+        public static void HandleCharFactionChangeResult(Packet packet)
+        {
+            packet.ReadByte("Result");
+            packet.ReadPackedGuid128("Guid");
+
+            packet.ResetBitReader();
+
+            var bit72 = packet.ReadBit("HasDisplayInfo");
+            if (bit72)
+            {
+                packet.ResetBitReader();
+                var nameLength = packet.ReadBits(6);
+
+                packet.ReadByte("SexID");
+                packet.ReadByte("RaceID");
+                var customizationCount = packet.ReadUInt32();
+                packet.ReadWoWString("Name", nameLength);
+
+                for (var j = 0u; j < customizationCount; ++j)
+                    ReadChrCustomizationChoice(packet, "Customizations", j);
+            }
+        }
     }
 }

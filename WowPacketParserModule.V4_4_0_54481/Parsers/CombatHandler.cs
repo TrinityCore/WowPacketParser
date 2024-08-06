@@ -43,6 +43,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("UnitGUID");
         }
 
+        [Parser(Opcode.SMSG_CAN_DUEL_RESULT)]
+        public static void HandleCanDuelResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadBit("Result");
+        }
+
         [Parser(Opcode.SMSG_CANCEL_AUTO_REPEAT)]
         public static void HandleCancelAutoRepeat(Packet packet)
         {

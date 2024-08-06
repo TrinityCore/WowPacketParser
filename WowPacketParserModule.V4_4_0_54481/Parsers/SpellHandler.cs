@@ -327,6 +327,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("SpellVisualID");
         }
 
+        [Parser(Opcode.SMSG_CANCEL_SPELL_VISUAL)]
+        public static void HandleCancelSpellVisual(Packet packet)
+        {
+            packet.ReadPackedGuid128("Source");
+            packet.ReadInt32("SpellVisualID");
+        }
+
+        [Parser(Opcode.SMSG_CANCEL_SPELL_VISUAL_KIT)]
+        public static void HandleCancelSpellVisualKit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Source");
+            packet.ReadInt32("SpellVisualKitID");
+            packet.ReadBit("MountedVisual");
+        }
+
         [Parser(Opcode.SMSG_SPELL_CHANNEL_START)]
         public static void HandleSpellChannelStart(Packet packet)
         {
@@ -750,6 +765,44 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadUInt32("TalentID");
             packet.ReadUInt16("Rank");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_ALL_SPELL_CHARGES)]
+        public static void HandleClearAllSpellCharges(Packet packet)
+        {
+            packet.ReadBit("Unused_440");
+            packet.ReadBit("IsPet");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWN)]
+        public static void HandleClearCooldown(Packet packet)
+        {
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadBit("ClearOnHold");
+            packet.ReadBit("IsPet");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWNS)]
+        public static void HandleClearCooldowns(Packet packet)
+        {
+            var count = packet.ReadInt32("SpellCount");
+            for (int i = 0; i < count; i++)
+                packet.ReadUInt32<SpellId>("SpellID");
+
+            packet.ReadBit("IsPet");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_SPELL_CHARGES)]
+        public static void HandleClearSpellCharges(Packet packet)
+        {
+            packet.ReadInt32("Category");
+            packet.ReadBit("IsPet");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_TARGET)]
+        public static void HandleClearTarget(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
         }
     }
 }

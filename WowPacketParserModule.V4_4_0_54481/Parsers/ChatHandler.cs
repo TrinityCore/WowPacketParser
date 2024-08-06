@@ -108,5 +108,37 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packetEmote.Emote = (int)emote;
             packetEmote.Sender = guid.ToUniversalGuid();
         }
+
+        [Parser(Opcode.SMSG_CHAT_PLAYER_AMBIGUOUS)]
+        public static void HandleChatPlayerAmbiguous(Packet packet)
+        {
+            packet.ResetBitReader();
+            var len = packet.ReadBits(9);
+            packet.ReadWoWString("Name", len);
+        }
+
+        [Parser(Opcode.SMSG_CHAT_PLAYER_NOTFOUND)]
+        public static void HandleChatPlayerNotFound(Packet packet)
+        {
+            packet.ResetBitReader();
+            var len = packet.ReadBits(9);
+            packet.ReadWoWString("Name", len);
+        }
+
+        [Parser(Opcode.SMSG_CHAT_RESTRICTED)]
+        public static void HandleChatRestricted(Packet packet)
+        {
+            packet.ReadInt32E<ChatRestrictionType>("Restriction");
+        }
+
+        [Parser(Opcode.SMSG_CHAT_SERVER_MESSAGE)]
+        public static void HandleServerMessage(Packet packet)
+        {
+            packet.ReadInt32("MessageID");
+
+            packet.ResetBitReader();
+            var len = packet.ReadBits(11);
+            packet.ReadWoWString("StringParam", len);
+        }
     }
 }

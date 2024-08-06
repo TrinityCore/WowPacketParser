@@ -28,6 +28,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_COMPLAINT_RESULT)]
+        public static void HandleComplaintResult(Packet packet)
+        {
+            packet.ReadUInt32("ComplaintType");
+            packet.ReadByte("Result");
+        }
+
         [Parser(Opcode.CMSG_GM_TICKET_GET_TICKET)]
         [Parser(Opcode.CMSG_GM_TICKET_GET_CASE_STATUS)]
         [Parser(Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS)]

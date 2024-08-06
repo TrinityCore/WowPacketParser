@@ -1,6 +1,6 @@
 ﻿namespace WowPacketParser.Enums
 {
-    enum ChatRestrictionType : byte
+    public enum ChatRestrictionType : byte
     {
         ChatRestricted = 0,
         ChatThrottled  = 1,

@@ -607,6 +607,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("SequenceIndex");
         }
 
+        [Parser(Opcode.SMSG_CONTROL_UPDATE)]
+        public static void HandleClientControlUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadBit("On");
+        }
+
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
         public static void HandleAbortNewWorld(Packet packet)
         {
