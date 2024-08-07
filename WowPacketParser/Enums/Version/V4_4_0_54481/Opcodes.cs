@@ -835,11 +835,11 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_BLACK_MARKET_OUTBID, 0x262B },
             { Opcode.SMSG_BLACK_MARKET_REQUEST_ITEMS_RESULT, 0x2629 },
             { Opcode.SMSG_BLACK_MARKET_WON, 0x262C },
-            { Opcode.SMSG_BONUS_ROLL_EMPTY, 0x2647 },
+            { Opcode.SMSG_BONUS_ROLL_EMPTY, 0x2647 }, // NYI
             { Opcode.SMSG_BOSS_KILL, 0x2951 },
             { Opcode.SMSG_BREAK_TARGET, 0x293C },
-            { Opcode.SMSG_BROADCAST_ACHIEVEMENT, 0x2BBC },
-            { Opcode.SMSG_BROADCAST_LEVELUP, 0x2BBD },
+            { Opcode.SMSG_BROADCAST_ACHIEVEMENT, 0x2BBC }, // NYI
+            { Opcode.SMSG_BROADCAST_LEVELUP, 0x2BBD }, // NYI
             { Opcode.SMSG_BUY_FAILED, 0x26CB },
             { Opcode.SMSG_BUY_SUCCEEDED, 0x26CA },
             { Opcode.SMSG_CACHE_INFO, 0x291D },
@@ -864,47 +864,47 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_CALENDAR_SEND_CALENDAR, 0x268F },
             { Opcode.SMSG_CALENDAR_SEND_EVENT, 0x2690 },
             { Opcode.SMSG_CALENDAR_SEND_NUM_PENDING, 0x26A0 },
-            { Opcode.SMSG_CAMERA_EFFECT, 0x272A },
+            { Opcode.SMSG_CAMERA_EFFECT, 0x272A }, // NYI
             { Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x26E2 },
             { Opcode.SMSG_CANCEL_COMBAT, 0x294B },
             { Opcode.SMSG_CANCEL_ORPHAN_SPELL_VISUAL, 0x2C45 },
-            { Opcode.SMSG_CANCEL_PRELOAD_WORLD, 0x2598 },
+            { Opcode.SMSG_CANCEL_PRELOAD_WORLD, 0x2598 }, // NYI
             { Opcode.SMSG_CANCEL_SCENE, 0x2639 },
             { Opcode.SMSG_CANCEL_SPELL_VISUAL, 0x2C43 },
             { Opcode.SMSG_CANCEL_SPELL_VISUAL_KIT, 0x2C47 },
             { Opcode.SMSG_CAN_DUEL_RESULT, 0x2947 },
-            { Opcode.SMSG_CAN_REDEEM_TOKEN_FOR_BALANCE_RESPONSE, 0x2819 },
+            { Opcode.SMSG_CAN_REDEEM_TOKEN_FOR_BALANCE_RESPONSE, 0x2819 }, // NYI
             { Opcode.SMSG_CAST_FAILED, 0x2C56 },
-            { Opcode.SMSG_CHANGE_PLAYER_DIFFICULTY_RESULT, 0x3004 },
+            { Opcode.SMSG_CHANGE_PLAYER_DIFFICULTY_RESULT, 0x3004 }, // NYI
             { Opcode.SMSG_CHANGE_REALM_TICKET_RESPONSE, 0x280C },
             { Opcode.SMSG_CHANNEL_LIST, 0x2BC4 },
             { Opcode.SMSG_CHANNEL_NOTIFY, 0x2BC1 },
             { Opcode.SMSG_CHANNEL_NOTIFY_JOINED, 0x2BC2 },
             { Opcode.SMSG_CHANNEL_NOTIFY_LEFT, 0x2BC3 },
-            { Opcode.SMSG_CHARACTER_CHECK_UPGRADE_RESULT, 0x27C5 },
+            { Opcode.SMSG_CHARACTER_CHECK_UPGRADE_RESULT, 0x27C5 }, // NYI
             { Opcode.SMSG_CHARACTER_LOGIN_FAILED, 0x2709 },
-            { Opcode.SMSG_CHARACTER_OBJECT_TEST_RESPONSE, 0x2791 },
+            { Opcode.SMSG_CHARACTER_OBJECT_TEST_RESPONSE, 0x2791 }, // NYI
             { Opcode.SMSG_CHARACTER_RENAME_RESULT, 0x276B },
-            { Opcode.SMSG_CHARACTER_UPGRADE_ABORTED, 0x27C4 },
-            { Opcode.SMSG_CHARACTER_UPGRADE_COMPLETE, 0x27C3 },
-            { Opcode.SMSG_CHARACTER_UPGRADE_MANUAL_UNREVOKE_RESULT, 0x27C6 },
-            { Opcode.SMSG_CHARACTER_UPGRADE_STARTED, 0x27C2 },
+            { Opcode.SMSG_CHARACTER_UPGRADE_ABORTED, 0x27C4 }, // NYI
+            { Opcode.SMSG_CHARACTER_UPGRADE_COMPLETE, 0x27C3 }, // NYI
+            { Opcode.SMSG_CHARACTER_UPGRADE_MANUAL_UNREVOKE_RESULT, 0x27C6 }, // NYI
+            { Opcode.SMSG_CHARACTER_UPGRADE_STARTED, 0x27C2 }, // NYI
             { Opcode.SMSG_CHAR_CUSTOMIZE_FAILURE, 0x26E6 },
             { Opcode.SMSG_CHAR_CUSTOMIZE_SUCCESS, 0x26E7 },
             { Opcode.SMSG_CHAR_FACTION_CHANGE_RESULT, 0x27AF },
             { Opcode.SMSG_CHAT, 0x2BAD },
-            { Opcode.SMSG_CHAT_AUTO_RESPONDED, 0x2BB8 },
-            { Opcode.SMSG_CHAT_DOWN, 0x2BBE },
-            { Opcode.SMSG_CHAT_IGNORED_ACCOUNT_MUTED, 0x2BAC },
-            { Opcode.SMSG_CHAT_IS_DOWN, 0x2BBF },
-            { Opcode.SMSG_CHAT_NOT_IN_PARTY, 0x2BB2 },
+            { Opcode.SMSG_CHAT_AUTO_RESPONDED, 0x2BB8 }, // NYI
+            { Opcode.SMSG_CHAT_DOWN, 0x2BBE }, // NYI
+            { Opcode.SMSG_CHAT_IGNORED_ACCOUNT_MUTED, 0x2BAC }, // NYI
+            { Opcode.SMSG_CHAT_IS_DOWN, 0x2BBF }, // NYI
+            { Opcode.SMSG_CHAT_NOT_IN_PARTY, 0x2BB2 }, // NYI
             { Opcode.SMSG_CHAT_PLAYER_AMBIGUOUS, 0x2BB0 },
             { Opcode.SMSG_CHAT_PLAYER_NOTFOUND, 0x2BB7 },
-            { Opcode.SMSG_CHAT_RECONNECT, 0x2BC0 },
+            { Opcode.SMSG_CHAT_RECONNECT, 0x2BC0 }, // NYI
             { Opcode.SMSG_CHAT_RESTRICTED, 0x2BB3 },
             { Opcode.SMSG_CHAT_SERVER_MESSAGE, 0x2BC5 },
-            { Opcode.SMSG_CHEAT_IGNORE_DIMISHING_RETURNS, 0x2C12 },
-            { Opcode.SMSG_CHECK_WARGAME_ENTRY, 0x2592 },
+            { Opcode.SMSG_CHEAT_IGNORE_DIMISHING_RETURNS, 0x2C12 }, // NYI
+            { Opcode.SMSG_CHECK_WARGAME_ENTRY, 0x2592 }, // NYI
             { Opcode.SMSG_CLEAR_ALL_SPELL_CHARGES, 0x2C26 },
             { Opcode.SMSG_CLEAR_BOSS_EMOTES, 0x25BD },
             { Opcode.SMSG_CLEAR_COOLDOWN, 0x26BE },
@@ -912,29 +912,29 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_CLEAR_SPELL_CHARGES, 0x2C27 },
             { Opcode.SMSG_CLEAR_TARGET, 0x2948 },
             { Opcode.SMSG_COIN_REMOVED, 0x2619 },
-            { Opcode.SMSG_COMBAT_EVENT_FAILED, 0x293F },
-            { Opcode.SMSG_COMMENTATOR_MAP_INFO, 0x270B },
-            { Opcode.SMSG_COMMENTATOR_PLAYER_INFO, 0x270C },
-            { Opcode.SMSG_COMMENTATOR_STATE_CHANGED, 0x270A },
-            { Opcode.SMSG_COMMERCE_TOKEN_GET_COUNT_RESPONSE, 0x27D5 },
+            { Opcode.SMSG_COMBAT_EVENT_FAILED, 0x293F }, // NYI
+            { Opcode.SMSG_COMMENTATOR_MAP_INFO, 0x270B }, // NYI
+            { Opcode.SMSG_COMMENTATOR_PLAYER_INFO, 0x270C }, // NYI
+            { Opcode.SMSG_COMMENTATOR_STATE_CHANGED, 0x270A }, // NYI
+            { Opcode.SMSG_COMMERCE_TOKEN_GET_COUNT_RESPONSE, 0x27D5 }, // NYI
             { Opcode.SMSG_COMMERCE_TOKEN_GET_LOG_RESPONSE, 0x27E1 },
             { Opcode.SMSG_COMMERCE_TOKEN_GET_MARKET_PRICE_RESPONSE, 0x27D7 },
             { Opcode.SMSG_COMMERCE_TOKEN_UPDATE, 0x27D6 },
             { Opcode.SMSG_COMPLAINT_RESULT, 0x26AF },
-            { Opcode.SMSG_CONFIRM_BARBERS_CHOICE, 0x26C1 },
-            { Opcode.SMSG_CONFIRM_PARTY_INVITE, 0x2818 },
+            { Opcode.SMSG_CONFIRM_BARBERS_CHOICE, 0x26C1 }, // NYI
+            { Opcode.SMSG_CONFIRM_PARTY_INVITE, 0x2818 }, // NYI
             { Opcode.SMSG_CONNECT_TO, 0x304D },
-            { Opcode.SMSG_CONSOLE_WRITE, 0x2637 },
-            { Opcode.SMSG_CONSUMABLE_TOKEN_BUY_AT_MARKET_PRICE_RESPONSE, 0x27DD },
-            { Opcode.SMSG_CONSUMABLE_TOKEN_BUY_CHOICE_REQUIRED, 0x27DC },
-            { Opcode.SMSG_CONSUMABLE_TOKEN_CAN_VETERAN_BUY_RESPONSE, 0x27DB },
-            { Opcode.SMSG_CONSUMABLE_TOKEN_REDEEM_CONFIRM_REQUIRED, 0x27DF },
-            { Opcode.SMSG_CONSUMABLE_TOKEN_REDEEM_RESPONSE, 0x27E0 },
+            { Opcode.SMSG_CONSOLE_WRITE, 0x2637 }, // NYI
+            { Opcode.SMSG_CONSUMABLE_TOKEN_BUY_AT_MARKET_PRICE_RESPONSE, 0x27DD }, // NYI
+            { Opcode.SMSG_CONSUMABLE_TOKEN_BUY_CHOICE_REQUIRED, 0x27DC }, // NYI
+            { Opcode.SMSG_CONSUMABLE_TOKEN_CAN_VETERAN_BUY_RESPONSE, 0x27DB }, // NYI
+            { Opcode.SMSG_CONSUMABLE_TOKEN_REDEEM_CONFIRM_REQUIRED, 0x27DF }, // NYI
+            { Opcode.SMSG_CONSUMABLE_TOKEN_REDEEM_RESPONSE, 0x27E0 }, // NYI
             { Opcode.SMSG_CONTACT_LIST, 0x278F },
-            { Opcode.SMSG_CONTRIBUTION_LAST_UPDATE_RESPONSE, 0x281F },
+            { Opcode.SMSG_CONTRIBUTION_LAST_UPDATE_RESPONSE, 0x281F }, // NYI
             { Opcode.SMSG_CONTROL_UPDATE, 0x2649 },
             { Opcode.SMSG_CONVERT_RUNE, 0x2C5F },
-            { Opcode.SMSG_COOLDOWN_CHEAT, 0x273D },
+            { Opcode.SMSG_COOLDOWN_CHEAT, 0x273D }, // NYI
             { Opcode.SMSG_COOLDOWN_EVENT, 0x26BD },
             { Opcode.SMSG_CORPSE_LOCATION, 0x2651 },
             { Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x274E },
