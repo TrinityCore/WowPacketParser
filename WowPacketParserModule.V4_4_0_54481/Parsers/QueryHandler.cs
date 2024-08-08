@@ -348,5 +348,51 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (var i = 0; i < count; ++i)
                 response.Responses.Add(ReadNameCacheLookupResult(packet, i));
         }
+
+        [Parser(Opcode.CMSG_QUERY_NPC_TEXT)]
+        public static void HandleNpcTextQuery(Packet packet)
+        {
+            packet.ReadInt32("Entry");
+            packet.ReadPackedGuid128("Guid");
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_QUERY_NPC_TEXT_RESPONSE)]
+        public static void HandleNpcTextUpdate(Packet packet)
+        {
+            var entry = packet.ReadEntry("Entry");
+            if (entry.Value) // Can be masked
+                return;
+
+            Bit hasData = packet.ReadBit("Has Data");
+            int size = packet.ReadInt32("Size");
+
+            if (!hasData || size == 0)
+                return; // nothing to do
+
+            NpcTextMop npcText = new NpcTextMop
+            {
+                ID = (uint)entry.Key
+            };
+
+            var data = packet.ReadBytes(size);
+
+            Packet pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            npcText.Probabilities = new float[8];
+            npcText.BroadcastTextId = new uint[8];
+            for (int i = 0; i < 8; ++i)
+                npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
+            for (int i = 0; i < 8; ++i)
+                npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
+
+            pkt.ClosePacket(false);
+
+            packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
+
+            Storage.NpcTextsMop.Add(npcText, packet.TimeSpan);
+            var proto = packet.Holder.NpcText = new() { Entry = npcText.ID.Value };
+            for (int i = 0; i < 8; ++i)
+                proto.Texts.Add(new PacketNpcTextEntry() { Probability = npcText.Probabilities[i], BroadcastTextId = npcText.BroadcastTextId[i] });
+        }
     }
 }
