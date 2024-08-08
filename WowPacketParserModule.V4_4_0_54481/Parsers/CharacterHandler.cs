@@ -341,5 +341,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     ReadChrCustomizationChoice(packet, "Customizations", j);
             }
         }
+
+        [Parser(Opcode.SMSG_GENERATE_RANDOM_CHARACTER_NAME_RESULT)]
+        public static void HandleGenerateRandomCharacterNameResponse(Packet packet)
+        {
+            packet.ReadBit("Success");
+            var nameLength = packet.ReadBits(6);
+
+            packet.ReadWoWString("Name", nameLength);
+        }
     }
 }

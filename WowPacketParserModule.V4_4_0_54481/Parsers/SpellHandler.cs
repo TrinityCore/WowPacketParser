@@ -787,7 +787,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             var count = packet.ReadInt32("SpellCount");
             for (int i = 0; i < count; i++)
-                packet.ReadUInt32<SpellId>("SpellID");
+                packet.ReadUInt32<SpellId>("SpellID", i);
 
             packet.ReadBit("IsPet");
         }
@@ -803,6 +803,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         public static void HandleClearTarget(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.SMSG_DISPEL_FAILED)]
+        public static void HandleDispelFailed(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadPackedGuid128("VictimGUID");
+            packet.ReadUInt32("SpellID");
+
+            var failedSpellsCount = packet.ReadUInt32();
+            for (int i = 0; i < failedSpellsCount; i++)
+                packet.ReadUInt32<SpellId>("FailedSpellID", i);
         }
     }
 }

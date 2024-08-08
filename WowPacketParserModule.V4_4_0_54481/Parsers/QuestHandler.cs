@@ -53,6 +53,81 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        public static void ReadPlayerChoiceResponse(Packet packet, int choiceId, uint index, params object[] indexes)
+        {
+            var responseId = packet.ReadInt32("ResponseID", indexes);
+            var responseIdentifier = packet.ReadInt16("ResponseIdentifier", indexes);
+            var choiceArtFileId = packet.ReadInt32("ChoiceArtFileID", indexes);
+            var flags = packet.ReadInt32("Flags", indexes);
+            var widgetSetId = packet.ReadUInt32("WidgetSetID", indexes);
+            var uiTextureAtlasElementID = packet.ReadUInt32("UiTextureAtlasElementID", indexes);
+            var soundKitId = packet.ReadUInt32("SoundKitID", indexes);
+            var groupID = packet.ReadByte("GroupID", indexes);
+            var uiTextureKitID = packet.ReadUInt32("UiTextureKitID", indexes);
+
+            packet.ResetBitReader();
+            var answerLength = packet.ReadBits(9);
+            var headerLength = packet.ReadBits(9);
+            var subHeaderLength = packet.ReadBits(7);
+            var buttonTooltipLength = packet.ReadBits(9);
+            var descriptionLength = packet.ReadBits(11);
+            var confirmationTextLength = packet.ReadBits(7);
+            var hasRewardQuestID = packet.ReadBit();
+            var hasReward = packet.ReadBit();
+            packet.ReadBit(); // Unused
+            if (hasReward)
+                V6_0_2_19033.Parsers.QuestHandler.ReadPlayerChoiceResponseReward(packet, choiceId, responseId, "PlayerChoiceResponseReward", indexes);
+
+            var answer = packet.ReadWoWString("Answer", answerLength, indexes);
+            var header = packet.ReadWoWString("Header", headerLength, indexes);
+            var subheader = packet.ReadWoWString("SubHeader", subHeaderLength, indexes);
+            var buttonTooltip = packet.ReadWoWString("ButtonTooltip", buttonTooltipLength, indexes);
+            var description = packet.ReadWoWString("Description", descriptionLength, indexes);
+            var confirmation = packet.ReadWoWString("ConfirmationText", confirmationTextLength, indexes);
+
+            var rewardQuestID = 0u;
+            if (hasRewardQuestID)
+                rewardQuestID = packet.ReadUInt32("RewardQuestID", indexes);
+
+            Storage.PlayerChoiceResponses.Add(new PlayerChoiceResponseTemplate
+            {
+                ChoiceId = choiceId,
+                ResponseIdentifier = responseIdentifier,
+                ResponseId = responseId,
+                Index = index,
+                ChoiceArtFileId = choiceArtFileId,
+                Flags = flags,
+                WidgetSetId = widgetSetId,
+                UiTextureAtlasElementID = uiTextureAtlasElementID,
+                SoundKitId = soundKitId,
+                GroupId = groupID,
+                Header = header,
+                Subheader = subheader,
+                ButtonTooltip = buttonTooltip,
+                Answer = answer,
+                Description = description,
+                Confirmation = confirmation,
+                RewardQuestID = rewardQuestID,
+                UiTextureKitID = uiTextureKitID
+            }, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                Storage.PlayerChoiceResponseLocales.Add(new PlayerChoiceResponseLocaleTemplate
+                {
+                    ChoiceId = choiceId,
+                    ResponseId = responseId,
+                    Locale = ClientLocale.PacketLocaleString,
+                    Header = header,
+                    Subheader = subheader,
+                    ButtonTooltip = buttonTooltip,
+                    Description = description,
+                    Answer = answer,
+                    Confirmation = confirmation
+                }, packet.TimeSpan);
+            }
+        }
+
         [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_QUERY)]
         public static void HandleQuestgiverStatusQuery(Packet packet)
         {
@@ -389,6 +464,55 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_DISPLAY_PLAYER_CHOICE)]
+        public static void HandleDisplayPlayerChoice(Packet packet)
+        {
+            var choiceId = packet.ReadInt32("ChoiceID");
+            var responseCount = packet.ReadUInt32();
+            packet.ReadPackedGuid128("SenderGUID");
+            var uiTextureKitId = packet.ReadInt32("UiTextureKitID");
+            var soundKitId = packet.ReadUInt32("SoundKitID");
+            var closeSoundKitId = packet.ReadUInt32("CloseUISoundKitID");
+            packet.ReadByte("NumRerolls");
+            var duration = packet.ReadInt64("Duration");
+            packet.ResetBitReader();
+            var questionLength = packet.ReadBits(8);
+            var pendingChoiceTextLength = packet.ReadBits(8);
+            packet.ReadBit("CloseChoiceFrame");
+            var hideWarboardHeader = packet.ReadBit("HideWarboardHeader");
+            var keepOpenAfterChoice = packet.ReadBit("KeepOpenAfterChoice");
+
+            for (var i = 0u; i < responseCount; ++i)
+                ReadPlayerChoiceResponse(packet, choiceId, i, "PlayerChoiceResponse", i);
+
+            var question = packet.ReadWoWString("Question", questionLength);
+            var pendingChoiceText = packet.ReadWoWString("PendingChoiceText", pendingChoiceTextLength);
+
+            Storage.PlayerChoices.Add(new PlayerChoiceTemplate
+            {
+                ChoiceId = choiceId,
+                UiTextureKitId = uiTextureKitId,
+                SoundKitId = soundKitId,
+                CloseSoundKitId = closeSoundKitId,
+                Duration = duration,
+                Question = question,
+                PendingChoiceText = pendingChoiceText,
+                HideWarboardHeader = hideWarboardHeader,
+                KeepOpenAfterChoice = keepOpenAfterChoice
+            }, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                Storage.PlayerChoiceLocales.Add(new PlayerChoiceLocaleTemplate
+                {
+                    ChoiceId = choiceId,
+                    Locale = ClientLocale.PacketLocaleString,
+                    Question = question
+                }, packet.TimeSpan);
+            }
+        }
+
+        [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
         [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_MULTIPLE_QUERY)]
         public static void HandleQuestZeroLengthPackets(Packet packet)
         {

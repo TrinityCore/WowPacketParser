@@ -68,6 +68,17 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32<ItemId>("ItemID");
         }
 
+        [Parser(Opcode.SMSG_ENCHANTMENT_LOG)]
+        public static void HandleEnchantmentLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Owner");
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("ItemGUID");
+            packet.ReadUInt32<ItemId>("ItemID");
+            packet.ReadUInt32("Enchantment");
+            packet.ReadUInt32("EnchantSlot");
+        }
+
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
         public static void HandleItemZero(Packet packet)
         {

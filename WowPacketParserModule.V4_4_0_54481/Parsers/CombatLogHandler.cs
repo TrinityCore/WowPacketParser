@@ -328,5 +328,22 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             if (bit100)
                 SpellHandler.ReadSpellCastLogData(packet);
         }
+
+        [Parser(Opcode.SMSG_ENVIRONMENTAL_DAMAGE_LOG)]
+        public static void HandleEnvirenmentalDamageLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+
+            packet.ReadByteE<EnvironmentDamage>("Type");
+
+            packet.ReadInt32("Amount");
+            packet.ReadInt32("Resisted");
+            packet.ReadInt32("Absorbed");
+
+            packet.ResetBitReader();
+            var bit76 = packet.ReadBit("HasLogData");
+            if (bit76)
+                SpellHandler.ReadSpellCastLogData(packet);
+        }
     }
 }

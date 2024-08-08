@@ -140,5 +140,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var len = packet.ReadBits(11);
             packet.ReadWoWString("StringParam", len);
         }
+
+        [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
+        public static void HandleDefenseMessage(Packet packet)
+        {
+            packet.ReadInt32<ZoneId>("ZoneID");
+            packet.ResetBitReader();
+            var len = packet.ReadBits(12);
+            packet.ReadWoWString("MessageText", len);
+        }
     }
 }

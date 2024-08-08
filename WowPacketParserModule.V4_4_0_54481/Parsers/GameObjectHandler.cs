@@ -44,5 +44,52 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("ObjectGUID");
         }
+
+        [Parser(Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE)]
+        public static void HandleDestructibleBuildingDamage(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("Owner");
+            packet.ReadInt32("Damage");
+            packet.ReadInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.SMSG_GAME_OBJECT_CLOSE_INTERACTION)]
+        public static void HandleGameObjectCloseInteractionResponse(Packet packet)
+        {
+            packet.ReadInt32("InteractionType");
+        }
+
+        [Parser(Opcode.SMSG_GAME_OBJECT_CUSTOM_ANIM)]
+        public static void HandleGoCustomAnim(Packet packet)
+        {
+            var customAnim = packet.Holder.GameObjectCustomAnim = new();
+            customAnim.GameObject = packet.ReadPackedGuid128("ObjectGUID");
+            customAnim.Anim = packet.ReadInt32("CustomAnim");
+            customAnim.PlayAsDespawn = packet.ReadBit("PlayAsDespawn");
+        }
+
+        [Parser(Opcode.SMSG_GAME_OBJECT_INTERACTION)]
+        public static void HandleGameObjectInteraction(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
+            packet.ReadInt32("InteractionType");
+        }
+
+        [Parser(Opcode.SMSG_GAME_OBJECT_PLAY_SPELL_VISUAL)]
+        public static void HandleGameObjectPlaySpellVisual(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
+            packet.ReadPackedGuid128("ActivatorGUID");
+            packet.ReadInt32("SpellVisualID");
+        }
+
+        [Parser(Opcode.SMSG_GAME_OBJECT_SET_STATE_LOCAL)]
+        public static void HandleGameObjectSetStateLocal(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadByte("State");
+        }
     }
 }

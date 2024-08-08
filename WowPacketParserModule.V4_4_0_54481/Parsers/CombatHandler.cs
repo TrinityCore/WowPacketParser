@@ -85,7 +85,47 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_DUEL_COMPLETE)]
+        public static void HandleDuelComplete(Packet packet)
+        {
+            packet.ReadBool("Started");
+        }
+
+        [Parser(Opcode.SMSG_DUEL_COUNTDOWN)]
+        public static void HandleDuelCountDown(Packet packet)
+        {
+            packet.ReadInt32("Countdown");
+        }
+
+        [Parser(Opcode.SMSG_DUEL_REQUESTED)]
+        public static void HandleDuelRequested(Packet packet)
+        {
+            packet.ReadPackedGuid128("ArbiterGUID");
+            packet.ReadPackedGuid128("RequestedByGUID");
+            packet.ReadPackedGuid128("RequestedByWowAccount");
+            packet.ReadBit("ToTheDeath");
+        }
+
+        [Parser(Opcode.SMSG_DUEL_WINNER)]
+        public static void HandleDuelWinner(Packet packet)
+        {
+            var beatenNameLength = packet.ReadBits(6);
+            var winnerNameLength = packet.ReadBits(6);
+
+            packet.ReadBit("Fled");
+
+            // Order guessed
+            packet.ReadUInt32("BeatenVirtualRealmAddress");
+            packet.ReadUInt32("WinnerVirtualRealmAddress");
+
+            // Order guessed
+            packet.ReadWoWString("BeatenName", beatenNameLength);
+            packet.ReadWoWString("WinnerName", winnerNameLength);
+        }
+
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
+        [Parser(Opcode.SMSG_DUEL_IN_BOUNDS)]
+        [Parser(Opcode.SMSG_DUEL_OUT_OF_BOUNDS)]
         public static void HandleCombatNull(Packet packet)
         {
         }

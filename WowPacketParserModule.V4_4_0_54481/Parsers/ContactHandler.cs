@@ -37,5 +37,28 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (var i = 0; i < contactInfoCount; i++)
                 ReadContactInfo(packet, i);
         }
+
+        [Parser(Opcode.SMSG_FRIEND_STATUS)]
+        public static void HandleFriendStatus(Packet packet)
+        {
+            packet.ReadByte("FriendResult");
+
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadPackedGuid128("WowAccount");
+
+            packet.ReadInt32("VirtualRealmAddress");
+
+            packet.ReadByteE<ContactStatus>("Status");
+
+            packet.ReadInt32<AreaId>("AreaID");
+            packet.ReadInt32("Level");
+            packet.ReadInt32E<Class>("ClassID");
+
+            packet.ResetBitReader();
+
+            var notesLen = packet.ReadBits(10);
+            packet.ReadBit("Mobile");
+            packet.ReadWoWString("Notes", notesLen);
+        }
     }
 }

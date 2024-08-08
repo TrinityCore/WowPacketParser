@@ -501,12 +501,73 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("LoadingScreenID");
         }
 
+        [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]
+        public static void HandleDeathReleaseLoc(Packet packet)
+        {
+            packet.ReadInt32<MapId>("Map Id");
+            packet.ReadVector3("Position");
+        }
+
+        [Parser(Opcode.SMSG_DISPLAY_GAME_ERROR)]
+        public static void HandleDisplayGameError(Packet packet)
+        {
+            packet.ReadUInt32("Error");
+            var hasArg = packet.ReadBit("HasArg");
+            var hasArg2 = packet.ReadBit("HasArg2");
+
+            if (hasArg)
+                packet.ReadUInt32("Arg");
+
+            if (hasArg2)
+                packet.ReadUInt32("Arg2");
+        }
+
+        [Parser(Opcode.SMSG_DISPLAY_TOAST)]
+        public static void HandleDisplayToast(Packet packet)
+        {
+            packet.ReadUInt64("Quantity");
+
+            packet.ReadByte("DisplayToastMethod");
+            packet.ReadUInt32("QuestID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Mailed");
+            var type = packet.ReadBits("Type", 2);
+            packet.ReadBit("IsSecondaryResult");
+
+            if (type == 0)
+            {
+                packet.ReadBit("BonusRoll");
+                Substructures.ItemHandler.ReadItemInstance(packet);
+                packet.ReadInt32("LootSpec");
+                packet.ReadSByte("Gender");
+            }
+
+            if (type == 1)
+                packet.ReadUInt32("CurrencyID");
+        }
+
+        [Parser(Opcode.SMSG_DURABILITY_DAMAGE_DEATH)]
+        public static void HandleDurabilityDamageDeath(Packet packet)
+        {
+            packet.ReadInt32("Percent");
+        }
+
+        [Parser(Opcode.SMSG_ENABLE_BARBER_SHOP)]
+        public static void HandleStartTimer(Packet packet)
+        {
+            packet.ReadByte("CustomizationScope");
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
         [Parser(Opcode.CMSG_QUERY_TIME)]
         [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
+        [Parser(Opcode.SMSG_FISH_ESCAPED)]
+        [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }
