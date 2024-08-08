@@ -274,6 +274,29 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             ReadMovementSpline(packet, pos, indexes, "MovementSpline");
         }
 
+        public static void ReadVignetteData(Packet packet, params object[] idx)
+        {
+            packet.ReadVector3("Position", idx);
+            packet.ReadPackedGuid128("ObjGUID", idx);
+            packet.ReadInt32("VignetteID", idx);
+            packet.ReadUInt32<AreaId>("ZoneID", idx);
+            packet.ReadUInt32("WMOGroupID", idx);
+            packet.ReadUInt32("WMODoodadPlacementID", idx);
+        }
+
+        public static void ReadVignetteDataSet(Packet packet, params object[] idx)
+        {
+            var idCount = packet.ReadUInt32();
+            var dataCount = packet.ReadUInt32();
+
+            for (var i = 0u; i < idCount; ++i)
+                packet.ReadPackedGuid128("IDs", idx, i);
+
+            // Added VignetteClientData
+            for (var i = 0u; i < dataCount; ++i)
+                ReadVignetteData(packet, idx, "Data", i);
+        }
+
         [Parser(Opcode.SMSG_ADJUST_SPLINE_DURATION)]
         public static void HandleAdjustSplineDuration(Packet packet)
         {
@@ -304,46 +327,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         public static void HandleVignetteUpdate(Packet packet)
         {
             packet.ReadBit("ForceUpdate");
-            packet.ReadBit("Unk_Bit_901");
+            packet.ReadBit("InFogOfWar");
 
-            // VignetteInstanceIDList
-            var int1 = packet.ReadUInt32("RemovedCount");
-            for (var i = 0; i < int1; ++i)
-                packet.ReadPackedGuid128("IDs", i);
+            var removedCount = packet.ReadUInt32();
 
-            // Added
-            var int2 = packet.ReadUInt32("AddedCount");
-            for (var i = 0; i < int2; ++i)
-                packet.ReadPackedGuid128("IDs", i);
+            ReadVignetteDataSet(packet, "Added");
+            ReadVignetteDataSet(packet, "Updated");
 
-            // Added VignetteClientData
-            var int3 = packet.ReadUInt32("VignetteClientDataCount");
-            for (var i = 0; i < int3; ++i)
-            {
-                packet.ReadVector3("Position", i);
-                packet.ReadPackedGuid128("ObjGUID", i);
-                packet.ReadInt32("VignetteID", i);
-                packet.ReadUInt32<AreaId>("AreaID", i);
-                packet.ReadUInt32("Unk901_1", i);
-                packet.ReadUInt32("Unk901_2", i);
-            }
-
-            // Updated
-            var int4 = packet.ReadUInt32("UpdatedCount");
-            for (var i = 0; i < int4; ++i)
-                packet.ReadPackedGuid128("IDs", i);
-
-            // Updated VignetteClientData
-            var int5 = packet.ReadUInt32("VignetteClientDataCount");
-            for (var i = 0; i < int5; ++i)
-            {
-                packet.ReadVector3("Position", i);
-                packet.ReadPackedGuid128("ObjGUID", i);
-                packet.ReadInt32("VignetteID", i);
-                packet.ReadUInt32<AreaId>("AreaID", i);
-                packet.ReadUInt32("Unk901_1", i);
-                packet.ReadUInt32("Unk901_2", i);
-            }
+            for (var i = 0; i < removedCount; ++i)
+                packet.ReadPackedGuid128("IDs", i, "Removed");
         }
 
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
