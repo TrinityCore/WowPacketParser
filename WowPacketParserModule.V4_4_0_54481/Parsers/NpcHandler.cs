@@ -339,5 +339,46 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_TALK_TO_GOSSIP, Direction.ClientToServer))
                 packet.Holder.GossipHello = new PacketGossipHello { GossipSource = guid };
         }
+
+        [Parser(Opcode.SMSG_GOSSIP_OPTION_NPC_INTERACTION)]
+        public static void HandleGossipOptionNPCInteraction(Packet packet)
+        {
+            packet.ReadPackedGuid128("GossipGUID");
+            var gossipNpcOptionID = packet.ReadInt32("GossipNpcOptionID");
+            var hasFriendshipFactionID = packet.ReadBit();
+
+            if (hasFriendshipFactionID)
+                packet.ReadInt32("FriendshipFactionID");
+
+            CoreParsers.NpcHandler.AddGossipNpcOption(gossipNpcOptionID, packet.TimeSpan, true);
+        }
+
+        [Parser(Opcode.SMSG_GOSSIP_POI)]
+        public static void HandleGossipPoi(Packet packet)
+        {
+            var protoPoi = packet.Holder.GossipPoi = new();
+            PointsOfInterest gossipPOI = new PointsOfInterest();
+
+            gossipPOI.ID = protoPoi.Id = packet.ReadInt32("ID");
+            gossipPOI.Flags = protoPoi.Flags = (uint)packet.ReadInt32("Flags");
+            Vector3 pos = packet.ReadVector3("Coordinates");
+            gossipPOI.PositionX = pos.X;
+            gossipPOI.PositionY = pos.Y;
+            gossipPOI.PositionZ = pos.Z;
+            protoPoi.Coordinates = new Vec2() { X = pos.X, Y = pos.Y };
+            protoPoi.Height = pos.Z;
+
+            gossipPOI.Icon = packet.ReadInt32E<GossipPOIIcon>("Icon");
+            gossipPOI.Importance = protoPoi.Importance = (uint)packet.ReadInt32("Importance");
+            protoPoi.Icon = (uint)gossipPOI.Icon;
+            gossipPOI.WMOGroupID = packet.ReadInt32("WMOGroupID");
+
+            packet.ResetBitReader();
+            uint bit84 = packet.ReadBits(6);
+            gossipPOI.Name = protoPoi.Name = packet.ReadWoWString("Name", bit84);
+
+            Storage.GossipPOIs.Add(gossipPOI, packet.TimeSpan);
+            CoreParsers.NpcHandler.UpdateTempGossipOptionActionPOI(packet.TimeSpan, gossipPOI.ID);
+        }
     }
 }

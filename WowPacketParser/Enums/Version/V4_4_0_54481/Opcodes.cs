@@ -1030,13 +1030,13 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_GOSSIP_MESSAGE, 0x2A98 },
             { Opcode.SMSG_GOSSIP_OPTION_NPC_INTERACTION, 0x2AA7 },
             { Opcode.SMSG_GOSSIP_POI, 0x279B },
-            { Opcode.SMSG_GOSSIP_QUEST_UPDATE, 0x2A99 },
-            { Opcode.SMSG_GROUP_ACTION_THROTTLED, 0x258F },
-            { Opcode.SMSG_GROUP_AUTO_KICK, 0x2798 },
+            { Opcode.SMSG_GOSSIP_QUEST_UPDATE, 0x2A99 }, // NYI
+            { Opcode.SMSG_GROUP_ACTION_THROTTLED, 0x258F }, // NYI
+            { Opcode.SMSG_GROUP_AUTO_KICK, 0x2798 }, // NYI
             { Opcode.SMSG_GROUP_DECLINE, 0x2794 },
             { Opcode.SMSG_GROUP_DESTROYED, 0x2797 },
             { Opcode.SMSG_GROUP_NEW_LEADER, 0x262F },
-            { Opcode.SMSG_GROUP_REQUEST_DECLINE, 0x2795 },
+            { Opcode.SMSG_GROUP_REQUEST_DECLINE, 0x2795 }, // NYI
             { Opcode.SMSG_GROUP_UNINVITE, 0x2796 },
             { Opcode.SMSG_GUILD_ACHIEVEMENT_DELETED, 0x29C6 },
             { Opcode.SMSG_GUILD_ACHIEVEMENT_EARNED, 0x29C5 },
