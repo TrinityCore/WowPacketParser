@@ -296,7 +296,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("VirtualRealmAddress");
         }
 
-        [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE, ClientVersionBuild.V8_1_0_28724)]
+        [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
         public static void HandleRealmQueryResponse(Packet packet)
         {
             packet.ReadUInt32("VirtualRealmAddress");

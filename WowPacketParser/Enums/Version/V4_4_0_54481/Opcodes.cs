@@ -838,7 +838,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_BONUS_ROLL_EMPTY, 0x2647 }, // NYI
             { Opcode.SMSG_BOSS_KILL, 0x2951 },
             { Opcode.SMSG_BREAK_TARGET, 0x293C },
-            { Opcode.SMSG_BROADCAST_ACHIEVEMENT, 0x2BBC }, // NYI
+            { Opcode.SMSG_BROADCAST_ACHIEVEMENT, 0x2BBC },
             { Opcode.SMSG_BROADCAST_LEVELUP, 0x2BBD }, // NYI
             { Opcode.SMSG_BUY_FAILED, 0x26CB },
             { Opcode.SMSG_BUY_SUCCEEDED, 0x26CA },
