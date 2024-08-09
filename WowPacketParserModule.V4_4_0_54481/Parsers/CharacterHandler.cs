@@ -350,5 +350,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ReadWoWString("Name", nameLength);
         }
+
+        [Parser(Opcode.SMSG_HEALTH_UPDATE)]
+        public static void HandleHealthUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt64("Health");
+        }
     }
 }
