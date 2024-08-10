@@ -816,5 +816,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (int i = 0; i < failedSpellsCount; i++)
                 packet.ReadUInt32<SpellId>("FailedSpellID", i);
         }
+
+        [Parser(Opcode.SMSG_INTERRUPT_POWER_REGEN)]
+        public static void HandleInterruptPowerRegen(Packet packet)
+        {
+            packet.ReadByteE<PowerType>("PowerType");
+        }
     }
 }
