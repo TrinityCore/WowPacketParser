@@ -280,6 +280,7 @@ namespace WowPacketParser.Enums.Version.V11_0_0_55666
             { Opcode.CMSG_CRAFTING_ORDER_CLAIM, 0x358C },
             { Opcode.CMSG_CRAFTING_ORDER_CREATE, 0x3588 },
             { Opcode.CMSG_CRAFTING_ORDER_FULFILL, 0x358E },
+            { Opcode.CMSG_CRAFTING_ORDER_GET_NPC_REWARD_INFO, 0x358B },
             { Opcode.CMSG_CRAFTING_ORDER_LIST_CRAFTER_ORDERS, 0x358A },
             { Opcode.CMSG_CRAFTING_ORDER_LIST_MY_ORDERS, 0x3589 },
             { Opcode.CMSG_CRAFTING_ORDER_REJECT, 0x3590 },
