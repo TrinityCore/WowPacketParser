@@ -1097,8 +1097,8 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_INITIALIZE_FACTIONS, 0x2728 },
             { Opcode.SMSG_INITIAL_SETUP, 0x2580 },
             { Opcode.SMSG_INIT_WORLD_STATES, 0x274A },
-            { Opcode.SMSG_INSPECT_HONOR_STATS, 0x2933 },
-            { Opcode.SMSG_INSPECT_PVP, 0x2726 },
+            { Opcode.SMSG_INSPECT_HONOR_STATS, 0x2933 }, // NYI
+            { Opcode.SMSG_INSPECT_PVP, 0x2726 }, // NYI
             { Opcode.SMSG_INSPECT_RESULT, 0x2633 },
             { Opcode.SMSG_INSTANCE_ENCOUNTER_CHANGE_PRIORITY, 0x27B5 },
             { Opcode.SMSG_INSTANCE_ENCOUNTER_DISENGAGE_UNIT, 0x27B4 },
@@ -1112,32 +1112,32 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_INSTANCE_ENCOUNTER_PHASE_SHIFT_CHANGED, 0x27C0 },
             { Opcode.SMSG_INSTANCE_ENCOUNTER_START, 0x27B9 },
             { Opcode.SMSG_INSTANCE_ENCOUNTER_TIMER_START, 0x27B6 },
-            { Opcode.SMSG_INSTANCE_ENCOUNTER_UPDATE_ALLOW_RELEASE_IN_PROGRESS, 0x27BB },
-            { Opcode.SMSG_INSTANCE_ENCOUNTER_UPDATE_SUPPRESS_RELEASE, 0x27BA },
-            { Opcode.SMSG_INSTANCE_GROUP_SIZE_CHANGED, 0x26FE },
+            { Opcode.SMSG_INSTANCE_ENCOUNTER_UPDATE_ALLOW_RELEASE_IN_PROGRESS, 0x27BB }, // NYI
+            { Opcode.SMSG_INSTANCE_ENCOUNTER_UPDATE_SUPPRESS_RELEASE, 0x27BA }, // NYI
+            { Opcode.SMSG_INSTANCE_GROUP_SIZE_CHANGED, 0x26FE }, // NYI
             { Opcode.SMSG_INSTANCE_INFO, 0x2636 },
             { Opcode.SMSG_INSTANCE_RESET, 0x268A },
             { Opcode.SMSG_INSTANCE_RESET_FAILED, 0x268B },
             { Opcode.SMSG_INSTANCE_SAVE_CREATED, 0x2784 },
             { Opcode.SMSG_INTERRUPT_POWER_REGEN, 0x2C58 },
-            { Opcode.SMSG_INVALIDATE_PAGE_TEXT, 0x2918 },
+            { Opcode.SMSG_INVALIDATE_PAGE_TEXT, 0x2918 }, // NYI
             { Opcode.SMSG_INVALIDATE_PLAYER, 0x2FFF },
-            { Opcode.SMSG_INVALID_PROMOTION_CODE, 0x2757 },
+            { Opcode.SMSG_INVALID_PROMOTION_CODE, 0x2757 }, // NYI
             { Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x2DA5 },
-            { Opcode.SMSG_INVENTORY_FIXUP_COMPLETE, 0x2817 },
+            { Opcode.SMSG_INVENTORY_FIXUP_COMPLETE, 0x2817 }, // NYI
             { Opcode.SMSG_INVENTORY_FULL_OVERFLOW, 0x2828 },
-            { Opcode.SMSG_ISLAND_AZERITE_GAIN, 0x2760 },
-            { Opcode.SMSG_ISLAND_COMPLETE, 0x2761 },
-            { Opcode.SMSG_IS_QUEST_COMPLETE_RESPONSE, 0x2A84 },
-            { Opcode.SMSG_ITEM_CHANGED, 0x26EF },
+            { Opcode.SMSG_ISLAND_AZERITE_GAIN, 0x2760 }, // NYI
+            { Opcode.SMSG_ISLAND_COMPLETE, 0x2761 }, // NYI
+            { Opcode.SMSG_IS_QUEST_COMPLETE_RESPONSE, 0x2A84 }, // NYI
+            { Opcode.SMSG_ITEM_CHANGED, 0x26EF }, // NYI
             { Opcode.SMSG_ITEM_COOLDOWN, 0x27CB },
             { Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x2759 },
             { Opcode.SMSG_ITEM_EXPIRE_PURCHASE_REFUND, 0x259E },
             { Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 0x259C },
             { Opcode.SMSG_ITEM_PUSH_RESULT, 0x2625 },
             { Opcode.SMSG_ITEM_TIME_UPDATE, 0x2758 },
-            { Opcode.SMSG_KICK_REASON, 0x268D },
-            { Opcode.SMSG_LATENCY_REPORT_PING, 0x2886 },
+            { Opcode.SMSG_KICK_REASON, 0x268D }, // NYI
+            { Opcode.SMSG_LATENCY_REPORT_PING, 0x2886 }, // NYI
             { Opcode.SMSG_LEARNED_SPELLS, 0x2C4C },
             { Opcode.SMSG_LEARN_PVP_TALENT_FAILED, 0x25D6 },
             { Opcode.SMSG_LEARN_TALENT_FAILED, 0x25D5 },

@@ -9,6 +9,29 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class ItemHandler
     {
+        public static void ReadItemPurchaseRefundItem(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32<ItemId>("ItemID", indexes);
+            packet.ReadInt32("ItemCount", indexes);
+        }
+
+        public static void ReadItemPurchaseRefundCurrency(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("CurrencyID", indexes);
+            packet.ReadInt32("CurrencyCount", indexes);
+        }
+
+        public static void ReadItemPurchaseContents(Packet packet, params object[] indexes)
+        {
+            packet.ReadUInt64("Money");
+
+            for (int i = 0; i < 5; i++)
+                ReadItemPurchaseRefundItem(packet, indexes, i, "ItemPurchaseRefundItem");
+
+            for (int i = 0; i < 5; i++)
+                ReadItemPurchaseRefundCurrency(packet, indexes, i, "ItemPurchaseRefundCurrency");
+        }
+
         [Parser(Opcode.SMSG_BUY_FAILED)]
         public static void HandleBuyFailed(Packet packet)
         {
@@ -79,7 +102,113 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("EnchantSlot");
         }
 
+        [Parser(Opcode.SMSG_INVENTORY_CHANGE_FAILURE)]
+        public static void HandleInventoryChangeFailure(Packet packet)
+        {
+            var result = packet.ReadByteE<InventoryResult440>("BagResult");
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadPackedGuid128("Item", i);
+
+            packet.ReadByte("ContainerBSlot");
+
+
+            switch (result)
+            {
+                case InventoryResult440.CantEquipLevel:
+                case InventoryResult440.PurchaseLevelTooLow:
+                {
+                    packet.ReadInt32("Level");
+                    break;
+                }
+                case InventoryResult440.EventAutoEquipBindConfirm:
+                {
+                    packet.ReadPackedGuid128("SrcContainer");
+                    packet.ReadInt32("SrcSlot");
+                    packet.ReadPackedGuid128("DstContainer");
+                    break;
+                }
+                case InventoryResult440.ItemMaxLimitCategoryCountExceededIs:
+                case InventoryResult440.ItemMaxLimitCategorySocketedExceededIs:
+                case InventoryResult440.ItemMaxLimitCategoryEquippedExceededIs:
+                {
+                    packet.ReadInt32("LimitCategory");
+                    break;
+                }
+            }
+        }
+
+        [Parser(Opcode.SMSG_ITEM_COOLDOWN)]
+        public static void HandleItemCooldown(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGuid");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("Cooldown");
+        }
+
+        [Parser(Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE)]
+        public static void HandleItemEnchantTimeUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item Guid");
+            packet.ReadUInt32("DurationLeft");
+            packet.ReadUInt32("Slot");
+            packet.ReadPackedGuid128("Player Guid");
+        }
+
+        [Parser(Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT)]
+        public static void HandleItemPurchaseRefundResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+            packet.ReadByte("Result");
+            var hasContents = packet.ReadBit("HasContents");
+            packet.ResetBitReader();
+
+            if (hasContents)
+                ReadItemPurchaseContents(packet, "Contents");
+        }
+
+        [Parser(Opcode.SMSG_ITEM_PUSH_RESULT)]
+        public static void HandleItemPushResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+
+            packet.ReadByte("Slot");
+
+            packet.ReadInt32("SlotInBag");
+
+            packet.ReadUInt32("QuestLogItemID");
+            packet.ReadUInt32("Quantity");
+            packet.ReadUInt32("QuantityInInventory");
+            packet.ReadInt32("DungeonEncounterID");
+
+            packet.ReadUInt32("BattlePetSpeciesID");
+            packet.ReadUInt32("BattlePetBreedID");
+            packet.ReadUInt32("BattlePetBreedQuality");
+            packet.ReadUInt32("BattlePetLevel");
+
+            packet.ReadPackedGuid128("ItemGUID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Pushed");
+            packet.ReadBit("Created");
+            packet.ReadBit("Unused440");
+            packet.ReadBits("DisplayText", 3);
+            packet.ReadBit("IsBonusRoll");
+            packet.ReadBit("IsEncounterLoot");
+
+            Substructures.ItemHandler.ReadItemInstance(packet);
+        }
+
+        [Parser(Opcode.SMSG_ITEM_TIME_UPDATE)]
+        public static void HandleItemTimeUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadUInt32("DurationLeft");
+        }
+
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
+        [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW)]
         public static void HandleItemZero(Packet packet)
         {
         }
