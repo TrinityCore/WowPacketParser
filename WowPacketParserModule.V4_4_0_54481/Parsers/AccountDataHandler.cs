@@ -96,5 +96,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.AddValue("Account Data", data);
         }
+
+        [Parser(Opcode.SMSG_LOGOUT_CANCEL_ACK)]
+        public static void HandleAccountNull(Packet packet)
+        {
+        }
     }
 }

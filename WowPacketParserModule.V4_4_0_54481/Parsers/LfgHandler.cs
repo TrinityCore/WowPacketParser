@@ -93,6 +93,44 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadInt32("Honor", idx);
         }
 
+        public static void ReadLfgBootInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadBit("VoteInProgress", idx);
+            packet.ReadBit("VotePassed", idx);
+            packet.ReadBit("MyVoteCompleted", idx);
+            packet.ReadBit("MyVote", idx);
+            var len = packet.ReadBits(8);
+            packet.ReadPackedGuid128("Target", idx);
+            packet.ReadUInt32("TotalVotes", idx);
+            packet.ReadUInt32("BootVotes", idx);
+            packet.ReadInt32("TimeLeft", idx);
+            packet.ReadUInt32("VotesNeeded", idx);
+            packet.ReadWoWString("Reason", len, idx);
+        }
+
+        public static void ReadLFGPlayerRewards(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            var hasRewardItem = packet.ReadBit();
+            var hasRewardCurrency = packet.ReadBit();
+            if (hasRewardItem)
+                Substructures.ItemHandler.ReadItemInstance(packet, indexes);
+            packet.ReadUInt32("Quantity", indexes);
+            packet.ReadInt32("BonusQuantity", indexes);
+            if (hasRewardCurrency)
+                packet.ReadInt32("RewardCurrency", indexes);
+        }
+
+        public static void ReadLFGRoleCheckUpdateMember(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("Guid", idx);
+            packet.ReadByteE<LfgRoleFlag>("RolesDesired", idx);
+            packet.ReadByte("Level", idx);
+            packet.ReadBit("RoleCheckComplete", idx);
+
+            packet.ResetBitReader();
+        }
+
         [Parser(Opcode.CMSG_DF_GET_SYSTEM_INFO)]
         public static void HandleLFGLockInfoRequest(Packet packet)
         {
@@ -147,9 +185,178 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_LFG_BOOT_PLAYER)]
+        public static void HandleLfgBootPlayer(Packet packet)
+        {
+            ReadLfgBootInfo(packet);
+        }
+
+        [Parser(Opcode.SMSG_LFG_JOIN_RESULT)]
+        public static void HandleLfgJoinResult(Packet packet)
+        {
+            ReadCliRideTicket(packet);
+
+            packet.ReadByte("Result");
+            packet.ReadByte("ResultDetail");
+
+            var blackListCount = packet.ReadInt32("BlackListCount");
+            var blackListNamesCount = packet.ReadUInt32("BlackListNamesCount");
+
+            for (int i = 0; i < blackListCount; i++)
+                ReadLFGBlackList(packet, i, "LFGBlackList");
+
+
+            int[] blackListNamesLengths = new int[blackListNamesCount];
+            for (int i = 0; i < blackListNamesCount; i++)
+            {
+                blackListNamesLengths[i] = (int)packet.ReadBits(24);
+            }
+
+            for (int i = 0; i < blackListNamesCount; i++)
+            {
+                packet.ReadDynamicString(blackListNamesLengths[i]);
+            }
+        }
+
+        [Parser(Opcode.SMSG_LFG_OFFER_CONTINUE)]
+        public static void HandleLfgOfferContinue(Packet packet)
+        {
+            packet.ReadLfgEntry("LfgEntry");
+        }
+
+        [Parser(Opcode.SMSG_LFG_PARTY_INFO)]
+        public static void HandleLfgPartyInfo(Packet packet)
+        {
+            var blackListCount = packet.ReadInt32("BlackListCount");
+            for (var i = 0; i < blackListCount; i++)
+                ReadLFGBlackList(packet, i);
+        }
+
+        [Parser(Opcode.SMSG_LFG_PLAYER_REWARD)]
+        public static void HandleLfgPlayerReward(Packet packet)
+        {
+            packet.ReadUInt32("QueuedSlot");
+            packet.ReadUInt32("ActualSlot");
+            packet.ReadInt32("RewardMoney");
+            packet.ReadInt32("AddedXP");
+
+            var count = packet.ReadInt32("RewardsCount");
+            for (var i = 0; i < count; ++i)
+                ReadLFGPlayerRewards(packet, i, "LFGPlayerRewards");
+        }
+
+        [Parser(Opcode.SMSG_LFG_PROPOSAL_UPDATE)]
+        public static void HandleLfgProposalUpdate(Packet packet)
+        {
+            ReadCliRideTicket(packet);
+
+            packet.ReadUInt64("InstanceID");
+            packet.ReadUInt32("ProposalID");
+            packet.ReadUInt32("Slot");
+            packet.ReadSByte("State");
+            packet.ReadUInt32("CompletedMask");
+            packet.ReadUInt32("EncounterMask");
+
+            var playerCount = packet.ReadUInt32("PlayersCount");
+            packet.ReadByte("Unused");
+            packet.ReadBit("ValidCompletedMask");
+            packet.ReadBit("ProposalSilent");
+            packet.ReadBit("IsRequeue");
+
+            for (var i = 0; i < playerCount; i++)
+            {
+                packet.ReadByte("Roles", i);
+
+                packet.ResetBitReader();
+
+                packet.ReadBit("Me", i);
+                packet.ReadBit("SameParty", i);
+                packet.ReadBit("MyParty", i);
+                packet.ReadBit("Responded", i);
+                packet.ReadBit("Accepted", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_LFG_QUEUE_STATUS)]
+        public static void HandleLfgQueueStatusUpdate(Packet packet)
+        {
+            ReadCliRideTicket(packet);
+
+            packet.ReadInt32("Slot");
+            packet.ReadInt32("AvgWaitTimeMe");
+            packet.ReadInt32("AvgWaitTime");
+
+            for (int i = 0; i < 3; i++)
+            {
+                packet.ReadInt32("AvgWaitTimeByRole", i);
+                packet.ReadByte("LastNeeded", i);
+            }
+
+            packet.ReadInt32("QueuedTime");
+        }
+
+        [Parser(Opcode.SMSG_LFG_ROLE_CHECK_UPDATE)]
+        public static void HandleLfgRoleCheck(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadByteE<LfgRoleCheckStatus>("RoleCheckStatus");
+            var joinSlotsCount = packet.ReadUInt32("JoinSlotsCount");
+            var bgQueueIdsCount = packet.ReadUInt32("BgQueueIDCount");
+            packet.ReadInt32("GroupFinderActivityID");
+            var membersCount = packet.ReadUInt32("MembersCount");
+
+            for (var i = 0; i < joinSlotsCount; ++i)
+                packet.ReadUInt32("JoinSlot", i);
+
+            for (var i = 0; i < bgQueueIdsCount; i++)
+                BattlegroundHandler.ReadPackedBattlegroundQueueTypeID(packet);
+
+            packet.ResetBitReader();
+            packet.ReadBit("IsBeginning");
+            packet.ReadBit("ShowRoleCheck");
+
+            for (var i = 0; i < membersCount; ++i)
+                ReadLFGRoleCheckUpdateMember(packet, i, "Members");
+        }
+
+        [Parser(Opcode.SMSG_LFG_TELEPORT_DENIED)]
+        public static void HandleLFGTeleportDenied(Packet packet)
+        {
+            packet.ReadBits("Reason", 4);
+        }
+
+        [Parser(Opcode.SMSG_LFG_UPDATE_STATUS)]
+        public static void HandleLfgUpdateStatus(Packet packet)
+        {
+            ReadCliRideTicket(packet);
+
+            packet.ReadByte("SubType");
+            packet.ReadByte("Reason");
+            var slotsCount = packet.ReadInt32("SlotsCount");
+            packet.ReadByte("RequestedRoles");
+            var suspendedPlayersCount = packet.ReadInt32("SuspendedPlayersCount");
+            packet.ReadUInt32<MapId>("QueueMapID");
+
+            for (int i = 0; i < slotsCount; i++)
+                packet.ReadInt32("Slots", i);
+
+            for (int i = 0; i < suspendedPlayersCount; i++)
+                packet.ReadPackedGuid128("SuspendedPlayers", i);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("IsParty");
+            packet.ReadBit("NotifyUI");
+            packet.ReadBit("Joined");
+            packet.ReadBit("LfgJoined");
+            packet.ReadBit("Queued");
+            packet.ReadBit("Unused");
+        }
+
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS)]
         [Parser(Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST)]
         [Parser(Opcode.CMSG_DF_GET_JOIN_STATUS)]
+        [Parser(Opcode.SMSG_LFG_DISABLED)]
         public static void HandleLfgZero(Packet packet)
         {
         }

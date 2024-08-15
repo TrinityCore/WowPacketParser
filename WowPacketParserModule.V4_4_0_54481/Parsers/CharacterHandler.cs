@@ -483,5 +483,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("ChrSpecializationID", "TraitInspectData");
             TraitHandler.ReadTraitConfig(packet, "TraitInspectData", "Traits");
         }
+
+        [Parser(Opcode.SMSG_LOG_XP_GAIN)]
+        public static void HandleLogXPGain(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+            packet.ReadInt32("Original");
+            packet.ReadByte("Reason");
+            packet.ReadInt32("Amount");
+            packet.ReadSingle("GroupBonus");
+        }
     }
 }

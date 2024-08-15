@@ -822,5 +822,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadByteE<PowerType>("PowerType");
         }
+
+        [Parser(Opcode.SMSG_LEARN_TALENT_FAILED)]
+        public static void HandleLearnTalentFailed(Packet packet)
+        {
+            packet.ReadBits("Reason", 4);
+            packet.ReadInt32("SpellID");
+            var count = packet.ReadUInt32("TalentCount");
+            for (int i = 0; i < count; i++)
+                packet.ReadUInt16("Talent");
+        }
     }
 }

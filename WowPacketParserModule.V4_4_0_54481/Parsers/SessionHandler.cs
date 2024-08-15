@@ -318,7 +318,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_LOGOUT_RESPONSE)]
+        public static void HandlePlayerLogoutResponse(Packet packet)
+        {
+            packet.ReadInt32("Reason");
+            packet.ReadBit("Instant");
+            // From TC:
+            // Reason 1: IsInCombat
+            // Reason 2: InDuel or frozen by GM
+            // Reason 3: Jumping or Falling
+        }
+
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK)]
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
         public static void HandleSessionZero(Packet packet)
         {
         }

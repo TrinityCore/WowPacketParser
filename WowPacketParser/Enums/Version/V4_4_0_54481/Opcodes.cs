@@ -1139,53 +1139,53 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_KICK_REASON, 0x268D }, // NYI
             { Opcode.SMSG_LATENCY_REPORT_PING, 0x2886 }, // NYI
             { Opcode.SMSG_LEARNED_SPELLS, 0x2C4C },
-            { Opcode.SMSG_LEARN_PVP_TALENT_FAILED, 0x25D6 },
+            { Opcode.SMSG_LEARN_PVP_TALENT_FAILED, 0x25D6 }, // NYI
             { Opcode.SMSG_LEARN_TALENT_FAILED, 0x25D5 },
             { Opcode.SMSG_LEGACY_LOOT_RULES, 0x282D },
             { Opcode.SMSG_LEVEL_UP_INFO, 0x26ED },
             { Opcode.SMSG_LFG_BOOT_PLAYER, 0x2A35 },
             { Opcode.SMSG_LFG_DISABLED, 0x2A33 },
-            { Opcode.SMSG_LFG_EXPAND_SEARCH_PROMPT, 0x2A3B },
-            { Opcode.SMSG_LFG_INSTANCE_SHUTDOWN_COUNTDOWN, 0x2A25 },
+            { Opcode.SMSG_LFG_EXPAND_SEARCH_PROMPT, 0x2A3B }, // NYI
+            { Opcode.SMSG_LFG_INSTANCE_SHUTDOWN_COUNTDOWN, 0x2A25 }, // NYI
             { Opcode.SMSG_LFG_JOIN_RESULT, 0x2A1C },
-            { Opcode.SMSG_LFG_LIST_APPLICANT_LIST_UPDATE, 0x2A2B },
-            { Opcode.SMSG_LFG_LIST_APPLICATION_STATUS_UPDATE, 0x2A28 },
-            { Opcode.SMSG_LFG_LIST_APPLY_TO_GROUP_RESULT, 0x2A29 },
-            { Opcode.SMSG_LFG_LIST_JOIN_RESULT, 0x2A1D },
-            { Opcode.SMSG_LFG_LIST_SEARCH_RESULTS, 0x2A1E },
-            { Opcode.SMSG_LFG_LIST_SEARCH_RESULTS_UPDATE, 0x2A2C },
-            { Opcode.SMSG_LFG_LIST_SEARCH_STATUS, 0x2A1F },
+            { Opcode.SMSG_LFG_LIST_APPLICANT_LIST_UPDATE, 0x2A2B }, // NYI
+            { Opcode.SMSG_LFG_LIST_APPLICATION_STATUS_UPDATE, 0x2A28 }, // NYI
+            { Opcode.SMSG_LFG_LIST_APPLY_TO_GROUP_RESULT, 0x2A29 }, // NYI
+            { Opcode.SMSG_LFG_LIST_JOIN_RESULT, 0x2A1D }, // NYI
+            { Opcode.SMSG_LFG_LIST_SEARCH_RESULTS, 0x2A1E }, // NYI
+            { Opcode.SMSG_LFG_LIST_SEARCH_RESULTS_UPDATE, 0x2A2C }, // NYI
+            { Opcode.SMSG_LFG_LIST_SEARCH_STATUS, 0x2A1F }, // NYI
             { Opcode.SMSG_LFG_LIST_UPDATE_BLACKLIST, 0x2A2A },
-            { Opcode.SMSG_LFG_LIST_UPDATE_EXPIRATION, 0x2A27 },
-            { Opcode.SMSG_LFG_LIST_UPDATE_STATUS, 0x2A26 },
+            { Opcode.SMSG_LFG_LIST_UPDATE_EXPIRATION, 0x2A27 }, // NYI
+            { Opcode.SMSG_LFG_LIST_UPDATE_STATUS, 0x2A26 }, // NYI
             { Opcode.SMSG_LFG_OFFER_CONTINUE, 0x2A34 },
             { Opcode.SMSG_LFG_PARTY_INFO, 0x2A36 },
             { Opcode.SMSG_LFG_PLAYER_INFO, 0x2A37 },
             { Opcode.SMSG_LFG_PLAYER_REWARD, 0x2A38 },
             { Opcode.SMSG_LFG_PROPOSAL_UPDATE, 0x2A2D },
             { Opcode.SMSG_LFG_QUEUE_STATUS, 0x2A20 },
-            { Opcode.SMSG_LFG_READY_CHECK_RESULT, 0x2A3A },
-            { Opcode.SMSG_LFG_READY_CHECK_UPDATE, 0x2A22 },
+            { Opcode.SMSG_LFG_READY_CHECK_RESULT, 0x2A3A }, // NYI
+            { Opcode.SMSG_LFG_READY_CHECK_UPDATE, 0x2A22 }, // NYI
             { Opcode.SMSG_LFG_ROLE_CHECK_UPDATE, 0x2A21 },
-            { Opcode.SMSG_LFG_SLOT_INVALID, 0x2A30 },
+            { Opcode.SMSG_LFG_SLOT_INVALID, 0x2A30 }, // NYI
             { Opcode.SMSG_LFG_TELEPORT_DENIED, 0x2A32 },
             { Opcode.SMSG_LFG_UPDATE_STATUS, 0x2A24 },
-            { Opcode.SMSG_LF_GUILD_APPLICANT_LIST_CHANGED, 0x29D6 },
-            { Opcode.SMSG_LF_GUILD_APPLICATIONS, 0x29D2 },
-            { Opcode.SMSG_LF_GUILD_APPLICATIONS_LIST_CHANGED, 0x29D7 },
-            { Opcode.SMSG_LF_GUILD_BROWSE, 0x29CF },
-            { Opcode.SMSG_LF_GUILD_COMMAND_RESULT, 0x29D1 },
-            { Opcode.SMSG_LF_GUILD_POST, 0x29CE },
-            { Opcode.SMSG_LF_GUILD_RECRUITS, 0x29D0 },
-            { Opcode.SMSG_LIVE_REGION_ACCOUNT_RESTORE_RESULT, 0x2776 },
-            { Opcode.SMSG_LIVE_REGION_CHARACTER_COPY_RESULT, 0x2775 },
-            { Opcode.SMSG_LIVE_REGION_GET_ACCOUNT_CHARACTER_LIST_RESULT, 0x276A },
+            { Opcode.SMSG_LF_GUILD_APPLICANT_LIST_CHANGED, 0x29D6 }, // NYI
+            { Opcode.SMSG_LF_GUILD_APPLICATIONS, 0x29D2 }, // NYI
+            { Opcode.SMSG_LF_GUILD_APPLICATIONS_LIST_CHANGED, 0x29D7 }, // NYI
+            { Opcode.SMSG_LF_GUILD_BROWSE, 0x29CF }, // NYI
+            { Opcode.SMSG_LF_GUILD_COMMAND_RESULT, 0x29D1 }, // NYI
+            { Opcode.SMSG_LF_GUILD_POST, 0x29CE }, // NYI
+            { Opcode.SMSG_LF_GUILD_RECRUITS, 0x29D0 }, // NYI
+            { Opcode.SMSG_LIVE_REGION_ACCOUNT_RESTORE_RESULT, 0x2776 }, // NYI
+            { Opcode.SMSG_LIVE_REGION_CHARACTER_COPY_RESULT, 0x2775 }, // NYI
+            { Opcode.SMSG_LIVE_REGION_GET_ACCOUNT_CHARACTER_LIST_RESULT, 0x276A }, // NYI
             { Opcode.SMSG_LOAD_CUF_PROFILES, 0x25BE },
             { Opcode.SMSG_LOAD_EQUIPMENT_SET, 0x2712 },
-            { Opcode.SMSG_LOBBY_MATCHMAKER_LOBBY_ACQUIRED_SERVER, 0x2890 },
-            { Opcode.SMSG_LOBBY_MATCHMAKER_PARTY_INFO, 0x2891 },
-            { Opcode.SMSG_LOBBY_MATCHMAKER_PARTY_INVITE_REJECTED, 0x2892 },
-            { Opcode.SMSG_LOBBY_MATCHMAKER_RECEIVE_INVITE, 0x2893 },
+            { Opcode.SMSG_LOBBY_MATCHMAKER_LOBBY_ACQUIRED_SERVER, 0x2890 }, // NYI
+            { Opcode.SMSG_LOBBY_MATCHMAKER_PARTY_INFO, 0x2891 }, // NYI
+            { Opcode.SMSG_LOBBY_MATCHMAKER_PARTY_INVITE_REJECTED, 0x2892 }, // NYI
+            { Opcode.SMSG_LOBBY_MATCHMAKER_RECEIVE_INVITE, 0x2893 }, // NYI
             { Opcode.SMSG_LOGIN_SET_TIME_SPEED, 0x2711 },
             { Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x2599 },
             { Opcode.SMSG_LOGOUT_CANCEL_ACK, 0x2689 },
