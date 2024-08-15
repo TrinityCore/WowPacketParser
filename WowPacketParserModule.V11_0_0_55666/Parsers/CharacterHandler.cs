@@ -17,6 +17,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadByte("Subclass", idx);
             packet.ReadInt32("SecondaryItemModifiedAppearanceID", idx);
             packet.ReadInt32("ItemID", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_2_55959))
+                packet.ReadInt32("TransmogrifiedItemID", idx);
         }
 
         public static void ReadBasicCharacterListEntry(Packet packet, params object[] idx)
