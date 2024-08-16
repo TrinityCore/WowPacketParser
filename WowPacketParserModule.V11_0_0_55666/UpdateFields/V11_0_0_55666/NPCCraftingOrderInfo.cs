@@ -11,10 +11,10 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_0_55666
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
     public class NPCCraftingOrderInfo : INPCCraftingOrderInfo
     {
-        public System.Nullable<ulong> Field_0 { get; set; }
-        public System.Nullable<int> Field_8 { get; set; }
-        public System.Nullable<int> Field_C { get; set; }
-        public System.Nullable<int> Field_10 { get; set; }
+        public System.Nullable<ulong> OrderID { get; set; }
+        public System.Nullable<int> NpcCraftingOrderSetID { get; set; }
+        public System.Nullable<int> NpcTreasureID { get; set; }
+        public System.Nullable<int> NpcCraftingOrderCustomerID { get; set; }
     }
 }
 

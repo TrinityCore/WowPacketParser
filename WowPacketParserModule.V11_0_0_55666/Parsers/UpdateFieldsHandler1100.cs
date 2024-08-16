@@ -3664,10 +3664,10 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_0_55666
         {
             var data = new NPCCraftingOrderInfo();
             packet.ResetBitReader();
-            data.Field_0 = packet.ReadUInt64("Field_0", indexes);
-            data.Field_8 = packet.ReadInt32("Field_8", indexes);
-            data.Field_C = packet.ReadInt32("Field_C", indexes);
-            data.Field_10 = packet.ReadInt32("Field_10", indexes);
+            data.OrderID = packet.ReadUInt64("OrderID", indexes);
+            data.NpcCraftingOrderSetID = packet.ReadInt32("NpcCraftingOrderSetID", indexes);
+            data.NpcTreasureID = packet.ReadInt32("NpcTreasureID", indexes);
+            data.NpcCraftingOrderCustomerID = packet.ReadInt32("NpcCraftingOrderCustomerID", indexes);
             return data;
         }
 
@@ -3682,19 +3682,19 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_0_55666
             packet.ResetBitReader();
             if (changesMask[0])
             {
-                data.Field_0 = packet.ReadUInt64("Field_0", indexes);
+                data.OrderID = packet.ReadUInt64("OrderID", indexes);
             }
             if (changesMask[1])
             {
-                data.Field_8 = packet.ReadInt32("Field_8", indexes);
+                data.NpcCraftingOrderSetID = packet.ReadInt32("NpcCraftingOrderSetID", indexes);
             }
             if (changesMask[2])
             {
-                data.Field_C = packet.ReadInt32("Field_C", indexes);
+                data.NpcTreasureID = packet.ReadInt32("NpcTreasureID", indexes);
             }
             if (changesMask[3])
             {
-                data.Field_10 = packet.ReadInt32("Field_10", indexes);
+                data.NpcCraftingOrderCustomerID = packet.ReadInt32("NpcCraftingOrderCustomerID", indexes);
             }
             return data;
         }
