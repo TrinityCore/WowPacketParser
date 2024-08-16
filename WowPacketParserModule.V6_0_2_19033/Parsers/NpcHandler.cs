@@ -19,6 +19,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         public static uint LastGossipPOIEntry;
 
+        public static void ReadTreasureItem(Packet packet, params object[] idx)
+        {
+            packet.ReadBits("Type", 1, idx);
+            packet.ReadInt32("ID", idx);
+            packet.ReadInt32("Quantity", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_2_55959))
+                packet.ReadByte("ItemContext", idx);
+        }
+
         public static GossipMessageOption ReadGossipOptionsData(uint menuId, WowGuid npcGuid, Packet packet, params object[] idx)
         {
             GossipMessageOption gossipMessageOption = new();
@@ -68,9 +78,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 for (uint i = 0; i < rewardsCount; ++i)
                 {
                     packet.ResetBitReader();
-                    packet.ReadBits("Type", 1, idx, "TreasureItem", i);
-                    packet.ReadInt32("ID", idx, "TreasureItem", i);
-                    packet.ReadInt32("Quantity", idx, "TreasureItem", i);
+                    ReadTreasureItem(packet, idx, "TreasureItem", i);
                 }
             }
 

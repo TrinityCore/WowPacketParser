@@ -26,6 +26,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadInt32("QuestMaxScalingLevel", idx);
             }
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_2_55959))
+                packet.ReadInt32("Unused1102", idx);
+
             for (int j = 0; j < 2; ++j)
                 packet.ReadInt32("QuestFlags", idx, j);
 

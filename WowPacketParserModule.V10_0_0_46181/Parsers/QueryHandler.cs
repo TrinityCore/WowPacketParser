@@ -149,11 +149,15 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             var objectiveCount = packet.ReadUInt32("ObjectiveCount");
             quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");
             var treasurePickerCount = 0u;
+            var treasurePickerCount2 = 0u;
             if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
                 quest.QuestRewardID = packet.ReadInt32("TreasurePickerID");
             else
+            {
                 treasurePickerCount = packet.ReadUInt32();
-
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_2_55959))
+                    treasurePickerCount2 = packet.ReadUInt32();
+            }
             quest.Expansion = packet.ReadInt32("Expansion");
             quest.ManagedWorldStateID = packet.ReadInt32("ManagedWorldStateID");
             quest.QuestSessionBonus = packet.ReadInt32("QuestSessionBonus");
@@ -175,6 +179,18 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                     OrderIndex = (int)i
                 };
                 Storage.QuestTreasurePickersStorage.Add(pickers);
+            }
+
+            for (uint i = 0; i < treasurePickerCount2; ++i)
+            {
+                var treasurePickerID = packet.ReadInt32("TreasurePickerID2");
+                //QuestTreasurePickers pickers = new()
+                //{
+                //    QuestID = quest.ID,
+                //    TreasurePickerID = treasurePickerID,
+                //    OrderIndex = (int)i
+                //};
+                //Storage.QuestTreasurePickersStorage.Add(pickers);
             }
             packet.ResetBitReader();
 
