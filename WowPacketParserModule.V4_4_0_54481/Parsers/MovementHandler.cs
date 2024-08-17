@@ -297,6 +297,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadVignetteData(packet, idx, "Data", i);
         }
 
+        public static void ReadMovementForce(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("ID", idx);
+            packet.ReadVector3("Origin", idx);
+            packet.ReadVector3("Direction", idx);
+            packet.ReadUInt32("TransportID", idx);
+            packet.ReadSingle("Magnitude", idx);
+            packet.ReadInt32("Unused910", idx);
+
+            packet.ResetBitReader();
+            packet.ReadBitsE<MovementForceType>("Type", 2, idx);
+        }
+
         [Parser(Opcode.SMSG_ADJUST_SPLINE_DURATION)]
         public static void HandleAdjustSplineDuration(Packet packet)
         {
@@ -593,6 +606,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_MOVE_SET_NORMAL_FALL)]
         [Parser(Opcode.SMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES)]
         [Parser(Opcode.SMSG_MOVE_UNSET_IGNORE_MOVEMENT_FORCES)]
+        [Parser(Opcode.SMSG_MOVE_DISABLE_COLLISION)]
+        [Parser(Opcode.SMSG_MOVE_DISABLE_DOUBLE_JUMP)]
+        [Parser(Opcode.SMSG_MOVE_DISABLE_INERTIA)]
+        [Parser(Opcode.SMSG_MOVE_ENABLE_COLLISION)]
+        [Parser(Opcode.SMSG_MOVE_ENABLE_DOUBLE_JUMP)]
+        [Parser(Opcode.SMSG_MOVE_ENABLE_INERTIA)]
         public static void HandleMovementIndex(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
@@ -604,6 +623,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("Unit");
             packet.ReadBit("On");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_APPLY_MOVEMENT_FORCE)]
+        public static void HandleMoveApplyMovementForce(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+
+            ReadMovementForce(packet, "MovementForce");
         }
 
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]

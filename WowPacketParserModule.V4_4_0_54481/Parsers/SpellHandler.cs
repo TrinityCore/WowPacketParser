@@ -832,5 +832,55 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (int i = 0; i < count; i++)
                 packet.ReadUInt16("Talent");
         }
+
+        [Parser(Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA)]
+        public static void HandleMirrorImageData(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("DisplayID");
+            packet.ReadByte("RaceID");
+            packet.ReadByte("Gender");
+            packet.ReadByte("ClassID");
+            var customizationCount = packet.ReadUInt32();
+            packet.ReadPackedGuid128("GuildGUID");
+            var itemDisplayCount = packet.ReadInt32("ItemDisplayCount");
+
+            for (var j = 0u; j < customizationCount; ++j)
+                CharacterHandler.ReadChrCustomizationChoice(packet, "Customizations", j);
+
+            for (var i = 0; i < itemDisplayCount; i++)
+                packet.ReadInt32("ItemDisplayID", i);
+        }
+
+        [Parser(Opcode.SMSG_MIRROR_IMAGE_CREATURE_DATA)]
+        public static void HandleGetMirrorImageData(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("DisplayID");
+            packet.ReadInt32("SpellVisualKitID"); // Unused
+        }
+
+        [Parser(Opcode.SMSG_MISSILE_CANCEL)]
+        public static void HandleMissileCancel(Packet packet)
+        {
+            packet.ReadPackedGuid128("OwnerGUID");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadBit("Reverse");
+        }
+
+        [Parser(Opcode.SMSG_MODIFY_COOLDOWN)]
+        public static void HandleModifyCooldown(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("DeltaTime");
+            packet.ReadBit("IsPet");
+            packet.ReadBit("WithoutCategoryCooldown");
+        }
+
+        [Parser(Opcode.SMSG_MOUNT_RESULT)]
+        public static void HandleMountResult(Packet packet)
+        {
+            packet.ReadInt32E<MountResult>("Result");
+        }
     }
 }

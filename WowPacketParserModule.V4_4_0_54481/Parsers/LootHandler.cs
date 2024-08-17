@@ -120,6 +120,50 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadCurrenciesData(packet, i, "Currencies");
         }
 
+        [Parser(Opcode.SMSG_LOOT_ROLL)]
+        public static void HandleLootRollServer(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            packet.ReadPackedGuid128("Winner");
+            packet.ReadInt32("Roll");
+            packet.ReadByte("RollType");
+            packet.ReadInt32("DungeonEncounterID");
+            ReadLootItem(packet, "LootItem");
+            packet.ResetBitReader();
+            packet.ReadBit("Autopassed");
+            packet.ReadBit("OffSpec");
+        }
+
+        [Parser(Opcode.SMSG_LOOT_ROLLS_COMPLETE)]
+        public static void HandleLootRollsComplete(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            packet.ReadByte("LootListID");
+            packet.ReadInt32("DungeonEncounterID");
+        }
+
+        [Parser(Opcode.SMSG_LOOT_ROLL_WON)]
+        public static void HandleLootRollWon(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            packet.ReadPackedGuid128("Player");
+            packet.ReadInt32("Roll");
+            packet.ReadByte("RollType");
+            packet.ReadInt32("DungeonEncounterID");
+            ReadLootItem(packet, "LootItem");
+            packet.ReadBit("MainSpec");
+        }
+
+        [Parser(Opcode.SMSG_MASTER_LOOT_CANDIDATE_LIST)]
+        public static void HandleMasterLootCandidateList(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            var candidateCount = packet.ReadUInt32("CandidateCount");
+
+            for (var i = 0; i < candidateCount; ++i)
+                packet.ReadPackedGuid128("Player", i);
+        }
+
         [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
         [Parser(Opcode.SMSG_LOOT_RELEASE_ALL)]
         public static void HandleLootZero(Packet packet)

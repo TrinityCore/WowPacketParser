@@ -89,6 +89,27 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_MAIL_COMMAND_RESULT)]
+        public static void HandleMailCommandResult(Packet packet)
+        {
+            packet.ReadUInt64("MailID");
+            packet.ReadInt32E<MailActionType>("Command");
+            packet.ReadInt32E<MailErrorType>("ErrorCode");
+            packet.ReadInt32("BagResult");
+            packet.ReadUInt64("AttachID");
+            packet.ReadInt32("QtyInInventory");
+        }
+
+        [Parser(Opcode.SMSG_MAIL_LIST_RESULT)]
+        public static void HandleMailListResult(Packet packet)
+        {
+            var mailsCount = packet.ReadInt32("MailsCount");
+            packet.ReadInt32("TotalNumRecords");
+
+            for (var i = 0; i < mailsCount; ++i)
+                ReadMailListEntry(packet, i, "MailListEntry");
+        }
+
         [Parser(Opcode.CMSG_QUERY_NEXT_MAIL_TIME)]
         public static void HandleNullMail(Packet packet)
         {

@@ -1202,22 +1202,22 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_LOOT_ROLL, 0x2620 },
             { Opcode.SMSG_LOOT_ROLLS_COMPLETE, 0x2622 },
             { Opcode.SMSG_LOOT_ROLL_WON, 0x2624 },
-            { Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE, 0x2674 },
+            { Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE, 0x2674 }, // NYI
             { Opcode.SMSG_MAIL_COMMAND_RESULT, 0x263D },
             { Opcode.SMSG_MAIL_LIST_RESULT, 0x275A },
             { Opcode.SMSG_MAIL_QUERY_NEXT_TIME_RESULT, 0x275B },
-            { Opcode.SMSG_MAP_OBJECTIVES_INIT, 0x2950 },
-            { Opcode.SMSG_MAP_OBJ_EVENTS, 0x25C8 },
+            { Opcode.SMSG_MAP_OBJECTIVES_INIT, 0x2950 }, // NYI
+            { Opcode.SMSG_MAP_OBJ_EVENTS, 0x25C8 }, // NYI
             { Opcode.SMSG_MASTER_LOOT_CANDIDATE_LIST, 0x2621 },
-            { Opcode.SMSG_MESSAGE_BOX, 0x2576 },
+            { Opcode.SMSG_MESSAGE_BOX, 0x2576 }, // NYI
             { Opcode.SMSG_MINIMAP_PING, 0x26D2 },
             { Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA, 0x2C14 },
             { Opcode.SMSG_MIRROR_IMAGE_CREATURE_DATA, 0x2C13 },
             { Opcode.SMSG_MISSILE_CANCEL, 0x25C9 },
             { Opcode.SMSG_MODIFY_COOLDOWN, 0x276C },
             { Opcode.SMSG_MOUNT_RESULT, 0x257B },
-            { Opcode.SMSG_MOVEMENT_ENFORCEMENT_ALERT, 0x2849 },
-            { Opcode.SMSG_MOVE_APPLY_INERTIA, 0x2E2E },
+            { Opcode.SMSG_MOVEMENT_ENFORCEMENT_ALERT, 0x2849 }, // NYI
+            { Opcode.SMSG_MOVE_APPLY_INERTIA, 0x2E2E }, // NYI
             { Opcode.SMSG_MOVE_APPLY_MOVEMENT_FORCE, 0x2E15 },
             { Opcode.SMSG_MOVE_DISABLE_COLLISION, 0x2E11 },
             { Opcode.SMSG_MOVE_DISABLE_DOUBLE_JUMP, 0x2DFD },
