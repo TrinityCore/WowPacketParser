@@ -4,6 +4,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
@@ -40,8 +41,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
         public static void ReadInertiaData(Packet packet, params object[] idx)
         {
-            packet.ReadPackedGuid128("GUID", idx);
-            packet.ReadVector4("Force", idx);
+            packet.ReadUInt32("ID", idx);
+            packet.ReadVector3("Force", idx);
             packet.ReadUInt32("Lifetime", idx);
         }
 
@@ -308,6 +309,66 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ResetBitReader();
             packet.ReadBitsE<MovementForceType>("Type", 2, idx);
+        }
+
+        public static void ReadMoveStateChange(Packet packet, params object[] idx)
+        {
+            var opcode = packet.ReadInt16();
+            var opcodeName = Opcodes.GetOpcodeName(opcode, packet.Direction);
+            packet.AddValue("MessageID", $"{opcodeName} (0x{opcode.ToString("X4")})", idx);
+
+            packet.ReadInt32("SequenceIndex", idx);
+
+            packet.ResetBitReader();
+
+            var hasSpeed = packet.ReadBit("HasSpeed", idx);
+            var hasSpeedRange = packet.ReadBit("HasSpeedRange", idx);
+            var hasKnockBack = packet.ReadBit("HasKnockBack", idx);
+            var hasVehicle = packet.ReadBit("HasVehicle", idx);
+            var hasCollisionHeight = packet.ReadBit("HasCollisionHeight", idx);
+            var hasMovementForce = packet.ReadBit("HasMovementForce", idx);
+            var hasMovementForceGUID = packet.ReadBit("HasMovementForceGUID", idx);
+            var hasMovementInertiaGUID = packet.ReadBit("HasMovementInertiaGUID", idx);
+            var hasMovementInertiaLifetimeMs = packet.ReadBit("HasMovementInertiaLifetimeMs", idx);
+
+
+            if (hasMovementForce)
+                ReadMovementForce(packet, "MovementForce", idx);
+
+            if (hasSpeed)
+                packet.ReadSingle("Speed", idx);
+
+            if (hasSpeedRange)
+            {
+                packet.ReadSingle("SpeedRangeMin", idx);
+                packet.ReadSingle("SpeedRangeMax", idx);
+            }
+
+            if (hasKnockBack)
+            {
+                packet.ReadSingle("HorzSpeed", idx);
+                packet.ReadVector2("Direction", idx);
+                packet.ReadSingle("InitVertSpeed", idx);
+            }
+
+            if (hasVehicle)
+                packet.ReadInt32("VehicleRecID", idx);
+
+            if (hasCollisionHeight)
+            {
+                packet.ReadSingle("Height", idx);
+                packet.ReadSingle("Scale", idx);
+                packet.ReadByte("UpdateCollisionHeightReason", idx);
+            }
+
+            if (hasMovementForceGUID)
+                packet.ReadPackedGuid128("MovementForceGUID", idx);
+
+            if (hasMovementInertiaGUID)
+                packet.ReadPackedGuid128("MovementInertiaGUID", idx);
+
+            if (hasMovementInertiaLifetimeMs)
+                packet.ReadUInt32("MovementInertiaLifetimeMs", idx);
         }
 
         [Parser(Opcode.SMSG_ADJUST_SPLINE_DURATION)]
@@ -582,6 +643,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_MOD_MOVEMENT_FORCE_MAGNITUDE)]
+        [Parser(Opcode.SMSG_MOVE_SET_PITCH_RATE)]
+        [Parser(Opcode.SMSG_MOVE_SET_SWIM_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_TURN_RATE)]
         public static void HandleMovementIndexSpeed(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
@@ -612,6 +678,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_MOVE_ENABLE_COLLISION)]
         [Parser(Opcode.SMSG_MOVE_ENABLE_DOUBLE_JUMP)]
         [Parser(Opcode.SMSG_MOVE_ENABLE_INERTIA)]
+        [Parser(Opcode.SMSG_MOVE_SET_CAN_TURN_WHILE_FALLING)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_CAN_TURN_WHILE_FALLING)]
         public static void HandleMovementIndex(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
@@ -632,6 +700,151 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("SequenceIndex");
 
             ReadMovementForce(packet, "MovementForce");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_KNOCK_BACK)]
+        public static void HandleMoveKnockBack(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+            packet.ReadVector2("Direction");
+            packet.ReadSingle("HorzSpeed");
+            packet.ReadSingle("VertSpeed");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_REMOVE_MOVEMENT_FORCE)]
+        public static void HandleMoveRemoveMovementForce(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+            packet.ReadPackedGuid128("TriggerGUID");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_COMPOUND_STATE)]
+        public static void HandleMoveSetCompoundState(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+
+            var moveStateChangeCount = packet.ReadInt32("MoveStateChangeCount");
+            for (int i = 0; i < moveStateChangeCount; i++)
+                ReadMoveStateChange(packet, "MoveStateChange", i);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_VEHICLE_REC_ID)]
+        public static void HandleMoveSetVehicleRecID(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+
+            packet.ReadInt32("VehicleRecID");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SKIP_TIME)]
+        public static void HandleMoveSkipTime(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadUInt32("TimeSkipped");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_PITCH_RATE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_TURN_RATE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_SPEED)]
+        public static void HandleSplineSetSpeed(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadSingle("Speed");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UPDATE_APPLY_MOVEMENT_FORCE)]
+        public static void HandleMoveUpdateApplyMovementForce(Packet packet)
+        {
+            ReadMovementStats(packet);
+            ReadMovementForce(packet, "MovementForce");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UPDATE_COLLISION_HEIGHT)]
+        public static void HandleMoveUpdateCollisionHeight434(Packet packet)
+        {
+            ReadMovementStats(packet);
+            packet.ReadSingle("Height");
+            packet.ReadSingle("Scale");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UPDATE_REMOVE_MOVEMENT_FORCE)]
+        public static void HandleMoveUpdateRemoveMovementForce(Packet packet)
+        {
+            ReadMovementStats(packet);
+            packet.ReadPackedGuid128("TriggerGUID");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT)]
+        public static void HandleMoveUpdateTeleport(Packet packet)
+        {
+            ReadMovementStats(packet, "MovementStats");
+
+            var movementForcesCount = packet.ReadUInt32("MovementForcesCount");
+
+            packet.ResetBitReader();
+
+            var hasWalkSpeed = packet.ReadBit("HasWalkSpeed");
+            var hasRunSpeed = packet.ReadBit("HasRunSpeed");
+            var hasRunBackSpeed = packet.ReadBit("HasRunBackSpeed");
+            var hasSwimSpeed = packet.ReadBit("HasSwimSpeed");
+            var hasSwimBackSpeed = packet.ReadBit("HasSwimBackSpeed");
+            var hasFlightSpeed = packet.ReadBit("HasFlightSpeed");
+            var hasFlightBackSpeed = packet.ReadBit("HasFlightBackSpeed");
+            var hasTurnRate = packet.ReadBit("HasTurnRate");
+            var hasPitchRate = packet.ReadBit("HasPitchRate");
+
+            for (int i = 0; i < movementForcesCount; i++)
+                ReadMovementForce(packet, i, "MovementForce");
+
+            if (hasWalkSpeed)
+                packet.ReadSingle("WalkSpeed");
+
+            if (hasRunSpeed)
+                packet.ReadSingle("RunSpeed");
+
+            if (hasRunBackSpeed)
+                packet.ReadSingle("RunBackSpeed");
+
+            if (hasSwimSpeed)
+                packet.ReadSingle("SwimSpeed");
+
+            if (hasSwimBackSpeed)
+                packet.ReadSingle("SwimBackSpeed");
+
+            if (hasFlightSpeed)
+                packet.ReadSingle("FlightSpeed");
+
+            if (hasFlightBackSpeed)
+                packet.ReadSingle("FlightBackSpeed");
+
+            if (hasTurnRate)
+                packet.ReadSingle("TurnRate");
+
+            if (hasPitchRate)
+                packet.ReadSingle("PitchRate");
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NEW_WORLD)]
+        public static void HandleNewWorld(Packet packet)
+        {
+            WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
+            packet.ReadVector4("Position");
+            packet.ReadInt32("Unused901_1");
+            packet.ReadInt32("Unused901_2");
+            packet.ReadUInt32("Reason");
+            packet.ReadVector3("MovementOffset");
+
+            packet.AddSniffData(StoreNameType.Map, (int)WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]

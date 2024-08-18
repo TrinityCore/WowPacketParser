@@ -345,5 +345,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             if (bit76)
                 SpellHandler.ReadSpellCastLogData(packet);
         }
+
+        [Parser(Opcode.SMSG_PARTY_KILL_LOG)]
+        public static void HandlePartyKillLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadPackedGuid128("VictimGUID");
+        }
     }
 }

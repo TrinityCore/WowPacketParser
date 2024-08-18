@@ -882,5 +882,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadInt32E<MountResult>("Result");
         }
+
+        [Parser(Opcode.SMSG_NOTIFY_MISSILE_TRAJECTORY_COLLISION)]
+        public static void HandleNotifyMissileTrajectoryCollision(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadVector3("CollisionPos");
+        }
+
+        [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
+        public static void HandleSpellNull(Packet packet)
+        {
+        }
     }
 }

@@ -1230,7 +1230,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_MOVE_ENABLE_INERTIA, 0x2E10 },
             { Opcode.SMSG_MOVE_ENABLE_TRANSITION_BETWEEN_SWIM_AND_FLY, 0x2E0B },
             { Opcode.SMSG_MOVE_KNOCK_BACK, 0x2E03 },
-            { Opcode.SMSG_MOVE_REMOVE_INERTIA, 0x2E2F },
+            { Opcode.SMSG_MOVE_REMOVE_INERTIA, 0x2E2F }, // NYI
             { Opcode.SMSG_MOVE_REMOVE_MOVEMENT_FORCE, 0x2E16 },
             { Opcode.SMSG_MOVE_ROOT, 0x2DF9 },
             { Opcode.SMSG_MOVE_SET_ACTIVE_MOVER, 0x2DD5 },
@@ -1290,7 +1290,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_MOVE_UNSET_HOVERING, 0x2E02 },
             { Opcode.SMSG_MOVE_UNSET_IGNORE_MOVEMENT_FORCES, 0x2E0A },
             { Opcode.SMSG_MOVE_UPDATE, 0x2DE0 },
-            { Opcode.SMSG_MOVE_UPDATE_APPLY_INERTIA, 0x2E30 },
+            { Opcode.SMSG_MOVE_UPDATE_APPLY_INERTIA, 0x2E30 }, // NYI
             { Opcode.SMSG_MOVE_UPDATE_APPLY_MOVEMENT_FORCE, 0x2DE4 },
             { Opcode.SMSG_MOVE_UPDATE_COLLISION_HEIGHT, 0x2DDF },
             { Opcode.SMSG_MOVE_UPDATE_FLIGHT_BACK_SPEED, 0x2DDC },
@@ -1298,7 +1298,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_MOVE_UPDATE_KNOCK_BACK, 0x2DE2 },
             { Opcode.SMSG_MOVE_UPDATE_MOD_MOVEMENT_FORCE_MAGNITUDE, 0x2DE3 },
             { Opcode.SMSG_MOVE_UPDATE_PITCH_RATE, 0x2DDE },
-            { Opcode.SMSG_MOVE_UPDATE_REMOVE_INERTIA, 0x2E31 },
+            { Opcode.SMSG_MOVE_UPDATE_REMOVE_INERTIA, 0x2E31 }, // NYI
             { Opcode.SMSG_MOVE_UPDATE_REMOVE_MOVEMENT_FORCE, 0x2DE5 },
             { Opcode.SMSG_MOVE_UPDATE_RUN_BACK_SPEED, 0x2DD7 },
             { Opcode.SMSG_MOVE_UPDATE_RUN_SPEED, 0x2DD6 },
@@ -1307,28 +1307,28 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_MOVE_UPDATE_TELEPORT, 0x2DE1 },
             { Opcode.SMSG_MOVE_UPDATE_TURN_RATE, 0x2DDD },
             { Opcode.SMSG_MOVE_UPDATE_WALK_SPEED, 0x2DD8 },
-            { Opcode.SMSG_NEUTRAL_PLAYER_FACTION_SELECT_RESULT, 0x25DE },
-            { Opcode.SMSG_NEW_DATA_BUILD, 0x28AE },
+            { Opcode.SMSG_NEUTRAL_PLAYER_FACTION_SELECT_RESULT, 0x25DE }, // NYI
+            { Opcode.SMSG_NEW_DATA_BUILD, 0x28AE }, // NYI
             { Opcode.SMSG_NEW_TAXI_PATH, 0x2682 },
             { Opcode.SMSG_NEW_WORLD, 0x2596 },
-            { Opcode.SMSG_NOTIFY_DEST_LOC_SPELL_CAST, 0x2C42 },
+            { Opcode.SMSG_NOTIFY_DEST_LOC_SPELL_CAST, 0x2C42 }, // NYI
             { Opcode.SMSG_NOTIFY_MISSILE_TRAJECTORY_COLLISION, 0x26AE },
-            { Opcode.SMSG_NOTIFY_MONEY, 0x259B },
+            { Opcode.SMSG_NOTIFY_MONEY, 0x259B }, // NYI
             { Opcode.SMSG_NOTIFY_RECEIVED_MAIL, 0x263E },
             { Opcode.SMSG_NPC_INTERACTION_OPEN_RESULT, 0x288C },
             { Opcode.SMSG_OFFER_PETITION_ERROR, 0x26BA },
             { Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, 0x26EA },
             { Opcode.SMSG_ON_MONSTER_MOVE, 0x2DD4 },
-            { Opcode.SMSG_OPEN_CONTAINER, 0x2DA6 },
-            { Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x2A31 },
+            { Opcode.SMSG_OPEN_CONTAINER, 0x2DA6 }, // NYI
+            { Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x2A31 }, // NYI
             { Opcode.SMSG_OVERRIDE_LIGHT, 0x26BF },
             { Opcode.SMSG_PAGE_TEXT, 0x271D },
             { Opcode.SMSG_PARTY_COMMAND_RESULT, 0x2799 },
             { Opcode.SMSG_PARTY_INVITE, 0x25BF },
             { Opcode.SMSG_PARTY_KILL_LOG, 0x275E },
             { Opcode.SMSG_PARTY_MEMBER_FULL_STATE, 0x275D },
-            { Opcode.SMSG_PARTY_MEMBER_PARTIAL_STATE, 0x275C },
-            { Opcode.SMSG_PARTY_NOTIFY_LFG_LEADER_CHANGE, 0x2879 },
+            { Opcode.SMSG_PARTY_MEMBER_PARTIAL_STATE, 0x275C }, // NYI
+            { Opcode.SMSG_PARTY_NOTIFY_LFG_LEADER_CHANGE, 0x2879 }, // NYI
             { Opcode.SMSG_PARTY_UPDATE, 0x25F6 },
             { Opcode.SMSG_PAUSE_MIRROR_TIMER, 0x2714 },
             { Opcode.SMSG_PENDING_RAID_LOCK, 0x26FC },

@@ -576,6 +576,28 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("Promote");
         }
 
+        [Parser(Opcode.SMSG_OFFER_PETITION_ERROR)]
+        public static void HandlePetitionError(Packet packet)
+        {
+            packet.ReadGuid("PetitionGUID");
+        }
+
+        [Parser(Opcode.SMSG_PETITION_ALREADY_SIGNED)]
+        public static void HandlePetitionAlreadySigned(Packet packet)
+        {
+            packet.ReadPackedGuid128("SignerGUID");
+        }
+
+        [Parser(Opcode.SMSG_PETITION_RENAME_GUILD_RESPONSE)]
+        public static void HandlePetitionRenameGuildResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGuid");
+            packet.ResetBitReader();
+            var length = packet.ReadBits("NewGuildNameLength", 7);
+
+            packet.ReadWoWString("NewGuildName", length);
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]

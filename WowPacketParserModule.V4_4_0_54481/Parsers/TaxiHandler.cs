@@ -12,5 +12,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadBitsE<TaxiError>("Result", 4);
         }
+
+        [Parser(Opcode.SMSG_NEW_TAXI_PATH)]
+        public static void HandleTaxiNull(Packet packet)
+        {
+        }
     }
 }

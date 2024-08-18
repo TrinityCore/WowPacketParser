@@ -560,6 +560,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByte("CustomizationScope");
         }
 
+        [Parser(Opcode.SMSG_OVERRIDE_LIGHT)]
+        public static void HandleOverrideLight(Packet packet)
+        {
+            packet.ReadUInt32("AreaLightID");
+            packet.ReadUInt32("OverrideLightID");
+            packet.ReadUInt32("TransitionMilliseconds");
+        }
+
+        [Parser(Opcode.SMSG_PAUSE_MIRROR_TIMER)]
+        public static void HandlePauseMirrorTimer(Packet packet)
+        {
+            packet.ReadUInt32E<MirrorTimerType>("Timer Type");
+            packet.ReadBool("Paused");
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]

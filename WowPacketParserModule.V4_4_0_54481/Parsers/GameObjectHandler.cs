@@ -91,5 +91,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("GUID");
             packet.ReadByte("State");
         }
+
+        [Parser(Opcode.SMSG_PAGE_TEXT)]
+        public static void HandleGoPageText(Packet packet)
+        {
+            packet.ReadPackedGuid128("GameObjectGUID");
+        }
     }
 }

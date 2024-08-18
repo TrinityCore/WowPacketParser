@@ -155,6 +155,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("Gm");
         }
 
+        [Parser(Opcode.SMSG_PENDING_RAID_LOCK)]
+        public static void HandlePendingRaidLock(Packet packet)
+        {
+            packet.ReadInt32("TimeUntilLock");
+            packet.ReadUInt32("CompletedMask");
+            packet.ReadBit("Extending");
+            packet.ReadBit("WarningOnly");
+        }
+
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_END)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_IN_COMBAT_RESURRECTION)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_PHASE_SHIFT_CHANGED)]

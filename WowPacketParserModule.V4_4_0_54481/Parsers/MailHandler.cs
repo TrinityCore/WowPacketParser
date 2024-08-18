@@ -110,6 +110,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadMailListEntry(packet, i, "MailListEntry");
         }
 
+        [Parser(Opcode.SMSG_NOTIFY_RECEIVED_MAIL)]
+        public static void HandleNotifyReceivedMail(Packet packet)
+        {
+            packet.ReadSingle("Delay");
+        }
+
         [Parser(Opcode.CMSG_QUERY_NEXT_MAIL_TIME)]
         public static void HandleNullMail(Packet packet)
         {

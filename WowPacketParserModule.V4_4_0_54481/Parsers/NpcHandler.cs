@@ -380,5 +380,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             Storage.GossipPOIs.Add(gossipPOI, packet.TimeSpan);
             CoreParsers.NpcHandler.UpdateTempGossipOptionActionPOI(packet.TimeSpan, gossipPOI.ID);
         }
+
+        [Parser(Opcode.SMSG_NPC_INTERACTION_OPEN_RESULT)]
+        public static void HandleNpcInteractionOpenResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32("InteractionType");
+            packet.ReadBit("Success");
+        }
     }
 }
