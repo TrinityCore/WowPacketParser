@@ -575,6 +575,47 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBool("Paused");
         }
 
+        [Parser(Opcode.SMSG_PLAY_MUSIC)]
+        public static void HandlePlayMusic(Packet packet)
+        {
+            PacketPlayMusic packetMusic = packet.Holder.PlayMusic = new PacketPlayMusic();
+            uint sound = packetMusic.Music = packet.ReadUInt32<SoundId>("SoundKitID");
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT)]
+        public static void HandlePlayOneShotAnimKit(Packet packet)
+        {
+            var animKit = packet.Holder.OneShotAnimKit = new();
+            animKit.Unit = packet.ReadPackedGuid128("Unit");
+            animKit.AnimKit = packet.ReadUInt16("AnimKitID");
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SOUND)]
+        public static void HandlePlaySound(Packet packet)
+        {
+            PacketPlaySound packetPlaySound = packet.Holder.PlaySound = new PacketPlaySound();
+            var sound = packetPlaySound.Sound = (uint)packet.ReadInt32<SoundId>("SoundKitID");
+            packetPlaySound.Source = packet.ReadPackedGuid128("SourceObjectGUID").ToUniversalGuid();
+            packetPlaySound.BroadcastTextId = (uint)packet.ReadInt32("BroadcastTextID");
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SPEAKERBOT_SOUND)]
+        public static void HandlePlaySpeakerbotSound(Packet packet)
+        {
+            packet.ReadPackedGuid128("SourceObjectGUID");
+            packet.ReadUInt32("SoundId");
+        }
+
+        [Parser(Opcode.SMSG_PRE_RESSURECT)]
+        public static void HandlePreRessurect(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]

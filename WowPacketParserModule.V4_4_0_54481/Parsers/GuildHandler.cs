@@ -49,6 +49,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadWoWString("OfficerNote", officersNoteLen, idx);
         }
 
+        public static void ReadPetitionSignature(Packet packet, params object[] indexes)
+        {
+            packet.ReadPackedGuid128("Signer", indexes);
+            packet.ReadInt32("Choice", indexes);
+        }
+
         [Parser(Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS)]
         public static void HandleGuildAchievementData(Packet packet)
         {
@@ -593,9 +599,51 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("PetitionGuid");
             packet.ResetBitReader();
-            var length = packet.ReadBits("NewGuildNameLength", 7);
+            var length = packet.ReadBits(7);
 
             packet.ReadWoWString("NewGuildName", length);
+        }
+
+        [Parser(Opcode.SMSG_PETITION_SHOW_LIST)]
+        public static void HandlePetitionShowList(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            var counter = packet.ReadUInt32("Counter");
+            for (var i = 0; i < counter; i++)
+            {
+                packet.ReadUInt32("Index");
+                packet.ReadUInt32("CharterCost");
+                packet.ReadUInt32("CharterEntry");
+                packet.ReadUInt32("Unk440");
+                packet.ReadUInt32("RequiredSigns");
+            }
+        }
+
+        [Parser(Opcode.SMSG_PETITION_SHOW_SIGNATURES)]
+        public static void HandlePetitionShowSignatures(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+            packet.ReadPackedGuid128("Owner");
+            packet.ReadPackedGuid128("OwnerWoWAccount");
+            packet.ReadInt32("PetitionID");
+
+            var signaturesCount = packet.ReadInt32("SignaturesCount");
+            for (int i = 0; i < signaturesCount; i++)
+                ReadPetitionSignature(packet, i, "PetitionSignature");
+        }
+
+        [Parser(Opcode.SMSG_PETITION_SIGN_RESULTS)]
+        public static void HandlePetitionSignResults(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+            packet.ReadPackedGuid128("Player");
+            packet.ReadBits("Error", 4);
+        }
+
+        [Parser(Opcode.SMSG_PLAYER_SAVE_GUILD_EMBLEM)]
+        public static void HandlePlayerSaveGuildEmblem(Packet packet)
+        {
+            packet.ReadInt32E<GuildEmblemError>("Error");
         }
 
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]

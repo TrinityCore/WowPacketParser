@@ -149,5 +149,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var len = packet.ReadBits(12);
             packet.ReadWoWString("MessageText", len);
         }
+
+        [Parser(Opcode.SMSG_PRINT_NOTIFICATION)]
+        public static void HandlePrintNotification(Packet packet)
+        {
+            var notifyTextLen = packet.ReadBits(12);
+
+            packet.ReadWoWString("NotifyText", notifyTextLen);
+        }
     }
 }

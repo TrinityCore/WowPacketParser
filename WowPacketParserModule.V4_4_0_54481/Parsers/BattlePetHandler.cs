@@ -45,6 +45,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadClientBattlePetOwnerInfo(packet, "OwnerInfo", idx);
         }
 
+        public static void ReadClientPetBattleSlot(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID", idx);
+
+            packet.ReadInt32("CollarID", idx);
+            packet.ReadByte("SlotIndex", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Locked", idx);
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_ERROR)]
         public static void HandleBattlePetError(Packet packet)
         {
@@ -86,6 +98,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         public static void HandleBattlePetDeletePet(Packet packet)
         {
             packet.ReadPackedGuid128("BattlePetGUID");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_SLOT_UPDATES)]
+        public static void HandlePetBattleSlotUpdates(Packet packet)
+        {
+            var petBattleSlotCount = packet.ReadInt32("PetBattleSlotCount");
+
+            packet.ReadBit("NewSlotUnlocked");
+            packet.ReadBit("AutoSlotted");
+
+            for (int i = 0; i < petBattleSlotCount; i++)
+                ReadClientPetBattleSlot(packet, i, "PetBattleSlot");
         }
 
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]

@@ -1341,34 +1341,34 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_PET_ACTION_SOUND, 0x26A4 },
             { Opcode.SMSG_PET_BATTLE_SLOT_UPDATES, 0x25EE },
             { Opcode.SMSG_PET_CAST_FAILED, 0x2C57 },
-            { Opcode.SMSG_PET_CLEAR_SPELLS, 0x2C23 },
-            { Opcode.SMSG_PET_DISMISS_SOUND, 0x26A5 },
-            { Opcode.SMSG_PET_GOD_MODE, 0x267F },
-            { Opcode.SMSG_PET_GUIDS, 0x2708 },
+            { Opcode.SMSG_PET_CLEAR_SPELLS, 0x2C23 }, // NYI
+            { Opcode.SMSG_PET_DISMISS_SOUND, 0x26A5 }, // NYI
+            { Opcode.SMSG_PET_GOD_MODE, 0x267F }, // NYI
+            { Opcode.SMSG_PET_GUIDS, 0x2708 }, // NYI
             { Opcode.SMSG_PET_LEARNED_SPELLS, 0x2C4E },
             { Opcode.SMSG_PET_MODE, 0x2589 },
             { Opcode.SMSG_PET_NAME_INVALID, 0x26C8 },
-            { Opcode.SMSG_PET_NEWLY_TAMED, 0x2588 },
+            { Opcode.SMSG_PET_NEWLY_TAMED, 0x2588 }, // NYI
             { Opcode.SMSG_PET_SPELLS_MESSAGE, 0x2C24 },
             { Opcode.SMSG_PET_STABLE_RESULT, 0x2595 },
             { Opcode.SMSG_PET_TAME_FAILURE, 0x26B7 },
             { Opcode.SMSG_PET_UNLEARNED_SPELLS, 0x2C4F },
             { Opcode.SMSG_PHASE_SHIFT_CHANGE, 0x2578 },
             { Opcode.SMSG_PLAYED_TIME, 0x26D9 },
-            { Opcode.SMSG_PLAYER_ACKNOWLEDGE_ARROW_CALLOUT, 0x3022 },
-            { Opcode.SMSG_PLAYER_BATTLEFIELD_AUTO_QUEUE, 0x301C },
-            { Opcode.SMSG_PLAYER_BONUS_ROLL_FAILED, 0x3016 },
+            { Opcode.SMSG_PLAYER_ACKNOWLEDGE_ARROW_CALLOUT, 0x3022 }, // NYI
+            { Opcode.SMSG_PLAYER_BATTLEFIELD_AUTO_QUEUE, 0x301C }, // NYI
+            { Opcode.SMSG_PLAYER_BONUS_ROLL_FAILED, 0x3016 }, // NYI
             { Opcode.SMSG_PLAYER_BOUND, 0x2FF8 },
-            { Opcode.SMSG_PLAYER_CONDITION_RESULT, 0x300A },
-            { Opcode.SMSG_PLAYER_HIDE_ARROW_CALLOUT, 0x3021 },
+            { Opcode.SMSG_PLAYER_CONDITION_RESULT, 0x300A }, // NYI
+            { Opcode.SMSG_PLAYER_HIDE_ARROW_CALLOUT, 0x3021 }, // NYI
             { Opcode.SMSG_PLAYER_IS_ADVENTURE_MAP_POI_VALID, 0x3009 },
             { Opcode.SMSG_PLAYER_SAVE_GUILD_EMBLEM, 0x29FA },
-            { Opcode.SMSG_PLAYER_SHOW_ARROW_CALLOUT, 0x3020 },
-            { Opcode.SMSG_PLAYER_SHOW_GENERIC_WIDGET_DISPLAY, 0x301E },
-            { Opcode.SMSG_PLAYER_SKINNED, 0x3006 },
-            { Opcode.SMSG_PLAYER_TUTORIAL_HIGHLIGHT_SPELL, 0x300D },
-            { Opcode.SMSG_PLAYER_TUTORIAL_UNHIGHLIGHT_SPELL, 0x300C },
-            { Opcode.SMSG_PLAYER_WORLD_PVP_QUEUE, 0x301D },
+            { Opcode.SMSG_PLAYER_SHOW_ARROW_CALLOUT, 0x3020 }, // NYI
+            { Opcode.SMSG_PLAYER_SHOW_GENERIC_WIDGET_DISPLAY, 0x301E }, // NYI
+            { Opcode.SMSG_PLAYER_SKINNED, 0x3006 }, // NYI
+            { Opcode.SMSG_PLAYER_TUTORIAL_HIGHLIGHT_SPELL, 0x300D }, // NYI
+            { Opcode.SMSG_PLAYER_TUTORIAL_UNHIGHLIGHT_SPELL, 0x300C }, // NYI
+            { Opcode.SMSG_PLAYER_WORLD_PVP_QUEUE, 0x301D }, // NYI
             { Opcode.SMSG_PLAY_MUSIC, 0x2771 },
             { Opcode.SMSG_PLAY_OBJECT_SOUND, 0x2772 },
             { Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT, 0x2735 },
@@ -1380,14 +1380,14 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x2C48 },
             { Opcode.SMSG_PONG, 0x304E },
             { Opcode.SMSG_POWER_UPDATE, 0x26D6 },
-            { Opcode.SMSG_PRELOAD_CHILD_MAP, 0x2579 },
-            { Opcode.SMSG_PRELOAD_WORLD, 0x2597 },
-            { Opcode.SMSG_PREPOPULATE_NAME_CACHE, 0x284C },
+            { Opcode.SMSG_PRELOAD_CHILD_MAP, 0x2579 }, // NYI
+            { Opcode.SMSG_PRELOAD_WORLD, 0x2597 }, // NYI
+            { Opcode.SMSG_PREPOPULATE_NAME_CACHE, 0x284C }, // NYI
             { Opcode.SMSG_PRE_RESSURECT, 0x276F },
             { Opcode.SMSG_PRINT_NOTIFICATION, 0x25CC },
             { Opcode.SMSG_PROC_RESIST, 0x275F },
-            { Opcode.SMSG_PROPOSE_LEVEL_GRANT, 0x26E1 },
-            { Opcode.SMSG_PUSH_SPELL_TO_ACTION_BAR, 0x2C50 },
+            { Opcode.SMSG_PROPOSE_LEVEL_GRANT, 0x26E1 }, // NYI
+            { Opcode.SMSG_PUSH_SPELL_TO_ACTION_BAR, 0x2C50 }, // NYI
             { Opcode.SMSG_PVP_CREDIT, 0x294A },
             { Opcode.SMSG_PVP_LOG_DATA, 0x2934 },
             { Opcode.SMSG_PVP_MATCH_INITIALIZE, 0x2956 },

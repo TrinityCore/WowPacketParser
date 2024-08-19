@@ -891,6 +891,59 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadVector3("CollisionPos");
         }
 
+        [Parser(Opcode.SMSG_PET_CAST_FAILED)]
+        public static void HandlePetCastFailed(Packet packet)
+        {
+            var spellFail = packet.Holder.SpellCastFailed = new();
+            spellFail.CastGuid = packet.ReadPackedGuid128("CastID");
+            spellFail.Spell = (uint)packet.ReadInt32<SpellId>("SpellID");
+            spellFail.Success = packet.ReadInt32("Reason") == 0;
+            packet.ReadInt32("FailedArg1");
+            packet.ReadInt32("FailedArg2");
+        }
+
+        [Parser(Opcode.SMSG_PLAYER_BOUND)]
+        public static void HandlePlayerBound(Packet packet)
+        {
+            packet.ReadPackedGuid128("BinderID");
+            packet.ReadUInt32<AreaId>("AreaID");
+        }
+
+        [Parser(Opcode.SMSG_PLAY_ORPHAN_SPELL_VISUAL)]
+        public static void HandlePlayOrphanSpellVisual(Packet packet)
+        {
+            packet.ReadVector3("SourceLocation");
+            packet.ReadVector3("SourceOrientation");
+            packet.ReadVector3("TargetLocation");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadInt32("SpellVisualID");
+            packet.ReadSingle("TravelSpeed");
+            packet.ReadSingle("LaunchDelay");
+            packet.ReadSingle("MinDuration");
+            packet.ReadBit("SpeedAsTime");
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL)]
+        public static void HandleCastVisual(Packet packet)
+        {
+            packet.ReadPackedGuid128("Source");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("Transport");
+
+            packet.ReadVector3("TargetPosition");
+
+            packet.ReadInt32("SpellVisualID");
+            packet.ReadSingle("TravelSpeed");
+            packet.ReadUInt16("HitReason");
+            packet.ReadUInt16("MissReason");
+            packet.ReadUInt16("ReflectStatus");
+
+            packet.ReadSingle("LaunchDelay");
+            packet.ReadSingle("MinDuration");
+
+            packet.ReadBit("SpeedAsTime");
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         public static void HandleSpellNull(Packet packet)
         {

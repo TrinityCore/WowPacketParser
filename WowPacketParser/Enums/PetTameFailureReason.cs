@@ -15,6 +15,7 @@ namespace WowPacketParser.Enums
         Dead                 = 10,
         NotDead              = 11,
         CannotControlExotic  = 12,
-        InvalidSlot          = 13
+        InvalidSlot          = 13,
+        EliteTooHighLevel    = 14
     }
 }
