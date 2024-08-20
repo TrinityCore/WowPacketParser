@@ -1405,7 +1405,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_QUERY_PETITION_RESPONSE, 0x291B },
             { Opcode.SMSG_QUERY_PET_NAME_RESPONSE, 0x2919 },
             { Opcode.SMSG_QUERY_PLAYER_NAMES_RESPONSE, 0x301B },
-            { Opcode.SMSG_QUERY_PLAYER_NAME_BY_COMMUNITY_ID_RESPONSE, 0x3002 },
+            { Opcode.SMSG_QUERY_PLAYER_NAME_BY_COMMUNITY_ID_RESPONSE, 0x3002 }, // NYI
             { Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, 0x2A96 },
             { Opcode.SMSG_QUERY_TIME_RESPONSE, 0x26E8 },
             { Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x2A81 },

@@ -123,6 +123,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadWoWString("WinnerName", winnerNameLength);
         }
 
+        [Parser(Opcode.SMSG_PVP_CREDIT)]
+        public static void HandlePvPCredit(Packet packet)
+        {
+            packet.ReadInt32("OriginalHonor");
+            packet.ReadInt32("Honor");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadInt32("Rank");
+
+            packet.ResetBitReader();
+            packet.ReadBit("ForceHonorable");
+        }
+
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
         [Parser(Opcode.SMSG_DUEL_IN_BOUNDS)]
         [Parser(Opcode.SMSG_DUEL_OUT_OF_BOUNDS)]

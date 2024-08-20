@@ -85,6 +85,29 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             return gossipMessageOption;
         }
 
+        public static GossipQuestOption ReadGossipQuestTextData(Packet packet, params object[] idx)
+        {
+            var gossipQuest = new GossipQuestOption();
+            gossipQuest.QuestId = (uint)packet.ReadInt32("QuestID", idx);
+            packet.ReadInt32("ContentTuningID", idx);
+            packet.ReadInt32("QuestType", idx);
+            packet.ReadInt32("QuestLevel", idx);
+            packet.ReadInt32("QuestMaxScalingLevel", idx);
+
+            for (int j = 0; j < 2; ++j)
+                packet.ReadInt32("QuestFlags", idx, j);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Repeatable", idx);
+            packet.ReadBit("Important", idx);
+
+            uint questTitleLen = packet.ReadBits(9);
+            gossipQuest.Title = packet.ReadWoWString("QuestTitle", questTitleLen, idx);
+
+            return gossipQuest;
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
@@ -387,6 +410,45 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt32("InteractionType");
             packet.ReadBit("Success");
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_QUERY_NPC_TEXT_RESPONSE)]
+        public static void HandleNpcTextUpdate(Packet packet)
+        {
+            var entry = packet.ReadEntry("Entry");
+            if (entry.Value) // Can be masked
+                return;
+
+            Bit hasData = packet.ReadBit("Has Data");
+            int size = packet.ReadInt32("Size");
+
+            if (!hasData || size == 0)
+                return; // nothing to do
+
+            NpcTextMop npcText = new NpcTextMop
+            {
+                ID = (uint)entry.Key
+            };
+
+            var data = packet.ReadBytes(size);
+
+            Packet pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            npcText.Probabilities = new float[8];
+            npcText.BroadcastTextId = new uint[8];
+            for (int i = 0; i < 8; ++i)
+                npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
+            for (int i = 0; i < 8; ++i)
+                npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
+
+            pkt.ClosePacket(false);
+
+            packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
+
+            Storage.NpcTextsMop.Add(npcText, packet.TimeSpan);
+            var proto = packet.Holder.NpcText = new() { Entry = npcText.ID.Value };
+            for (int i = 0; i < 8; ++i)
+                proto.Texts.Add(new PacketNpcTextEntry() { Probability = npcText.Probabilities[i], BroadcastTextId = npcText.BroadcastTextId[i] });
         }
     }
 }

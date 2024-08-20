@@ -32,6 +32,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadItemPurchaseRefundCurrency(packet, indexes, i, "ItemPurchaseRefundCurrency");
         }
 
+        public static void ReadCliItemTextCache(Packet packet, params object[] idx)
+        {
+            var length = packet.ReadBits("TextLength", 13, idx);
+            packet.ReadWoWString("Text", length, idx);
+        }
+
         [Parser(Opcode.SMSG_BUY_FAILED)]
         public static void HandleBuyFailed(Packet packet)
         {
@@ -205,6 +211,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("GUID");
             packet.ReadUInt32("DurationLeft");
+        }
+
+        [Parser(Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE)]
+        public static void HandleQueryItemTextResponse(Packet packet)
+        {
+            packet.ReadBit("Valid");
+            packet.ResetBitReader();
+
+            ReadCliItemTextCache(packet, "Item");
+            packet.ReadPackedGuid128("Id");
         }
 
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]

@@ -112,6 +112,32 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadClientPetBattleSlot(packet, i, "PetBattleSlot");
         }
 
+        [Parser(Opcode.SMSG_QUERY_BATTLE_PET_NAME_RESPONSE)]
+        public static void HandleBattlePetQueryResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetID");
+
+            packet.ReadInt32("CreatureID");
+            packet.ReadTime64("Timestamp");
+
+            packet.ResetBitReader();
+            var nonEmpty = packet.ReadBit("Allow");
+            if (!nonEmpty)
+                return;
+
+            var nameLength = packet.ReadBits(8);
+
+            packet.ReadBit("HasDeclined");
+            var declinedNameLengths = new uint[5];
+            for (int i = 0; i < 5; i++)
+                declinedNameLengths[i] = packet.ReadBits(7);
+
+            for (int i = 0; i < 5; i++)
+                packet.ReadWoWString("DeclinedNames", declinedNameLengths[i]);
+
+            packet.ReadWoWString("Name", nameLength);
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED)]
         [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL)]

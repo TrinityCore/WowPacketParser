@@ -36,6 +36,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("TournamentRules", indexes);
         }
 
+        public static void ReadRatedMatchDeserterPenalty(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("PersonalRatingChange");
+            packet.ReadInt32<SpellId>("QueuePenaltySpellID");
+            packet.ReadInt32("QueuePenaltyDuration");
+        }
+
         [Parser(Opcode.SMSG_AREA_SPIRIT_HEALER_TIME)]
         public static void HandleAreaSpiritHealerTime(Packet packet)
         {
@@ -159,6 +166,40 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             LfgHandler.ReadLfgPlayerQuestReward(packet, "Arena2v2Rewards");
             LfgHandler.ReadLfgPlayerQuestReward(packet, "Arena3v3Rewards");
             LfgHandler.ReadLfgPlayerQuestReward(packet, "Arena5v5Rewards");
+        }
+
+        [Parser(Opcode.SMSG_PVP_MATCH_INITIALIZE)]
+        public static void HandlePvpMatchInitialize(Packet packet)
+        {
+            packet.ReadUInt32<MapId>("MapID");
+            packet.ReadByteE<MatchState>("State");
+            packet.ReadInt64("StartTime");
+            packet.ReadInt64("Duration");
+            packet.ReadByte("ArenaFaction");
+            packet.ReadUInt32("BattlemasterListID");
+
+            packet.ResetBitReader();
+            packet.ReadBit("Registered");
+            packet.ReadBit("AffectsRating");
+
+            var hasDeserterPenalty = packet.ReadBit("HasRatedMatchDeserterPenalty");
+            if (hasDeserterPenalty)
+                ReadRatedMatchDeserterPenalty(packet, "RatedMatchDeserterPenalty");
+        }
+
+        [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]
+        public static void HandlePVPOptionsEnabled(Packet packet)
+        {
+            packet.ReadBit("RatedBattlegrounds");
+            packet.ReadBit("PugBattlegrounds");
+            packet.ReadBit("WargameBattlegrounds");
+            packet.ReadBit("WargameArenas");
+            packet.ReadBit("RatedArenas");
+            packet.ReadBit("ArenaSkirmish");
+            packet.ReadBit("SoloShuffle");
+            packet.ReadBit("RatedSoloShuffle");
+            packet.ReadBit("BattlegroundBlitz");
+            packet.ReadBit("RatedBattlegroundBlitz");
         }
     }
 }
