@@ -71,14 +71,27 @@ namespace WowPacketParser.SQL
         /// <returns></returns>
         public static void ReplaceLastCommaWithSemicolon(this StringBuilder str)
         {
+            bool isComment = false;
+            int lastCommaPos = -1;
             for (var i = str.Length - 1; i > 0; i--)
             {
-                if (i - 3 >= 0 && str[i - 3] == ',' && str[i - 2] == ' ' && str[i - 1] == '-' && str[i] == '-')
+                if (i >= 3 && str[i - 3] == ',' && str[i - 2] == ' ' && str[i - 1] == '-' && str[i] == '-')
                 {
                     str[i - 3] = ';';
+                    isComment = true;
                     break;
                 }
+
+                if (lastCommaPos == -1 && str[i] == ',')
+                    lastCommaPos = i;
+
+                // only interact with last line, skip trailing newline
+                if ((str[i] == '\n' || str[i] == '\r') && i < str.Length - 3)
+                    break;
             }
+
+            if (!isComment && lastCommaPos != -1)
+                str[lastCommaPos] = ';';
         }
 
         /// <summary>

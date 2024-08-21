@@ -61,6 +61,16 @@ namespace WowPacketParser.Tests.SQL
                 new TestDataOnePK {ID = 6, TestInt1 = 7, noQuotes = "@CGUID+1"}
             };
 
+            _valuesOnePkLastLineComment = new RowList<TestDataOnePK>
+            {
+                new TestDataOnePK {ID = 4, TestInt1 = 5, TestString1 = "string2", noQuotes="@CGUID"},
+                new Row<TestDataOnePK>()
+                {
+                    Comment = "test, comment",
+                    Data = new TestDataOnePK {ID = 6, TestInt1 = 7, noQuotes = "@CGUID+1"}
+                }
+            };
+
             _conditionsTwoPk = new RowList<TestDataTwoPK>
             {
                 new TestDataTwoPK {ID = 10, TestInt1 = 20, TestString1 = "string10"},
@@ -91,6 +101,7 @@ namespace WowPacketParser.Tests.SQL
 
         private RowList<TestDataOnePK> _conditionsOnePk;
         private RowList<TestDataOnePK> _valuesOnePk;
+        private RowList<TestDataOnePK> _valuesOnePkLastLineComment;
 
         private RowList<TestDataTwoPK> _conditionsTwoPk;
         private RowList<TestDataTwoPK> _valuesTwoPk;
@@ -166,6 +177,15 @@ namespace WowPacketParser.Tests.SQL
                             "(4, 5, UNKNOWN, 'string2', @CGUID)," + Environment.NewLine +
                             "(6, 7, UNKNOWN, UNKNOWN, @CGUID+1);" + Environment.NewLine,
                             Is.EqualTo(new SQLInsert<TestDataOnePK>(_valuesOnePk, false).Build()));
+        }
+
+        [Test]
+        public void TestSQLInsertCommentWithComma()
+        {
+            Assert.That("INSERT INTO `test_data_one_p_k` (`ID`, `TestInt1`, `TestInt2`, `TestString1`, `NoQuotes`) VALUES" + Environment.NewLine +
+                            "(4, 5, UNKNOWN, 'string2', @CGUID)," + Environment.NewLine +
+                            "(6, 7, UNKNOWN, UNKNOWN, @CGUID+1); -- test, comment" + Environment.NewLine,
+                            Is.EqualTo(new SQLInsert<TestDataOnePK>(_valuesOnePkLastLineComment, false).Build()));
         }
     }
 }
