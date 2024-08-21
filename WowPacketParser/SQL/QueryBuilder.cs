@@ -425,7 +425,7 @@ namespace WowPacketParser.SQL
             {
                 if (count >= MaxRowsPerInsert)
                 {
-                    query.ReplaceLast(',', ';');
+                    query.ReplaceLastCommaWithSemicolon();
                     query.Append(Environment.NewLine);
                     query.Append(_insertHeader);
                     count = 0;
@@ -434,7 +434,7 @@ namespace WowPacketParser.SQL
                 query.Append(Environment.NewLine);
                 count++;
             }
-            query.ReplaceLast(',', ';');
+            query.ReplaceLastCommaWithSemicolon();
 
             return query.ToString();
         }

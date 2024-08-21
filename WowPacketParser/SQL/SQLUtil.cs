@@ -65,21 +65,20 @@ namespace WowPacketParser.SQL
         }
 
         /// <summary>
-        /// Replaces the last entry of a given character by some other char
-        /// Useful when replacing comma by semicolon
+        /// Replaces the last comma with semicolon in StringBuilder
         /// </summary>
         /// <param name="str"></param>
-        /// <param name="oldChar"></param>
-        /// <param name="newChar"></param>
         /// <returns></returns>
-        public static void ReplaceLast(this StringBuilder str, char oldChar, char newChar)
+        public static void ReplaceLastCommaWithSemicolon(this StringBuilder str)
         {
             for (var i = str.Length - 1; i > 0; i--)
-                if (str[i] == oldChar)
+            {
+                if (i - 3 >= 0 && str[i - 3] == ',' && str[i - 2] == ' ' && str[i - 1] == '-' && str[i] == '-')
                 {
-                    str[i] = newChar;
+                    str[i - 3] = ';';
                     break;
                 }
+            }
         }
 
         /// <summary>
