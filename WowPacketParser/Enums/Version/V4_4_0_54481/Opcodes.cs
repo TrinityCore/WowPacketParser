@@ -1420,11 +1420,11 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, 0x2A93 },
             { Opcode.SMSG_QUEST_GIVER_STATUS, 0x2A9B },
             { Opcode.SMSG_QUEST_GIVER_STATUS_MULTIPLE, 0x2A91 },
-            { Opcode.SMSG_QUEST_ITEM_USABILITY_RESPONSE, 0x2A82 },
+            { Opcode.SMSG_QUEST_ITEM_USABILITY_RESPONSE, 0x2A82 }, // NYI
             { Opcode.SMSG_QUEST_LOG_FULL, 0x2A87 },
             { Opcode.SMSG_QUEST_NON_LOG_UPDATE_COMPLETE, 0x2A88 },
             { Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x2A9D },
-            { Opcode.SMSG_QUEST_POI_UPDATE_RESPONSE, 0x2A9F },
+            { Opcode.SMSG_QUEST_POI_UPDATE_RESPONSE, 0x2A9F }, // NYI
             { Opcode.SMSG_QUEST_PUSH_RESULT, 0x2A90 },
             { Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT, 0x2A8C },
             { Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT_SIMPLE, 0x2A8D },

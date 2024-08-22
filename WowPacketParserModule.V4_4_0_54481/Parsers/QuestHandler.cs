@@ -946,8 +946,42 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_QUEST_PUSH_RESULT)]
+        public static void HandleQuestPushResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("SenderGUID");
+            packet.ReadByteE<QuestPushReason915>("Result");
+
+            var questTitleLength = packet.ReadBits(9);
+            packet.ReadWoWString("QuestTitle", questTitleLength);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT)]
+        public static void HandleQuestUpdateAddCredit(Packet packet)
+        {
+            var addCredit = packet.Holder.QuestAddKillCredit = new();
+            addCredit.Victim = packet.ReadPackedGuid128("VictimGUID");
+
+            addCredit.QuestId = (uint)packet.ReadInt32("QuestID");
+            addCredit.KillCredit = (uint)packet.ReadInt32("ObjectID");
+
+            addCredit.Count = packet.ReadUInt16("Count");
+            addCredit.RequiredCount = packet.ReadUInt16("Required");
+
+            packet.ReadByte("ObjectiveType");
+        }
+
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT_SIMPLE)]
+        public static void HandleQuestUpdateAddCreditSimple(Packet packet)
+        {
+            packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadInt32("ObjectID");
+            packet.ReadByte("ObjectiveType");
+        }
+
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
         [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_MULTIPLE_QUERY)]
+        [Parser(Opcode.SMSG_QUEST_LOG_FULL)]
         public static void HandleQuestZeroLengthPackets(Packet packet)
         {
         }
