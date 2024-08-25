@@ -1430,9 +1430,9 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT_SIMPLE, 0x2A8D },
             { Opcode.SMSG_QUEST_UPDATE_ADD_PVP_CREDIT, 0x2A8E },
             { Opcode.SMSG_QUEST_UPDATE_COMPLETE, 0x2A89 },
-            { Opcode.SMSG_QUEST_UPDATE_FAILED, 0x2A8A },
+            { Opcode.SMSG_QUEST_UPDATE_FAILED, 0x2A8A }, // NYI
             { Opcode.SMSG_QUEST_UPDATE_FAILED_TIMER, 0x2A8B },
-            { Opcode.SMSG_QUEUE_SUMMARY_UPDATE, 0x2816 },
+            { Opcode.SMSG_QUEUE_SUMMARY_UPDATE, 0x2816 }, // NYI
             { Opcode.SMSG_RAID_DIFFICULTY_SET, 0x27B0 },
             { Opcode.SMSG_RAID_GROUP_ONLY, 0x27B2 },
             { Opcode.SMSG_RAID_INSTANCE_MESSAGE, 0x2BB4 },

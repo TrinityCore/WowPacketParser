@@ -979,6 +979,28 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByte("ObjectiveType");
         }
 
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_PVP_CREDIT)]
+        public static void HandleQuestUpdateAddPvPCredit(Packet packet)
+        {
+            packet.ReadInt32<QuestId>("Quest ID");
+            packet.ReadUInt16("Count");
+        }
+
+        [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE)]
+        public static void HandleQuestUpdateComplete(Packet packet)
+        {
+            var questComplete = packet.Holder.QuestComplete = new();
+            questComplete.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
+        }
+
+        [Parser(Opcode.SMSG_QUEST_UPDATE_FAILED_TIMER)]
+        public static void HandleQuestUpdateFailedTimer(Packet packet)
+        {
+            var questFailed = packet.Holder.QuestFailed = new();
+            questFailed.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
+            questFailed.TimerFail = true;
+        }
+
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
         [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_MULTIPLE_QUERY)]
         [Parser(Opcode.SMSG_QUEST_LOG_FULL)]

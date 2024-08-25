@@ -164,6 +164,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("WarningOnly");
         }
 
+        [Parser(Opcode.SMSG_RAID_DIFFICULTY_SET)]
+        public static void HandleSetRaidDifficulty(Packet packet)
+        {
+            packet.ReadInt32<DifficultyId>("DifficultyID");
+            packet.ReadByte("Legacy");
+        }
+
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_END)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_IN_COMBAT_RESURRECTION)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_PHASE_SHIFT_CHANGED)]

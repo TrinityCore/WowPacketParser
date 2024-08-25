@@ -236,6 +236,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_RAID_GROUP_ONLY)]
+        public static void HandleRaidGroupOnly(Packet packet)
+        {
+            packet.ReadInt32("Delay");
+            packet.ReadUInt32("Reason");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
         [Parser(Opcode.SMSG_GROUP_UNINVITE)]
