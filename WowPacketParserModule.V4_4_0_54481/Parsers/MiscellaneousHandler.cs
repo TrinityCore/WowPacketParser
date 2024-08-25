@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
@@ -31,6 +32,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ResetBitReader();
             var textLen = packet.ReadBits(7);
             packet.ReadWoWString("Text", textLen);
+        }
+
+        public static void ReadUIEventToast(Packet packet, params object[] args)
+        {
+            packet.ReadInt32("UiEventToastID", args);
+            packet.ReadInt32("Asset", args);
         }
 
         [Parser(Opcode.SMSG_ALLIED_RACE_DETAILS)]
@@ -614,6 +621,137 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         public static void HandlePreRessurect(Packet packet)
         {
             packet.ReadPackedGuid128("PlayerGUID");
+        }
+
+        [Parser(Opcode.SMSG_RANDOM_ROLL)]
+        public static void HandleRandomRollResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("Roller");
+            packet.ReadPackedGuid128("RollerWowAccount");
+            packet.ReadInt32("Min");
+            packet.ReadInt32("Max");
+            packet.ReadInt32("Result");
+        }
+
+        [Parser(Opcode.SMSG_RECRUIT_A_FRIEND_FAILURE)]
+        public static void HandleRaFFailure(Packet packet)
+        {
+            packet.ReadInt32("Reason");
+            packet.ResetBitReader();
+            var len = packet.ReadBits(6);
+            packet.ReadWoWString("Str", len);
+        }
+
+        [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
+        public static void SetAIAnimKitId(Packet packet)
+        {
+            var animKit = packet.Holder.SetAnimKit = new();
+            var guid = packet.ReadPackedGuid128("Unit");
+            var animKitID = packet.ReadUInt16("AnimKitID");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                if (Storage.Objects.ContainsKey(guid))
+                {
+                    var timeSpan = Storage.Objects[guid].Item2 - packet.TimeSpan;
+                    if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
+                        ((Unit)Storage.Objects[guid].Item1).AIAnimKit = animKitID;
+                }
+
+            animKit.Unit = guid;
+            animKit.AnimKit = animKitID;
+        }
+
+        [Parser(Opcode.SMSG_SET_ANIM_TIER)]
+        public static void HandleSetAnimTier(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadBits("Tier", 3);
+        }
+
+        [Parser(Opcode.SMSG_SET_CURRENCY)]
+        public static void HandleSetCurrency(Packet packet)
+        {
+            packet.ReadInt32("Type");
+            packet.ReadInt32("Quantity");
+            packet.ReadUInt32("Flags");
+            uint toastCount = packet.ReadUInt32("UiEventToastCount");
+            for (var i = 0; i < toastCount; i++)
+                ReadUIEventToast(packet, "UiEventToast", i);
+
+            var hasWeeklyQuantity = packet.ReadBit("HasWeeklyQuantity");
+            var hasTrackedQuantity = packet.ReadBit("HasTrackedQuantity");
+            var hasMaxQuantity = packet.ReadBit("HasMaxQuantity");
+            var hasTotalEarned = packet.ReadBit("HasTotalEarned");
+            packet.ReadBit("SuppressChatLog");
+            var hasQuantityChange = packet.ReadBit("HasQuantityChange");
+            var hasQuantityGainSource = packet.ReadBit("HasQuantityGainSource");
+            var hasQuantityLostSource = packet.ReadBit("HasQuantityLostSource");
+            var hasFirstCraftOperationID = packet.ReadBit("HasFirstCraftOperationID");
+            var hasHasNextRechargeTime = packet.ReadBit("HasNextRechargeTime");
+            var hasRechargeCycleStartTime = packet.ReadBit("HasRechargeCycleStartTime");
+            var hasOverflownCurrencyID = packet.ReadBit("HasOverflownCurrencyID");
+
+            if (hasWeeklyQuantity)
+                packet.ReadInt32("WeeklyQuantity");
+
+            if (hasTrackedQuantity)
+                packet.ReadInt32("TrackedQuantity");
+
+            if (hasMaxQuantity)
+                packet.ReadInt32("MaxQuantity");
+
+            if (hasTotalEarned)
+                packet.ReadInt32("TotalEarned");
+
+            if (hasQuantityChange)
+                packet.ReadInt32("QuantityChange");
+
+            if (hasQuantityGainSource)
+                packet.ReadInt32("QuantityGainSource");
+
+            if (hasQuantityLostSource)
+                packet.ReadInt32("QuantityLostSource");
+
+            if (hasFirstCraftOperationID)
+                packet.ReadUInt32("FirstCraftOperationID");
+
+            if (hasHasNextRechargeTime)
+                packet.ReadTime64("NextRechargeTime");
+
+            if (hasRechargeCycleStartTime)
+                packet.ReadTime64("RechargeCycleStartTime");
+
+            if (hasOverflownCurrencyID)
+                packet.ReadUInt32("OverflownCurrencyID");
+        }
+
+        [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
+        public static void SetMeleeAnimKitId(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("Unit");
+            var animKitID = packet.ReadUInt16("AnimKitID");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                if (Storage.Objects.ContainsKey(guid))
+                {
+                    var timeSpan = Storage.Objects[guid].Item2 - packet.TimeSpan;
+                    if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
+                        ((Unit)Storage.Objects[guid].Item1).MeleeAnimKit = animKitID;
+                }
+        }
+
+        [Parser(Opcode.SMSG_SET_MOVEMENT_ANIM_KIT)]
+        public static void HandleSetMovementAnimKit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadUInt16("AnimKitID");
+        }
+
+        [Parser(Opcode.SMSG_SET_PLAY_HOVER_ANIM)]
+        public static void HandlePlayHoverAnim(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadBit("PlayHoverAnim");
         }
 
         [Parser(Opcode.SMSG_RESUME_COMMS)]

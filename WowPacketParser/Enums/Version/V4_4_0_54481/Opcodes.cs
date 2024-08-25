@@ -1445,25 +1445,25 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_READ_ITEM_RESULT_FAILED, 0x27AC },
             { Opcode.SMSG_READ_ITEM_RESULT_OK, 0x27A4 },
             { Opcode.SMSG_REALM_QUERY_RESPONSE, 0x2913 },
-            { Opcode.SMSG_REATTACH_RESURRECT, 0x274F },
+            { Opcode.SMSG_REATTACH_RESURRECT, 0x274F }, // NYI
             { Opcode.SMSG_RECRUIT_A_FRIEND_FAILURE, 0x26C5 },
-            { Opcode.SMSG_REFER_A_FRIEND_EXPIRED, 0x2727 },
-            { Opcode.SMSG_REFRESH_COMPONENT, 0x2653 },
+            { Opcode.SMSG_REFER_A_FRIEND_EXPIRED, 0x2727 }, // NYI
+            { Opcode.SMSG_REFRESH_COMPONENT, 0x2653 }, // NYI
             { Opcode.SMSG_REFRESH_SPELL_HISTORY, 0x2C2B },
             { Opcode.SMSG_REMOVE_ITEM_PASSIVE, 0x25AD },
             { Opcode.SMSG_REPORT_PVP_PLAYER_AFK_RESULT, 0x3001 },
             { Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x2590 },
             { Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, 0x2939 },
-            { Opcode.SMSG_REQUEST_SCHEDULED_PVP_INFO_RESPONSE, 0x293A },
-            { Opcode.SMSG_RESET_COMPRESSION_CONTEXT, 0x304F },
+            { Opcode.SMSG_REQUEST_SCHEDULED_PVP_INFO_RESPONSE, 0x293A }, // NYI
+            { Opcode.SMSG_RESET_COMPRESSION_CONTEXT, 0x304F }, // NYI
             { Opcode.SMSG_RESET_FAILED_NOTIFY, 0x26BB },
-            { Opcode.SMSG_RESET_QUEST_POI, 0x2AA0 },
-            { Opcode.SMSG_RESET_RANGED_COMBAT_TIMER, 0x2949 },
+            { Opcode.SMSG_RESET_QUEST_POI, 0x2AA0 }, // NYI
+            { Opcode.SMSG_RESET_RANGED_COMBAT_TIMER, 0x2949 }, // NYI
             { Opcode.SMSG_RESET_WEEKLY_CURRENCY, 0x2575 },
             { Opcode.SMSG_RESPEC_WIPE_CONFIRM, 0x2614 },
             { Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x2572 },
-            { Opcode.SMSG_RESUME_CAST, 0x2C3A },
-            { Opcode.SMSG_RESUME_CAST_BAR, 0x2C3D },
+            { Opcode.SMSG_RESUME_CAST, 0x2C3A }, // NYI
+            { Opcode.SMSG_RESUME_CAST_BAR, 0x2C3D }, // NYI
             { Opcode.SMSG_RESUME_COMMS, 0x304B },
             { Opcode.SMSG_RESUME_TOKEN, 0x25AB },
             { Opcode.SMSG_RESURRECT_REQUEST, 0x257E },
@@ -1471,22 +1471,22 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_ROLE_CHANGED_INFORM, 0x258B },
             { Opcode.SMSG_ROLE_CHOSEN, 0x2A39 },
             { Opcode.SMSG_ROLE_POLL_INFORM, 0x258C },
-            { Opcode.SMSG_RUNE_REGEN_DEBUG, 0x25B8 },
+            { Opcode.SMSG_RUNE_REGEN_DEBUG, 0x25B8 }, // NYI
             { Opcode.SMSG_SCENARIO_COMPLETED, 0x27F0 },
             { Opcode.SMSG_SCENARIO_POIS, 0x2635 },
             { Opcode.SMSG_SCENARIO_PROGRESS_UPDATE, 0x262E },
-            { Opcode.SMSG_SCENARIO_SHOW_CRITERIA, 0x2806 },
+            { Opcode.SMSG_SCENARIO_SHOW_CRITERIA, 0x2806 }, // NYI
             { Opcode.SMSG_SCENARIO_STATE, 0x262D },
-            { Opcode.SMSG_SCENARIO_UI_UPDATE, 0x2805 },
+            { Opcode.SMSG_SCENARIO_UI_UPDATE, 0x2805 }, // NYI
             { Opcode.SMSG_SCENARIO_VACATE, 0x27AD },
-            { Opcode.SMSG_SCENE_OBJECT_EVENT, 0x25E4 },
-            { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FINAL_ROUND, 0x25E9 },
-            { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FINISHED, 0x25EA },
-            { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FIRST_ROUND, 0x25E6 },
-            { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_INITIAL_UPDATE, 0x25E5 },
-            { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_REPLACEMENTS_MADE, 0x25E8 },
-            { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_ROUND_RESULT, 0x25E7 },
-            { Opcode.SMSG_SCRIPT_CAST, 0x2C55 },
+            { Opcode.SMSG_SCENE_OBJECT_EVENT, 0x25E4 }, // NYI
+            { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FINAL_ROUND, 0x25E9 }, // NYI
+            { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FINISHED, 0x25EA }, // NYI
+            { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FIRST_ROUND, 0x25E6 }, // NYI
+            { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_INITIAL_UPDATE, 0x25E5 }, // NYI
+            { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_REPLACEMENTS_MADE, 0x25E8 }, // NYI
+            { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_ROUND_RESULT, 0x25E7 }, // NYI
+            { Opcode.SMSG_SCRIPT_CAST, 0x2C55 }, // NYI
             { Opcode.SMSG_SELL_RESPONSE, 0x26C9 },
             { Opcode.SMSG_SEND_ITEM_PASSIVES, 0x25AE },
             { Opcode.SMSG_SEND_KNOWN_SPELLS, 0x2C29 },
@@ -1495,25 +1495,25 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_SEND_SPELL_CHARGES, 0x2C2C },
             { Opcode.SMSG_SEND_SPELL_HISTORY, 0x2C2A },
             { Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x2C2D },
-            { Opcode.SMSG_SERVER_FIRST_ACHIEVEMENTS, 0x2650 },
-            { Opcode.SMSG_SERVER_TIME, 0x2686 },
+            { Opcode.SMSG_SERVER_FIRST_ACHIEVEMENTS, 0x2650 }, // NYI
+            { Opcode.SMSG_SERVER_TIME, 0x2686 }, // NYI
             { Opcode.SMSG_SERVER_TIME_OFFSET, 0x2718 },
             { Opcode.SMSG_SETUP_CURRENCY, 0x2573 },
             { Opcode.SMSG_SET_AI_ANIM_KIT, 0x2734 },
             { Opcode.SMSG_SET_ANIM_TIER, 0x2738 },
-            { Opcode.SMSG_SET_CHR_UPGRADE_TIER, 0x25E1 },
+            { Opcode.SMSG_SET_CHR_UPGRADE_TIER, 0x25E1 }, // NYI
             { Opcode.SMSG_SET_CURRENCY, 0x2574 },
-            { Opcode.SMSG_SET_DF_FAST_LAUNCH_RESULT, 0x2A2E },
+            { Opcode.SMSG_SET_DF_FAST_LAUNCH_RESULT, 0x2A2E }, // NYI
             { Opcode.SMSG_SET_DUNGEON_DIFFICULTY, 0x26A8 },
-            { Opcode.SMSG_SET_FACTION_AT_WAR, 0x2704 },
+            { Opcode.SMSG_SET_FACTION_AT_WAR, 0x2704 }, // NYI
             { Opcode.SMSG_SET_FACTION_NOT_VISIBLE, 0x272F },
             { Opcode.SMSG_SET_FACTION_STANDING, 0x2730 },
             { Opcode.SMSG_SET_FACTION_VISIBLE, 0x272E },
             { Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x2C35 },
             { Opcode.SMSG_SET_FORCED_REACTIONS, 0x2721 },
             { Opcode.SMSG_SET_ITEM_PURCHASE_DATA, 0x259D },
-            { Opcode.SMSG_SET_LOOT_METHOD_FAILED, 0x27D4 },
-            { Opcode.SMSG_SET_MAX_WEEKLY_QUANTITY, 0x25A0 },
+            { Opcode.SMSG_SET_LOOT_METHOD_FAILED, 0x27D4 }, // NYI
+            { Opcode.SMSG_SET_MAX_WEEKLY_QUANTITY, 0x25A0 }, // NYI
             { Opcode.SMSG_SET_MELEE_ANIM_KIT, 0x2737 },
             { Opcode.SMSG_SET_MOVEMENT_ANIM_KIT, 0x2736 },
             { Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x2C36 },

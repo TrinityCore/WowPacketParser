@@ -506,5 +506,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadByteE<PowerType>("PowerType", i);
             }
         }
+
+        [Parser(Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT)]
+        public static void HandleSetPlayerDeclinedNamesResult(Packet packet)
+        {
+            packet.ReadInt32("ResultCode");
+            packet.ReadPackedGuid128("Player");
+        }
     }
 }

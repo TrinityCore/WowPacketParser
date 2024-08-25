@@ -944,6 +944,60 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("SpeedAsTime");
         }
 
+        [Parser(Opcode.SMSG_RESPEC_WIPE_CONFIRM)]
+        public static void HandleRespecWipeConfirm(Packet packet)
+        {
+            packet.ReadSByte("RespecType");
+            packet.ReadUInt32("Cost");
+            packet.ReadPackedGuid128("RespecMaster");
+        }
+
+        [Parser(Opcode.SMSG_RESURRECT_REQUEST)]
+        public static void HandleResurrectRequest(Packet packet)
+        {
+            packet.ReadPackedGuid128("ResurrectOffererGUID");
+
+            packet.ReadUInt32("ResurrectOffererVirtualRealmAddress");
+            packet.ReadUInt32("PetNumber");
+            packet.ReadInt32<SpellId>("SpellID");
+
+            var len = packet.ReadBits(11);
+
+            packet.ReadBit("UseTimer");
+            packet.ReadBit("Sickness");
+
+            packet.ReadWoWString("Name", len);
+        }
+
+        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER)]
+        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER)]
+        public static void HandleSetSpellModifierFlat(Packet packet)
+        {
+            var modCount = packet.ReadUInt32("SpellModifierCount");
+
+            for (var j = 0; j < modCount; ++j)
+            {
+                packet.ReadByteE<SpellModOp>("SpellMod", j);
+
+                var modTypeCount = packet.ReadUInt32("SpellModifierDataCount", j);
+                for (var i = 0; i < modTypeCount; ++i)
+                {
+                    packet.ReadSingle("ModifierValue", j, i);
+                    packet.ReadByte("ClassIndex", j, i);
+                }
+            }
+        }
+
+        [Parser(Opcode.SMSG_SET_SPELL_CHARGES)]
+        public static void HandleSetSpellCharges(Packet packet)
+        {
+            packet.ReadInt32("Category");
+            packet.ReadInt32("RecoveryTime");
+            packet.ReadByte("ConsumedCharges");
+            packet.ReadSingle("ChargeModRate");
+            packet.ReadBit("IsPet");
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         public static void HandleSpellNull(Packet packet)
         {

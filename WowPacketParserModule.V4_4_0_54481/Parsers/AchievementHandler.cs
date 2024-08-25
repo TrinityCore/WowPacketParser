@@ -124,5 +124,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadInt32("CriteriaID");
         }
+
+        [Parser(Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS)]
+        public static void HandleRespondInspectAchievements(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+            ReadAllAchievements(packet, "Data");
+        }
     }
 }

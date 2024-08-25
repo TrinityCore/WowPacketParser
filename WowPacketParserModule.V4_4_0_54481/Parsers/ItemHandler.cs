@@ -223,6 +223,58 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Id");
         }
 
+        [Parser(Opcode.SMSG_READ_ITEM_RESULT_FAILED)]
+        public static void HandleReadItemResultFailed(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+            packet.ReadUInt32("Delay");
+            packet.ReadBits("Subcode", 2);
+        }
+
+        [Parser(Opcode.SMSG_READ_ITEM_RESULT_OK)]
+        public static void HandleReadItemResultOk(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+        }
+
+        [Parser(Opcode.SMSG_REMOVE_ITEM_PASSIVE)]
+        public static void HandleRemoveItemPassive(Packet packet)
+        {
+            packet.ReadUInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.SMSG_SELL_RESPONSE)]
+        public static void HandleSellResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            var itemGuidCount = packet.ReadUInt32("ItemGuidCount");
+
+            packet.ReadInt32E<SellResult>("Reason");
+
+            for (var i = 0; i < itemGuidCount; ++i)
+                packet.ReadPackedGuid128("ItemGuid", i);
+        }
+
+        [Parser(Opcode.SMSG_SEND_ITEM_PASSIVES)]
+        public static void HandleSendItemPassives(Packet packet)
+        {
+            var spellCount = packet.ReadUInt32("SpellCount");
+
+            for (var i = 0; i < spellCount; ++i)
+                packet.ReadInt32("SpellID", i);
+        }
+
+        [Parser(Opcode.SMSG_SET_ITEM_PURCHASE_DATA)]
+        public static void HandleSetItemPurchaseData(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+
+            ReadItemPurchaseContents(packet, "ItemPurchaseContents");
+
+            packet.ReadInt32("Flags");
+            packet.ReadInt32("PurchaseTime");
+        }
+
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW)]
         public static void HandleItemZero(Packet packet)

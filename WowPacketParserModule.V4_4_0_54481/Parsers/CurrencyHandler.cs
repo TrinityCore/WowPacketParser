@@ -51,5 +51,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     packet.ReadTime64("RechargeCyclicStartTime", i);
             }
         }
+
+        [Parser(Opcode.SMSG_RESET_WEEKLY_CURRENCY)]
+        public static void HandleCurrencyZero(Packet packet)
+        {
+        }
     }
 }

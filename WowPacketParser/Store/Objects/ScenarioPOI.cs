@@ -38,6 +38,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("PlayerConditionID")]
         public int? PlayerConditionID;
 
+        [DBFieldName("NavigationPlayerConditionID")]
+        public int? NavigationPlayerConditionID;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }

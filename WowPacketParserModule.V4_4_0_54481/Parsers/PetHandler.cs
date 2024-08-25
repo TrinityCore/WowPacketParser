@@ -99,5 +99,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadByteE<PetTameFailureReason>("Reason");
         }
+
+        [Parser(Opcode.SMSG_SET_PET_SPECIALIZATION)]
+        public static void HandleSetPetSpecialization(Packet packet)
+        {
+            packet.ReadUInt16("SpecID");
+        }
     }
 }

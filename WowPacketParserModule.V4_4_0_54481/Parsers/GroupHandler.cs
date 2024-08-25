@@ -243,6 +243,83 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("Reason");
         }
 
+        [Parser(Opcode.SMSG_RAID_MARKERS_CHANGED)]
+        public static void HandleRaidMarkersChanged(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadInt32("ActiveMarkers");
+
+            var count = packet.ReadBits(4);
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadPackedGuid128("TransportGUID");
+                packet.ReadInt32("MapID");
+                packet.ReadVector3("Position");
+            }
+        }
+
+        [Parser(Opcode.SMSG_READY_CHECK_COMPLETED)]
+        public static void HandleReadyCheckCompleted(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("PartyGUID");
+        }
+
+        [Parser(Opcode.SMSG_READY_CHECK_RESPONSE)]
+        public static void HandleReadyCheckResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("PartyGUID");
+            packet.ReadPackedGuid128("Player");
+            packet.ReadBit("IsReady");
+        }
+
+        [Parser(Opcode.SMSG_READY_CHECK_STARTED)]
+        public static void HandleReadyCheckStarted(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("PartyGUID");
+            packet.ReadPackedGuid128("InitiatorGUID");
+            packet.ReadInt64("Duration");
+        }
+
+        [Parser(Opcode.SMSG_ROLE_CHANGED_INFORM)]
+        public static void HandleRoleChangedInform(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("From");
+            packet.ReadPackedGuid128("ChangedUnit");
+            packet.ReadInt32E<LfgRoleFlag>("OldRole");
+            packet.ReadInt32E<LfgRoleFlag>("NewRole");
+        }
+
+        [Parser(Opcode.SMSG_ROLE_POLL_INFORM)]
+        public static void HandleRolePollInform(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("From");
+        }
+
+        [Parser(Opcode.SMSG_SEND_RAID_TARGET_UPDATE_ALL)]
+        public static void HandleSendRaidTargetUpdateAll(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            var raidTargetSymbolCount = packet.ReadInt32("RaidTargetSymbolCount");
+            for (int i = 0; i < raidTargetSymbolCount; i++)
+            {
+                packet.ReadPackedGuid128("Target", i);
+                packet.ReadByte("Symbol", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_SEND_RAID_TARGET_UPDATE_SINGLE)]
+        public static void HandleSendRaidTargetUpdateSingle(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadByte("Symbol");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("ChangedBy");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
         [Parser(Opcode.SMSG_GROUP_UNINVITE)]

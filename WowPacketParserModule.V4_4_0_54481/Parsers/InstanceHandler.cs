@@ -171,9 +171,29 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByte("Legacy");
         }
 
+        [Parser(Opcode.SMSG_RAID_INSTANCE_MESSAGE)]
+        public static void HandleRaidInstanceMessage(Packet packet)
+        {
+            packet.ReadByte("Type");
+
+            packet.ReadUInt32<MapId>("MapID");
+            packet.ReadUInt32("DifficultyID");
+
+            packet.ResetBitReader();
+            packet.ReadBit("Locked");
+            packet.ReadBit("Extended");
+        }
+
+        [Parser(Opcode.SMSG_SET_DUNGEON_DIFFICULTY)]
+        public static void HandleSetDungeonDifficulty(Packet packet)
+        {
+            packet.ReadInt32<DifficultyId>("DifficultyID");
+        }
+
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_END)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_IN_COMBAT_RESURRECTION)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_PHASE_SHIFT_CHANGED)]
+        [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
         public static void HandleInstanceZero(Packet packet)
         {
         }

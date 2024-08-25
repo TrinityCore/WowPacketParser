@@ -353,6 +353,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("Unused");
         }
 
+        [Parser(Opcode.SMSG_ROLE_CHOSEN)]
+        public static void HandleRoleChosen(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+            packet.ReadByteE<LfgRoleFlag>("RoleMask");
+            packet.ReadBit("Accepted");
+        }
+
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS)]
         [Parser(Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST)]
         [Parser(Opcode.CMSG_DF_GET_JOIN_STATUS)]

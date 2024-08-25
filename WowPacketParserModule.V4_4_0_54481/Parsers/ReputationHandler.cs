@@ -40,6 +40,33 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_SET_FACTION_VISIBLE)]
+        [Parser(Opcode.SMSG_SET_FACTION_NOT_VISIBLE)]
+        public static void HandleSetFactionMisc(Packet packet)
+        {
+            packet.ReadUInt32("FactionIndex");
+        }
+
+        public static void ReadFactionStandingData(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("Index", indexes);
+            packet.ReadInt32("Standing", indexes);
+            packet.ReadInt32("FactionID", indexes);
+        }
+
+        [Parser(Opcode.SMSG_SET_FACTION_STANDING)]
+        public static void HandleSetFactionStanding(Packet packet)
+        {
+            packet.ReadSingle("BonusFromAchievementSystem");
+
+            var count = packet.ReadInt32();
+            for (int i = 0; i < count; i++)
+                ReadFactionStandingData(packet, i);
+
+            packet.ResetBitReader();
+            packet.ReadBit("ShowVisual");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_FORCED_REACTIONS)]
         public static void HandleReputationZero(Packet packet)
         {

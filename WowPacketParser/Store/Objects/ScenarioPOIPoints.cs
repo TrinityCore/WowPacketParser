@@ -21,6 +21,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Y")]
         public int? Y;
 
+        [DBFieldName("Z")]
+        public int? Z;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
