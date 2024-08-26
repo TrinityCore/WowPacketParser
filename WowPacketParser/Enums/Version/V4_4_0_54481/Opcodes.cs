@@ -1524,18 +1524,18 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_SET_SPELL_CHARGES, 0x2C28 },
             { Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x267B },
             { Opcode.SMSG_SET_VEHICLE_REC_ID, 0x26FB },
-            { Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI, 0x25DD },
-            { Opcode.SMSG_SHOW_QUEST_COMPLETION_TEXT, 0x2A95 },
+            { Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI, 0x25DD }, // NYI
+            { Opcode.SMSG_SHOW_QUEST_COMPLETION_TEXT, 0x2A95 }, // NYI
             { Opcode.SMSG_SHOW_TAXI_NODES, 0x26D1 },
-            { Opcode.SMSG_SHOW_TRADE_SKILL_RESPONSE, 0x2778 },
+            { Opcode.SMSG_SHOW_TRADE_SKILL_RESPONSE, 0x2778 }, // NYI
             { Opcode.SMSG_SOCIAL_CONTRACT_REQUEST_RESPONSE, 0x2895 },
-            { Opcode.SMSG_SOCKET_GEMS_FAILURE, 0x272C },
+            { Opcode.SMSG_SOCKET_GEMS_FAILURE, 0x272C }, // NYI
             { Opcode.SMSG_SOCKET_GEMS_SUCCESS, 0x272B },
-            { Opcode.SMSG_SOR_START_EXPERIENCE_INCOMPLETE, 0x25DF },
+            { Opcode.SMSG_SOR_START_EXPERIENCE_INCOMPLETE, 0x25DF }, // NYI
             { Opcode.SMSG_SPECIAL_MOUNT_ANIM, 0x26A3 },
-            { Opcode.SMSG_SPEC_INVOLUNTARILY_CHANGED, 0x271C },
+            { Opcode.SMSG_SPEC_INVOLUNTARILY_CHANGED, 0x271C }, // NYI
             { Opcode.SMSG_SPELL_ABSORB_LOG, 0x2C1C },
-            { Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x2C16 },
+            { Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x2C16 }, // NYI
             { Opcode.SMSG_SPELL_CHANNEL_START, 0x2C33 },
             { Opcode.SMSG_SPELL_CHANNEL_UPDATE, 0x2C34 },
             { Opcode.SMSG_SPELL_COOLDOWN, 0x2C15 },
@@ -1546,7 +1546,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_SPELL_EXECUTE_LOG, 0x2C3F },
             { Opcode.SMSG_SPELL_FAILED_OTHER, 0x2C54 },
             { Opcode.SMSG_SPELL_FAILURE, 0x2C52 },
-            { Opcode.SMSG_SPELL_FAILURE_MESSAGE, 0x2C59 },
+            { Opcode.SMSG_SPELL_FAILURE_MESSAGE, 0x2C59 }, // NYI
             { Opcode.SMSG_SPELL_GO, 0x2C38 },
             { Opcode.SMSG_SPELL_HEAL_ABSORB_LOG, 0x2C1B },
             { Opcode.SMSG_SPELL_HEAL_LOG, 0x2C1A },

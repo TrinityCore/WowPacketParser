@@ -998,6 +998,22 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("IsPet");
         }
 
+        [Parser(Opcode.SMSG_SPELL_COOLDOWN)]
+        public static void HandleSpellCooldown(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("Caster");
+            packet.ReadByte("Flags");
+
+            var count = packet.ReadInt32("SpellCooldownsCount");
+            for (int i = 0; i < count; i++)
+            {
+                var spellId = packet.ReadInt32("SrecID", i);
+                var time = packet.ReadInt32("ForcedCooldown", i);
+                packet.ReadSingle("ModRate", i);
+                WowPacketParser.Parsing.Parsers.SpellHandler.FillSpellListCooldown((uint)spellId, time, guid.GetEntry());
+            }
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         public static void HandleSpellNull(Packet packet)
         {

@@ -275,6 +275,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("PurchaseTime");
         }
 
+        [Parser(Opcode.SMSG_SOCKET_GEMS_SUCCESS)]
+        public static void HandleSocketGemsSuccess(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+        }
+
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW)]
         public static void HandleItemZero(Packet packet)

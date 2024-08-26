@@ -754,6 +754,24 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("PlayHoverAnim");
         }
 
+        [Parser(Opcode.SMSG_SET_VEHICLE_REC_ID)]
+        public static void HandleSetVehicleRecID(Packet packet)
+        {
+            packet.ReadPackedGuid128("VehicleGUID");
+            packet.ReadInt32("VehicleRecID");
+        }
+
+        [Parser(Opcode.SMSG_SPECIAL_MOUNT_ANIM)]
+        public static void HandleSpecialMountAnim(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            var spellVisualKitIdCount = packet.ReadUInt32("SpellVisualKitIdCount");
+            packet.ReadInt32("SequenceVariation");
+
+            for (var i = 0; i < spellVisualKitIdCount; i++)
+                packet.ReadUInt32("SpellVisualKitID", i);
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
