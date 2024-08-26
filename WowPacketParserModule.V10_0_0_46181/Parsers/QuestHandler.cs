@@ -248,16 +248,10 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         public static QuestOfferReward ReadQuestGiverOfferRewardData(Packet packet, params object[] indexes)
         {
             var emotesCount = 0u;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_2_55959))
-            {
-                V9_0_1_36216.Parsers.QuestHandler.ReadQuestRewards(packet, "QuestRewards");
-                emotesCount = packet.ReadUInt32("EmotesCount");
-            }
+            var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID", indexes);
 
-            var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID");
-
-            packet.ReadInt32("QuestGiverCreatureID");
-            int id = packet.ReadInt32("QuestID");
+            packet.ReadInt32("QuestGiverCreatureID", indexes);
+            int id = packet.ReadInt32("QuestID", indexes);
 
             QuestOfferReward questOfferReward = new QuestOfferReward
             {
@@ -267,29 +261,26 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             CoreParsers.QuestHandler.AddQuestEnder(questgiverGUID, (uint)id);
 
             for (int i = 0; i < 3; i++)
-                packet.ReadInt32("QuestFlags", i);
+                packet.ReadInt32("QuestFlags", indexes, i);
 
-            packet.ReadInt32("SuggestedPartyMembers");
-
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_0_2_55959))
-                emotesCount = packet.ReadUInt32("EmotesCount");
+            packet.ReadInt32("SuggestedPartyMembers", indexes);
+            emotesCount = packet.ReadUInt32("EmotesCount", indexes);
 
             // QuestDescEmote
             questOfferReward.Emote = new int?[] { 0, 0, 0, 0 };
             questOfferReward.EmoteDelay = new uint?[] { 0, 0, 0, 0 };
             for (var i = 0; i < emotesCount; i++)
             {
-                questOfferReward.Emote[i] = packet.ReadInt32("Type");
-                questOfferReward.EmoteDelay[i] = packet.ReadUInt32("Delay");
+                questOfferReward.Emote[i] = packet.ReadInt32("Type", indexes);
+                questOfferReward.EmoteDelay[i] = packet.ReadUInt32("Delay", indexes);
             }
 
             packet.ResetBitReader();
 
-            packet.ReadBit("AutoLaunched");
-            packet.ReadBit("Unused");
+            packet.ReadBit("AutoLaunched", indexes);
+            packet.ReadBit("Unused", indexes);
 
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_0_2_55959))
-                V9_0_1_36216.Parsers.QuestHandler.ReadQuestRewards(packet, "QuestRewards");
+            V9_0_1_36216.Parsers.QuestHandler.ReadQuestRewards(packet, "QuestRewards", indexes);
 
             return questOfferReward;
         }
