@@ -466,5 +466,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE)]
+        public static void HandleSpellOrDamageImmune(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadPackedGuid128("VictimGUID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+
+            packet.ReadBit("IsPeriodic");
+        }
     }
 }

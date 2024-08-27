@@ -1014,6 +1014,53 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_SPELL_VISUAL_LOAD_SCREEN)]
+        public static void HandleSpellVisualLoadScreen(Packet packet)
+        {
+            packet.ReadInt32("SpellVisualKitID");
+            packet.ReadInt32("Delay");
+        }
+
+        [Parser(Opcode.SMSG_SUPERCEDED_SPELLS)]
+        public static void HandleSupercededSpells(Packet packet)
+        {
+            var spellCount = packet.ReadUInt32();
+
+            for (var i = 0; i < spellCount; ++i)
+                ReadLearnedSpellInfo(packet, "ClientLearnedSpellData", i);
+        }
+
+        [Parser(Opcode.SMSG_TOTEM_CREATED)]
+        public static void HandleTotemCreated(Packet packet)
+        {
+            packet.ReadByte("Slot");
+            packet.ReadPackedGuid128("Totem");
+            packet.ReadUInt32("Duration");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadSingle("TimeMod");
+
+            packet.ResetBitReader();
+            packet.ReadBit("CannotDismiss");
+        }
+
+        [Parser(Opcode.SMSG_TOTEM_MOVED)]
+        public static void HandleTotemMoved(Packet packet)
+        {
+            packet.ReadByte("Slot");
+            packet.ReadByte("NewSlot");
+            packet.ReadPackedGuid128("Totem");
+        }
+
+        [Parser(Opcode.SMSG_UNLEARNED_SPELLS)]
+        public static void HandleUnlearnedSpells(Packet packet)
+        {
+            var count = packet.ReadInt32("UnlearnedSpellCount");
+            for (int i = 0; i < count; i++)
+                packet.ReadUInt32<SpellId>("SpellID");
+
+                packet.ReadBit("SuppressMessaging");
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         public static void HandleSpellNull(Packet packet)
         {

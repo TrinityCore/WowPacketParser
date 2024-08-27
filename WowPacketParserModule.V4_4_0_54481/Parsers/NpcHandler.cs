@@ -450,5 +450,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (int i = 0; i < 8; ++i)
                 proto.Texts.Add(new PacketNpcTextEntry() { Probability = npcText.Probabilities[i], BroadcastTextId = npcText.BroadcastTextId[i] });
         }
+
+        [Parser(Opcode.SMSG_TRAINER_BUY_FAILED)]
+        public static void HandleTrainerBuyFailed(Packet packet)
+        {
+            packet.ReadPackedGuid128("TrainerGUID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadUInt32("TrainerFailedReason");
+        }
     }
 }

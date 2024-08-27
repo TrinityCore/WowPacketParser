@@ -562,7 +562,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         }
 
         [Parser(Opcode.SMSG_ENABLE_BARBER_SHOP)]
-        public static void HandleStartTimer(Packet packet)
+        public static void HandleEnableBarberShop(Packet packet)
         {
             packet.ReadByte("CustomizationScope");
         }
@@ -770,6 +770,52 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             for (var i = 0; i < spellVisualKitIdCount; i++)
                 packet.ReadUInt32("SpellVisualKitID", i);
+        }
+
+        [Parser(Opcode.SMSG_START_MIRROR_TIMER)]
+        public static void HandleStartMirrorTimer(Packet packet)
+        {
+            packet.ReadUInt32("Timer");
+            packet.ReadUInt32("Value");
+            packet.ReadUInt32("MaxValue");
+            packet.ReadInt32("Scale");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadBit("Paused");
+        }
+
+        [Parser(Opcode.SMSG_START_TIMER)]
+        public static void HandleStartTimer(Packet packet)
+        {
+            packet.ReadInt64("TotalTime");
+            packet.ReadUInt32E<TimerType>("Type");
+            packet.ReadInt64("TimeLeft");
+            
+            var hasPlayerGUID = packet.ReadBit("HasPlayerGUID");
+            if (hasPlayerGUID)
+                packet.ReadPackedGuid128("PlayerGUID");
+        }
+
+        [Parser(Opcode.SMSG_STOP_MIRROR_TIMER)]
+        public static void HandleStopMirrorTimer(Packet packet)
+        {
+            packet.ReadUInt32E<MirrorTimerType>("Timer Type");
+        }
+
+        [Parser(Opcode.SMSG_STOP_SPEAKERBOT_SOUND)]
+        public static void HandleStopSpeakerbotSound(Packet packet)
+        {
+            packet.ReadPackedGuid128("SourceObjectGUID");
+        }
+
+        [Parser(Opcode.SMSG_SUMMON_REQUEST)]
+        public static void HandleSummonRequest(Packet packet)
+        {
+            packet.ReadPackedGuid128("SummonerGUID");
+            packet.ReadUInt32("SummonerVirtualRealmAddress");
+            packet.ReadInt32<AreaId>("AreaID");
+            packet.ReadByte("Reason");
+            packet.ResetBitReader();
+            packet.ReadBit("SkipStartingArea");
         }
 
         [Parser(Opcode.SMSG_RESUME_COMMS)]

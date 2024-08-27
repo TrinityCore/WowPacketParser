@@ -164,6 +164,23 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadPackedGuid128("Player", i);
         }
 
+        [Parser(Opcode.SMSG_START_LOOT_ROLL)]
+        public static void HandleLootStartRoll(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            packet.ReadInt32<MapId>("MapID");
+            packet.ReadUInt32("RollTime");
+            packet.ReadByte("ValidRolls");
+            
+            for (var i = 0; i < 3; i++)
+                packet.ReadUInt32E<LootRollIneligibilityReason>("LootRollIneligibleReason");
+
+            packet.ReadByteE<LootMethod>("Method");
+            
+            packet.ReadInt32("DungeonEncounterID");
+            ReadLootItem(packet, "LootItem");
+        }
+
         [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
         [Parser(Opcode.SMSG_LOOT_RELEASE_ALL)]
         public static void HandleLootZero(Packet packet)

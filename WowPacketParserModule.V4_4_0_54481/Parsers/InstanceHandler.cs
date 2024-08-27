@@ -190,6 +190,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32<DifficultyId>("DifficultyID");
         }
 
+        [Parser(Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP)]
+        public static void HandleUpdateInstanceOwnership(Packet packet)
+        {
+            packet.ReadInt32("IOwnInstance");
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_LAST_INSTANCE)]
+        public static void HandleUpdateLastInstance(Packet packet)
+        {
+            packet.ReadInt32<MapId>("MapID");
+        }
+
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_END)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_IN_COMBAT_RESURRECTION)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_PHASE_SHIFT_CHANGED)]

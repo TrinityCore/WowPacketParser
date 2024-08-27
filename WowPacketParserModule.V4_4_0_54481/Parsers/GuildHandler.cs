@@ -693,6 +693,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadPetitionInfo(packet, "PetitionInfo");
         }
 
+        [Parser(Opcode.SMSG_TURN_IN_PETITION_RESULT)]
+        public static void HandlePetitionTurnInResults(Packet packet)
+        {
+            packet.ReadBitsE<PetitionResultType>("Result", 4);
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]

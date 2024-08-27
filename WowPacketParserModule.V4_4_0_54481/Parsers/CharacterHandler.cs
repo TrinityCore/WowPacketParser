@@ -4,6 +4,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using WowPacketParserModule.V4_4_0_54481.Enums;
 
 namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
@@ -512,6 +513,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadInt32("ResultCode");
             packet.ReadPackedGuid128("Player");
+        }
+
+        [Parser(Opcode.SMSG_TITLE_EARNED)]
+        [Parser(Opcode.SMSG_TITLE_LOST)]
+        public static void HandleTitleEarned(Packet packet)
+        {
+            packet.ReadUInt32("Index");
+        }
+
+        [Parser(Opcode.SMSG_UNDELETE_CHARACTER_RESPONSE)]
+        public static void HandleUndeleteCharacterResponse(Packet packet)
+        {
+            packet.ReadInt32("ClientToken");
+            packet.ReadInt32E<CharacterUndeleteResult>("Result");
+            packet.ReadPackedGuid128("CharacterGuid");
         }
     }
 }

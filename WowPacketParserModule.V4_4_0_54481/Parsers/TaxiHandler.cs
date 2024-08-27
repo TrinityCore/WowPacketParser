@@ -36,6 +36,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
         }
 
+        [Parser(Opcode.SMSG_TAXI_NODE_STATUS)]
+        public static void HandleTaxiStatus(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadBits("Status", 2);
+        }
+
         [Parser(Opcode.SMSG_NEW_TAXI_PATH)]
         public static void HandleTaxiNull(Packet packet)
         {

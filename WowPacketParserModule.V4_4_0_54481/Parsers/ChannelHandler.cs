@@ -87,5 +87,40 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadWoWString("ChannelName", channelLength);
             packet.ReadWoWString("Password", passwordLength);
         }
+
+        [Parser(Opcode.SMSG_USERLIST_ADD)]
+        public static void HandleChannelUserListAdd(Packet packet)
+        {
+            packet.ReadPackedGuid128("AddedUserGUID");
+            packet.ReadByteE<ChannelMemberFlag>("UserFlags");
+            packet.ReadUInt32E<ChannelFlag>("ChannelFlags");
+            packet.ReadUInt32("ChannelID");
+
+            var len = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", len);
+        }
+
+        [Parser(Opcode.SMSG_USERLIST_REMOVE)]
+        public static void HandleChannelUserListRemove(Packet packet)
+        {
+            packet.ReadPackedGuid128("RemovedUserGUID");
+            packet.ReadUInt32E<ChannelFlag>("ChannelFlags");
+            packet.ReadUInt32("ChannelID");
+
+            var len = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", len);
+        }
+
+        [Parser(Opcode.SMSG_USERLIST_UPDATE)]
+        public static void HandleChannelUserListUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("UpdatedUserGUID");
+            packet.ReadByteE<ChannelMemberFlag>("UserFlags");
+            packet.ReadUInt32E<ChannelFlag>("ChannelFlags");
+            packet.ReadUInt32("ChannelID");
+
+            var len = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", len);
+        }
     }
 }

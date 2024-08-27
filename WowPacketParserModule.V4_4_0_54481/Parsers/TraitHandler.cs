@@ -43,5 +43,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ReadWoWString("Name", nameLength, indexes);
         }
+
+        [Parser(Opcode.SMSG_TRAIT_CONFIG_COMMIT_FAILED)]
+        public static void ReadTraitsCommitConfigFailed(Packet packet)
+        {
+            packet.ReadInt32("ConfigID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadBits("Reason", 4);
+        }
     }
 }

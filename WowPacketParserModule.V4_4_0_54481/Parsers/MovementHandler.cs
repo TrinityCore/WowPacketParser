@@ -847,6 +847,36 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
+        [Parser(Opcode.SMSG_TRANSFER_ABORTED)]
+        public static void HandleTransferAborted(Packet packet)
+        {
+            packet.ReadInt32<MapId>("MapID");
+            packet.ReadByte("Arg");
+            packet.ReadInt32("MapDifficultyXConditionID");
+            packet.ReadBitsE<TransferAbortReason>("TransfertAbort", 6);
+        }
+
+        [Parser(Opcode.SMSG_TRANSFER_PENDING)]
+        public static void HandleTransferPending(Packet packet)
+        {
+            packet.ReadInt32<MapId>("MapID");
+            packet.ReadVector3("OldMapPosition");
+
+            packet.ResetBitReader();
+
+            var hasShipTransferPending = packet.ReadBit();
+            var hasTransferSpell = packet.ReadBit();
+
+            if (hasShipTransferPending)
+            {
+                packet.ReadUInt32<GOId>("ID");
+                packet.ReadInt32<MapId>("OriginMapID");
+            }
+
+            if (hasTransferSpell)
+                packet.ReadUInt32<SpellId>("TransferSpellID");
+        }
+
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
         public static void HandleAbortNewWorld(Packet packet)
         {

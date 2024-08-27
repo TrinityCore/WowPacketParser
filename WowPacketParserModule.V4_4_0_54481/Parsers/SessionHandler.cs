@@ -329,8 +329,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             // Reason 3: Jumping or Falling
         }
 
+        [Parser(Opcode.SMSG_WAIT_QUEUE_UPDATE)]
+        public static void HandleWaitQueueUpdate(Packet packet)
+        {
+            packet.ReadInt32("WaitCount");
+            packet.ReadInt32("WaitTime");
+            packet.ReadInt32("AllowedFactionGroupForCharacterCreate");
+            packet.ReadBit("HasFCM");
+            packet.ReadBit("CanCreateOnlyIfExisting");
+        }
+
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK)]
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
+        [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH)]
         public static void HandleSessionZero(Packet packet)
         {
         }

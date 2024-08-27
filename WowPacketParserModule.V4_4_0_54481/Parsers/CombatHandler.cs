@@ -135,6 +135,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("ForceHonorable");
         }
 
+        [Parser(Opcode.SMSG_THREAT_CLEAR)]
+        public static void HandleClearThreatlist(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+        }
+
+        [Parser(Opcode.SMSG_THREAT_REMOVE)]
+        public static void HandleRemoveThreatlist(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadPackedGuid128("AboutGUID");
+        }
+
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
         [Parser(Opcode.SMSG_DUEL_IN_BOUNDS)]
         [Parser(Opcode.SMSG_DUEL_OUT_OF_BOUNDS)]

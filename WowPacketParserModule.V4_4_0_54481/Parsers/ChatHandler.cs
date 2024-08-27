@@ -157,5 +157,23 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ReadWoWString("NotifyText", notifyTextLen);
         }
+
+        [Parser(Opcode.SMSG_TEXT_EMOTE)]
+        public static void HandleTextEmoteServer(Packet packet)
+        {
+            packet.ReadPackedGuid128("SourceGUID");
+            packet.ReadPackedGuid128("SourceAccountGUID");
+            packet.ReadInt32E<EmoteTextType>("EmoteID");
+            packet.ReadInt32("SoundIndex");
+            packet.ReadPackedGuid128("TargetGUID");
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_AADC_STATUS_RESPONSE)]
+        public static void HandleUpdateAadcStatusResponse(Packet packet)
+        {
+            packet.ResetBitReader();
+            packet.ReadBit("Success");
+            packet.ReadBit("ChatDisabled");
+        }
     }
 }
