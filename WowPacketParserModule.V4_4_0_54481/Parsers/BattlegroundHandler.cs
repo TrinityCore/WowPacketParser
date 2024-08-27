@@ -45,27 +45,27 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
         public static void ReadRatedPvpBracketInfo(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("PersonalRating");
-            packet.ReadInt32("Ranking");
-            packet.ReadInt32("SeasonPlayed");
-            packet.ReadInt32("SeasonWon");
-            packet.ReadInt32("Unused1");
-            packet.ReadInt32("Unused2");
-            packet.ReadInt32("WeeklyPlayed");
-            packet.ReadInt32("WeeklyWon");
-            packet.ReadInt32("RoundsSeasonPlayed");
-            packet.ReadInt32("RoundsSeasonWon");
-            packet.ReadInt32("RoundsWeeklyPlayed");
-            packet.ReadInt32("RoundsWeeklyWon");
-            packet.ReadInt32("BestWeeklyRating");
-            packet.ReadInt32("LastWeeksBestRating");
-            packet.ReadInt32("BestSeasonRating");
-            packet.ReadInt32("PvpTierID");
-            packet.ReadInt32("Unused3");
-            packet.ReadInt32("Unused4");
-            packet.ReadInt32("Rank");
+            packet.ReadInt32("PersonalRating", idx);
+            packet.ReadInt32("Ranking", idx);
+            packet.ReadInt32("SeasonPlayed", idx);
+            packet.ReadInt32("SeasonWon", idx);
+            packet.ReadInt32("Unused1", idx);
+            packet.ReadInt32("Unused2", idx);
+            packet.ReadInt32("WeeklyPlayed", idx);
+            packet.ReadInt32("WeeklyWon", idx);
+            packet.ReadInt32("RoundsSeasonPlayed", idx);
+            packet.ReadInt32("RoundsSeasonWon", idx);
+            packet.ReadInt32("RoundsWeeklyPlayed", idx);
+            packet.ReadInt32("RoundsWeeklyWon", idx);
+            packet.ReadInt32("BestWeeklyRating", idx);
+            packet.ReadInt32("LastWeeksBestRating", idx);
+            packet.ReadInt32("BestSeasonRating", idx);
+            packet.ReadInt32("PvpTierID", idx);
+            packet.ReadInt32("Unused3", idx);
+            packet.ReadInt32("Unused4", idx);
+            packet.ReadInt32("Rank", idx);
             packet.ResetBitReader();
-            packet.ReadBit("Disqualified");
+            packet.ReadBit("Disqualified", idx);
         }
 
         [Parser(Opcode.SMSG_AREA_SPIRIT_HEALER_TIME)]
@@ -231,7 +231,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         public static void HandleRatedPvPInfo(Packet packet)
         {
             for (int i = 0; i < 9; i++)
-                ReadRatedPvpBracketInfo(packet, i);
+                ReadRatedPvpBracketInfo(packet, i, "Bracket");
         }
 
         [Parser(Opcode.SMSG_REPORT_PVP_PLAYER_AFK_RESULT)]

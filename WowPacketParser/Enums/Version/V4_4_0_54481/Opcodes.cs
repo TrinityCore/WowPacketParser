@@ -1654,12 +1654,12 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.SMSG_WEATHER, 0x26AA },
             { Opcode.SMSG_WHO, 0x2BAE },
             { Opcode.SMSG_WHO_IS, 0x26A9 },
-            { Opcode.SMSG_WILL_BE_KICKED_FOR_ADDED_SUBSCRIPTION_TIME, 0x2829 },
+            { Opcode.SMSG_WILL_BE_KICKED_FOR_ADDED_SUBSCRIPTION_TIME, 0x2829 }, // NYI
             { Opcode.SMSG_WORLD_QUEST_UPDATE_RESPONSE, 0x300F },
             { Opcode.SMSG_WORLD_SERVER_INFO, 0x25AF },
-            { Opcode.SMSG_WOW_ENTITLEMENT_NOTIFICATION, 0x286E },
-            { Opcode.SMSG_XP_GAIN_ABORTED, 0x25CB },
-            { Opcode.SMSG_XP_GAIN_ENABLED, 0x27B1 },
+            { Opcode.SMSG_WOW_ENTITLEMENT_NOTIFICATION, 0x286E }, // NYI
+            { Opcode.SMSG_XP_GAIN_ABORTED, 0x25CB }, // NYI
+            { Opcode.SMSG_XP_GAIN_ENABLED, 0x27B1 }, // NYI
             { Opcode.SMSG_ZONE_UNDER_ATTACK, 0x2BB5 },
 
                 // Opcodes that are not generated automatically

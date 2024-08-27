@@ -1001,6 +1001,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             questFailed.TimerFail = true;
         }
 
+        [Parser(Opcode.SMSG_WORLD_QUEST_UPDATE_RESPONSE)]
+        public static void HandleWorldQuestUpdateResponse(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadTime64("LastUpdate", i);
+                packet.ReadUInt32<QuestId>("QuestID", i);
+                packet.ReadUInt32("Timer", i);
+                packet.ReadInt32("VariableID", i);
+                packet.ReadInt32("Value", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
         [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_MULTIPLE_QUERY)]
         [Parser(Opcode.SMSG_QUEST_LOG_FULL)]

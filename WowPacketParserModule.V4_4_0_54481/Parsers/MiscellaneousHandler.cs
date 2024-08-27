@@ -40,6 +40,22 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("Asset", args);
         }
 
+        public static void ReadWhoEntry(Packet packet, params object[] idx)
+        {
+            CharacterHandler.ReadPlayerGuidLookupData(packet, idx);
+
+            packet.ReadPackedGuid128("GuildGUID", idx);
+
+            packet.ReadUInt32("GuildVirtualRealmAddress", idx);
+            packet.ReadInt32<AreaId>("AreaID", idx);
+
+            packet.ResetBitReader();
+            var guildNameLen = packet.ReadBits(7);
+            packet.ReadBit("IsGM", idx);
+
+            packet.ReadWoWString("GuildName", guildNameLen, idx);
+        }
+
         [Parser(Opcode.SMSG_ALLIED_RACE_DETAILS)]
         public static void HandleAlliedRaceDetails(Packet packet)
         {
@@ -816,6 +832,23 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByte("Reason");
             packet.ResetBitReader();
             packet.ReadBit("SkipStartingArea");
+        }
+
+        [Parser(Opcode.SMSG_WHO)]
+        public static void HandleWho(Packet packet)
+        {
+            packet.ReadUInt32("RequestID");
+            var entriesCount = packet.ReadBits("EntriesCount", 6);
+
+            for (var i = 0; i < entriesCount; ++i)
+                ReadWhoEntry(packet, i);
+        }
+
+        [Parser(Opcode.SMSG_WHO_IS)]
+        public static void HandleWhoIsResponse(Packet packet)
+        {
+            var accNameLen = packet.ReadBits(11);
+            packet.ReadWoWString("AccountName", accNameLen);
         }
 
         [Parser(Opcode.SMSG_RESUME_COMMS)]

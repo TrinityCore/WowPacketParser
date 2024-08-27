@@ -16,7 +16,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ResetBitReader();
             packet.ReadBit("IsDeleted", idx);
-            var bits15 = (int)packet.ReadBits(6);
+            var nameLength = (int)packet.ReadBits(6);
 
             var count = new int[5];
             for (var i = 0; i < 5; ++i)
@@ -38,7 +38,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             data.Level = packet.ReadByte("Level", idx);
             packet.ReadByte("Unused915", idx);
 
-            data.Name = packet.ReadWoWString("Name", bits15, idx);
+            data.Name = packet.ReadWoWString("Name", nameLength, idx);
 
             return data;
         }
