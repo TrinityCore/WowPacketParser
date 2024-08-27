@@ -705,6 +705,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_GUILD_EVENT_RANKS_UPDATED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_TAB_ADDED)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
+        [Parser(Opcode.CMSG_ACCEPT_GUILD_INVITE)]
         public static void HandleGuildZero(Packet packet)
         {
         }

@@ -6,6 +6,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class AddonHandler
     {
+        public static void ReadAddOnInfo(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+
+            var nameLength = (int)packet.ReadBits(10);
+            var versionLength = (int)packet.ReadBits(10);
+            packet.ReadBit("Loaded", indexes);
+            packet.ReadBit("Disabled", indexes);
+            if (nameLength > 1)
+                packet.ReadDynamicString("Name", nameLength - 1, indexes);
+
+            if (versionLength > 1)
+                packet.ReadDynamicString("Version", versionLength - 1, indexes);
+        }
+
         [Parser(Opcode.CMSG_CHAT_REGISTER_ADDON_PREFIXES)]
         public static void HandleChatRegisterAddonPrefixes(Packet packet)
         {

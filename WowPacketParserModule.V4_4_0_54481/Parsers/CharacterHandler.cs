@@ -529,5 +529,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32E<CharacterUndeleteResult>("Result");
             packet.ReadPackedGuid128("CharacterGuid");
         }
+
+        [Parser(Opcode.CMSG_ALTER_APPEARANCE)]
+        public static void HandleAlterAppearance(Packet packet)
+        {
+            var customizationsCount = packet.ReadUInt32("CustomizationsCount");
+            packet.ReadByte("NewSexID");
+            packet.ReadInt32E<Race>("CustomizedRace");
+            packet.ReadInt32("CustomizedChrModelID");
+            for (var i = 0; i < customizationsCount; i++)
+                ReadChrCustomizationChoice(packet, "Customizations", i);
+        }
     }
 }

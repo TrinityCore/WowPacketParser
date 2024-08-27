@@ -60,5 +60,23 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("Mobile");
             packet.ReadWoWString("Notes", notesLen);
         }
+
+        [Parser(Opcode.CMSG_ADD_FRIEND)]
+        public static void HandleAddFriend(Packet packet)
+        {
+            var nameLength = packet.ReadBits(9);
+            var notesLength = packet.ReadBits(10);
+
+            packet.ReadWoWString("Name", nameLength);
+            packet.ReadWoWString("Notes", notesLength);
+        }
+
+        [Parser(Opcode.CMSG_ADD_IGNORE)]
+        public static void HandleAddIgnoreOrMute(Packet packet)
+        {
+            var nameLength = packet.ReadBits(9);
+            packet.ReadPackedGuid128("AccountGUID");
+            packet.ReadWoWString("Name", nameLength);
+        }
     }
 }

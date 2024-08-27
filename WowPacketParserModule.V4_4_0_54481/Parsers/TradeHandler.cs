@@ -95,5 +95,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (int i = 0; i < count; i++)
                 ReadTradeItem(packet, i);
         }
+
+        [Parser(Opcode.CMSG_ACCEPT_TRADE)]
+        public static void HandleAcceptTrade(Packet packet)
+        {
+            packet.ReadUInt32("StateIndex");
+        }
     }
 }

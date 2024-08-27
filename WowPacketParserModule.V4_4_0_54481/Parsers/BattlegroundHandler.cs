@@ -242,5 +242,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByte("NumBlackMarksOnOffender");
             packet.ReadByte("NumPlayersIHaveReported");
         }
+
+        [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY)]
+        [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE)]
+        public static void HandleAreaSpiritHealer(Packet packet)
+        {
+            packet.ReadPackedGuid128("HealerGuid");
+        }
     }
 }

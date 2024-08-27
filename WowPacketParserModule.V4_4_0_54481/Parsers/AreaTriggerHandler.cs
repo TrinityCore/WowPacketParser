@@ -105,6 +105,17 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadAreaTriggerOrbit(null, packet, "Orbit");
         }
 
+        [Parser(Opcode.CMSG_AREA_TRIGGER)]
+        public static void HandleClientAreaTrigger(Packet packet)
+        {
+            var entry = packet.ReadEntry("AreaTriggerID");
+            var entered = packet.ReadBit("Entered");
+            packet.ReadBit("FromClient");
+
+            packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
+            packet.Holder.ClientAreaTrigger = new() { Enter = entered, AreaTrigger = (uint)entry.Key };
+        }
+
         [Parser(Opcode.SMSG_AREA_TRIGGER_NO_CORPSE)]
         public static void HandleCorpseNull(Packet packet)
         {

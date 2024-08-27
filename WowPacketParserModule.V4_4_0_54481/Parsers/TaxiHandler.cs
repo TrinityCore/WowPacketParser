@@ -43,6 +43,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBits("Status", 2);
         }
 
+        [Parser(Opcode.CMSG_ACTIVATE_TAXI)]
+        public static void HandleActivateTaxi(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vendor");
+            packet.ReadUInt32("Node");
+            packet.ReadUInt32("GroundMountID");
+            packet.ReadUInt32("FlyingMountID");
+        }
+
         [Parser(Opcode.SMSG_NEW_TAXI_PATH)]
         public static void HandleTaxiNull(Packet packet)
         {

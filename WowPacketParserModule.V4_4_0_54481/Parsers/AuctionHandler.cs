@@ -221,5 +221,78 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             ReadClientAuctionBidderNotification(packet, "Info");
         }
+
+        [Parser(Opcode.CMSG_AUCTION_HELLO_REQUEST)]
+        public static void HandleClientAuctionHello(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_BIDDER_ITEMS)]
+        public static void HandleAuctionListBiddedItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadUInt32("Offset");
+
+            var auctionIdsCount = packet.ReadBits(7);
+            var taintedBy = packet.ReadBit();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            for (var i = 0; i < auctionIdsCount; i++)
+                packet.ReadUInt32("AuctionID", i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_ITEMS)]
+        public static void HandleAuctionListItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("Offset");
+            packet.ReadByte("MinLevel");
+            packet.ReadByte("MaxLevel");
+            packet.ReadInt32E<ItemQuality>("Quality");
+            var sort = packet.ReadByte("SortCount");
+            var knownPetsCount = packet.ReadUInt32("KnownPetsCount");
+            packet.ReadByte("MaxPetLevel");
+
+            for (int i = 0; i < knownPetsCount; ++i)
+                packet.ReadByte("KnownPets", i);
+
+            var taintedBy = packet.ReadBit();
+            var nameLength = packet.ReadBits(8);
+            packet.ReadWoWString("Name", nameLength);
+
+            var classFiltersCount = packet.ReadBits("ClassFiltersCount", 3);
+
+            packet.ReadBit("OnlyUsable");
+            packet.ReadBit("ExactMatch");
+
+            packet.ResetBitReader();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "AddonInfo");
+
+            for (int i = 0; i < classFiltersCount; ++i)
+            {
+                packet.ReadInt32E<ItemClass>("ItemClass", "ClassFilters", i);
+
+                var subClassFiltersCount = packet.ReadBits("SubClassFiltersCount", 5, "ClassFilters", i);
+                for (int j = 0; j < subClassFiltersCount; ++j)
+                {
+                    packet.ReadUInt64("ItemSubclass", "ClassFilters", i, "SubClassFilters", j);
+                    packet.ReadUInt32("InvTypeMask", "ClassFilters", i, "SubClassFilters", j);
+                }
+            }
+
+            var size = packet.ReadInt32("DataSize");
+            var data = packet.ReadBytes(size);
+            var sorts = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            for (var i = 0; i < sort; ++i)
+            {
+                sorts.ReadByte("Type", i);
+                sorts.ReadByte("Direction", i);
+            }
+        }
     }
 }

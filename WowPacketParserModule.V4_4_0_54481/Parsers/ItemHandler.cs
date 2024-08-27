@@ -281,6 +281,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Item");
         }
 
+        [Parser(Opcode.CMSG_ADD_TOY)]
+        public static void HandleAddToy(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW)]
         public static void HandleItemZero(Packet packet)

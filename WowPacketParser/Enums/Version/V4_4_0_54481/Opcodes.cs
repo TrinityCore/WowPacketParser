@@ -20,33 +20,33 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new()
         {
             { Opcode.CMSG_ACCEPT_GUILD_INVITE, 0x35FD },
-            { Opcode.CMSG_ACCEPT_SOCIAL_CONTRACT, 0x3749 },
+            { Opcode.CMSG_ACCEPT_SOCIAL_CONTRACT, 0x3749 }, // NYI
             { Opcode.CMSG_ACCEPT_TRADE, 0x315B },
-            { Opcode.CMSG_ACCEPT_WARGAME_INVITE, 0x35E0 },
-            { Opcode.CMSG_ACCOUNT_NOTIFICATION_ACKNOWLEDGED, 0x3739 },
+            { Opcode.CMSG_ACCEPT_WARGAME_INVITE, 0x35E0 }, // NYI
+            { Opcode.CMSG_ACCOUNT_NOTIFICATION_ACKNOWLEDGED, 0x3739 }, // NYI
             { Opcode.CMSG_ACTIVATE_TAXI, 0x34AB },
-            { Opcode.CMSG_ADD_BATTLENET_FRIEND, 0x3658 },
+            { Opcode.CMSG_ADD_BATTLENET_FRIEND, 0x3658 }, // NYI
             { Opcode.CMSG_ADD_FRIEND, 0x36D4 },
             { Opcode.CMSG_ADD_IGNORE, 0x36D8 },
-            { Opcode.CMSG_ADDON_LIST, 0x35D8 },
+            { Opcode.CMSG_ADDON_LIST, 0x35D8 }, // NYI
             { Opcode.CMSG_ADD_TOY, 0x329B },
             { Opcode.CMSG_ADVENTURE_MAP_START_QUEST, 0x32DA },
             { Opcode.CMSG_ALTER_APPEARANCE, 0x34F5 },
             { Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY, 0x34B0 },
             { Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE, 0x34B1 },
             { Opcode.CMSG_AREA_TRIGGER, 0x31D8 },
-            { Opcode.CMSG_ARENA_TEAM_ACCEPT, 0x36B5 },
-            { Opcode.CMSG_ARENA_TEAM_DECLINE, 0x36B6 },
-            { Opcode.CMSG_ARENA_TEAM_DISBAND, 0x36B9 },
-            { Opcode.CMSG_ARENA_TEAM_LEADER, 0x36BA },
-            { Opcode.CMSG_ARENA_TEAM_LEAVE, 0x36B7 },
-            { Opcode.CMSG_ARENA_TEAM_REMOVE, 0x36B8 },
+            { Opcode.CMSG_ARENA_TEAM_ACCEPT, 0x36B5 }, // NYI
+            { Opcode.CMSG_ARENA_TEAM_DECLINE, 0x36B6 }, // NYI
+            { Opcode.CMSG_ARENA_TEAM_DISBAND, 0x36B9 }, // NYI
+            { Opcode.CMSG_ARENA_TEAM_LEADER, 0x36BA }, // NYI
+            { Opcode.CMSG_ARENA_TEAM_LEAVE, 0x36B7 }, // NYI
+            { Opcode.CMSG_ARENA_TEAM_REMOVE, 0x36B8 }, // NYI
             { Opcode.CMSG_ARENA_TEAM_ROSTER, 0x36B4 },
-            { Opcode.CMSG_ASSIGN_EQUIPMENT_SET_SPEC, 0x3209 },
+            { Opcode.CMSG_ASSIGN_EQUIPMENT_SET_SPEC, 0x3209 }, // NYI
             { Opcode.CMSG_ATTACK_STOP, 0x3258 },
             { Opcode.CMSG_ATTACK_SWING, 0x3257 },
-            { Opcode.CMSG_AUCTIONABLE_TOKEN_SELL, 0x36EA },
-            { Opcode.CMSG_AUCTIONABLE_TOKEN_SELL_AT_MARKET_PRICE, 0x36EB },
+            { Opcode.CMSG_AUCTIONABLE_TOKEN_SELL, 0x36EA }, // NYI
+            { Opcode.CMSG_AUCTIONABLE_TOKEN_SELL_AT_MARKET_PRICE, 0x36EB }, // NYI
             { Opcode.CMSG_AUCTION_HELLO_REQUEST, 0x34CA },
             { Opcode.CMSG_AUCTION_LIST_BIDDER_ITEMS, 0x34D0 },
             { Opcode.CMSG_AUCTION_LIST_ITEMS, 0x34CD },
