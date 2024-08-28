@@ -154,6 +154,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Victim");
         }
 
+        [Parser(Opcode.CMSG_CAN_DUEL)]
+        public static void HandleCanDuel(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadBit("ToTheDeath");
+        }
+
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
         [Parser(Opcode.SMSG_DUEL_IN_BOUNDS)]
         [Parser(Opcode.SMSG_DUEL_OUT_OF_BOUNDS)]

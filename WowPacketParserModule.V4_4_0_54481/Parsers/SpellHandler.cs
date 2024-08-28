@@ -1061,7 +1061,31 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadBit("SuppressMessaging");
         }
 
+        [Parser(Opcode.CMSG_CANCEL_AURA)]
+        public static void HandleCanelAura(Packet packet)
+        {
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadPackedGuid128("CasterGUID");
+        }
+
+        [Parser(Opcode.CMSG_CANCEL_CHANNELLING)]
+        public static void HandleCancelChanneling(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("Reason");
+        }
+
+        [Parser(Opcode.CMSG_CANCEL_TEMP_ENCHANTMENT)]
+        public static void HandleCancelTempEnchantment(Packet packet)
+        {
+            packet.ReadUInt32("Slot");
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
+        [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL)]
+        [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA)]
+        [Parser(Opcode.CMSG_CANCEL_MOUNT_AURA)]
+        [Parser(Opcode.CMSG_CANCEL_QUEUED_SPELL)]
         public static void HandleSpellNull(Packet packet)
         {
         }

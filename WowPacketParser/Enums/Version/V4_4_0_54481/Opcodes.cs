@@ -97,7 +97,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_BATTLE_PET_SET_BATTLE_SLOT, 0x362A },
             { Opcode.CMSG_BATTLE_PET_SET_FLAGS, 0x362D },
             { Opcode.CMSG_BATTLE_PET_SUMMON, 0x3626 },
-            { Opcode.CMSG_BATTLE_PET_UPDATE_DISPLAY_NOTIFY, 0x31E2 },
+            { Opcode.CMSG_BATTLE_PET_UPDATE_DISPLAY_NOTIFY, 0x31E2 }, // NYI
             { Opcode.CMSG_BATTLE_PET_UPDATE_NOTIFY, 0x31E1 },
             { Opcode.CMSG_BEGIN_TRADE, 0x3158 },
             { Opcode.CMSG_BINDER_ACTIVATE, 0x34B2 },
@@ -107,7 +107,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_BUY_BACK_ITEM, 0x34A4 },
             { Opcode.CMSG_BUY_BANK_SLOT, 0x34B4 },
             { Opcode.CMSG_BUY_ITEM, 0x34A3 },
-            { Opcode.CMSG_BUY_STABLE_SLOT, 0x316C },
+            { Opcode.CMSG_BUY_STABLE_SLOT, 0x316C }, // NYI
             { Opcode.CMSG_CALENDAR_ADD_EVENT, 0x367B },
             { Opcode.CMSG_CALENDAR_COMMUNITY_INVITE, 0x366F },
             { Opcode.CMSG_CALENDAR_COMPLAIN, 0x3677 },
@@ -133,15 +133,15 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_CANCEL_TEMP_ENCHANTMENT, 0x34F2 },
             { Opcode.CMSG_CANCEL_TRADE, 0x315D },
             { Opcode.CMSG_CAN_DUEL, 0x3660 },
-            { Opcode.CMSG_CAN_REDEEM_TOKEN_FOR_BALANCE, 0x370B },
+            { Opcode.CMSG_CAN_REDEEM_TOKEN_FOR_BALANCE, 0x370B }, // NYI
             { Opcode.CMSG_CAST_SPELL, 0x329E },
             { Opcode.CMSG_CHANGE_REALM_TICKET, 0x36FD },
             { Opcode.CMSG_CHANGE_SUB_GROUP, 0x364B },
-            { Opcode.CMSG_CHARACTER_CHECK_UPGRADE, 0x36CA },
+            { Opcode.CMSG_CHARACTER_CHECK_UPGRADE, 0x36CA }, // NYI
             { Opcode.CMSG_CHARACTER_RENAME_REQUEST, 0x36C5 },
-            { Opcode.CMSG_CHARACTER_UPGRADE_MANUAL_UNREVOKE_REQUEST, 0x36C8 },
-            { Opcode.CMSG_CHARACTER_UPGRADE_START, 0x36C9 },
-            { Opcode.CMSG_CHAR_CREATE_FINALIZE_REINCARNATION, 0x375B },
+            { Opcode.CMSG_CHARACTER_UPGRADE_MANUAL_UNREVOKE_REQUEST, 0x36C8 }, // NYI
+            { Opcode.CMSG_CHARACTER_UPGRADE_START, 0x36C9 }, // NYI
+            { Opcode.CMSG_CHAR_CREATE_FINALIZE_REINCARNATION, 0x375B }, // NYI
             { Opcode.CMSG_CHAR_CUSTOMIZE, 0x3688 },
             { Opcode.CMSG_CHAR_DELETE, 0x3699 },
             { Opcode.CMSG_CHAR_RACE_OR_FACTION_CHANGE, 0x368E },

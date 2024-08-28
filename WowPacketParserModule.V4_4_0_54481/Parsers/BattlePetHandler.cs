@@ -144,9 +144,31 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("BattlePetGUID");
         }
 
+        [Parser(Opcode.CMSG_BATTLE_PET_SET_BATTLE_SLOT)]
+        public static void HandleBattlePetSetBattleSlot(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+            packet.ReadByte("SlotIndex");
+        }
+
+        [Parser(Opcode.CMSG_BATTLE_PET_SET_FLAGS)]
+        public static void HandleBattlePetSetFlags(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+            packet.ReadUInt16("Flags");
+            packet.ReadBits("ControlType", 2);
+        }
+
+        [Parser(Opcode.CMSG_BATTLE_PET_UPDATE_NOTIFY)]
+        public static void HandleBattlePetUpdateNotify(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED)]
         [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL)]
+        [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL_LOCK)]
         public static void HandleBattlePetZero(Packet packet)
         {
         }

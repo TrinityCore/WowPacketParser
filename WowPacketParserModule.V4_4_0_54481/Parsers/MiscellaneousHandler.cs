@@ -805,7 +805,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt64("TotalTime");
             packet.ReadUInt32E<TimerType>("Type");
             packet.ReadInt64("TimeLeft");
-            
+
             var hasPlayerGUID = packet.ReadBit("HasPlayerGUID");
             if (hasPlayerGUID)
                 packet.ReadPackedGuid128("PlayerGUID");
@@ -849,6 +849,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             var accNameLen = packet.ReadBits(11);
             packet.ReadWoWString("AccountName", accNameLen);
+        }
+
+        [Parser(Opcode.CMSG_BUG_REPORT)]
+        public static void HandleBugReport(Packet packet)
+        {
+            packet.ReadBit("Type");
+
+            var len1 = packet.ReadBits(12);
+            var len2 = packet.ReadBits(10);
+
+            packet.ReadWoWString("DiagInfo", len1);
+            packet.ReadWoWString("Text", len2);
         }
 
         [Parser(Opcode.SMSG_RESUME_COMMS)]

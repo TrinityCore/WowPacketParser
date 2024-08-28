@@ -339,6 +339,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("CanCreateOnlyIfExisting");
         }
 
+        [Parser(Opcode.CMSG_CHANGE_REALM_TICKET)]
+        public static void HandleChangeRealmTicket(Packet packet)
+        {
+            packet.ReadUInt32("Token");
+            packet.ReadBytes("Secret", 32);
+        }
+
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK)]
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
         [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH)]

@@ -9,6 +9,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class ChatHandler
     {
+        public static void ReadChatAddonMessageParams(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            var prefixLen = packet.ReadBits(5);
+            var textLen = packet.ReadBits(8);
+            packet.ReadBit("IsLogged", indexes);
+
+            packet.ReadInt32("Type", indexes);
+            packet.ReadWoWString("Prefix", prefixLen, indexes);
+            packet.ReadWoWString("Text", textLen, indexes);
+        }
+
         [Parser(Opcode.SMSG_CHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
@@ -174,6 +186,31 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ResetBitReader();
             packet.ReadBit("Success");
             packet.ReadBit("ChatDisabled");
+        }
+
+        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE)]
+        public static void HandleAddonMessage(Packet packet)
+        {
+            ReadChatAddonMessageParams(packet);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_TARGETED)]
+        public static void HandleChatAddonMessageTargeted(Packet packet)
+        {
+            ReadChatAddonMessageParams(packet, "Params");
+
+            packet.ReadPackedGuid128("ChannelGUID");
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadUInt32("PlayerVirtualRealmAddress");
+
+            var playerNameLen = packet.ReadBits(6);
+            var channelNameLen = packet.ReadBits(6);
+
+            if (playerNameLen > 1)
+                packet.ReadDynamicString("PlayerName", playerNameLen);
+
+            if (channelNameLen > 1)
+                packet.ReadDynamicString("ChannelName", channelNameLen);
         }
     }
 }

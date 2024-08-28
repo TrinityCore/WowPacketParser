@@ -47,5 +47,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (var i = 0; i < count; ++i)
                 ReadBlackMarketItem(packet, "Items", i);
         }
+
+        [Parser(Opcode.CMSG_BLACK_MARKET_OPEN)]
+        public static void HandleBlackMarketOpen(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+        }
     }
 }

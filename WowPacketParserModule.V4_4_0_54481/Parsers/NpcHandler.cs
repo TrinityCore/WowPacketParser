@@ -458,5 +458,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadUInt32("TrainerFailedReason");
         }
+
+        [Parser(Opcode.CMSG_BUY_BANK_SLOT)]
+        public static void HandleBuyBankSlot(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+        }
     }
 }

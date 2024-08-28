@@ -342,7 +342,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_AUTO_STORE_BAG_ITEM)]
         public static void HandleAutoStoreBagItem(Packet packet)
         {
-            ReadInvUpdate(packet);            
+            ReadInvUpdate(packet);
 
             packet.ReadByte("ContainerSlotB");
             packet.ReadByte("ContainerSlotA");
@@ -355,6 +355,28 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Banker");
             packet.ReadByte("BankTab");
             packet.ReadByte("BankSlot");
+        }
+
+        [Parser(Opcode.CMSG_BUY_BACK_ITEM)]
+        public static void HandleBuyBackItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            packet.ReadUInt32("Slot");
+        }
+
+        [Parser(Opcode.CMSG_BUY_ITEM)]
+        public static void HandleBuyItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            packet.ReadPackedGuid128("ContainerGUID");
+
+            packet.ReadInt32("Quantity");
+            packet.ReadUInt32("Muid");
+            packet.ReadUInt32("Slot");
+            packet.ReadInt32("ItemType");
+
+            Substructures.ItemHandler.ReadItemInstance(packet, "ItemInstance");
+
         }
 
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]

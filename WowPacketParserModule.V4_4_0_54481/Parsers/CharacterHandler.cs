@@ -540,5 +540,50 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (var i = 0; i < customizationsCount; i++)
                 ReadChrCustomizationChoice(packet, "Customizations", i);
         }
+
+        [Parser(Opcode.CMSG_CHARACTER_RENAME_REQUEST)]
+        public static void HandleClientCharRename(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+
+            packet.ResetBitReader();
+
+            var newNameLen = packet.ReadBits(6);
+            packet.ReadWoWString("NewName", newNameLen);
+        }
+
+        [Parser(Opcode.CMSG_CHAR_CUSTOMIZE)]
+        public static void HandleClientCharCustomize(Packet packet)
+        {
+            packet.ReadPackedGuid128("CharGUID");
+
+            packet.ReadByte("SexID");
+            var customizationCount = packet.ReadUInt32("CustomizationCount");
+
+            for (var j = 0u; j < customizationCount; ++j)
+                ReadChrCustomizationChoice(packet, "Customizations", j);
+
+            packet.ResetBitReader();
+            var nameLen = packet.ReadBits(6);
+            packet.ReadWoWString("CharName", nameLen);
+        }
+
+        [Parser(Opcode.CMSG_CHAR_RACE_OR_FACTION_CHANGE)]
+        public static void HandleCharRaceOrFactionChange(Packet packet)
+        {
+            packet.ReadBit("FactionChange");
+
+            var nameLen = packet.ReadBits(6);
+
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadByte("SexID");
+            packet.ReadByteE<Race>("RaceID");
+            packet.ReadByteE<Race>("InitialRaceID");
+            var customizationsCount = packet.ReadUInt32("CustomizationsCount");
+            packet.ReadWoWString("Name", nameLen);
+
+            for (var i = 0; i < customizationsCount; i++)
+                ReadChrCustomizationChoice(packet, "Customizations", i);
+        }
     }
 }

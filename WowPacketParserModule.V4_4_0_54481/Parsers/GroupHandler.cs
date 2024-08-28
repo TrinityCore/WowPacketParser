@@ -320,6 +320,17 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("ChangedBy");
         }
 
+        [Parser(Opcode.CMSG_CHANGE_SUB_GROUP)]
+        public static void HandleChangeSubGroup(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+            packet.ReadByte("NewSubGroup");
+
+            var hasPartyIndex = packet.ReadBit();
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
         [Parser(Opcode.SMSG_GROUP_UNINVITE)]
