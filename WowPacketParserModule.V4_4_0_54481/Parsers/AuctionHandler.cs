@@ -271,7 +271,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ResetBitReader();
 
             if (taintedBy)
-                AddonHandler.ReadAddOnInfo(packet, "AddonInfo");
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
 
             for (int i = 0; i < classFiltersCount; ++i)
             {
@@ -293,6 +293,85 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 sorts.ReadByte("Type", i);
                 sorts.ReadByte("Direction", i);
             }
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_OWNER_ITEMS)]
+        public static void HandleAuctionListOwnerItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadUInt32("Offset");
+
+            var taintedBy = packet.ReadBit();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_PLACE_BID)]
+        public static void HandleAuctionPlaceBid(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("AuctionID");
+            packet.ReadInt64("BidAmount");
+
+            var taintedBy = packet.ReadBit();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_REMOVE_ITEM)]
+        public static void HandleAuctionRemoveItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("AuctionID");
+
+            var taintedBy = packet.ReadBit();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_REPLICATE_ITEMS)]
+        public static void HandleAuctionReplicateItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("ChangeNumberGlobal");
+            packet.ReadInt32("ChangeNumberCursor");
+            packet.ReadInt32("ChangeNumberTombstone");
+            packet.ReadInt32("Count");
+
+            var taintedBy = packet.ReadBit();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_SELL_ITEM)]
+        public static void HandleAuctionSellItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt64("MinBit");
+            packet.ReadInt64("BuyoutPrice");
+            packet.ReadInt32("RunTime");
+
+            var taintedBy = packet.ReadBit();
+            var count = packet.ReadBits("ItemsCount", 6);
+            packet.ResetBitReader();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadPackedGuid128("Guid", i);
+                packet.ReadInt32("UseCount");
+            }
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
+        public static void HandleAuctionZero(Packet packet)
+        {
         }
     }
 }

@@ -249,5 +249,65 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("HealerGuid");
         }
+
+        [Parser(Opcode.CMSG_BATTLEFIELD_LIST)]
+        public static void HandleBattlefieldListClient(Packet packet)
+        {
+            packet.ReadInt32<BgId>("ListID");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
+        public static void HandleBattlefieldPort(Packet packet)
+        {
+            LfgHandler.ReadCliRideTicket(packet);
+            packet.ResetBitReader();
+            packet.ReadBit("AcceptedInvite");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_HELLO)]
+        public static void HandleBattlemasterHello(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+        }
+
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN)]
+        public static void HandleBattlemasterJoin(Packet packet)
+        {
+            ReadPackedBattlegroundQueueTypeID(packet);
+            packet.ReadByte("Roles");
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadInt32("BlacklistMap", i);
+
+            packet.ReadPackedGuid128("BattlemasterGuid");
+            packet.ReadInt32("UnkID");
+            packet.ReadInt32("BattlefieldIndexSpecific");
+            packet.ReadBit("JoinAsGroup");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA)]
+        public static void HandleBattlemasterJoinArena(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlemasterGuid");
+            packet.ReadByte("TeamSizeIndex");
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_SKIRMISH)]
+        public static void HandleBattlemasterJoinSkirmish(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlemasterGUID");
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+            packet.ReadByte("Bracket");
+            packet.ResetBitReader();
+            packet.ReadBit("JoinAsGroup");
+            packet.ReadBit("IsRequeue");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]
+        public static void HandleBattlegroundNull(Packet packet)
+        {
+        }
     }
 }

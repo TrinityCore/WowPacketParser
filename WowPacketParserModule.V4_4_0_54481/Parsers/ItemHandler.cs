@@ -38,6 +38,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadWoWString("Text", length, idx);
         }
 
+        public static void ReadInvUpdate(Packet packet, params object[] indexes)
+        {
+            var bits2 = packet.ReadBits("InvItemCount", 2);
+            for (int i = 0; i < bits2; i++)
+            {
+                packet.ReadByte("ContainerSlot", i);
+                packet.ReadByte("Slot", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_BUY_FAILED)]
         public static void HandleBuyFailed(Packet packet)
         {
@@ -285,6 +295,66 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         public static void HandleAddToy(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.CMSG_AUTOBANK_ITEM)]
+        [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]
+        public static void HandleAutoItem(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_AUTO_EQUIP_ITEM)]
+        public static void HandleAutoEquipItem(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadByte("PackSlot");
+            packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_AUTO_EQUIP_ITEM_SLOT)]
+        public static void HandleAutoEquipItemSlot(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadPackedGuid128("Item");
+            packet.ReadByte("ItemDstSlot");
+        }
+
+        [Parser(Opcode.CMSG_AUTO_GUILD_BANK_ITEM)]
+        public static void HandleAutoGuildBankItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+            packet.ReadByte("BankSlot");
+            packet.ReadByte("ContainerItemSlot");
+
+            var hasContainerSlot = packet.ReadBit();
+
+            if (hasContainerSlot)
+                packet.ReadByte("ContainerSlot");
+        }
+
+        [Parser(Opcode.CMSG_AUTO_STORE_BAG_ITEM)]
+        public static void HandleAutoStoreBagItem(Packet packet)
+        {
+            ReadInvUpdate(packet);            
+
+            packet.ReadByte("ContainerSlotB");
+            packet.ReadByte("ContainerSlotA");
+            packet.ReadByte("SlotA");
+        }
+
+        [Parser(Opcode.CMSG_AUTO_STORE_GUILD_BANK_ITEM)]
+        public static void HandleAutoStoreGuildBankItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+            packet.ReadByte("BankSlot");
         }
 
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]

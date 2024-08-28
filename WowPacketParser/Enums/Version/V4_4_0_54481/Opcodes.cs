@@ -65,10 +65,10 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_AUTO_GUILD_BANK_ITEM, 0x34B6 },
             { Opcode.CMSG_AUTO_STORE_BAG_ITEM, 0x3999 },
             { Opcode.CMSG_AUTO_STORE_GUILD_BANK_ITEM, 0x34BF },
-            { Opcode.CMSG_AZERITE_EMPOWERED_ITEM_SELECT_POWER, 0x32F3 },
-            { Opcode.CMSG_AZERITE_EMPOWERED_ITEM_VIEWED, 0x32E1 },
-            { Opcode.CMSG_AZERITE_ESSENCE_ACTIVATE_ESSENCE, 0x32F5 },
-            { Opcode.CMSG_AZERITE_ESSENCE_UNLOCK_MILESTONE, 0x32F4 },
+            { Opcode.CMSG_AZERITE_EMPOWERED_ITEM_SELECT_POWER, 0x32F3 }, // NYI
+            { Opcode.CMSG_AZERITE_EMPOWERED_ITEM_VIEWED, 0x32E1 }, // NYI
+            { Opcode.CMSG_AZERITE_ESSENCE_ACTIVATE_ESSENCE, 0x32F5 }, // NYI
+            { Opcode.CMSG_AZERITE_ESSENCE_UNLOCK_MILESTONE, 0x32F4 }, // NYI
             { Opcode.CMSG_BANKER_ACTIVATE, 0x34B3 },
             { Opcode.CMSG_BATTLEFIELD_LEAVE, 0x3177 },
             { Opcode.CMSG_BATTLEFIELD_LIST, 0x3183 },
@@ -78,7 +78,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_BATTLEMASTER_JOIN_ARENA, 0x3521 },
             { Opcode.CMSG_JOIN_RATED_BATTLEGROUND, 0x317D },
             { Opcode.CMSG_BATTLEMASTER_JOIN_SKIRMISH, 0x3522 },
-            { Opcode.CMSG_BATTLENET_CHALLENGE_RESPONSE, 0x36D7 },
+            { Opcode.CMSG_BATTLENET_CHALLENGE_RESPONSE, 0x36D7 }, // NYI
             { Opcode.CMSG_BATTLENET_REQUEST, 0x36F9 },
             { Opcode.CMSG_BATTLE_PAY_ACK_FAILED_RESPONSE, 0x36D1 },
             { Opcode.CMSG_BATTLE_PAY_CANCEL_OPEN_CHECKOUT, 0x3717 },

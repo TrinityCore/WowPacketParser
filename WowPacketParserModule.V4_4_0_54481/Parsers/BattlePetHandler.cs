@@ -138,6 +138,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadWoWString("Name", nameLength);
         }
 
+        [Parser(Opcode.CMSG_BATTLE_PET_CLEAR_FANFARE)]
+        public static void HandleBattlePetClearFanfare(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED)]
         [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL)]
