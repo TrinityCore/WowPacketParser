@@ -79,8 +79,7 @@ namespace WowPacketParser.SQL.Builders
                         && p.Data.Map == creature.Map
                         && FloatComparison((float)p.Data.PosX, creature.Movement.Position.X, precision)
                         && FloatComparison((float)p.Data.PosY, creature.Movement.Position.Y, precision)
-                        && FloatComparison((float)p.Data.PosZ, creature.Movement.Position.Z, precision)
-                        && FloatComparison((float)p.Data.Orientation, creature.Movement.Orientation, precision)).FirstOrDefault();
+                        && FloatComparison((float)p.Data.PosZ, creature.Movement.Position.Z, precision)).FirstOrDefault();
 
                     if (existingCreature != null)
                         creature.ExistingDatabaseSpawn = true;
