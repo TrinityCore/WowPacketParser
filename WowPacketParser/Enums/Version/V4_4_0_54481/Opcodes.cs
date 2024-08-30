@@ -178,35 +178,35 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_CHAT_MESSAGE_WHISPER, 0x37E4 },
             { Opcode.CMSG_CHAT_MESSAGE_YELL, 0x37FD },
             { Opcode.CMSG_CHAT_REGISTER_ADDON_PREFIXES, 0x37E1 },
-            { Opcode.CMSG_CHAT_REPORT_FILTERED, 0x37E0 },
+            { Opcode.CMSG_CHAT_REPORT_FILTERED, 0x37E0 }, // NYI
             { Opcode.CMSG_CHAT_REPORT_IGNORED, 0x37DF },
             { Opcode.CMSG_CHAT_UNREGISTER_ALL_ADDON_PREFIXES, 0x37E2 },
             { Opcode.CMSG_CHECK_IS_ADVENTURE_MAP_POI_VALID, 0x3249 },
-            { Opcode.CMSG_CLEAR_NEW_APPEARANCE, 0x3129 },
+            { Opcode.CMSG_CLEAR_NEW_APPEARANCE, 0x3129 }, // NYI
             { Opcode.CMSG_CLEAR_RAID_MARKER, 0x31A9 },
             { Opcode.CMSG_CLOSE_INTERACTION, 0x3493 },
-            { Opcode.CMSG_CLOSE_QUEST_CHOICE, 0x32A4 },
-            { Opcode.CMSG_CLOSE_TRAIT_SYSTEM_INTERACTION, 0x330F },
-            { Opcode.CMSG_CLUB_FINDER_APPLICATION_RESPONSE, 0x3722 },
-            { Opcode.CMSG_CLUB_FINDER_GET_APPLICANTS_LIST, 0x3720 },
-            { Opcode.CMSG_CLUB_FINDER_POST, 0x371D },
-            { Opcode.CMSG_CLUB_FINDER_REQUEST_CLUBS_DATA, 0x3724 },
-            { Opcode.CMSG_CLUB_FINDER_REQUEST_CLUBS_LIST, 0x371E },
-            { Opcode.CMSG_CLUB_FINDER_REQUEST_MEMBERSHIP_TO_CLUB, 0x371F },
-            { Opcode.CMSG_CLUB_FINDER_REQUEST_PENDING_CLUBS_LIST, 0x3723 },
-            { Opcode.CMSG_CLUB_FINDER_REQUEST_SUBSCRIBED_CLUB_POSTING_IDS, 0x3725 },
-            { Opcode.CMSG_CLUB_FINDER_RESPOND_TO_APPLICANT, 0x3721 },
-            { Opcode.CMSG_CLUB_FINDER_WHISPER_APPLICANT_REQUEST, 0x3740 },
-            { Opcode.CMSG_CLUB_PRESENCE_SUBSCRIBE, 0x36FB },
+            { Opcode.CMSG_CLOSE_QUEST_CHOICE, 0x32A4 }, // NYI
+            { Opcode.CMSG_CLOSE_TRAIT_SYSTEM_INTERACTION, 0x330F }, // NYI
+            { Opcode.CMSG_CLUB_FINDER_APPLICATION_RESPONSE, 0x3722 }, // NYI
+            { Opcode.CMSG_CLUB_FINDER_GET_APPLICANTS_LIST, 0x3720 }, // NYI
+            { Opcode.CMSG_CLUB_FINDER_POST, 0x371D }, // NYI
+            { Opcode.CMSG_CLUB_FINDER_REQUEST_CLUBS_DATA, 0x3724 }, // NYI
+            { Opcode.CMSG_CLUB_FINDER_REQUEST_CLUBS_LIST, 0x371E }, // NYI
+            { Opcode.CMSG_CLUB_FINDER_REQUEST_MEMBERSHIP_TO_CLUB, 0x371F }, // NYI
+            { Opcode.CMSG_CLUB_FINDER_REQUEST_PENDING_CLUBS_LIST, 0x3723 }, // NYI
+            { Opcode.CMSG_CLUB_FINDER_REQUEST_SUBSCRIBED_CLUB_POSTING_IDS, 0x3725 }, // NYI
+            { Opcode.CMSG_CLUB_FINDER_RESPOND_TO_APPLICANT, 0x3721 }, // NYI
+            { Opcode.CMSG_CLUB_FINDER_WHISPER_APPLICANT_REQUEST, 0x3740 }, // NYI
+            { Opcode.CMSG_CLUB_PRESENCE_SUBSCRIBE, 0x36FB }, // NYI
             { Opcode.CMSG_COLLECTION_ITEM_SET_FAVORITE, 0x3630 },
-            { Opcode.CMSG_COMMENTATOR_ENABLE, 0x35F0 },
-            { Opcode.CMSG_COMMENTATOR_ENTER_INSTANCE, 0x35F4 },
-            { Opcode.CMSG_COMMENTATOR_EXIT_INSTANCE, 0x35F5 },
-            { Opcode.CMSG_COMMENTATOR_GET_MAP_INFO, 0x35F1 },
-            { Opcode.CMSG_COMMENTATOR_GET_PLAYER_COOLDOWNS, 0x35F3 },
-            { Opcode.CMSG_COMMENTATOR_GET_PLAYER_INFO, 0x35F2 },
-            { Opcode.CMSG_COMMENTATOR_START_WARGAME, 0x35EF },
-            { Opcode.CMSG_COMMERCE_TOKEN_GET_COUNT, 0x36E8 },
+            { Opcode.CMSG_COMMENTATOR_ENABLE, 0x35F0 }, // NYI
+            { Opcode.CMSG_COMMENTATOR_ENTER_INSTANCE, 0x35F4 }, // NYI
+            { Opcode.CMSG_COMMENTATOR_EXIT_INSTANCE, 0x35F5 }, // NYI
+            { Opcode.CMSG_COMMENTATOR_GET_MAP_INFO, 0x35F1 }, // NYI
+            { Opcode.CMSG_COMMENTATOR_GET_PLAYER_COOLDOWNS, 0x35F3 }, // NYI
+            { Opcode.CMSG_COMMENTATOR_GET_PLAYER_INFO, 0x35F2 }, // NYI
+            { Opcode.CMSG_COMMENTATOR_START_WARGAME, 0x35EF }, // NYI
+            { Opcode.CMSG_COMMERCE_TOKEN_GET_COUNT, 0x36E8 }, // NYI
             { Opcode.CMSG_COMMERCE_TOKEN_GET_LOG, 0x36F2 },
             { Opcode.CMSG_COMMERCE_TOKEN_GET_MARKET_PRICE, 0x36E9 },
             { Opcode.CMSG_COMPLAINT, 0x366A },
@@ -215,12 +215,12 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_CONFIRM_BARBERS_CHOICE, 0x3210 },
             { Opcode.CMSG_CONFIRM_RESPEC_WIPE, 0x320F },
             { Opcode.CMSG_CONNECT_TO_FAILED, 0x35D4 },
-            { Opcode.CMSG_CONSUMABLE_TOKEN_BUY, 0x36ED },
-            { Opcode.CMSG_CONSUMABLE_TOKEN_BUY_AT_MARKET_PRICE, 0x36EE },
-            { Opcode.CMSG_CONSUMABLE_TOKEN_CAN_VETERAN_BUY, 0x36EC },
-            { Opcode.CMSG_CONSUMABLE_TOKEN_REDEEM, 0x36F0 },
-            { Opcode.CMSG_CONSUMABLE_TOKEN_REDEEM_CONFIRMATION, 0x36F1 },
-            { Opcode.CMSG_CONTRIBUTION_LAST_UPDATE_REQUEST, 0x355E },
+            { Opcode.CMSG_CONSUMABLE_TOKEN_BUY, 0x36ED }, // NYI
+            { Opcode.CMSG_CONSUMABLE_TOKEN_BUY_AT_MARKET_PRICE, 0x36EE }, // NYI
+            { Opcode.CMSG_CONSUMABLE_TOKEN_CAN_VETERAN_BUY, 0x36EC }, // NYI
+            { Opcode.CMSG_CONSUMABLE_TOKEN_REDEEM, 0x36F0 }, // NYI
+            { Opcode.CMSG_CONSUMABLE_TOKEN_REDEEM_CONFIRMATION, 0x36F1 }, // NYI
+            { Opcode.CMSG_CONTRIBUTION_LAST_UPDATE_REQUEST, 0x355E }, // NYI
             { Opcode.CMSG_CONVERSATION_LINE_STARTED, 0x3548 },
             { Opcode.CMSG_CONVERT_RAID, 0x364D },
             { Opcode.CMSG_CREATE_CHARACTER, 0x3641 },
@@ -237,12 +237,12 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_DF_JOIN, 0x360A },
             { Opcode.CMSG_DF_LEAVE, 0x3613 },
             { Opcode.CMSG_DF_PROPOSAL_RESPONSE, 0x3608 },
-            { Opcode.CMSG_DF_READY_CHECK_RESPONSE, 0x361B },
+            { Opcode.CMSG_DF_READY_CHECK_RESPONSE, 0x361B }, // NYI
             { Opcode.CMSG_DF_SET_ROLES, 0x3616 },
             { Opcode.CMSG_DF_TELEPORT, 0x3618 },
-            { Opcode.CMSG_DISCARDED_TIME_SYNC_ACKS, 0x3A41 },
+            { Opcode.CMSG_DISCARDED_TIME_SYNC_ACKS, 0x3A41 }, // NYI
             { Opcode.CMSG_DISMISS_CRITTER, 0x34F9 },
-            { Opcode.CMSG_DO_COUNTDOWN, 0x371C },
+            { Opcode.CMSG_DO_COUNTDOWN, 0x371C }, // NYI
             { Opcode.CMSG_DO_READY_CHECK, 0x3631 },
             { Opcode.CMSG_DUEL_RESPONSE, 0x34E2 },
             { Opcode.CMSG_EJECT_PASSENGER, 0x323E },

@@ -361,6 +361,61 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("Accepted");
         }
 
+        [Parser(Opcode.CMSG_DF_BOOT_PLAYER_VOTE)]
+        public static void HandleDFBootPlayerVote(Packet packet)
+        {
+            packet.ReadBit("Vote");
+        }
+
+        [Parser(Opcode.CMSG_DF_JOIN)]
+        public static void HandleDFJoin(Packet packet)
+        {
+            packet.ReadBit("QueueAsGroup");
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadBit("UnknownBit");
+            packet.ResetBitReader();
+
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+            var slotsCount = packet.ReadInt32();
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+
+            for (var i = 0; i < slotsCount; ++i)
+                packet.ReadUInt32("Slot", i);
+        }
+
+        [Parser(Opcode.CMSG_DF_LEAVE)]
+        public static void HandleDFLeave(Packet packet)
+        {
+            ReadCliRideTicket(packet, "RideTicket");
+        }
+
+        [Parser(Opcode.CMSG_DF_PROPOSAL_RESPONSE)]
+        public static void HandleDFProposalResponse(Packet packet)
+        {
+            ReadCliRideTicket(packet);
+            packet.ReadInt64("InstanceID");
+            packet.ReadInt32("ProposalID");
+            packet.ReadBit("Accepted");
+        }
+
+        [Parser(Opcode.CMSG_DF_SET_ROLES)]
+        public static void HandleDFSetRoles(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadByteE<LfgRoleFlag>("RolesDesired");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_DF_TELEPORT)]
+        public static void HandleDFTeleport(Packet packet)
+        {
+            packet.ReadBit("TeleportOut");
+        }
+
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS)]
         [Parser(Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST)]
         [Parser(Opcode.CMSG_DF_GET_JOIN_STATUS)]

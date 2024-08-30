@@ -13,5 +13,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ResetBitReader();
             packet.ReadBit("IsVisible");
         }
+
+        [Parser(Opcode.CMSG_CHECK_IS_ADVENTURE_MAP_POI_VALID)]
+        public static void HandleCheckIsAdventureMapPOIValid(Packet packet)
+        {
+            packet.ReadUInt32("AdventureMapPoiID");
+        }
     }
 }

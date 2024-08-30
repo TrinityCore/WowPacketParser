@@ -212,5 +212,56 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             if (channelNameLen > 1)
                 packet.ReadDynamicString("ChannelName", channelNameLen);
         }
+
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_GUILD)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_OFFICER)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_YELL)]
+        public static void HandleClientChatMessage(Packet packet)
+        {
+            packet.ReadInt32E<Language>("Language");
+            var len = packet.ReadBits(11);
+            packet.ReadWoWString("Text", len);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_INSTANCE_CHAT)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_PARTY)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID_WARNING)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_SAY)]
+        public static void HandleClientChatMessageInstance(Packet packet)
+        {
+            packet.ReadInt32E<Language>("Language");
+            var len = packet.ReadBits(11);
+            packet.ReadBit("IsSecure");
+            packet.ReadWoWString("Text", len);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_WHISPER)]
+        public static void HandleClientChatMessageWhisper(Packet packet)
+        {
+            packet.ReadInt32E<Language>("Language");
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadUInt32("TargetVirtualRealmAddress");
+            var targetLen = packet.ReadBits(6);
+            var textLen = packet.ReadBits(11);
+
+            if (targetLen > 1)
+                packet.ReadDynamicString("Target", targetLen);
+
+            if (textLen > 1)
+                packet.ReadDynamicString("Text", textLen);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_REPORT_IGNORED)]
+        public static void HandleChatIgnored(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadByte("Reason");
+        }
+
+        [Parser(Opcode.CMSG_EMOTE)]
+        public static void HandleChatNull(Packet packet)
+        {
+        }
     }
 }

@@ -45,5 +45,17 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             // check in sniff
             // packet.ReadUInt32("AuctionDuration");
         }
+
+        [Parser(Opcode.CMSG_COMMERCE_TOKEN_GET_LOG)]
+        public static void HandleCommerceTokenGetLog(Packet packet)
+        {
+            packet.ReadUInt32("UnkInt");
+        }
+
+        [Parser(Opcode.CMSG_COMMERCE_TOKEN_GET_MARKET_PRICE)]
+        public static void HandleCommerceTokenGetMarketPrice(Packet packet)
+        {
+            packet.ReadUInt32("UnkInt");
+        }
     }
 }

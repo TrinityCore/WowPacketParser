@@ -863,6 +863,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadWoWString("Text", len2);
         }
 
+        [Parser(Opcode.CMSG_COLLECTION_ITEM_SET_FAVORITE)]
+        public static void HandleCollectionItemSetFavorite(Packet packet)
+        {
+            packet.ReadInt32E<CollectionType>("CollectionType");
+            packet.ReadUInt32("ID");
+            packet.ResetBitReader();
+            packet.ReadBit("IsFavorite");
+        }
+
+        [Parser(Opcode.CMSG_EJECT_PASSENGER)]
+        public static void HandleEjectPassenger(Packet packet)
+        {
+            packet.ReadPackedGuid128("Passenger");
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
@@ -871,6 +886,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_FISH_ESCAPED)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
+        [Parser(Opcode.CMSG_CLIENT_PORT_GRAVEYARD)]
+        [Parser(Opcode.CMSG_COMPLETE_CINEMATIC)]
+        [Parser(Opcode.CMSG_COMPLETE_MOVIE)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

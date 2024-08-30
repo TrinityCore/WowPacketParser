@@ -102,6 +102,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("StateIndex");
         }
 
+        [Parser(Opcode.CMSG_CLEAR_TRADE_ITEM)]
+        public static void HandleClearTradeItem(Packet packet)
+        {
+            packet.ReadByte("Slot");
+        }
+
         [Parser(Opcode.CMSG_BEGIN_TRADE)]
         [Parser(Opcode.CMSG_BUSY_TRADE)]
         [Parser(Opcode.CMSG_CANCEL_TRADE)]

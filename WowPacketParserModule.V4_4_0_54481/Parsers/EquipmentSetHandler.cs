@@ -62,5 +62,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt64("Guid");
             packet.ReadByte("Result");
         }
+
+        [Parser(Opcode.CMSG_DELETE_EQUIPMENT_SET)]
+        public static void HandleDeleteEquipmentSet(Packet packet)
+        {
+            packet.ReadUInt64("ID");
+        }
     }
 }

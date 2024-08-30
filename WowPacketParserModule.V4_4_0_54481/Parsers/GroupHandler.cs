@@ -331,6 +331,27 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadByte("PartyIndex");
         }
 
+        [Parser(Opcode.CMSG_CLEAR_RAID_MARKER)]
+        public static void HandleClearRaidMarker(Packet packet)
+        {
+            packet.ReadByte("MarkerId");
+        }
+
+        [Parser(Opcode.CMSG_CONVERT_RAID)]
+        public static void HandleConvertRaid(Packet packet)
+        {
+            packet.ReadBit("Raid");
+        }
+
+        [Parser(Opcode.CMSG_DO_READY_CHECK)]
+        public static void HandleDoReadyCheck(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
         [Parser(Opcode.SMSG_GROUP_UNINVITE)]

@@ -122,5 +122,52 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var len = packet.ReadBits(7);
             packet.ReadWoWString("ChannelName", len);
         }
+
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_ANNOUNCEMENTS)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_DECLINE_INVITE)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_DISPLAY_LIST)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_LIST)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_OWNER)]
+        public static void HandleChannelMisc2(Packet packet)
+        {
+            var length = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", length);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_BAN)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_INVITE)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_KICK)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_MODERATOR)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_SET_OWNER)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_SILENCE_ALL)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_UNBAN)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_UNMODERATOR)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_UNSILENCE_ALL)]
+        public static void HandleChannelMisc1(Packet packet)
+        {
+            var lenChannelName = packet.ReadBits(7);
+            var lenName = packet.ReadBits(9);
+
+            packet.ReadWoWString("ChannelName", lenChannelName);
+            packet.ReadWoWString("Name", lenName);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_PASSWORD)]
+        public static void HandleChannelPassword(Packet packet)
+        {
+            var lenChannelName = packet.ReadBits(7);
+            var lenName = packet.ReadBits(7);
+
+            packet.ReadWoWString("ChannelName", lenChannelName);
+            packet.ReadWoWString("Name", lenName);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_LEAVE_CHANNEL)]
+        public static void HandleChannelLeave(Packet packet)
+        {
+            packet.ReadInt32("ZoneChannelID");
+            var length = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", length);
+        }
     }
 }

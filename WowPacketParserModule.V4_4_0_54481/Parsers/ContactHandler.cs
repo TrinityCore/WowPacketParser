@@ -28,6 +28,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadWoWString("Notes", notesLen);
         }
 
+        public static void ReadQualifiedGUID(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("VirtualRealmAddress", indexes);
+            packet.ReadPackedGuid128("Guid", indexes);
+        }
+
         [Parser(Opcode.SMSG_CONTACT_LIST)]
         public static void HandleContactList(Packet packet)
         {
@@ -77,6 +83,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var nameLength = packet.ReadBits(9);
             packet.ReadPackedGuid128("AccountGUID");
             packet.ReadWoWString("Name", nameLength);
+        }
+
+        [Parser(Opcode.CMSG_DEL_FRIEND)]
+        [Parser(Opcode.CMSG_DEL_IGNORE)]
+        public static void HandleDeleteFriendOrIgnoreOrMute(Packet packet)
+        {
+            ReadQualifiedGUID(packet, "QualifiedGUID");
+        }
+
+        [Parser(Opcode.CMSG_DUEL_RESPONSE)]
+        public static void HandleDuelResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("ArbiterGUID");
+            packet.ReadBit("Accepted");
+            packet.ReadBit("Forfeited");
         }
     }
 }

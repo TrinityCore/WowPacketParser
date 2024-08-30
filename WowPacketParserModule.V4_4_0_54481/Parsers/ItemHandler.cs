@@ -376,7 +376,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("ItemType");
 
             Substructures.ItemHandler.ReadItemInstance(packet, "ItemInstance");
+        }
 
+        [Parser(Opcode.CMSG_DESTROY_ITEM)]
+        public static void HandleDestroyItem(Packet packet)
+        {
+            packet.ReadUInt32("Count");
+            packet.ReadByte("ContainerId");
+            packet.ReadByte("SlotNum");
         }
 
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]

@@ -699,6 +699,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBitsE<PetitionResultType>("Result", 4);
         }
 
+        [Parser(Opcode.CMSG_DECLINE_GUILD_INVITES)]
+        public static void HandleDeclineGuildInvites(Packet packet)
+        {
+            packet.ReadBit("Allow");
+        }
+
+        [Parser(Opcode.CMSG_DECLINE_PETITION)]
+        public static void HandleDeclinePetition(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGUID");
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]

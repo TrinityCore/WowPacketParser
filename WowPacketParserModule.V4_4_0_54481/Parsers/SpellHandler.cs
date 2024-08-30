@@ -1081,6 +1081,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("Slot");
         }
 
+        [Parser(Opcode.CMSG_CONFIRM_RESPEC_WIPE)]
+        public static void HandleConfirmRespecWipe(Packet packet)
+        {
+            packet.ReadPackedGuid128("RespecMaster");
+            packet.ReadByte("RespecType");
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL)]
         [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA)]

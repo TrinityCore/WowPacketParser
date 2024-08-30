@@ -105,5 +105,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadUInt16("SpecID");
         }
+
+        [Parser(Opcode.CMSG_DISMISS_CRITTER)]
+        public static void HandleDismissCritter(Packet packet)
+        {
+            packet.ReadPackedGuid128("CritterGUID");
+        }
     }
 }
