@@ -81,6 +81,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_GM_TICKET_ACKNOWLEDGE_SURVEY)]
+        public static void HandleGMTicketAcknowledgeSurvey(Packet packet)
+        {
+            packet.ReadInt32("CaseID");
+        }
+
         [Parser(Opcode.CMSG_GM_TICKET_GET_TICKET)]
         [Parser(Opcode.CMSG_GM_TICKET_GET_CASE_STATUS)]
         [Parser(Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS)]

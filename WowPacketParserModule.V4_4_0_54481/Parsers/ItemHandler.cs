@@ -386,6 +386,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByte("SlotNum");
         }
 
+        [Parser(Opcode.CMSG_GET_ITEM_PURCHASE_DATA)]
+        public static void HandleGetItemPurchaseData(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+        }
+
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW)]
         public static void HandleItemZero(Packet packet)

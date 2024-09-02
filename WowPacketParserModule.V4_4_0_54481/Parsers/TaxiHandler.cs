@@ -52,6 +52,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("FlyingMountID");
         }
 
+        [Parser(Opcode.CMSG_ENABLE_TAXI_NODE)]
+        public static void HandleEnableTaxiNode(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+        }
+
         [Parser(Opcode.SMSG_NEW_TAXI_PATH)]
         public static void HandleTaxiNull(Packet packet)
         {

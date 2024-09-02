@@ -853,7 +853,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         }
 
         [Parser(Opcode.SMSG_MIRROR_IMAGE_CREATURE_DATA)]
-        public static void HandleGetMirrorImageData(Packet packet)
+        public static void HandleMirrorImageCreatureData(Packet packet)
         {
             packet.ReadPackedGuid128("UnitGUID");
             packet.ReadInt32("DisplayID");
@@ -1086,6 +1086,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("RespecMaster");
             packet.ReadByte("RespecType");
+        }
+
+        [Parser(Opcode.CMSG_GET_MIRROR_IMAGE_DATA)]
+        public static void HandleGetMirrorImageData(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("DisplayID");
         }
 
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]

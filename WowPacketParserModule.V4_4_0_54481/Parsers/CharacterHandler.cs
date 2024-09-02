@@ -609,7 +609,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadChrCustomizationChoice(packet, "Customizations", i);
         }
 
+        [Parser(Opcode.CMSG_GENERATE_RANDOM_CHARACTER_NAME)]
+        public static void HandleGenerateRandomCharacterNameQuery(Packet packet)
+        {
+            packet.ReadByteE<Race>("Race");
+            packet.ReadSByteE<Gender>("Sex");
+        }
+
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE)]
+        [Parser(Opcode.CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT)]
         public static void HandleCharNull(Packet packet)
         {
         }

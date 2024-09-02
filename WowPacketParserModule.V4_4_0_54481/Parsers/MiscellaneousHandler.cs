@@ -878,6 +878,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Passenger");
         }
 
+        [Parser(Opcode.CMSG_FAR_SIGHT)]
+        public static void HandleFarSight(Packet packet)
+        {
+            packet.ReadBool("Apply");
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
@@ -889,6 +895,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_CLIENT_PORT_GRAVEYARD)]
         [Parser(Opcode.CMSG_COMPLETE_CINEMATIC)]
         [Parser(Opcode.CMSG_COMPLETE_MOVIE)]
+        [Parser(Opcode.CMSG_ENABLE_NAGLE)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

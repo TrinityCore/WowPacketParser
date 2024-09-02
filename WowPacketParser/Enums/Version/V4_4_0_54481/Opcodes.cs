@@ -249,22 +249,22 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_EMOTE, 0x3543 },
             { Opcode.CMSG_ENABLE_NAGLE, 0x377F },
             { Opcode.CMSG_ENABLE_TAXI_NODE, 0x34A9 },
-            { Opcode.CMSG_ENGINE_SURVEY, 0x36E7 },
+            { Opcode.CMSG_ENGINE_SURVEY, 0x36E7 }, // NYI
             { Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK, 0x377B },
             { Opcode.CMSG_ENUM_CHARACTERS, 0x35E8 },
             { Opcode.CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT, 0x36E1 },
             { Opcode.CMSG_FAR_SIGHT, 0x34E8 },
-            { Opcode.CMSG_GAME_EVENT_DEBUG_DISABLE, 0x31B3 },
-            { Opcode.CMSG_GAME_EVENT_DEBUG_ENABLE, 0x31B4 },
+            { Opcode.CMSG_GAME_EVENT_DEBUG_DISABLE, 0x31B3 }, // NYI
+            { Opcode.CMSG_GAME_EVENT_DEBUG_ENABLE, 0x31B4 }, // NYI
             { Opcode.CMSG_GAME_OBJ_REPORT_USE, 0x34EF },
             { Opcode.CMSG_GAME_OBJ_USE, 0x34EE },
             { Opcode.CMSG_GENERATE_RANDOM_CHARACTER_NAME, 0x35E7 },
-            { Opcode.CMSG_GET_ACCOUNT_CHARACTER_LIST, 0x36BB },
-            { Opcode.CMSG_GET_ACCOUNT_NOTIFICATIONS, 0x3738 },
+            { Opcode.CMSG_GET_ACCOUNT_CHARACTER_LIST, 0x36BB }, // NYI
+            { Opcode.CMSG_GET_ACCOUNT_NOTIFICATIONS, 0x3738 }, // NYI
             { Opcode.CMSG_GET_ITEM_PURCHASE_DATA, 0x3531 },
             { Opcode.CMSG_GET_MIRROR_IMAGE_DATA, 0x3299 },
             { Opcode.CMSG_GET_PVP_OPTIONS_ENABLED, 0x35EE },
-            { Opcode.CMSG_GET_REMAINING_GAME_TIME, 0x36EF },
+            { Opcode.CMSG_GET_REMAINING_GAME_TIME, 0x36EF }, // NYI
             { Opcode.CMSG_GET_UNDELETE_CHARACTER_COOLDOWN_STATUS, 0x36E3 },
             { Opcode.CMSG_GET_VAS_ACCOUNT_CHARACTER_LIST, 0x36F4 },
             { Opcode.CMSG_GET_VAS_TRANSFER_TARGET_REALM_LIST, 0x36F5 },
@@ -272,10 +272,10 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_GM_TICKET_GET_CASE_STATUS, 0x368B },
             { Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS, 0x368A },
             { Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x3494 },
-            { Opcode.CMSG_GUILD_ADD_BATTLENET_FRIEND, 0x5036 },
+            { Opcode.CMSG_GUILD_ADD_BATTLENET_FRIEND, 0x5036 }, // NYI
             { Opcode.CMSG_GUILD_ADD_RANK, 0x501B },
             { Opcode.CMSG_GUILD_ASSIGN_MEMBER_RANK, 0x5016 },
-            { Opcode.CMSG_GUILD_AUTO_DECLINE_INVITATION, 0x5018 },
+            { Opcode.CMSG_GUILD_AUTO_DECLINE_INVITATION, 0x5018 }, // NYI
             { Opcode.CMSG_GUILD_BANK_ACTIVATE, 0x34B5 },
             { Opcode.CMSG_GUILD_BANK_BUY_TAB, 0x34C3 },
             { Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY, 0x34C5 },

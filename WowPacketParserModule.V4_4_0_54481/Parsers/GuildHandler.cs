@@ -711,6 +711,60 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("PetitionGUID");
         }
 
+        [Parser(Opcode.CMSG_GUILD_ADD_RANK)]
+        public static void HandleGuildAddRank(Packet packet)
+        {
+            var nameLength = packet.ReadBits(7);
+            packet.ReadInt32("RankOrder");
+            packet.ReadWoWString("Name", nameLength);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_ASSIGN_MEMBER_RANK)]
+        public static void HandleGuildAssignMemberRank(Packet packet)
+        {
+            packet.ReadPackedGuid128("Member");
+            packet.ReadInt32("RankOrder");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_ACTIVATE)]
+        public static void HandleGuildBankActivate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+
+            packet.ResetBitReader();
+            packet.ReadBit("FullUpdate");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_BUY_TAB)]
+        public static void HandleGuildBankBuyTab(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY)]
+        public static void HandleGuildBankDepositMoney(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadUInt64("Money");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_LOG_QUERY)]
+        public static void HandleGuildBankLogQuery(Packet packet)
+        {
+            packet.ReadInt32("Tab");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_QUERY_TAB)]
+        public static void HandleGuildBankQueryTab(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("Tab");
+
+            packet.ResetBitReader();
+            packet.ReadBit("FullUpdate");
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]
