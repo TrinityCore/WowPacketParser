@@ -344,19 +344,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         }
 
         [Parser(Opcode.CMSG_DO_READY_CHECK)]
+        [Parser(Opcode.CMSG_INITIATE_ROLE_POLL)]
+        [Parser(Opcode.CMSG_LEAVE_GROUP)]
         public static void HandleDoReadyCheck(Packet packet)
         {
             var hasPartyIndex = packet.ReadBit("HasPartyIndex");
 
             if (hasPartyIndex)
                 packet.ReadByte("PartyIndex");
-        }
-        [Parser(Opcode.CMSG_INITIATE_ROLE_POLL)]
-        public static void HandleInitiateRolePoll(Packet packet)
-        {
-            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
-            if (hasPartyIndex)
-                packet.ReadByte("hasPartyIndex");
         }
 
         [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]

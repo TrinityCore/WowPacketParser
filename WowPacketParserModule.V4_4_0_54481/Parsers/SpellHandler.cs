@@ -1095,6 +1095,25 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("DisplayID");
         }
 
+        [Parser(Opcode.CMSG_KEYBOUND_OVERRIDE)]
+        public static void HandleKeyboundOverride(Packet packet)
+        {
+            packet.ReadUInt16("OverrideID");
+        }
+
+        [Parser(Opcode.CMSG_LEARN_PREVIEW_TALENTS)]
+        public static void HandleLearnPreviewTalents(Packet packet)
+        {
+            var talentCount = packet.ReadUInt32("TalentCount");
+            packet.ReadInt32("TabIndex");
+
+            for (int i = 0; i < talentCount; i++)
+            {
+                packet.ReadInt32("TalentID", i);
+                packet.ReadInt32("Rank", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL)]
         [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA)]

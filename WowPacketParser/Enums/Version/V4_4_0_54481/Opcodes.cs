@@ -76,7 +76,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_BATTLEMASTER_HELLO, 0x32B3 },
             { Opcode.CMSG_BATTLEMASTER_JOIN, 0x3520 },
             { Opcode.CMSG_BATTLEMASTER_JOIN_ARENA, 0x3521 },
-            { Opcode.CMSG_JOIN_RATED_BATTLEGROUND, 0x317D },
+            { Opcode.CMSG_JOIN_RATED_BATTLEGROUND, 0x317D }, // NYI
             { Opcode.CMSG_BATTLEMASTER_JOIN_SKIRMISH, 0x3522 },
             { Opcode.CMSG_BATTLENET_CHALLENGE_RESPONSE, 0x36D7 }, // NYI
             { Opcode.CMSG_BATTLENET_REQUEST, 0x36F9 },
@@ -326,39 +326,39 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_ITEM_TEXT_QUERY, 0x32C6 },
             { Opcode.CMSG_KEEP_ALIVE, 0x367D },
             { Opcode.CMSG_KEYBOUND_OVERRIDE, 0x3225 },
-            { Opcode.CMSG_LATENCY_REPORT, 0x3785 },
+            { Opcode.CMSG_LATENCY_REPORT, 0x3785 }, // NYI
             { Opcode.CMSG_LEARN_PREVIEW_TALENTS, 0x3555 },
-            { Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET, 0x3557 },
+            { Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET, 0x3557 }, // NYI
             { Opcode.CMSG_LEARN_TALENT, 0x3554 },
             { Opcode.CMSG_LEAVE_GROUP, 0x3648 },
-            { Opcode.CMSG_LFG_LIST_APPLY_TO_GROUP, 0x360E },
-            { Opcode.CMSG_LFG_LIST_CANCEL_APPLICATION, 0x360F },
-            { Opcode.CMSG_LFG_LIST_DECLINE_APPLICANT, 0x3610 },
+            { Opcode.CMSG_LFG_LIST_APPLY_TO_GROUP, 0x360E }, // NYI
+            { Opcode.CMSG_LFG_LIST_CANCEL_APPLICATION, 0x360F }, // NYI
+            { Opcode.CMSG_LFG_LIST_DECLINE_APPLICANT, 0x3610 }, // NYI
             { Opcode.CMSG_LFG_LIST_GET_STATUS, 0x360C },
-            { Opcode.CMSG_LFG_LIST_INVITE_APPLICANT, 0x3611 },
-            { Opcode.CMSG_LFG_LIST_INVITE_RESPONSE, 0x3612 },
-            { Opcode.CMSG_LFG_LIST_JOIN, 0x32F1 },
-            { Opcode.CMSG_LFG_LIST_LEAVE, 0x360B },
-            { Opcode.CMSG_LFG_LIST_SEARCH, 0x360D },
-            { Opcode.CMSG_LFG_LIST_SET_ROLES, 0x3303 },
-            { Opcode.CMSG_LFG_LIST_UPDATE_REQUEST, 0x32F2 },
+            { Opcode.CMSG_LFG_LIST_INVITE_APPLICANT, 0x3611 }, // NYI
+            { Opcode.CMSG_LFG_LIST_INVITE_RESPONSE, 0x3612 }, // NYI
+            { Opcode.CMSG_LFG_LIST_JOIN, 0x32F1 }, // NYI
+            { Opcode.CMSG_LFG_LIST_LEAVE, 0x360B }, // NYI
+            { Opcode.CMSG_LFG_LIST_SEARCH, 0x360D }, // NYI
+            { Opcode.CMSG_LFG_LIST_SET_ROLES, 0x3303 }, // NYI
+            { Opcode.CMSG_LFG_LIST_UPDATE_REQUEST, 0x32F2 }, // NYI
             { Opcode.CMSG_LIST_INVENTORY, 0x34A1 },
-            { Opcode.CMSG_LIVE_REGION_ACCOUNT_RESTORE, 0x36BE },
-            { Opcode.CMSG_LIVE_REGION_CHARACTER_COPY, 0x36BD },
-            { Opcode.CMSG_LIVE_REGION_GET_ACCOUNT_CHARACTER_LIST, 0x36BC },
+            { Opcode.CMSG_LIVE_REGION_ACCOUNT_RESTORE, 0x36BE }, // NYI
+            { Opcode.CMSG_LIVE_REGION_CHARACTER_COPY, 0x36BD }, // NYI
+            { Opcode.CMSG_LIVE_REGION_GET_ACCOUNT_CHARACTER_LIST, 0x36BC }, // NYI
             { Opcode.CMSG_LOADING_SCREEN_NOTIFY, 0x35F8 },
             { Opcode.CMSG_LOGOUT_CANCEL, 0x34D8 },
-            { Opcode.CMSG_LOGOUT_INSTANT, 0x34D9 },
+            { Opcode.CMSG_LOGOUT_INSTANT, 0x34D9 }, // NYI
             { Opcode.CMSG_LOGOUT_REQUEST, 0x34D6 },
             { Opcode.CMSG_LOG_DISCONNECT, 0x377D },
-            { Opcode.CMSG_LOG_STREAMING_ERROR, 0x3781 },
+            { Opcode.CMSG_LOG_STREAMING_ERROR, 0x3781 }, // NYI
             { Opcode.CMSG_LOOT_ITEM, 0x3213 },
             { Opcode.CMSG_LOOT_MONEY, 0x3212 },
             { Opcode.CMSG_LOOT_RELEASE, 0x3215 },
             { Opcode.CMSG_LOOT_ROLL, 0x3216 },
             { Opcode.CMSG_LOOT_UNIT, 0x3211 },
-            { Opcode.CMSG_LOW_LEVEL_RAID1, 0x3512 },
-            { Opcode.CMSG_LOW_LEVEL_RAID2, 0x369D },
+            { Opcode.CMSG_LOW_LEVEL_RAID1, 0x3512 }, // NYI
+            { Opcode.CMSG_LOW_LEVEL_RAID2, 0x369D }, // NYI
             { Opcode.CMSG_MAIL_CREATE_TEXT_ITEM, 0x353D },
             { Opcode.CMSG_MAIL_DELETE, 0x3227 },
             { Opcode.CMSG_MAIL_GET_LIST, 0x3538 },

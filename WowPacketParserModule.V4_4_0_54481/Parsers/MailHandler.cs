@@ -116,6 +116,33 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadSingle("Delay");
         }
 
+        [Parser(Opcode.CMSG_MAIL_CREATE_TEXT_ITEM)]
+        public static void HandleMailCreateTextItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadUInt64("MailID");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_DELETE)]
+        public static void HandleMailDelete(Packet packet)
+        {
+            packet.ReadUInt64("MailID");
+            packet.ReadInt32("DeleteReason");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_GET_LIST)]
+        public static void HandleGetMailList(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_MARK_AS_READ)]
+        public static void HandleMailMarkAsRead(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadUInt64("MailID");
+        }
+
         [Parser(Opcode.CMSG_QUERY_NEXT_MAIL_TIME)]
         public static void HandleNullMail(Packet packet)
         {

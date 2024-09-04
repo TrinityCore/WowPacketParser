@@ -395,7 +395,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_ITEM_PURCHASE_REFUND)]
         public static void HandleItemPurchaseRefund(Packet packet)
         {
-            packet.ReadGuid("ItemGUID");
+            packet.ReadPackedGuid128("ItemGUID");
+        }
+
+        [Parser(Opcode.CMSG_ITEM_TEXT_QUERY)]
+        public static void HandleItemTextQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
         }
 
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]

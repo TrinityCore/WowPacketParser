@@ -181,6 +181,46 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             ReadLootItem(packet, "LootItem");
         }
 
+        [Parser(Opcode.CMSG_LOOT_ITEM)]
+        public static void HandleAutoStoreLootItem(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadPackedGuid128("Object", i);
+                packet.ReadByte("LootListID", i);
+            }
+
+            packet.ReadBit("IsSoftInteract");
+        }
+
+        [Parser(Opcode.CMSG_LOOT_MONEY)]
+        public static void HandleLootMoney(Packet packet)
+        {
+            packet.ReadBit("IsSoftInteract");
+        }
+
+        [Parser(Opcode.CMSG_LOOT_RELEASE)]
+        public static void HandleLootRelease(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
+        }
+
+        [Parser(Opcode.CMSG_LOOT_ROLL)]
+        public static void HandleLootRoll(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            packet.ReadByte("LootListID");
+            packet.ReadByteE<LootRollType>("RollType");
+        }
+
+        [Parser(Opcode.CMSG_LOOT_UNIT)]
+        public static void HandleLoot(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+        }
+
         [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
         [Parser(Opcode.SMSG_LOOT_RELEASE_ALL)]
         public static void HandleLootZero(Packet packet)
