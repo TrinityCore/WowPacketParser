@@ -392,6 +392,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("ItemGUID");
         }
 
+        [Parser(Opcode.CMSG_ITEM_PURCHASE_REFUND)]
+        public static void HandleItemPurchaseRefund(Packet packet)
+        {
+            packet.ReadGuid("ItemGUID");
+        }
+
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW)]
         public static void HandleItemZero(Packet packet)

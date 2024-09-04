@@ -108,9 +108,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByte("Slot");
         }
 
+        [Parser(Opcode.CMSG_INITIATE_TRADE)]
+        public static void HandleInitiateTrade(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+        }
+
         [Parser(Opcode.CMSG_BEGIN_TRADE)]
         [Parser(Opcode.CMSG_BUSY_TRADE)]
         [Parser(Opcode.CMSG_CANCEL_TRADE)]
+        [Parser(Opcode.CMSG_IGNORE_TRADE)]
         public static void HandleTradeNull(Packet packet)
         {
         }

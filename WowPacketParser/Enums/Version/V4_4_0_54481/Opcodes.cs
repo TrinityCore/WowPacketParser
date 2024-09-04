@@ -302,9 +302,9 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_GUILD_OFFICER_REMOVE_MEMBER, 0x501A },
             { Opcode.CMSG_GUILD_PERMISSIONS_QUERY, 0x5031 },
             { Opcode.CMSG_GUILD_PROMOTE_MEMBER, 0x5014 },
-            { Opcode.CMSG_GUILD_QUERY_MEMBER_RECIPES, 0x5020 },
+            { Opcode.CMSG_GUILD_QUERY_MEMBER_RECIPES, 0x5020 }, // NYI
             { Opcode.CMSG_GUILD_QUERY_NEWS, 0x5023 },
-            { Opcode.CMSG_GUILD_QUERY_RECIPES, 0x5021 },
+            { Opcode.CMSG_GUILD_QUERY_RECIPES, 0x5021 }, // NYI
             { Opcode.CMSG_GUILD_REPLACE_GUILD_MASTER, 0x5035 },
             { Opcode.CMSG_GUILD_SET_ACHIEVEMENT_TRACKING, 0x5026 },
             { Opcode.CMSG_GUILD_SET_FOCUSED_ACHIEVEMENT, 0x5027 },
@@ -320,7 +320,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_INITIATE_ROLE_POLL, 0x35DA },
             { Opcode.CMSG_INITIATE_TRADE, 0x3157 },
             { Opcode.CMSG_INSPECT, 0x352B },
-            { Opcode.CMSG_INSPECT_PVP, 0x369F },
+            { Opcode.CMSG_INSPECT_PVP, 0x369F }, // NYI
             { Opcode.CMSG_INSTANCE_LOCK_RESPONSE, 0x350B },
             { Opcode.CMSG_ITEM_PURCHASE_REFUND, 0x3532 },
             { Opcode.CMSG_ITEM_TEXT_QUERY, 0x32C6 },

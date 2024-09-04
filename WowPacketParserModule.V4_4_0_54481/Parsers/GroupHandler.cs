@@ -351,6 +351,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             if (hasPartyIndex)
                 packet.ReadByte("PartyIndex");
         }
+        [Parser(Opcode.CMSG_INITIATE_ROLE_POLL)]
+        public static void HandleInitiateRolePoll(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            if (hasPartyIndex)
+                packet.ReadByte("hasPartyIndex");
+        }
 
         [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]

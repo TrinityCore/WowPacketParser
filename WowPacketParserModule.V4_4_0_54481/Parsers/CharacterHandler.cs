@@ -616,6 +616,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadSByteE<Gender>("Sex");
         }
 
+        [Parser(Opcode.CMSG_INSPECT)]
+        public static void HandleInspect(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+        }
+
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE)]
         [Parser(Opcode.CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT)]
         public static void HandleCharNull(Packet packet)

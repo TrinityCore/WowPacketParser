@@ -821,6 +821,109 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("AchievementID");
         }
 
+        [Parser(Opcode.CMSG_GUILD_GET_RANKS)]
+        public static void HandleGuildRanks(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_INVITE_BY_NAME)]
+        public static void HandleGuildInviteByName(Packet packet)
+        {
+            var nameLength = packet.ReadBits(9);
+            var hasArenaTeamId = packet.ReadBit("HasArenaTeamId");
+
+            packet.ReadWoWString("Name", nameLength);
+
+            if (hasArenaTeamId)
+                packet.ReadInt32("ArenaTeamId");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_NEWS_UPDATE_STICKY)]
+        public static void HandleGuildNewsUpdateSticky(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadInt32("NewsID");
+            packet.ReadBit("Sticky");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_OFFICER_REMOVE_MEMBER)]
+        public static void HandleGuildOfficerRemoveMember(Packet packet)
+        {
+            packet.ReadPackedGuid128("Removee");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_PROMOTE_MEMBER)]
+        public static void HandleGuildPromoteMember(Packet packet)
+        {
+            packet.ReadPackedGuid128("Promotee");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_QUERY_NEWS)]
+        public static void HandleGuildQueryNews(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SET_FOCUSED_ACHIEVEMENT)]
+        public static void HandleGuildSetFocusedAchievement(Packet packet)
+        {
+            packet.ReadInt32("AchievementID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SET_GUILD_MASTER)]
+        public static void HandleGuildSetGuildMaster(Packet packet)
+        {
+            var nameLength = packet.ReadBits(9);
+            packet.ReadWoWString("NewMasterName", nameLength);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SET_MEMBER_NOTE)]
+        public static void HandleGuildSetMemberNote(Packet packet)
+        {
+            packet.ReadPackedGuid128("NoteeGUID");
+            var nameLength = packet.ReadBits(8);
+            packet.ReadBit("IsPublic");
+            packet.ReadWoWString("Note", nameLength);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS)]
+        public static void HandlelGuildSetRankPermissions(Packet packet)
+        {
+            packet.ReadByte("RankID");
+            packet.ReadInt32("RankOrder");
+            packet.ReadUInt32E<GuildRankRightsFlag>("Flags");
+            packet.ReadUInt32("WithdrawGoldLimit");
+
+            for (var i = 0; i < 8; ++i)
+            {
+                packet.ReadUInt32E<GuildBankRightsFlag>("TabFlags", i);
+                packet.ReadUInt32("TabWithdrawItemLimit", i);
+            }
+
+            packet.ResetBitReader();
+            var rankNameLen = packet.ReadBits(7);
+
+            packet.ReadWoWString("RankName", rankNameLen);
+
+            packet.ReadUInt32E<GuildRankRightsFlag>("OldFlags");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SHIFT_RANK)]
+        public static void HandleGuildShiftRank(Packet packet)
+        {
+            packet.ReadInt32("RankOrder");
+            packet.ReadBit("ShiftUp");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_UPDATE_INFO_TEXT)]
+        [Parser(Opcode.CMSG_GUILD_UPDATE_MOTD_TEXT)]
+        public static void HandleGuildUpdateInfoText(Packet packet)
+        {
+            var nameLength = packet.ReadBits(11);
+            packet.ReadWoWString("InfoText", nameLength);
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]
@@ -832,6 +935,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_GUILD_DECLINE_INVITATION)]
         [Parser(Opcode.CMSG_GUILD_DELETE)]
         [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
+        [Parser(Opcode.CMSG_GUILD_GET_ROSTER)]
+        [Parser(Opcode.CMSG_GUILD_LEAVE)]
+        [Parser(Opcode.CMSG_GUILD_PERMISSIONS_QUERY)]
+        [Parser(Opcode.CMSG_GUILD_REPLACE_GUILD_MASTER)]
         public static void HandleGuildZero(Packet packet)
         {
         }

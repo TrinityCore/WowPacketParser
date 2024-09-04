@@ -202,6 +202,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32<MapId>("MapID");
         }
 
+        [Parser(Opcode.CMSG_INSTANCE_LOCK_RESPONSE)]
+        public static void HandleInstanceLockResponse(Packet packet)
+        {
+            packet.ReadBool("Accept");
+        }
+
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_END)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_IN_COMBAT_RESURRECTION)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_PHASE_SHIFT_CHANGED)]
