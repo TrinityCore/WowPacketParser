@@ -221,6 +221,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Unit");
         }
 
+        [Parser(Opcode.CMSG_MASTER_LOOT_ITEM)]
+        public static void HandleMasterLootItem(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+            packet.ReadPackedGuid128("Target");
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadPackedGuid128("Object", i);
+                packet.ReadByte("LootListID", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
         [Parser(Opcode.SMSG_LOOT_RELEASE_ALL)]
         public static void HandleLootZero(Packet packet)

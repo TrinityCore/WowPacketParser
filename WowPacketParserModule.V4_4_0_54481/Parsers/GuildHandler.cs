@@ -924,6 +924,43 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadWoWString("InfoText", nameLength);
         }
 
+        [Parser(Opcode.CMSG_MERGE_GUILD_BANK_ITEM_WITH_GUILD_BANK_ITEM)]
+        public static void HandleMergeGuildBankItemWithGuildBankItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+            packet.ReadByte("BankSlot");
+            packet.ReadByte("BankTab1");
+            packet.ReadByte("BankSlot1");
+            packet.ReadUInt32("StackCount");
+        }
+
+        [Parser(Opcode.CMSG_MERGE_GUILD_BANK_ITEM_WITH_ITEM)]
+        [Parser(Opcode.CMSG_MERGE_ITEM_WITH_GUILD_BANK_ITEM)]
+        public static void HandleMergeGuildBankItemWithItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+            packet.ReadByte("BankSlot");
+            packet.ReadByte("ContainerItemSlot");
+            packet.ReadUInt32("StackCount");
+
+            var hasContainerSlot = packet.ReadBit("HasContainerSlot");
+
+            if (hasContainerSlot)
+                packet.ReadByte("ContainerSlot");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_GUILD_BANK_ITEM)]
+        public static void HandleMoveGuildBankItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+            packet.ReadByte("BankSlot");
+            packet.ReadByte("BankTab1");
+            packet.ReadByte("BankSlot1");
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]

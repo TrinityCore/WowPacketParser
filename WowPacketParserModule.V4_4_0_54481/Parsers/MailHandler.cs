@@ -143,6 +143,29 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt64("MailID");
         }
 
+        [Parser(Opcode.CMSG_MAIL_RETURN_TO_SENDER)]
+        public static void HandleMailReturnToSender(Packet packet)
+        {
+            packet.ReadUInt64("MailID");
+            packet.ReadPackedGuid128("SenderGUID");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_TAKE_ITEM)]
+        public static void HandleMailTakeItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadUInt64("MailID");
+            packet.ReadUInt64("AttachID");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_TAKE_MONEY)]
+        public static void HandleMailTakeMoney(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadUInt64("MailID");
+            packet.ReadUInt64("Money");
+        }
+
         [Parser(Opcode.CMSG_QUERY_NEXT_MAIL_TIME)]
         public static void HandleNullMail(Packet packet)
         {

@@ -354,6 +354,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadByte("PartyIndex");
         }
 
+        [Parser(Opcode.CMSG_MINIMAP_PING)]
+        public static void HandleClientMinimapPing(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadVector2("Position");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
         [Parser(Opcode.SMSG_GROUP_UNINVITE)]

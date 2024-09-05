@@ -371,6 +371,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadUInt32("MovementInertiaLifetimeMs", idx);
         }
 
+        public static MovementInfo ReadMovementAck(Packet packet, params object[] idx)
+        {
+            var stats = ReadMovementStats(packet, idx);
+            packet.ReadInt32("AckIndex", idx);
+            return stats;
+        }
+
         [Parser(Opcode.SMSG_ADJUST_SPLINE_DURATION)]
         public static void HandleAdjustSplineDuration(Packet packet)
         {
@@ -541,6 +548,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_MOVE_STOP_SWIM)]
         [Parser(Opcode.CMSG_MOVE_STOP_TURN)]
         [Parser(Opcode.CMSG_MOVE_DOUBLE_JUMP)]
+        [Parser(Opcode.CMSG_MOVE_UPDATE_FALL_SPEED)]
         public static void HandleClientPlayerMove(Packet packet)
         {
             var stats = ReadMovementStats(packet);
@@ -593,7 +601,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
         public static void HandleMoveSetCollisionHeightAck(Packet packet)
         {
-            V6_0_2_19033.Parsers.MovementHandler.ReadMovementAck(packet, "MovementAck");
+            ReadMovementAck(packet, "MovementAck");
             packet.ReadSingle("Height");
             packet.ReadInt32("MountDisplayID");
             packet.ReadByte("Reason");
@@ -875,6 +883,100 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             if (hasTransferSpell)
                 packet.ReadUInt32<SpellId>("TransferSpellID");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_APPLY_MOVEMENT_FORCE_ACK)]
+        public static void HandleMoveApplyMovementForceAck(Packet packet)
+        {
+            var stats = ReadMovementAck(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.PositionAsVector4 };
+            ReadMovementForce(packet, "MovementForce");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_CHANGE_VEHICLE_SEATS)]
+        public static void HandleMoveChangeVehicleSeats(Packet packet)
+        {
+            ReadMovementStats(packet);
+            packet.ReadPackedGuid128("DstVehicle");
+            packet.ReadByte("DstSeatIndex");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_COLLISION_DISABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_COLLISION_ENABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_ENABLE_DOUBLE_JUMP_ACK)]
+        [Parser(Opcode.CMSG_MOVE_ENABLE_SWIM_TO_FLY_TRANS_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FEATHER_FALL_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_ROOT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_UNROOT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_GRAVITY_ENABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_HOVER_ACK)]
+        [Parser(Opcode.CMSG_MOVE_INERTIA_DISABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_INERTIA_ENABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_FLY_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_TURN_WHILE_FALLING_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES_ACK)]
+        [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
+        public static void HandleMoveAck(Packet packet)
+        {
+            var stats = ReadMovementAck(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.PositionAsVector4 };
+        }
+
+        [Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_BACK_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_PITCH_RATE_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_RUN_BACK_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_RUN_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_SWIM_BACK_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_SWIM_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_TURN_RATE_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_WALK_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_MOD_MOVEMENT_FORCE_MAGNITUDE_ACK)]
+        public static void HandleMoveSpeedAck(Packet packet)
+        {
+            var stats = ReadMovementAck(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.PositionAsVector4 };
+            packet.ReadSingle("Speed");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK)]
+        public static void HandleMoveKnockBackAck(Packet packet)
+        {
+            var stats = ReadMovementAck(packet, "MovementAck");
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.PositionAsVector4 };
+
+            packet.ResetBitReader();
+
+            var hasSpeeds = packet.ReadBit("HasSpeeds");
+            if (hasSpeeds)
+            {
+                packet.ReadSingle("HorzSpeed");
+                packet.ReadSingle("VertSpeed");
+            }
+        }
+
+        [Parser(Opcode.CMSG_MOVE_REMOVE_MOVEMENT_FORCE_ACK)]
+        public static void HandleMoveRemoveMovementForceAck(Packet packet)
+        {
+            var stats = ReadMovementAck(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.PositionAsVector4 };
+            packet.ReadPackedGuid128("TriggerGUID");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_SET_VEHICLE_REC_ID_ACK)]
+        public static void HandleMoveSetVehicleRecIdAck(Packet packet)
+        {
+            var stats = ReadMovementAck(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.PositionAsVector4 };
+            packet.ReadInt32("VehicleRecID");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_SPLINE_DONE)]
+        public static void HandleMoveSplineDone(Packet packet)
+        {
+            ReadMovementStats(packet);
+            packet.ReadInt32("SplineID");
         }
 
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]

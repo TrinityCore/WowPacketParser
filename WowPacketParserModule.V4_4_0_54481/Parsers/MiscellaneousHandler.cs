@@ -881,7 +881,17 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_FAR_SIGHT)]
         public static void HandleFarSight(Packet packet)
         {
-            packet.ReadBool("Apply");
+            packet.ReadBit("Apply");
+        }
+
+        [Parser(Opcode.CMSG_MOUNT_SPECIAL_ANIM)]
+        public static void HandleMountSpecialAnim(Packet packet)
+        {
+            var count = packet.ReadUInt32();
+            packet.ReadInt32("SequenceVariation");
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("SpellVisualKitID", i);
         }
 
         [Parser(Opcode.SMSG_RESUME_COMMS)]
@@ -896,6 +906,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_COMPLETE_CINEMATIC)]
         [Parser(Opcode.CMSG_COMPLETE_MOVIE)]
         [Parser(Opcode.CMSG_ENABLE_NAGLE)]
+        [Parser(Opcode.CMSG_NEXT_CINEMATIC_CAMERA)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

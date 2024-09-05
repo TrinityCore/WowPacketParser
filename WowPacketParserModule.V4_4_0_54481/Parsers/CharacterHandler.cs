@@ -622,6 +622,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Target");
         }
 
+        [Parser(Opcode.CMSG_MOUNT_SET_FAVORITE)]
+        public static void HandleMountSetFavorite(Packet packet)
+        {
+            packet.ReadInt32("MountSpellID");
+            packet.ReadBit("IsFavorite");
+        }
+
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE)]
         [Parser(Opcode.CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT)]
         public static void HandleCharNull(Packet packet)
