@@ -203,8 +203,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             CoreParsers.QuestHandler.AddQuestEnder(questgiverGUID, (uint)id);
 
-            for (int i = 0; i < 3; i++)
-                packet.ReadInt32("QuestFlags", i);
+            packet.ReadInt32E<QuestFlags>("Flags");
+            packet.ReadInt32E<QuestFlagsEx>("FlagsEx");
+            packet.ReadInt32E<QuestFlagsEx2>("FlagsEx2_Unused440"); // Probably uninitialized random values atm
 
             packet.ReadInt32("SuggestedPartyMembers");
             var emotesCount = packet.ReadUInt32("EmotesCount");
@@ -743,8 +744,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("PortraitGiverModelSceneID");
             packet.ReadInt32("PortraitTurnIn");
 
-            for (int i = 0; i < 3; i++)
-                packet.ReadInt32("QuestFlags", i);
+            packet.ReadInt32E<QuestFlags>("Flags");
+            packet.ReadInt32E<QuestFlagsEx>("FlagsEx");
+            packet.ReadInt32E<QuestFlagsEx2>("FlagsEx2_Unused440"); // Probably uninitialized random values atm
 
             packet.ReadInt32("SuggestedPartyMembers");
             var learnSpellsCount = packet.ReadUInt32("LearnSpellsCount");
