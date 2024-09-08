@@ -907,6 +907,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_COMPLETE_MOVIE)]
         [Parser(Opcode.CMSG_ENABLE_NAGLE)]
         [Parser(Opcode.CMSG_NEXT_CINEMATIC_CAMERA)]
+        [Parser(Opcode.CMSG_OPENING_CINEMATIC)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

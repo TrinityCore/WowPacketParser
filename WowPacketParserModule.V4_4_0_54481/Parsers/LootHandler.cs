@@ -171,12 +171,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32<MapId>("MapID");
             packet.ReadUInt32("RollTime");
             packet.ReadByte("ValidRolls");
-            
+
             for (var i = 0; i < 3; i++)
                 packet.ReadUInt32E<LootRollIneligibilityReason>("LootRollIneligibleReason");
 
             packet.ReadByteE<LootMethod>("Method");
-            
+
             packet.ReadInt32("DungeonEncounterID");
             ReadLootItem(packet, "LootItem");
         }
@@ -232,6 +232,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadPackedGuid128("Object", i);
                 packet.ReadByte("LootListID", i);
             }
+        }
+
+        [Parser(Opcode.CMSG_OPT_OUT_OF_LOOT)]
+        public static void HandleOptOutOfLoot(Packet packet)
+        {
+            packet.ReadBool("PassOnLoot");
         }
 
         [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
