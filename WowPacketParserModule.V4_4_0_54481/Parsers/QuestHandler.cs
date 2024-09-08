@@ -1016,6 +1016,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_QUEST_GIVER_ACCEPT_QUEST)]
+        public static void HandleQuestGiverAcceptQuest(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadBit("StartCheat");
+        }
+
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
         [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_MULTIPLE_QUERY)]
         [Parser(Opcode.SMSG_QUEST_LOG_FULL)]
