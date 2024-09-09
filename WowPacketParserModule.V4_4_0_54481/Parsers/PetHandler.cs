@@ -111,5 +111,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("CritterGUID");
         }
+
+        [Parser(Opcode.CMSG_PET_ABANDON)]
+        public static void HandlePetAbandon(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+        }
     }
 }

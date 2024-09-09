@@ -969,6 +969,35 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("TargetPlayer");
         }
 
+        [Parser(Opcode.CMSG_PETITION_BUY)]
+        public static void HandlePetitionBuy(Packet packet)
+        {
+            var length = packet.ReadBits(7);
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadUInt32("Index");
+            packet.ReadWoWString("Title", length);
+        }
+
+        [Parser(Opcode.CMSG_PETITION_RENAME_GUILD)]
+        public static void HandlePetitionRenameGuild(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGuid");
+            var length = packet.ReadBits(7);
+            packet.ReadWoWString("Name", length);
+        }
+
+        [Parser(Opcode.CMSG_PETITION_SHOW_LIST)]
+        public static void HandlePetitionShowListClient(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionUnit");
+        }
+
+        [Parser(Opcode.CMSG_PETITION_SHOW_SIGNATURES)]
+        public static void HandleClientPetitionShowSignatures(Packet packet)
+        {
+            packet.ReadGuid("PetitionGuid");
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]
