@@ -50,6 +50,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var action = packet.ReadUInt32();
             var value = action & 0x7FFFFF;
             var type = (action >> 23) & 0x1F;
+            var flags = action & 0xF800000;
 
             switch (type)
             {
@@ -66,16 +67,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 case 17:
                 {
                     packet.AddValue("SpellID", StoreGetters.GetName(StoreNameType.Spell, (int)value), indexes);
+                    packet.AddValue("Flags", (PetModeFlags)flags, indexes);
                     break;
                 }
                 case 6:
                 {
                     packet.AddValue("ReactState", (ReactState)value, indexes);
+                    packet.AddValue("Flags", (PetModeFlags)flags, indexes);
                     break;
                 }
                 case 7:
                 {
                     packet.AddValue("CommandState", (CommandState)value, indexes);
+                    packet.AddValue("Flags", (PetModeFlags)flags, indexes);
                     break;
                 }
             }
