@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Xml;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -42,6 +43,42 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
 
             packet.ReadWoWString("NewName", bits20);
+        }
+
+        public static void ReadPetAction(Packet packet, params object[] indexes)
+        {
+            var action = packet.ReadUInt32();
+            var value = action & 0x7FFFFF;
+            var type = (action >> 23) & 0x1F;
+
+            switch (type)
+            {
+                case 1:
+                case 8:
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                case 17:
+                {
+                    packet.AddValue("SpellID", StoreGetters.GetName(StoreNameType.Spell, (int)value), indexes);
+                    break;
+                }
+                case 6:
+                {
+                    packet.AddValue("ReactState", (ReactState)value, indexes);
+                    break;
+                }
+                case 7:
+                {
+                    packet.AddValue("CommandState", (CommandState)value, indexes);
+                    break;
+                }
+            }
         }
 
         [Parser(Opcode.CMSG_QUERY_PET_NAME)]
@@ -116,6 +153,17 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         public static void HandlePetAbandon(Packet packet)
         {
             packet.ReadPackedGuid128("PetGUID");
+        }
+
+        [Parser(Opcode.CMSG_PET_ACTION)]
+        public static void HandlePetAction(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+
+            ReadPetAction(packet, "Action");
+
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadVector3("ActionPosition");
         }
     }
 }
