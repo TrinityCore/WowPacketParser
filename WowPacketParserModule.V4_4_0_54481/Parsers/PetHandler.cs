@@ -3,6 +3,7 @@ using System.Xml;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.SQL.Builders;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -45,44 +46,69 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadWoWString("NewName", bits20);
         }
 
-        public static void ReadPetAction(Packet packet, params object[] indexes)
+        public static (uint slot, uint spellID) ReadPetAction(Packet packet, params object[] indexes)
         {
             var action = packet.ReadUInt32();
-            var value = action & 0x7FFFFF;
-            var type = (action >> 23) & 0x1F;
-            var flags = action & 0xF800000;
+            var value = action & 0x007FFFFF;
+            var slot = (action & 0xFF800000) >> 23;
 
-            switch (type)
+            switch (slot)
             {
-                case 1:
-                case 8:
-                case 9:
-                case 10:
-                case 11:
-                case 12:
-                case 13:
-                case 14:
-                case 15:
-                case 16:
-                case 17:
+                case 0:
                 {
-                    packet.AddValue("SpellID", StoreGetters.GetName(StoreNameType.Spell, (int)value), indexes);
-                    packet.AddValue("Flags", (PetModeFlags)flags, indexes);
+                    packet.AddValue("SpellID", value, indexes);
+                    break;
+                }
+                case 0x1:
+                {
+                    packet.AddValue("PassiveSpell", StoreGetters.GetName(StoreNameType.Spell, (int)value), indexes);
+                    break;
+                }
+                case 0x101:
+                {
+                    packet.AddValue("ManualSpell", StoreGetters.GetName(StoreNameType.Spell, (int)value), indexes);
+                    break;
+                }
+                case 0x181:
+                {
+                    packet.AddValue("AutoCastSpell", StoreGetters.GetName(StoreNameType.Spell, (int)value), indexes);
                     break;
                 }
                 case 6:
                 {
                     packet.AddValue("ReactState", (ReactState)value, indexes);
-                    packet.AddValue("Flags", (PetModeFlags)flags, indexes);
                     break;
                 }
                 case 7:
                 {
                     packet.AddValue("CommandState", (CommandState)value, indexes);
-                    packet.AddValue("Flags", (PetModeFlags)flags, indexes);
+                    break;
+                }
+                default:
+                {
+                    packet.AddValue("UnknonwCase", value, indexes);
                     break;
                 }
             }
+
+            return (slot, value);
+        }
+
+        public static void ReadPetSpellCooldownData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("SpellID", idx);
+            packet.ReadInt32("Duration", idx);
+            packet.ReadInt32("CategoryDuration", idx);
+            packet.ReadSingle("ModRate", idx);
+            packet.ReadInt16("Category", idx);
+        }
+
+        public static void ReadPetSpellHistoryData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("CategoryID", idx);
+            packet.ReadInt32("RecoveryTime", idx);
+            packet.ReadSingle("ChargeModRate", idx);
+            packet.ReadSByte("ConsumedCharges", idx);
         }
 
         [Parser(Opcode.CMSG_QUERY_PET_NAME)]
@@ -185,6 +211,63 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadUInt32("Unk440_1");
                 packet.ReadUInt32("Unk440_2");
             }
+        }
+
+        [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE)]
+        public static void HandlePetSpells(Packet packet)
+        {
+            var petGuid = packet.ReadPackedGuid128("PetGUID");
+            packet.ReadInt16("CreatureFamily");
+            packet.ReadInt16("Specialization");
+            packet.ReadInt32("TimeLimit");
+
+            ReadPetFlags(packet, "PetModeAndOrders");
+
+            const int maxCreatureSpells = 10;
+            for (var i = 0; i < maxCreatureSpells; i++) // Read pet / vehicle spell ids
+            {
+                var (slot, spellId) = ReadPetAction(packet, "ActionButtons", i);
+
+                if (spellId == 0)
+                    continue;
+
+                if (slot == 7 && spellId != 2 || slot == 6 && spellId < 10)
+                    continue;
+
+                // pets do not have npc entry available in sniff - skip
+                if (petGuid.GetHighType() == HighGuidType.Pet)
+                    continue;
+
+                var operationName = "";
+                if (slot == 7 && spellId == 2)
+                    operationName = "Attack";
+                else
+                    operationName = StoreGetters.GetName(StoreNameType.Spell, (int)spellId, false);
+
+                var potentialKey = (int)(petGuid.GetEntry() * 100 + 5 + CoreParsers.MovementHandler.CurrentDifficultyID);
+                if (Storage.CreatureSpellLists.Where(p => p.Item1.Id == potentialKey && p.Item1.SpellId == spellId).SingleOrDefault() == null)
+                    Storage.CreatureSpellLists.Add(new CreatureSpellList
+                    {
+                        Id = potentialKey,
+                        Position = i,
+                        SpellId = (int)spellId,
+                        Comments = StoreGetters.GetName(StoreNameType.Unit, (int)petGuid.GetEntry(), false) + " - " + operationName
+                    });
+            }
+
+            var actionsCount = packet.ReadInt32("ActionsCount");
+            var cooldownsCount = packet.ReadUInt32("CooldownsCount");
+            var spellHistoryCount = packet.ReadUInt32("SpellHistoryCount");
+
+            for (int i = 0; i < actionsCount; i++)
+                ReadPetAction(packet, i, "Actions");
+
+            for (int i = 0; i < cooldownsCount; i++)
+                ReadPetSpellCooldownData(packet, i, "PetSpellCooldown");
+
+
+            for (int i = 0; i < spellHistoryCount; i++)
+                ReadPetSpellHistoryData(packet, i, "PetSpellHistory");
         }
     }
 }
