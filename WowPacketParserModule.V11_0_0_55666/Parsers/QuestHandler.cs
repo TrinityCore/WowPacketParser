@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using WowPacketParser.DBC;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -280,6 +281,64 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 };
 
                 Storage.LocalesQuestOfferRewards.Add(localesQuestOfferReward, packet.TimeSpan);
+            }
+        }
+
+        [Parser(Opcode.SMSG_UI_MAP_QUEST_LINES_RESPONSE)]
+        public static void HandleUiMapQuestLinesResponse(Packet packet)
+        {
+            var uiMap = packet.ReadInt32("UiMapID");
+            var questLineXQuestCount = packet.ReadUInt32();
+            var questCount = packet.ReadUInt32();
+            var questLineCount = packet.ReadUInt32();
+
+            for (int i = 0; i < questLineXQuestCount; i++)
+            {
+                var questLineXQuestId = packet.ReadUInt32();
+
+                if (Settings.UseDBC && DBC.QuestLineXQuest.ContainsKey((int)questLineXQuestId))
+                {
+                    if (DBC.QuestLineXQuest.TryGetValue((int)questLineXQuestId, out var questLineXQuest))
+                    {
+                        var questLineId = questLineXQuest.QuestLineID;
+                        var questId = questLineXQuest.QuestID;
+
+                        UIMapQuestLine uiMapQuestLine = new()
+                        {
+                            UIMapId = (uint)uiMap,
+                            QuestLineId = questLineId
+                        };
+                        Storage.UIMapQuestLines.Add(uiMapQuestLine, packet.TimeSpan);
+
+                        packet.WriteLine($"[{i}] QuestLineXQuestID: {questLineXQuestId} (QuestID: {questId} QuestLineID: {questLineId})");
+                    }
+                }
+                else
+                    packet.AddValue($"QuestLineXQuestID", questLineXQuestId, i);
+            }
+
+            for (int i = 0; i < questCount; i++)
+            {
+                var questId = packet.ReadUInt32<QuestId>("QuestID", i);
+
+                UIMapQuest uiMapQuest = new UIMapQuest
+                {
+                    UIMapId = (uint)uiMap,
+                    QuestId = questId
+                };
+                Storage.UIMapQuests.Add(uiMapQuest, packet.TimeSpan);
+            }
+
+            for (int i = 0; i < questLineCount; i++)
+            {
+                var questLineId = packet.ReadUInt32("QuestLineID", i);
+
+                UIMapQuestLine uiMapQuestLine = new()
+                {
+                    UIMapId = (uint)uiMap,
+                    QuestLineId = questLineId
+                };
+                Storage.UIMapQuestLines.Add(uiMapQuestLine, packet.TimeSpan);
             }
         }
     }

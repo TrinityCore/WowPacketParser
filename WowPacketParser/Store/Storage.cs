@@ -105,6 +105,8 @@ namespace WowPacketParser.Store
         public static readonly DataBag<QuestCompletionLogConditional> QuestCompletionLogConditional = new DataBag<QuestCompletionLogConditional>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestOfferRewardConditional> QuestOfferRewardConditional = new DataBag<QuestOfferRewardConditional>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestRequestItemsConditional> QuestRequestItemsConditional = new DataBag<QuestRequestItemsConditional>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly DataBag<UIMapQuestLine> UIMapQuestLines = new DataBag<UIMapQuestLine>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly DataBag<UIMapQuest> UIMapQuests = new DataBag<UIMapQuest>(new List<SQLOutput> { SQLOutput.quest_template });
 
         // Names
         public static readonly DataBag<ObjectName> ObjectNames = new DataBag<ObjectName>();
@@ -1654,6 +1656,8 @@ namespace WowPacketParser.Store
             QuestCompletionLogConditional.Clear();
             QuestOfferRewardConditional.Clear();
             QuestRequestItemsConditional.Clear();
+            UIMapQuestLines.Clear();
+            UIMapQuests.Clear();
 
             ObjectNames.Clear();
 

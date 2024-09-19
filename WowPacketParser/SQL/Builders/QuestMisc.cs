@@ -183,6 +183,37 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string UIMapQuestLines()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
+            if (Storage.UIMapQuestLines.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.UIMapQuestLines);
+
+            return SQLUtil.Compare(Storage.UIMapQuestLines, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod]
+        public static string UIMapQuests()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
+            if (Storage.UIMapQuests.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.UIMapQuests);
+
+            return SQLUtil.Compare(Storage.UIMapQuests, templatesDb, x =>
+            {
+                return $"{StoreGetters.GetName(StoreNameType.Quest, (int)x.QuestId, false)}";
+            });
+        }
+
+        [BuilderMethod]
         public static string CreatureQuestStarters()
         {
             if (Storage.CreatureQuestStarters.IsEmpty())
