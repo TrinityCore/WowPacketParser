@@ -89,7 +89,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             var rewardQuestID = 0u;
             if (hasRewardQuestID)
-                rewardQuestID = packet.ReadUInt32("RewardQuestID", indexes);
+                rewardQuestID = packet.ReadUInt32<QuestId>("RewardQuestID", indexes);
 
             Storage.PlayerChoiceResponses.Add(new PlayerChoiceResponseTemplate
             {
@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID");
 
             packet.ReadInt32("QuestGiverCreatureID");
-            int id = packet.ReadInt32("QuestID");
+            int id = packet.ReadInt32<QuestId>("QuestID");
 
             QuestOfferReward questOfferReward = new QuestOfferReward
             {
@@ -518,7 +518,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             for (var i = 0; i < questPOIData; ++i)
             {
-                int questId = packet.ReadInt32("QuestID", i);
+                int questId = packet.ReadInt32<QuestId>("QuestID", i);
 
                 var questPOIBlobData = packet.ReadUInt32("QuestPOIBlobData", i);
 
@@ -632,7 +632,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_QUEST_CONFIRM_ACCEPT)]
         public static void HandleQuestConfirmAccept(Packet packet)
         {
-            packet.ReadInt32("QuestID");
+            packet.ReadInt32<QuestId>("QuestID");
             packet.ReadPackedGuid128("InitiatedBy");
             var len = packet.ReadBits(10);
             packet.ReadWoWString("QuestTitle", len);
@@ -708,7 +708,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         public static void HandlQuestGiverQuestComplete(Packet packet)
         {
             var questComplete = packet.Holder.QuestGiverQuestComplete = new();
-            questComplete.QuestId = (uint)packet.ReadInt32("QuestId");
+            questComplete.QuestId = (uint)packet.ReadInt32<QuestId>("QuestId");
             packet.ReadInt32("XpReward");
             packet.ReadInt64("MoneyReward");
             packet.ReadInt32("SkillLineIDReward");
@@ -730,7 +730,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID");
             packet.ReadPackedGuid128("InformUnit");
 
-            int id = packet.ReadInt32("QuestID");
+            int id = packet.ReadInt32<QuestId>("QuestID");
             QuestDetails questDetails = new QuestDetails
             {
                 ID = (uint)id
@@ -869,7 +869,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             requestItems.QuestGiver = questgiverGUID;
             requestItems.QuestGiverEntry = (uint)packet.ReadInt32("QuestGiverCreatureID");
 
-            int id = packet.ReadInt32("QuestID");
+            int id = packet.ReadInt32<QuestId>("QuestID");
             int delay = requestItems.EmoteDelay = packet.ReadInt32("EmoteDelay");
             int emote = requestItems.EmoteType = packet.ReadInt32("EmoteType");
             requestItems.QuestId = (uint)id;
@@ -964,7 +964,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var addCredit = packet.Holder.QuestAddKillCredit = new();
             addCredit.Victim = packet.ReadPackedGuid128("VictimGUID");
 
-            addCredit.QuestId = (uint)packet.ReadInt32("QuestID");
+            addCredit.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
             addCredit.KillCredit = (uint)packet.ReadInt32("ObjectID");
 
             addCredit.Count = packet.ReadUInt16("Count");
@@ -1024,6 +1024,96 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("QuestGiverGUID");
             packet.ReadInt32<QuestId>("QuestID");
             packet.ReadBit("StartCheat");
+        }
+
+        [Parser(Opcode.CMSG_PUSH_QUEST_TO_PARTY)]
+        public static void HandlePushQuestToParty(Packet packet)
+        {
+            packet.ReadInt32("Entry");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS)]
+        public static void HandleQueryQuestCompletionNpcs(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+
+            for (var i = 0; i < count; i++)
+                packet.ReadInt32<QuestId>("QuestID", i);
+        }
+
+        [Parser(Opcode.CMSG_QUEST_CONFIRM_ACCEPT)]
+        public static void HandleClientQuestConfirmAccept(Packet packet)
+        {
+            packet.ReadInt32<QuestId>("QuestID");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_CHOOSE_REWARD)]
+        public static void HandleQuestChooseReward(Packet packet)
+        {
+            var chooseReward = packet.Holder.ClientQuestGiverChooseReward = new();
+            chooseReward.QuestGiver = packet.ReadPackedGuid128("QuestGiverGUID");
+            chooseReward.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
+            chooseReward.Item = (uint)ReadRewardItem(packet, "ItemChoice").ItemID;
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_CLOSE_QUEST)]
+        public static void HandleQuestGiverCloseQuest(Packet packet)
+        {
+            packet.ReadUInt32<QuestId>("QuestID");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_COMPLETE_QUEST)]
+        public static void HandleQuestGiverCompleteQuest(Packet packet)
+        {
+            var questGiverCompleteQuest = packet.Holder.QuestGiverCompleteQuestRequest = new();
+            questGiverCompleteQuest.QuestGiver = packet.ReadPackedGuid128("QuestGiverGUID");
+            questGiverCompleteQuest.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadBit("FromScript");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_HELLO)]
+        public static void HandleQuestGiverHello(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiver GUID");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_QUERY_QUEST)]
+        public static void HandleQuestGiverQueryQuest(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadBit("RespondToGiver");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_REQUEST_REWARD)]
+        public static void HandleQuestRequestReward(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadInt32<QuestId>("QuestID");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_TRACKED_QUERY)]
+        public static void HandleQuestGiverStatusTrackedQuery(Packet packet)
+        {
+            var guidCount = packet.ReadUInt32("GUIDCount");
+            for (var i = 0; i < guidCount; i++)
+            {
+                packet.ReadPackedGuid128("QuestGiverGUID", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_QUEST_LOG_REMOVE_QUEST)]
+        public static void HandleQuestRemoveQuest(Packet packet)
+        {
+            packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_PUSH_RESULT)]
+        public static void HandleCliQuestPushResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("SenderGUID");
+            packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadByteE<QuestPushReason915>("Result");
         }
 
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]

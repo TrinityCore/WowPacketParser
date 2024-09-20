@@ -483,7 +483,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_PET_ACTION, 0x348B },
             { Opcode.CMSG_PET_CANCEL_AURA, 0x348E },
             { Opcode.CMSG_PET_CAST_SPELL, 0x329D },
-            { Opcode.CMSG_PET_LEARN_TALENT, 0x3556 },
+            { Opcode.CMSG_PET_LEARN_TALENT, 0x3556 }, // NYI
             { Opcode.CMSG_PET_RENAME, 0x3682 },
             { Opcode.CMSG_PET_SET_ACTION, 0x348A },
             { Opcode.CMSG_PET_SPELL_AUTOCAST, 0x348F },
@@ -497,7 +497,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_VIOLENCE_LEVEL, 0x3189 },
             { Opcode.CMSG_PUSH_QUEST_TO_PARTY, 0x349F },
             { Opcode.CMSG_PVP_LOG_DATA, 0x3181 },
-            { Opcode.CMSG_QUERY_ARENA_TEAM, 0x36A0 },
+            { Opcode.CMSG_QUERY_ARENA_TEAM, 0x36A0 }, // NYI
             { Opcode.CMSG_QUERY_BATTLE_PET_NAME, 0x3278 },
             { Opcode.CMSG_QUERY_CORPSE_LOCATION_FROM_CLIENT, 0x365E },
             { Opcode.CMSG_QUERY_CORPSE_TRANSPORT, 0x365F },
@@ -512,14 +512,14 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_QUERY_PETITION, 0x3279 },
             { Opcode.CMSG_QUERY_PET_NAME, 0x3277 },
             { Opcode.CMSG_QUERY_PLAYER_NAMES, 0x3786 },
-            { Opcode.CMSG_QUERY_PLAYER_NAMES_FOR_COMMUNITY, 0x3784 },
-            { Opcode.CMSG_QUERY_PLAYER_NAME_BY_COMMUNITY_ID, 0x3783 },
+            { Opcode.CMSG_QUERY_PLAYER_NAMES_FOR_COMMUNITY, 0x3784 }, // NYI
+            { Opcode.CMSG_QUERY_PLAYER_NAME_BY_COMMUNITY_ID, 0x3783 }, // NYI
             { Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x3179 },
             { Opcode.CMSG_QUERY_QUEST_INFO, 0x3275 },
-            { Opcode.CMSG_QUERY_QUEST_ITEM_USABILITY, 0x317A },
+            { Opcode.CMSG_QUERY_QUEST_ITEM_USABILITY, 0x317A }, // NYI
             { Opcode.CMSG_QUERY_REALM_NAME, 0x3686 },
             { Opcode.CMSG_QUERY_TIME, 0x34D5 },
-            { Opcode.CMSG_QUERY_TREASURE_PICKER, 0x32DD },
+            { Opcode.CMSG_QUERY_TREASURE_PICKER, 0x32DD }, // NYI
             { Opcode.CMSG_QUERY_VOID_STORAGE, 0x31A5 },
             { Opcode.CMSG_QUEST_CONFIRM_ACCEPT, 0x349E },
             { Opcode.CMSG_QUEST_GIVER_ACCEPT_QUEST, 0x3498 },
@@ -536,9 +536,9 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_QUEST_POI_QUERY, 0x36AE },
             { Opcode.CMSG_QUEST_PUSH_RESULT, 0x34A0 },
             { Opcode.CMSG_QUEUED_MESSAGES_END, 0x3780 },
-            { Opcode.CMSG_QUICK_JOIN_AUTO_ACCEPT_REQUESTS, 0x3709 },
-            { Opcode.CMSG_QUICK_JOIN_REQUEST_INVITE, 0x3708 },
-            { Opcode.CMSG_QUICK_JOIN_RESPOND_TO_INVITE, 0x3707 },
+            { Opcode.CMSG_QUICK_JOIN_AUTO_ACCEPT_REQUESTS, 0x3709 }, // NYI
+            { Opcode.CMSG_QUICK_JOIN_REQUEST_INVITE, 0x3708 }, // NYI
+            { Opcode.CMSG_QUICK_JOIN_RESPOND_TO_INVITE, 0x3707 }, // NYI
             { Opcode.CMSG_RANDOM_ROLL, 0x3653 },
             { Opcode.CMSG_READY_CHECK_RESPONSE, 0x3632 },
             { Opcode.CMSG_READ_ITEM, 0x32C8 },

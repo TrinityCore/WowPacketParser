@@ -269,5 +269,27 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (int i = 0; i < spellHistoryCount; i++)
                 ReadPetSpellHistoryData(packet, i, "PetSpellHistory");
         }
+
+        [Parser(Opcode.CMSG_PET_CANCEL_AURA)]
+        public static void HandlePetCancelAura(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.CMSG_PET_RENAME)]
+        public static void HandlePetRename(Packet packet)
+        {
+            ReadPetRenameData(packet);
+        }
+
+        [Parser(Opcode.CMSG_PET_SPELL_AUTOCAST)]
+        public static void HandlePetSpellAutocast(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ResetBitReader();
+            packet.ReadBit("AutocastEnabled");
+        }
     }
 }

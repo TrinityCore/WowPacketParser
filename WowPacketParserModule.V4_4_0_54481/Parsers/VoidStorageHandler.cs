@@ -53,6 +53,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32E<VoidTransferError>("Error");
         }
 
+        [Parser(Opcode.CMSG_QUERY_VOID_STORAGE)]
+        public static void HandleVoidStorageQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
         [Parser(Opcode.SMSG_VOID_STORAGE_FAILED)]
         public static void HandleVoidStorageZero(Packet packet)
         {

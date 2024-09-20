@@ -165,6 +165,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("BattlePetGUID");
         }
 
+        [Parser(Opcode.CMSG_QUERY_BATTLE_PET_NAME)]
+        public static void HandleBattlePetQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetID");
+            packet.ReadPackedGuid128("UnitGUID");
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED)]
         [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL)]

@@ -131,5 +131,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Player");
             ReadAllAchievements(packet, "Data");
         }
+
+        [Parser(Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS)]
+        public static void HandleQueryInspectAchievements(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+        }
     }
 }

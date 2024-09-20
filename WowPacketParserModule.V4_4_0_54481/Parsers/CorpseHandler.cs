@@ -33,5 +33,24 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadVector3("Position");
             packet.ReadSingle("Facing");
         }
+
+        [Parser(Opcode.CMSG_QUERY_CORPSE_LOCATION_FROM_CLIENT)]
+        public static void HandleQueryCorpseLocationFromClient(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_CORPSE_TRANSPORT)]
+        public static void HandleQueryCorpseTransport(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+            packet.ReadPackedGuid128("Transport");
+        }
+
+        [Parser(Opcode.CMSG_RECLAIM_CORPSE)]
+        public static void HandleReclaimCorpse(Packet packet)
+        {
+            packet.ReadPackedGuid128("CorpseGUID");
+        }
     }
 }

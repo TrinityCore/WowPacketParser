@@ -894,6 +894,24 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadInt32("SpellVisualKitID", i);
         }
 
+        [Parser(Opcode.CMSG_QUERY_PAGE_TEXT)]
+        public static void HandlePageTextQuery(Packet packet)
+        {
+            packet.ReadUInt32("Entry");
+            packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.CMSG_RANDOM_ROLL)]
+        public static void HandleRandomRoll(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadInt32("Min");
+            packet.ReadInt32("Max");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]

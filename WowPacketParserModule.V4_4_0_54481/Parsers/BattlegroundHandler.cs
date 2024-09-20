@@ -308,6 +308,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]
         [Parser(Opcode.CMSG_GET_PVP_OPTIONS_ENABLED)]
         [Parser(Opcode.CMSG_HEARTH_AND_RESURRECT)]
+        [Parser(Opcode.CMSG_PVP_LOG_DATA)]
         public static void HandleBattlegroundNull(Packet packet)
         {
         }
