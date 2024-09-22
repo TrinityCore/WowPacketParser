@@ -982,7 +982,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 var modTypeCount = packet.ReadUInt32("SpellModifierDataCount", j);
                 for (var i = 0; i < modTypeCount; ++i)
                 {
-                    packet.ReadSingle("ModifierValue", j, i);
+                    packet.ReadInt32("ModifierValue", j, i);
                     packet.ReadByte("ClassIndex", j, i);
                 }
             }
