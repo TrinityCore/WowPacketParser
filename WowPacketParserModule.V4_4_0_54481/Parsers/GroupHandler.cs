@@ -420,6 +420,25 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadByte("PartyIndex");
         }
 
+        [Parser(Opcode.CMSG_REQUEST_PARTY_JOIN_UPDATES)]
+        public static void HandleRequestPartyJoinUpdates(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]
+        public static void HandleRequestPartyMemberStats(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadPackedGuid128("Target");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
         [Parser(Opcode.SMSG_GROUP_UNINVITE)]

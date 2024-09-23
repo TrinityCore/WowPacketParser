@@ -1119,6 +1119,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
         [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_MULTIPLE_QUERY)]
         [Parser(Opcode.SMSG_QUEST_LOG_FULL)]
+        [Parser(Opcode.CMSG_REQUEST_WORLD_QUEST_UPDATE)]
         public static void HandleQuestZeroLengthPackets(Packet packet)
         {
         }

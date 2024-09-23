@@ -912,6 +912,32 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadByte("PartyIndex");
         }
 
+        [Parser(Opcode.CMSG_REPOP_REQUEST)]
+        public static void HandleRepopRequest(Packet packet)
+        {
+            packet.ReadBool("CheckInstance");
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_SWITCH_SEAT)]
+        public static void HandleRequestVehicleSwitchSeat(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vehicle");
+            packet.ReadByte("SeatIndex");
+        }
+
+        [Parser(Opcode.CMSG_RESURRECT_RESPONSE)]
+        public static void HandleResurrectResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("Resurrecter");
+            packet.ReadUInt32("Response");
+        }
+
+        [Parser(Opcode.CMSG_RIDE_VEHICLE_INTERACT)]
+        public static void HandleRideVehicleInteract(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vehicle");
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
@@ -926,6 +952,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_ENABLE_NAGLE)]
         [Parser(Opcode.CMSG_NEXT_CINEMATIC_CAMERA)]
         [Parser(Opcode.CMSG_OPENING_CINEMATIC)]
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_EXIT)]
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_NEXT_SEAT)]
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_PREV_SEAT)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

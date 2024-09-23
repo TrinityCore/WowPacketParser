@@ -291,5 +291,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ResetBitReader();
             packet.ReadBit("AutocastEnabled");
         }
+
+        [Parser(Opcode.CMSG_REQUEST_STABLED_PETS)]
+        public static void HandleRequestStabledPets(Packet packet)
+        {
+            packet.ReadPackedGuid128("StableMaster");
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_PET_INFO)]
+        public static void HandlePetNull(Packet packet)
+        {
+        }
     }
 }

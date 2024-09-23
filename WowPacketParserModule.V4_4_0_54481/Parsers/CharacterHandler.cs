@@ -629,6 +629,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("IsFavorite");
         }
 
+        [Parser(Opcode.CMSG_REORDER_CHARACTERS)]
+        public static void HandleReorderCharacters(Packet packet)
+        {
+            var count = packet.ReadBits("CharactersCount", 9);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadPackedGuid128("PlayerGUID");
+                packet.ReadByte("NewPosition", i);
+            }
+        }
+
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE)]
         [Parser(Opcode.CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT)]
         public static void HandleCharNull(Packet packet)

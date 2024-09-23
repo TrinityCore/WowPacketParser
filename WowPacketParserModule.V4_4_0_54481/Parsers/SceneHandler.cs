@@ -34,5 +34,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             if (sceneId != 0) // SPELL_EFFECT_195 plays scenes by SceneScriptPackageID and sets SceneID = 0 (there are no Scenes which have SceneID = 0)
                 Storage.Scenes.Add(scene, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_SCENE_PLAYBACK_CANCELED)]
+        [Parser(Opcode.CMSG_SCENE_PLAYBACK_COMPLETE)]
+        public static void HandlScenePlaybackCanceled(Packet packet)
+        {
+            packet.ReadUInt32("SceneInstanceID");
+            packet.ReadUInt32("TimePassed");
+        }
+
+        [Parser(Opcode.CMSG_SCENE_TRIGGER_EVENT)]
+        public static void HandleSceneTriggerEvent(Packet packet)
+        {
+            var len = packet.ReadBits(6);
+            packet.ReadUInt32("SceneInstanceID");
+            packet.ReadWoWString("Event", len);
+        }
     }
 }

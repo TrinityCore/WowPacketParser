@@ -544,26 +544,26 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_READ_ITEM, 0x32C8 },
             { Opcode.CMSG_REFORGE_ITEM, 0x3156 },
             { Opcode.CMSG_RECLAIM_CORPSE, 0x34DB },
-            { Opcode.CMSG_REMOVE_GLYPH, 0x3301 },
+            { Opcode.CMSG_REMOVE_GLYPH, 0x3301 }, // NYI
             { Opcode.CMSG_REMOVE_NEW_ITEM, 0x32E0 },
             { Opcode.CMSG_REORDER_CHARACTERS, 0x35E9 },
             { Opcode.CMSG_REPAIR_ITEM, 0x34EC },
             { Opcode.CMSG_REPOP_REQUEST, 0x3528 },
-            { Opcode.CMSG_REPORT_CLIENT_VARIABLES, 0x3703 },
-            { Opcode.CMSG_REPORT_ENABLED_ADDONS, 0x3702 },
-            { Opcode.CMSG_REPORT_FROZEN_WHILE_LOADING_MAP, 0x36A6 },
-            { Opcode.CMSG_REPORT_KEYBINDING_EXECUTION_COUNTS, 0x3704 },
+            { Opcode.CMSG_REPORT_CLIENT_VARIABLES, 0x3703 }, // NYI
+            { Opcode.CMSG_REPORT_ENABLED_ADDONS, 0x3702 }, // NYI
+            { Opcode.CMSG_REPORT_FROZEN_WHILE_LOADING_MAP, 0x36A6 }, // NYI
+            { Opcode.CMSG_REPORT_KEYBINDING_EXECUTION_COUNTS, 0x3704 }, // NYI
             { Opcode.CMSG_REPORT_PVP_PLAYER_AFK, 0x34F4 },
-            { Opcode.CMSG_REPORT_SERVER_LAG, 0x32FC },
+            { Opcode.CMSG_REPORT_SERVER_LAG, 0x32FC }, // NYI
             { Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x3690 },
-            { Opcode.CMSG_REQUEST_AREA_POI_UPDATE, 0x32DF },
+            { Opcode.CMSG_REQUEST_AREA_POI_UPDATE, 0x32DF }, // NYI
             { Opcode.CMSG_REQUEST_BATTLEFIELD_STATUS, 0x35DC },
             { Opcode.CMSG_REQUEST_CEMETERY_LIST, 0x317B },
-            { Opcode.CMSG_REQUEST_CROWD_CONTROL_SPELL, 0x352C },
+            { Opcode.CMSG_REQUEST_CROWD_CONTROL_SPELL, 0x352C }, // NYI
             { Opcode.CMSG_REQUEST_FORCED_REACTIONS, 0x3207 },
             { Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, 0x31AB },
             { Opcode.CMSG_REQUEST_GUILD_REWARDS_LIST, 0x31AA },
-            { Opcode.CMSG_REQUEST_HONOR_STATS, 0x3180 },
+            { Opcode.CMSG_REQUEST_HONOR_STATS, 0x3180 }, // NYI
             { Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST, 0x32A6 },
             { Opcode.CMSG_REQUEST_PARTY_JOIN_UPDATES, 0x35F7 },
             { Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x3652 },
@@ -572,7 +572,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_REQUEST_PVP_REWARDS, 0x3198 },
             { Opcode.CMSG_REQUEST_RAID_INFO, 0x36CE },
             { Opcode.CMSG_REQUEST_RATED_PVP_INFO, 0x35E3 },
-            { Opcode.CMSG_REQUEST_SCHEDULED_PVP_INFO, 0x3199 },
+            { Opcode.CMSG_REQUEST_SCHEDULED_PVP_INFO, 0x3199 }, // NYI
             { Opcode.CMSG_REQUEST_STABLED_PETS, 0x3491 },
             { Opcode.CMSG_REQUEST_VEHICLE_EXIT, 0x3239 },
             { Opcode.CMSG_REQUEST_VEHICLE_NEXT_SEAT, 0x323B },
@@ -582,7 +582,7 @@ namespace WowPacketParser.Enums.Version.V4_4_0_54481
             { Opcode.CMSG_RESET_INSTANCES, 0x3666 },
             { Opcode.CMSG_RESURRECT_RESPONSE, 0x3681 },
             { Opcode.CMSG_RIDE_VEHICLE_INTERACT, 0x323D },
-            { Opcode.CMSG_SAVE_ACCOUNT_DATA_EXPORT, 0x374D },
+            { Opcode.CMSG_SAVE_ACCOUNT_DATA_EXPORT, 0x374D }, // NYI
             { Opcode.CMSG_SAVE_CUF_PROFILES, 0x3190 },
             { Opcode.CMSG_SAVE_EQUIPMENT_SET, 0x3509 },
             { Opcode.CMSG_SCENE_PLAYBACK_CANCELED, 0x3222 },

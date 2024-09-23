@@ -1005,6 +1005,29 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("ItemGUID");
         }
 
+        [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE)]
+        public static void HandleGuildUpdatePartyState(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_GUILD_REWARDS_LIST)]
+        public static void HandleRequestGuildRewardsList(Packet packet)
+        {
+            packet.ReadTime64("CurrentVersion");
+        }
+
+        [Parser(Opcode.CMSG_SAVE_GUILD_EMBLEM)]
+        public static void HandleSaveGuildEmblem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vendor");
+            packet.ReadInt32("EColor");
+            packet.ReadInt32("EStyle");
+            packet.ReadInt32("BColor");
+            packet.ReadInt32("BStyle");
+            packet.ReadInt32("Bg");
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]

@@ -305,6 +305,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("IsRequeue");
         }
 
+        [Parser(Opcode.CMSG_REPORT_PVP_PLAYER_AFK)]
+        public static void HandleReportPvPPlayerAfk(Packet packet)
+        {
+            packet.ReadGuid("Offender");
+        }
+
         [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]
         [Parser(Opcode.CMSG_GET_PVP_OPTIONS_ENABLED)]
         [Parser(Opcode.CMSG_HEARTH_AND_RESURRECT)]
