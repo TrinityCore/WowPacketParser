@@ -89,9 +89,9 @@ namespace WowPacketParser.Store
         public static readonly DataBag<GossipMenu> Gossips = new DataBag<GossipMenu>(new List<SQLOutput> { SQLOutput.gossip_menu });
         public static readonly DataBag<GossipMenu925> Gossips925 = new DataBag<GossipMenu925>(new List<SQLOutput> { SQLOutput.gossip_menu });
         public static readonly DataBag<GossipMenuAddon> GossipMenuAddons = new DataBag<GossipMenuAddon>(new List<SQLOutput> { SQLOutput.gossip_menu_addon });
-        public static readonly StoreDictionary<(uint?, uint?), GossipMenuOption> GossipMenuOptions = new StoreDictionary<(uint?, uint?), GossipMenuOption>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
+        public static readonly StoreDictionary<(uint?, uint?), GossipMenuOption> GossipMenuOptions = new StoreDictionary<(uint?, uint?), GossipMenuOption>(new List<SQLOutput>());
         public static readonly DataBag<GossipMenuOptionAddon> GossipMenuOptionAddons = new DataBag<GossipMenuOptionAddon>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
-        public static readonly StoreDictionary<(uint /*menuId*/, int /*gossipOptionId*/), uint /*orderIndex*/> GossipOptionIdToOrderIndexMap = new(new List<SQLOutput> { SQLOutput.gossip_menu_option });
+        public static readonly StoreDictionary<(uint /*menuId*/, int /*gossipOptionId*/), uint /*orderIndex*/> GossipOptionIdToOrderIndexMap = new(new List<SQLOutput>());
 
         // Quest POI (QuestId, Id)
         public static readonly DataBag<QuestPOI> QuestPOIs = new DataBag<QuestPOI>(new List<SQLOutput> { SQLOutput.quest_poi_points });

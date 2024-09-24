@@ -77,9 +77,6 @@ namespace WowPacketParser.Parsing.Parsers
             LastGossipOption.ActionPoiId = gossipPOIID;
             TempGossipOptionPOI.ActionPoiId = gossipPOIID;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
-                return;
-
             if (!TempGossipOptionPOI.HasSelection)
                 return;
 
@@ -100,9 +97,6 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void UpdateLastGossipOptionActionMessage(TimeSpan timeSpan, uint? menuId)
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
-                return;
-
             if (!LastGossipOption.HasSelection)
                 return;
 
