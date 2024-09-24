@@ -16,6 +16,41 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class UpdateHandler
     {
+        public static MovementUpdateTransport ReadTransportData(MovementInfo moveInfo, WowGuid guid, Packet packet, object index)
+        {
+            moveInfo.Transport = new MovementInfo.TransportInfo();
+            MovementUpdateTransport transport = new();
+            packet.ResetBitReader();
+            transport.TransportGuid = moveInfo.Transport.Guid = packet.ReadPackedGuid128("TransportGUID", index);
+            transport.Position = moveInfo.Transport.Offset = packet.ReadVector4("TransportPosition", index);
+            var seat = packet.ReadByte("VehicleSeatIndex", index);
+            transport.Seat = seat;
+            transport.MoveTime = packet.ReadUInt32("MoveTime", index);
+
+            var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", index);
+            var hasVehicleRecID = packet.ReadBit("HasVehicleRecID", index);
+
+            if (hasPrevMoveTime)
+                transport.PrevMoveTime = packet.ReadUInt32("PrevMoveTime", index);
+
+            if (hasVehicleRecID)
+                transport.VehicleId = packet.ReadInt32("VehicleRecID", index);
+
+            if (moveInfo.Transport.Guid.HasEntry() && moveInfo.Transport.Guid.GetHighType() == HighGuidType.Vehicle &&
+                guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
+            {
+                VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
+                {
+                    Entry = moveInfo.Transport.Guid.GetEntry(),
+                    AccessoryEntry = guid.GetEntry(),
+                    SeatId = seat
+                };
+                Storage.VehicleTemplateAccessories.Add(vehicleAccessory, packet.TimeSpan);
+            }
+
+            return transport;
+        }
+
         [HasSniffData] // in ReadCreateObjectBlock
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)
@@ -307,7 +342,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 var hasAdvFlying = packet.ReadBit("HasAdvFlying", index);
 
                 if (hasTransport)
-                    V8_0_1_27101.Parsers.UpdateHandler.ReadTransportData(moveInfo, guid, packet, index);
+                    ReadTransportData(moveInfo, guid, packet, index);
 
                 if (hasStandingOnGameObjectGUID)
                     packet.ReadPackedGuid128("StandingOnGameObjectGUID", index);
@@ -454,10 +489,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                         }
 
                         if (hasSpellEffectExtraData)
-                            V8_0_1_27101.Parsers.MovementHandler.ReadMonsterSplineSpellEffectExtraData(packet, index);
+                            MovementHandler.ReadMonsterSplineSpellEffectExtraData(packet, index);
 
                         if (hasJumpExtraData)
-                            V8_0_1_27101.Parsers.MovementHandler.ReadMonsterSplineJumpExtraData(packet, index);
+                            MovementHandler.ReadMonsterSplineJumpExtraData(packet, index);
 
                         if (hasAnimationTierTransition)
                         {

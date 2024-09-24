@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <Import Project="../default.props" />
 
     <PropertyGroup>
@@ -11,12 +11,9 @@
 
     <ItemGroup>
         <ProjectReference Include="..\WowPacketParserModule.Substructures\WowPacketParserModule.Substructures.csproj" />
-        <ProjectReference Include="..\WowPacketParserModule.V3_4_0_45166\WowPacketParserModule.V3_4_0_45166.csproj" />
+        <ProjectReference Include="..\WowPacketParserModule.V10_0_0_46181\WowPacketParserModule.V10_0_0_46181.csproj" />
         <ProjectReference Include="..\WowPacketParserModule.V6_0_2_19033\WowPacketParserModule.V6_0_2_19033.csproj" />
         <ProjectReference Include="..\WowPacketParserModule.V7_0_3_22248\WowPacketParserModule.V7_0_3_22248.csproj" />
-        <ProjectReference Include="..\WowPacketParserModule.V8_0_1_27101\WowPacketParserModule.V8_0_1_27101.csproj" />
-        <ProjectReference Include="..\WowPacketParserModule.V9_0_1_36216\WowPacketParserModule.V9_0_1_36216.csproj" />
-        <ProjectReference Include="..\WowPacketParserModule.V10_0_0_46181\WowPacketParserModule.V10_0_0_46181.csproj" />
         <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
             <Private>false</Private>
             <EmbedInteropTypes>false</EmbedInteropTypes>
@@ -28,5 +25,5 @@
             <HintPath>..\packages\DBFileReaderLib.1.0.0.0\lib\DBFileReaderLib.dll</HintPath>
         </Reference>
     </ItemGroup>
-    
+
 </Project>

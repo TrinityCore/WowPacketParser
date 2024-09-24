@@ -820,7 +820,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_INTERRUPT_POWER_REGEN)]
         public static void HandleInterruptPowerRegen(Packet packet)
         {
-            packet.ReadByteE<PowerType>("PowerType");
+            packet.ReadInt32E<PowerType>("PowerType");
         }
 
         [Parser(Opcode.SMSG_LEARN_TALENT_FAILED)]

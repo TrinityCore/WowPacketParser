@@ -995,7 +995,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_PETITION_SHOW_SIGNATURES)]
         public static void HandleClientPetitionShowSignatures(Packet packet)
         {
-            packet.ReadGuid("PetitionGuid");
+            packet.ReadPackedGuid128("PetitionGuid");
         }
 
         [Parser(Opcode.CMSG_QUERY_PETITION)]
