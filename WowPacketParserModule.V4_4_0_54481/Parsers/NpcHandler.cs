@@ -425,5 +425,39 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("Banker");
         }
+
+        [Parser(Opcode.CMSG_SPELL_CLICK)]
+        public static void HandleSpellClick(Packet packet)
+        {
+            WowGuid guid = packet.ReadPackedGuid128("SpellClickUnitGUID");
+            packet.Holder.SpellClick = new() { Target = guid };
+            packet.ReadBit("TryAutoDismount");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.CMSG_SPIRIT_HEALER_ACTIVATE)]
+        public static void HandleSpiritHealerActivate(Packet packet)
+        {
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
+            CoreParsers.NpcHandler.LastGossipOption.Guid = packet.ReadPackedGuid128("Healer");
+        }
+
+        [Parser(Opcode.CMSG_TABARD_VENDOR_ACTIVATE)]
+        public static void HandleTabardVendorActivate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vendor");
+            packet.ReadInt32("Type");
+        }
+
+        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
+        public static void HandleTrainerBuySpell(Packet packet)
+        {
+            packet.ReadPackedGuid128("TrainerGUID");
+            packet.ReadInt32("TrainerID");
+            packet.ReadInt32<SpellId>("SpellID");
+        }
     }
 }

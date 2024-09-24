@@ -1136,6 +1136,37 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32<SpellId>("SpellID");
         }
 
+        [Parser(Opcode.CMSG_TOTEM_DESTROYED)]
+        public static void HandleTotemDestroyed(Packet packet)
+        {
+            packet.ReadByte("Slot");
+            packet.ReadPackedGuid128("TotemGUID");
+        }
+
+        [Parser(Opcode.CMSG_UNLEARN_SKILL)]
+        public static void HandleUnlearnSkill(Packet packet)
+        {
+            packet.ReadInt32("SkillLine");
+        }
+
+        [Parser(Opcode.CMSG_UPDATE_MISSILE_TRAJECTORY)]
+        public static void HandleUpdateMissileTrajectory(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadUInt16("MoveMsgID");
+            packet.ReadInt32("SpellID");
+            packet.ReadSingle("Pitch");
+            packet.ReadSingle("Speed");
+            packet.ReadVector3("FirePos");
+            packet.ReadVector3("ImpactPos");
+
+            packet.ResetBitReader();
+            var hasStatus = packet.ReadBit("HasStatus");
+            if (hasStatus)
+                Substructures.MovementHandler.ReadMovementStats(packet, "Status");
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL)]
         [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA)]

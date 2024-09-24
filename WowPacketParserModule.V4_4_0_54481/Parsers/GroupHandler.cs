@@ -439,6 +439,91 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadByte("PartyIndex");
         }
 
+        [Parser(Opcode.CMSG_SET_ASSISTANT_LEADER)]
+        public static void HandleSetAssistantLeader(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadBit("Apply");
+            packet.ReadPackedGuid128("Target");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_SET_EVERYONE_IS_ASSISTANT)]
+        public static void HandleSetEveryoneIsAssistant(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadBit("EveryoneIsAssistant");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_SET_LOOT_METHOD)]
+        public static void HandleLootMethod(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadByteE<LootMethod>("Method");
+            packet.ReadPackedGuid128("Master");
+            packet.ReadInt32E<ItemQuality>("Threshold");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_SET_PARTY_ASSIGNMENT)]
+        public static void HandleSetPartyAssigment(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadBit("Set");
+            packet.ReadByte("Assignment");
+            packet.ReadPackedGuid128("Target");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_SET_PARTY_LEADER)]
+        public static void HandleSetPartyLeader(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadPackedGuid128("Target");
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_SET_ROLE)]
+        public static void HandleSetRole(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadPackedGuid128("ChangedUnit");
+            packet.ReadByte("Role");
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_SWAP_SUB_GROUPS)]
+        public static void HandleSwapSubGroups(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadPackedGuid128("FirstTarget");
+            packet.ReadPackedGuid128("SecondTarget"); ;
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_UPDATE_RAID_TARGET)]
+        public static void HandleUpdateRaidTarget(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadByte("Symbol");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
         [Parser(Opcode.SMSG_GROUP_UNINVITE)]

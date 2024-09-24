@@ -114,10 +114,25 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("GUID");
         }
 
+        [Parser(Opcode.CMSG_SET_TRADE_GOLD)]
+        public static void HandleTradeGold(Packet packet)
+        {
+            packet.ReadUInt64("Coinage");
+        }
+
+        [Parser(Opcode.CMSG_SET_TRADE_ITEM)]
+        public static void HandleTradeItem(Packet packet)
+        {
+            packet.ReadByte("TradeSlot");
+            packet.ReadByte("PackSlot");
+            packet.ReadByte("ItemSlotInPack");
+        }
+
         [Parser(Opcode.CMSG_BEGIN_TRADE)]
         [Parser(Opcode.CMSG_BUSY_TRADE)]
         [Parser(Opcode.CMSG_CANCEL_TRADE)]
         [Parser(Opcode.CMSG_IGNORE_TRADE)]
+        [Parser(Opcode.CMSG_UNACCEPT_TRADE)]
         public static void HandleTradeNull(Packet packet)
         {
         }

@@ -477,5 +477,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ReadBit("IsPeriodic");
         }
+
+        [Parser(Opcode.CMSG_SET_ADVANCED_COMBAT_LOGGING)]
+        public static void HandleSetAdvancedCombatLogging(Packet packet)
+        {
+            packet.ReadBit("Enable");
+        }
     }
 }

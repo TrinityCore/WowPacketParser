@@ -104,5 +104,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadWoWString("SetName", setNameLen);
             packet.ReadWoWString("SetIcon", setIconLen);
         }
+
+        [Parser(Opcode.CMSG_USE_EQUIPMENT_SET)]
+        public static void HandleUseEquipmentSet(Packet packet)
+        {
+            ItemHandler.ReadInvUpdate(packet, "InvUpdate");
+            for (int i = 0; i < NumSlots; i++)
+            {
+                packet.ReadPackedGuid128("Item");
+                packet.ReadByte("ContainerSlot");
+                packet.ReadByte("Slot");
+            }
+
+            packet.ReadUInt64("GUID");
+        }
     }
 }

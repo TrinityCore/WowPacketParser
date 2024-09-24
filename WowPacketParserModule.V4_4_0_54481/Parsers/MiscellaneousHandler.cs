@@ -938,6 +938,74 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Vehicle");
         }
 
+        [Parser(Opcode.CMSG_TUTORIAL)]
+        public static void HandleTutorial(Packet packet)
+        {
+            var action = packet.ReadBitsE<TutorialAction>("TutorialAction", 2);
+
+            if (action == TutorialAction.Update)
+                packet.ReadInt32E<Tutorial>("TutorialBit");
+        }
+
+        [Parser(Opcode.CMSG_WHO)]
+        public static void HandleWhoRequest(Packet packet)
+        {
+            var areaCount = packet.ReadBits(4);
+            packet.ReadBit("IsFromAddon");
+
+            packet.ReadInt32("MinLevel");
+            packet.ReadInt32("MaxLevel");
+            packet.ReadInt64("RaceFilter");
+            packet.ReadInt32("ClassFilter");
+
+            packet.ResetBitReader();
+
+            var nameLen = packet.ReadBits(6);
+            var virtualRealmNameLen = packet.ReadBits(9);
+            var guildLen = packet.ReadBits(7);
+            var guildVirtualRealmNameLen = packet.ReadBits(9);
+            var wordCount = packet.ReadBits(3);
+
+            packet.ReadBit("ShowEnemies");
+            packet.ReadBit("ShowArenaPlayers");
+            packet.ReadBit("ExactName");
+            var hasServerInfo = packet.ReadBit("HasServerInfo");
+            packet.ResetBitReader();
+
+            for (var i = 0; i < wordCount; ++i)
+            {
+                var bits0 = packet.ReadBits(7);
+                packet.ReadWoWString("Word", bits0, i);
+                packet.ResetBitReader();
+            }
+
+            packet.ReadWoWString("Name", nameLen);
+            packet.ReadWoWString("VirtualRealmName", virtualRealmNameLen);
+            packet.ReadWoWString("Guild", guildLen);
+            packet.ReadWoWString("GuildVirtualRealmName", guildVirtualRealmNameLen);
+
+            // WhoRequestServerInfo
+            if (hasServerInfo)
+            {
+                packet.ReadInt32("FactionGroup");
+                packet.ReadInt32("Locale");
+                packet.ReadInt32("RequesterVirtualRealmAddress");
+            }
+
+            packet.ReadUInt32("RequestID");
+            packet.ReadByteE<WhoRequestOrigin>("Origin");
+
+            for (var i = 0; i < areaCount; ++i)
+                packet.ReadUInt32<AreaId>("Area", i);
+        }
+
+        [Parser(Opcode.CMSG_WHO_IS)]
+        public static void HandleWhoIsRequest(Packet packet)
+        {
+            var len = packet.ReadBits(6);
+            packet.ReadWoWString("CharName", len);
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]

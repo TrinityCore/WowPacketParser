@@ -97,6 +97,22 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.AddValue("Account Data", data);
         }
 
+        [Parser(Opcode.CMSG_UPDATE_ACCOUNT_DATA)]
+        public static void HandleClientUpdateAccountData(Packet packet)
+        {
+            packet.ReadTime64("Time");
+
+            var decompCount = packet.ReadInt32();
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32E<AccountDataType>("DataType");
+            var compCount = packet.ReadInt32();
+
+            var pkt = packet.Inflate(compCount, decompCount, false);
+            var data = pkt.ReadWoWString(decompCount);
+
+            packet.AddValue("CompressedData", data);
+        }
+
         [Parser(Opcode.SMSG_LOGOUT_CANCEL_ACK)]
         public static void HandleAccountNull(Packet packet)
         {

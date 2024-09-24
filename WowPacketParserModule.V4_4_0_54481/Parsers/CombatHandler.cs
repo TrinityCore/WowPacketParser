@@ -161,10 +161,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("ToTheDeath");
         }
 
+        [Parser(Opcode.CMSG_SET_SHEATHED)]
+        public static void HandleSetSheathed(Packet packet)
+        {
+            packet.ReadInt32E<SheathState>("CurrentSheathState");
+            packet.ReadBit("Animate");
+        }
+
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
         [Parser(Opcode.SMSG_DUEL_IN_BOUNDS)]
         [Parser(Opcode.SMSG_DUEL_OUT_OF_BOUNDS)]
         [Parser(Opcode.CMSG_ATTACK_STOP)]
+        [Parser(Opcode.CMSG_TOGGLE_PVP)]
         public static void HandleCombatNull(Packet packet)
         {
         }

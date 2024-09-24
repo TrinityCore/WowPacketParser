@@ -641,6 +641,38 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_SET_PLAYER_DECLINED_NAMES)]
+        public static void HandleSetPlayerDeclinedNames(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+
+            var count = new int[5];
+            for (var i = 0; i < 5; ++i)
+                count[i] = (int)packet.ReadBits(7);
+
+            for (var i = 0; i < 5; ++i)
+                packet.ReadWoWString("DeclinedName", count[i], i);
+        }
+
+        [Parser(Opcode.CMSG_SET_PVP)]
+        public static void HandleSetPVP(Packet packet)
+        {
+            packet.ReadBit("EnablePVP");
+        }
+
+        [Parser(Opcode.CMSG_SET_TITLE)]
+        public static void HandleSetTitle(Packet packet)
+        {
+            packet.ReadInt32("TitleID");
+        }
+
+        [Parser(Opcode.CMSG_UNDELETE_CHARACTER)]
+        public static void HandleUndeleteCharacter(Packet packet)
+        {
+            packet.ReadInt32("ClientToken");
+            packet.ReadPackedGuid128("CharacterGuid");
+        }
+
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE)]
         [Parser(Opcode.CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT)]
         public static void HandleCharNull(Packet packet)

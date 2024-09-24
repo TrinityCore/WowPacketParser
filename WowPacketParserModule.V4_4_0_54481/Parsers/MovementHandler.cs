@@ -979,7 +979,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("SplineID");
         }
 
+        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER)]
+        public static void HandleSetActiveMover(Packet packet)
+        {
+            packet.ReadPackedGuid128("ActiveMover");
+        }
+
+        [Parser(Opcode.CMSG_SUMMON_RESPONSE)]
+        public static void HandleSummonResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("SummonerGUID");
+            packet.ReadBit("Accept");
+        }
+
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
+        [Parser(Opcode.CMSG_WORLD_PORT_RESPONSE)]
         public static void HandleAbortNewWorld(Packet packet)
         {
         }

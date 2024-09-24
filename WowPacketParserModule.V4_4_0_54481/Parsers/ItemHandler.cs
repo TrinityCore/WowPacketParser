@@ -443,6 +443,69 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("Amount");
         }
 
+        [Parser(Opcode.CMSG_SOCKET_GEMS)]
+        public static void HandleSocketGems(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            for (var i = 0; i < 3; ++i)
+                packet.ReadPackedGuid128("Gem GUID", i);
+        }
+
+        [Parser(Opcode.CMSG_SPLIT_ITEM)]
+        public static void HandleSplitItem(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadByte("FromPackSlot");
+            packet.ReadByte("FromSlot");
+            packet.ReadByte("ToPackSlot");
+            packet.ReadByte("ToSlot");
+            packet.ReadInt32("Quantity");
+        }
+
+        [Parser(Opcode.CMSG_SWAP_INV_ITEM)]
+        public static void HandleSwapInvItem(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadByte("Slot2");
+            packet.ReadByte("Slot1");
+        }
+
+        [Parser(Opcode.CMSG_SWAP_ITEM)]
+        public static void HandleSwapItem(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadByte("ContainerSlotB");
+            packet.ReadByte("ContainerSlotA");
+            packet.ReadByte("SlotB");
+            packet.ReadByte("SlotA");
+        }
+
+        [Parser(Opcode.CMSG_USE_CRITTER_ITEM)]
+        public static void HandleUseCritterItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+        }
+
+        [Parser(Opcode.CMSG_USE_ITEM)]
+        public static void HandleUseItem(Packet packet)
+        {
+            var useItem = packet.Holder.ClientUseItem = new();
+            useItem.PackSlot = packet.ReadByte("PackSlot");
+            useItem.ItemSlot = packet.ReadByte("Slot");
+            useItem.CastItem = packet.ReadPackedGuid128("CastItem");
+
+            useItem.SpellId = SpellHandler.ReadSpellCastRequest(packet, "Cast");
+        }
+
+        [Parser(Opcode.CMSG_WRAP_ITEM)]
+        public static void HandleWrapItem(Packet packet)
+        {
+            ReadInvUpdate(packet, "InvUpdate");
+        }
+
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW)]
         public static void HandleItemZero(Packet packet)

@@ -298,6 +298,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("StableMaster");
         }
 
+        [Parser(Opcode.CMSG_SET_PET_SLOT)]
+        public static void HandleSetPetSlot(Packet packet)
+        {
+            packet.ReadUInt32("PetNumber");
+            packet.ReadByte("DestSlot");
+            packet.ReadPackedGuid128("StableMaster");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_PET_INFO)]
         public static void HandlePetNull(Packet packet)
         {

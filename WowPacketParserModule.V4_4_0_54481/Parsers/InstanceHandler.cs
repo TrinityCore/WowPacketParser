@@ -165,6 +165,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         }
 
         [Parser(Opcode.SMSG_RAID_DIFFICULTY_SET)]
+        [Parser(Opcode.CMSG_SET_RAID_DIFFICULTY)]
         public static void HandleSetRaidDifficulty(Packet packet)
         {
             packet.ReadInt32<DifficultyId>("DifficultyID");
@@ -185,6 +186,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         }
 
         [Parser(Opcode.SMSG_SET_DUNGEON_DIFFICULTY)]
+        [Parser(Opcode.CMSG_SET_DUNGEON_DIFFICULTY)]
         public static void HandleSetDungeonDifficulty(Packet packet)
         {
             packet.ReadInt32<DifficultyId>("DifficultyID");

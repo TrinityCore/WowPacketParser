@@ -59,6 +59,34 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Guid");
         }
 
+        [Parser(Opcode.CMSG_SWAP_VOID_ITEM)]
+        public static void HandleVoidSwapItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Npc");
+            packet.ReadPackedGuid128("VoidItem");
+            packet.ReadInt32("DstSlot");
+        }
+
+        [Parser(Opcode.CMSG_UNLOCK_VOID_STORAGE)]
+        public static void HandleVoidStorageUnlock(Packet packet)
+        {
+            packet.ReadPackedGuid128("Npc");
+        }
+
+        [Parser(Opcode.CMSG_VOID_STORAGE_TRANSFER)]
+        public static void HandleVoidStorageTransfer(Packet packet)
+        {
+            packet.ReadPackedGuid128("Npc");
+            var int48 = packet.ReadInt32("DepositsCount");
+            var int32 = packet.ReadInt32("WithdrawalsCount");
+
+            for (int i = 0; i < int48; i++)
+                packet.ReadPackedGuid128("Deposits", i);
+
+            for (int i = 0; i < int32; i++)
+                packet.ReadPackedGuid128("Withdrawals", i);
+        }
+
         [Parser(Opcode.SMSG_VOID_STORAGE_FAILED)]
         public static void HandleVoidStorageZero(Packet packet)
         {

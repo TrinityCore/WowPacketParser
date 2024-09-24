@@ -58,7 +58,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Unit");
         }
 
+        [Parser(Opcode.CMSG_SET_TAXI_BENCHMARK_MODE)]
+        public static void HandleSetTaxiBenchmarkMode(Packet packet)
+        {
+            packet.ReadBool("Activate");
+        }
+
+        [Parser(Opcode.CMSG_TAXI_NODE_STATUS_QUERY)]
+        [Parser(Opcode.CMSG_TAXI_QUERY_AVAILABLE_NODES)]
+        public static void HandleTaxinodeStatusQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+        }
+
         [Parser(Opcode.SMSG_NEW_TAXI_PATH)]
+        [Parser(Opcode.CMSG_TAXI_REQUEST_EARLY_LANDING)]
         public static void HandleTaxiNull(Packet packet)
         {
         }
