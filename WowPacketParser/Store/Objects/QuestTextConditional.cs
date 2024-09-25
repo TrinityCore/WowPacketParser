@@ -39,28 +39,28 @@ namespace WowPacketParser.Store.Objects
         }
     }
 
-    [DBTableName("quest_description_conditional", TargetedDatabaseFlag.SinceDragonflight)]
+    [DBTableName("quest_description_conditional", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic)]
     public sealed record QuestDescriptionConditional : QuestTextConditional
     {
         public QuestDescriptionConditional() { }
         public QuestDescriptionConditional(QuestTextConditional questTextConditional) : base(questTextConditional) { }
     }
 
-    [DBTableName("quest_completion_log_conditional", TargetedDatabaseFlag.SinceDragonflight)]
+    [DBTableName("quest_completion_log_conditional", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic)]
     public sealed record QuestCompletionLogConditional : QuestTextConditional
     {
         public QuestCompletionLogConditional() { }
         public QuestCompletionLogConditional(QuestTextConditional questTextConditional) : base(questTextConditional) { }
     }
 
-    [DBTableName("quest_offer_reward_conditional", TargetedDatabaseFlag.SinceDragonflight)]
+    [DBTableName("quest_offer_reward_conditional", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic)]
     public sealed record QuestOfferRewardConditional : QuestTextConditional
     {
         public QuestOfferRewardConditional() { }
         public QuestOfferRewardConditional(QuestTextConditional questTextConditional) : base(questTextConditional) { }
     }
 
-    [DBTableName("quest_request_items_conditional", TargetedDatabaseFlag.SinceDragonflight)]
+    [DBTableName("quest_request_items_conditional", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic)]
     public sealed record QuestRequestItemsConditional : QuestTextConditional
     {
         public QuestRequestItemsConditional() { }

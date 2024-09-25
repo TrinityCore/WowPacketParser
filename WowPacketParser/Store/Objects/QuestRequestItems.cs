@@ -15,10 +15,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("EmoteOnIncomplete")]
         public uint? EmoteOnIncomplete;
 
-        [DBFieldName("EmoteOnCompleteDelay", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("EmoteOnCompleteDelay", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public uint? EmoteOnCompleteDelay;
 
-        [DBFieldName("EmoteOnIncompleteDelay", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("EmoteOnIncompleteDelay", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public uint? EmoteOnIncompleteDelay;
 
         [DBFieldName("CompletionText", LocaleConstant.enUS)]

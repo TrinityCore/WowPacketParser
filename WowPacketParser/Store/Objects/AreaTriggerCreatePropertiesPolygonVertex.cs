@@ -5,14 +5,14 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("spell_areatrigger_vertices", TargetedDatabaseFlag.TillBattleForAzeroth)]
-    [DBTableName("areatrigger_create_properties_polygon_vertex", TargetedDatabaseFlag.SinceShadowlands)]
+    [DBTableName("areatrigger_create_properties_polygon_vertex", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
     public sealed record AreaTriggerCreatePropertiesPolygonVertex : IDataModel
     {
         [DBFieldName("SpellMiscId", TargetedDatabaseFlag.TillBattleForAzeroth, true)]
-        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabaseFlag.SinceShadowlands, true)]
+        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic, true)]
         public uint? AreaTriggerCreatePropertiesId;
 
-        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight, true)]
+        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, true)]
         public byte? IsCustom = 1;
 
         [DBFieldName("Idx", true)]
@@ -44,10 +44,10 @@ namespace WowPacketParser.Store.Objects
     public sealed record AreaTriggerCreatePropertiesPolygonVertexCustom : IDataModel
     {
         [DBFieldName("SpellMiscId", TargetedDatabaseFlag.TillBattleForAzeroth, true, true)]
-        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabaseFlag.SinceShadowlands, true, true)]
+        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic, true, true)]
         public string AreaTriggerCreatePropertiesId;
 
-        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight, true)]
+        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, true)]
         public byte? IsCustom;
 
         [DBFieldName("Idx", true)]

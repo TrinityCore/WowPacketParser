@@ -67,7 +67,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("curhealth", TargetedDatabaseFlag.TillShadowlands)]
         public uint? CurHealth;
 
-        [DBFieldName("curHealthPct", TargetedDatabaseFlag.Dragonflight | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("curHealthPct", TargetedDatabaseFlag.Dragonflight | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public uint? CurHealthPct;
 
         [DBFieldName("curmana", TargetedDatabaseFlag.TillShadowlands)]

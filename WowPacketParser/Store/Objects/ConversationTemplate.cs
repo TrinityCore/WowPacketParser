@@ -19,7 +19,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("LastLineEndTime", TargetedDatabaseFlag.TillBattleForAzeroth)]
         public uint? LastLineEndTime;
 
-        [DBFieldName("TextureKitId", TargetedDatabaseFlag.SinceBattleForAzeroth)]
+        [DBFieldName("TextureKitId", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
         public uint? TextureKitId;
 
         [DBFieldName("VerifiedBuild")]

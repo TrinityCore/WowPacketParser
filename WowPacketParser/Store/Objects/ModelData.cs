@@ -22,7 +22,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("DisplayID_Other_Gender")]
         public uint? DisplayIDOtherGender = 0;
 
-        [DBFieldName("VerifiedBuild", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("VerifiedBuild", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

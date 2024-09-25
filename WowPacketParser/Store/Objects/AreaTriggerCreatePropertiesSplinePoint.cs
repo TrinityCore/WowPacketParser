@@ -5,14 +5,14 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("spell_areatrigger_splines", TargetedDatabaseFlag.TillBattleForAzeroth)]
-    [DBTableName("areatrigger_create_properties_spline_point", TargetedDatabaseFlag.SinceShadowlands)]
+    [DBTableName("areatrigger_create_properties_spline_point", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
     public sealed record AreaTriggerCreatePropertiesSplinePoint : IDataModel
     {
         [DBFieldName("SpellMiscId", TargetedDatabaseFlag.TillBattleForAzeroth, true, true)]
-        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabaseFlag.SinceShadowlands, true, true)]
+        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic, true, true)]
         public uint? AreaTriggerCreatePropertiesId;
 
-        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight, true)]
+        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, true)]
         public byte? IsCustom;
 
         [DBFieldName("Idx", true)]

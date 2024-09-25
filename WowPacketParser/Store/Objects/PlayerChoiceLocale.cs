@@ -32,13 +32,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Locale")]
         public string Locale;
 
-        [DBFieldName("Header", TargetedDatabaseFlag.SinceLegion)]
+        [DBFieldName("Header", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.CataClassic)]
         public string Header;
 
-        [DBFieldName("Subheader", TargetedDatabaseFlag.SinceBattleForAzeroth)]
+        [DBFieldName("Subheader", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
         public string Subheader;
 
-        [DBFieldName("ButtonTooltip", TargetedDatabaseFlag.SinceBattleForAzeroth)]
+        [DBFieldName("ButtonTooltip", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
         public string ButtonTooltip;
 
         [DBFieldName("Answer")]
@@ -47,7 +47,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Description")]
         public string Description;
 
-        [DBFieldName("Confirmation", TargetedDatabaseFlag.SinceLegion)]
+        [DBFieldName("Confirmation", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.CataClassic)]
         public string Confirmation;
 
         [DBFieldName("VerifiedBuild")]

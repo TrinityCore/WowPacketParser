@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         public string GUID;
 
         [DBFieldName("path_id", TargetedDatabaseFlag.TillShadowlands)]
-        [DBFieldName("PathId", TargetedDatabaseFlag.SinceDragonflight)]
+        [DBFieldName("PathId", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic)]
         public uint? PathID;
 
         [DBFieldName("mount")]
@@ -34,18 +34,18 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("emote")]
         public uint? Emote;
 
-        [DBFieldName("aiAnimKit", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("aiAnimKit", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public ushort? AIAnimKit;
 
-        [DBFieldName("movementAnimKit", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("movementAnimKit", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public ushort? MovementAnimKit;
 
-        [DBFieldName("meleeAnimKit", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("meleeAnimKit", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public ushort? MeleeAnimKit;
 
         // visibilityDistanceType exists in all database versions but because UnitFlags2 to detect the value from sniff doesn't exist in earlier client version
         // we pretend the field doesn't exist
-        [DBFieldName("visibilityDistanceType", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic)]
+        [DBFieldName("visibilityDistanceType", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
         public byte? VisibilityDistanceType;
 
         [DBFieldName("auras")]

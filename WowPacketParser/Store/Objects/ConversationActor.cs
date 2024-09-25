@@ -16,16 +16,16 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Idx", true)]
         public uint? Idx;
 
-        [DBFieldName("CreatureId", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("CreatureId", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
         public uint? CreatureId;
 
-        [DBFieldName("CreatureDisplayInfoId", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("CreatureDisplayInfoId", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
         public uint? CreatureDisplayInfoId;
 
-        [DBFieldName("NoActorObject", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("NoActorObject", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
         public bool? NoActorObject;
 
-        [DBFieldName("ActivePlayerObject", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("ActivePlayerObject", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
         public bool? ActivePlayerObject;
 
         public WowGuid Guid;

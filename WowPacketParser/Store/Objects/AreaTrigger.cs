@@ -10,11 +10,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SpawnId", true, true)]
         public string SpawnId;
 
-        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabaseFlag.SinceDragonflight, false, true)]
+        [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, false, true)]
         [DBFieldName("AreaTriggerId", TargetedDatabaseFlag.TillShadowlands, false, true)]
         public string AreaTriggerCreatePropertiesId;
 
-        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight)]
+        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic)]
         [DBFieldName("IsServerSide", TargetedDatabaseFlag.TillShadowlands)]
         public byte? IsCustom;
 

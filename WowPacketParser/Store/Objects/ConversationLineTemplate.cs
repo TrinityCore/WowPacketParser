@@ -22,7 +22,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Flags")]
         public byte? Flags;
 
-        [DBFieldName("ChatType", TargetedDatabaseFlag.SinceShadowlands)]
+        [DBFieldName("ChatType", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
         public byte? ChatType;
 
         [DBFieldName("VerifiedBuild")]

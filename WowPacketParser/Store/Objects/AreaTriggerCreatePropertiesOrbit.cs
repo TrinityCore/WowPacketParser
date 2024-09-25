@@ -15,7 +15,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("AreaTriggerCreatePropertiesId", true, true)]
         public uint? AreaTriggerCreatePropertiesId;
 
-        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight, true)]
+        [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, true)]
         public byte? IsCustom;
 
         [DBFieldName("StartDelay")]
