@@ -311,6 +311,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadGuid("Offender");
         }
 
+        [Parser(Opcode.CMSG_JOIN_RATED_BATTLEGROUND)]
+        public static void HandleJoinRatedBattleground(Packet packet)
+        {
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+        }
+
         [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]
         [Parser(Opcode.CMSG_GET_PVP_OPTIONS_ENABLED)]
         [Parser(Opcode.CMSG_HEARTH_AND_RESURRECT)]

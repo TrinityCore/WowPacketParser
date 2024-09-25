@@ -1023,6 +1023,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_REQUEST_VEHICLE_EXIT)]
         [Parser(Opcode.CMSG_REQUEST_VEHICLE_NEXT_SEAT)]
         [Parser(Opcode.CMSG_REQUEST_VEHICLE_PREV_SEAT)]
+        [Parser(Opcode.CMSG_ACCEPT_SOCIAL_CONTRACT)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

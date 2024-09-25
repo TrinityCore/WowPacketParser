@@ -113,6 +113,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.AddValue("CompressedData", data);
         }
 
+        [Parser(Opcode.CMSG_ACCOUNT_NOTIFICATION_ACKNOWLEDGED)]
+        public static void HandleAccountNotificationAckknowledged(Packet packet)
+        {
+            packet.ReadUInt64("InstanceID");
+            packet.ReadUInt32("OpenSeconds");
+            packet.ReadUInt32("ReadSeconds");
+        }
+
         [Parser(Opcode.SMSG_LOGOUT_CANCEL_ACK)]
         public static void HandleAccountNull(Packet packet)
         {
