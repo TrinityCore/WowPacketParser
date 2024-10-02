@@ -50,6 +50,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("DecalPropertiesId")]
         public uint? DecalPropertiesId = 0;
 
+        [DBFieldName("SpellForVisuals", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, false, false, true)]
+        public uint? SpellForVisuals;
+
         [DBFieldName("TimeToTarget")]
         public uint? TimeToTarget = 0;
 
@@ -67,8 +70,6 @@ namespace WowPacketParser.Store.Objects
 
         // Will be inserted as comment
         public uint spellId = 0;
-
-        public uint SpellForVisuals;
 
         public string CustomId;
 
@@ -174,6 +175,9 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("DecalPropertiesId")]
         public uint? DecalPropertiesId = 0;
+
+        [DBFieldName("SpellForVisuals", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, false, false, true)]
+        public uint? SpellForVisuals;
 
         [DBFieldName("TimeToTarget")]
         public uint? TimeToTarget = 0;
