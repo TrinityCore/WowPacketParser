@@ -259,6 +259,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             var playerCount = packet.ReadUInt32("PlayersCount");
             packet.ReadByte("Unused");
+
+            packet.ResetBitReader();
             packet.ReadBit("ValidCompletedMask");
             packet.ReadBit("ProposalSilent");
             packet.ReadBit("IsRequeue");
