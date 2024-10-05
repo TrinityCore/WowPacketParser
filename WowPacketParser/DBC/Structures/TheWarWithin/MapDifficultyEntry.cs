@@ -17,6 +17,8 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public int ItemContextPickerID;
         public int Flags;
         public int ContentTuningID;
+        public int WorldStateExpressionID;
+        [NonInlineRelation(typeof(uint))]
         public int MapID;
     }
 }
