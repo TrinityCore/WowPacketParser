@@ -157,7 +157,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 AddBroadcastTextToGossip(packetGossip.MenuId, broadcastTextID, guid);
 
             for (int i = 0; i < questsCount; ++i)
-                packetGossip.Quests.Add(V7_0_3_22248.Parsers.NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests"));
+                packetGossip.Quests.Add(ReadGossipQuestTextData(packet, i, "GossipQuests"));
 
             if (guid.GetObjectType() == ObjectType.Unit)
             {
