@@ -1499,7 +1499,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             ContentTuningHotfix1100 hotfix = new ContentTuningHotfix1100();
 
-            hotfix.ID = entry;
+            hotfix.ID = packet.ReadUInt32("ID", indexes);
             hotfix.Flags = packet.ReadInt32("Flags", indexes);
             hotfix.ExpansionID = packet.ReadInt32("ExpansionID", indexes);
             hotfix.HealthItemLevelCurveID = packet.ReadInt32("HealthItemLevelCurveID", indexes);
