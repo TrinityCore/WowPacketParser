@@ -208,7 +208,7 @@ namespace WowPacketParser.Misc
 
                     string auraInfo = string.Empty;
                     auraInfo += $"Aura Id {aura:D} ({ aura })";
-                    auraInfo += $", value = { effect.EffectBasePoints }";
+                    auraInfo += $", value = { effect.EffectBasePointsF }";
                     auraInfo += $", misc = { misc } (";
 
                     switch (aura)

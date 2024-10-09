@@ -182,16 +182,16 @@ namespace WowPacketParser.SQL
                         if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
                         {
                             broadcastText.ConditionID = 0;
-                            broadcastText.SoundEntriesID = new uint[2];
-                            broadcastText.SoundEntriesID[0] = Convert.ToUInt32(reader["SoundEntriesID"]);
-                            broadcastText.SoundEntriesID[1] = 0;
+                            broadcastText.SoundKitID = new uint[2];
+                            broadcastText.SoundKitID[0] = Convert.ToUInt32(reader["SoundKitID"]);
+                            broadcastText.SoundKitID[1] = 0;
                         }
                         else
                         {
                             broadcastText.ConditionID = Convert.ToInt32(reader["ConditionID"]);
-                            broadcastText.SoundEntriesID = new uint[2];
-                            broadcastText.SoundEntriesID[0] = Convert.ToUInt32(reader[$"Sound{soundFieldName}ID1"]);
-                            broadcastText.SoundEntriesID[1] = Convert.ToUInt32(reader[$"Sound{soundFieldName}ID2"]);
+                            broadcastText.SoundKitID = new uint[2];
+                            broadcastText.SoundKitID[0] = Convert.ToUInt32(reader[$"Sound{soundFieldName}ID1"]);
+                            broadcastText.SoundKitID[1] = Convert.ToUInt32(reader[$"Sound{soundFieldName}ID2"]);
                         }
 
                         if (!DBC.DBC.BroadcastText.ContainsKey(id))
