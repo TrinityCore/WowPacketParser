@@ -1,4 +1,4 @@
-﻿using DBFileReaderLib.Attributes;
+using DBFileReaderLib.Attributes;
 
 namespace WowPacketParser.DBC.Structures.TheWarWithin
 {
@@ -33,6 +33,6 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public int NavigationMaxDistance;
         public int PreloadFileDataID;
         [Cardinality(3)]
-        public uint[] Flags = new uint[3];
+        public int[] Flags = new int[3];
     }
 }

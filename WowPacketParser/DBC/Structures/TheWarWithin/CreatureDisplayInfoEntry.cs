@@ -1,4 +1,4 @@
-﻿using DBFileReaderLib.Attributes;
+using DBFileReaderLib.Attributes;
 
 namespace WowPacketParser.DBC.Structures.TheWarWithin
 {
@@ -31,8 +31,8 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public int DissolveOutEffectID;
         public sbyte CreatureModelMinLod;
         public ushort ConditionalCreatureModelID;
-        public float Unknown_1100_1;
-        public ushort Unknown_1100_2;
+        public float MountMaxBankingAngle;
+        public ushort Unknown1100;
         [Cardinality(4)]
         public int[] TextureVariationFileDataID = new int[4];
     }

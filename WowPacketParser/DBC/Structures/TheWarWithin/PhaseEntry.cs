@@ -1,4 +1,4 @@
-﻿using DBFileReaderLib.Attributes;
+using DBFileReaderLib.Attributes;
 
 namespace WowPacketParser.DBC.Structures.TheWarWithin
 {
@@ -7,6 +7,6 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
     {
         [Index(true)]
         public uint ID;
-        public short Flags;
+        public int Flags;
     }
 }

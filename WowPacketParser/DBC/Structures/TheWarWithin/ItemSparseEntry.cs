@@ -1,5 +1,4 @@
-﻿using DBFileReaderLib.Attributes;
-using System;
+using DBFileReaderLib.Attributes;
 
 namespace WowPacketParser.DBC.Structures.TheWarWithin
 {
@@ -48,7 +47,7 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public ushort RequiredTransmogHoliday;
         public ushort RequiredHoliday;
         public ushort GemProperties;
-        public ushort SocketMatchEnchantmentId;
+        public ushort SocketMatchEnchantmentID;
         public ushort TotemCategoryID;
         public ushort InstanceBound;
         [Cardinality(2)]
@@ -71,7 +70,7 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public byte Material;
         public byte PageMaterialID;
         public byte Bonding;
-        public byte DamageDamageType;
+        public byte DamageType;
         public byte ContainerSlots;
         public byte RequiredPVPMedal;
         public byte RequiredPVPRank;
