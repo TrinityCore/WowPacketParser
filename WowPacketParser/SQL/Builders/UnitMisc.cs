@@ -887,7 +887,7 @@ namespace WowPacketParser.SQL.Builders
                     var creatureDiff = DBC.DBC.CreatureDifficulty.Where(diff => diff.Value.CreatureID == unit.Key.GetEntry());
                     if (creatureDiff.Any())
                     {
-                        template.Faction  = creatureDiff.Select(lv => lv.Value.FactionTemplateID).First();
+                        template.Faction  = creatureDiff.Select(lv => lv.Value.FactionID).First();
                     }
                 }
 

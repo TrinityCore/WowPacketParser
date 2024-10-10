@@ -1,4 +1,4 @@
-﻿using DBFileReaderLib.Attributes;
+using DBFileReaderLib.Attributes;
 
 namespace WowPacketParser.DBC.Structures.TheWarWithin
 {
@@ -16,10 +16,10 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public ushort CreatureFamily;
         public byte StartAnimState;
         [Cardinality(4)]
-        public uint[] DisplayID = new uint[4];
+        public int[] DisplayID = new int[4];
         [Cardinality(4)]
         public float[] DisplayProbability = new float[4];
         [Cardinality(3)]
-        public uint[] AlwaysItem = new uint[3];
+        public int[] AlwaysItem = new int[3];
     }
 }

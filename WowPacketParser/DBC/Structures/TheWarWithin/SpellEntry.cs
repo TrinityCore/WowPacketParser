@@ -1,9 +1,8 @@
-﻿using DBFileReaderLib.Attributes;
+using DBFileReaderLib.Attributes;
 
 namespace WowPacketParser.DBC.Structures.TheWarWithin
 {
     [DBFile("Spell")]
-
     public sealed class SpellEntry
     {
         [Index(true)]

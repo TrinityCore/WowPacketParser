@@ -201,12 +201,12 @@ namespace WowPacketParser.DBC
             }));
         }
 
-        public static HashSet<ushort> GetPhaseGroups(ICollection<ushort> phases)
+        public static HashSet<int> GetPhaseGroups(ICollection<ushort> phases)
         {
             if (!phases.Any())
-                return new HashSet<ushort>();
+                return new HashSet<int>();
 
-            HashSet<ushort> phaseGroups = new HashSet<ushort>();
+            HashSet<int> phaseGroups = new HashSet<int>();
 
             foreach (var phaseGroup in Phases)
             {
@@ -229,6 +229,6 @@ namespace WowPacketParser.DBC
         public static readonly Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
         public static readonly Dictionary<uint, FactionEntry> FactionStores = new Dictionary<uint, FactionEntry>();
         public static readonly Dictionary<Tuple<uint, uint>, SpellEffectEntry> SpellEffectStores = new Dictionary<Tuple<uint, uint>, SpellEffectEntry>();
-        public static readonly Dictionary<ushort, List<ushort>> Phases = new Dictionary<ushort, List<ushort>>();
+        public static readonly Dictionary<int, List<ushort>> Phases = new Dictionary<int, List<ushort>>();
     }
 }

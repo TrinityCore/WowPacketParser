@@ -1,9 +1,8 @@
-﻿using DBFileReaderLib.Attributes;
+using DBFileReaderLib.Attributes;
 
 namespace WowPacketParser.DBC.Structures.TheWarWithin
 {
     [DBFile("CreatureFamily")]
-
     public sealed class CreatureFamilyEntry
     {
         [Index(true)]

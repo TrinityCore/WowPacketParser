@@ -1,9 +1,8 @@
-﻿using DBFileReaderLib.Attributes;
+using DBFileReaderLib.Attributes;
 
 namespace WowPacketParser.DBC.Structures.TheWarWithin
 {
     [DBFile("SpellEffect")]
-
     public sealed class SpellEffectEntry
     {
         [Index(true)]
@@ -30,7 +29,7 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public float Variance;
         public float ResourceCoefficient;
         public float GroupSizeBasePointsCoefficient;
-        public float EffectBasePoints;
+        public float EffectBasePointsF;
         public int ScalingClass;
         [Cardinality(2)]
         public int[] EffectMiscValue = new int[2];
@@ -40,6 +39,7 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public int[] EffectSpellClassMask = new int[4];
         [Cardinality(2)]
         public short[] ImplicitTarget = new short[2];
+        [NonInlineRelation(typeof(uint))]
         public int SpellID;
     }
 }

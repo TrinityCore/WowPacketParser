@@ -1,4 +1,4 @@
-﻿using DBFileReaderLib.Attributes;
+using DBFileReaderLib.Attributes;
 
 namespace WowPacketParser.DBC.Structures.TheWarWithin
 {
@@ -33,4 +33,3 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public byte[] ParentFactionCap = new byte[2];
     }
 }
-
