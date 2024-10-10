@@ -367,6 +367,7 @@ namespace WowPacketParser.Hotfix
                     case "toy":
                     case "trait_currency_source":
                     case "trait_definition":
+                    case "trait_sub_tree":
                     case "transmog_set_group":
                     case "transmog_set":
                     case "ui_map":
