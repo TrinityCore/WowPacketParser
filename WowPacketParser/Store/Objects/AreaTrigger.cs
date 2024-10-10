@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Collections.Generic;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -20,6 +21,9 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("MapId")]
         public uint? MapId;
+
+        [DBFieldName("SpawnDifficulties", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic)]
+        public string SpawnDifficulties;
 
         [DBFieldName("PosX")]
         public float? PosX;
@@ -48,7 +52,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ShapeData", TargetedDatabaseFlag.TillShadowlands, 8, true)] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
         public float?[] ShapeData = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        [DBFieldName("SpellForVisuals", false, false, true)]
+        [DBFieldName("SpellForVisuals", TargetedDatabaseFlag.TillShadowlands, false, false, true)]
         public uint? SpellForVisuals;
 
         [DBFieldName("Comment")]
@@ -58,5 +62,16 @@ namespace WowPacketParser.Store.Objects
         public int? VerifiedBuild = ClientVersion.BuildInt;
 
         public WowGuid areatriggerGuid;
+
+        public List<int> GetDefaultSpawnDifficulties()
+        {
+            if (Settings.UseDBC && DBC.DBC.MapDifficultyStores != null)
+            {
+                if (DBC.DBC.MapDifficultyStores.ContainsKey((int)MapId))
+                    return DBC.DBC.MapDifficultyStores[(int)MapId];
+            }
+
+            return new List<int>();
+        }
     }
 }
