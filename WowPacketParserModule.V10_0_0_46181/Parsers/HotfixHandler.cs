@@ -1960,7 +1960,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         {
             ContentTuningHotfix1027 hotfix = new ContentTuningHotfix1027();
 
-            hotfix.ID = entry;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54630))
+                hotfix.ID = packet.ReadUInt32("ID", indexes);
+            else
+                hotfix.ID = entry;
+            
             hotfix.Flags = packet.ReadInt32("Flags", indexes);
             hotfix.ExpansionID = packet.ReadInt32("ExpansionID", indexes);
             hotfix.HealthItemLevelCurveID = packet.ReadInt32("HealthItemLevelCurveID", indexes);
