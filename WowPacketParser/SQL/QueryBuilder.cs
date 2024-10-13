@@ -12,15 +12,17 @@ namespace WowPacketParser.SQL
         private readonly RowList<T> _conditions;
 
         private readonly bool _onlyPrimaryKeys;
+        private readonly int _conditionStartIdx;
 
         private static readonly List<Tuple<string, FieldInfo, List<DBFieldNameAttribute>>> _databaseFields = SQLUtil.GetFields<T>();
         private static readonly FieldInfo _primaryKeyReflectionField = SQLUtil.GetFirstPrimaryKey<T>();
         private static readonly bool _isHotfixTable = SQLUtil.IsHotfixTable<T>();
 
-        public SQLWhere(RowList<T> conditionList, bool onlyPrimaryKeys = false)
+        public SQLWhere(RowList<T> conditionList, bool onlyPrimaryKeys = false, int conditionStartIdx = -1)
         {
             _conditions = conditionList;
             _onlyPrimaryKeys = onlyPrimaryKeys;
+            _conditionStartIdx = conditionStartIdx;
         }
 
         public bool HasConditions => _conditions != null && _conditions.Count != 0;
@@ -50,8 +52,15 @@ namespace WowPacketParser.SQL
                 {
                     whereClause.Append(" IN (");
 
-                    foreach (Row<T> condition in _conditions)
+                    List<Row<T>> rows = _conditions.GetRows();
+
+                    // _conditionStartIdx -1 is used for SELECT statements
+                    int startIdx = (_conditionStartIdx >= 0) ? _conditionStartIdx : 0;
+                    int endIdx = (_conditionStartIdx >= 0) ? Math.Min(_conditions.Count, _conditionStartIdx + Settings.MaximumConditionsPerStatement) : _conditions.Count;
+
+                    for (var i = startIdx; i < endIdx; i++)
                     {
+                        Row<T> condition = rows[i];
                         object value = field.Item2.GetValue(condition.Data);
                         whereClause.Append(SQLUtil.ToSQLValue(value, noQuotes: field.Item3.Any(a => a.NoQuotes == true)));
 
@@ -76,8 +85,12 @@ namespace WowPacketParser.SQL
                     // Fallback to standard AND where clauses if the distinct one failed
                 }
 
-                foreach (Row<T> condition in _conditions)
+                int startIdx = (_conditionStartIdx >= 0) ? _conditionStartIdx : 0;
+                int endIdx = (_conditionStartIdx >= 0) ? Math.Min(_conditions.Count, _conditionStartIdx + Settings.MaximumConditionsPerStatement) : _conditions.Count;
+
+                for (var i = startIdx; i < endIdx; i++)
                 {
+                    Row<T> condition = _conditions.GetRows()[i];
                     whereClause.Append("(");
 
                     if (_isHotfixTable)
@@ -113,8 +126,14 @@ namespace WowPacketParser.SQL
         {
             // 1. Get a list of all conditions as list of field/value pairs
             List<WhereCondition> whereConditions = new List<WhereCondition>();
-            foreach (Row<T> condition in _conditions)
+
+            // _conditionStartIdx -1 is used for SELECT statements
+            int startIdx = (_conditionStartIdx >= 0) ? _conditionStartIdx : 0;
+            int endIdx = (_conditionStartIdx >= 0) ? Math.Min(_conditions.Count, _conditionStartIdx + Settings.MaximumConditionsPerStatement) : _conditions.Count;
+
+            for (var i = startIdx; i < endIdx; i++)
             {
+                Row<T> condition = _conditions.GetRows()[i];
                 var whereCondition = new WhereCondition();
 
                 foreach (var field in _databaseFields)
@@ -279,16 +298,19 @@ namespace WowPacketParser.SQL
         {
             StringBuilder result = new StringBuilder();
 
-            var rowsStrings = _rows2.Select(row => new SQLUpdateRow<T>(row.Key, row.Value).Build());
+            var rowsStrings = _rows2.Select(row => {
+                var sb = new StringBuilder();
+                for (var i = 0; i < row.Value.Count; i += Settings.MaximumConditionsPerStatement)
+                    sb.AppendLine(new SQLUpdateRow<T>(row.Key, row.Value, i).Build());
+                return sb.ToString();
+            });
 
             foreach (string rowString in rowsStrings)
             {
                 if (string.IsNullOrEmpty(rowString))
                     continue;
                 result.Append(rowString);
-                result.Append(Environment.NewLine);
             }
-
             return result.ToString();
         }
     }
@@ -307,10 +329,10 @@ namespace WowPacketParser.SQL
 
         private static readonly List<Tuple<string, FieldInfo, List<DBFieldNameAttribute>>> _databaseFields = SQLUtil.GetFields<T>();
 
-        public SQLUpdateRow(Row<T> value, RowList<T> conditions)
+        public SQLUpdateRow(Row<T> value, RowList<T> conditions, int conditionStartIdx = -1)
         {
             _value = value;
-            WhereClause = new SQLWhere<T>(conditions, true);
+            WhereClause = new SQLWhere<T>(conditions, true, conditionStartIdx);
         }
 
         /// <summary>
@@ -646,11 +668,14 @@ namespace WowPacketParser.SQL
             }
             else
             {
-                query.Append("DELETE FROM ");
-                query.Append(SQLUtil.GetTableName<T>());
-                query.Append(" WHERE ");
-                query.Append(new SQLWhere<T>(_rows, true).Build());
-                query.Append(";");
+                for (var i = 0; i < _rows.Count; i += Settings.MaximumConditionsPerStatement)
+                {
+                    query.Append("DELETE FROM ");
+                    query.Append(SQLUtil.GetTableName<T>());
+                    query.Append(" WHERE ");
+                    query.Append(new SQLWhere<T>(_rows, true, i).Build());
+                    query.Append(";");
+                }
             }
 
             query.Append(Environment.NewLine);

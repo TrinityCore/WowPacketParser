@@ -27,6 +27,7 @@ namespace WowPacketParser.Misc
         public static readonly bool SkipRowsWithFallbackValues = Conf.GetBoolean("SkipRowsWithFallbackValues", true);
         public static readonly bool IgnoreZeroValues = Conf.GetBoolean("IgnoreZeroValues", false);
         public static readonly bool ForceInsertQueries = Conf.GetBoolean("ForceInsertQueries", false);
+        public static readonly int MaximumConditionsPerStatement = Conf.GetInt("MaximumConditionsPerStatement", 5000);
         public static readonly bool RecalcDiscount = Conf.GetBoolean("RecalcDiscount", false);
         public static readonly bool ForcePhaseZero = Conf.GetBoolean("ForcePhaseZero", false);
         public static readonly bool GenerateCreateObject2SpawnsOnly = Conf.GetBoolean("GenerateCreateObject2SpawnsOnly", false);

@@ -50,6 +50,11 @@ namespace WowPacketParser.SQL
             return _rows.GetEnumerator();
         }
 
+        public List<Row<T>> GetRows()
+        {
+            return _rows;
+        }
+
         [ExcludeFromCodeCoverage]
         IEnumerator IEnumerable.GetEnumerator()
         {
