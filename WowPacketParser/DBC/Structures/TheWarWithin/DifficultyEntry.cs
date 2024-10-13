@@ -1,4 +1,4 @@
-﻿using DBFileReaderLib.Attributes;
+using DBFileReaderLib.Attributes;
 
 namespace WowPacketParser.DBC.Structures.TheWarWithin
 {
@@ -17,8 +17,8 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public ushort Flags;
         public byte ItemContext;
         public byte ToggleDifficultyID;
-        public uint GroupSizeHealthCurveID;         // unproven
-        public uint GroupSizeDmgCurveID;            // unproven
-        public uint GroupSizeSpellPointsCurveID;    // unproven
+        public uint GroupSizeHealthCurveID;
+        public uint GroupSizeDmgCurveID;
+        public uint GroupSizeSpellPointsCurveID;
     }
 }

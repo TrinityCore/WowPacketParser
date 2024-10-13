@@ -1,9 +1,8 @@
-﻿using DBFileReaderLib.Attributes;
+using DBFileReaderLib.Attributes;
 
 namespace WowPacketParser.DBC.Structures.TheWarWithin
 {
     [DBFile("Achievement")]
-
     public sealed class AchievementEntry
     {
         public string Description;
@@ -18,7 +17,7 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public sbyte MinimumCriteria;
         public sbyte Points;
         public int Flags;
-        public short UiOrder;
+        public ushort UiOrder;
         public int IconFileID;
         public int RewardItemID;
         public uint CriteriaTree;

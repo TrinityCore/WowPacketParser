@@ -1,4 +1,4 @@
-﻿using DBFileReaderLib.Attributes;
+using DBFileReaderLib.Attributes;
 
 namespace WowPacketParser.DBC.Structures.TheWarWithin
 {
@@ -17,6 +17,6 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public int FailAsset;
         public int Flags;
         public short EligibilityWorldStateID;
-        public sbyte EligibilityWorldStatevalue;
+        public sbyte EligibilityWorldStateValue;
     }
 }
