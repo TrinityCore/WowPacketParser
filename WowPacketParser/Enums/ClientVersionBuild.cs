@@ -678,8 +678,10 @@ namespace WowPacketParser.Enums
 
         V1_15_0_52302 = 52302, // live
         V1_15_0_52610 = 52610, // live
+        
         V1_15_1_53247 = 53247, // live
         V1_15_1_53495 = 53495, // live
+        
         V1_15_2_54262 = 54262, // live
 
         // TBC Classic
