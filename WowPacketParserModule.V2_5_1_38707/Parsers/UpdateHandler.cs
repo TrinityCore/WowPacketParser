@@ -1,10 +1,13 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Drawing;
+using System.Linq;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using WowPacketParser.Store.Objects.Movement;
 using WowPacketParser.Store.Objects.UpdateFields;
 using CoreFields = WowPacketParser.Enums.Version;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -441,14 +444,35 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 {
                     packet.ResetBitReader();
                     packet.ReadInt32("ID", index);
-                    packet.ReadVector3("Destination", index);
+
+                    CreatureMovement movement = Storage.CreatureMovement.Where(p => p.Item1.GUID == guid).SingleOrDefault()?.Item1;
+                    bool add = false;
+                    if (movement == null)
+                    {
+                        movement = new CreatureMovement()
+                        {
+                            GUID = guid
+                        };
+                        add = true;
+                    }
+
+                    var destination = packet.ReadVector3("Destination", index);
 
                     var hasMovementSplineMove = packet.ReadBit("MovementSplineMove", index);
                     if (hasMovementSplineMove)
                     {
                         packet.ResetBitReader();
 
-                        packet.ReadUInt32E<SplineFlag>("SplineFlags", index);
+                        var splineFlag = packet.ReadUInt32E<SplineFlag>("SplineFlags", index);
+                        CreatureMovementFlags moveType = CreatureMovementFlags.None;
+
+                        if (splineFlag.HasFlag(SplineFlag.EnterCycle) || splineFlag.HasFlag(SplineFlag.Cyclic))
+                            moveType = CreatureMovementFlags.ExactPathFlyingCyclic;
+                        else if (splineFlag.HasFlag(SplineFlag.Flying))
+                            moveType = CreatureMovementFlags.ExactPathFlying;
+                        else if (splineFlag.HasFlag(SplineFlag.UncompressedPath))
+                            moveType = CreatureMovementFlags.ExactPath;
+
                         packet.ReadInt32("Elapsed", index);
                         packet.ReadUInt32("Duration", index);
                         packet.ReadSingle("DurationModifier", index);
@@ -493,6 +517,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                                 break;
                             case 3:
                                 orientation = packet.ReadSingle("FaceDirection", index);
+                                moveType = CreatureMovementFlags.Invalid;
                                 break;
                             default:
                                 break;
@@ -504,13 +529,23 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                         for (var i = 0; i < pointsCount; ++i)
                         {
                             var spot = packet.ReadVector3("Points", index, i);
+                            if (moveType != CreatureMovementFlags.Invalid)
+                                movement.Waypoints.Add(new CreatureMovementNode
+                                {
+                                    Position = spot,
+                                    Point = splineFlag.HasFlag(SplineFlag.EnterCycle) || splineFlag.HasFlag(SplineFlag.Cyclic)
+                                });
                         }
 
                         if (hasSpellEffectExtraData)
                             V8_0_1_27101.Parsers.MovementHandler.ReadMonsterSplineSpellEffectExtraData(packet, index);
 
                         if (hasJumpExtraData)
-                            V8_0_1_27101.Parsers.MovementHandler.ReadMonsterSplineJumpExtraData(packet, index);
+                        {
+                            var jumpData = V8_0_1_27101.Parsers.MovementHandler.ReadMonsterSplineJumpExtraData(packet, index);
+                            if (jumpData.StartTime > 0)
+                                moveType = CreatureMovementFlags.ExactPathAndJump;
+                        }
 
                         if (hasAnimationTierTransition)
                         {
@@ -531,6 +566,9 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                             }
                         }
                     }
+
+                    if (movement.Type != CreatureMovementFlags.Invalid && add)
+                        Storage.CreatureMovement.Add(movement);
                 }
             }
 
