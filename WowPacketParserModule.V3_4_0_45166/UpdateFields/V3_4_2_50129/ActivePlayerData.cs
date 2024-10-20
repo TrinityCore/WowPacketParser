@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
 {
     public class ActivePlayerData : IActivePlayerData
     {
-        public WowGuid[] InvSlots { get; } = new WowGuid[129];
+        public WowGuid[] InvSlots { get; } = new WowGuid[141];
         public WowGuid FarsightObject { get; set; }
         public WowGuid ComboTarget { get; set; }
         public System.Nullable<ulong> Coinage { get; set; }
@@ -106,20 +106,24 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
         public System.Nullable<ulong>[] QuestCompleted { get; } = new System.Nullable<ulong>[875];
         public System.Nullable<int> Honor { get; set; }
         public System.Nullable<int> HonorNextLevel { get; set; }
+        public System.Nullable<int> Field_F74 { get; set; }
         public System.Nullable<int> PvpTierMaxFromWins { get; set; }
         public System.Nullable<int> PvpLastWeeksTierMaxFromWins { get; set; }
+        public System.Nullable<byte> PvpRankProgress { get; set; }
+        public System.Nullable<int> PerksProgramCurrency { get; set; }
         public System.Nullable<byte> NumBankSlots { get; set; }
         public System.Nullable<int> TransportServerTime { get; set; }
+        public System.Nullable<uint> ActiveCombatTraitConfigID { get; set; }
         public IGlyphInfo[] GlyphInfo { get; } = new IGlyphInfo[6];
         public System.Nullable<byte> GlyphsEnabled { get; set; }
-        public System.Nullable<byte> Unk340 { get; set; }
+        public System.Nullable<byte> LfgRoles { get; set; }
+        public DynamicUpdateField<System.Nullable<ushort>>[] ResearchSites { get; } = new DynamicUpdateField<System.Nullable<ushort>>[1] { new DynamicUpdateField<System.Nullable<ushort>>() };
+        public DynamicUpdateField<System.Nullable<uint>>[] ResearchSiteProgress { get; } = new DynamicUpdateField<System.Nullable<uint>>[1] { new DynamicUpdateField<System.Nullable<uint>>() };
         public DynamicUpdateField<IResearch>[] Research { get; } = new DynamicUpdateField<IResearch>[1] { new DynamicUpdateField<IResearch>() };
         public DynamicUpdateField<System.Nullable<ulong>> KnownTitles { get; } = new DynamicUpdateField<System.Nullable<ulong>>();
-        public DynamicUpdateField<System.Nullable<uint>> ResearchSites { get; } = new DynamicUpdateField<System.Nullable<uint>>();
-        public DynamicUpdateField<System.Nullable<uint>> ResearchSiteProgress { get; } = new DynamicUpdateField<System.Nullable<uint>>();
         public DynamicUpdateField<System.Nullable<int>> DailyQuestsCompleted { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<System.Nullable<int>> AvailableQuestLineXQuestIDs { get; } = new DynamicUpdateField<System.Nullable<int>>();
-        public DynamicUpdateField<System.Nullable<int>> Unk254 { get; } = new DynamicUpdateField<System.Nullable<int>>();
+        public DynamicUpdateField<System.Nullable<int>> Field_1000 { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<System.Nullable<int>> Heirlooms { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<System.Nullable<uint>> HeirloomFlags { get; } = new DynamicUpdateField<System.Nullable<uint>>();
         public DynamicUpdateField<System.Nullable<int>> Toys { get; } = new DynamicUpdateField<System.Nullable<int>>();
@@ -128,9 +132,13 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
         public DynamicUpdateField<System.Nullable<int>> SelfResSpells { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<ISpellPctModByLabel> SpellPctModByLabel { get; } = new DynamicUpdateField<ISpellPctModByLabel>();
         public DynamicUpdateField<ISpellFlatModByLabel> SpellFlatModByLabel { get; } = new DynamicUpdateField<ISpellFlatModByLabel>();
+        public DynamicUpdateField<IQuestLog> TaskQuests { get; } = new DynamicUpdateField<IQuestLog>();
+        public DynamicUpdateField<ICategoryCooldownMod> CategoryCooldownMods { get; } = new DynamicUpdateField<ICategoryCooldownMod>();
+        public DynamicUpdateField<IWeeklySpellUse> WeeklySpellUses { get; } = new DynamicUpdateField<IWeeklySpellUse>();
         public IPVPInfo[] PvpInfo { get; } = new IPVPInfo[6];
         public System.Nullable<bool> InsertItemsLeftToRight { get; set; }
         public DynamicUpdateField<ICharacterRestriction> CharacterRestrictions { get; } = new DynamicUpdateField<ICharacterRestriction>();
+        public DynamicUpdateField<ITraitConfig> TraitConfigs { get; } = new DynamicUpdateField<ITraitConfig>();
     }
 }
 

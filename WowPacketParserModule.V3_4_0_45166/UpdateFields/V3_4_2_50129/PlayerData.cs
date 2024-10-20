@@ -15,13 +15,14 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
         public System.Nullable<uint> GuildRankID { get; set; }
         public System.Nullable<uint> GuildDeleteDate { get; set; }
         public System.Nullable<int> GuildLevel { get; set; }
-        public System.Nullable<byte> PartyType { get; set; }
+        public System.Nullable<byte>[] PartyType { get; } = new System.Nullable<byte>[2];
+        public System.Nullable<byte> NumBankSlots { get; set; }
         public System.Nullable<byte> NativeSex { get; set; }
         public System.Nullable<byte> Inebriation { get; set; }
         public System.Nullable<byte> PvpTitle { get; set; }
         public System.Nullable<byte> ArenaFaction { get; set; }
         public System.Nullable<byte> PvpRank { get; set; }
-        public System.Nullable<byte> Unk254 { get; set; }
+        public System.Nullable<int> Unk254 { get; set; }
         public System.Nullable<uint> DuelTeam { get; set; }
         public System.Nullable<int> GuildTimeStamp { get; set; }
         public IQuestLog[] QuestLog { get; } = new IQuestLog[25];
@@ -34,8 +35,13 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
         public System.Nullable<float>[] AvgItemLevel { get; } = new System.Nullable<float>[6];
         public System.Nullable<byte> CurrentBattlePetBreedQuality { get; set; }
         public System.Nullable<int> HonorLevel { get; set; }
+        public System.Nullable<long> LogoutTime { get; set; }
+        public WowGuid BnetAccount { get; set; }
+        public System.Nullable<int> CurrentBattlePetSpeciesID { get; set; }
+        public System.Nullable<uint>[] Field_3120 { get; } = new System.Nullable<uint>[19];
         public DynamicUpdateField<IChrCustomizationChoice> Customizations { get; } = new DynamicUpdateField<IChrCustomizationChoice>();
         public DynamicUpdateField<IArenaCooldown> ArenaCooldowns { get; } = new DynamicUpdateField<IArenaCooldown>();
+        public DynamicUpdateField<System.Nullable<int>> VisualItemReplacements { get; } = new DynamicUpdateField<System.Nullable<int>>();
     }
 }
 
