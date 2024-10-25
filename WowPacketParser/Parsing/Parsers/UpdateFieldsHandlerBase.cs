@@ -145,5 +145,15 @@ namespace WowPacketParser.Parsing.Parsers
         {
             return null;
         }
+
+        public virtual IVendorData ReadCreateVendorData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IVendorData ReadUpdateVendorData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
     }
 }
