@@ -23,6 +23,7 @@ namespace WowPacketParser.Store.Objects
         public IObjectData ObjectData;
         public Dictionary<int, UpdateField> UpdateFields;
         public Dictionary<int, List<UpdateField>> DynamicUpdateFields;
+        public List<WowCSEntityFragments> EntityFragments;
 
         public uint PhaseMask;
 

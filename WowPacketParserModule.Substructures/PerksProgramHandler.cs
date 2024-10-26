@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
 namespace WowPacketParserModule.Substructures
 {
@@ -18,6 +19,8 @@ namespace WowPacketParserModule.Substructures
             packet.ReadInt32("Price", indexes);
             packet.ReadTime64("AvailableUntil", indexes);
             packet.ReadBit("Disabled", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_5_57171))
+                packet.ReadBit("Field_41", indexes);
         }
     }
 }

@@ -142,6 +142,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void ProcessExistingObject(ref WoWObject obj, WoWObject newObj, WowGuid guid)
         {
             obj.PhaseMask |= newObj.PhaseMask;
+            obj.EntityFragments = newObj.EntityFragments;
             if (guid.GetHighType() == HighGuidType.Creature) // skip if not an unit
             {
                 if (!obj.Movement.HasWpsOrRandMov)
