@@ -557,10 +557,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
             data.Health = packet.ReadInt64("Health", indexes);
             data.MaxHealth = packet.ReadInt64("MaxHealth", indexes);
             data.DisplayID = packet.ReadInt32("DisplayID", indexes);
-            for (var i = 0; i < 2; ++i)
-            {
-                data.NpcFlags[i] = packet.ReadUInt32("NpcFlags", indexes, i);
-            }
+            data.NpcFlags = packet.ReadUInt32("NpcFlags", indexes);
+            data.NpcFlags2 = packet.ReadUInt32("NpcFlags2", indexes);
             data.StateSpellVisualID = packet.ReadUInt32("StateSpellVisualID", indexes);
             data.StateAnimID = packet.ReadUInt32("StateAnimID", indexes);
             data.StateAnimKitID = packet.ReadUInt32("StateAnimKitID", indexes);
@@ -740,7 +738,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
                 data.ComboTarget = packet.ReadPackedGuid128("ComboTarget", indexes);
             }
             data.Field_2F0 = packet.ReadSingle("Field_2F0", indexes);
-            data.Field_2F4 = packet.ReadUInt32("Field_2F4", indexes);
+            data.Field_2F4 = packet.ReadSingle("Field_2F4", indexes);
             for (var i = 0; i < data.PassiveSpells.Count; ++i)
             {
                 data.PassiveSpells[i] = ReadCreatePassiveSpellHistory(packet, indexes, "PassiveSpells", i);
@@ -841,12 +839,13 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
                 {
                     data.DisplayID = packet.ReadInt32("DisplayID", indexes);
                 }
-                for (var i = 0; i < 2; ++i)
+                if (changesMask[8])
                 {
-                    if (changesMask[8 + i])
-                    {
-                        data.NpcFlags[i] = packet.ReadUInt32("NpcFlags", indexes, i);
-                    }
+                    data.NpcFlags = packet.ReadUInt32("NpcFlags", indexes);
+                }
+                if (changesMask[9])
+                {
+                    data.NpcFlags2 = packet.ReadUInt32("NpcFlags2", indexes);
                 }
                 if (changesMask[10])
                 {
@@ -1247,7 +1246,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
                 }
                 if (changesMask[110])
                 {
-                    data.GlideEventSpeedDivisor = packet.ReadUInt32("GlideEventSpeedDivisor", indexes);
+                    data.GlideEventSpeedDivisor = packet.ReadSingle("GlideEventSpeedDivisor", indexes);
                 }
                 if (changesMask[111])
                 {
@@ -1263,11 +1262,11 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
                 }
                 if (changesMask[114])
                 {
-                    data.Field_2F0 = packet.ReadUInt32("Field_2F0", indexes);
+                    data.Field_2F0 = packet.ReadSingle("Field_2F0", indexes);
                 }
                 if (changesMask[115])
                 {
-                    data.Field_2F4 = packet.ReadUInt32("Field_2F4", indexes);
+                    data.Field_2F4 = packet.ReadSingle("Field_2F4", indexes);
                 }
             }
             if (changesMask[116])
@@ -1498,6 +1497,38 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
             return data;
         }
 
+        public static IZonePlayerForcedReaction ReadCreateZonePlayerForcedReaction(Packet packet, params object[] indexes)
+        {
+            var data = new ZonePlayerForcedReaction();
+            packet.ResetBitReader();
+            data.FactionID = packet.ReadInt32("FactionID", indexes);
+            data.Reaction = packet.ReadInt32("Reaction", indexes);
+            return data;
+        }
+
+        public static IZonePlayerForcedReaction ReadUpdateZonePlayerForcedReaction(Packet packet, params object[] indexes)
+        {
+            var data = new ZonePlayerForcedReaction();
+            packet.ResetBitReader();
+            var rawChangesMask = new int[1];
+            rawChangesMask[0] = (int)packet.ReadBits(3);
+            var changesMask = new BitArray(rawChangesMask);
+
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
+                if (changesMask[1])
+                {
+                    data.FactionID = packet.ReadInt32("FactionID", indexes);
+                }
+                if (changesMask[2])
+                {
+                    data.Reaction = packet.ReadInt32("Reaction", indexes);
+                }
+            }
+            return data;
+        }
+
         public static IDeclinedNames ReadCreateDeclinedNames(Packet packet, params object[] indexes)
         {
             var data = new DeclinedNames();
@@ -1546,38 +1577,6 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
                     {
                         data.Name[i] = packet.ReadWoWString("Name", data.Name[i].Length, indexes, i);
                     }
-                }
-            }
-            return data;
-        }
-
-        public static IZonePlayerForcedReaction ReadCreateZonePlayerForcedReaction(Packet packet, params object[] indexes)
-        {
-            var data = new ZonePlayerForcedReaction();
-            packet.ResetBitReader();
-            data.FactionID = packet.ReadInt32("FactionID", indexes);
-            data.Reaction = packet.ReadInt32("Reaction", indexes);
-            return data;
-        }
-
-        public static IZonePlayerForcedReaction ReadUpdateZonePlayerForcedReaction(Packet packet, params object[] indexes)
-        {
-            var data = new ZonePlayerForcedReaction();
-            packet.ResetBitReader();
-            var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(3);
-            var changesMask = new BitArray(rawChangesMask);
-
-            packet.ResetBitReader();
-            if (changesMask[0])
-            {
-                if (changesMask[1])
-                {
-                    data.FactionID = packet.ReadInt32("FactionID", indexes);
-                }
-                if (changesMask[2])
-                {
-                    data.Reaction = packet.ReadInt32("Reaction", indexes);
                 }
             }
             return data;
@@ -1916,11 +1915,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
             }
             if (changesMask[32])
             {
-                if (changesMask[35])
-                {
-                    hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
-                    packet.ResetBitReader();
-                }
+                hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
+                packet.ResetBitReader();
                 if (changesMask[36])
                 {
                     Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");
@@ -3127,7 +3123,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
             data.SortBagsRightToLeft = packet.ReadBit("SortBagsRightToLeft", indexes);
             data.InsertItemsLeftToRight = packet.ReadBit("InsertItemsLeftToRight", indexes);
             hasPetStable = packet.ReadBit("HasPetStable", indexes);
-            packet.ResetBitReader();
+            data.AccountBankTabSettings.Resize(packet.ReadBits(3));
             data.ResearchHistory = ReadCreateResearchHistory(packet, indexes, "ResearchHistory");
             Substructures.PerksProgramHandler.ReadPerksVendorItem(packet, indexes, "FrozenPerksVendorItem");
             for (var i = 0; i < data.CharacterDataElements.Count; ++i)
@@ -3196,10 +3192,6 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
                     data.AccountDataElements.ReadUpdateMask(packet);
                 }
             }
-            //if (changesMask[20])
-            //{
-            //    data.BitVectors = ReadUpdateBitVectors(packet, indexes, "BitVectors");
-            //}
             if (changesMask[23])
             {
                 for (var i = 0; i < 1; ++i)
@@ -3956,14 +3948,11 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
                 {
                     Substructures.PerksProgramHandler.ReadPerksVendorItem(packet, indexes, "FrozenPerksVendorItem");
                 }
-                if (changesMask[128])
+                if (changesMask[129])
                 {
-                    if (changesMask[129])
+                    if (hasPetStable)
                     {
-                        if (hasPetStable)
-                        {
-                            data.PetStable = ReadUpdateStableInfo(packet, indexes, "PetStable");
-                        }
+                        data.PetStable = ReadUpdateStableInfo(packet, indexes, "PetStable");
                     }
                 }
             }

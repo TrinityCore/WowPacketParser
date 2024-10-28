@@ -14,7 +14,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
         public System.Nullable<long> Health { get; set; }
         public System.Nullable<long> MaxHealth { get; set; }
         public System.Nullable<int> DisplayID { get; set; }
-        public System.Nullable<uint>[] NpcFlags { get; } = new System.Nullable<uint>[2];
+        public System.Nullable<uint> NpcFlags { get; set; }
+        public System.Nullable<uint> NpcFlags2 { get; set; }
         public System.Nullable<uint> StateSpellVisualID { get; set; }
         public System.Nullable<uint> StateAnimID { get; set; }
         public System.Nullable<uint> StateAnimKitID { get; set; }
@@ -133,10 +134,12 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
         public System.Nullable<uint> CurrentAreaID { get; set; }
         public WowGuid ComboTarget { get; set; }
         public System.Nullable<float> Field_2F0 { get; set; }
-        public System.Nullable<uint> Field_2F4 { get; set; }
+        public System.Nullable<float> Field_2F4 { get; set; }
         public DynamicUpdateField<IPassiveSpellHistory> PassiveSpells { get; } = new DynamicUpdateField<IPassiveSpellHistory>();
         public DynamicUpdateField<System.Nullable<int>> WorldEffects { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<WowGuid> ChannelObjects { get; } = new DynamicUpdateField<WowGuid>();
+
+        uint?[] IUnitData.NpcFlags => new[] { NpcFlags, NpcFlags2 };
 
         // dummies required by interface
         public int? CreatureFamily { get; set; }

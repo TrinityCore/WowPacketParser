@@ -11,8 +11,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57141
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
     public class ItemMod : IItemMod
     {
-        public int Value { get; set; }
         public byte Type { get; set; }
+        public int Value { get; set; }
     }
 }
 
