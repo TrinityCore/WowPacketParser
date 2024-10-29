@@ -71,25 +71,29 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                             WoWObject obj;
                             Storage.Objects.TryGetValue(guid, out obj);
 
+                            var fragments = obj != null ? obj.EntityFragments : [WowCSEntityFragments.CGObject];
+
                             fieldsData.ReadBool("IsOwned", i);
                             if (fieldsData.ReadBool("HasFragmentUpdates", i))
                             {
                                 switch (fieldsData.ReadByte("ArchetypeSerializationType", i))
                                 {
                                     case 0:
-                                        obj.EntityFragments = ReadEntityFragments(fieldsData, "NewEntityFragmentID", i);
+                                        fragments = ReadEntityFragments(fieldsData, "NewEntityFragmentID", i);
+                                        if (obj != null)
+                                            obj.EntityFragments = fragments;
                                         break;
                                     case 1:
-                                        obj.EntityFragments.AddRange(ReadEntityFragments(fieldsData, "NewEntityFragmentID", i));
+                                        fragments.AddRange(ReadEntityFragments(fieldsData, "NewEntityFragmentID", i));
                                         foreach (var removedFragment in ReadEntityFragments(fieldsData, "RemovedEntityFragmentID", i))
-                                            obj.EntityFragments.RemoveAll(f => f == removedFragment);
-                                        obj.EntityFragments.Sort();
+                                            fragments.RemoveAll(f => f == removedFragment);
+                                        fragments.Sort();
                                         break;
                                 }
                             }
 
                             var fragmentBitCount = 0;
-                            foreach (var existingFragment in obj.EntityFragments)
+                            foreach (var existingFragment in fragments)
                             {
                                 if (!WowCSUtilities.IsUpdateable(existingFragment))
                                     continue;
@@ -101,7 +105,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
                             var changedFragments = new BitArray(fieldsData.ReadBytes((fragmentBitCount + 7) / 8));
 
-                            var objectIndirectFragment = WowCSUtilities.GetUpdateBitIndex(obj.EntityFragments, WowCSEntityFragments.CGObject);
+                            var objectIndirectFragment = WowCSUtilities.GetUpdateBitIndex(fragments, WowCSEntityFragments.CGObject);
                             if (objectIndirectFragment >= 0 && changedFragments[objectIndirectFragment])
                             {
                                 if (changedFragments[objectIndirectFragment + 1])
