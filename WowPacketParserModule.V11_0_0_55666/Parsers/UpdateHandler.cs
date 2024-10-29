@@ -345,10 +345,10 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
             packet.ResetBitReader();
 
+            packet.ReadBit("HasPositionFragment", index);
             packet.ReadBit("NoBirthAnim", index);
             packet.ReadBit("EnablePortals", index);
             packet.ReadBit("PlayHoverAnim", index);
-            packet.ReadBit("Bit4", index);
 
             var hasMovementUpdate = packet.ReadBit("HasMovementUpdate", index);
             var hasMovementTransport = packet.ReadBit("HasMovementTransport", index);
@@ -835,16 +835,16 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                     gob.WorldEffectID = worldEffectId;
 
                 var hasInt1 = packet.ReadBit("bit8", index);
-                var hasStruct2 = packet.ReadBit("bit18", index);
+                var hasStruct2 = packet.ReadBit("HasShipPath", index);
                 var hasTransportStatePercent = packet.ReadBit("HasTransportStatePercent", index);
                 if (hasStruct2)
                 {
                     packet.ResetBitReader();
-                    packet.ReadUInt32("Field_C", index, "Struct2");
-                    packet.ReadUInt32("Field_10", index, "Struct2");
-                    packet.ReadBit("Field_14", index, "Struct2");
-                    packet.ReadBit("Field_15", index, "Struct2");
-                    packet.ReadBit("Field_16", index, "Struct2");
+                    packet.ReadUInt32("Period", index, "ShipPath");
+                    packet.ReadUInt32("Progress", index, "ShipPath");
+                    packet.ReadBit("StopRequested", index, "ShipPath");
+                    packet.ReadBit("Stopped", index, "ShipPath");
+                    packet.ReadBit("Field_16", index, "ShipPath");
                 }
 
                 if (hasInt1)
