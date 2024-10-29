@@ -177,7 +177,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             // SpellLogPowerData
             for (var i = 0; i < spellLogPowerDataCount; ++i)
             {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57141))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
                     packet.ReadByte("PowerType", idx, i);
                 else
                     packet.ReadInt32("PowerType", idx, i);
