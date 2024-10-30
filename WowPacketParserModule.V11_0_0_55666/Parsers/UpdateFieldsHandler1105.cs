@@ -2553,7 +2553,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_5_57171
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
             var rawMaskMask = new int[1];
-            rawMaskMask[0] = (int)packet.ReadBits(32);
+            rawMaskMask[0] = (int)packet.ReadBits(1);
             var maskMask = new BitArray(rawMaskMask);
             if (maskMask[0])
                 rawChangesMask[0] = (int)packet.ReadBits(32);
@@ -2567,7 +2567,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_5_57171
                     if (changesMask[1 + i])
                     {
                         var rawChangesMask2 = new int[1];
-                        rawChangesMask2[0] = (int)packet.ReadBits(1);
+                        rawChangesMask2[0] = (int)packet.ReadBits(2);
                         var changesMask2 = new BitArray(rawChangesMask2);
                         if (changesMask2[0])
                         {
