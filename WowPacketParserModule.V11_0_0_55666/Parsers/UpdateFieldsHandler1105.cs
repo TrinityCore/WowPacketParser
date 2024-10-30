@@ -2552,25 +2552,36 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_5_57171
             var data = new BitVectors();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(1);
+            var rawMaskMask = new int[1];
+            rawMaskMask[0] = (int)packet.ReadBits(32);
+            var maskMask = new BitArray(rawMaskMask);
+            if (maskMask[0])
+                rawChangesMask[0] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
+            packet.ResetBitReader();
 
             if (changesMask[0])
             {
                 for (var i = 0; i < 13; ++i)
                 {
-                    data.Values[i].ReadUpdateMask(packet);
-                }
-            }
-            if (changesMask[0])
-            {
-                for (var i = 0; i < 13; ++i)
-                {
-                    for (var j = 0; j < data.Values[i].Count; ++j)
+                    if (changesMask[1 + i])
                     {
-                        if (data.Values[i].UpdateMask[j])
+                        var rawChangesMask2 = new int[1];
+                        rawChangesMask2[0] = (int)packet.ReadBits(1);
+                        var changesMask2 = new BitArray(rawChangesMask2);
+                        if (changesMask2[0])
                         {
-                            data.Values[i][j] = packet.ReadUInt64("Values", indexes, i, j);
+                            if (changesMask2[1])
+                            {
+                                data.Values[i].ReadUpdateMask(packet);
+                                for (var j = 0; j < data.Values[i].Count; ++j)
+                                {
+                                    if (data.Values[i].UpdateMask[j])
+                                    {
+                                        data.Values[i][j] = packet.ReadUInt64("Values", indexes, i, j);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
