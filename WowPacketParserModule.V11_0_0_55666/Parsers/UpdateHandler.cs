@@ -839,9 +839,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                     gob.WorldEffectID = worldEffectId;
 
                 var hasInt1 = packet.ReadBit("bit8", index);
-                var hasStruct2 = packet.ReadBit("HasShipPath", index);
+                var hasShipPath = packet.ReadBit("HasShipPath", index);
                 var hasTransportStatePercent = packet.ReadBit("HasTransportStatePercent", index);
-                if (hasStruct2)
+                if (hasShipPath)
                 {
                     packet.ResetBitReader();
                     packet.ReadUInt32("Period", index, "ShipPath");

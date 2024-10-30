@@ -9,9 +9,9 @@ using WowPacketParser.Store.Objects.UpdateFields;
 namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_5_57171
 {
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
-    public class BitVectors : IBitVectors
+    public class BitVector : IBitVector
     {
-        public IBitVector[] Values { get; } = new IBitVector[13];
+        public DynamicUpdateField<System.Nullable<ulong>> Values { get; } = new DynamicUpdateField<System.Nullable<ulong>>();
     }
 }
 

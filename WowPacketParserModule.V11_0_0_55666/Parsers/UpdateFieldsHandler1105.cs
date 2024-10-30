@@ -2532,17 +2532,57 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_5_57171
             return data;
         }
 
+        public static IBitVector ReadCreateBitVector(Packet packet, params object[] indexes)
+        {
+            var data = new BitVector();
+            packet.ResetBitReader();
+            data.Values.Resize(packet.ReadUInt32());
+            for (var i = 0; i < data.Values.Count; ++i)
+            {
+                data.Values[i] = packet.ReadUInt64("Values", indexes, i);
+            }
+            return data;
+        }
+
+        public static IBitVector ReadUpdateBitVector(Packet packet, params object[] indexes)
+        {
+            var data = new BitVector();
+            packet.ResetBitReader();
+            var rawChangesMask = new int[1];
+            rawChangesMask[0] = (int)packet.ReadBits(2);
+            var changesMask = new BitArray(rawChangesMask);
+
+            if (changesMask[0])
+            {
+                if (changesMask[1])
+                {
+                    data.Values.ReadUpdateMask(packet);
+                }
+            }
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
+                if (changesMask[1])
+                {
+                    for (var i = 0; i < data.Values.Count; ++i)
+                    {
+                        if (data.Values.UpdateMask[i])
+                        {
+                            data.Values[i] = packet.ReadUInt64("Values", indexes, i);
+                        }
+                    }
+                }
+            }
+            return data;
+        }
+
         public static IBitVectors ReadCreateBitVectors(Packet packet, params object[] indexes)
         {
             var data = new BitVectors();
             packet.ResetBitReader();
             for (var i = 0; i < 13; ++i)
             {
-                data.Values[i].Resize(packet.ReadUInt32());
-                for (var j = 0; j < data.Values[i].Count; ++j)
-                {
-                    data.Values[i][j] = packet.ReadUInt64("Values", indexes, i, j);
-                }
+                data.Values[i] = ReadCreateBitVector(packet, indexes, "Values", i);
             }
             return data;
         }
@@ -2552,30 +2592,24 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_5_57171
             var data = new BitVectors();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(1);
+            var rawMaskMask = new int[1];
+            rawMaskMask[0] = (int)packet.ReadBits(1);
+            var maskMask = new BitArray(rawMaskMask);
+            if (maskMask[0])
+                rawChangesMask[0] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
 
+            packet.ResetBitReader();
             if (changesMask[0])
             {
                 for (var i = 0; i < 13; ++i)
                 {
-                    data.Values[i].ReadUpdateMask(packet);
-                }
-            }
-            if (changesMask[0])
-            {
-                for (var i = 0; i < 13; ++i)
-                {
-                    for (var j = 0; j < data.Values[i].Count; ++j)
+                    if (changesMask[1 + i])
                     {
-                        if (data.Values[i].UpdateMask[j])
-                        {
-                            data.Values[i][j] = packet.ReadUInt64("Values", indexes, i, j);
-                        }
+                        data.Values[i] = ReadUpdateBitVector(packet, indexes, "Values", i);
                     }
                 }
             }
-            packet.ResetBitReader();
             return data;
         }
 
