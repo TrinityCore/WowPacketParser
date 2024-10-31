@@ -85,4 +85,89 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+    [Hotfix]
+    [DBTableName("creature_display_info")]
+    public sealed record CreatureDisplayInfoHotfix441: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("ModelID")]
+        public ushort? ModelID;
+
+        [DBFieldName("SoundID")]
+        public ushort? SoundID;
+
+        [DBFieldName("SizeClass")]
+        public sbyte? SizeClass;
+
+        [DBFieldName("CreatureModelScale")]
+        public float? CreatureModelScale;
+
+        [DBFieldName("CreatureModelAlpha")]
+        public byte? CreatureModelAlpha;
+
+        [DBFieldName("BloodID")]
+        public byte? BloodID;
+
+        [DBFieldName("ExtendedDisplayInfoID")]
+        public int? ExtendedDisplayInfoID;
+
+        [DBFieldName("NPCSoundID")]
+        public ushort? NPCSoundID;
+
+        [DBFieldName("ParticleColorID")]
+        public ushort? ParticleColorID;
+
+        [DBFieldName("PortraitCreatureDisplayInfoID")]
+        public int? PortraitCreatureDisplayInfoID;
+
+        [DBFieldName("PortraitTextureFileDataID")]
+        public int? PortraitTextureFileDataID;
+
+        [DBFieldName("ObjectEffectPackageID")]
+        public ushort? ObjectEffectPackageID;
+
+        [DBFieldName("AnimReplacementSetID")]
+        public ushort? AnimReplacementSetID;
+
+        [DBFieldName("Flags")]
+        public int? Flags;
+
+        [DBFieldName("StateSpellVisualKitID")]
+        public int? StateSpellVisualKitID;
+
+        [DBFieldName("PlayerOverrideScale")]
+        public float? PlayerOverrideScale;
+
+        [DBFieldName("PetInstanceScale")]
+        public float? PetInstanceScale;
+
+        [DBFieldName("UnarmedWeaponType")]
+        public sbyte? UnarmedWeaponType;
+
+        [DBFieldName("MountPoofSpellVisualKitID")]
+        public int? MountPoofSpellVisualKitID;
+
+        [DBFieldName("DissolveEffectID")]
+        public int? DissolveEffectID;
+
+        [DBFieldName("Gender")]
+        public sbyte? Gender;
+
+        [DBFieldName("DissolveOutEffectID")]
+        public int? DissolveOutEffectID;
+
+        [DBFieldName("CreatureModelMinLod")]
+        public sbyte? CreatureModelMinLod;
+
+        [DBFieldName("Unknown1154")]
+        public ushort? Unknown1154;
+
+        [DBFieldName("TextureVariationFileDataID", 4)]
+        public int?[] TextureVariationFileDataID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

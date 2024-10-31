@@ -13,8 +13,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Name")]
         public string Name;
 
-        [DBFieldName("PrestigeLevel")]
-        public int? PrestigeLevel;
+        [DBFieldName("HonorLevel")]
+        public int? HonorLevel;
 
         [DBFieldName("BadgeTextureFileDataID")]
         public int? BadgeTextureFileDataID;

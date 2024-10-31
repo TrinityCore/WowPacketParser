@@ -4,17 +4,20 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [Hotfix]
-    [DBTableName("trait_node_group")]
-    public sealed record TraitNodeGroupHotfix440: IDataModel
+    [DBTableName("path_node")]
+    public sealed record PathNodeHotfix440: IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;
 
-        [DBFieldName("TraitTreeID")]
-        public int? TraitTreeID;
+        [DBFieldName("PathID")]
+        public ushort? PathID;
 
-        [DBFieldName("Flags")]
-        public int? Flags;
+        [DBFieldName("Sequence")]
+        public short? Sequence;
+
+        [DBFieldName("LocationID")]
+        public int? LocationID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

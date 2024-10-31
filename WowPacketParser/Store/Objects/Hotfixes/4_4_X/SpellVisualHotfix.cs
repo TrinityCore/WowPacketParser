@@ -10,11 +10,23 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ID", true)]
         public uint? ID;
 
-        [DBFieldName("MissileCastOffset", 3)]
-        public float?[] MissileCastOffset;
+        [DBFieldName("MissileCastOffsetX")]
+        public float? MissileCastOffsetX;
 
-        [DBFieldName("MissileImpactOffset", 3)]
-        public float?[] MissileImpactOffset;
+        [DBFieldName("MissileCastOffsetY")]
+        public float? MissileCastOffsetY;
+
+        [DBFieldName("MissileCastOffsetZ")]
+        public float? MissileCastOffsetZ;
+
+        [DBFieldName("MissileImpactOffsetX")]
+        public float? MissileImpactOffsetX;
+
+        [DBFieldName("MissileImpactOffsetY")]
+        public float? MissileImpactOffsetY;
+
+        [DBFieldName("MissileImpactOffsetZ")]
+        public float? MissileImpactOffsetZ;
 
         [DBFieldName("AnimEventSoundID")]
         public uint? AnimEventSoundID;

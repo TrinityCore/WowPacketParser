@@ -7,11 +7,23 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("chr_model")]
     public sealed record ChrModelHotfix440: IDataModel
     {
-        [DBFieldName("FaceCustomizationOffset", 3)]
-        public float?[] FaceCustomizationOffset;
+        [DBFieldName("FaceCustomizationOffsetX")]
+        public float? FaceCustomizationOffsetX;
 
-        [DBFieldName("CustomizeOffset", 3)]
-        public float?[] CustomizeOffset;
+        [DBFieldName("FaceCustomizationOffsetY")]
+        public float? FaceCustomizationOffsetY;
+
+        [DBFieldName("FaceCustomizationOffsetZ")]
+        public float? FaceCustomizationOffsetZ;
+
+        [DBFieldName("CustomizeOffsetX")]
+        public float? CustomizeOffsetX;
+
+        [DBFieldName("CustomizeOffsetY")]
+        public float? CustomizeOffsetY;
+
+        [DBFieldName("CustomizeOffsetZ")]
+        public float? CustomizeOffsetZ;
 
         [DBFieldName("ID", true)]
         public uint? ID;
@@ -52,8 +64,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("BarberShopCameraOffsetScale")]
         public float? BarberShopCameraOffsetScale;
 
-        [DBFieldName("BarberShopCameraHeightOffsetScale")]
-        public float? BarberShopCameraHeightOffsetScale;
+        [DBFieldName("BarberShopCameraRotationFacing")]
+        public float? BarberShopCameraRotationFacing;
 
         [DBFieldName("BarberShopCameraRotationOffset")]
         public float? BarberShopCameraRotationOffset;

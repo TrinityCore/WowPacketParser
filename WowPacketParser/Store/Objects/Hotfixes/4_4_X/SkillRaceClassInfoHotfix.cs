@@ -31,8 +31,42 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SkillTierID")]
         public short? SkillTierID;
 
-        [DBFieldName("Unknown115_1")]
-        public int? Unknown115_1;
+        [DBFieldName("Unknown1150")]
+        public int? Unknown1150;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+    [Hotfix]
+    [DBTableName("skill_race_class_info")]
+    public sealed record SkillRaceClassInfoHotfix441: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("RaceMask")]
+        public long? RaceMask;
+
+        [DBFieldName("SkillID")]
+        public short? SkillID;
+
+        [DBFieldName("ClassMask")]
+        public int? ClassMask;
+
+        [DBFieldName("Flags")]
+        public ushort? Flags;
+
+        [DBFieldName("Availability")]
+        public int? Availability;
+
+        [DBFieldName("MinLevel")]
+        public sbyte? MinLevel;
+
+        [DBFieldName("SkillTierID")]
+        public short? SkillTierID;
+
+        [DBFieldName("Unknown1150")]
+        public int? Unknown1150;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

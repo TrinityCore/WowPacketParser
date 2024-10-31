@@ -22,8 +22,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ChrCustomizationVisReqID")]
         public int? ChrCustomizationVisReqID;
 
-        [DBFieldName("SortOrder")]
-        public ushort? SortOrder;
+        [DBFieldName("OrderIndex")]
+        public ushort? OrderIndex;
 
         [DBFieldName("UiOrderIndex")]
         public ushort? UiOrderIndex;

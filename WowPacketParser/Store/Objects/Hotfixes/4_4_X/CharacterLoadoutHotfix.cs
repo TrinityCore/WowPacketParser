@@ -25,4 +25,26 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+    [Hotfix]
+    [DBTableName("character_loadout")]
+    public sealed record CharacterLoadoutHotfix441: IDataModel
+    {
+        [DBFieldName("Racemask")]
+        public long? Racemask;
+
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("ChrClassID")]
+        public sbyte? ChrClassID;
+
+        [DBFieldName("Purpose")]
+        public int? Purpose;
+
+        [DBFieldName("ItemContext")]
+        public byte? ItemContext;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

@@ -4,7 +4,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V6_0_2_19033.Hotfix
 {
-    [HotfixStructure(DB2Hash.AreaPOI)]
+    [HotfixStructure(DB2Hash.AreaPoi)]
     public class AreaPOIEntry
     {
         public uint ID { get; set; }

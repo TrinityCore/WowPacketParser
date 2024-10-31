@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V6_0_2_19033.Hotfix
 {
-    [HotfixStructure(DB2Hash.AreaPOIState)]
+    [HotfixStructure(DB2Hash.AreaPoiState)]
     public class AreaPOIStateEntry
     {
         public uint ID { get; set; }

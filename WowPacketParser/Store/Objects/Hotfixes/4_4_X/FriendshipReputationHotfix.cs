@@ -13,11 +13,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ID", true)]
         public uint? ID;
 
-        [DBFieldName("Field34146722002")]
-        public int? Field34146722002;
+        [DBFieldName("Unknown341_0")]
+        public int? Unknown341_0;
 
-        [DBFieldName("Field34146722003")]
-        public int? Field34146722003;
+        [DBFieldName("Unknown341_1")]
+        public int? Unknown341_1;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

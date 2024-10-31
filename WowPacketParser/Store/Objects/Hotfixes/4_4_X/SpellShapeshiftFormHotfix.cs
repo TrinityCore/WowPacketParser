@@ -13,8 +13,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Name")]
         public string Name;
 
-        [DBFieldName("Field115052124002")]
-        public uint? Field115052124002;
+        [DBFieldName("Unknown1150")]
+        public uint? Unknown1150;
 
         [DBFieldName("CreatureType")]
         public sbyte? CreatureType;

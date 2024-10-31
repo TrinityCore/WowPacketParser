@@ -7830,25 +7830,18 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.AchievementCategoryHotfixes440, hotfixes, StoreNameType.None);
                     }
 
-                    if (!Storage.AdventureJournalHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AdventureJournalHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AdventureJournalHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AdventureMapPOIHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AdventureMapPOIHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AdventureMapPOIHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
                     if (!Storage.AnimationDataHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.AnimationDataHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.AnimationDataHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AnimationDataHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AnimationDataHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AnimationDataHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.AnimKitHotfixes440.IsEmpty())
@@ -7879,6 +7872,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.AreaTriggerHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.AreaTriggerHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AreaTriggerHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AreaTriggerHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.AreaTriggerActionSetHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.AreaTriggerActionSetHotfixes440, Settings.HotfixesDatabase);
@@ -7893,165 +7893,11 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ArmorLocationHotfixes440, hotfixes, StoreNameType.None);
                     }
 
-                    if (!Storage.ArtifactHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ArtifactAppearanceHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactAppearanceHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactAppearanceHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ArtifactAppearanceSetHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactAppearanceSetHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactAppearanceSetHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ArtifactCategoryHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactCategoryHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactCategoryHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ArtifactPowerHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactPowerHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactPowerHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ArtifactPowerLinkHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactPowerLinkHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactPowerLinkHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ArtifactPowerPickerHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactPowerPickerHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactPowerPickerHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ArtifactPowerRankHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactPowerRankHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactPowerRankHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ArtifactQuestXpHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactQuestXpHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactQuestXpHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ArtifactTierHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactTierHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactTierHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ArtifactUnlockHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactUnlockHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactUnlockHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
                     if (!Storage.AuctionHouseHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.AuctionHouseHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.AuctionHouseHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeriteEmpoweredItemHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeriteEmpoweredItemHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeriteEmpoweredItemHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeriteEssenceHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeriteEssenceHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeriteEssenceHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeriteEssencePowerHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeriteEssencePowerHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeriteEssencePowerHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeriteItemHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeriteItemHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeriteItemHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeriteItemMilestonePowerHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeriteItemMilestonePowerHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeriteItemMilestonePowerHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeriteKnowledgeMultiplierHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeriteKnowledgeMultiplierHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeriteKnowledgeMultiplierHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeriteLevelInfoHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeriteLevelInfoHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeriteLevelInfoHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeritePowerHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeritePowerHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeritePowerHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeritePowerSetMemberHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeritePowerSetMemberHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeritePowerSetMemberHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeriteTierUnlockHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeriteTierUnlockHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeriteTierUnlockHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeriteTierUnlockSetHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeriteTierUnlockSetHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeriteTierUnlockSetHotfixes440, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.BankBagSlotPricesHotfixes440.IsEmpty())
@@ -8103,6 +7949,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.BattlePetSpeciesHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.BattlePetSpeciesHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlePetSpeciesHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlePetSpeciesHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.BattlePetSpeciesStateHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.BattlePetSpeciesStateHotfixes440, Settings.HotfixesDatabase);
@@ -8117,11 +7970,32 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.BattlemasterListHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.BattlemasterListHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlemasterListHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlemasterListHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BattlemasterListXMapHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlemasterListXMapHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlemasterListXMapHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.BroadcastTextHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.BroadcastTextHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.BroadcastTextHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BroadcastTextHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BroadcastTextHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BroadcastTextHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.CfgCategoriesHotfixes440.IsEmpty())
@@ -8152,6 +8026,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.CharacterLoadoutHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.CharacterLoadoutHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CharacterLoadoutHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CharacterLoadoutHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.CharacterLoadoutItemHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.CharacterLoadoutItemHotfixes440, Settings.HotfixesDatabase);
@@ -8178,6 +8059,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ChrClassesHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ChrClassesHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrClassesHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrClassesHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrClassesHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ChrClassesXPowerTypesHotfixes440.IsEmpty())
@@ -8250,13 +8138,6 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ChrRacesHotfixes440, hotfixes, StoreNameType.None);
                     }
 
-                    if (!Storage.ChrSpecializationHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ChrSpecializationHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ChrSpecializationHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
                     if (!Storage.CinematicCameraHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.CinematicCameraHotfixes440, Settings.HotfixesDatabase);
@@ -8306,6 +8187,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.CreatureDisplayInfoHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.CreatureDisplayInfoHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureDisplayInfoHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureDisplayInfoHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.CreatureDisplayInfoExtraHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.CreatureDisplayInfoExtraHotfixes440, Settings.HotfixesDatabase);
@@ -8325,6 +8213,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.CreatureModelDataHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.CreatureModelDataHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CreatureModelDataHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureModelDataHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureModelDataHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.CreatureTypeHotfixes440.IsEmpty())
@@ -8362,6 +8257,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.CurrencyTypesHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.CurrencyTypesHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CurrencyTypesHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CurrencyTypesHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.CurveHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.CurveHotfixes440, Settings.HotfixesDatabase);
@@ -8390,6 +8292,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.DifficultyHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.DifficultyHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.DifficultyHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.DifficultyHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.DungeonEncounterHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.DungeonEncounterHotfixes440, Settings.HotfixesDatabase);
@@ -8416,6 +8325,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.EmotesHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.EmotesHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.EmotesHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.EmotesHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.EmotesHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.EmotesTextHotfixes440.IsEmpty())
@@ -8460,6 +8376,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.FactionTemplateHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.FactionTemplateHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.FactionTemplateHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.FactionTemplateHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.FriendshipRepReactionHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.FriendshipRepReactionHotfixes440, Settings.HotfixesDatabase);
@@ -8488,6 +8411,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.GameobjectDisplayInfoHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.GameobjectDisplayInfoHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GameobjectDisplayInfoHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GameobjectDisplayInfoHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.GameobjectsHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.GameobjectsHotfixes440, Settings.HotfixesDatabase);
@@ -8495,95 +8425,11 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.GameobjectsHotfixes440, hotfixes, StoreNameType.None);
                     }
 
-                    if (!Storage.GarrAbilityHotfixes440.IsEmpty())
+                    if (!Storage.GameobjectsHotfixes441.IsEmpty())
                     {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrAbilityHotfixes440, Settings.HotfixesDatabase);
+                        var hotfixes = SQLDatabase.Get(Storage.GameobjectsHotfixes441, Settings.HotfixesDatabase);
 
-                        sql += SQLUtil.Compare(Storage.GarrAbilityHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrBuildingHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrBuildingHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrBuildingHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrBuildingPlotInstHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrBuildingPlotInstHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrBuildingPlotInstHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrClassSpecHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrClassSpecHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrClassSpecHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrFollowerHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrFollowerHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrFollowerHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrFollowerXAbilityHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrFollowerXAbilityHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrFollowerXAbilityHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrMissionHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrMissionHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrMissionHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrPlotHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrPlotHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrPlotHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrPlotBuildingHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrPlotBuildingHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrPlotBuildingHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrPlotInstanceHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrPlotInstanceHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrPlotInstanceHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrSiteLevelHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrSiteLevelHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrSiteLevelHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrSiteLevelPlotInstHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrSiteLevelPlotInstHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrSiteLevelPlotInstHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrTalentTreeHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrTalentTreeHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrTalentTreeHotfixes440, hotfixes, StoreNameType.None);
+                        sql += SQLUtil.Compare(Storage.GameobjectsHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.GemPropertiesHotfixes440.IsEmpty())
@@ -8598,6 +8444,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.GlyphBindableSpellHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.GlyphBindableSpellHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GlyphSlotHotfixes440.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GlyphSlotHotfixes440, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GlyphSlotHotfixes440, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.GlyphPropertiesHotfixes440.IsEmpty())
@@ -8703,6 +8556,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ItemAppearanceHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ItemAppearanceHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemAppearanceHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemAppearanceHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemAppearanceHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ItemArmorQualityHotfixes440.IsEmpty())
@@ -8901,11 +8761,25 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ItemPriceBaseHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ItemReforgeHotfixes440.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemReforgeHotfixes440, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemReforgeHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ItemSearchNameHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ItemSearchNameHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ItemSearchNameHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSearchNameHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSearchNameHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSearchNameHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ItemSetHotfixes440.IsEmpty())
@@ -8929,18 +8803,11 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ItemSparseHotfixes440, hotfixes, StoreNameType.None);
                     }
 
-                    if (!Storage.ItemSpecHotfixes440.IsEmpty())
+                    if (!Storage.ItemSparseHotfixes441.IsEmpty())
                     {
-                        var hotfixes = SQLDatabase.Get(Storage.ItemSpecHotfixes440, Settings.HotfixesDatabase);
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSparseHotfixes441, Settings.HotfixesDatabase);
 
-                        sql += SQLUtil.Compare(Storage.ItemSpecHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ItemSpecOverrideHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ItemSpecOverrideHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ItemSpecOverrideHotfixes440, hotfixes, StoreNameType.None);
+                        sql += SQLUtil.Compare(Storage.ItemSparseHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ItemXBonusTreeHotfixes440.IsEmpty())
@@ -9027,6 +8894,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.LiquidTypeHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.LocationHotfixes440.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.LocationHotfixes440, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.LocationHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.LockHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.LockHotfixes440, Settings.HotfixesDatabase);
@@ -9046,6 +8920,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.MapHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.MapHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MapHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.MapChallengeModeHotfixes440.IsEmpty())
@@ -9090,6 +8971,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.MountCapabilityHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.MountCapabilityHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MountCapabilityHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MountCapabilityHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.MountTypeXCapabilityHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.MountTypeXCapabilityHotfixes440, Settings.HotfixesDatabase);
@@ -9104,6 +8992,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.MountXDisplayHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.MountXDisplayHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MountXDisplayHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MountXDisplayHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.MovieHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.MovieHotfixes440, Settings.HotfixesDatabase);
@@ -9116,6 +9011,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.MythicPlusSeasonHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.MythicPlusSeasonHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MythicPlusSeasonHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MythicPlusSeasonHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MythicPlusSeasonHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.NameGenHotfixes440.IsEmpty())
@@ -9167,6 +9069,27 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ParagonReputationHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.PathHotfixes440.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PathHotfixes440, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PathHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PathNodeHotfixes440.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PathNodeHotfixes440, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PathNodeHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PathPropertyHotfixes440.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PathPropertyHotfixes440, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PathPropertyHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.PhaseHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.PhaseHotfixes440, Settings.HotfixesDatabase);
@@ -9188,6 +9111,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.PlayerConditionHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.PlayerConditionHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerConditionHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerConditionHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.PowerDisplayHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.PowerDisplayHotfixes440, Settings.HotfixesDatabase);
@@ -9195,11 +9125,25 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.PowerDisplayHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.PowerDisplayHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PowerDisplayHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PowerDisplayHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.PowerTypeHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.PowerTypeHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.PowerTypeHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PowerTypeHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PowerTypeHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PowerTypeHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.PrestigeLevelInfoHotfixes440.IsEmpty())
@@ -9228,27 +9172,6 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.PvpSeasonHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.PvpSeasonHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.PvpTalentHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.PvpTalentHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.PvpTalentHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.PvpTalentCategoryHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.PvpTalentCategoryHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.PvpTalentCategoryHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.PvpTalentSlotUnlockHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.PvpTalentSlotUnlockHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.PvpTalentSlotUnlockHotfixes440, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.PvpTierHotfixes440.IsEmpty())
@@ -9398,6 +9321,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.SkillLineHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.SkillLineHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SkillLineHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SkillLineHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.SkillLineAbilityHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.SkillLineAbilityHotfixes440, Settings.HotfixesDatabase);
@@ -9405,11 +9335,11 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.SkillLineAbilityHotfixes440, hotfixes, StoreNameType.None);
                     }
 
-                    if (!Storage.SkillLineXTraitTreeHotfixes440.IsEmpty())
+                    if (!Storage.SkillLineAbilityHotfixes441.IsEmpty())
                     {
-                        var hotfixes = SQLDatabase.Get(Storage.SkillLineXTraitTreeHotfixes440, Settings.HotfixesDatabase);
+                        var hotfixes = SQLDatabase.Get(Storage.SkillLineAbilityHotfixes441, Settings.HotfixesDatabase);
 
-                        sql += SQLUtil.Compare(Storage.SkillLineXTraitTreeHotfixes440, hotfixes, StoreNameType.None);
+                        sql += SQLUtil.Compare(Storage.SkillLineAbilityHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.SkillRaceClassInfoHotfixes440.IsEmpty())
@@ -9419,25 +9349,18 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.SkillRaceClassInfoHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.SkillRaceClassInfoHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SkillRaceClassInfoHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SkillRaceClassInfoHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.SoundKitHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.SoundKitHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.SoundKitHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.SpecializationSpellsHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.SpecializationSpellsHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.SpecializationSpellsHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.SpecSetMemberHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.SpecSetMemberHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.SpecSetMemberHotfixes440, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.SpellAuraOptionsHotfixes440.IsEmpty())
@@ -9538,6 +9461,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.SpellItemEnchantmentHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.SpellItemEnchantmentHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellItemEnchantmentHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellItemEnchantmentHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.SpellItemEnchantmentConditionHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.SpellItemEnchantmentConditionHotfixes440, Settings.HotfixesDatabase);
@@ -9578,6 +9508,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.SpellMiscHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.SpellMiscHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellMiscHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellMiscHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellMiscHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.SpellNameHotfixes440.IsEmpty())
@@ -9692,11 +9629,25 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.SpellVisualEffectNameHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.SpellVisualEffectNameHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellVisualEffectNameHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellVisualEffectNameHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.SpellVisualMissileHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.SpellVisualMissileHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.SpellVisualMissileHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellVisualMissileHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellVisualMissileHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellVisualMissileHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.SpellVisualKitHotfixes440.IsEmpty())
@@ -9732,6 +9683,20 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.TalentHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.TalentHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TalentTabHotfixes440.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TalentTabHotfixes440, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TalentTabHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TalentTreePrimarySpellsHotfixes440.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TalentTreePrimarySpellsHotfixes440, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TalentTreePrimarySpellsHotfixes440, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.TaxiNodesHotfixes440.IsEmpty())
@@ -9774,167 +9739,6 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.TransmogHolidayHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.TransmogHolidayHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitCondHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitCondHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitCondHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitCostHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitCostHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitCostHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitCurrencyHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitCurrencyHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitCurrencyHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitCurrencySourceHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitCurrencySourceHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitCurrencySourceHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitDefinitionHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitDefinitionHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitDefinitionHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitDefinitionEffectPointsHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitDefinitionEffectPointsHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitDefinitionEffectPointsHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitEdgeHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitEdgeHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitEdgeHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitNodeHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitNodeHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitNodeEntryHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeEntryHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitNodeEntryHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitNodeEntryXTraitCondHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeEntryXTraitCondHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitNodeEntryXTraitCondHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitNodeEntryXTraitCostHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeEntryXTraitCostHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitNodeEntryXTraitCostHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitNodeGroupHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeGroupHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitNodeGroupHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitNodeGroupXTraitCondHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeGroupXTraitCondHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitNodeGroupXTraitCondHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitNodeGroupXTraitCostHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeGroupXTraitCostHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitNodeGroupXTraitCostHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitNodeGroupXTraitNodeHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeGroupXTraitNodeHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitNodeGroupXTraitNodeHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitNodeXTraitCondHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeXTraitCondHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitNodeXTraitCondHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitNodeXTraitCostHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeXTraitCostHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitNodeXTraitCostHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitNodeXTraitNodeEntryHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeXTraitNodeEntryHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitNodeXTraitNodeEntryHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitTreeHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitTreeHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitTreeHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitTreeLoadoutHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitTreeLoadoutHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitTreeLoadoutHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitTreeLoadoutEntryHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitTreeLoadoutEntryHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitTreeLoadoutEntryHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitTreeXTraitCostHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitTreeXTraitCostHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitTreeXTraitCostHotfixes440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitTreeXTraitCurrencyHotfixes440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitTreeXTraitCurrencyHotfixes440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitTreeXTraitCurrencyHotfixes440, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.TransmogSetHotfixes440.IsEmpty())
@@ -10007,6 +9811,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.UnitConditionHotfixes440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.UnitConditionHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UnitConditionHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UnitConditionHotfixes441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.UnitPowerBarHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.UnitPowerBarHotfixes440, Settings.HotfixesDatabase);
@@ -10026,6 +9837,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.VehicleSeatHotfixes440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.VehicleSeatHotfixes440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.VehicleSeatHotfixes441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.VehicleSeatHotfixes441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.VehicleSeatHotfixes441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.VignetteHotfixes440.IsEmpty())
@@ -12449,20 +12267,6 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.AchievementCategoryHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
-                    if (!Storage.AdventureJournalHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AdventureJournalHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AdventureJournalHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AdventureMapPOIHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AdventureMapPOIHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AdventureMapPOIHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
                     if (!Storage.AreaTableHotfixesLocale440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.AreaTableHotfixesLocale440, Settings.HotfixesDatabase);
@@ -12477,25 +12281,11 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.AreaTriggerHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
-                    if (!Storage.ArtifactHotfixesLocale440.IsEmpty())
+                    if (!Storage.AreaTriggerHotfixesLocale441.IsEmpty())
                     {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactHotfixesLocale440, Settings.HotfixesDatabase);
+                        var hotfixes = SQLDatabase.Get(Storage.AreaTriggerHotfixesLocale441, Settings.HotfixesDatabase);
 
-                        sql += SQLUtil.Compare(Storage.ArtifactHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ArtifactAppearanceHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactAppearanceHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactAppearanceHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ArtifactAppearanceSetHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ArtifactAppearanceSetHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ArtifactAppearanceSetHotfixesLocale440, hotfixes, StoreNameType.None);
+                        sql += SQLUtil.Compare(Storage.AreaTriggerHotfixesLocale441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.AuctionHouseHotfixesLocale440.IsEmpty())
@@ -12503,20 +12293,6 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.AuctionHouseHotfixesLocale440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.AuctionHouseHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeriteEssenceHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeriteEssenceHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeriteEssenceHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.AzeriteEssencePowerHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.AzeriteEssencePowerHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.AzeriteEssencePowerHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.BarberShopStyleHotfixesLocale440.IsEmpty())
@@ -12540,6 +12316,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.BattlePetSpeciesHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.BattlePetSpeciesHotfixesLocale441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlePetSpeciesHotfixesLocale441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlePetSpeciesHotfixesLocale441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.BattlemasterListHotfixesLocale440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.BattlemasterListHotfixesLocale440, Settings.HotfixesDatabase);
@@ -12547,11 +12330,25 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.BattlemasterListHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.BattlemasterListHotfixesLocale441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlemasterListHotfixesLocale441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlemasterListHotfixesLocale441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.BroadcastTextHotfixesLocale440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.BroadcastTextHotfixesLocale440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.BroadcastTextHotfixesLocale440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BroadcastTextHotfixesLocale441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BroadcastTextHotfixesLocale441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BroadcastTextHotfixesLocale441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.CfgCategoriesHotfixesLocale440.IsEmpty())
@@ -12582,6 +12379,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ChrClassesHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ChrClassesHotfixesLocale441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrClassesHotfixesLocale441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrClassesHotfixesLocale441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ChrCustomizationChoiceHotfixesLocale440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationChoiceHotfixesLocale440, Settings.HotfixesDatabase);
@@ -12608,13 +12412,6 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ChrRacesHotfixesLocale440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ChrRacesHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.ChrSpecializationHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.ChrSpecializationHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.ChrSpecializationHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.CreatureFamilyHotfixesLocale440.IsEmpty())
@@ -12652,11 +12449,25 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.CurrencyTypesHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.CurrencyTypesHotfixesLocale441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CurrencyTypesHotfixesLocale441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CurrencyTypesHotfixesLocale441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.DifficultyHotfixesLocale440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.DifficultyHotfixesLocale440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.DifficultyHotfixesLocale440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.DifficultyHotfixesLocale441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.DifficultyHotfixesLocale441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.DifficultyHotfixesLocale441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.DungeonEncounterHotfixesLocale440.IsEmpty())
@@ -12694,46 +12505,11 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.GameobjectsHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
-                    if (!Storage.GarrAbilityHotfixesLocale440.IsEmpty())
+                    if (!Storage.GameobjectsHotfixesLocale441.IsEmpty())
                     {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrAbilityHotfixesLocale440, Settings.HotfixesDatabase);
+                        var hotfixes = SQLDatabase.Get(Storage.GameobjectsHotfixesLocale441, Settings.HotfixesDatabase);
 
-                        sql += SQLUtil.Compare(Storage.GarrAbilityHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrBuildingHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrBuildingHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrBuildingHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrClassSpecHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrClassSpecHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrClassSpecHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrFollowerHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrFollowerHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrFollowerHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrMissionHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrMissionHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrMissionHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.GarrTalentTreeHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.GarrTalentTreeHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.GarrTalentTreeHotfixesLocale440, hotfixes, StoreNameType.None);
+                        sql += SQLUtil.Compare(Storage.GameobjectsHotfixesLocale441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.HeirloomHotfixesLocale440.IsEmpty())
@@ -12778,6 +12554,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ItemSearchNameHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ItemSearchNameHotfixesLocale441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSearchNameHotfixesLocale441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSearchNameHotfixesLocale441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ItemSetHotfixesLocale440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ItemSetHotfixesLocale440, Settings.HotfixesDatabase);
@@ -12790,6 +12573,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ItemSparseHotfixesLocale440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ItemSparseHotfixesLocale440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSparseHotfixesLocale441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSparseHotfixesLocale441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSparseHotfixesLocale441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.JournalEncounterHotfixesLocale440.IsEmpty())
@@ -12855,6 +12645,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.MapHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.MapHotfixesLocale441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapHotfixesLocale441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapHotfixesLocale441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.MapChallengeModeHotfixesLocale440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.MapChallengeModeHotfixesLocale440, Settings.HotfixesDatabase);
@@ -12890,18 +12687,18 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.PlayerConditionHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.PlayerConditionHotfixesLocale441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerConditionHotfixesLocale441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerConditionHotfixesLocale441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.PrestigeLevelInfoHotfixesLocale440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.PrestigeLevelInfoHotfixesLocale440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.PrestigeLevelInfoHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.PvpTalentHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.PvpTalentHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.PvpTalentHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.PvpTierHotfixesLocale440.IsEmpty())
@@ -12953,6 +12750,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.SkillLineHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.SkillLineHotfixesLocale441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SkillLineHotfixesLocale441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SkillLineHotfixesLocale441, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.SkillLineAbilityHotfixesLocale440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.SkillLineAbilityHotfixesLocale440, Settings.HotfixesDatabase);
@@ -12960,11 +12764,11 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.SkillLineAbilityHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
-                    if (!Storage.SpecializationSpellsHotfixesLocale440.IsEmpty())
+                    if (!Storage.SkillLineAbilityHotfixesLocale441.IsEmpty())
                     {
-                        var hotfixes = SQLDatabase.Get(Storage.SpecializationSpellsHotfixesLocale440, Settings.HotfixesDatabase);
+                        var hotfixes = SQLDatabase.Get(Storage.SkillLineAbilityHotfixesLocale441, Settings.HotfixesDatabase);
 
-                        sql += SQLUtil.Compare(Storage.SpecializationSpellsHotfixesLocale440, hotfixes, StoreNameType.None);
+                        sql += SQLUtil.Compare(Storage.SkillLineAbilityHotfixesLocale441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.SpellCategoryHotfixesLocale440.IsEmpty())
@@ -12986,6 +12790,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.SpellItemEnchantmentHotfixesLocale440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.SpellItemEnchantmentHotfixesLocale440, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellItemEnchantmentHotfixesLocale441.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellItemEnchantmentHotfixesLocale441, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellItemEnchantmentHotfixesLocale441, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.SpellNameHotfixesLocale440.IsEmpty())
@@ -13016,6 +12827,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.TalentHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.TalentTabHotfixesLocale440.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TalentTabHotfixesLocale440, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TalentTabHotfixesLocale440, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.TaxiNodesHotfixesLocale440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.TaxiNodesHotfixesLocale440, Settings.HotfixesDatabase);
@@ -13035,20 +12853,6 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ToyHotfixesLocale440, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ToyHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitCurrencySourceHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitCurrencySourceHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitCurrencySourceHotfixesLocale440, hotfixes, StoreNameType.None);
-                    }
-
-                    if (!Storage.TraitDefinitionHotfixesLocale440.IsEmpty())
-                    {
-                        var hotfixes = SQLDatabase.Get(Storage.TraitDefinitionHotfixesLocale440, Settings.HotfixesDatabase);
-
-                        sql += SQLUtil.Compare(Storage.TraitDefinitionHotfixesLocale440, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.TransmogSetHotfixesLocale440.IsEmpty())
@@ -13099,47 +12903,25 @@ namespace WowPacketParser.SQL.Builders
                 {
                     sql += $"DELETE FROM `achievement` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `achievement_category` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `adventure_journal` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `adventure_map_poi` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `animation_data` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `anim_kit` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `area_group_member` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `area_table` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `area_trigger` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `area_trigger_action_set` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `armor_location` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_appearance` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_appearance_set` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_category` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_power` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_power_link` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_power_picker` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_power_rank` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_quest_xp` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_tier` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_unlock` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `auction_house` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_empowered_item` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_essence` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_essence_power` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_item` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_item_milestone_power` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_knowledge_multiplier` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_level_info` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_power` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_power_set_member` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_tier_unlock` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_tier_unlock_set` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_unlock_mapping` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `bank_bag_slot_prices` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `banned_addons` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `barber_shop_style` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `battle_pet_ability` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `battle_pet_breed_quality` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `battle_pet_breed_state` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `battle_pet_species` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `battle_pet_species_state` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `battlemaster_list` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `broadcast_text_duration` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `battlemaster_list_x_map` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `cfg_categories` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `cfg_regions` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `char_titles` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `character_loadout` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13157,13 +12939,12 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `chr_model` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `chr_race_x_chr_model` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `chr_races` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `chr_specialization` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `cinematic_camera` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `cinematic_sequences` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `conditional_chr_model` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `conditional_content_tuning` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `content_tuning` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `content_tuning_x_expected` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `conversation_line` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `corruption_effects` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `creature_display_info` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `creature_display_info_extra` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `creature_family` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13192,24 +12973,12 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `gameobject_art_kit` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `gameobject_display_info` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `gameobjects` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_ability` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_building` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_building_plot_inst` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_class_spec` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_follower` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_follower_x_ability` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_mission` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_plot` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_plot_building` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_plot_instance` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_site_level` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_site_level_plot_inst` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_talent_tree` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `gem_properties` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `global_curve` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `glyph_bindable_spell` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `glyph_slot` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `glyph_properties` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `glyph_required_spec` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `gossip_npc_option` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `guild_color_background` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `guild_color_border` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `guild_color_emblem` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13231,6 +13000,7 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `item_bonus_tree_node` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_child_equipment` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_class` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `item_context_picker_entry` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_currency_cost` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_damage_ammo` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_damage_one_hand` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13249,37 +13019,37 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `item_modified_appearance_extra` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_name_description` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_price_base` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `item_reforge` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_search_name` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_set` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_set_spell` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_sparse` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `item_spec` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `item_spec_override` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_x_bonus_tree` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `item_x_item_effect` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `journal_encounter` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `journal_encounter_section` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `journal_instance` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `journal_tier` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `keychain` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `keystone_affix` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `language_words` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `languages` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `lfg_dungeons` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `light` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `liquid_type` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `location` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `lock` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `mail_template` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `map` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `map_challenge_mode` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `map_difficulty` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `map_difficulty_x_condition` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `maw_power` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `modifier_tree` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `mount` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `mount_capability` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `mount_type_x_capability` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `mount_x_display` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `movie` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `mythic_plus_season` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `name_gen` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `names_profanity` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `names_reserved` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13287,6 +13057,9 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `num_talents_at_level` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `override_spell_data` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `paragon_reputation` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `path` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `path_node` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `path_property` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `phase` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `phase_x_phase_group` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `power_display` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13294,9 +13067,7 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `prestige_level_info` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `pvp_difficulty` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `pvp_item` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `pvp_talent` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `pvp_talent_category` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `pvp_talent_slot_unlock` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `pvp_season` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `pvp_tier` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `quest_faction_reward` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `quest_info` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13316,13 +13087,11 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `scene_script_global_text` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `scene_script_package` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `scene_script_text` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `server_messages` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `skill_line` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `skill_line_ability` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `skill_race_class_info` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `soulbind_conduit_rank` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `sound_kit` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `specialization_spells` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `spec_set_member` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `spell_aura_options` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `spell_aura_restrictions` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `spell_cast_times` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13338,6 +13107,7 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `spell_interrupts` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `spell_item_enchantment` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `spell_item_enchantment_condition` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `spell_keybound_override` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `spell_label` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `spell_learn_spell` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `spell_levels` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13363,13 +13133,14 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `spell_x_spell_visual` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `summon_properties` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `talent` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `talent_tab` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `talent_tree_primary_spells` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `taxi_nodes` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `taxi_path` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `taxi_path_node` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `totem_category` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `toy` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `transmog_holiday` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `transmog_illusion` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `transmog_set` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `transmog_set_group` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `transmog_set_item` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13379,11 +13150,11 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `ui_map_assignment` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `ui_map_link` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `ui_map_x_map_art` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `ui_splash_screen` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `unit_condition` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `unit_power_bar` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `vehicle` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `vehicle_seat` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `vignette` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `wmo_area_table` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `world_effect` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `world_map_overlay` WHERE (`VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13393,18 +13164,14 @@ namespace WowPacketParser.SQL.Builders
                 {
                     sql += $"DELETE FROM `achievement_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `achievement_category_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `adventure_journal_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `adventure_map_poi_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `area_table_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_appearance_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `artifact_appearance_set_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `area_trigger_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `auction_house_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_essence_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `azerite_essence_power_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `barber_shop_style_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `battle_pet_ability_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `battle_pet_species_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `battlemaster_list_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `cfg_categories_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `char_titles_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `chat_channels_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `chr_classes_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13412,7 +13179,6 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `chr_customization_option_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `chr_customization_req_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `chr_races_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `chr_specialization_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `creature_family_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `creature_type_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `criteria_tree_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13424,12 +13190,6 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `friendship_rep_reaction_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `friendship_reputation_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `gameobjects_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_ability_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_building_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_class_spec_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_follower_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_mission_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `garr_talent_tree_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `heirloom_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_bag_family_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `item_class_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13452,15 +13212,14 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `map_difficulty_x_condition_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `mount_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `prestige_level_info_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `pvp_talent_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `pvp_tier_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `quest_info_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `quest_sort_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `scenario_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `scenario_step_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `server_messages_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `skill_line_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `skill_line_ability_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `specialization_spells_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `spell_category_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `spell_focus_object_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `spell_item_enchantment_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
@@ -13468,14 +13227,15 @@ namespace WowPacketParser.SQL.Builders
                     sql += $"DELETE FROM `spell_range_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `spell_shapeshift_form_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `talent_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `talent_tab_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `taxi_nodes_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `totem_category_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `toy_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `transmog_set_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `transmog_set_group_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `ui_map_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
-                    sql += $"DELETE FROM `ui_splash_screen_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `unit_power_bar_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
+                    sql += $"DELETE FROM `vignette_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                     sql += $"DELETE FROM `wmo_area_table_locale` WHERE (`locale`= '{ClientLocale.PacketLocaleString}' AND `VerifiedBuild`>0 AND `VerifiedBuild`<{ClientVersion.BuildInt});" + Environment.NewLine;
                 }*/
 

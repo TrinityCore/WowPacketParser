@@ -19,29 +19,29 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("TrainerID")]
         public int? TrainerID;
 
-        [DBFieldName("Unk341_1")]
-        public int? Unk341_1;
+        [DBFieldName("Unknown341_0")]
+        public int? Unknown341_0;
 
-        [DBFieldName("Unk341_2")]
-        public int? Unk341_2;
+        [DBFieldName("Unknown341_1")]
+        public int? Unknown341_1;
 
-        [DBFieldName("Unk341_3")]
-        public int? Unk341_3;
+        [DBFieldName("Unknown341_2")]
+        public int? Unknown341_2;
 
-        [DBFieldName("Unk341_4")]
-        public int? Unk341_4;
+        [DBFieldName("Unknown341_3")]
+        public int? Unknown341_3;
 
-        [DBFieldName("Unk341_5")]
-        public int? Unk341_5;
+        [DBFieldName("Unknown341_4")]
+        public int? Unknown341_4;
 
-        [DBFieldName("Unk341_6")]
-        public int? Unk341_6;
+        [DBFieldName("Unknown341_5")]
+        public int? Unknown341_5;
 
-        [DBFieldName("Unk341_7")]
-        public int? Unk341_7;
+        [DBFieldName("Unknown341_6")]
+        public int? Unknown341_6;
 
-        [DBFieldName("Unk341_8")]
-        public int? Unk341_8;
+        [DBFieldName("Unknown341_7")]
+        public int? Unknown341_7;
 
         [DBFieldName("GossipOptionID")]
         public int? GossipOptionID;

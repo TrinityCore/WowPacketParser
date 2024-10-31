@@ -10,11 +10,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ID", true)]
         public uint? ID;
 
-        [DBFieldName("ShapeshiftFormID")]
-        public int? ShapeshiftFormID;
+        [DBFieldName("SpellShapeshiftFormID")]
+        public int? SpellShapeshiftFormID;
 
-        [DBFieldName("DisplayID")]
-        public int? DisplayID;
+        [DBFieldName("CreatureDisplayInfoID")]
+        public int? CreatureDisplayInfoID;
 
         [DBFieldName("BarberShopMinCameraDistance")]
         public float? BarberShopMinCameraDistance;

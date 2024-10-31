@@ -19,17 +19,17 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Flags")]
         public int? Flags;
 
-        [DBFieldName("ChrModelID")]
-        public int? ChrModelID;
-
         [DBFieldName("ChrRacesID")]
         public int? ChrRacesID;
 
         [DBFieldName("Sex")]
         public int? Sex;
 
-        [DBFieldName("SortIndex")]
-        public int? SortIndex;
+        [DBFieldName("ChrModelID")]
+        public int? ChrModelID;
+
+        [DBFieldName("OrderIndex")]
+        public int? OrderIndex;
 
         [DBFieldName("ChrCustomizationCategoryID")]
         public int? ChrCustomizationCategoryID;
@@ -46,8 +46,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ChrCustomizationReqID")]
         public int? ChrCustomizationReqID;
 
-        [DBFieldName("UiOrderIndex")]
-        public int? UiOrderIndex;
+        [DBFieldName("SecondaryOrderIndex")]
+        public int? SecondaryOrderIndex;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

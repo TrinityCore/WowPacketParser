@@ -4,17 +4,17 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [Hotfix]
-    [DBTableName("garr_plot_building")]
-    public sealed record GarrPlotBuildingHotfix440: IDataModel
+    [DBTableName("glyph_slot")]
+    public sealed record GlyphSlotHotfix440: IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;
 
-        [DBFieldName("GarrPlotID")]
-        public byte? GarrPlotID;
+        [DBFieldName("Tooltip")]
+        public int? Tooltip;
 
-        [DBFieldName("GarrBuildingID")]
-        public byte? GarrBuildingID;
+        [DBFieldName("Type")]
+        public uint? Type;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
