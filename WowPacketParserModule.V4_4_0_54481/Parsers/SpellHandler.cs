@@ -923,6 +923,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadVector3("SourceOrientation");
             packet.ReadVector3("TargetLocation");
             packet.ReadPackedGuid128("Target");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadPackedGuid128("TargetTransport");
             packet.ReadInt32("SpellVisualID");
             packet.ReadSingle("TravelSpeed");
             packet.ReadSingle("LaunchDelay");
