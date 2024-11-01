@@ -121,7 +121,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         {
             packet.ReadUInt64("Quantity");
 
-            packet.ReadByte("DisplayToastMethod");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadUInt32("DisplayToastMethod");
+            else
+                packet.ReadByte("DisplayToastMethod");
+
             packet.ReadUInt32("QuestID");
 
             packet.ResetBitReader();
