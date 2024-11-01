@@ -295,7 +295,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadSpellMissStatus(packet, idx, "MissStatus", i);
 
             for (var i = 0; i < remainingPowerCount; ++i)
-                ReadSpellPowerData(packet, idx, "RemainingPower", i);
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                    ReadSpellPowerData441(packet, idx, "RemainingPower", i);
+                else
+                    ReadSpellPowerData(packet, idx, "RemainingPower", i);
+            }
 
             if (hasRuneData)
                 ReadRuneData(packet, idx, "RemainingRunes");
@@ -316,6 +321,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadInt32("Cost", idx);
             packet.ReadByteE<PowerType>("Type", idx);
+        }
+
+        public static void ReadSpellPowerData441(Packet packet, params object[] idx)
+        {
+            packet.ReadByteE<PowerType>("Type", idx);
+            packet.ReadInt32("Cost", idx);
         }
 
         public static void ReadRuneData(Packet packet, params object[] indexes)
