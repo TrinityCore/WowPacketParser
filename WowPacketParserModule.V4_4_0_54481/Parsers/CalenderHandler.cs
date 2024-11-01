@@ -28,10 +28,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByte("EventType", indexes);
 
             packet.ReadInt32("Date", indexes);
-            packet.ReadInt32("Flags", indexes);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadUInt16E<CalendarFlag>("Flags");
+            else
+                packet.ReadInt32E<CalendarFlag>("Flags");
+
             packet.ReadInt32("TextureID", indexes);
 
-            packet.ReadPackedGuid128("EventGuildID", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadUInt64("EventClubID");
+            else
+                packet.ReadPackedGuid128("EventGuildID");
+
             packet.ReadPackedGuid128("OwnerGUID", indexes);
 
             packet.ResetBitReader();
@@ -178,7 +187,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedTime("OriginalDate");
             packet.ReadPackedTime("Date");
             packet.ReadUInt32("LockDate");
-            packet.ReadUInt32E<CalendarFlag>("Flags");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadUInt16E<CalendarFlag>("Flags");
+            else
+                packet.ReadUInt32E<CalendarFlag>("Flags");
+
             packet.ReadUInt32("TextureID");
             packet.ReadByte("EventType");
 
@@ -209,7 +223,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadUInt64("EventID");
             packet.ReadPackedTime("Date");
-            packet.ReadInt32E<CalendarFlag>("Flags");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadUInt16E<CalendarFlag>("Flags");
+            else
+                packet.ReadInt32E<CalendarFlag>("Flags");
+
             packet.ReadByteE<CalendarEventType>("EventType");
             packet.ReadInt32("TextureID");
             packet.ReadUInt64("EventClubID");
@@ -222,6 +241,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("OwnerGUID | InvitedByGUID");
 
             var eventNameLength = packet.ReadBits("EventNameLength", 8);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadBit("Unknown_1100");
             packet.ResetBitReader();
 
             packet.ReadWoWString("EventName", eventNameLength);
@@ -356,7 +377,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt64("EventID");
             packet.ReadByte("GetEventType");
             packet.ReadInt32("TextureID");
-            packet.ReadUInt32("Flags");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadUInt16E<CalendarFlag>("Flags");
+            else
+                packet.ReadInt32E<CalendarFlag>("Flags");
+
             packet.ReadPackedTime("Date");
             packet.ReadUInt32("LockDate");
             packet.ReadUInt64("EventClubID");
