@@ -21,9 +21,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("Valid");
             packet.ReadPackedGuid128("Player");
             packet.ReadInt32("ActualMapID");
-            packet.ReadVector3("Position");
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadVector3("Position");
+
             packet.ReadInt32("MapID");
             packet.ReadPackedGuid128("Transport");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadVector3("Position");
         }
 
         [Parser(Opcode.SMSG_CORPSE_TRANSPORT_QUERY)]
