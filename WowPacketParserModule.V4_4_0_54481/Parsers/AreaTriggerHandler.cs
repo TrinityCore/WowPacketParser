@@ -90,6 +90,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("TriggerGUID");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadPackedGuid128("Unused_1100");
+
             packet.ResetBitReader();
             var hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline");
             var hasAreaTriggerOrbit = packet.ReadBit("HasAreaTriggerOrbit");

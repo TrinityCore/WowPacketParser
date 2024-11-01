@@ -349,8 +349,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_CONNECT_TO_FAILED)]
         public static void HandleRedirectFailed(Packet packet)
         {
-            packet.ReadUInt32("Serial");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadUInt32("Serial");
+
             packet.ReadSByte("Con");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadUInt32("Serial");
         }
 
         [Parser(Opcode.CMSG_LOGOUT_REQUEST)]

@@ -598,11 +598,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("IsTrialBoost");
             packet.ReadBit("UseNPE");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadBit("HardcoreSelfFound");
+
             packet.ReadByteE<Race>("RaceID");
             packet.ReadByteE<Class>("ClassID");
             packet.ReadByteE<Gender>("SexID");
 
             var customizationCount = packet.ReadUInt32();
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadUInt32("TimerunningSeasonID");
 
             packet.ReadWoWString("Name", nameLen);
 

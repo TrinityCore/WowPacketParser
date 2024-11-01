@@ -167,8 +167,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("TotalCount");
             packet.ReadInt32("DesiredDelay");
 
-            packet.ReadBit("OnlyUsable");
-            packet.ResetBitReader();
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_1_57294))
+            {
+                packet.ReadBit("OnlyUsable");
+                packet.ResetBitReader();
+            }
 
             for (var i = 0; i < itemsCount; i++)
                 ReadCliAuctionItem(packet, i);

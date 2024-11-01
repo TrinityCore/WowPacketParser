@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -82,8 +83,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadSingle("Unk Attacker State 3 7", indexes);
                 packet.ReadSingle("Unk Attacker State 3 8", indexes);
                 packet.ReadSingle("Unk Attacker State 3 9", indexes);
-                packet.ReadSingle("Unk Attacker State 3 10", indexes);
-                packet.ReadSingle("Unk Attacker State 3 11", indexes);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                {
+                    for (var j = 0; j < 5; j++)
+                    {
+                        packet.ReadSingle("Unk Attacker State 3 10", j, indexes);
+                        packet.ReadSingle("Unk Attacker State 3 11", j, indexes);
+                    }
+                }
+                else
+                {
+                    packet.ReadSingle("Unk Attacker State 3 10", indexes);
+                    packet.ReadSingle("Unk Attacker State 3 11", indexes);
+                }
                 packet.ReadInt32("Unk Attacker State 3 12", indexes);
             }
 
