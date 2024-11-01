@@ -38,6 +38,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("TargetVirtualAddress");
             packet.ReadUInt32("SenderVirtualAddress");
             packet.ReadInt32("AchievementID");
+
+            uint chatFlags = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                chatFlags = packet.ReadUInt16("ChatFlags");
+
             packet.ReadSingle("DisplayTime");
             packet.ReadInt32<SpellId>("SpellID");
 
@@ -46,7 +51,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var prefixLen = packet.ReadBits(5);
             var channelLen = packet.ReadBits(7);
             var textLen = packet.ReadBits(12);
-            var chatFlags = packet.ReadBits("ChatFlags", 15);
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_1_57294))
+                chatFlags = packet.ReadBits("ChatFlags", 15);
 
             packet.ReadBit("HideChatLog");
             packet.ReadBit("FakeSenderName");
