@@ -134,6 +134,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var optionalReagentsCount = packet.ReadUInt32("OptionalReagentsCount", idx);
             var removedModificationsCount = packet.ReadUInt32("RemovedModificationsCount", idx);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadByte("CraftingFlags", idx);
+
             for (var j = 0; j < optionalCurrenciesCount; ++j)
                 ReadOptionalCurrency(packet, idx, "OptionalCurrency", j);
 

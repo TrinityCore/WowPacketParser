@@ -537,6 +537,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByte("NewSexID");
             packet.ReadInt32E<Race>("CustomizedRace");
             packet.ReadInt32("CustomizedChrModelID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadInt32("UnalteredVisualRaceID");
+
             for (var i = 0; i < customizationsCount; i++)
                 ReadChrCustomizationChoice(packet, "Customizations", i);
         }

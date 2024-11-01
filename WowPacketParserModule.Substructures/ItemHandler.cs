@@ -147,13 +147,53 @@ namespace WowPacketParserModule.Substructures
             return instance;
         }
 
+        public static ItemInstance ReadItemInstance441(Packet packet, params object[] indexes)
+        {
+            ItemInstance instance = new ItemInstance();
+            instance.ItemID = packet.ReadInt32<ItemId>("ItemID", indexes);
+            instance.RandomPropertiesSeed = packet.ReadUInt32("RandomPropertiesSeed", indexes);
+            instance.RandomPropertiesID = packet.ReadUInt32("RandomPropertiesID", indexes);
+            
+            var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
+            packet.ResetBitReader();
+            
+            var modificationCount = packet.ReadBits(6);
+            packet.ResetBitReader();
+            
+            for (var j = 0u; j < modificationCount; ++j)
+            {
+                ItemModifier mod = packet.ReadByteE<ItemModifier>();
+                var value = packet.ReadInt32();
+                packet.AddValue(mod.ToString(), value, indexes);
+                instance.ItemModifier[mod] = value;
+            }
+
+            if (hasBonuses)
+            {
+                instance.Context = packet.ReadByte("Context", indexes);
+
+                var bonusCount = packet.ReadUInt32();
+                instance.BonusListIDs = new uint[bonusCount];
+                for (var j = 0; j < bonusCount; ++j)
+                    instance.BonusListIDs[j] = packet.ReadUInt32("BonusListID", indexes, j);
+            }
+
+            return instance;
+        }
+
         public static ItemInstance ReadItemInstance(Packet packet, params object[] indexes)
         {
+            if (ClientVersion.IsCataClientVersionBuild(ClientVersion.Build))
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                    return ReadItemInstance441(packet, indexes);
+                else
+                    return ReadItemInstance251(packet, indexes);
+            }
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_1_38835) &&
                (ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build) ||
                 ClientVersion.IsClassicSeasonOfMasteryClientVersionBuild(ClientVersion.Build) ||
-                ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build) ||
-                ClientVersion.IsCataClientVersionBuild(ClientVersion.Build)))
+                ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build)))
                 return ReadItemInstance251(packet, indexes);
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683) || ClientVersion.IsClassicVanillaClientVersionBuild(ClientVersion.Build))
                 return ReadItemInstance602(packet, indexes);

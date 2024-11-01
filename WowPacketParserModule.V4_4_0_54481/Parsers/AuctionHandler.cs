@@ -356,7 +356,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("RunTime");
 
             var taintedBy = packet.ReadBit();
-            var count = packet.ReadBits("ItemsCount", 6);
+
+            var bitsCount = 6;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                bitsCount = 5;
+
+            var count = packet.ReadBits("ItemsCount", bitsCount);
             packet.ResetBitReader();
 
             if (taintedBy)

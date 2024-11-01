@@ -1105,13 +1105,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("BorderColorRGB");
         }
 
+        [Parser(Opcode.CMSG_ACCEPT_GUILD_INVITE, ClientVersionBuild.V4_4_1_57294)]
+        public static void HandleAcceptGuildInvite441(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_RANKS_UPDATED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_TAB_ADDED)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
-        [Parser(Opcode.CMSG_ACCEPT_GUILD_INVITE)]
+        [Parser(Opcode.CMSG_ACCEPT_GUILD_INVITE, ClientVersionBuild.V4_4_0_54481, ClientVersionBuild.V4_4_1_57294)]
         [Parser(Opcode.CMSG_GUILD_CHALLENGE_UPDATE_REQUEST)]
         [Parser(Opcode.CMSG_GUILD_DECLINE_INVITATION)]
         [Parser(Opcode.CMSG_GUILD_DELETE)]

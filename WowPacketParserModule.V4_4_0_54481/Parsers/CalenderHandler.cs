@@ -126,7 +126,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByteE<CalendarEventType>("EventType", index);
             packet.ReadInt32("TextureID", index);
             packet.ReadTime("Time", index);
-            packet.ReadInt32E<CalendarFlag>("Flags", index);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadUInt16E<CalendarFlag>("Flags", index);
+            else
+                packet.ReadInt32E<CalendarFlag>("Flags", index);
 
             packet.ResetBitReader();
             var TitleLen = packet.ReadBits(8);

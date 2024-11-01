@@ -203,8 +203,17 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("PlayerGUID");
             packet.ReadUInt32("PlayerVirtualRealmAddress");
 
-            var playerNameLen = packet.ReadBits(6);
-            var channelNameLen = packet.ReadBits(6);
+            var playerBitsCount = 6;
+            var channelBitsCount = 6;
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+            {
+                playerBitsCount = 7;
+                channelBitsCount = 7;
+            }
+
+            var playerNameLen = packet.ReadBits(playerBitsCount);
+            var channelNameLen = packet.ReadBits(channelBitsCount);
 
             if (playerNameLen > 1)
                 packet.ReadDynamicString("PlayerName", playerNameLen);
@@ -242,7 +251,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32E<Language>("Language");
             packet.ReadPackedGuid128("TargetGUID");
             packet.ReadUInt32("TargetVirtualRealmAddress");
-            var targetLen = packet.ReadBits(6);
+
+            var bitsCount = 6;
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+            {
+                bitsCount = 7;
+            }
+
+            var targetLen = packet.ReadBits(bitsCount);
             var textLen = packet.ReadBits(11);
 
             if (targetLen > 1)

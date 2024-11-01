@@ -346,7 +346,6 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
         }
 
-        [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
         [Parser(Opcode.CMSG_BINDER_ACTIVATE)]
         [Parser(Opcode.SMSG_BINDER_CONFIRM)]
         [Parser(Opcode.CMSG_TALK_TO_GOSSIP)]
@@ -357,6 +356,20 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             CoreParsers.NpcHandler.LastGossipOption.Reset();
             CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
             var guid = CoreParsers.NpcHandler.LastGossipOption.Guid = packet.ReadPackedGuid128("Guid");
+
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_TALK_TO_GOSSIP, Direction.ClientToServer))
+                packet.Holder.GossipHello = new PacketGossipHello { GossipSource = guid };
+        }
+
+        [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
+        public static void HandleBankerActivate(Packet packet)
+        {
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
+            var guid = CoreParsers.NpcHandler.LastGossipOption.Guid = packet.ReadPackedGuid128("Guid");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadInt32E<PlayerInteractionType>("InteractionType");
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_TALK_TO_GOSSIP, Direction.ClientToServer))
                 packet.Holder.GossipHello = new PacketGossipHello { GossipSource = guid };
