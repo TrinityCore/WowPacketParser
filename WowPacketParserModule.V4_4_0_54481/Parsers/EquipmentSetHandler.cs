@@ -9,9 +9,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_EQUIPMENT_SET_ID)]
         public static void HandleEquipmentSetSaved(Packet packet)
         {
-            packet.ReadUInt64("GUID");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadUInt64("GUID");
+
             packet.ReadInt32("Type");
             packet.ReadUInt32("SetID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadUInt64("GUID");
         }
 
         private const int NumSlots = 19;
