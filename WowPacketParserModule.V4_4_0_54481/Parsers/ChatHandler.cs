@@ -40,7 +40,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("AchievementID");
 
             uint chatFlags = 0;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+            if (ClientVersion.AddedInVersion(ClientBranch.Cata, ClientVersionBuild.V4_4_1_57294) || ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_4_56738))
                 chatFlags = packet.ReadUInt16("ChatFlags");
 
             packet.ReadSingle("DisplayTime");
@@ -52,7 +52,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var channelLen = packet.ReadBits(7);
             var textLen = packet.ReadBits(12);
 
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_1_57294))
+            if (ClientVersion.RemovedInVersion(ClientBranch.Cata, ClientVersionBuild.V4_4_1_57294) || ClientVersion.RemovedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_4_56738))
                 chatFlags = packet.ReadBits("ChatFlags", 15);
 
             packet.ReadBit("HideChatLog");
