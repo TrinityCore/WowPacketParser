@@ -34,11 +34,11 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
         public System.Nullable<byte> Sex { get; set; }
         public System.Nullable<byte> DisplayPower { get; set; }
         public System.Nullable<uint> OverrideDisplayPowerID { get; set; }
-        public System.Nullable<float>[] Unk340 { get; } = new System.Nullable<float>[7];
-        public System.Nullable<float>[] Unk340_2 { get; } = new System.Nullable<float>[7];
-        public System.Nullable<int>[] Power { get; } = new System.Nullable<int>[7];
-        public System.Nullable<int>[] MaxPower { get; } = new System.Nullable<int>[7];
-        public System.Nullable<float>[] PowerRegenFlatModifier { get; } = new System.Nullable<float>[7];
+        public System.Nullable<float>[] PowerRegenFlatModifier { get; } = new System.Nullable<float>[10];
+        public System.Nullable<float>[] ModPowerRegen { get; } = new System.Nullable<float>[10];
+        public System.Nullable<int>[] Power { get; } = new System.Nullable<int>[10];
+        public System.Nullable<int>[] MaxPower { get; } = new System.Nullable<int>[10];
+        public System.Nullable<float>[] PowerRegenInterruptedFlatModifier { get; } = new System.Nullable<float>[10];
         public System.Nullable<int> Level { get; set; }
         public System.Nullable<int> EffectiveLevel { get; set; }
         public System.Nullable<int> ContentTuningID { get; set; }
@@ -116,18 +116,17 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
         public System.Nullable<int> MinItemLevel { get; set; }
         public System.Nullable<int> MaxItemLevel { get; set; }
         public System.Nullable<int> WildBattlePetLevel { get; set; }
-        // public System.Nullable<uint> BattlePetCompanionNameTimestamp { get; set; }
-        // kind reminder this is manual herpity guessworkity
+        public System.Nullable<uint> BattlePetCompanionNameTimestamp { get; set; }
         public System.Nullable<int> InteractSpellID { get; set; }
-        //  System.Nullable<int> ScaleDuration { get; set; }
+        public System.Nullable<int> ScaleDuration { get; set; }
         public System.Nullable<int> LooksLikeMountID { get; set; }
         public System.Nullable<int> LooksLikeCreatureID { get; set; }
         public System.Nullable<int> LookAtControllerID { get; set; }
-        // public System.Nullable<int> PerksVendorItemID { get; set; }
-        // public System.Nullable<int> TaxiNodesID { get; set; }
+        public System.Nullable<int> PerksVendorItemID { get; set; }
         public WowGuid GuildGUID { get; set; }
         public WowGuid SkinningOwnerGUID { get; set; }
-        public WowGuid Unk340_3 { get; set; }
+        public System.Nullable<int> FlightCapabilityID { get; set; }
+        public WowGuid ComboTarget { get; set; }
         public DynamicUpdateField<IPassiveSpellHistory> PassiveSpells { get; } = new DynamicUpdateField<IPassiveSpellHistory>();
         public DynamicUpdateField<System.Nullable<int>> WorldEffects { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<WowGuid> ChannelObjects { get; } = new DynamicUpdateField<WowGuid>();

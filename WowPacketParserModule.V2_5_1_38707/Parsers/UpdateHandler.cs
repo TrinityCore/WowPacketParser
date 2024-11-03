@@ -335,7 +335,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 }
 
                 var hasStandingOnGameObjectGUID = false;
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_3_51505))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_2_50063))
                     hasStandingOnGameObjectGUID = packet.ReadBit("HasStandingOnGameObjectGUID", index);
 
                 var hasTransport = packet.ReadBit("Has Transport Data", index);
@@ -871,7 +871,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
 
                 if (hasActionButtons)
                 {
-                    var actionButtonCount = (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_3_51505) ? 180 : 132);
+                    var actionButtonCount = (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_2_50063) ? 180 : 132);
                     for (int i = 0; i < actionButtonCount; i++)
                         packet.ReadInt32("Action", index, i);
                 }
