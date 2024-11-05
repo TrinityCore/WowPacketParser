@@ -11,8 +11,17 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_FACTION_BONUS_INFO)]
         public static void HandleFactionBonusInfo(Packet packet)
         {
-            for (var i = 0; i < FactionCount; i++)
+            uint factionCount = FactionCount;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                factionCount = packet.ReadUInt32();
+
+            for (var i = 0; i < factionCount; i++)
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                    packet.ReadInt32("FactionID");
+
                 packet.ReadBit("FactionHasBonus", i);
+            }
         }
 
         [Parser(Opcode.SMSG_INITIALIZE_FACTIONS)]
