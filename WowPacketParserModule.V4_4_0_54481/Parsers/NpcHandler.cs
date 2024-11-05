@@ -52,6 +52,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             bool hasSpellId = packet.ReadBit();
             bool hasOverrideIconId = packet.ReadBit();
 
+            uint failureDescriptionLength = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                failureDescriptionLength = packet.ReadBits(8);
+
             uint rewardsCount = packet.ReadUInt32();
             for (uint i = 0; i < rewardsCount; ++i)
             {
@@ -59,6 +63,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadBits("Type", 1, idx, "TreasureItem", i);
                 packet.ReadInt32("ID", idx, "TreasureItem", i);
                 packet.ReadInt32("Quantity", idx, "TreasureItem", i);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                    packet.ReadByte("ItemContext", idx, "TreasureItem", i);
             }
 
             gossipOption.OptionText = gossipMessageOption.Text = packet.ReadWoWString("Text", textLen, idx);
@@ -72,6 +79,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             if (hasOverrideIconId)
                 gossipOption.OverrideIconID = packet.ReadInt32("OverrideIconID", idx);
+
+            if (failureDescriptionLength > 1)
+                packet.ReadDynamicString("FailureDescription", failureDescriptionLength);
 
             gossipOption.FillBroadcastTextIDs();
 
@@ -118,6 +128,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             int menuId = packet.ReadInt32("GossipID");
             packetGossip.MenuId = (uint)menuId;
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadInt32("LfgDungeonsID");
 
             int friendshipFactionID = packet.ReadInt32("FriendshipFactionID");
             CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, friendshipFactionID, 0, guid, packet.TimeSpan);
