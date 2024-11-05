@@ -88,7 +88,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unit_flags3", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.AnyClassic, false, false, true)]
         public uint? UnitFlags3;
 
-        [DBFieldName("dynamicflags", TargetedDatabaseFlag.TillShadowlands | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("dynamicflags", TargetedDatabaseFlag.TillShadowlands | TargetedDatabaseFlag.Classic | TargetedDatabaseFlag.WotlkClassic)]
         public uint? DynamicFlag;
 
         [DBFieldName("VerifiedBuild")]
