@@ -373,12 +373,49 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             quest.TimeAllowed = packet.ReadInt64("TimeAllowed");
             uint objectiveCount = packet.ReadUInt32("ObjectiveCount");
             quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");
-            quest.QuestRewardID = packet.ReadInt32("TreasurePickerID");
+
+            var treasurePickerCount = 0u;
+            var treasurePickerCount2 = 0u;
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_1_57294))
+                quest.QuestRewardID = packet.ReadInt32("TreasurePickerID");
+            else
+            {
+                treasurePickerCount = packet.ReadUInt32();
+                treasurePickerCount2 = packet.ReadUInt32();
+            }
+
             quest.Expansion = packet.ReadInt32("Expansion");
             packet.ReadInt32("QuestGiverCreatureID");
 
             var conditionalQuestDescriptionCount = packet.ReadUInt32();
             var conditionalQuestCompletionLogCount = packet.ReadUInt32();
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+            {
+                for (uint i = 0; i < treasurePickerCount; ++i)
+                {
+                    var treasurePickerID = packet.ReadInt32("TreasurePickerID");
+                    QuestTreasurePickers pickers = new()
+                    {
+                        QuestID = quest.ID,
+                        TreasurePickerID = treasurePickerID,
+                        OrderIndex = (int)i
+                    };
+                    Storage.QuestTreasurePickersStorage.Add(pickers);
+                }
+
+                for (uint i = 0; i < treasurePickerCount2; ++i)
+                {
+                    var treasurePickerID = packet.ReadInt32("TreasurePickerID2");
+                    //QuestTreasurePickers pickers = new()
+                    //{
+                    //    QuestID = quest.ID,
+                    //    TreasurePickerID = treasurePickerID,
+                    //    OrderIndex = (int)i
+                    //};
+                    //Storage.QuestTreasurePickersStorage.Add(pickers);
+                }
+            }
 
             packet.ResetBitReader();
 
@@ -401,7 +438,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     ID = (uint)objectiveId.Key,
                     QuestID = (uint)id.Key
                 };
-                questInfoObjective.Type = packet.ReadByteE<QuestRequirementType>("Quest Requirement Type", i);
+
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_1_57294))
+                    questInfoObjective.Type = packet.ReadByteE<QuestRequirementType>("Quest Requirement Type", i);
+                else
+                    questInfoObjective.Type = packet.ReadInt32E<QuestRequirementType>("Quest Requirement Type", i);
+
                 questInfoObjective.StorageIndex = packet.ReadSByte("StorageIndex", i);
                 questInfoObjective.Order = i;
                 questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
