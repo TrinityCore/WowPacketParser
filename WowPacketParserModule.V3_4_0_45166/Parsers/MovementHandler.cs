@@ -198,7 +198,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
             monsterMove.Id = packet.ReadUInt32("Id", indexes);
-            if (ClientVersion.RemovedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_0_52302) || ClientVersion.Branch != ClientBranch.Classic)
+            if (ClientVersion.RemovedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_0_52146) || ClientVersion.Branch != ClientBranch.Classic)
                 monsterMove.Destination = packet.ReadVector3("Destination", indexes);
 
             packet.ResetBitReader();
@@ -232,7 +232,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
-        [Parser(Opcode.SMSG_ON_MONSTER_MOVE, ClientBranch.Classic, ClientVersionBuild.V1_15_0_52302)]
+        [Parser(Opcode.SMSG_ON_MONSTER_MOVE, ClientBranch.Classic, ClientVersionBuild.V1_15_0_52146)]
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE, ClientBranch.WotLK, ClientVersionBuild.V3_4_3_51505)]
         public static void HandleOnMonsterMove(Packet packet)
         {
