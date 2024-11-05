@@ -18,14 +18,30 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_INITIALIZE_FACTIONS)]
         public static void HandleInitializeFactions(Packet packet)
         {
-            for (var i = 0; i < FactionCount; i++)
+            uint factionCount = FactionCount;
+            uint bonusCount = FactionCount;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
             {
-                packet.ReadUInt16E<ReputationFlags>("ReputationFlags", i);
-                packet.ReadUInt32E<ReputationRank>("FactionStandings", i);
+                factionCount = packet.ReadUInt32();
+                bonusCount = packet.ReadUInt32();
             }
 
-            for (var i = 0; i < FactionCount; i++)
+            for (var i = 0; i < factionCount; i++)
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                    packet.ReadInt32("FactionID");
+
+                packet.ReadUInt16E<ReputationFlags>("ReputationFlags", i);
+                packet.ReadUInt32E<ReputationRank>("FactionStanding", i);
+            }
+
+            for (var i = 0; i < bonusCount; i++)
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                    packet.ReadInt32("FactionID");
+
                 packet.ReadBit("FactionHasBonus", i);
+            }
         }
 
         [Parser(Opcode.SMSG_SET_FORCED_REACTIONS)]
