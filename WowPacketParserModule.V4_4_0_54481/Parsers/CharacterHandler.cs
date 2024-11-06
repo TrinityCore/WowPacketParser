@@ -38,6 +38,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             data.Level = packet.ReadByte("Level", idx);
             packet.ReadByte("Unused915", idx);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadInt32("TimerunningSeasonID");
+
             data.Name = packet.ReadWoWString("Name", nameLength, idx);
 
             return data;
