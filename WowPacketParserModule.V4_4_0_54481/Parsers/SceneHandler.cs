@@ -29,6 +29,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("TransportGUID");
             packet.ReadVector3("Pos");
             packet.ReadSingle("Facing");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadInt32("MovieID");
+
             scene.Encrypted = packet.ReadBit("Encrypted");
 
             if (sceneId != 0) // SPELL_EFFECT_195 plays scenes by SceneScriptPackageID and sets SceneID = 0 (there are no Scenes which have SceneID = 0)
