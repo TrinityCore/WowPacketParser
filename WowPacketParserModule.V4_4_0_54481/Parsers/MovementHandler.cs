@@ -850,6 +850,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("Reason");
             packet.ReadVector3("MovementOffset");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadInt32("Counter");
+
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
