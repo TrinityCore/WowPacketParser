@@ -189,6 +189,57 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("IsBoostSpell", idx);
         }
 
+        public static void ReadQuestRewards441(Packet packet, params object[] idx)
+        {
+            for (var i = 0; i < 4; ++i)
+            {
+                packet.ReadInt32("ID", idx, i);
+                packet.ReadInt32("Quantity", idx, i);
+            }
+
+            for (var i = 0; i < 4; ++i)
+            {
+                packet.ReadInt32("CurrencyID", idx, i);
+                packet.ReadInt32("CurrencyQty", idx, i);
+                packet.ReadInt32("BonusQty", idx, i);
+            }
+
+            packet.ReadInt32("ChoiceItemCount", idx);
+            packet.ReadInt32("ItemCount", idx);
+            packet.ReadInt32("RewardMoney", idx);
+            packet.ReadInt32("XP", idx);
+            packet.ReadUInt64("ArtifactXP", idx);
+            packet.ReadInt32("ArtifactCategoryID", idx);
+            packet.ReadInt32("Honor", idx);
+            packet.ReadInt32("Title", idx);
+            packet.ReadInt32("FactionFlags", idx);
+
+            for (var i = 0; i < 5; ++i)
+            {
+                packet.ReadInt32("FactionID", idx, i);
+                packet.ReadInt32("FactionValue", idx, i);
+                packet.ReadInt32("FactionOverride", idx, i);
+                packet.ReadInt32("FactionCapIn", idx, i);
+            }
+
+            for (var i = 0; i < 3; ++i)
+                packet.ReadInt32("SpellCompletionDisplayID", idx, i);
+
+            packet.ReadInt32("SpellCompletionID", idx);
+            packet.ReadInt32("SkillLineID", idx);
+            packet.ReadInt32("NumSkillUps", idx);
+            var treasurePickerCount = packet.ReadUInt32();
+
+            for (var i = 0; i < treasurePickerCount; ++i)
+                packet.ReadInt32("TreasurePickerID", idx, i);
+
+            for (var i = 0; i < 6; ++i)
+                ReadRewardItem(packet, "QuestRewards", "ItemChoiceData", i);
+
+            packet.ResetBitReader();
+            packet.ReadBit("IsBoostSpell", idx);
+        }
+
         public static QuestOfferReward ReadQuestGiverOfferRewardData(Packet packet, params object[] indexes)
         {
             var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID");
@@ -225,6 +276,44 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("Unused");
 
             ReadQuestRewards(packet, "QuestRewards");
+
+            return questOfferReward;
+        }
+
+        public static QuestOfferReward ReadQuestGiverOfferRewardData441(Packet packet, params object[] indexes)
+        {
+            ReadQuestRewards441(packet, "QuestRewards");
+            var emotesCount = packet.ReadUInt32("EmotesCount");
+            var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadInt32E<QuestFlags>("Flags");
+            packet.ReadInt32E<QuestFlagsEx>("FlagsEx");
+            packet.ReadInt32E<QuestFlagsEx2>("FlagsEx2_Unused440"); // Probably uninitialized random values atm
+            packet.ReadInt32("QuestGiverCreatureID");
+            int id = packet.ReadInt32<QuestId>("QuestID");
+
+            QuestOfferReward questOfferReward = new QuestOfferReward
+            {
+                ID = (uint)id
+            };
+
+            packet.ReadInt32("SuggestedPartyMembers");
+            packet.ReadInt32E<QuestInfo>("QuestInfoID");
+            // QuestDescEmote
+            questOfferReward.Emote = new int?[] { 0, 0, 0, 0 };
+            questOfferReward.EmoteDelay = new uint?[] { 0, 0, 0, 0 };
+            for (var i = 0; i < emotesCount; i++)
+            {
+                questOfferReward.Emote[i] = packet.ReadInt32("Type");
+                questOfferReward.EmoteDelay[i] = packet.ReadUInt32("Delay");
+            }
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("AutoLaunched");
+            packet.ReadBit("Unused");
+            packet.ReadBit("ResetByScheduler");
+
+            CoreParsers.QuestHandler.AddQuestEnder(questgiverGUID, (uint)id);
 
             return questOfferReward;
         }
@@ -703,7 +792,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_OFFER_REWARD_MESSAGE)]
         public static void QuestGiverOfferReward(Packet packet)
         {
-            var questOfferReward = ReadQuestGiverOfferRewardData(packet, "QuestGiverOfferRewardData");
+            QuestOfferReward questOfferReward;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                questOfferReward = ReadQuestGiverOfferRewardData441(packet, "QuestGiverOfferRewardData");
+            else
+                questOfferReward = ReadQuestGiverOfferRewardData(packet, "QuestGiverOfferRewardData");
 
             packet.ReadInt32("QuestPackageID");
             packet.ReadInt32("PortraitGiver");
