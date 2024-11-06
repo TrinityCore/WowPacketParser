@@ -199,7 +199,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ReadUInt32("BattlePetSpeciesID");
             packet.ReadUInt32("BattlePetBreedID");
-            packet.ReadUInt32("BattlePetBreedQuality");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadByte("BattlePetBreedQuality");
+            else
+                packet.ReadUInt32("BattlePetBreedQuality");
+
             packet.ReadUInt32("BattlePetLevel");
 
             packet.ReadPackedGuid128("ItemGUID");
