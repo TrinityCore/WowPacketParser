@@ -180,6 +180,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("LeaderGUID");
             packet.ReadByte("LeaderFactionGroup");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadInt32("PingRestriction");
+
             var playerCount = packet.ReadUInt32("PlayerListCount");
             var hasLFG = packet.ReadBit("HasLfgInfo");
             var hasLootSettings = packet.ReadBit("HasLootSettings");
