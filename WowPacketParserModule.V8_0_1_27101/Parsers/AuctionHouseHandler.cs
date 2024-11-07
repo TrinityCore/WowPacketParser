@@ -236,5 +236,51 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     ReadAuctionSortDef(packet, i);
             }
         }
+
+        public static void ReadBucketInfo(Packet packet, int index)
+        {
+            ReadAuctionBucketKey(packet, index, "Key");
+
+            packet.ReadInt32("TotalQuantity", index);
+            packet.ReadInt32("RequiredLevel", index);
+            packet.ReadUInt64("MinPrice", index);
+            var itemModifiedAppearanceIDsCount = packet.ReadUInt32();
+            for (var i = 0u; i < itemModifiedAppearanceIDsCount; ++i)
+                packet.ReadInt32("ItemModifiedAppearanceID", index, i);
+
+            packet.ResetBitReader();
+            var hasMaxBattlePetQuality = packet.ReadBit();
+            var hasMaxBattlePetLevel = packet.ReadBit();
+            var hasBattlePetBreedID = packet.ReadBit();
+            var hasBattlePetLevelMask = packet.ReadBit();
+            packet.ReadBit("ContainsOwnerItem", index);
+            packet.ReadBit("ContainsOnlyCollectedAppearances", index);
+
+            if (hasMaxBattlePetQuality)
+                packet.ReadByte("MaxBattlePetQuality", index);
+
+            if (hasMaxBattlePetLevel)
+                packet.ReadByte("MaxBattlePetLevel", index);
+
+            if (hasBattlePetBreedID)
+                packet.ReadByte("BattlePetBreedID", index);
+
+            if (hasBattlePetLevelMask)
+                packet.ReadUInt32("BattlePetLevelMask", index);
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_LIST_BUCKETS_RESULT)]
+        public static void HandleAuctionListBucketsResult(Packet packet)
+        {
+            var bucketCount = packet.ReadUInt32();
+            packet.ReadUInt32("DesiredDelay");
+            packet.ReadInt32("Unknown830_0");
+            packet.ReadInt32("Unknown830_1");
+            packet.ReadBits("BrowseMode", 2);
+            packet.ReadBit("HasMoreResults");
+
+            for (var i = 0; i < bucketCount; ++i)
+                ReadBucketInfo(packet, i);
+        }
     }
 }
