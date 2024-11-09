@@ -84,7 +84,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             for (uint i = 0; i < displayIdCount; ++i)
             {
                 displayIds[i] = (uint)packet.ReadInt32("DisplayId", i);
-                response.Models.Add(creature.DisplayId[i] ?? 0);
+                response.Models.Add(displayIds[i] ?? 0);
                 packet.ReadSingle("DisplayScale", i);
                 packet.ReadSingle("DisplayProbability", i);
             }
