@@ -164,6 +164,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                                 else if (conversation != null)
                                     conversation.ConversationData = data;
                             }
+
+                            if (fieldsData.Position != fieldsData.Length)
+                            {
+                                var pos = fieldsData.Position;
+                                var len = fieldsData.Length;
+                                fieldsData.WriteLine("UpdateField UpdateBlock not fully read! Current position: {0} Length: {1} Bytes remaining: {2}. TypeFlags: {3}",
+                                    pos, len, len - pos, (UpdateTypeFlag)updateTypeFlag);
+                            }
                         }
                         updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, TextStartOffset = partWriter.StartOffset, TextLength = partWriter.Length, Text = partWriter.Text});
                         break;
@@ -255,6 +263,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     case ObjectType.Conversation:
                         (obj as ConversationTemplate).ConversationData = handler.ReadCreateConversationData(fieldsData, flags, index);
                         break;
+                }
+
+                if (fieldsData.Position != fieldsData.Length)
+                {
+                    var pos = fieldsData.Position;
+                    var len = fieldsData.Length;
+                    fieldsData.WriteLine("UpdateField CreateBlock not fully read! Current position: {0} Length: {1} Bytes remaining: {2}.",
+                        pos, len, len - pos);
                 }
             }
 
