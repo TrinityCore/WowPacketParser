@@ -518,6 +518,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             uint questTurnTargetNameLen = packet.ReadBits(8);
             uint questCompletionLogLen = packet.ReadBits(11);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadBit("ResetByScheduler");
+
             for (uint i = 0; i < objectiveCount; ++i)
             {
                 var objectiveId = packet.ReadEntry("Id", i);
