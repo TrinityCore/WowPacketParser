@@ -175,14 +175,26 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_RAID_INSTANCE_MESSAGE)]
         public static void HandleRaidInstanceMessage(Packet packet)
         {
-            packet.ReadByte("Type");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadInt32("Type");
+            else
+                packet.ReadByte("Type");
 
             packet.ReadUInt32<MapId>("MapID");
             packet.ReadUInt32("DifficultyID");
 
-            packet.ResetBitReader();
+            uint messageLen = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+            {
+                packet.ReadInt32("TimeLeft");
+                messageLen = packet.ReadBits(8);
+            }
+
             packet.ReadBit("Locked");
             packet.ReadBit("Extended");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadWoWString("Message", messageLen);
         }
 
         [Parser(Opcode.SMSG_SET_DUNGEON_DIFFICULTY)]
