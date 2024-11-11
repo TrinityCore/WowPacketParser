@@ -103,13 +103,25 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadInt32("QuestLevel", idx);
             packet.ReadInt32("QuestMaxScalingLevel", idx);
 
-            for (int j = 0; j < 2; ++j)
-                packet.ReadInt32("QuestFlags", idx, j);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+            {
+                packet.ReadInt32("Unused1102", idx);
+                packet.ReadInt32E<QuestFlags>("Flags", idx);
+                packet.ReadInt32E<QuestFlagsEx>("FlagsEx", idx);
+                packet.ReadInt32E<QuestFlagsEx2>("FlagsEx2", idx);
+            }
+            else
+            {
+                for (int j = 0; j < 2; ++j)
+                    packet.ReadInt32("QuestFlags", idx, j);
+            }
 
             packet.ResetBitReader();
 
             packet.ReadBit("Repeatable", idx);
+            packet.ReadBit("ResetByScheduler", idx);
             packet.ReadBit("Important", idx);
+            packet.ReadBit("Meta", idx);
 
             uint questTitleLen = packet.ReadBits(9);
             gossipQuest.Title = packet.ReadWoWString("QuestTitle", questTitleLen, idx);
