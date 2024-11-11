@@ -1024,7 +1024,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.V4_4_0_54481, ClientVersionBuild.V4_4_1_57294)]
         public static void HandleQuestGiverRequestItems(Packet packet)
         {
             var requestItems = packet.Holder.QuestGiverRequestItems = new();
@@ -1085,6 +1085,96 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ResetBitReader();
 
             requestItems.AutoLaunched = packet.ReadBit("AutoLaunched");
+
+            packet.ResetBitReader();
+            packet.ReadInt32("QuestGiverCreatureID"); // questgiver entry?
+            var conditionalCompletionTextCount = packet.ReadUInt32();
+            var questTitleLen = packet.ReadBits(9);
+            var completionTextLen = packet.ReadBits(12);
+
+            for (int i = 0; i < conditionalCompletionTextCount; i++)
+                ReadConditionalQuestText(packet, id, i, ConditionalTextType.RequestItems, i, "ConditionalCompletionText");
+
+            requestItems.QuestTitle = packet.ReadWoWString("QuestTitle", questTitleLen);
+            string completionText = requestItems.CompletionText = packet.ReadWoWString("CompletionText", completionTextLen);
+
+            CoreParsers.QuestHandler.QuestRequestItemHelper(id, completionText, delay, emote, isComplete, packet, noRequestOnComplete);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && completionText != string.Empty)
+            {
+                QuestRequestItemsLocale localesQuestRequestItems = new QuestRequestItemsLocale
+                {
+                    ID = (uint)id,
+                    CompletionText = completionText
+                };
+                Storage.LocalesQuestRequestItems.Add(localesQuestRequestItems, packet.TimeSpan);
+            }
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.V4_4_1_57294)]
+        public static void HandleQuestGiverRequestItems441(Packet packet)
+        {
+            var requestItems = packet.Holder.QuestGiverRequestItems = new();
+            var collectCount = requestItems.CollectCount = packet.ReadUInt32("CollectCount");
+            var currencyCount = requestItems.CurrencyCount = packet.ReadUInt32("CurrencyCount");
+            var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID");
+            requestItems.QuestGiver = questgiverGUID;
+
+            for (int i = 0; i < 3; i++)
+            {
+                var flags = packet.ReadInt32("QuestFlags", i);
+                if (i == 0)
+                    requestItems.QuestFlags = (uint)flags;
+                else if (i == 1)
+                    requestItems.QuestFlags2 = (uint)flags;
+            }
+
+            QuestStatusFlags statusFlags = packet.ReadInt32E<QuestStatusFlags>("StatusFlags");
+            requestItems.StatusFlags = (PacketQuestStatusFlags)statusFlags;
+            bool isComplete = (statusFlags & (QuestStatusFlags.Complete)) == QuestStatusFlags.Complete;
+            bool noRequestOnComplete = (statusFlags & QuestStatusFlags.NoRequestOnComplete) != 0;
+
+            requestItems.QuestGiverEntry = (uint)packet.ReadInt32("QuestGiverCreatureID");
+
+            int id = packet.ReadInt32<QuestId>("QuestID");
+            int delay = requestItems.EmoteDelay = packet.ReadInt32("EmoteDelay");
+            int emote = requestItems.EmoteType = packet.ReadInt32("EmoteType");
+            requestItems.QuestId = (uint)id;
+
+            CoreParsers.QuestHandler.AddQuestEnder(questgiverGUID, (uint)id);
+
+            requestItems.SuggestedPartyMembers = packet.ReadInt32("SuggestPartyMembers");
+            requestItems.MoneyToGet = packet.ReadInt32("MoneyToGet");
+            packet.ReadInt32("QuestInfoID");
+
+            for (int i = 0; i < collectCount; i++)
+            {
+                var objectId = packet.ReadInt32("ObjectID", i);
+                var amount = packet.ReadInt32("Amount", i);
+                var flags = packet.ReadUInt32("Flags", i);
+                requestItems.Collect.Add(new QuestCollect()
+                {
+                    Id = objectId,
+                    Count = amount,
+                    Flags = flags
+                });
+            }
+
+            for (int i = 0; i < currencyCount; i++)
+            {
+                var currencyId = packet.ReadInt32("CurrencyID", i);
+                var amount = packet.ReadInt32("Amount", i);
+                requestItems.Currencies.Add(new Currency()
+                {
+                    Id = (uint)currencyId,
+                    Count = (uint)amount
+                });
+            }
+
+            packet.ResetBitReader();
+
+            requestItems.AutoLaunched = packet.ReadBit("AutoLaunched");
+            packet.ReadBit("ResetByScheduler");
 
             packet.ResetBitReader();
             packet.ReadInt32("QuestGiverCreatureID"); // questgiver entry?
