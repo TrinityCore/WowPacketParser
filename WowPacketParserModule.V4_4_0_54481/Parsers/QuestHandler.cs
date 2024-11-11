@@ -892,6 +892,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var descEmotesCount = packet.ReadUInt32("DescEmotesCount");
             var objectivesCount = packet.ReadUInt32("ObjectivesCount");
             packet.ReadInt32("QuestStartItemID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadInt32("QuestInfoID");
+
             packet.ReadInt32("QuestSessionBonus");
             packet.ReadInt32("QuestGiverCreatureID");
             var conditionalDescriptionTextCount = packet.ReadUInt32();
@@ -909,10 +913,20 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             for (var i = 0; i < objectivesCount; i++)
             {
-                packet.ReadInt32("ObjectiveID", i);
-                packet.ReadInt32("ObjectID", i);
-                packet.ReadInt32("Amount", i);
-                packet.ReadByte("Type", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                {
+                    packet.ReadInt32("ObjectiveID", i);
+                    packet.ReadInt32("Type", i);
+                    packet.ReadInt32("ObjectID", i);
+                    packet.ReadInt32("Amount", i);
+                }
+                else
+                {
+                    packet.ReadInt32("ObjectiveID", i);
+                    packet.ReadInt32("ObjectID", i);
+                    packet.ReadInt32("Amount", i);
+                    packet.ReadByte("Type", i);
+                }
             }
 
             packet.ResetBitReader();
@@ -926,11 +940,22 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             uint portraitTurnInNameLen = packet.ReadBits(8);
 
             packet.ReadBit("AutoLaunched");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadBit("FromContentPush");
+
             packet.ReadBit("Unused");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadBit("ResetByScheduler");
+
             packet.ReadBit("StartCheat");
             packet.ReadBit("DisplayPopup");
 
-            ReadQuestRewards(packet, "QuestRewards");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                ReadQuestRewards441(packet, "QuestRewards");
+            else
+                ReadQuestRewards(packet, "QuestRewards");
 
             packet.ReadWoWString("QuestTitle", questTitleLen);
             packet.ReadWoWString("DescriptionText", descriptionTextLen);
