@@ -285,7 +285,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 {
                     packet.ReadPackedGuid128("Victim");
                     packet.ReadInt32("Points");
-                    packet.ReadInt32("PowerType");
+
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                        packet.ReadByteE<PowerType>("Type");
+                    else
+                        packet.ReadUInt32E<PowerType>("Type");
+
                     packet.ReadSingle("Amplitude");
                 }
 
