@@ -49,7 +49,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
                     packet.ReadInt32("FactionID");
 
-                packet.ReadBool("FactionHasBonus", i);
+                packet.ReadBit("FactionHasBonus", i);
+                packet.ResetBitReader();
             }
         }
 
@@ -88,8 +89,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (int i = 0; i < count; i++)
                 ReadFactionStandingData(packet, i);
 
-            packet.ResetBitReader();
-            packet.ReadBool("ShowVisual");
+            packet.ReadBit("ShowVisual");
         }
 
         [Parser(Opcode.CMSG_SET_FACTION_AT_WAR)]
