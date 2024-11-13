@@ -17,5 +17,7 @@ namespace WowPacketParser.Enums
         PerCharacterClickBindingsCache  = 12,
         GlobalEditModeCache             = 13,
         PerCharacterEditModeCache       = 14,
+        GlobalFrontendChatSettings      = 15,
+        GlobalCharacterListOrder        = 16,
     }
 }

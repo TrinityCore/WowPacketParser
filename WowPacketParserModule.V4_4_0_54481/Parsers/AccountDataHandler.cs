@@ -71,7 +71,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Guid");
             packet.ReadTime64("ServerTime");
 
-            for (var i = 0; i < 15; ++i)
+            var count = ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294) ? 17 : 15;
+
+            for (var i = 0; i < count; ++i)
                 packet.ReadTime64($"[{(AccountDataType)i}] Time", i);
         }
 
