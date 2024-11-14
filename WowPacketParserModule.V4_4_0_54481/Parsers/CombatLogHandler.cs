@@ -102,7 +102,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
                 packet.ReadSingle("Unk Float", indexes);
 
-            ReadCombatLogContentTuning(packet, indexes, "ContentTuning");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_1_57294))
+                ReadCombatLogContentTuning(packet, indexes, "ContentTuning");
+            else
+                ReadContentTuningParams(packet, indexes, "ContentTuning");
         }
 
         public static void ReadContentTuningParams(Packet packet, params object[] idx)
