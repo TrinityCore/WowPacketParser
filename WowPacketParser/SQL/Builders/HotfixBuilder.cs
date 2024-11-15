@@ -3082,6 +3082,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.BroadcastTextDurationHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.BroadcastTextDurationHotfixes1105.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BroadcastTextDurationHotfixes1105, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BroadcastTextDurationHotfixes1105, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.CfgCategoriesHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.CfgCategoriesHotfixes1100, Settings.HotfixesDatabase);
@@ -3185,6 +3192,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationOptionHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ChrCustomizationOptionHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrCustomizationOptionHotfixes1105.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationOptionHotfixes1105, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrCustomizationOptionHotfixes1105, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ChrCustomizationReqHotfixes1100.IsEmpty())
@@ -3381,6 +3395,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.DifficultyHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.DifficultyHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.DifficultyHotfixes1105.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.DifficultyHotfixes1105, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.DifficultyHotfixes1105, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.DungeonEncounterHotfixes1100.IsEmpty())
@@ -4069,6 +4090,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.LfgDungeonsHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.LfgDungeonsHotfixes1105.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.LfgDungeonsHotfixes1105, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.LfgDungeonsHotfixes1105, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.LightHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.LightHotfixes1100, Settings.HotfixesDatabase);
@@ -4711,6 +4739,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.SpellMiscHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.SpellMiscHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellMiscHotfixes1105.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellMiscHotfixes1105, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellMiscHotfixes1105, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.SpellNameHotfixes1100.IsEmpty())
@@ -10872,6 +10907,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ChrCustomizationOptionHotfixesLocale1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ChrCustomizationOptionHotfixesLocale1105.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationOptionHotfixesLocale1105, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrCustomizationOptionHotfixesLocale1105, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ChrCustomizationReqHotfixesLocale1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationReqHotfixesLocale1100, Settings.HotfixesDatabase);
@@ -10933,6 +10975,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.DifficultyHotfixesLocale1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.DifficultyHotfixesLocale1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.DifficultyHotfixesLocale1105.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.DifficultyHotfixesLocale1105, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.DifficultyHotfixesLocale1105, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.DungeonEncounterHotfixesLocale1100.IsEmpty())
@@ -11129,6 +11178,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.LfgDungeonsHotfixesLocale1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.LfgDungeonsHotfixesLocale1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.LfgDungeonsHotfixesLocale1105.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.LfgDungeonsHotfixesLocale1105, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.LfgDungeonsHotfixesLocale1105, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.MailTemplateHotfixesLocale1100.IsEmpty())
