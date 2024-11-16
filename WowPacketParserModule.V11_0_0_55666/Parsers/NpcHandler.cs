@@ -32,8 +32,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             var optionsCount = packet.ReadUInt32("GossipOptionsCount");
             var questsCount = packet.ReadUInt32("GossipQuestsCount");
 
-            var hasTextID = packet.ReadBit("HasTextID");
             var hasBroadcastTextID = packet.ReadBit("HasBroadcastTextID");
+            var hasBroadcastTextID2 = packet.ReadBit("HasBroadcastTextID2");
 
             for (var i = 0u; i < optionsCount; ++i)
                 packetGossip.Options.Add(V6_0_2_19033.Parsers.NpcHandler.ReadGossipOptionsData((uint)menuId, guid, packet, i, "GossipOptions"));
@@ -41,13 +41,12 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             uint broadcastTextID = 0;
             uint npcTextID = 0;
 
-            if (hasTextID)
-                npcTextID = (uint)packet.ReadInt32("TextID");
-
             if (hasBroadcastTextID)
                 broadcastTextID = (uint)packet.ReadInt32("BroadcastTextID");
+            else if (hasBroadcastTextID2)
+                broadcastTextID = (uint)packet.ReadInt32("BroadcastTextID2");
 
-            if (!hasTextID && hasBroadcastTextID)
+            if (hasBroadcastTextID || hasBroadcastTextID2)
                 npcTextID = SQLDatabase.GetNPCTextIDByMenuIDAndBroadcastText(menuId, broadcastTextID);
 
             if (npcTextID != 0)
@@ -62,13 +61,13 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
                 Storage.Gossips.Add(gossip, packet.TimeSpan);
             }
-            else if (hasBroadcastTextID)
+            else if (hasBroadcastTextID || hasBroadcastTextID2)
                 V9_0_1_36216.Parsers.NpcHandler.AddBroadcastTextToGossip(packetGossip.MenuId, broadcastTextID, guid);
 
             for (var i = 0u; i < questsCount; ++i)
                 packetGossip.Quests.Add(V7_0_3_22248.Parsers.NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests"));
 
-            if (guid.GetObjectType() == ObjectType.Unit)
+            if (guid.GetObjectType() == ObjectType.Unit && !CoreParsers.NpcHandler.HasLastGossipOption(packet.TimeSpan, (uint)menuId))
             {
                 CreatureTemplateGossip creatureTemplateGossip = new()
                 {
