@@ -3037,8 +3037,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57359
             data.SpellPctModByLabel.Resize(packet.ReadUInt32());
             data.SpellFlatModByLabel.Resize(packet.ReadUInt32());
             data.TaskQuests.Resize(packet.ReadUInt32());
+            data.TimerunningSeasonID = packet.ReadInt32("TimerunningSeasonID", indexes);
             data.TransportServerTime = packet.ReadInt32("TransportServerTime", indexes);
-            data.Field_15BC = packet.ReadInt32("Field_15BC", indexes);
             data.TraitConfigs.Resize(packet.ReadUInt32());
             data.ActiveCombatTraitConfigID = packet.ReadUInt32("ActiveCombatTraitConfigID", indexes);
             for (var i = 0; i < 9; ++i)
@@ -3920,7 +3920,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57359
                 }
                 if (changesMask[125])
                 {
-                    data.Field_15BC = packet.ReadInt32("Field_15BC", indexes);
+                    data.TimerunningSeasonID = packet.ReadInt32("TimerunningSeasonID", indexes);
                 }
                 if (changesMask[126])
                 {

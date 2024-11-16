@@ -119,8 +119,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57359
         public System.Nullable<byte> PvpRankProgress { get; set; }
         public System.Nullable<int> PerksProgramCurrency { get; set; }
         public IResearchHistory ResearchHistory { get; set; }
+        public System.Nullable<int> TimerunningSeasonID { get; set; }
         public System.Nullable<int> TransportServerTime { get; set; }
-        public System.Nullable<int> Field_15BC { get; set; }
         public System.Nullable<uint> ActiveCombatTraitConfigID { get; set; }
         public System.Nullable<uint>[] GlyphSlots { get; } = new System.Nullable<uint>[9];
         public System.Nullable<uint>[] Glyphs { get; } = new System.Nullable<uint>[9];
