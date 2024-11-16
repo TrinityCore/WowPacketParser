@@ -28,6 +28,7 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         public byte MaxPlayers;
         public short WindSettingsID;
         public int ZmpFileDataID;
+        public int Unknown1154;
         [Cardinality(3)]
         public int[] Flags = new int[3];
     }

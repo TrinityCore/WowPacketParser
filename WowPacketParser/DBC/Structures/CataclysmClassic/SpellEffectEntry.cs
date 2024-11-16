@@ -39,6 +39,7 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         public int[] EffectSpellClassMask = new int[4];
         [Cardinality(2)]
         public short[] ImplicitTarget = new short[2];
-        public uint SpellID;
+        [NonInlineRelation(typeof(uint))]
+        public int SpellID;
     }
 }

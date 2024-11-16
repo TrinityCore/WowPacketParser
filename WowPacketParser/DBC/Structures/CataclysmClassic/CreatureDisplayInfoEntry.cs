@@ -20,7 +20,7 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         public int PortraitTextureFileDataID;
         public ushort ObjectEffectPackageID;
         public ushort AnimReplacementSetID;
-        public byte Flags;
+        public int Flags;
         public int StateSpellVisualKitID;
         public float PlayerOverrideScale;
         public float PetInstanceScale;
@@ -30,6 +30,7 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         public sbyte Gender;
         public int DissolveOutEffectID;
         public sbyte CreatureModelMinLod;
+        public ushort Unknown1154;
         [Cardinality(4)]
         public int[] TextureVariationFileDataID = new int[4];
     }

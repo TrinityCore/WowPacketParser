@@ -10,10 +10,11 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         public sbyte ExpansionID;
         public sbyte MinLevel;
         public sbyte MaxLevel;
-        public ushort FactionID;
+        public ushort FactionTemplateID;
         public int ContentTuningID;
         [Cardinality(8)]
         public int[] Flags = new int[8];
-        public uint CreatureID;
+        [NonInlineRelation(typeof(uint))]
+        public int CreatureID;
     }
 }

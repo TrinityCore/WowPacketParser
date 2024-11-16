@@ -8,7 +8,7 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         [Index(true)]
         public uint ID;
         public ushort Faction;
-        public ushort Flags;
+        public int Flags;
         public byte FactionGroup;
         public byte FriendGroup;
         public byte EnemyGroup;

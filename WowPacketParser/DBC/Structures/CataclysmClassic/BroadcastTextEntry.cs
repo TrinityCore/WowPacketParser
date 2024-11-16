@@ -12,7 +12,7 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         public int LanguageID;
         public int ConditionID;
         public ushort EmotesID;
-        public byte Flags;
+        public ushort Flags;
         public uint ChatBubbleDurationMs;
         public int VoiceOverPriorityID;
         [Cardinality(2)]

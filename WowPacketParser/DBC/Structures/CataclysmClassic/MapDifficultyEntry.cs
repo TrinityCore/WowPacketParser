@@ -16,6 +16,7 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         public byte ResetInterval;
         public byte MaxPlayers;
         public byte Flags;
-        public uint MapID;
+        [NonInlineRelation(typeof(uint))]
+        public int MapID;
     }
 }

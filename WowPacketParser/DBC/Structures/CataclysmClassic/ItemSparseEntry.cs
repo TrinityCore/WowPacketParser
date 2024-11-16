@@ -22,9 +22,11 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         [Cardinality(10)]
         public float[] StatPercentageOfSocket = new float[10];
         [Cardinality(10)]
-        public int[] Unknown440 = new int[10];
-        [Cardinality(10)]
         public int[] StatPercentEditor = new int[10];
+        [Cardinality(10)]
+        public int[] Unknown1153 = new int[10];
+        [Cardinality(10)]
+        public int[] StatModifierBonusStat = new int[10];
         public int Stackable;
         public int MaxCount;
         public int MinReputation;
@@ -34,8 +36,8 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         public uint VendorStackCount;
         public float PriceVariance;
         public float PriceRandomValue;
-        [Cardinality(4)]
-        public int[] Flags = new int[4];
+        [Cardinality(5)]
+        public int[] Flags = new int[5];
         public int OppositeFactionItemID;
         public int ModifiedCraftingReagentItemID;
         public int ContentTuningID;
@@ -83,8 +85,6 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         public byte LanguageID;
         public byte Bonding;
         public byte DamageType;
-        [Cardinality(10)]
-        public sbyte[] StatModifierBonusStat = new sbyte[10];
         public byte ContainerSlots;
         public byte RequiredPVPMedal;
         public byte RequiredPVPRank;

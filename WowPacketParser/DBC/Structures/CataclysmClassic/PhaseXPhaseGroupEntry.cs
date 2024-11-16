@@ -8,6 +8,7 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         [Index(true)]
         public uint ID;
         public ushort PhaseID;
-        public uint PhaseGroupID;
+        [NonInlineRelation(typeof(uint))]
+        public int PhaseGroupID;
     }
 }

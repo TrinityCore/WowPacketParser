@@ -20,5 +20,6 @@ namespace WowPacketParser.DBC.Structures.CataclysmClassic
         public ushort GroupSizeHealthCurveID;
         public ushort GroupSizeDmgCurveID;
         public ushort GroupSizeSpellPointsCurveID;
+        public int Unknown1154;
     }
 }
