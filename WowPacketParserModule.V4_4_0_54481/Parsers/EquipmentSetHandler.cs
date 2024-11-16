@@ -64,8 +64,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_USE_EQUIPMENT_SET_RESULT)]
         public static void HandleUseEquipmentSetResult(Packet packet)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadInt32("Reason");
+
             packet.ReadUInt64("Guid");
-            packet.ReadByte("Result");
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_1_57294))
+                packet.ReadByte("Result");
         }
 
         [Parser(Opcode.CMSG_DELETE_EQUIPMENT_SET)]
