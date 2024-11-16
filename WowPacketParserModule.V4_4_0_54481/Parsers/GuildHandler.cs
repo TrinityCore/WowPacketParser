@@ -974,7 +974,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_PETITION_BUY)]
         public static void HandlePetitionBuy(Packet packet)
         {
-            var length = packet.ReadBits(7);
+            int bitCount = 7;
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                bitCount = 8;
+
+            var length = packet.ReadBits(bitCount);
             packet.ReadPackedGuid128("Unit");
             packet.ReadUInt32("Index");
             packet.ReadWoWString("Title", length);
