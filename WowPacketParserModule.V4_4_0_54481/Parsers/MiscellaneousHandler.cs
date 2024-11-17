@@ -84,7 +84,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Guid");
         }
 
-        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN)]
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN, ClientVersionBuild.V4_4_0_54481, ClientVersionBuild.V4_4_1_57294)]
         public static void HandleFeatureSystemStatusGlueScreen(Packet packet)
         {
             packet.ReadBit("BpayStoreEnabled");
@@ -160,6 +160,91 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             if (realmHiddenAlert)
                 packet.ReadWoWString("RealmHiddenAlert", realmHiddenAlertLen);
+
+            for (int i = 0; i < liveRegionCharacterCopySourceRegionsCount; i++)
+                packet.ReadUInt32("LiveRegionCharacterCopySourceRegion", i);
+
+            for (var i = 0; i < gameRuleValuesCount; ++i)
+                ReadGameRuleValuePair(packet, "GameRuleValues", i);
+
+            for (var i = 0; i < debugTimeEventCount; ++i)
+                ReadDebugTimeInfo(packet, "DebugTimeEvent", i);
+        }
+
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN, ClientVersionBuild.V4_4_1_57294)]
+        public static void HandleFeatureSystemStatusGlueScreen441(Packet packet)
+        {
+            packet.ReadBit("BpayStoreEnabled");
+            packet.ReadBit("BpayStoreAvailable");
+            packet.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.ReadBit("CharUndeleteEnabled");
+            packet.ReadBit("CommerceSystemEnabled");
+            packet.ReadBit("Unk14");
+            packet.ReadBit("WillKickFromWorld");
+            packet.ReadBit("IsExpansionPreorderInStore");
+
+            packet.ReadBit("KioskModeEnabled");
+            packet.ReadBit("IsCompetitiveModeEnabled");
+            packet.ReadBit("IsBoostEnabled");
+            packet.ReadBit("TrialBoostEnabled");
+            packet.ReadBit("TokenBalanceEnabled");
+            packet.ReadBit("PaidCharacterTransfersBetweenBnetAccountsEnabled");
+            packet.ReadBit("LiveRegionCharacterListEnabled");
+            packet.ReadBit("LiveRegionCharacterCopyEnabled");
+
+            packet.ReadBit("LiveRegionAccountCopyEnabled");
+            packet.ReadBit("LiveRegionKeyBindingsCopyEnabled");
+            packet.ReadBit("Unknown901CheckoutRelated");
+            packet.ReadBit("Unused1002_2");
+            var europaTicket = packet.ReadBit("IsEuropaTicketSystemStatusEnabled");
+            packet.ReadBit("IsNameReservationEnabled");
+            var launchEta = packet.ReadBit();
+            packet.ReadBit("TimerunningEnabled");
+
+            packet.ReadBit("Unk441_0");
+            packet.ReadBit("Unk441_1");
+            packet.ReadBit("IsSoMNotificationEnabled");
+            packet.ReadBit("AddonsDisabled");
+            packet.ReadBit("Unk441_2");
+            packet.ReadBit("AccountSaveDataExportEnabled");
+            packet.ReadBit("AccountLockedByExport");
+
+            uint realmHiddenAlertLen = packet.ReadBits(11);
+
+            packet.ReadBit("BNSendWhisperUseV2Services");
+            packet.ReadBit("BNSendGameDataUseV2Services");
+            packet.ReadBit("CharacterSelectListModeRealmless");
+
+            packet.ResetBitReader();
+
+            if (europaTicket)
+                V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
+
+            packet.ReadUInt32("TokenPollTimeSeconds");
+            packet.ReadUInt32("KioskSessionMinutes");
+            packet.ReadInt64("TokenBalanceAmount");
+            packet.ReadInt32("MaxCharactersPerRealm");
+            var liveRegionCharacterCopySourceRegionsCount = packet.ReadUInt32("LiveRegionCharacterCopySourceRegionsCount");
+            packet.ReadUInt32("BpayStoreProductDeliveryDelay");
+            packet.ReadInt32("ActiveCharacterUpgradeBoostType");
+            packet.ReadInt32("ActiveClassTrialBoostType");
+            packet.ReadInt32("MinimumExpansionLevel");
+            packet.ReadInt32("MaximumExpansionLevel");
+            packet.ReadInt32("ActiveSeason");
+            var gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
+            packet.ReadInt32("ActiveTimerunningSeasonID");
+            packet.ReadInt32("RemainingTimerunningSeasonSeconds");
+            packet.ReadInt16("MaxPlayerNameQueriesPerPacket");
+            packet.ReadInt16("PlayerNameQueryTelemetryInterval");
+            packet.ReadUInt32("PlayerNameQueryInterval");
+            uint debugTimeEventCount = packet.ReadUInt32("DebugTimeEventCount");
+            packet.ReadInt32("Unused1007");
+            packet.ReadInt32("EventRealmQueues");
+
+            if (launchEta)
+                packet.ReadInt32("LaunchETA");
+
+            packet.ReadDynamicString("RealmHiddenAlert", realmHiddenAlertLen);
 
             for (int i = 0; i < liveRegionCharacterCopySourceRegionsCount; i++)
                 packet.ReadUInt32("LiveRegionCharacterCopySourceRegion", i);
