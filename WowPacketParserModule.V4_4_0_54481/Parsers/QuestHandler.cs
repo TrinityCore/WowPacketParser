@@ -233,6 +233,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (var i = 0; i < treasurePickerCount; ++i)
                 packet.ReadInt32("TreasurePickerID", idx, i);
 
+            packet.ResetBitReader();
+
             for (var i = 0; i < 6; ++i)
                 ReadRewardItem(packet, idx, "ItemChoiceData", i);
 
