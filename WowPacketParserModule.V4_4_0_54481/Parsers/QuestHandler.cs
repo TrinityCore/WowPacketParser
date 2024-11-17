@@ -132,8 +132,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
         public static ItemInstance ReadRewardItem(Packet packet, params object[] idx)
         {
-            packet.ResetBitReader();
             packet.ReadBitsE<LootItemType>("LootItemType", 2, idx);
+            packet.ResetBitReader();
             var itemInstance = Substructures.ItemHandler.ReadItemInstance(packet, idx);
 
             packet.ReadInt32("Quantity", idx);
@@ -234,10 +234,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadInt32("TreasurePickerID", idx, i);
 
             for (var i = 0; i < 6; ++i)
-                ReadRewardItem(packet, "QuestRewards", "ItemChoiceData", i);
+                ReadRewardItem(packet, idx, "ItemChoiceData", i);
 
-            packet.ResetBitReader();
             packet.ReadBit("IsBoostSpell", idx);
+            packet.ResetBitReader();
         }
 
         public static QuestOfferReward ReadQuestGiverOfferRewardData(Packet packet, params object[] indexes)
@@ -282,36 +282,35 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
         public static QuestOfferReward ReadQuestGiverOfferRewardData441(Packet packet, params object[] indexes)
         {
-            ReadQuestRewards441(packet, "QuestRewards");
-            var emotesCount = packet.ReadUInt32("EmotesCount");
-            var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID");
-            packet.ReadInt32E<QuestFlags>("Flags");
-            packet.ReadInt32E<QuestFlagsEx>("FlagsEx");
-            packet.ReadInt32E<QuestFlagsEx2>("FlagsEx2_Unused440"); // Probably uninitialized random values atm
-            packet.ReadInt32("QuestGiverCreatureID");
-            int id = packet.ReadInt32<QuestId>("QuestID");
+            ReadQuestRewards441(packet, indexes, "QuestRewards");
+            var emotesCount = packet.ReadUInt32("EmotesCount", indexes);
+            var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID", indexes);
+            packet.ReadInt32E<QuestFlags>("Flags", indexes);
+            packet.ReadInt32E<QuestFlagsEx>("FlagsEx", indexes);
+            packet.ReadInt32E<QuestFlagsEx2>("FlagsEx2_Unused440", indexes); // Probably uninitialized random values atm
+            packet.ReadInt32("QuestGiverCreatureID", indexes);
+            int id = packet.ReadInt32<QuestId>("QuestID", indexes);
 
             QuestOfferReward questOfferReward = new QuestOfferReward
             {
                 ID = (uint)id
             };
 
-            packet.ReadInt32("SuggestedPartyMembers");
-            packet.ReadInt32E<QuestInfo>("QuestInfoID");
+            packet.ReadInt32("SuggestedPartyMembers", indexes);
+            packet.ReadInt32E<QuestInfo>("QuestInfoID", indexes);
             // QuestDescEmote
             questOfferReward.Emote = new int?[] { 0, 0, 0, 0 };
             questOfferReward.EmoteDelay = new uint?[] { 0, 0, 0, 0 };
             for (var i = 0; i < emotesCount; i++)
             {
-                questOfferReward.Emote[i] = packet.ReadInt32("Type");
-                questOfferReward.EmoteDelay[i] = packet.ReadUInt32("Delay");
+                questOfferReward.Emote[i] = packet.ReadInt32("Type", i, indexes);
+                questOfferReward.EmoteDelay[i] = packet.ReadUInt32("Delay", i, indexes);
             }
 
             packet.ResetBitReader();
-
-            packet.ReadBit("AutoLaunched");
-            packet.ReadBit("Unused");
-            packet.ReadBit("ResetByScheduler");
+            packet.ReadBit("AutoLaunched", indexes);
+            packet.ReadBit("Unused", indexes);
+            packet.ReadBit("ResetByScheduler", indexes);
 
             CoreParsers.QuestHandler.AddQuestEnder(questgiverGUID, (uint)id);
 
@@ -797,7 +796,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             QuestOfferReward questOfferReward;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
-                questOfferReward = ReadQuestGiverOfferRewardData441(packet, "QuestGiverOfferRewardData");
+                questOfferReward = ReadQuestGiverOfferRewardData441(packet);
             else
                 questOfferReward = ReadQuestGiverOfferRewardData(packet, "QuestGiverOfferRewardData");
 
