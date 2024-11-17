@@ -153,13 +153,14 @@ namespace WowPacketParserModule.Substructures
             instance.ItemID = packet.ReadInt32<ItemId>("ItemID", indexes);
             instance.RandomPropertiesSeed = packet.ReadUInt32("RandomPropertiesSeed", indexes);
             instance.RandomPropertiesID = packet.ReadUInt32("RandomPropertiesID", indexes);
-            
+
+            packet.ResetBitReader();
             var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
             packet.ResetBitReader();
-            
+
             var modificationCount = packet.ReadBits(6);
             packet.ResetBitReader();
-            
+
             for (var j = 0u; j < modificationCount; ++j)
             {
                 ItemModifier mod = packet.ReadByteE<ItemModifier>();

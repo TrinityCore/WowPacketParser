@@ -132,8 +132,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
         public static ItemInstance ReadRewardItem(Packet packet, params object[] idx)
         {
-            packet.ReadBitsE<LootItemType>("LootItemType", 2, idx);
             packet.ResetBitReader();
+            packet.ReadBitsE<LootItemType>("LootItemType", 2, idx);
             var itemInstance = Substructures.ItemHandler.ReadItemInstance(packet, idx);
 
             packet.ReadInt32("Quantity", idx);
@@ -233,13 +233,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (var i = 0; i < treasurePickerCount; ++i)
                 packet.ReadInt32("TreasurePickerID", idx, i);
 
-            packet.ResetBitReader();
-
             for (var i = 0; i < 6; ++i)
                 ReadRewardItem(packet, idx, "ItemChoiceData", i);
 
-            packet.ReadBit("IsBoostSpell", idx);
             packet.ResetBitReader();
+            packet.ReadBit("IsBoostSpell", idx);
         }
 
         public static QuestOfferReward ReadQuestGiverOfferRewardData(Packet packet, params object[] indexes)
