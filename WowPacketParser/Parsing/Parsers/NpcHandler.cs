@@ -95,12 +95,21 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        public static bool HasLastGossipOption(TimeSpan timeSpan, uint? menuId)
+        {
+            if (LastGossipOption.HasSelection)
+                if ((timeSpan - LastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
+                    return true;
+
+            return false;
+        }
+
         public static void UpdateLastGossipOptionActionMessage(TimeSpan timeSpan, uint? menuId)
         {
             if (!LastGossipOption.HasSelection)
                 return;
 
-            if ((timeSpan - LastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
+            if (HasLastGossipOption(timeSpan, menuId))
             {
                 Storage.GossipMenuOptions[(LastGossipOption.MenuId, LastGossipOption.OptionIndex)].Item1.ActionMenuID = menuId;
                 Storage.GossipMenuOptions[(LastGossipOption.MenuId, LastGossipOption.OptionIndex)].Item1.ActionPoiID = LastGossipOption.ActionPoiId ?? 0;
@@ -577,7 +586,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < questsCount; i++)
                 ReadGossipQuestTextData(packet, i, "GossipQuests");
 
-            if (guid.GetObjectType() == ObjectType.Unit)
+            if (guid.GetObjectType() == ObjectType.Unit && !HasLastGossipOption(packet.TimeSpan, (uint)menuId))
             {
                 CreatureTemplateGossip creatureTemplateGossip = new()
                 {

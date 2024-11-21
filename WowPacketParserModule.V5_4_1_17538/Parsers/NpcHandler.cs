@@ -115,7 +115,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             gossip.ObjectType = guid.GetObjectType();
             gossip.ObjectEntry = guid.GetEntry();
 
-            if (guid.GetObjectType() == ObjectType.Unit)
+            if (guid.GetObjectType() == ObjectType.Unit && !CoreParsers.NpcHandler.HasLastGossipOption(packet.TimeSpan, (uint)menuId))
             {
                 CreatureTemplateGossip creatureTemplateGossip = new()
                 {

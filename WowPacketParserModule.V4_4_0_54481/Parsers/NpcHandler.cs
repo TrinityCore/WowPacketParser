@@ -184,7 +184,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (int i = 0; i < questsCount; ++i)
                 packetGossip.Quests.Add(ReadGossipQuestTextData(packet, i, "GossipQuests"));
 
-            if (guid.GetObjectType() == ObjectType.Unit)
+            if (guid.GetObjectType() == ObjectType.Unit && !CoreParsers.NpcHandler.HasLastGossipOption(packet.TimeSpan, (uint)menuId))
             {
                 CreatureTemplateGossip creatureTemplateGossip = new()
                 {
