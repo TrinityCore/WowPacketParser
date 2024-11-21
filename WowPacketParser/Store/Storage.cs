@@ -757,6 +757,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<ModifierTreeHotfix1100> ModifierTreeHotfixes1100 = new DataBag<ModifierTreeHotfix1100>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<MountHotfix1100> MountHotfixes1100 = new DataBag<MountHotfix1100>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<MountCapabilityHotfix1100> MountCapabilityHotfixes1100 = new DataBag<MountCapabilityHotfix1100>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<MountEquipmentHotfix1100> MountEquipmentHotfixes1100 = new DataBag<MountEquipmentHotfix1100>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<MountTypeXCapabilityHotfix1100> MountTypeXCapabilityHotfixes1100 = new DataBag<MountTypeXCapabilityHotfix1100>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<MountXDisplayHotfix1100> MountXDisplayHotfixes1100 = new DataBag<MountXDisplayHotfix1100>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<MovieHotfix1100> MovieHotfixes1100 = new DataBag<MovieHotfix1100>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -2735,6 +2736,7 @@ namespace WowPacketParser.Store
             MawPowerHotfixes1100.Clear();
             ModifierTreeHotfixes1100.Clear();
             MountHotfixes1100.Clear();
+            MountEquipmentHotfixes1100.Clear();
             MountCapabilityHotfixes1100.Clear();
             MountTypeXCapabilityHotfixes1100.Clear();
             MountXDisplayHotfixes1100.Clear();

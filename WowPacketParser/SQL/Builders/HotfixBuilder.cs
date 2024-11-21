@@ -4195,6 +4195,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.MountCapabilityHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.MountEquipmentHotfixes1100.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MountEquipmentHotfixes1100, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MountEquipmentHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.MountTypeXCapabilityHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.MountTypeXCapabilityHotfixes1100, Settings.HotfixesDatabase);

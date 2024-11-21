@@ -4393,6 +4393,19 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             Storage.MountCapabilityHotfixes1100.Add(hotfix, packet.TimeSpan);
         }
 
+        public static void MountEquipmentHandler1100(Packet packet, uint entry, params object[] indexes)
+        {
+            MountEquipmentHotfix1100 hotfix = new MountEquipmentHotfix1100();
+
+            hotfix.ID = entry;
+            hotfix.Item = packet.ReadInt32("Item", indexes);
+            hotfix.BuffSpell = packet.ReadInt32("BuffSpell", indexes);
+            hotfix.Unknown820 = packet.ReadInt32("Unknown820", indexes);
+            hotfix.LearnedBySpell = packet.ReadUInt32("LearnedBySpell", indexes);
+
+            Storage.MountEquipmentHotfixes1100.Add(hotfix, packet.TimeSpan);
+        }
+
         public static void MountTypeXCapabilityHandler1100(Packet packet, uint entry, params object[] indexes)
         {
             MountTypeXCapabilityHotfix1100 hotfix = new MountTypeXCapabilityHotfix1100();
@@ -8445,6 +8458,11 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                             case DB2Hash.MountCapability:
                             {
                                 MountCapabilityHandler1100(db2File, (uint)entry, count);
+                                break;
+                            }
+                            case DB2Hash.MountEquipment:
+                            {
+                                MountEquipmentHandler1100(db2File, (uint)entry, count);
                                 break;
                             }
                             case DB2Hash.MountTypeXCapability:
