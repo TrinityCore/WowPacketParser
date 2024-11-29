@@ -53,6 +53,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_0_49407))
                 removedModificationsCount = packet.ReadUInt32("RemovedModificationsCount", idx);
 
+            if (ClientVersion.AddedInVersion(ClientType.TheWarWithin))
+                packet.ReadByte("CraftingFlags", idx);
+
             for (var j = 0; j < optionalCurrenciesCount; ++j)
                 ReadOptionalCurrency(packet, idx, "OptionalCurrency", j);
 
