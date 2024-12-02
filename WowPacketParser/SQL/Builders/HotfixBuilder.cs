@@ -3327,6 +3327,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.CreatureFamilyHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.CreatureLabelHotfixes1100.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureLabelHotfixes1100, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureLabelHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.CreatureModelDataHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.CreatureModelDataHotfixes1100, Settings.HotfixesDatabase);
@@ -3514,6 +3521,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.GameobjectDisplayInfoHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.GameobjectDisplayInfoHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GameobjectLabelHotfixes1100.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GameobjectLabelHotfixes1100, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GameobjectLabelHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.GameobjectsHotfixes1100.IsEmpty())
