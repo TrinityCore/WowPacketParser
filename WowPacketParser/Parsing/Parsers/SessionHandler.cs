@@ -1,4 +1,3 @@
-using Ionic.Zlib;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +9,7 @@ namespace WowPacketParser.Parsing.Parsers
     public static class SessionHandler
     {
         public static WowGuid LoginGuid;
-        public static Dictionary<int, ZlibCodec> ZStreams = new Dictionary<int, ZlibCodec>();
+        public static Dictionary<int, ZStream> ZStreams = new Dictionary<int, ZStream>();
 
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1a_13205)]
         public static void HandleServerAuthChallenge(Packet packet)
@@ -559,7 +558,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleResetCompressionContext(Packet packet)
         {
             packet.ReadInt32("Unk?");
-            ZStreams[packet.ConnectionIndex] = new ZlibCodec(CompressionMode.Decompress);
+            packet.ResetInflateStream();
         }
     }
 }

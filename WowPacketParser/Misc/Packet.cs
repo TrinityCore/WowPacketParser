@@ -1,9 +1,9 @@
 using Google.Protobuf.WellKnownTypes;
-using Ionic.Zlib;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -95,26 +95,7 @@ namespace WowPacketParser.Misc
             Storage.SniffData.Add(item, TimeSpan);
         }
 
-        public bool TryInflate(int inflatedSize, int index, byte[] arr, ref byte[] newarr)
-        {
-            try
-            {
-                if (!SessionHandler.ZStreams.ContainsKey(index))
-                    SessionHandler.ZStreams[index] = new ZlibCodec(CompressionMode.Decompress);
-                SessionHandler.ZStreams[index].InputBuffer = arr;
-                SessionHandler.ZStreams[index].NextIn = 0;
-                SessionHandler.ZStreams[index].AvailableBytesIn = arr.Length;
-                SessionHandler.ZStreams[index].OutputBuffer = newarr;
-                SessionHandler.ZStreams[index].NextOut = 0;
-                SessionHandler.ZStreams[index].AvailableBytesOut = inflatedSize;
-                SessionHandler.ZStreams[index].Inflate(FlushType.Sync);
-                return true;
-            }
-            catch (ZlibException)
-            {
-                return false;
-            }
-        }
+        public void ResetInflateStream() => ZLibHelper.ResetInflateStream(ConnectionIndex);
 
         public Packet Inflate(int inflatedSize, bool keepStream = true)
         {
@@ -127,36 +108,12 @@ namespace WowPacketParser.Misc
             if (keepStream)
             {
                 int idx = ConnectionIndex;
-                while (!TryInflate(inflatedSize, idx, arr, ref newarr) && idx <= 4)
+                while (!ZLibHelper.TryInflate(inflatedSize, idx, arr, ref newarr) && idx <= 4)
                     idx += 1;
             }
             else
             {
-                /*try
-                {
-                    var inflater = new Inflater(true);
-                    inflater.SetInput(arr, 0, arr.Length);
-                    inflater.Inflate(newarr, 0, inflatedSize);
-                }
-                catch (ICSharpCode.SharpZipLib.SharpZipBaseException)
-                {
-                    var inflater = new Inflater(true);
-                    inflater.SetInput(arr, 0, arr.Length);
-                    inflater.Inflate(newarr, 0, inflatedSize);
-                }*/
-                var stream = new ZlibCodec(CompressionMode.Decompress)
-                {
-                    InputBuffer = arr,
-                    NextIn = 0,
-                    AvailableBytesIn = arr.Length,
-                    OutputBuffer = newarr,
-                    NextOut = 0,
-                    AvailableBytesOut = inflatedSize
-                };
-
-                stream.Inflate(FlushType.None);
-                stream.Inflate(FlushType.Finish);
-                stream.EndInflate();
+                ZLibHelper.Inflate(inflatedSize, arr, newarr);
             }
 
             // Cannot use "using" here
@@ -178,35 +135,12 @@ namespace WowPacketParser.Misc
             if (keepStream)
             {
                 int idx = ConnectionIndex;
-                while (!TryInflate(inflatedSize, idx, arr, ref newarr) && idx <= 4)
+                while (!ZLibHelper.TryInflate(inflatedSize, idx, arr, ref newarr) && idx <= 4)
                     idx += 1;
             }
             else
             {
-                /*try
-                {
-                    var inflater = new Inflater(true);
-                    inflater.SetInput(arr, 0, arr.Length);
-                    inflater.Inflate(newarr, 0, inflatedSize);
-                }
-                catch (ICSharpCode.SharpZipLib.SharpZipBaseException)
-                {
-                    var inflater = new Inflater(true);
-                    inflater.SetInput(arr, 0, arr.Length);
-                    inflater.Inflate(newarr, 0, inflatedSize);
-                }*/
-                var stream = new ZlibCodec(CompressionMode.Decompress)
-                {
-                    InputBuffer = arr,
-                    NextIn = 0,
-                    AvailableBytesIn = arr.Length,
-                    OutputBuffer = newarr,
-                    NextOut = 0,
-                    AvailableBytesOut = inflatedSize
-                };
-                stream.Inflate(FlushType.None);
-                stream.Inflate(FlushType.Finish);
-                stream.EndInflate();
+                ZLibHelper.Inflate(inflatedSize, arr, newarr);
             }
 
             // Cannot use "using" here
