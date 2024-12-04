@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
@@ -15,6 +17,23 @@ namespace WowPacketParser
     {
         private static void Main(string[] args)
         {
+            NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), (libraryName, assembly, searchPath) =>
+            {
+                if (libraryName.Equals("compression_native", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        return NativeLibrary.Load("System.IO.Compression.Native.dll", assembly, searchPath);
+
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                        return NativeLibrary.Load("libSystem.IO.Compression.Native.dylib", assembly, searchPath);
+
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                        return NativeLibrary.Load("libSystem.IO.Compression.Native.so", assembly, searchPath);
+                }
+
+                return default;
+            });
+
             SetUpWindowTitle();
             SetUpConsole();
 
