@@ -5,12 +5,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MySql.Data" Version="8.3.0" />
+        <PackageReference Include="MySql.Data" Version="9.1.0" />
         <PackageReference Include="RawScape.Wintellect.PowerCollections" Version="1.0.1" />
         <PackageReference Include="Sigil" Version="5.0.0" />
-        <PackageReference Include="SSH.NET" Version="2024.0.0" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
-        <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
+        <PackageReference Include="SSH.NET" Version="2024.2.0" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0" />
+        <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
+
+        <!-- Fix for transitive packets triggering https://github.com/advisories/GHSA-8g4q-xg66-9fp4 -->
+        <PackageReference Include="System.Text.Json" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>
