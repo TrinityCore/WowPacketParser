@@ -81,6 +81,7 @@ using WowPacketParser.Enums.Version.V10_2_7_54577;
 using WowPacketParser.Enums.Version.V11_0_0_55666;
 using WowPacketParser.Enums.Version.V11_0_2_55959;
 using WowPacketParser.Enums.Version.V11_0_5_57171;
+using WowPacketParser.Enums.Version.V11_0_7_58123;
 using WowPacketParser.Misc;
 using WowPacketParser.Enums.Version.V1_15_4_56738;
 using WowPacketParser.Enums.Version.V1_15_3_55515;
