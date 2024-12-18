@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
         public System.Nullable<uint> AnimationDataID { get; set; }
         public System.Nullable<uint> AnimKitID { get; set; }
         public System.Nullable<uint> AnimProgress { get; set; }
-        public System.Nullable<bool> Field_C { get; set; }
+        public System.Nullable<bool> IsDecay { get; set; }
     }
 }
 

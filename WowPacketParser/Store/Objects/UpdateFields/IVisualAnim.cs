@@ -5,6 +5,6 @@ namespace WowPacketParser.Store.Objects.UpdateFields
     {
         uint? AnimationDataID { get; set; }
         uint? AnimKitID { get; set; }
-        bool? Field_C { get; set; }
+        bool? IsDecay { get; set; }
     }
 }

@@ -5988,7 +5988,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_2_55959
             data.AnimationDataID = packet.ReadUInt32("AnimationDataID", indexes);
             data.AnimKitID = packet.ReadUInt32("AnimKitID", indexes);
             data.AnimProgress = packet.ReadUInt32("AnimProgress", indexes);
-            data.Field_C = packet.ReadBit("Field_C", indexes);
+            data.IsDecay = packet.ReadBit("IsDecay", indexes);
             return data;
         }
 
@@ -6004,7 +6004,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_2_55959
             {
                 if (changesMask[1])
                 {
-                    data.Field_C = packet.ReadBit("Field_C", indexes);
+                    data.IsDecay = packet.ReadBit("IsDecay", indexes);
                 }
             }
             packet.ResetBitReader();
