@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_5_57171
     public class QuestSession : IQuestSession
     {
         public WowGuid Owner { get; set; }
-        public System.Nullable<ulong>[] QuestCompleted { get; } = new System.Nullable<ulong>[950];
+        public System.Nullable<ulong>[] QuestCompleted { get; } = new System.Nullable<ulong>[1000];
     }
 }
 
