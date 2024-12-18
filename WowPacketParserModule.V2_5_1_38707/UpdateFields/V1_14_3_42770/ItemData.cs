@@ -26,7 +26,7 @@ namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V1_14_3_42770
         public long CreateTime { get; set; }
         public ulong ArtifactXP { get; set; }
         public byte ItemAppearanceModID { get; set; }
-        public uint DynamicFlags2 { get; set; }
+        public uint ZoneFlags { get; set; }
         public DynamicUpdateField<IArtifactPower> ArtifactPowers { get; } = new DynamicUpdateField<IArtifactPower>();
         public DynamicUpdateField<ISocketedGem> Gems { get; } = new DynamicUpdateField<ISocketedGem>();
         public IItemModList Modifiers { get; set; }

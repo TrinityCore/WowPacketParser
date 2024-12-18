@@ -272,7 +272,7 @@ namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V1_14_3_42770
             data.Gems.Resize(packet.ReadUInt32());
             if ((flags & UpdateFieldFlag.Owner) != UpdateFieldFlag.None)
             {
-                data.DynamicFlags2 = packet.ReadUInt32("DynamicFlags2", indexes);
+                data.ZoneFlags = packet.ReadUInt32("ZoneFlags", indexes);
             }
             for (var i = 0; i < data.ArtifactPowers.Count; ++i)
             {
@@ -410,7 +410,7 @@ namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V1_14_3_42770
                 }
                 if (changesMask[21])
                 {
-                    data.DynamicFlags2 = packet.ReadUInt32("DynamicFlags2", indexes);
+                    data.ZoneFlags = packet.ReadUInt32("ZoneFlags", indexes);
                 }
                 if (changesMask[20])
                 {
