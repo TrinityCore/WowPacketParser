@@ -1226,6 +1226,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V4_4_1_57359: // Blizzard changed ActivePlayer in second 4.4.1 build
                 case ClientVersionBuild.V4_4_1_57564:
                 case ClientVersionBuild.V4_4_1_57916:
+                case ClientVersionBuild.V4_4_1_58158:
                 {
                     return "V4_4_1_57359";
                 }
