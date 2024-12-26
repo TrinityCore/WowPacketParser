@@ -1221,7 +1221,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_spell_list))
                 return;
 
-            var existingEntry = Storage.CreatureSpellLists.Where(p => p.Item1.SpellId == spellId && p.Item1.Id == (entry * 100 + 5 + CoreParsers.MovementHandler.CurrentDifficultyID)).SingleOrDefault();
+            var existingEntry = Storage.CreatureSpellLists.Where(p => p.Item1.SpellId == spellId && p.Item1.Id == (entry * 100 + CreatureSpellList.ConvertDifficultyToIdx(CoreParsers.MovementHandler.CurrentDifficultyID))).SingleOrDefault();
             if (existingEntry != null)
             {
                 // can be min max, not just fixed

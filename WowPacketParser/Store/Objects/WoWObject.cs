@@ -31,7 +31,7 @@ namespace WowPacketParser.Store.Objects
 
         public int? PhaseOverride = null;
 
-        public uint DifficultyID;
+        public uint? DifficultyID;
 
         public bool ForceTemporarySpawn;
 

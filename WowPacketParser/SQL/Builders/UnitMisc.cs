@@ -136,10 +136,10 @@ namespace WowPacketParser.SQL.Builders
 
             foreach (var pair in entries.SelectMany(entry => entry))
             {
-                if (list.ContainsKey((pair.Key.GetEntry(), pair.Value.DifficultyID)))
-                    list[(pair.Key.GetEntry(), pair.Value.DifficultyID)].Add(pair.Value.UnitData.Level ?? 0);
+                if (list.ContainsKey((pair.Key.GetEntry(), pair.Value.DifficultyID ?? 0)))
+                    list[(pair.Key.GetEntry(), pair.Value.DifficultyID ?? 0)].Add(pair.Value.UnitData.Level ?? 0);
                 else
-                    list.Add((pair.Key.GetEntry(), pair.Value.DifficultyID), new List<int> { pair.Value.UnitData.Level ?? 0 });
+                    list.Add((pair.Key.GetEntry(), pair.Value.DifficultyID ?? 0), new List<int> { pair.Value.UnitData.Level ?? 0 });
             }
 
             var result = list.ToDictionary(pair => pair.Key, pair => ValueTuple.Create(pair.Value.Min(), pair.Value.Max()));
@@ -228,8 +228,8 @@ namespace WowPacketParser.SQL.Builders
                     {
                         Entry = unit.Key.GetEntry(),
                         DifficultyID = npc.DifficultyID,
-                        MinLevel = difficultyLevels[(unit.Key.GetEntry(), npc.DifficultyID)].Item1,
-                        MaxLevel = difficultyLevels[(unit.Key.GetEntry(), npc.DifficultyID)].Item2,
+                        MinLevel = difficultyLevels[(unit.Key.GetEntry(), npc.DifficultyID ?? 0)].Item1,
+                        MaxLevel = difficultyLevels[(unit.Key.GetEntry(), npc.DifficultyID ?? 0)].Item2,
                     };
                     UpdateCreatureStaticFlags(ref npc, ref creatureDifficulty);
                     WowPacketParser.SQL.SQLDatabase.CheckCreatureTemplateDifficultyNonWDBFallbacks(ref creatureDifficulty, creatureDifficulty.DifficultyID.Value);
@@ -363,6 +363,10 @@ namespace WowPacketParser.SQL.Builders
                                 spellList.Item1.Comments = split[0] + "(Heroic)" + " - " + split[1];
                             }
                         }
+                        else if (spellList.Item1.Id % 10 == 4)
+                        {
+                            spellList.Item1.Comments = "(UNK DIFFICULTY) - " + spellList.Item1.Comments;
+                        }
                     }
                 }
                 else if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing)
@@ -405,6 +409,10 @@ namespace WowPacketParser.SQL.Builders
                                 var split = spellList.Item1.Comments.Split('-');
                                 spellList.Item1.Comments = split[0] + stringAddition + " - " + split[1];
                             }
+                        }
+                        else if (modulo == 4)
+                        {
+                            spellList.Item1.Comments = "(UNK DIFFICULTY) - " + spellList.Item1.Comments;
                         }
                     }
                 }

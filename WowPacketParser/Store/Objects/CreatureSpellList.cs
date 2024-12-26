@@ -46,5 +46,15 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("Comments")]
         public string Comments = "";
+
+        public static int ConvertDifficultyToIdx(uint? difficultyId)
+        {
+            switch (difficultyId)
+            {
+                case null: return 4;
+                default: return 5 + (int)difficultyId - 1;
+                case 0: return 5; // open world
+            }
+        }
     }
 }

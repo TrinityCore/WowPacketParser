@@ -244,7 +244,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 else
                     operationName = StoreGetters.GetName(StoreNameType.Spell, (int)spellId, false);
 
-                var potentialKey = (int)(petGuid.GetEntry() * 100 + 5 + CoreParsers.MovementHandler.CurrentDifficultyID);
+                var potentialKey = (int)(petGuid.GetEntry() * 100 + CreatureSpellList.ConvertDifficultyToIdx(CoreParsers.MovementHandler.CurrentDifficultyID));
                 if (Storage.CreatureSpellLists.Where(p => p.Item1.Id == potentialKey && p.Item1.SpellId == spellId).SingleOrDefault() == null)
                     Storage.CreatureSpellLists.Add(new CreatureSpellList
                     {

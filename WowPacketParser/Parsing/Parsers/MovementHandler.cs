@@ -19,7 +19,7 @@ namespace WowPacketParser.Parsing.Parsers
         [ThreadStatic]
         public static uint CurrentMapId;
 
-        public static uint CurrentDifficultyID = 1;
+        public static uint? CurrentDifficultyID = null; // null and not -1 to force compiler errors when code isnt right
         public static int CurrentPhaseMask = 1;
 
         // this is a dictionary because ConcurrentSet does not exist
