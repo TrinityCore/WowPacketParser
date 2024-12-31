@@ -5,9 +5,9 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
     [DBFile("MapDifficulty")]
     public sealed class MapDifficultyEntry
     {
-        [Index(true)]
-        public uint ID;
         public string Message;
+        [Index(false)]
+        public uint ID;
         public int DifficultyID;
         public int LockID;
         public byte ResetInterval;

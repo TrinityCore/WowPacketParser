@@ -178,7 +178,8 @@ namespace WowPacketParser.SQL
                         broadcastText.EmoteDelay[2] = Convert.ToUInt16(reader["EmoteDelay3"]);
                         broadcastText.EmotesID = Convert.ToUInt16(reader["EmotesID"]);
                         broadcastText.LanguageID = Convert.ToInt32(reader["LanguageID"]);
-                        broadcastText.Flags = Convert.ToByte(reader["Flags"]);
+                        broadcastText.Flags = Convert.ToUInt16(reader["Flags"]);
+
                         if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
                         {
                             broadcastText.ConditionID = 0;
