@@ -261,7 +261,7 @@ namespace WowPacketParser.Store.Objects
         public ulong? AllowableRacesWod;
 
         [DBFieldName("QuestRewardID", TargetedDatabaseFlag.Legion)]
-        [DBFieldName("TreasurePickerID", TargetedDatabaseFlag.SinceBattleForAzerothTillDragonflight | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("TreasurePickerID", TargetedDatabaseFlag.SinceBattleForAzerothTillDragonflight | TargetedDatabaseFlag.Classic | TargetedDatabaseFlag.WotlkClassic)]
         public int? QuestRewardID;
 
         [DBFieldName("Expansion", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.AnyClassic)]
