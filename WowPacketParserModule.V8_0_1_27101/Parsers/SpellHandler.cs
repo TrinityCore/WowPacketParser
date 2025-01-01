@@ -377,9 +377,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void HandlePlayOrphanSpellVisual(Packet packet)
         {
             packet.ReadVector3("SourceLocation");
-            packet.ReadVector3("SourceOrientation");
+            packet.ReadVector3("SourceRotation");
             packet.ReadVector3("TargetLocation");
             packet.ReadPackedGuid128("Target");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+                packet.ReadPackedGuid128("TargetTransport");
             packet.ReadInt32("SpellVisualID");
             packet.ReadSingle("TravelSpeed");
             packet.ReadSingle("LaunchDelay");
