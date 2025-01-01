@@ -321,14 +321,14 @@ namespace WowPacketParser.SQL
             }
         }
 
-        public static CreatureTemplateDifficultyWDB CheckCreatureTemplateDifficultyWDBFallbacks(CreatureTemplateDifficultyWDB sniffData, uint difficulty)
+        public static CreatureTemplateDifficultyWDB CheckCreatureTemplateDifficultyWDBFallbacks(CreatureTemplateDifficultyWDB sniffData, uint? difficulty)
         {
-            // if db disabled/empty simply return sniff data
-            if (CreatureTemplateDifficultyWDBData.Count == 0)
+            // if db disabled/empty or difficulty information is not known simply return sniff data
+            if (CreatureTemplateDifficultyWDBData.Count == 0 || difficulty == null)
                 return sniffData;
 
             // entry with same difficulty already exists
-            if (CreatureTemplateDifficultyWDBData.TryGetValue((sniffData.Entry.Value, difficulty), out var dbData))
+            if (CreatureTemplateDifficultyWDBData.TryGetValue((sniffData.Entry.Value, difficulty.Value), out var dbData))
             {
                 // data is equal, return sniffData to update
                 if (sniffData.WDBEqualsSkipDifficultySkipHealthScalingExpansion(dbData))
