@@ -99,23 +99,15 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
             else
             {
-                var newpos = packet.ReadVector3("Points", indexes);
+                var endpos = packet.ReadVector3("Points", indexes);
 
                 if (pointsCount > 1)
                 {
-                    var mid = new Vector3
-                    {
-                        X = (pos.X + newpos.X) * 0.5f,
-                        Y = (pos.Y + newpos.Y) * 0.5f,
-                        Z = (pos.Z + newpos.Z) * 0.5f
-                    };
+                    var mid = (pos + endpos) * 0.5f;
 
                     for (var i = 0; i < pointsCount - 1; ++i)
                     {
-                        var vec = packet.ReadPackedVector3();
-                        vec.X = mid.X - vec.X;
-                        vec.Y = mid.Y - vec.Y;
-                        vec.Z = mid.Z - vec.Z;
+                        var vec = mid - packet.ReadPackedVector3();
 
                         monsterMove.PackedPoints.Add(packet.AddValue("Waypoints", vec, indexes, i));
                     }

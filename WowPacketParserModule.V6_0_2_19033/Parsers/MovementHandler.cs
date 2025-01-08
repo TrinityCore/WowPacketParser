@@ -233,26 +233,42 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var packedDeltasCount = packet.ReadInt32("PackedDeltasCount", indexes);
 
-            Vector3 endpos = new Vector3();
-            for (int i = 0; i < pointsCount; i++)
+            var endpos = new Vector3();
+            double distance = 0.0f;
+            if (pointsCount > 0)
             {
-                var spot = packet.ReadVector3();
+                var prevpos = pos;
+                for (var i = 0; i < pointsCount; ++i)
+                {
+                    var spot = packet.ReadVector3("Points", indexes, i);
+                    monsterMove.Points.Add(spot);
+                    distance += Vector3.GetDistance(prevpos, spot);
+                    prevpos = spot;
 
-                // client always taking first point
-                if (i == 0)
-                    endpos = spot;
-
-                monsterMove.Points.Add(spot);
-                packet.AddValue("Points", spot, indexes, i);
+                    // client always taking first point
+                    if (i == 0)
+                        endpos = spot;
+                }
             }
 
-            var waypoints = new Vector3[packedDeltasCount];
-            for (int i = 0; i < packedDeltasCount; i++)
+            if (packedDeltasCount > 0)
             {
-                var packedDeltas = packet.ReadPackedVector3();
-                waypoints[i].X = packedDeltas.X;
-                waypoints[i].Y = packedDeltas.Y;
-                waypoints[i].Z = packedDeltas.Z;
+                // Calculate mid pos
+                var mid = (pos + endpos) * 0.5f;
+
+                // ignore distance set by Points array if packed deltas are used
+                distance = 0;
+
+                var prevpos = pos;
+                for (var i = 0; i < packedDeltasCount; ++i)
+                {
+                    var vec = mid - packet.ReadPackedVector3();
+                    packet.AddValue("WayPoints", vec, indexes, i);
+                    monsterMove.PackedPoints.Add(vec);
+                    distance += Vector3.GetDistance(prevpos, vec);
+                    prevpos = vec;
+                }
+                distance += Vector3.GetDistance(prevpos, endpos);
             }
 
             packet.ResetBitReader();
@@ -277,24 +293,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (monsterSplineFilter)
                 ReadMonsterSplineFilter(packet, indexes, "MonsterSplineFilter");
 
-            // Calculate mid pos
-            var mid = new Vector3
+            if (endpos.X != 0 && endpos.Y != 0 && endpos.Z != 0)
             {
-                X = (pos.X + endpos.X) * 0.5f,
-                Y = (pos.Y + endpos.Y) * 0.5f,
-                Z = (pos.Z + endpos.Z) * 0.5f
-            };
-
-            for (var i = 0; i < packedDeltasCount; ++i)
-            {
-                var vec = new Vector3
-                {
-                    X = mid.X - waypoints[i].X,
-                    Y = mid.Y - waypoints[i].Y,
-                    Z = mid.Z - waypoints[i].Z
-                };
-                monsterMove.PackedPoints.Add(vec);
-                packet.AddValue("WayPoints", vec, indexes, i);
+                packet.AddValue("Computed Distance", distance, indexes);
+                packet.AddValue("Computed Speed", (distance / monsterMove.MoveTime) * 1000, indexes);
             }
         }
 

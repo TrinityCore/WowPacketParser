@@ -203,7 +203,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleMonsterMove(Packet packet)
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove = new();
-            WowGuid guid = packet.ReadPackedGuid("GUID");
+            WowGuid guid = packet.ReadPackedGuid("MoverGUID");
             monsterMove.Mover = guid;
             monsterMove.TransportGuid = new WowGuid64(0);
 
@@ -217,12 +217,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT, Direction.ServerToClient))
             {
-                WowGuid transportGuid = packet.ReadPackedGuid("Transport GUID");
+                WowGuid transportGuid = packet.ReadPackedGuid("TransportGUID");
                 monsterMove.TransportGuid = transportGuid;
 
                 int seat = -1;
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                    seat = monsterMove.VehicleSeat = packet.ReadByte("Transport Seat");
+                    seat = monsterMove.VehicleSeat = packet.ReadByte("VehicleSeat");
 
                 if (transportGuid.HasEntry() && transportGuid.GetHighType() == HighGuidType.Vehicle &&
                     guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
@@ -240,28 +240,29 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
                 packet.ReadBool("Toggle AnimTierInTrans");
 
-            var pos = monsterMove.Position = packet.ReadVector3("Position");
+            var pos = packet.ReadVector3("Position");
+            monsterMove.Position = pos;
 
-            packet.ReadInt32("Move Ticks");
+            packet.ReadInt32("Id");
 
-            var type = packet.ReadByteE<SplineType>("Spline Type");
+            var type = packet.ReadByteE<SplineType>("Face");
 
             switch (type)
             {
                 case SplineType.FacingSpot:
                 {
-                    monsterMove.LookPosition = packet.ReadVector3("Facing Spot");
+                    monsterMove.LookPosition = packet.ReadVector3("FaceSpot");
                     break;
                 }
                 case SplineType.FacingTarget:
                 {
                     var lookTarget = monsterMove.LookTarget = new();
-                    lookTarget.Target = packet.ReadGuid("Facing GUID");
+                    lookTarget.Target = packet.ReadGuid("FacingGUID");
                     break;
                 }
                 case SplineType.FacingAngle:
                 {
-                    monsterMove.LookOrientation = packet.ReadSingle("Facing Angle");
+                    monsterMove.LookOrientation = packet.ReadSingle("FaceDirection");
                     break;
                 }
                 case SplineType.Stop:
@@ -282,43 +283,43 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
             }
 
-            var flags = packet.ReadInt32E<SplineFlag>("Spline Flags");
+            var flags = packet.ReadInt32E<SplineFlag>("Flags");
             monsterMove.Flags = flags.ToUniversal();
 
             if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
-                packet.ReadByteE<MovementAnimationState>("Animation State");
-                packet.ReadInt32("Async-time in ms");
+                packet.ReadByteE<MovementAnimationState>("AnimTier");
+                packet.ReadInt32("TierTransStartTime");
             }
 
-            monsterMove.MoveTime = (uint)packet.ReadInt32("Move Time");
+            monsterMove.MoveTime = (uint)packet.ReadInt32("MoveTime");
 
             if (flags.HasAnyFlag(SplineFlag.Trajectory))
             {
-                packet.ReadSingle("Vertical Speed");
-                packet.ReadInt32("Async-time in ms");
+                packet.ReadSingle("JumpGravity");
+                packet.ReadInt32("SpecialTime");
             }
-
-            var waypoints = packet.ReadInt32("Waypoints");
 
             double distance = 0;
 
             if (flags.HasAnyFlag(SplineFlag.Flying | SplineFlag.CatmullRom))
             {
+                var waypoints = packet.ReadInt32("PointsCount");
                 var start = pos;
                 for (var i = 0; i < waypoints; i++)
                 {
-                    var vec = packet.ReadVector3("Waypoint", i);
+                    var vec = packet.ReadVector3("WayPoints", i);
                     monsterMove.Points.Add(vec);
                     distance += Vector3.GetDistance(start, vec);
                 }
             }
             else
             {
-                var newpos = packet.ReadVector3("Waypoint Endpoint");
-                monsterMove.Points.Add(newpos);
+                var waypoints = packet.ReadInt32("PackedDeltasCount");
+                var endpos = packet.ReadVector3("Waypoint Endpoint");
+                monsterMove.Points.Add(endpos);
 
-                Vector3 mid = (pos + newpos) * 0.5f;
+                Vector3 mid = (pos + endpos) * 0.5f;
                 var start = pos;
 
                 for (var i = 1; i < waypoints; i++)
@@ -328,14 +329,14 @@ namespace WowPacketParser.Parsing.Parsers
                     distance += Vector3.GetDistance(start, vec);
                     monsterMove.PackedPoints.Add(vec);
                     start = vec;
-                    packet.AddValue("Waypoint", vec, i);
+                    packet.AddValue("WayPoints", vec, i);
                 }
 
-                distance += Vector3.GetDistance(start, newpos);
+                distance += Vector3.GetDistance(start, endpos);
             }
 
-            packet.WriteLine("Computed Distance: " + distance.ToString());
-            packet.WriteLine("Computed Speed: " + (distance / monsterMove.MoveTime * 1000).ToString());
+            packet.WriteLine("Computed Distance: " + distance);
+            packet.WriteLine("Computed Speed: " + distance / monsterMove.MoveTime * 1000);
         }
 
         private static void ReadSplineMovement510(Packet packet, Vector3 pos)

@@ -79,7 +79,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("AnimTier", indexes);
             packet.ReadUInt32("TierTransStartTime", indexes);
             monsterMove.ElapsedTime = packet.ReadInt32("Elapsed", indexes);
-            var moveTime = monsterMove.MoveTime = packet.ReadUInt32("MoveTime", indexes);
+            monsterMove.MoveTime = packet.ReadUInt32("MoveTime", indexes);
             jump.Gravity = packet.ReadSingle("JumpGravity", indexes);
             jump.Duration = packet.ReadUInt32("SpecialTime", indexes);
 
@@ -115,69 +115,51 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     break;
             }
 
-            Vector3 endpos = new Vector3();
-            for (int i = 0; i < pointsCount; i++)
+            var endpos = new Vector3();
+            double distance = 0.0f;
+            if (pointsCount > 0)
             {
-                var spot = packet.ReadVector3();
+                var prevpos = pos;
+                for (var i = 0; i < pointsCount; ++i)
+                {
+                    var spot = packet.ReadVector3("Points", indexes, i);
+                    monsterMove.Points.Add(spot);
+                    distance += Vector3.GetDistance(prevpos, spot);
+                    prevpos = spot;
 
-                // client always taking first point
-                if (i == 0)
-                    endpos = spot;
-
-                monsterMove.Points.Add(spot);
-                packet.AddValue("Points", spot, indexes, i);
+                    // client always taking first point
+                    if (i == 0)
+                        endpos = spot;
+                }
             }
 
-            var waypoints = new Vector3[packedDeltasCount];
-            for (int i = 0; i < packedDeltasCount; i++)
+            if (packedDeltasCount > 0)
             {
-                var packedDeltas = packet.ReadPackedVector3();
-                waypoints[i].X = packedDeltas.X;
-                waypoints[i].Y = packedDeltas.Y;
-                waypoints[i].Z = packedDeltas.Z;
+                // Calculate mid pos
+                var mid = (pos + endpos) * 0.5f;
+
+                // ignore distance set by Points array if packed deltas are used
+                distance = 0;
+
+                var prevpos = pos;
+                for (var i = 0; i < packedDeltasCount; ++i)
+                {
+                    var vec = mid - packet.ReadPackedVector3();
+                    packet.AddValue("WayPoints", vec, indexes, i);
+                    monsterMove.PackedPoints.Add(vec);
+                    distance += Vector3.GetDistance(prevpos, vec);
+                    prevpos = vec;
+                }
+                distance += Vector3.GetDistance(prevpos, endpos);
             }
 
             if (hasSpellEffectExtraData)
                 ReadMonsterSplineSpellEffectExtraData(packet, "MonsterSplineSpellEffectExtra");
 
-            // Calculate mid pos
-            var mid = new Vector3
-            {
-                X = (pos.X + endpos.X) * 0.5f,
-                Y = (pos.Y + endpos.Y) * 0.5f,
-                Z = (pos.Z + endpos.Z) * 0.5f
-            };
-
-
-            List<Vector3> trueWaypoints = new List<Vector3>();
-            for (var i = 0; i < packedDeltasCount; ++i)
-            {
-                var vec = new Vector3
-                {
-                    X = mid.X - waypoints[i].X,
-                    Y = mid.Y - waypoints[i].Y,
-                    Z = mid.Z - waypoints[i].Z
-                };
-                monsterMove.PackedPoints.Add(vec);
-                trueWaypoints.Add(vec);
-                packet.AddValue("WayPoints", vec, indexes, i);
-            }
-
             if (endpos.X != 0 && endpos.Y != 0 && endpos.Z != 0)
             {
-                double distance = 0;
-                if (packedDeltasCount > 0)
-                {
-                    distance = Vector3.GetDistance(pos, trueWaypoints[0]);
-                    for (var i = 1; i < packedDeltasCount; ++i)
-                        distance += Vector3.GetDistance(trueWaypoints[i - 1], trueWaypoints[i]);
-                    distance += Vector3.GetDistance(trueWaypoints[(int)(packedDeltasCount - 1)], endpos);
-                }
-                else
-                    distance = Vector3.GetDistance(pos, endpos);
-
-                packet.WriteLine("(MovementMonsterSpline) Computed Distance: " + distance.ToString());
-                packet.WriteLine("(MovementMonsterSpline) Computed Speed: " + ((distance / moveTime) * 1000).ToString());
+                packet.AddValue("Computed Distance", distance, indexes);
+                packet.AddValue("Computed Speed", (distance / monsterMove.MoveTime) * 1000, indexes);
             }
         }
 
