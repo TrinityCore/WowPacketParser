@@ -54,6 +54,12 @@
         CraftingReagentSlot6 = 49,
         CraftingReagentSlot7 = 50,
         CraftingReagentSlot8 = 51,
-        CraftingReagentSlot9 = 52
+        CraftingReagentSlot9 = 52,
+        CraftingReagentSlot10 = 53,
+        CraftingReagentSlot11 = 54,
+        CraftingReagentSlot12 = 55,
+        CraftingReagentSlot13 = 56,
+        CraftingReagentSlot14 = 57,
+        Reforge = 58
     }
 }

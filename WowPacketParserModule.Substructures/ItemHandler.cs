@@ -111,6 +111,40 @@ namespace WowPacketParserModule.Substructures
             return instance;
         }
 
+        public static ItemInstance ReadItemInstance1100(Packet packet, params object[] indexes)
+        {
+            ItemInstance instance = new ItemInstance();
+            instance.ItemID = packet.ReadInt32<ItemId>("ItemID", indexes);
+
+            packet.ResetBitReader();
+            var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
+            packet.ResetBitReader();
+
+            {
+                var modificationCount = packet.ReadBits(6);
+                packet.ResetBitReader();
+                for (var j = 0u; j < modificationCount; ++j)
+                {
+                    ItemModifier mod = packet.ReadByteE<ItemModifier>();
+                    var value = packet.ReadInt32();
+                    packet.AddValue(mod.ToString(), value, indexes);
+                    instance.ItemModifier[mod] = value;
+                }
+            }
+
+            if (hasBonuses)
+            {
+                instance.Context = packet.ReadByte("Context", indexes);
+
+                var bonusCount = packet.ReadUInt32();
+                instance.BonusListIDs = new uint[bonusCount];
+                for (var j = 0; j < bonusCount; ++j)
+                    instance.BonusListIDs[j] = packet.ReadUInt32("BonusListID", indexes, j);
+            }
+
+            return instance;
+        }
+
         public static ItemInstance ReadItemInstance251(Packet packet, params object[] indexes)
         {
             ItemInstance instance = new ItemInstance();
@@ -198,6 +232,8 @@ namespace WowPacketParserModule.Substructures
                 return ReadItemInstance251(packet, indexes);
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683) || ClientVersion.IsClassicVanillaClientVersionBuild(ClientVersion.Build))
                 return ReadItemInstance602(packet, indexes);
+            if (ClientVersion.AddedInVersion(ClientType.TheWarWithin))
+                return ReadItemInstance1100(packet, indexes);
             if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
                 return ReadItemInstance901(packet, indexes);
             return ReadItemInstance815(packet, indexes);
