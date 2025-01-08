@@ -10,13 +10,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
     {
         public static List<AreaTriggerCreatePropertiesSplinePoint> ReadAreaTriggerSpline(AreaTriggerCreateProperties createProperties, Packet packet, params object[] indexes)
         {
-            packet.ReadInt32("TimeToTarget", indexes);
+            var moveTime = packet.ReadInt32("TimeToTarget", indexes);
             packet.ReadInt32("ElapsedTimeForMovement", indexes);
 
             packet.ResetBitReader();
 
             var pointCount = (int)packet.ReadBits("PointsCount", 16, indexes);
             var points = new List<AreaTriggerCreatePropertiesSplinePoint>(pointCount);
+            var distance = 0.0;
+            var prevPoint = new Vector3();
 
             for (var i = 0u; i < pointCount; ++i)
             {
@@ -32,6 +34,17 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                         Z = point.Z
                     });
                 }
+
+                if (i > 0)
+                    distance += Vector3.GetDistance(prevPoint, point);
+
+                prevPoint = point;
+            }
+
+            if (distance > 0)
+            {
+                packet.AddValue("Computed Distance", distance, indexes);
+                packet.AddValue("Computed Speed", (distance / moveTime) * 1000, indexes);
             }
 
             return points;
