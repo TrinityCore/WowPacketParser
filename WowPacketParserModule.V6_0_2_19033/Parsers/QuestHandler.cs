@@ -172,6 +172,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     }
 
                     Storage.QuestPOIs.Add(questPoi, packet.TimeSpan);
+
+                    CoreParsers.QuestHandler.AddSpawnTrackingData(questPoi, packet.TimeSpan);
                 }
             }
         }
@@ -331,7 +333,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     Storage.LocalesQuestObjectives.Add(localesQuestObjectives, packet.TimeSpan);
                 }
 
-                Storage.QuestObjectives.Add(questInfoObjective, packet.TimeSpan);
+                Storage.QuestObjectives.Add((uint)questInfoObjective.ID, questInfoObjective, packet.TimeSpan);
             }
 
             packet.ResetBitReader();

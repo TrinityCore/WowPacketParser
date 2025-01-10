@@ -15,6 +15,7 @@ namespace WowPacketParser.DBC
     {
         public static Storage<AreaTableEntry> AreaTable { get; set; }
         public static Storage<AchievementEntry> Achievement { get; set; }
+        public static Storage<AnimationDataEntry> AnimationData { get; set; }
         public static Storage<BroadcastTextEntry> BroadcastText { get; set; }
         public static Storage<CreatureEntry> Creature { get; set; }
         public static Storage<CreatureDifficultyEntry> CreatureDifficulty { get; set; }
@@ -221,6 +222,11 @@ namespace WowPacketParser.DBC
             }
 
             return phaseGroups;
+        }
+
+        public static uint GetEmptyAnimStateID()
+        {
+            return (uint)AnimationData.Count;
         }
 
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
