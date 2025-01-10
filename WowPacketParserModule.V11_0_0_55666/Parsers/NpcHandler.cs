@@ -83,5 +83,44 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.AddSniffData(StoreNameType.Gossip, menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
 
+        [Parser(Opcode.SMSG_VENDOR_INVENTORY)]
+        public static void HandleVendorInventory(Packet packet)
+        {
+            uint entry = packet.ReadPackedGuid128("VendorGUID").GetEntry();
+            packet.ReadInt32("Reason");
+            uint count = packet.ReadUInt32("VendorItems");
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadUInt64("Price", i);
+                NpcVendor vendor = new NpcVendor
+                {
+                    Entry = entry,
+                    Slot = (int)packet.ReadUInt32("MuID", i),
+                    Type = (uint)packet.ReadInt32("Type", i)
+                };
+
+                int buyCount = packet.ReadInt32("StackCount", i);
+                int maxCount = packet.ReadInt32("Quantity", i);
+                vendor.ExtendedCost = (uint)packet.ReadInt32("ExtendedCostID", i);
+                vendor.PlayerConditionID = (uint)packet.ReadInt32("PlayerConditionFailed", i);
+                packet.ResetBitReader();
+                packet.ReadBit("Locked", i);
+                vendor.IgnoreFiltering = packet.ReadBit("DoNotFilterOnVendor", i);
+                packet.ReadBit("Refundable", i);
+                packet.ResetBitReader();
+
+                vendor.Item = Substructures.ItemHandler.ReadItemInstance1100(packet, i).ItemID;
+
+                vendor.MaxCount = maxCount == -1 ? 0 : (uint)maxCount; // TDB
+                if (vendor.Type == 2)
+                    vendor.MaxCount = (uint)buyCount;
+
+                Storage.NpcVendors.Add(vendor, packet.TimeSpan);
+            }
+
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
+        }
     }
 }
