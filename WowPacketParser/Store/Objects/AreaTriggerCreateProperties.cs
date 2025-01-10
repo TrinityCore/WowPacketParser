@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
-using WowPacketParser.SQL.Builders;
 using WowPacketParser.Store.Objects.UpdateFields;
 using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
 
@@ -53,11 +51,14 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SpellForVisuals", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, false, false, true)]
         public uint? SpellForVisuals;
 
-        [DBFieldName("TimeToTarget")]
+        [DBFieldName("TimeToTarget", TargetedDatabaseFlag.TillDragonflight)]
         public uint? TimeToTarget = 0;
 
         [DBFieldName("TimeToTargetScale")]
         public uint? TimeToTargetScale = 0;
+
+        [DBFieldName("Speed", TargetedDatabaseFlag.SinceTheWarWithin)]
+        public float? Speed;
 
         [DBFieldName("Shape", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
         public byte? Shape;
@@ -179,11 +180,14 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SpellForVisuals", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, false, false, true)]
         public uint? SpellForVisuals;
 
-        [DBFieldName("TimeToTarget")]
+        [DBFieldName("TimeToTarget", TargetedDatabaseFlag.TillDragonflight)]
         public uint? TimeToTarget = 0;
 
         [DBFieldName("TimeToTargetScale")]
         public uint? TimeToTargetScale = 0;
+
+        [DBFieldName("Speed", TargetedDatabaseFlag.SinceTheWarWithin)]
+        public float? Speed;
 
         [DBFieldName("Shape", TargetedDatabaseFlag.SinceShadowlands)]
         public byte? Shape;

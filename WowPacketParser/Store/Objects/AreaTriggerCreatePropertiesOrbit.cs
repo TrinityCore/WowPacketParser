@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -45,6 +40,6 @@ namespace WowPacketParser.Store.Objects
         // Will be inserted as comment
         public uint spellId = 0;
 
-        public WowGuid areatriggerGuid;
+        public AreaTriggerCreateProperties CreateProperties;
     }
 }

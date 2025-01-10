@@ -1,6 +1,8 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V9_0_1_36216.Parsers
 {
@@ -15,9 +17,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_AREA_TRIGGER_RE_PATH)]
         public static void HandleAreaTriggerReShape(Packet packet)
         {
-            packet.ReadPackedGuid128("TriggerGUID");
+            var areaTriggerGuid = packet.ReadPackedGuid128("TriggerGUID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
                 packet.ReadPackedGuid128("Unused_1100");
+
+            Storage.Objects.TryGetValue(areaTriggerGuid, out WoWObject createProperties);
 
             packet.ResetBitReader();
             var hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline");
@@ -25,13 +29,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var hasAreaTriggerMovementScript = packet.ReadBit("HasAreaTriggerMovementScript");
 
             if (hasAreaTriggerSpline)
-                V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerSpline(null, packet, "Spline");
+                V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerSpline((AreaTriggerCreateProperties)createProperties, packet, "Spline");
 
             if (hasAreaTriggerMovementScript)
                 ReadAreaTriggerMovementScript(packet, "MovementScript");
 
             if (hasAreaTriggerOrbit)
-                V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerOrbit(null, packet, "Orbit");
+                V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerOrbit((AreaTriggerCreateProperties)createProperties, packet, "Orbit");
         }
     }
 }

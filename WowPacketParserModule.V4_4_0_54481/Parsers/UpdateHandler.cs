@@ -684,7 +684,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     packet.ReadBit("Unk3");
 
                 if (hasAreaTriggerSpline)
-                    V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerSpline(spellAreaTrigger, packet, index);
+                    foreach (var splinePoint in AreaTriggerHandler.ReadAreaTriggerSpline(spellAreaTrigger, packet, index, "AreaTriggerSpline"))
+                        Storage.AreaTriggerCreatePropertiesSplinePoints.Add(splinePoint);
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesFlags.HasTargetRollPitchYaw) != 0)
                     packet.ReadVector3("TargetRollPitchYaw", index);
@@ -792,7 +793,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 }
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesFlags.HasOrbit) != 0)
-                    V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerOrbit(guid, packet, "Orbit");
+                    Storage.AreaTriggerCreatePropertiesOrbits.Add(AreaTriggerHandler.ReadAreaTriggerOrbit(spellAreaTrigger, packet, index, "AreaTriggerOrbit"));
 
                 Storage.AreaTriggerTemplates.Add(areaTriggerTemplate);
             }

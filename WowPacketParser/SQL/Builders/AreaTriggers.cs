@@ -71,6 +71,9 @@ namespace WowPacketParser.SQL.Builders
                     row.Data.AnimKitId = createProperties.Value.AnimKitId;
                     row.Data.DecalPropertiesId = createProperties.Value.DecalPropertiesId;
                     row.Data.SpellForVisuals = createProperties.Value.SpellForVisuals;
+                    row.Data.TimeToTarget = createProperties.Value.TimeToTarget;
+                    row.Data.TimeToTargetScale = createProperties.Value.TimeToTargetScale;
+                    row.Data.Speed = createProperties.Value.Speed;
                     row.Data.Shape = createProperties.Value.Shape;
                     row.Data.ShapeData = createProperties.Value.ShapeData;
 
@@ -112,8 +115,7 @@ namespace WowPacketParser.SQL.Builders
 
             foreach (var orbit in Storage.AreaTriggerCreatePropertiesOrbits)
             {
-                var spellAreaTriggerTuple = Storage.Objects.Where(obj => obj.Key == orbit.Item1.areatriggerGuid).First();
-                AreaTriggerCreateProperties areaTrigger = (AreaTriggerCreateProperties)spellAreaTriggerTuple.Value.Item1;
+                AreaTriggerCreateProperties areaTrigger = orbit.Item1.CreateProperties;
 
                 orbit.Item1.spellId = areaTrigger.spellId;
                 orbit.Item1.AreaTriggerCreatePropertiesId = areaTrigger.AreaTriggerCreatePropertiesId;

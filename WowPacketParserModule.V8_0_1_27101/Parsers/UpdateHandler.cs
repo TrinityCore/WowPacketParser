@@ -851,7 +851,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 }
 
                 if ((createProperties.Flags & (uint)AreaTriggerCreatePropertiesFlags.HasOrbit) != 0)
-                    Storage.AreaTriggerCreatePropertiesOrbits.Add(AreaTriggerHandler.ReadAreaTriggerOrbit(guid, packet, index, "AreaTriggerOrbit"));
+                    Storage.AreaTriggerCreatePropertiesOrbits.Add(AreaTriggerHandler.ReadAreaTriggerOrbit(createProperties, packet, index, "AreaTriggerOrbit"));
 
                 // TargetedDatabase.Shadowlands stores AreaTriggerCreatePropertiesFlags in Template
                 if (Settings.TargetedDatabase < TargetedDatabase.Dragonflight)

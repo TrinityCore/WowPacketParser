@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V4_4_0_54481.Parsers
@@ -36,7 +37,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     });
                 }
 
-                if (i > 0)
+                if (i > 1 && i < pointCount - 1) // ignore first and last points (dummy spline points)
                     distance += Vector3.GetDistance(prevPoint, point);
 
                 prevPoint = point;
@@ -45,17 +46,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             if (distance > 0)
             {
                 packet.AddValue("Computed Distance", distance, indexes);
-                packet.AddValue("Computed Speed", (distance / moveTime) * 1000, indexes);
+                double speed = packet.AddValue("Computed Speed", (distance / moveTime) * 1000, indexes);
+                if (createProperties != null)
+                    createProperties.Speed = (float)speed;
             }
 
             return points;
         }
 
-        public static AreaTriggerCreatePropertiesOrbit ReadAreaTriggerOrbit(WowGuid areaTriggerGuid, Packet packet, params object[] indexes)
+        public static AreaTriggerCreatePropertiesOrbit ReadAreaTriggerOrbit(AreaTriggerCreateProperties createProperties, Packet packet, params object[] indexes)
         {
             packet.ResetBitReader();
             var orbit = new AreaTriggerCreatePropertiesOrbit();
-            orbit.areatriggerGuid = areaTriggerGuid;
+            orbit.CreateProperties = createProperties;
 
             var hasTarget = packet.ReadBit("HasPathTarget", indexes);
             var hasCenter = packet.ReadBit("HasCenter", indexes);
@@ -76,9 +79,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             if (hasCenter)
                 packet.ReadVector3("Center", indexes);
 
-            var distance = 2 * Math.PI * orbit.CircleRadius;
+            var distance = 2 * Math.PI * orbit.CircleRadius.Value;
             packet.AddValue("Computed Distance", distance, indexes);
-            packet.AddValue("Computed Speed", (distance / moveTime) * 1000, indexes);
+            var speed = packet.AddValue("Computed Speed", (distance / moveTime) * 1000, indexes);
+            if (createProperties != null)
+                createProperties.Speed = (float)speed;
 
             return orbit;
         }
@@ -106,10 +111,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_AREA_TRIGGER_RE_PATH)]
         public static void HandleAreaTriggerReShape(Packet packet)
         {
-            packet.ReadPackedGuid128("TriggerGUID");
+            var areaTriggerGuid = packet.ReadPackedGuid128("TriggerGUID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
                 packet.ReadPackedGuid128("Unused_1100");
+
+            Storage.Objects.TryGetValue(areaTriggerGuid, out WoWObject createProperties);
 
             packet.ResetBitReader();
             var hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline");
@@ -117,13 +124,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var hasAreaTriggerMovementScript = packet.ReadBit("HasAreaTriggerMovementScript");
 
             if (hasAreaTriggerSpline)
-                ReadAreaTriggerSpline(null, packet, "Spline");
+                ReadAreaTriggerSpline((AreaTriggerCreateProperties)createProperties, packet, "Spline");
 
             if (hasAreaTriggerMovementScript)
                 ReadAreaTriggerMovementScript(packet, "MovementScript");
 
             if (hasAreaTriggerOrbit)
-                ReadAreaTriggerOrbit(null, packet, "Orbit");
+                ReadAreaTriggerOrbit((AreaTriggerCreateProperties)createProperties, packet, "Orbit");
         }
 
         [Parser(Opcode.CMSG_AREA_TRIGGER)]

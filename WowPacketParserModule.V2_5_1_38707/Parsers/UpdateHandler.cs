@@ -801,7 +801,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 }
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesFlags.HasOrbit) != 0)
-                    V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerOrbit(guid, packet, "Orbit");
+                    V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerOrbit(spellAreaTrigger, packet, "Orbit");
 
                 Storage.AreaTriggerTemplates.Add(areaTriggerTemplate);
             }
