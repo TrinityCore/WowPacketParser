@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -61,7 +62,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             orbit.CounterClockwise = packet.ReadBit("CounterClockwise", indexes);
             orbit.CanLoop = packet.ReadBit("CanLoop", indexes);
 
-            packet.ReadUInt32("TimeToTarget", indexes);
+            var moveTime = packet.ReadUInt32("TimeToTarget", indexes);
             packet.ReadInt32("ElapsedTimeForMovement", indexes);
             orbit.StartDelay = packet.ReadUInt32("StartDelay", indexes);
             orbit.CircleRadius = packet.ReadSingle("Radius", indexes);
@@ -74,6 +75,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             if (hasCenter)
                 packet.ReadVector3("Center", indexes);
+
+            var distance = 2 * Math.PI * orbit.CircleRadius;
+            packet.AddValue("Computed Distance", distance, indexes);
+            packet.AddValue("Computed Speed", (distance / moveTime) * 1000, indexes);
 
             return orbit;
         }
