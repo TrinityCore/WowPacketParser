@@ -183,5 +183,15 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 V7_0_3_22248.Parsers.CharacterHandler.ReadRaceUnlockData(packet, i, "RaceUnlockData");
 
         }
+
+        [Parser(Opcode.CMSG_REQUEST_STORE_FRONT_INFO_UPDATE)]
+        public static void HandleRequestStoreFrontInfoUpdate(Packet packet)
+        {
+            packet.ReadUInt32("StoreFrontID");
+
+            var count = packet.ReadUInt32("UnknownCount");
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("UnknownField", i);
+        }
     }
 }
