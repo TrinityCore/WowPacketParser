@@ -638,6 +638,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByteE<StandState>("State");
         }
 
+        [Parser(Opcode.CMSG_STAND_STATE_CHANGE)]
+        public static void HandleStandStateChange(Packet packet)
+        {
+            packet.ReadByteE<StandState>("StandState");
+        }
+
         [Parser(Opcode.CMSG_SET_PVP)]
         public static void HandleSetPVP(Packet packet)
         {

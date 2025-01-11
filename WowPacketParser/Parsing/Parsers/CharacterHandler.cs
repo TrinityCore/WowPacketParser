@@ -12,7 +12,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_STAND_STATE_CHANGE)]
         public static void HandleStandStateChange(Packet packet)
         {
-            packet.ReadInt32E<StandState>("StandState");
+            packet.ReadByteE<StandState>("StandState");
         }
 
         [Parser(Opcode.SMSG_STAND_STATE_UPDATE)]
