@@ -1242,7 +1242,7 @@ namespace WowPacketParser.Enums.Version.V11_0_7_58123
             { Opcode.SMSG_DUEL_REQUESTED, 0x3D001A },
             { Opcode.SMSG_DUEL_WINNER, 0x3D0020 },
             { Opcode.SMSG_DURABILITY_DAMAGE_DEATH, 0x3701DA },
-            { Opcode.SMSG_EMOTE, 0x3B0259 },
+            { Opcode.SMSG_EMOTE, 0x370259 },
             { Opcode.SMSG_ENABLE_BARBER_SHOP, 0x370154 },
             { Opcode.SMSG_ENCHANTMENT_LOG, 0x3701AA },
             { Opcode.SMSG_ENCOUNTER_END, 0x370214 },
