@@ -59,15 +59,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var splineFlag = packet.ReadUInt32E<SplineFlag>("Flags", indexes);
             monsterMove.Flags = splineFlag.ToUniversal();
 
-            CreatureMovementFlags moveType = CreatureMovementFlags.NormalPathfinding;
-
-            if (splineFlag.HasFlag(SplineFlag.EnterCycle) || splineFlag.HasFlag(SplineFlag.Cyclic))
-                moveType = CreatureMovementFlags.ExactPathFlyingCyclic;
-            else if (splineFlag.HasFlag(SplineFlag.Flying))
-                moveType = CreatureMovementFlags.ExactPathFlying;
-            else if (splineFlag.HasFlag(SplineFlag.UncompressedPath))
-                moveType = CreatureMovementFlags.ExactPath;
-
             if (ClientVersion.RemovedInVersion(ClientType.Shadowlands))
             {
                 packet.ReadByte("AnimTier", indexes);
@@ -118,7 +109,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     SplineLookTarget lookTarget = monsterMove.LookTarget = new();
                     lookTarget.Orientation = packet.ReadSingle("FaceDirection", indexes);
                     lookTarget.Target = packet.ReadPackedGuid128("FacingGUID", indexes);
-                    moveType = CreatureMovementFlags.CombatMovement;
                     break;
                 case SplineFacingType.Angle:
                     monsterMove.LookOrientation = packet.ReadSingle("FaceDirection", indexes);
@@ -171,8 +161,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (hasJumpExtraData)
             {
                 monsterMove.Jump = ReadMonsterSplineJumpExtraData(packet, indexes, "MonsterSplineJumpExtraData");
-                if (monsterMove.Jump.StartTime > 0)
-                    moveType = CreatureMovementFlags.ExactPathAndJump;
             }
 
             if (hasAnimTier)
@@ -199,8 +187,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.AddValue("Computed Distance", distance, indexes);
                 packet.AddValue("Computed Speed", (distance / monsterMove.MoveTime) * 1000, indexes);
             }
-
-            monsterMove.CreatureMovementFlags = moveType;
         }
 
         public static void ReadMovementMonsterSpline(Packet packet, Vector3 pos, WowGuid guid, params object[] indexes)
