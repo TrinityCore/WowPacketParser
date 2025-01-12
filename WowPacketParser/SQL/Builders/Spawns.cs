@@ -215,7 +215,7 @@ namespace WowPacketParser.SQL.Builders
 
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)entry, false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + " - ";
-                row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)creature.DifficultyID, false) + ")";
+                row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, ((int?)creature.DifficultyID) ?? 0, false) + ")";
                 row.Comment += creature.CreateType == CreateObjectType.Spawn ? " CreateObject2" : " CreateObject1";
 
                 string auras = string.Empty;
