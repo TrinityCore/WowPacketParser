@@ -8,6 +8,7 @@ using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParser.Store.Objects.UpdateFields;
+using WowPacketParserModule.V7_0_3_22248.Enums;
 using CoreFields = WowPacketParser.Enums.Version;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
@@ -456,14 +457,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                         packet.ResetBitReader();
 
                         var splineFlag = packet.ReadUInt32E<SplineFlag>("SplineFlags", index);
-                        CreatureMovementFlags moveType = CreatureMovementFlags.NormalPathfinding;
-
-                        if (splineFlag.HasFlag(SplineFlag.EnterCycle) || splineFlag.HasFlag(SplineFlag.Cyclic))
-                            moveType = CreatureMovementFlags.ExactPathFlyingCyclic;
-                        else if (splineFlag.HasFlag(SplineFlag.Flying))
-                            moveType = CreatureMovementFlags.ExactPathFlying;
-                        else if (splineFlag.HasFlag(SplineFlag.UncompressedPath))
-                            moveType = CreatureMovementFlags.ExactPath;
+                        monsterMove.Flags = splineFlag.ToUniversal();
 
                         packet.ReadInt32("Elapsed", index);
                         packet.ReadUInt32("Duration", index);
@@ -501,15 +495,15 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                         switch (face)
                         {
                             case 1:
-                                var faceSpot = packet.ReadVector3("FaceSpot", index);
+                                var faceSpot = monsterMove.LookPosition = packet.ReadVector3("FaceSpot", index);
                                 orientation = GetAngle(moveInfo.Position.X, moveInfo.Position.Y, faceSpot.X, faceSpot.Y);
                                 break;
                             case 2:
-                                packet.ReadPackedGuid128("FaceGUID", index);
-                                moveType = CreatureMovementFlags.CombatMovement;
+                                SplineLookTarget lookTarget = monsterMove.LookTarget = new();
+                                lookTarget.Target = packet.ReadPackedGuid128("FaceGUID", index);
                                 break;
                             case 3:
-                                orientation = packet.ReadSingle("FaceDirection", index);
+                                monsterMove.LookOrientation = orientation = packet.ReadSingle("FaceDirection", index);
                                 break;
                             default:
                                 break;
@@ -532,9 +526,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
 
                         if (hasJumpExtraData)
                         {
-                            var jumpData = V8_0_1_27101.Parsers.MovementHandler.ReadMonsterSplineJumpExtraData(packet, index);
-                            if (jumpData.StartTime > 0)
-                                moveType = CreatureMovementFlags.ExactPathAndJump;
+                            monsterMove.Jump = V8_0_1_27101.Parsers.MovementHandler.ReadMonsterSplineJumpExtraData(packet, index);
                         }
 
                         if (hasAnimationTierTransition)
@@ -555,8 +547,6 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                                 packet.ReadInt32("Unknown4", index, "Unknown901", i);
                             }
                         }
-
-                        monsterMove.CreatureMovementFlags = moveType;
                     }
                 }
             }
