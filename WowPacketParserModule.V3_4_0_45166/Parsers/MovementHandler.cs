@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Google.Protobuf.WellKnownTypes;
-using WowPacketParser.DBC;
 using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
@@ -58,7 +55,18 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
-            monsterMove.Flags = packet.ReadUInt32E<SplineFlag>("Flags", indexes).ToUniversal();
+            var splineFlag = packet.ReadUInt32E<SplineFlag>("Flags", indexes);
+            monsterMove.Flags = splineFlag.ToUniversal();
+
+            CreatureMovementFlags moveType = CreatureMovementFlags.NormalPathfinding;
+
+            if (splineFlag.HasFlag(SplineFlag.EnterCicle) || splineFlag.HasFlag(SplineFlag.Cyclic))
+                moveType = CreatureMovementFlags.ExactPathFlyingCyclic;
+            else if (splineFlag.HasFlag(SplineFlag.Flying))
+                moveType = CreatureMovementFlags.ExactPathFlying;
+            else if (splineFlag.HasFlag(SplineFlag.UncompressedPath))
+                moveType = CreatureMovementFlags.ExactPath;
+
             if (ClientVersion.RemovedInVersion(ClientType.Shadowlands))
             {
                 packet.ReadByte("AnimTier", indexes);
@@ -109,6 +117,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                     SplineLookTarget lookTarget = monsterMove.LookTarget = new();
                     lookTarget.Orientation = packet.ReadSingle("FaceDirection", indexes);
                     lookTarget.Target = packet.ReadPackedGuid128("FacingGUID", indexes);
+                    moveType = CreatureMovementFlags.CombatMovement;
                     break;
                 case SplineFacingType.Angle:
                     monsterMove.LookOrientation = packet.ReadSingle("FaceDirection", indexes);
@@ -159,7 +168,11 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 ReadMonsterSplineSpellEffectExtraData(packet, indexes, "MonsterSplineSpellEffectExtra");
 
             if (hasJumpExtraData)
+            {
                 monsterMove.Jump = ReadMonsterSplineJumpExtraData(packet, indexes, "MonsterSplineJumpExtraData");
+                if (monsterMove.Jump.StartTime > 0)
+                    moveType = CreatureMovementFlags.ExactPathAndJump;
+            }
 
             if (hasAnimTier)
             {
@@ -185,12 +198,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 packet.AddValue("Computed Distance", distance, indexes);
                 packet.AddValue("Computed Speed", (distance / monsterMove.MoveTime) * 1000, indexes);
             }
+
+            monsterMove.CreatureMovementFlags = moveType;
         }
 
         public static void ReadMovementMonsterSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
             monsterMove.Id = packet.ReadUInt32("Id", indexes);
+
             if (ClientVersion.RemovedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_0_52146) || ClientVersion.Branch != ClientBranch.Classic)
                 monsterMove.Destination = packet.ReadVector3("Destination", indexes);
 
