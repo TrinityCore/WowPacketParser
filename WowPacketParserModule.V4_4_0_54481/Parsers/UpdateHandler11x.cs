@@ -1134,18 +1134,5 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
             return moveInfo;
         }
-
-        [Parser(Opcode.SMSG_DESTROY_ARENA_UNIT)]
-        public static void HandleDestroyArenaUnit(Packet packet)
-        {
-            packet.ReadPackedGuid128("Guid");
-        }
-
-        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED)]
-        [Parser(Opcode.CMSG_OBJECT_UPDATE_RESCUED)]
-        public static void HandleObjectUpdateOrRescued(Packet packet)
-        {
-            packet.ReadPackedGuid128("ObjectGUID");
-        }
     }
 }
