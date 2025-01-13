@@ -119,9 +119,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                             Storage.Objects.TryGetValue(guid, out obj);
 
                             if (ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_5_57638))
-                                ReadUpdateObjectBlockFragmented(packet, updateValues, handler, obj, i);
+                                ReadUpdateObjectBlockFragmented(fieldsData, updateValues, handler, obj, i);
                             else
-                                ReadUpdateObjectBlock(packet, updateValues, handler, obj, i);
+                                ReadUpdateObjectBlock(fieldsData, updateValues, handler, obj, i);
                         }
                         updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, TextStartOffset = partWriter.StartOffset, TextLength = partWriter.Length, Text = partWriter.Text});
                         break;
