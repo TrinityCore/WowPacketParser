@@ -175,9 +175,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                                 }
                             }
                             else
-                                obj.EntityFragments.Remove(WowCSEntityFragments.CGObject);
+                                obj?.EntityFragments.Remove(WowCSEntityFragments.CGObject);
 
-                            var vendorFragment = WowCSUtilities.GetUpdateBitIndex(obj.EntityFragments, WowCSEntityFragments.FVendor_C);
+                            var vendorFragment = WowCSUtilities.GetUpdateBitIndex(fragments, WowCSEntityFragments.FVendor_C);
                             if (vendorFragment >= 0 && changedFragments[vendorFragment])
                                 handler.ReadUpdateVendorData(fieldsData, i);
                         }
@@ -291,7 +291,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         obj.EntityFragments.Remove(WowCSEntityFragments.CGObject);
                 }
                 if (obj.EntityFragments.Contains(WowCSEntityFragments.FVendor_C))
-                    handler.ReadCreateVendorData(fieldsData, flags, index);
+                    if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_0_7_58630) || fieldsData.ReadBool("IndirectFragmentActive [FVendor_C]", index))
+                        handler.ReadCreateVendorData(fieldsData, flags, index);
             }
 
             // If this is the second time we see the same object (same guid,

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums
 {
@@ -55,6 +56,8 @@ namespace WowPacketParser.Enums
                 case WowCSEntityFragments.CGObject:
                 case WowCSEntityFragments.CActor:
                     return true;
+                case WowCSEntityFragments.FVendor_C:
+                    return ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_7_58630);
                 default:
                     return false;
             }
