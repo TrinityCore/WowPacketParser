@@ -362,6 +362,7 @@ message PacketMonsterMove {
   repeated Vec3 points = 13;
   repeated Vec3 packedPoints = 14;
   optional SplineJump jump = 15;
+  bool creationSpline = 16;
 }
 
 message SplineJump {
