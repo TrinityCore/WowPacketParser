@@ -189,9 +189,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             packet.ReadUInt32("StoreFrontID");
 
-            var count = packet.ReadUInt32("UnknownCount");
+            var count = packet.ReadUInt32("CurrencyCount");
             for (var i = 0; i < count; ++i)
-                packet.ReadInt32("UnknownField", i);
+                packet.ReadInt32<CurrencyId>("CurrencyID", i);
         }
     }
 }
