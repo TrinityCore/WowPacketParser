@@ -775,5 +775,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadSingle("UnkFloat");
             packet.ReadBit("UnkBool");
         }
+
+        [Parser(Opcode.SMSG_SPELL_VISUAL_LOAD_SCREEN)]
+        public static void HandleSpellVisualLoadScreen(Packet packet)
+        {
+            packet.ReadInt32("SpellVisualKitID");
+            packet.ReadInt32("Delay");
+        }
     }
 }
