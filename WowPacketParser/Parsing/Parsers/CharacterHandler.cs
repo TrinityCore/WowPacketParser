@@ -18,7 +18,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_STAND_STATE_UPDATE)]
         public static void HandleStandStateUpdate(Packet packet)
         {
-            packet.ReadByteE<StandState>("State");
+            packet.ReadInt32E<StandState>("State");
         }
 
         [Parser(Opcode.CMSG_CREATE_CHARACTER)]
