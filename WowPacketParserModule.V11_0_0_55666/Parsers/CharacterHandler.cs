@@ -181,7 +181,12 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
             for (var i = 0u; i < raceUnlockCount; ++i)
                 V7_0_3_22248.Parsers.CharacterHandler.ReadRaceUnlockData(packet, i, "RaceUnlockData");
+        }
 
+        [Parser(Opcode.CMSG_STAND_STATE_CHANGE, ClientVersionBuild.V11_0_7_58123)]
+        public static void HandleStandStateChange(Packet packet)
+        {
+            packet.ReadByteE<StandState>("StandState");
         }
     }
 }
