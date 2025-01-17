@@ -188,5 +188,15 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             packet.ReadByteE<StandState>("StandState");
         }
+
+        [Parser(Opcode.CMSG_REQUEST_STORE_FRONT_INFO_UPDATE)]
+        public static void HandleRequestStoreFrontInfoUpdate(Packet packet)
+        {
+            packet.ReadUInt32("StoreFrontID");
+
+            var count = packet.ReadUInt32("CurrencyCount");
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32<CurrencyId>("CurrencyID", i);
+        }
     }
 }
