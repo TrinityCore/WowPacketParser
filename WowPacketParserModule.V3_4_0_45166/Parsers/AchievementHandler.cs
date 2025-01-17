@@ -20,9 +20,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadTime64("CreationTime", indexes);
 
             packet.ResetBitReader();
-            var hasRafAcceptanceID = packet.ReadBit("HasRafAcceptanceID", indexes);
-            if (hasRafAcceptanceID)
-                packet.ReadUInt64("RafAcceptanceID", indexes);
+            var hasDynamicID = packet.ReadBit("HasDynamicID", indexes);
+            if (hasDynamicID)
+                packet.ReadUInt64("DynamicID", indexes);
 
             if (Settings.UseDBC)
                 if (DBC.Criteria.ContainsKey(criteriaId))
@@ -60,10 +60,10 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadTime64("ElapsedTime");
             packet.ReadTime64("CreationTime");
 
-            var hasRafAcceptanceID = packet.ReadBit("HasRafAcceptanceID");
+            var hasDynamicID = packet.ReadBit("HasDynamicID");
 
-            if (hasRafAcceptanceID)
-                packet.ReadUInt64("RafAcceptanceID");
+            if (hasDynamicID)
+                packet.ReadUInt64("DynamicID");
 
             if (Settings.UseDBC)
                 if (DBC.Criteria.ContainsKey(criteriaId))

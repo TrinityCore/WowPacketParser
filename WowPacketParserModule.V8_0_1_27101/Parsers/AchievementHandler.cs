@@ -19,12 +19,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadTime("ElapsedTime");
             packet.ReadTime("CreationTime");
 
-            var hasRafAcceptanceID = false;
+            var hasDynamicID = false;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
-                hasRafAcceptanceID = packet.ReadBit();
+                hasDynamicID = packet.ReadBit();
 
-            if (hasRafAcceptanceID)
-                packet.ReadUInt64("RafAcceptanceID");
+            if (hasDynamicID)
+                packet.ReadUInt64("DynamicID");
 
             if (Settings.UseDBC)
                 if (DBC.Criteria.ContainsKey(criteriaId))
