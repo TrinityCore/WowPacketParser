@@ -20,8 +20,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
             packet.ResetBitReader();
 
-            var bit100 = packet.ReadBit("HasLogData");
-            if (bit100)
+            var hasLogData = packet.ReadBit("HasLogData");
+            if (hasLogData)
                 V6_0_2_19033.Parsers.SpellHandler.ReadSpellCastLogData(packet);
         }
     }
