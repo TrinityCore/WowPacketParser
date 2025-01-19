@@ -3692,6 +3692,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
                 data.BuybackPrice[i] = packet.ReadUInt32("BuybackPrice", indexes, i);
                 data.BuybackTimestamp[i] = packet.ReadInt64("BuybackTimestamp", indexes, i);
             }
+            packet.ReadUInt32("padding", indexes);
+            packet.ReadUInt32("padding", indexes);
             data.TodayHonorableKills = packet.ReadUInt16("TodayHonorableKills", indexes);
             data.TodayDishonorableKills = packet.ReadUInt16("TodayDishonorableKills", indexes);
             data.YesterdayHonorableKills = packet.ReadUInt16("YesterdayHonorableKills", indexes);
@@ -3750,7 +3752,10 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             data.Honor = packet.ReadInt32("Honor", indexes);
             data.HonorNextLevel = packet.ReadInt32("HonorNextLevel", indexes);
             data.Field_F74 = packet.ReadInt32("Field_F74", indexes);
+            // data.Field_1261 = packet.ReadByte("Field_1261", indexes);
             data.PerksProgramCurrency = packet.ReadInt32("PerksProgramCurrency", indexes);
+            data.PvpTierMaxFromWins = packet.ReadInt32("PvpTierMaxFromWins", indexes);
+            data.PvpLastWeeksTierMaxFromWins = packet.ReadInt32("PvpLastWeeksTierMaxFromWins", indexes);
             data.NumBankSlots = packet.ReadByte("NumBankSlots", indexes);
             data.NumAccountBankTabs = packet.ReadByte("NumAccountBankTabs", indexes);
             for (var i = 0; i < 1; ++i)
@@ -3776,7 +3781,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             data.Heirlooms.Resize(packet.ReadUInt32());
             data.HeirloomFlags.Resize(packet.ReadUInt32());
             data.Toys.Resize(packet.ReadUInt32());
-            data.ToyFlags.Resize(packet.ReadUInt32());
+            // data.ToyFlags.Resize(packet.ReadUInt32());
             data.Transmog.Resize(packet.ReadUInt32());
             data.ConditionalTransmog.Resize(packet.ReadUInt32());
             data.SelfResSpells.Resize(packet.ReadUInt32());
@@ -3785,12 +3790,12 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             data.CharacterRestrictions.Resize(packet.ReadUInt32());
             data.SpellPctModByLabel.Resize(packet.ReadUInt32());
             data.SpellFlatModByLabel.Resize(packet.ReadUInt32());
-            data.MawPowers.Resize(packet.ReadUInt32());
-            data.MultiFloorExploration.Resize(packet.ReadUInt32());
-            data.RecipeProgression.Resize(packet.ReadUInt32());
-            data.ReplayedQuests.Resize(packet.ReadUInt32());
-            data.TaskQuests.Resize(packet.ReadUInt32());
-            data.DisabledSpells.Resize(packet.ReadUInt32());
+            // data.MawPowers.Resize(packet.ReadUInt32());
+            // data.MultiFloorExploration.Resize(packet.ReadUInt32());
+            // data.RecipeProgression.Resize(packet.ReadUInt32());
+            // data.ReplayedQuests.Resize(packet.ReadUInt32());
+            // data.TaskQuests.Resize(packet.ReadUInt32());
+            // data.DisabledSpells.Resize(packet.ReadUInt32());
             data.UiChromieTimeExpansionID = packet.ReadInt32("UiChromieTimeExpansionID", indexes);
             data.TimerunningSeasonID = packet.ReadInt32("TimerunningSeasonID", indexes);
             data.TransportServerTime = packet.ReadInt32("TransportServerTime", indexes);
@@ -3798,9 +3803,9 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             data.DEBUGSoulbindConduitRank = packet.ReadInt16("DEBUGSoulbindConduitRank", indexes);
             data.TraitConfigs.Resize(packet.ReadUInt32());
             data.ActiveCombatTraitConfigID = packet.ReadUInt32("ActiveCombatTraitConfigID", indexes);
-            data.CraftingOrders.Resize(packet.ReadUInt32());
-            data.PersonalCraftingOrderCounts.Resize(packet.ReadUInt32());
-            data.NpcCraftingOrders.Resize(packet.ReadUInt32());
+            // data.CraftingOrders.Resize(packet.ReadUInt32());
+            // data.PersonalCraftingOrderCounts.Resize(packet.ReadUInt32());
+            // data.NpcCraftingOrders.Resize(packet.ReadUInt32());
             data.CategoryCooldownMods.Resize(packet.ReadUInt32());
             data.WeeklySpellUses.Resize(packet.ReadUInt32());
             for (var i = 0; i < 17; ++i)
