@@ -27,6 +27,17 @@ namespace WowPacketParser.Parsing
         /// [addedInVersion, +inf[
         /// </summary>
         /// <param name="opcode"></param>
+        /// <param name="addedInVersion"></param>
+        public ParserAttribute(Opcode opcode, ClientBranch branch)
+        {
+            if (ClientVersion.Branch == branch)
+                Opcode = opcode;
+        }
+
+        /// <summary>
+        /// [addedInVersion, +inf[
+        /// </summary>
+        /// <param name="opcode"></param>
         /// <param name="branch"></param>
         /// <param name="addedInVersion"></param>
         public ParserAttribute(Opcode opcode, ClientBranch branch, ClientVersionBuild addedInVersion)
