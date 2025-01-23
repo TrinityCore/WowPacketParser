@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -11,6 +12,9 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("EffectIndex", true)]
         public byte? EffectIndex;
+
+        [DBFieldName("OrderIndex", TargetedDatabaseFlag.SinceTheWarWithin, true, true)]
+        public string OrderIndex;
 
         [DBFieldName("MapID")]
         public ushort? MapID;
