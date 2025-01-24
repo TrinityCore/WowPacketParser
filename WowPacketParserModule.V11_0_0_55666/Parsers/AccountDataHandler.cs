@@ -12,9 +12,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadPackedGuid128("Guid");
             packet.ReadTime64("ServerTime");
 
-            var count = 17;
-
-            for (var i = 0; i < count; ++i)
+            for (var i = 0; i < 17; ++i)
                 packet.ReadTime64($"[{(AccountDataType)i}] Time", i);
         }
     }
