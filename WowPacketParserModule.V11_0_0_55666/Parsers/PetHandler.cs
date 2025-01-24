@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         public static void HandlePetDismissSound(Packet packet)
         {
             packet.ReadPackedGuid128("Pet Guid");
-            packet.ReadUInt32("Model ID");
+            packet.ReadUInt32("Display ID");
             packet.ReadVector3("Position");
         }
     }
