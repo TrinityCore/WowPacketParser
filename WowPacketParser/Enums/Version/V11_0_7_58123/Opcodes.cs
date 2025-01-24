@@ -2077,7 +2077,7 @@ namespace WowPacketParser.Enums.Version.V11_0_7_58123
             { Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0x370142 },
             { Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x370121 },
             { Opcode.SMSG_UPDATE_OBJECT, 0x470000 },
-            { Opcode.SMSG_UNKNOWN_3605009, 0x370211 },
+            { Opcode.SMSG_BATTLE_PAY_DELIVERABLE_DELIVERED, 0x370211 },
             { Opcode.SMSG_UPDATE_PRIMARY_SPEC, 0x37006F },
             { Opcode.SMSG_UPDATE_RECENT_PLAYER_GUIDS, 0x37008C },
             { Opcode.SMSG_UPDATE_TALENT_DATA, 0x37006E },
