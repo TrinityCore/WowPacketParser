@@ -132,6 +132,7 @@ namespace WowPacketParser.Store
 
         // Spell Target Position
         public static readonly DataBag<SpellTargetPosition> SpellTargetPositions = new DataBag<SpellTargetPosition>(new List<SQLOutput> { SQLOutput.spell_target_position });
+        public static readonly StoreMulti<uint, SpellTargetPosition> SpellTargetMultiplePositions = new StoreMulti<uint, SpellTargetPosition>(new List<SQLOutput> { SQLOutput.spell_target_position });
 
         // Hotfixes
         public static readonly DataBag<HotfixData> HotfixDatas = new DataBag<HotfixData>(new List<SQLOutput> { SQLOutput.hotfix_data });
@@ -2122,6 +2123,7 @@ namespace WowPacketParser.Store
             SpellClicks.Clear();
 
             SpellTargetPositions.Clear();
+            SpellTargetMultiplePositions.Clear();
 
             LocalesCreatures.Clear();
             LocalesQuests.Clear();

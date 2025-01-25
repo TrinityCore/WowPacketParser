@@ -63,9 +63,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     if (DBC.SpellEffectStores.ContainsKey(tuple))
                     {
                         var effect = DBC.SpellEffectStores[tuple];
-                        if ((Targets)effect.ImplicitTarget[0] == Targets.TARGET_DEST_DB || (Targets)effect.ImplicitTarget[1] == Targets.TARGET_DEST_DB)
+                        var isValidDBTarget = (short[] implicitTargets, Targets type) =>
                         {
-                            string effectHelper = $"Spell: { StoreGetters.GetName(StoreNameType.Spell, (int)spellID) } Efffect: { effect.Effect } ({ (SpellEffects)effect.Effect })";
+                            foreach (var implicitTarget in implicitTargets)
+                                if ((Targets)implicitTarget == type)
+                                    return true;
+
+                            return false;
+                        };
+                        var isSingleDBTarget = isValidDBTarget(effect.ImplicitTarget, Targets.TARGET_DEST_DB);
+                        var isMultipleDBTarget = isValidDBTarget(effect.ImplicitTarget, Targets.TARGET_DEST_NEARBY_DB);
+                        if (isSingleDBTarget || isMultipleDBTarget)
+                        {
+                            string effectHelper = $"Spell: { StoreGetters.GetName(StoreNameType.Spell, (int)spellID) } Effect {effect.EffectIndex}: { effect.Effect } ({ (SpellEffects)effect.Effect })";
 
                             var spellTargetPosition = new SpellTargetPosition
                             {
@@ -78,8 +88,16 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                 EffectHelper = effectHelper
                             };
 
-                            if (!Storage.SpellTargetPositions.ContainsKey(spellTargetPosition))
-                                Storage.SpellTargetPositions.Add(spellTargetPosition);
+                            if (isSingleDBTarget)
+                            {
+                                if (!Storage.SpellTargetPositions.ContainsKey(spellTargetPosition))
+                                {
+                                    spellTargetPosition.OrderIndex = "0";
+                                    Storage.SpellTargetPositions.Add(spellTargetPosition);
+                                }
+                            }
+                            else
+                                Storage.SpellTargetMultiplePositions.Add(spellID, spellTargetPosition, packet.TimeSpan);
                         }
                     }
                 }
