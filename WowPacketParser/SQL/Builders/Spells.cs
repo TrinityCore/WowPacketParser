@@ -25,7 +25,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string SpellTargetMultiplePositions()
         {
-            if (Storage.SpellTargetPositions.IsEmpty())
+            if (Storage.SpellTargetMultiplePositions.IsEmpty())
                 return string.Empty;
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spell_target_position))
