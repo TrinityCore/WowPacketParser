@@ -362,7 +362,15 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             playSpellVisualKit.KitRecId = packet.ReadInt32("KitRecID");
             playSpellVisualKit.KitType = packet.ReadInt32("KitType");
             playSpellVisualKit.Duration = packet.ReadUInt32("Duration");
-            packet.ReadBit("MountedVisual");
+            packet.ReadBit("SetMountAnim");
+        }
+
+        [Parser(Opcode.SMSG_CANCEL_SPELL_VISUAL_KIT)]
+        public static void HandleCancelSpellVisualKit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Source");
+            packet.ReadInt32("SpellVisualKitID");
+            packet.ReadBit("SetMountAnim");
         }
 
         [Parser(Opcode.CMSG_UPDATE_SPELL_VISUAL)]
