@@ -9,9 +9,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         [Parser(Opcode.SMSG_PET_DISMISS_SOUND)]
         public static void HandlePetDismissSound(Packet packet)
         {
-            packet.ReadPackedGuid128("Pet Guid");
-            packet.ReadUInt32("Display ID");
-            packet.ReadVector3("Position");
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("CreatureDisplayInfoID");
+            packet.ReadVector3("ModelPosition");
         }
     }
 }
