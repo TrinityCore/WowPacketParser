@@ -210,8 +210,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 packet.ReadInt32<CurrencyId>("CurrencyID", i);
                 packet.ReadInt32("QuantityBefore", i);
                 packet.ReadInt32("QuantityAfter", i);
-                packet.ReadInt32("TransferID", i);
-                packet.ReadInt32("UnknownField", i);
+                packet.ReadInt64("TransferID", i);
             }
         }
     }
