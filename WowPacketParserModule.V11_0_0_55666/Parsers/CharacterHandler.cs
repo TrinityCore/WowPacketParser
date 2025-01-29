@@ -208,9 +208,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 packet.ReadPackedGuid128("Player", i);
                 packet.ReadPackedGuid128("Owner", i);
                 packet.ReadInt32<CurrencyId>("CurrencyID", i);
-                packet.ReadInt32("Quantity Before", i);
-                packet.ReadInt32("Quantity After", i);
-                packet.ReadInt32("Transfer ID", i);
+                packet.ReadInt32("QuantityBefore", i);
+                packet.ReadInt32("QuantityAfter", i);
+                packet.ReadInt32("TransferID", i);
                 packet.ReadInt32("UnknownField", i);
             }
         }
