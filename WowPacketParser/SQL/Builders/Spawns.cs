@@ -48,6 +48,70 @@ namespace WowPacketParser.SQL.Builders
             return true;
         }
 
+        private static void AddSpawnTrackingData(RowList<SpawnTracking> spawnTrackingRows, RowList<SpawnTrackingState> spawnTrackingStateRows, uint spawnCount, WoWObject worldObject)
+        {
+            var objectType = worldObject.Type;
+            if (objectType != ObjectType.Unit && objectType != ObjectType.GameObject)
+                return;
+
+            var spawnType = objectType == ObjectType.Unit ? "CGUID" : "OGUID";
+            StoreNameType storeNameType = objectType == ObjectType.Unit ? StoreNameType.Unit : StoreNameType.GameObject;
+            var unitData = objectType == ObjectType.Unit ? (worldObject as Unit).UnitData : null;
+            var gameObjectData = objectType == ObjectType.GameObject ? (worldObject as GameObject).GameObjectData : null;
+
+            // spawn_tracking
+            var spawnTrackingRow = new Row<SpawnTracking>();
+            spawnTrackingRow.Data.SpawnId = $"@{spawnType}+{spawnCount}";
+            spawnTrackingRow.Data.SpawnType = (byte)(objectType == ObjectType.Unit ? 0 : 1);
+            spawnTrackingRow.Data.QuestObjectiveId = unitData is not null ? unitData.StateWorldEffectsQuestObjectiveID : gameObjectData.StateWorldEffectsQuestObjectiveID;
+            spawnTrackingRow.Comment += StoreGetters.GetName(storeNameType, (int)worldObject.ObjectData.EntryID, false);
+
+            spawnTrackingRows.Add(spawnTrackingRow);
+
+            // spawn_tracking_state
+            var spawnTrackingStateRow = new Row<SpawnTrackingState>();
+            spawnTrackingStateRow.Data.SpawnId = $"@{spawnType}+{spawnCount}";
+            spawnTrackingStateRow.Data.SpawnType = (byte)(objectType == ObjectType.Unit ? 0 : 1);
+            spawnTrackingStateRow.Data.Visible = true;
+            spawnTrackingStateRow.Data.StateSpellVisualId = unitData is not null ? unitData.StateSpellVisualID : gameObjectData.StateSpellVisualID;
+            spawnTrackingStateRow.Data.StateAnimId = unitData is not null ? unitData.StateAnimID : gameObjectData.SpawnTrackingStateAnimID;
+            spawnTrackingStateRow.Data.StateAnimKitId = unitData is not null ? unitData.StateAnimKitID : gameObjectData.SpawnTrackingStateAnimKitID;
+            spawnTrackingStateRow.Data.StateWorldEffects = null;
+
+            if (spawnTrackingStateRow.Data.StateSpellVisualId <= 0)
+                spawnTrackingStateRow.Data.StateSpellVisualId = null;
+
+            uint emptyAnimId = DBC.DBC.GetEmptyAnimStateID();
+            if (emptyAnimId == 0 || spawnTrackingStateRow.Data.StateAnimId == emptyAnimId)
+                spawnTrackingStateRow.Data.StateAnimId = null;
+
+            if (spawnTrackingStateRow.Data.StateAnimKitId <= 0)
+                spawnTrackingStateRow.Data.StateAnimKitId = null;
+
+            string stateWorldEffects = string.Empty;
+            uint?[] stateWorldEffectIDs = unitData is not null ? unitData.StateWorldEffectIDs : gameObjectData.StateWorldEffectIDs;
+            if (stateWorldEffectIDs != null && stateWorldEffectIDs.Length != 0)
+            {
+                foreach (uint? worldEffectId in stateWorldEffectIDs)
+                {
+                    if (worldEffectId == 0)
+                        continue;
+
+                    stateWorldEffects += $"{worldEffectId} ";
+                }
+
+                stateWorldEffects = stateWorldEffects.TrimEnd(' ');
+            }
+            if (!string.IsNullOrEmpty(stateWorldEffects))
+                spawnTrackingStateRow.Data.StateWorldEffects = stateWorldEffects;
+
+            spawnTrackingStateRow.Comment += StoreGetters.GetName(storeNameType, (int)worldObject.ObjectData.EntryID, false);
+
+            if (spawnTrackingStateRow.Data.StateSpellVisualId != null || spawnTrackingStateRow.Data.StateAnimId != null
+                || spawnTrackingStateRow.Data.StateAnimKitId != null || spawnTrackingStateRow.Data.StateWorldEffects != null)
+                spawnTrackingStateRows.Add(spawnTrackingStateRow);
+        }
+
         [BuilderMethod(Units = true)]
         public static string Creature(Dictionary<WowGuid, Unit> units)
         {
@@ -276,58 +340,7 @@ namespace WowPacketParser.SQL.Builders
                 }
 
                 if (ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor) && creature.UnitData.StateWorldEffectsQuestObjectiveID > 0)
-                {
-                    // spawn_tracking
-                    var spawnTrackingRow = new Row<SpawnTracking>();
-                    spawnTrackingRow.Data.SpawnId = $"@CGUID+{count}";
-                    spawnTrackingRow.Data.SpawnType = 0;
-                    spawnTrackingRow.Data.QuestObjectiveId = creature.UnitData.StateWorldEffectsQuestObjectiveID;
-                    spawnTrackingRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)entry, false);
-
-                    spawnTrackingRows.Add(spawnTrackingRow);
-
-                    // spawn_tracking_state
-                    var spawnTrackingStateRow = new Row<SpawnTrackingState>();
-                    spawnTrackingStateRow.Data.SpawnId = $"CGUID+{count}";
-                    spawnTrackingStateRow.Data.SpawnType = 1;
-                    spawnTrackingStateRow.Data.Visible = true;
-                    spawnTrackingStateRow.Data.StateSpellVisualId = null;
-                    spawnTrackingStateRow.Data.StateAnimId = null;
-                    spawnTrackingStateRow.Data.StateAnimKitId = null;
-                    spawnTrackingStateRow.Data.StateWorldEffects = null;
-
-                    if (creature.UnitData.StateSpellVisualID > 0)
-                        spawnTrackingStateRow.Data.StateSpellVisualId = creature.UnitData.StateSpellVisualID;
-
-                    uint emptyAnimId = DBC.DBC.GetEmptyAnimStateID();
-                    if (emptyAnimId != 0 && creature.UnitData.StateAnimID != emptyAnimId)
-                        spawnTrackingStateRow.Data.StateAnimId = creature.UnitData.StateAnimID;
-
-                    if (creature.UnitData.StateAnimKitID > 0)
-                        spawnTrackingStateRow.Data.StateAnimKitId = creature.UnitData.StateAnimKitID;
-
-                    string stateWorldEffects = string.Empty;
-                    if (creature.UnitData.StateWorldEffectIDs != null && creature.UnitData.StateWorldEffectIDs.Length != 0)
-                    {
-                        foreach (uint? worldEffectId in creature.UnitData.StateWorldEffectIDs)
-                        {
-                            if (worldEffectId == 0)
-                                continue;
-
-                            stateWorldEffects += $"{worldEffectId} ";
-                        }
-
-                        stateWorldEffects = stateWorldEffects.TrimEnd(' ');
-                    }
-                    if (!string.IsNullOrEmpty(stateWorldEffects))
-                        spawnTrackingStateRow.Data.StateWorldEffects = stateWorldEffects;
-
-                    spawnTrackingStateRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)entry, false);
-
-                    if (spawnTrackingStateRow.Data.StateSpellVisualId != null || spawnTrackingStateRow.Data.StateAnimId != null
-                        || spawnTrackingStateRow.Data.StateAnimKitId != null || spawnTrackingStateRow.Data.StateWorldEffects != null)
-                        spawnTrackingStateRows.Add(spawnTrackingStateRow);
-                }
+                    AddSpawnTrackingData(spawnTrackingRows, spawnTrackingStateRows, count, creature);
 
                 if (creature.Guid.GetHighType() == HighGuidType.Pet || (creature.IsTemporarySpawn() && !Settings.SaveTempSpawns))
                 {
@@ -577,58 +590,7 @@ namespace WowPacketParser.SQL.Builders
                 }
 
                 if (ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor) && go.GameObjectData.StateWorldEffectsQuestObjectiveID > 0)
-                {
-                    // spawn_tracking
-                    var spawnTrackingRow = new Row<SpawnTracking>();
-                    spawnTrackingRow.Data.SpawnId = $"@OGUID+{count}";
-                    spawnTrackingRow.Data.SpawnType = 1;
-                    spawnTrackingRow.Data.QuestObjectiveId = go.GameObjectData.StateWorldEffectsQuestObjectiveID;
-                    spawnTrackingRow.Comment += StoreGetters.GetName(StoreNameType.GameObject, (int)entry, false);
-
-                    spawnTrackingRows.Add(spawnTrackingRow);
-
-                    // spawn_tracking_state
-                    var spawnTrackingStateRow = new Row<SpawnTrackingState>();
-                    spawnTrackingStateRow.Data.SpawnId = $"@OGUID+{count}";
-                    spawnTrackingStateRow.Data.SpawnType = 1;
-                    spawnTrackingStateRow.Data.Visible = true;
-                    spawnTrackingStateRow.Data.StateSpellVisualId = null;
-                    spawnTrackingStateRow.Data.StateAnimId = null;
-                    spawnTrackingStateRow.Data.StateAnimKitId = null;
-                    spawnTrackingStateRow.Data.StateWorldEffects = null;
-
-                    if (go.GameObjectData.StateSpellVisualID > 0)
-                        spawnTrackingStateRow.Data.StateSpellVisualId = go.GameObjectData.StateSpellVisualID;
-
-                    uint emptyAnimId = DBC.DBC.GetEmptyAnimStateID();
-                    if (emptyAnimId != 0  && go.GameObjectData.SpawnTrackingStateAnimID != emptyAnimId)
-                        spawnTrackingStateRow.Data.StateAnimId = go.GameObjectData.SpawnTrackingStateAnimID;
-
-                    if (go.GameObjectData.SpawnTrackingStateAnimKitID > 0)
-                        spawnTrackingStateRow.Data.StateAnimKitId = go.GameObjectData.SpawnTrackingStateAnimKitID;
-
-                    string stateWorldEffects = string.Empty;
-                    if (go.GameObjectData.StateWorldEffectIDs != null && go.GameObjectData.StateWorldEffectIDs.Length != 0)
-                    {
-                        foreach (uint? worldEffectId in go.GameObjectData.StateWorldEffectIDs)
-                        {
-                            if (worldEffectId == 0)
-                                continue;
-
-                            stateWorldEffects += $"{worldEffectId} ";
-                        }
-
-                        stateWorldEffects = stateWorldEffects.TrimEnd(' ');
-                    }
-                    if (!string.IsNullOrEmpty(stateWorldEffects))
-                        spawnTrackingStateRow.Data.StateWorldEffects = stateWorldEffects;
-
-                    spawnTrackingStateRow.Comment += StoreGetters.GetName(StoreNameType.GameObject, (int)entry, false);
-
-                    if (spawnTrackingStateRow.Data.StateSpellVisualId != null || spawnTrackingStateRow.Data.StateAnimId != null
-                        || spawnTrackingStateRow.Data.StateAnimKitId != null || spawnTrackingStateRow.Data.StateWorldEffects != null)
-                        spawnTrackingStateRows.Add(spawnTrackingStateRow);
-                }
+                    AddSpawnTrackingData(spawnTrackingRows, spawnTrackingStateRows, count, go);
 
                 row.Data.SpawnTimeSecs = go.GetDefaultSpawnTime(go.DifficultyID ?? 0);
                 row.Data.AnimProgress = go.GameObjectData.PercentHealth;
