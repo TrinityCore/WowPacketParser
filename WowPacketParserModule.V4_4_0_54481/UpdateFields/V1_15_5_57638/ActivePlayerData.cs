@@ -125,6 +125,10 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
         public System.Nullable<int> TimerunningSeasonID { get; set; }
         public System.Nullable<int> TransportServerTime { get; set; }
         public System.Nullable<uint> WeeklyRewardsPeriodSinceOrigin { get; set; }
+        public System.Nullable<uint>[] GlyphSlots { get; } = new System.Nullable<uint>[6];
+        public System.Nullable<uint>[] Glyphs { get; } = new System.Nullable<uint>[6];
+        public System.Nullable<ushort> GlyphsEnabled { get; set; }
+        public System.Nullable<byte> LfgRoles { get; set; }
         public System.Nullable<short> DEBUGSoulbindConduitRank { get; set; }
         public System.Nullable<uint> ActiveCombatTraitConfigID { get; set; }
         public System.Nullable<float>[] ItemUpgradeHighWatermark { get; } = new System.Nullable<float>[17];
@@ -135,6 +139,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
         public System.Nullable<float> ItemUpgradeHighTrinketWatermark { get; set; }
         public System.Nullable<ulong> LootHistoryInstanceID { get; set; }
         public IStableInfo PetStable { get; set; }
+        public System.Nullable<byte> NumStableSlots { get; set; }
+        public System.Nullable<ulong>[] Field_4348 { get; } = new System.Nullable<ulong>[13];
         public System.Nullable<byte> RequiredMountCapabilityFlags { get; set; }
         public IWalkInData WalkInData { get; set; }
         public IDelveData DelveData { get; set; }
@@ -144,6 +150,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
         public DynamicUpdateField<System.Nullable<ulong>> KnownTitles { get; } = new DynamicUpdateField<System.Nullable<ulong>>();
         public DynamicUpdateField<System.Nullable<int>> DailyQuestsCompleted { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<System.Nullable<int>> AvailableQuestLineXQuestIDs { get; } = new DynamicUpdateField<System.Nullable<int>>();
+        public DynamicUpdateField<System.Nullable<int>> Field_1000 { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<System.Nullable<int>> Heirlooms { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<System.Nullable<uint>> HeirloomFlags { get; } = new DynamicUpdateField<System.Nullable<uint>>();
         public DynamicUpdateField<System.Nullable<int>> Toys { get; } = new DynamicUpdateField<System.Nullable<int>>();

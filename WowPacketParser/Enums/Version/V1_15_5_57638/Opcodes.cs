@@ -1952,7 +1952,7 @@ namespace WowPacketParser.Enums.Version.V1_15_5_57638
             { Opcode.SMSG_SET_MAX_WEEKLY_QUANTITY, 0x370036 },
             { Opcode.SMSG_SET_MELEE_ANIM_KIT, 0x3701C8 },
             { Opcode.SMSG_SET_MOVEMENT_ANIM_KIT, 0x3701C7 },
-            { Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x510028 },
+            // { Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x510028 },
             { Opcode.SMSG_SET_PET_SPECIALIZATION, 0x3700BB },
             { Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT, 0x4A000B },
             { Opcode.SMSG_SET_PLAY_HOVER_ANIM, 0x370052 },

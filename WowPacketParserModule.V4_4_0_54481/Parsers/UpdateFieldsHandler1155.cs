@@ -673,11 +673,11 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
                 {
                     data.Resistances[i] = packet.ReadInt32("Resistances", indexes, i);
                 }
-            }
-            for (var i = 0; i < 7; ++i)
-            {
-                data.ResistanceBuffModsPositive[i] = packet.ReadInt32("ResistanceBuffModsPositive", indexes, i);
-                data.ResistanceBuffModsNegative[i] = packet.ReadInt32("ResistanceBuffModsNegative", indexes, i);
+                for (var i = 0; i < 7; ++i)
+                {
+                    data.ResistanceBuffModsPositive[i] = packet.ReadInt32("ResistanceBuffModsPositive", indexes, i);
+                    data.ResistanceBuffModsNegative[i] = packet.ReadInt32("ResistanceBuffModsNegative", indexes, i);
+                }
             }
             if ((flags & UpdateFieldFlag.Owner) != UpdateFieldFlag.None)
             {
@@ -1704,6 +1704,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             {
                 data.VisualItemReplacements[i] = packet.ReadInt32("VisualItemReplacements", indexes, i);
             }
+            packet.ResetBitReader();
             data.Name = new string('*', (int)packet.ReadBits(6));
             hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
             Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");
@@ -2079,13 +2080,21 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
         {
             var data = new BitVectors();
             packet.ResetBitReader();
-            for (var i = 0; i < 11; ++i)
+            for (var i = 0; i < 13; ++i)
             {
-                data.Values[i].Resize(packet.ReadUInt32());
-                for (var j = 0; j < data.Values[i].Count; ++j)
-                {
-                    data.Values[i][j] = packet.ReadUInt64("Values", indexes, i, j);
-                }
+                data.Values[i] = ReadCreateBitVector(packet, indexes, "Values", i);
+            }
+            return data;
+        }
+
+        public static IBitVector ReadCreateBitVector(Packet packet, params object[] indexes)
+        {
+            var data = new BitVector();
+            packet.ResetBitReader();
+            data.Values.Resize(packet.ReadUInt32());
+            for (var i = 0; i < data.Values.Count; ++i)
+            {
+                data.Values[i] = packet.ReadUInt64("Values", indexes, i);
             }
             return data;
         }
@@ -2102,21 +2111,21 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             {
                 for (var i = 0; i < 11; ++i)
                 {
-                    data.Values[i].ReadUpdateMask(packet);
+                    // data.Values[i].ReadUpdateMask(packet);
                 }
             }
             if (changesMask[0])
             {
-                for (var i = 0; i < 11; ++i)
-                {
-                    for (var j = 0; j < data.Values[i].Count; ++j)
-                    {
-                        if (data.Values[i].UpdateMask[j])
-                        {
-                            data.Values[i][j] = packet.ReadUInt64("Values", indexes, i, j);
-                        }
-                    }
-                }
+                //for (var i = 0; i < 11; ++i)
+                //{
+                //    for (var j = 0; j < data.Values[i].Count; ++j)
+                //    {
+                //        if (data.Values[i].UpdateMask[j])
+                //        {
+                //            data.Values[i][j] = packet.ReadUInt64("Values", indexes, i, j);
+                //        }
+                //    }
+                //}
             }
             packet.ResetBitReader();
             return data;
@@ -3605,10 +3614,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
         {
             var data = new ActivePlayerData();
             packet.ResetBitReader();
-            var hasQuestSession = false;
             var hasPetStable = false;
-            var hasWalkInData = false;
-            var hasDelveData = false;
             for (var i = 0; i < 146; ++i)
             {
                 data.InvSlots[i] = packet.ReadPackedGuid128("InvSlots", indexes, i);
@@ -3692,8 +3698,6 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
                 data.BuybackPrice[i] = packet.ReadUInt32("BuybackPrice", indexes, i);
                 data.BuybackTimestamp[i] = packet.ReadInt64("BuybackTimestamp", indexes, i);
             }
-            packet.ReadUInt32("padding", indexes);
-            packet.ReadUInt32("padding", indexes);
             data.TodayHonorableKills = packet.ReadUInt16("TodayHonorableKills", indexes);
             data.TodayDishonorableKills = packet.ReadUInt16("TodayDishonorableKills", indexes);
             data.YesterdayHonorableKills = packet.ReadUInt16("YesterdayHonorableKills", indexes);
@@ -3741,7 +3745,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             {
                 data.BagSlotFlags[i] = packet.ReadUInt32("BagSlotFlags", indexes, i);
             }
-            for (var i = 0; i < 7; ++i)
+            for (var i = 0; i < 6; ++i)
             {
                 data.BankBagSlotFlags[i] = packet.ReadUInt32("BankBagSlotFlags", indexes, i);
             }
@@ -3752,12 +3756,11 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             data.Honor = packet.ReadInt32("Honor", indexes);
             data.HonorNextLevel = packet.ReadInt32("HonorNextLevel", indexes);
             data.Field_F74 = packet.ReadInt32("Field_F74", indexes);
-            // data.Field_1261 = packet.ReadByte("Field_1261", indexes);
+            data.Field_1261 = packet.ReadByte("Field_1261", indexes);
             data.PerksProgramCurrency = packet.ReadInt32("PerksProgramCurrency", indexes);
             data.PvpTierMaxFromWins = packet.ReadInt32("PvpTierMaxFromWins", indexes);
-            data.PvpLastWeeksTierMaxFromWins = packet.ReadInt32("PvpLastWeeksTierMaxFromWins", indexes);
             data.NumBankSlots = packet.ReadByte("NumBankSlots", indexes);
-            data.NumAccountBankTabs = packet.ReadByte("NumAccountBankTabs", indexes);
+            packet.ReadUInt32("UNK_1", indexes);
             for (var i = 0; i < 1; ++i)
             {
                 data.ResearchSites[i].Resize(packet.ReadUInt32());
@@ -3778,48 +3781,35 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             }
             data.DailyQuestsCompleted.Resize(packet.ReadUInt32());
             data.AvailableQuestLineXQuestIDs.Resize(packet.ReadUInt32());
+            data.Field_1000.Resize(packet.ReadUInt32());
             data.Heirlooms.Resize(packet.ReadUInt32());
             data.HeirloomFlags.Resize(packet.ReadUInt32());
             data.Toys.Resize(packet.ReadUInt32());
-            // data.ToyFlags.Resize(packet.ReadUInt32());
             data.Transmog.Resize(packet.ReadUInt32());
             data.ConditionalTransmog.Resize(packet.ReadUInt32());
             data.SelfResSpells.Resize(packet.ReadUInt32());
-            data.RuneforgePowers.Resize(packet.ReadUInt32());
-            data.TransmogIllusions.Resize(packet.ReadUInt32());
             data.CharacterRestrictions.Resize(packet.ReadUInt32());
             data.SpellPctModByLabel.Resize(packet.ReadUInt32());
             data.SpellFlatModByLabel.Resize(packet.ReadUInt32());
-            // data.MawPowers.Resize(packet.ReadUInt32());
-            // data.MultiFloorExploration.Resize(packet.ReadUInt32());
-            // data.RecipeProgression.Resize(packet.ReadUInt32());
-            // data.ReplayedQuests.Resize(packet.ReadUInt32());
-            // data.TaskQuests.Resize(packet.ReadUInt32());
-            // data.DisabledSpells.Resize(packet.ReadUInt32());
-            data.UiChromieTimeExpansionID = packet.ReadInt32("UiChromieTimeExpansionID", indexes);
+            data.TaskQuests.Resize(packet.ReadUInt32());
             data.TimerunningSeasonID = packet.ReadInt32("TimerunningSeasonID", indexes);
             data.TransportServerTime = packet.ReadInt32("TransportServerTime", indexes);
-            data.WeeklyRewardsPeriodSinceOrigin = packet.ReadUInt32("WeeklyRewardsPeriodSinceOrigin", indexes);
-            data.DEBUGSoulbindConduitRank = packet.ReadInt16("DEBUGSoulbindConduitRank", indexes);
             data.TraitConfigs.Resize(packet.ReadUInt32());
             data.ActiveCombatTraitConfigID = packet.ReadUInt32("ActiveCombatTraitConfigID", indexes);
-            // data.CraftingOrders.Resize(packet.ReadUInt32());
-            // data.PersonalCraftingOrderCounts.Resize(packet.ReadUInt32());
-            // data.NpcCraftingOrders.Resize(packet.ReadUInt32());
+            for (var i = 0; i < 6; ++i)
+            {
+                data.GlyphSlots[i] = packet.ReadUInt32("GlyphSlots", indexes, i);
+                data.Glyphs[i] = packet.ReadUInt32("Glyphs", indexes, i);
+            }
+            data.GlyphsEnabled = packet.ReadUInt16("GlyphsEnabled", indexes);
+            data.LfgRoles = packet.ReadByte("LfgRoles", indexes);
             data.CategoryCooldownMods.Resize(packet.ReadUInt32());
             data.WeeklySpellUses.Resize(packet.ReadUInt32());
-            for (var i = 0; i < 17; ++i)
+            data.NumStableSlots = packet.ReadByte("NumStableSlots", indexes);
+            for (var i = 0; i < 13; ++i)
             {
-                data.ItemUpgradeHighWatermark[i] = packet.ReadSingle("ItemUpgradeHighWatermark", indexes, i);
+                data.Field_4348[i] = packet.ReadUInt64("Field_4348", indexes, i);
             }
-            data.ItemUpgradeHighOnehandWeaponItemID = packet.ReadInt32("ItemUpgradeHighOnehandWeaponItemID", indexes);
-            data.ItemUpgradeHighFingerItemID = packet.ReadInt32("ItemUpgradeHighFingerItemID", indexes);
-            data.ItemUpgradeHighFingerWatermark = packet.ReadSingle("ItemUpgradeHighFingerWatermark", indexes);
-            data.ItemUpgradeHighTrinketItemID = packet.ReadInt32("ItemUpgradeHighTrinketItemID", indexes);
-            data.ItemUpgradeHighTrinketWatermark = packet.ReadSingle("ItemUpgradeHighTrinketWatermark", indexes);
-            data.LootHistoryInstanceID = packet.ReadUInt64("LootHistoryInstanceID", indexes);
-            data.TrackedCollectableSources.Resize(packet.ReadUInt32());
-            data.RequiredMountCapabilityFlags = packet.ReadByte("RequiredMountCapabilityFlags", indexes);
             for (var i = 0; i < data.KnownTitles.Count; ++i)
             {
                 data.KnownTitles[i] = packet.ReadUInt64("KnownTitles", indexes, i);
@@ -3831,6 +3821,10 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             for (var i = 0; i < data.AvailableQuestLineXQuestIDs.Count; ++i)
             {
                 data.AvailableQuestLineXQuestIDs[i] = packet.ReadInt32("AvailableQuestLineXQuestIDs", indexes, i);
+            }
+            for (var i = 0; i < data.Field_1000.Count; ++i)
+            {
+                data.Field_1000[i] = packet.ReadInt32("Field_1000", indexes, i);
             }
             for (var i = 0; i < data.Heirlooms.Count; ++i)
             {
@@ -3844,10 +3838,6 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             {
                 data.Toys[i] = packet.ReadInt32("Toys", indexes, i);
             }
-            for (var i = 0; i < data.ToyFlags.Count; ++i)
-            {
-                data.ToyFlags[i] = packet.ReadUInt32("ToyFlags", indexes, i);
-            }
             for (var i = 0; i < data.Transmog.Count; ++i)
             {
                 data.Transmog[i] = packet.ReadUInt32("Transmog", indexes, i);
@@ -3860,14 +3850,6 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             {
                 data.SelfResSpells[i] = packet.ReadInt32("SelfResSpells", indexes, i);
             }
-            for (var i = 0; i < data.RuneforgePowers.Count; ++i)
-            {
-                data.RuneforgePowers[i] = packet.ReadUInt32("RuneforgePowers", indexes, i);
-            }
-            for (var i = 0; i < data.TransmogIllusions.Count; ++i)
-            {
-                data.TransmogIllusions[i] = packet.ReadUInt32("TransmogIllusions", indexes, i);
-            }
             for (var i = 0; i < data.SpellPctModByLabel.Count; ++i)
             {
                 data.SpellPctModByLabel[i] = ReadCreateSpellPctModByLabel(packet, indexes, "SpellPctModByLabel", i);
@@ -3876,37 +3858,9 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             {
                 data.SpellFlatModByLabel[i] = ReadCreateSpellFlatModByLabel(packet, indexes, "SpellFlatModByLabel", i);
             }
-            for (var i = 0; i < data.MawPowers.Count; ++i)
-            {
-                data.MawPowers[i] = ReadCreateMawPower(packet, indexes, "MawPowers", i);
-            }
-            for (var i = 0; i < data.MultiFloorExploration.Count; ++i)
-            {
-                data.MultiFloorExploration[i] = ReadCreateMultiFloorExplore(packet, indexes, "MultiFloorExploration", i);
-            }
-            for (var i = 0; i < data.RecipeProgression.Count; ++i)
-            {
-                data.RecipeProgression[i] = ReadCreateRecipeProgressionInfo(packet, indexes, "RecipeProgression", i);
-            }
-            for (var i = 0; i < data.ReplayedQuests.Count; ++i)
-            {
-                data.ReplayedQuests[i] = ReadCreateReplayedQuest(packet, indexes, "ReplayedQuests", i);
-            }
             for (var i = 0; i < data.TaskQuests.Count; ++i)
             {
                 data.TaskQuests[i] = ReadCreateQuestLog(packet, indexes, "TaskQuests", i);
-            }
-            for (var i = 0; i < data.DisabledSpells.Count; ++i)
-            {
-                data.DisabledSpells[i] = packet.ReadInt32("DisabledSpells", indexes, i);
-            }
-            for (var i = 0; i < data.PersonalCraftingOrderCounts.Count; ++i)
-            {
-                data.PersonalCraftingOrderCounts[i] = ReadCreatePersonalCraftingOrderCount(packet, indexes, "PersonalCraftingOrderCounts", i);
-            }
-            for (var i = 0; i < data.NpcCraftingOrders.Count; ++i)
-            {
-                data.NpcCraftingOrders[i] = ReadCreateNPCCraftingOrderInfo(packet, indexes, "NpcCraftingOrders", i);
             }
             for (var i = 0; i < data.CategoryCooldownMods.Count; ++i)
             {
@@ -3916,31 +3870,17 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             {
                 data.WeeklySpellUses[i] = ReadCreateWeeklySpellUse(packet, indexes, "WeeklySpellUses", i);
             }
-            for (var i = 0; i < data.TrackedCollectableSources.Count; ++i)
+            for (var i = 0; i < 9; ++i)
             {
-                data.TrackedCollectableSources[i] = ReadCreateCollectableSourceTrackedData(packet, indexes, "TrackedCollectableSources", i);
+                data.PvpInfo[i] = ReadCreatePVPInfo(packet, indexes, "PvpInfo", i);
             }
             packet.ResetBitReader();
-            data.BackpackAutoSortDisabled = packet.ReadBit("BackpackAutoSortDisabled", indexes);
-            data.BackpackSellJunkDisabled = packet.ReadBit("BackpackSellJunkDisabled", indexes);
-            data.BankAutoSortDisabled = packet.ReadBit("BankAutoSortDisabled", indexes);
             data.SortBagsRightToLeft = packet.ReadBit("SortBagsRightToLeft", indexes);
             data.InsertItemsLeftToRight = packet.ReadBit("InsertItemsLeftToRight", indexes);
-            data.HasPerksProgramPendingReward = packet.ReadBit("HasPerksProgramPendingReward", indexes);
-            hasQuestSession = packet.ReadBit("HasQuestSession", indexes);
             hasPetStable = packet.ReadBit("HasPetStable", indexes);
             data.AccountBankTabSettings.Resize(packet.ReadBits(3));
-            hasWalkInData = packet.ReadBit("HasWalkInData", indexes);
-            hasDelveData = packet.ReadBit("HasDelveData", indexes);
-            packet.ResetBitReader();
             data.ResearchHistory = ReadCreateResearchHistory(packet, indexes, "ResearchHistory");
-            if (hasQuestSession)
-            {
-                /*data.QuestSession = */ ReadCreateQuestSession(packet, indexes, "QuestSession");
-            }
             Substructures.PerksProgramHandler.ReadPerksVendorItem(packet, indexes, "FrozenPerksVendorItem");
-            /*data.Field_1410 =*/ ReadCreateActivePlayerUnk901(packet, indexes, "Field_1410");
-            Substructures.MythicPlusHandler.ReadDungeonScoreData(packet, indexes, "DungeonScore");
             for (var i = 0; i < data.CharacterDataElements.Count; ++i)
             {
                 data.CharacterDataElements[i] = ReadCreatePlayerDataElement(packet, indexes, "CharacterDataElements", i);
@@ -3948,10 +3888,6 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             for (var i = 0; i < data.AccountDataElements.Count; ++i)
             {
                 data.AccountDataElements[i] = ReadCreatePlayerDataElement(packet, indexes, "AccountDataElements", i);
-            }
-            for (var i = 0; i < data.PvpInfo.Count; ++i)
-            {
-                data.PvpInfo[i] = ReadCreatePVPInfo(packet, indexes, "PvpInfo", i);
             }
             for (var i = 0; i < data.CharacterRestrictions.Count; ++i)
             {
@@ -3961,10 +3897,6 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             {
                 data.TraitConfigs[i] = ReadCreateTraitConfig(packet, indexes, "TraitConfigs", i);
             }
-            for (var i = 0; i < data.CraftingOrders.Count; ++i)
-            {
-                data.CraftingOrders[i] = ReadCreateCraftingOrder(packet, indexes, "CraftingOrders", i);
-            }
             if (hasPetStable)
             {
                 data.PetStable = ReadCreateStableInfo(packet, indexes, "PetStable");
@@ -3972,14 +3904,6 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
             for (var i = 0; i < data.AccountBankTabSettings.Count; ++i)
             {
                 data.AccountBankTabSettings[i] = ReadCreateBankTabSettings(packet, indexes, "AccountBankTabSettings", i);
-            }
-            if (hasWalkInData)
-            {
-                data.WalkInData = ReadCreateWalkInData(packet, indexes, "WalkInData");
-            }
-            if (hasDelveData)
-            {
-                data.DelveData = ReadCreateDelveData(packet, indexes, "DelveData");
             }
             return data;
         }
