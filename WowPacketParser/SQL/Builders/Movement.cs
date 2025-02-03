@@ -172,14 +172,13 @@ namespace WowPacketParser.SQL.Builders
                         if (pointIdCounter == 1)
                             output.Append($" -- PathType: {path.Type}");
 
-                        if (isLast)
-                            output.AppendLine();
+                        output.AppendLine();
 
                         ++pointIdCounter;
                     }
-
-                    output.AppendLine();
                 }
+                
+                output.AppendLine();
 
                 ++pathIdCounter;
             }
