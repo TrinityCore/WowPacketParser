@@ -6,12 +6,12 @@ using System.CodeDom.Compiler;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects.UpdateFields;
 
-namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
+namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
 {
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
     public class ActivePlayerData : IActivePlayerData
     {
-        public WowGuid[] InvSlots { get; } = new WowGuid[146];
+        public WowGuid[] InvSlots { get; } = new WowGuid[232];
         public WowGuid FarsightObject { get; set; }
         public WowGuid SummonedBattlePetGUID { get; set; }
         public System.Nullable<ulong> Coinage { get; set; }
@@ -37,9 +37,6 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
         public System.Nullable<float> RangedCritPercentage { get; set; }
         public System.Nullable<float> OffhandCritPercentage { get; set; }
         public System.Nullable<float>[] SpellCritPercentage { get; } = new System.Nullable<float>[7];
-        public System.Nullable<int>[] ModDamageDonePos { get; } = new System.Nullable<int>[7];
-        public System.Nullable<int>[] ModDamageDoneNeg { get; } = new System.Nullable<int>[7];
-        public System.Nullable<float>[] ModDamageDonePercent { get; } = new System.Nullable<float>[7];
         public System.Nullable<int> ShieldBlock { get; set; }
         public System.Nullable<float> ShieldBlockCritPercentage { get; set; }
         public System.Nullable<float> Mastery { get; set; }
@@ -52,6 +49,9 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
         public System.Nullable<float> PvpPowerHealing { get; set; }
         public IBitVectors BitVectors { get; set; }
         public IRestInfo[] RestInfo { get; } = new IRestInfo[2];
+        public System.Nullable<int>[] ModDamageDonePos { get; } = new System.Nullable<int>[7];
+        public System.Nullable<int>[] ModDamageDoneNeg { get; } = new System.Nullable<int>[7];
+        public System.Nullable<float>[] ModDamageDonePercent { get; } = new System.Nullable<float>[7];
         public System.Nullable<int> ModHealingDonePos { get; set; }
         public System.Nullable<float> ModHealingPercent { get; set; }
         public System.Nullable<float> ModHealingDonePercent { get; set; }
@@ -100,6 +100,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
         public System.Nullable<float> UiSpellHitModifier { get; set; }
         public System.Nullable<int> HomeRealmTimeOffset { get; set; }
         public System.Nullable<float> ModPetHaste { get; set; }
+        public System.Nullable<sbyte> JailersTowerLevelMax { get; set; }
+        public System.Nullable<sbyte> JailersTowerLevel { get; set; }
         public System.Nullable<byte> LocalRegenFlags { get; set; }
         public System.Nullable<byte> AuraVision { get; set; }
         public System.Nullable<byte> NumBackpackSlots { get; set; }
@@ -107,20 +109,20 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
         public System.Nullable<int> LfgBonusFactionID { get; set; }
         public System.Nullable<ushort> LootSpecID { get; set; }
         public System.Nullable<uint> OverrideZonePVPType { get; set; }
-        public System.Nullable<uint>[] BagSlotFlags { get; } = new System.Nullable<uint>[4];
+        public System.Nullable<uint>[] BagSlotFlags { get; } = new System.Nullable<uint>[5];
         public System.Nullable<uint>[] BankBagSlotFlags { get; } = new System.Nullable<uint>[7];
         public System.Nullable<ulong>[] QuestCompleted { get; } = new System.Nullable<ulong>[1000];
         public System.Nullable<int> Honor { get; set; }
         public System.Nullable<int> HonorNextLevel { get; set; }
         public System.Nullable<int> Field_F74 { get; set; }
         public System.Nullable<byte> Field_1261 { get; set; }
-        public System.Nullable<int> PvpTierMaxFromWins { get; set; }
-        public System.Nullable<int> PvpLastWeeksTierMaxFromWins { get; set; }
-        public System.Nullable<byte> PvpRankProgress { get; set; }
         public System.Nullable<int> PerksProgramCurrency { get; set; }
+        public System.Nullable<int> PvpTierMaxFromWins { get; set; }
         public System.Nullable<byte> NumBankSlots { get; set; }
         public System.Nullable<byte> NumAccountBankTabs { get; set; }
         public IResearchHistory ResearchHistory { get; set; }
+        public IActivePlayerUnk901 Field_1410 { get; set; }
+        public IQuestSession QuestSession { get; set; }
         public System.Nullable<int> UiChromieTimeExpansionID { get; set; }
         public System.Nullable<int> TimerunningSeasonID { get; set; }
         public System.Nullable<int> TransportServerTime { get; set; }

@@ -17,7 +17,7 @@ namespace WowPacketParserModule.Substructures
             packet.ReadInt32("TransmogIllusionID", indexes);
             packet.ReadInt32("ToyID", indexes);
             packet.ReadInt32("Price", indexes);
-            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_0_7_58123))
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_0_7_58123) || ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_6_58797))
                 packet.ReadInt32("OriginalPrice", indexes);
             packet.ReadTime64("AvailableUntil", indexes);
             packet.ReadBit("Disabled", indexes);
