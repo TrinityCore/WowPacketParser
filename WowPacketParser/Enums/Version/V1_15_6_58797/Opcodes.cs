@@ -2115,7 +2115,7 @@ namespace WowPacketParser.Enums.Version.V1_15_6_58797
             { Opcode.SMSG_WHO_IS, 0x37013E },
             { Opcode.SMSG_WILL_BE_KICKED_FOR_ADDED_SUBSCRIPTION_TIME, 0x3702B5 },
             { Opcode.SMSG_WORLD_QUEST_UPDATE_RESPONSE, 0x4A0017 },
-            { Opcode.SMSG_WORLD_SERVER_INFO, 0x370045 },
+            { Opcode.SMSG_WORLD_SERVER_INFO, 0x3B0046 },
             { Opcode.SMSG_WOW_ENTITLEMENT_NOTIFICATION, 0x3702E4 },
             { Opcode.SMSG_WOW_LABS_AREA_INFO, 0x370317 },
             { Opcode.SMSG_WOW_LABS_NOTIFY_PLAYERS_MATCH_END, 0x370313 },

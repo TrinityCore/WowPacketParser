@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
     {
         public WowGuid Caster { get; set; }
         public System.Nullable<byte> Type { get; set; }
-        public ISpellCastVisual SpellVisual { get; set; }
+        public System.Nullable<int> SpellXSpellVisualID { get; set; }
         public System.Nullable<int> SpellID { get; set; }
         public System.Nullable<float> Radius { get; set; }
         public System.Nullable<uint> CastTime { get; set; }

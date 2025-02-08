@@ -3911,6 +3911,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
         public override IActivePlayerData ReadUpdateActivePlayerData(Packet packet, params object[] indexes)
         {
             var data = new ActivePlayerData();
+            /*
             packet.ResetBitReader();
             var rawChangesMask = new int[48];
             var rawMaskMask = new int[2];
@@ -4593,7 +4594,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
                 }
                 if (changesMask[69])
                 {
-                    /*data.SpellCritPercentage = */packet.ReadSingle("SpellCritPercentage", indexes);
+                    // data.SpellCritPercentage = packet.ReadSingle("SpellCritPercentage", indexes);
                 }
             }
             if (changesMask[70])
@@ -4874,7 +4875,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
                 {
                     if (hasQuestSession)
                     {
-                        /*data.QuestSession =*/ ReadUpdateQuestSession(packet, indexes, "QuestSession");
+                        // data.QuestSession = ReadUpdateQuestSession(packet, indexes, "QuestSession");
                     }
                 }
                 if (changesMask[124])
@@ -4883,7 +4884,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
                 }
                 if (changesMask[126])
                 {
-                    /*data.Field_1410 =*/ ReadUpdateActivePlayerUnk901(packet, indexes, "Field_1410");
+                    // data.Field_1410 = ReadUpdateActivePlayerUnk901(packet, indexes, "Field_1410");
                 }
                 if (changesMask[132])
                 {
@@ -5053,7 +5054,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
                         data.ItemUpgradeHighWatermark[i] = packet.ReadSingle("ItemUpgradeHighWatermark", indexes, i);
                     }
                 }
-            }
+            }*/
             return data;
         }
 

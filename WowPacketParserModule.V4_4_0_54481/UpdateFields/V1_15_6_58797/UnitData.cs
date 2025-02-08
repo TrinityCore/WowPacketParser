@@ -11,6 +11,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
     public class UnitData : IMutableUnitData
     {
+        public System.Nullable<long> Health { get; set; }
+        public System.Nullable<long> MaxHealth { get; set; }
         public System.Nullable<int> DisplayID { get; set; }
         public System.Nullable<uint> NpcFlags { get; set; }
         public System.Nullable<uint> NpcFlags2 { get; set; }
@@ -40,13 +42,11 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
         public System.Nullable<byte> Sex { get; set; }
         public System.Nullable<byte> DisplayPower { get; set; }
         public System.Nullable<uint> OverrideDisplayPowerID { get; set; }
-        public System.Nullable<long> Health { get; set; }
         public System.Nullable<int>[] Power { get; } = new System.Nullable<int>[10];
         public System.Nullable<int>[] MaxPower { get; } = new System.Nullable<int>[10];
         public System.Nullable<float>[] ModPowerRegen { get; } = new System.Nullable<float>[10];
         public System.Nullable<float>[] PowerRegenFlatModifier { get; } = new System.Nullable<float>[10];
         public System.Nullable<float>[] PowerRegenInterruptedFlatModifier { get; } = new System.Nullable<float>[10];
-        public System.Nullable<long> MaxHealth { get; set; }
         public System.Nullable<int> Level { get; set; }
         public System.Nullable<int> EffectiveLevel { get; set; }
         public System.Nullable<int> ContentTuningID { get; set; }

@@ -829,36 +829,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadInt32("PauseTimes", index, i);
 
             if (hasMovementTransport)
-            {
-                moveInfo.Transport = new MovementInfo.TransportInfo();
-                packet.ResetBitReader();
-                moveInfo.Transport.Guid = packet.ReadPackedGuid128("TransportGUID", index);
-                moveInfo.Transport.Offset = packet.ReadVector4("TransportPosition", index);
-                sbyte seat = packet.ReadSByte("VehicleSeatIndex", index);
-
-                packet.ReadUInt32("MoveTime", index);
-
-                var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", index);
-                var hasVehicleRecID = packet.ReadBit("HasVehicleRecID", index);
-
-                if (hasPrevMoveTime)
-                    packet.ReadUInt32("PrevMoveTime", index);
-
-                if (hasVehicleRecID)
-                    packet.ReadInt32("VehicleRecID", index);
-
-                if (moveInfo.Transport.Guid.HasEntry() && moveInfo.Transport.Guid.GetHighType() == HighGuidType.Vehicle &&
-                    guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
-                {
-                    VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
-                    {
-                        Entry = moveInfo.Transport.Guid.GetEntry(),
-                        AccessoryEntry = guid.GetEntry(),
-                        SeatId = seat
-                    };
-                    Storage.VehicleTemplateAccessories.Add(vehicleAccessory, packet.TimeSpan);
-                }
-            }
+                ReadTransportData(moveInfo, guid, packet, index);
 
             if (hasAreaTrigger && obj is AreaTriggerCreateProperties)
             {
@@ -1071,12 +1042,41 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             if (hasGameObject)
             {
-                packet.ResetBitReader();
-                packet.ReadInt32("WorldEffectID", index);
+                if (ClientVersion.RemovedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_5_57638))
+                {
+                    packet.ResetBitReader();
+                    packet.ReadInt32("WorldEffectID", index);
 
-                var bit8 = packet.ReadBit("bit8", index);
-                if (bit8)
-                    packet.ReadInt32("Int1", index);
+                    var bit8 = packet.ReadBit("bit8", index);
+                    if (bit8)
+                        packet.ReadInt32("Int1", index);
+                }
+                else
+                {
+                    packet.ResetBitReader();
+                    var worldEffectId = packet.ReadUInt32("WorldEffectID", index);
+                    if (worldEffectId != 0 && obj is GameObject gob)
+                        gob.WorldEffectID = worldEffectId;
+
+                    var hasInt1 = packet.ReadBit("bit8", index);
+                    var hasShipPath = packet.ReadBit("HasShipPath", index);
+                    var hasTransportStatePercent = packet.ReadBit("HasTransportStatePercent", index);
+                    if (hasShipPath)
+                    {
+                        packet.ResetBitReader();
+                        packet.ReadUInt32("Period", index, "ShipPath");
+                        packet.ReadUInt32("Progress", index, "ShipPath");
+                        packet.ReadBit("StopRequested", index, "ShipPath");
+                        packet.ReadBit("Stopped", index, "ShipPath");
+                        packet.ReadBit("Field_16", index, "ShipPath");
+                    }
+
+                    if (hasInt1)
+                        packet.ReadUInt32("Int1", index);
+
+                    if (hasTransportStatePercent)
+                        packet.ReadSingle("TransportStatePercent", index);
+                }
             }
 
             if (hasSmoothPhasing)
