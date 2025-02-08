@@ -68,6 +68,7 @@ namespace WowPacketParser.Enums
         ITEM_FIELD_ENCHANTMENT_9_1,
         ITEM_FIELD_ENCHANTMENT_9_3,
         ITEM_FIELD_FLAGS,
+        [UpdateField(UpdateFieldType.Guid)]
         ITEM_FIELD_GIFTCREATOR,
         ITEM_FIELD_ITEM_TEXT_ID,
         ITEM_FIELD_MAXDURABILITY,
@@ -171,6 +172,7 @@ namespace WowPacketParser.Enums
         UNIT_FIELD_CHANNEL_DATA,
         [UpdateField(UpdateFieldType.Guid)]
         UNIT_FIELD_CHANNEL_OBJECT,
+        [UpdateField(UpdateFieldType.Guid)]
         UNIT_FIELD_CHARM,
         [UpdateField(UpdateFieldType.Guid)]
         UNIT_FIELD_CHARMEDBY,
@@ -324,6 +326,7 @@ namespace WowPacketParser.Enums
         UNIT_FIELD_STATE_ANIM_KIT_ID,
         UNIT_FIELD_STATE_SPELL_VISUAL_ID,
         UNIT_FIELD_STATE_WORLD_EFFECT_ID,
+        [UpdateField(UpdateFieldType.Guid)]
         UNIT_FIELD_SUMMON,
         [UpdateField(UpdateFieldType.Guid)]
         UNIT_FIELD_SUMMONEDBY,
@@ -375,12 +378,14 @@ namespace WowPacketParser.Enums
         PLAYER_CRIT_PERCENTAGE,
         PLAYER_DODGE_PERCENTAGE,
         PLAYER_DODGE_PERCENTAGE_FROM_ATTRIBUTE,
+        [UpdateField(UpdateFieldType.Guid)]
         PLAYER_DUEL_ARBITER,
         PLAYER_DUEL_TEAM,
         PLAYER_END,
         PLAYER_EXPERTISE,
         PLAYER_EXPLORED_ZONES_1,
         PLAYER_FAKE_INEBRIATION,
+        [UpdateField(UpdateFieldType.Guid)]
         PLAYER_FARSIGHT,
         PLAYER_FIELD_ARENA_CURRENCY,
         PLAYER_FIELD_ARENA_TEAM_INFO_1_1,
