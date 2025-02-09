@@ -1005,7 +1005,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 var modTypeCount = packet.ReadUInt32("SpellModifierDataCount", j);
                 for (var i = 0; i < modTypeCount; ++i)
                 {
-                    packet.ReadInt32("ModifierValue", j, i);
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                        packet.ReadSingle("ModifierValue", j, i);
+                    else
+                        packet.ReadInt32("ModifierValue", j, i);
+
                     packet.ReadByte("ClassIndex", j, i);
                 }
             }
