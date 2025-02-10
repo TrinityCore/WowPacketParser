@@ -62,7 +62,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             if (hasOrient)
-                packet.ReadSingle("Orientation", idx);
+            {
+                var orientation = packet.ReadSingle("Orientation", idx);
+                if (spellData != null)
+                    spellData.DstOrientation = orientation;
+            }
 
             packet.ReadWoWString("Name", nameLength, idx);
         }
