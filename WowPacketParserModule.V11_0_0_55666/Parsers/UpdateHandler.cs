@@ -179,7 +179,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
                             var vendorFragment = WowCSUtilities.GetUpdateBitIndex(fragments, WowCSEntityFragments.FVendor_C);
                             if (vendorFragment >= 0 && changedFragments[vendorFragment])
-                                handler.ReadUpdateVendorData(fieldsData, i);
+                                if (!WowCSUtilities.IsIndirect(WowCSEntityFragments.FVendor_C) || changedFragments[vendorFragment + 1])
+                                    handler.ReadUpdateVendorData(fieldsData, i);
                         }
                         updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, TextStartOffset = partWriter.StartOffset, TextLength = partWriter.Length, Text = partWriter.Text});
                         break;
@@ -291,7 +292,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         obj.EntityFragments.Remove(WowCSEntityFragments.CGObject);
                 }
                 if (obj.EntityFragments.Contains(WowCSEntityFragments.FVendor_C))
-                    if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_0_7_58630) || fieldsData.ReadBool("IndirectFragmentActive [FVendor_C]", index))
+                    if (!WowCSUtilities.IsIndirect(WowCSEntityFragments.FVendor_C) || fieldsData.ReadBool("IndirectFragmentActive [FVendor_C]", index))
                         handler.ReadCreateVendorData(fieldsData, flags, index);
             }
 
