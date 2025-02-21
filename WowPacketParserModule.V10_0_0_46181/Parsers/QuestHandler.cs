@@ -394,5 +394,48 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 Storage.UIMapQuests.Add(uiMapQuest, packet.TimeSpan);
             }
         }
+
+        [Parser(Opcode.CMSG_SPAWN_TRACKING_UPDATE)]
+        public static void HandleSpawnTrackingVignette(Packet packet)
+        {
+            var count = packet.ReadUInt32("SpawnTrackingCount");
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadUInt32("SpawnTrackingID", i);
+                packet.ReadInt32("ObjectID", i);
+                packet.ReadInt32("ObjectTypeMask", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_QUEST_POI_UPDATE_RESPONSE)]
+        public static void HandleQuestPOIUpdateResponse(Packet packet)
+        {
+            var count = packet.ReadUInt32("SpawnTrackingCount");
+
+            for (var i = 0; i < count; i++)
+            {
+                var spawnTrackingId = packet.ReadUInt32("SpawnTrackingID", i);
+                packet.ReadInt32("ObjectID", i);
+                var phaseId = packet.ReadInt32("PhaseID", i);
+                var phaseGroup = packet.ReadInt32("PhaseGroupID", i);
+                var phaseUseFlags = packet.ReadInt32("PhaseUseFlags", i);
+
+                packet.ResetBitReader();
+
+                packet.ReadBit("Visible", i);
+
+                SpawnTrackingTemplate spawnTrackingTemplate = new SpawnTrackingTemplate
+                {
+                    SpawnTrackingId = spawnTrackingId,
+                    MapId = CoreParsers.MovementHandler.CurrentMapId,
+                    PhaseId = phaseId,
+                    PhaseGroup = phaseGroup,
+                    PhaseUseFlags = (byte)phaseUseFlags
+                };
+
+                Storage.SpawnTrackingTemplates.Add(spawnTrackingTemplate, packet.TimeSpan);
+            }
+        }
     }
 }

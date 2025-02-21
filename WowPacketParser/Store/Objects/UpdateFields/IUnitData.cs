@@ -47,6 +47,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         uint? StateSpellVisualID { get; }
         uint? StateAnimID { get; }
         uint? StateAnimKitID { get; }
+        uint? StateWorldEffectsQuestObjectiveID { get; }
+        uint?[] StateWorldEffectIDs { get; }
         WowGuid Charm { get; }
         WowGuid Summon { get; }
         WowGuid Critter { get; }
@@ -105,6 +107,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         new uint? StateSpellVisualID { get; set; }
         new uint? StateAnimID { get; set; }
         new uint? StateAnimKitID { get; set; }
+        new uint? StateWorldEffectsQuestObjectiveID { get; set; }
+        new uint?[] StateWorldEffectIDs { get; set; }
         new WowGuid Charm { get; set; }
         new WowGuid Summon { get; set; }
         new WowGuid Critter { get; set; }
@@ -154,6 +158,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields
             data.StateSpellVisualID = update.StateSpellVisualID ?? data.StateSpellVisualID;
             data.StateAnimID = update.StateAnimID ?? data.StateAnimID;
             data.StateAnimKitID = update.StateAnimKitID ?? data.StateAnimKitID;
+            data.StateWorldEffectsQuestObjectiveID = update.StateWorldEffectsQuestObjectiveID ?? data.StateWorldEffectsQuestObjectiveID;
+            data.StateWorldEffectIDs = update.StateWorldEffectIDs ?? data.StateWorldEffectIDs;
             data.Charm = update.Charm ?? data.Charm;
             data.Summon = update.Summon ?? data.Summon;
             data.Critter = update.Critter ?? data.Critter;

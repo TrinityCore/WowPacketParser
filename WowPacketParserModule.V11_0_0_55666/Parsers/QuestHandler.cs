@@ -341,5 +341,24 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 Storage.UIMapQuestLines.Add(uiMapQuestLine, packet.TimeSpan);
             }
         }
+
+        [Parser(Opcode.CMSG_SPAWN_TRACKING_UPDATE)]
+        public static void HandleSpawnTrackingVignette(Packet packet)
+        {
+            var count = packet.ReadUInt32("SpawnTrackingCount");
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadInt32("ObjectTypeMask", i);
+                packet.ReadInt32("ObjectID", i);
+                packet.ReadUInt32("SpawnTrackingID", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_FORCE_SPAWN_TRACKING_UPDATE)]
+        public static void HandleForceSpawnTrackingUpdate(Packet packet)
+        {
+            packet.ReadInt32<QuestId>("Quest");
+        }
     }
 }

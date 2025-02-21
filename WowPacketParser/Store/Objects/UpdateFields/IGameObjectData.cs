@@ -17,6 +17,12 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         int? DisplayID { get; }
         uint? ArtKit { get; }
         int? Level { get; }
+        uint? SpellVisualID { get; }
+        uint? StateSpellVisualID { get; }
+        uint? SpawnTrackingStateAnimID { get; }
+        uint? SpawnTrackingStateAnimKitID { get; }
+        uint? StateWorldEffectsQuestObjectiveID { get; }
+        uint?[] StateWorldEffectIDs { get; }
     }
 
     public interface IMutableGameObjectData : IGameObjectData
@@ -31,6 +37,12 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         new int? DisplayID { get; set; }
         new uint? ArtKit { get; set; }
         new int? Level { get; set; }
+        new uint? SpellVisualID { get; set; }
+        new uint? StateSpellVisualID { get; set; }
+        new uint? SpawnTrackingStateAnimID { get; set; }
+        new uint? SpawnTrackingStateAnimKitID { get; set; }
+        new uint? StateWorldEffectsQuestObjectiveID { get; set; }
+        new uint?[] StateWorldEffectIDs { get; set; }
     }
 
     public static partial class Extensions
@@ -47,6 +59,12 @@ namespace WowPacketParser.Store.Objects.UpdateFields
             data.DisplayID = update.DisplayID ?? data.DisplayID;
             data.ArtKit = update.ArtKit ?? data.ArtKit;
             data.Level = update.Level ?? data.Level;
+            data.SpellVisualID = update.SpellVisualID ?? data.SpellVisualID;
+            data.StateSpellVisualID = update.StateSpellVisualID ?? data.StateSpellVisualID;
+            data.SpawnTrackingStateAnimID = update.SpawnTrackingStateAnimID ?? data.SpawnTrackingStateAnimID;
+            data.SpawnTrackingStateAnimKitID = update.SpawnTrackingStateAnimKitID ?? data.SpawnTrackingStateAnimKitID;
+            data.StateWorldEffectsQuestObjectiveID = update.StateWorldEffectsQuestObjectiveID ?? data.StateWorldEffectsQuestObjectiveID;
+            data.StateWorldEffectIDs = update.StateWorldEffectIDs ?? data.StateWorldEffectIDs;
         }
     }
 }

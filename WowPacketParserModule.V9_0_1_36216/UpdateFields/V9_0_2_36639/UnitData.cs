@@ -9,12 +9,12 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_2_36639
     {
         public int? DisplayID { get; set; }
         public uint?[] NpcFlags { get; } = new uint?[2];
-        public uint? StateSpellVisualID { get; set; }
-        public uint? StateAnimID { get; set; }
-        public uint? StateAnimKitID { get; set; }
-        public uint StateWorldEffectsQuestObjectiveID { get; set; }
-        public int SpellOverrideNameID { get; set; }
-        public uint[] StateWorldEffectIDs { get; set; }
+        public System.Nullable<uint> StateSpellVisualID { get; set; }
+        public System.Nullable<uint> StateAnimID { get; set; }
+        public System.Nullable<uint> StateAnimKitID { get; set; }
+        public System.Nullable<uint> StateWorldEffectsQuestObjectiveID { get; set; }
+        public System.Nullable<int> SpellOverrideNameID { get; set; }
+        public System.Nullable<uint>[] StateWorldEffectIDs { get; set; }
         public WowGuid Charm { get; set; }
         public WowGuid Summon { get; set; }
         public WowGuid Critter { get; set; }

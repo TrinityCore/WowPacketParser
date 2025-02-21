@@ -34,7 +34,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<GameObjectQuestEnder> GameObjectQuestEnders = new DataBag<GameObjectQuestEnder>(new List<SQLOutput> { SQLOutput.gameobject_questender });
         public static readonly DataBag<ItemTemplate> ItemTemplates = new DataBag<ItemTemplate>(new List<SQLOutput> { SQLOutput.item_template });
         public static readonly DataBag<QuestTemplate> QuestTemplates = new DataBag<QuestTemplate>(new List<SQLOutput> { SQLOutput.quest_template });
-        public static readonly DataBag<QuestObjective> QuestObjectives = new DataBag<QuestObjective>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly StoreDictionary<uint, QuestObjective> QuestObjectives = new StoreDictionary<uint, QuestObjective>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestVisualEffect> QuestVisualEffects = new DataBag<QuestVisualEffect>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestRewardDisplaySpell> QuestRewardDisplaySpells = new DataBag<QuestRewardDisplaySpell>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestTreasurePickers> QuestTreasurePickersStorage = new DataBag<QuestTreasurePickers>(new List<SQLOutput> { SQLOutput.quest_template });
@@ -145,6 +145,12 @@ namespace WowPacketParser.Store
         // Scenario
         public static readonly DataBag<ScenarioPOI> ScenarioPOIs = new DataBag<ScenarioPOI>(new List<SQLOutput> { SQLOutput.scenario_poi });
         public static readonly DataBag<ScenarioPOIPoint> ScenarioPOIPoints = new DataBag<ScenarioPOIPoint>(new List<SQLOutput> { SQLOutput.scenario_poi });
+
+        // Spawn Tracking
+        public static readonly DataBag<SpawnTrackingTemplate> SpawnTrackingTemplates = new DataBag<SpawnTrackingTemplate>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly DataBag<SpawnTrackingQuestObjective> SpawnTrackingQuestObjectives = new DataBag<SpawnTrackingQuestObjective>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly StoreDictionary<uint /*SpawnTrackingId*/, int /*MapId*/> SpawnTrackingMaps = new(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly DataBag<SpawnTracking> SpawnTrackings = new DataBag<SpawnTracking>(new List<SQLOutput> { SQLOutput.quest_template });
 
         public static readonly DataBag<BroadcastText> BroadcastTexts = new DataBag<BroadcastText>(new List<SQLOutput> { SQLOutput.broadcast_text });
         public static readonly DataBag<BroadcastTextLocale> BroadcastTextLocales = new DataBag<BroadcastTextLocale>(new List<SQLOutput> { SQLOutput.broadcast_text_locale });
@@ -2141,6 +2147,11 @@ namespace WowPacketParser.Store
 
             ScenarioPOIs.Clear();
             ScenarioPOIPoints.Clear();
+
+            SpawnTrackingTemplates.Clear();
+            SpawnTrackingQuestObjectives.Clear();
+            SpawnTrackingMaps.Clear();
+            SpawnTrackings.Clear();
 
             BroadcastTexts.Clear();
             BroadcastTextLocales.Clear();

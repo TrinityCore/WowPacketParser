@@ -101,15 +101,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
         }
 
-        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
-        public static void HandleLoginVerifyWorld(Packet packet)
-        {
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
-            packet.ReadVector4("Position");
-            packet.ReadUInt32("Reason");
-        }
-
         [HasSniffData]
+        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         [Parser(Opcode.SMSG_NEW_WORLD)]
         public static void HandleNewWorld(Packet packet)
         {

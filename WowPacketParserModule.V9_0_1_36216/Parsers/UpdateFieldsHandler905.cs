@@ -802,7 +802,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_5_37862
             data.StateSpellVisualID = packet.ReadUInt32("StateSpellVisualID", indexes);
             data.StateAnimID = packet.ReadUInt32("StateAnimID", indexes);
             data.StateAnimKitID = packet.ReadUInt32("StateAnimKitID", indexes);
-            data.StateWorldEffectIDs = new uint[packet.ReadUInt32()];
+            data.StateWorldEffectIDs = new System.Nullable<uint>[packet.ReadUInt32()];
             data.StateWorldEffectsQuestObjectiveID = packet.ReadUInt32("StateWorldEffectsQuestObjectiveID", indexes);
             data.SpellOverrideNameID = packet.ReadInt32("SpellOverrideNameID", indexes);
             for (var i = 0; i < data.StateWorldEffectIDs.Length; ++i)
@@ -1008,7 +1008,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_5_37862
             {
                 if (changesMask[1])
                 {
-                    data.StateWorldEffectIDs = Enumerable.Range(0, (int)packet.ReadBits(32)).Select(x => new uint()).Cast<uint>().ToArray();
+                    data.StateWorldEffectIDs = Enumerable.Range(0, (int)packet.ReadBits(32)).Select(x => new uint()).Cast<System.Nullable<uint>>().ToArray();
                     for (var i = 0; i < data.StateWorldEffectIDs.Length; ++i)
                     {
                         data.StateWorldEffectIDs[i] = packet.ReadUInt32("StateWorldEffectIDs", indexes, i);
@@ -3653,7 +3653,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_5_37862
             data.StateSpellVisualID = packet.ReadUInt32("StateSpellVisualID", indexes);
             data.SpawnTrackingStateAnimID = packet.ReadUInt32("SpawnTrackingStateAnimID", indexes);
             data.SpawnTrackingStateAnimKitID = packet.ReadUInt32("SpawnTrackingStateAnimKitID", indexes);
-            data.StateWorldEffectIDs = new uint[packet.ReadUInt32()];
+            data.StateWorldEffectIDs = new System.Nullable<uint>[packet.ReadUInt32()];
             data.StateWorldEffectsQuestObjectiveID = packet.ReadUInt32("StateWorldEffectsQuestObjectiveID", indexes);
             for (var i = 0; i < data.StateWorldEffectIDs.Length; ++i)
             {
@@ -3690,7 +3690,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_5_37862
             {
                 if (changesMask[1])
                 {
-                    data.StateWorldEffectIDs = Enumerable.Range(0, (int)packet.ReadBits(32)).Select(x => new uint()).Cast<uint>().ToArray();
+                    data.StateWorldEffectIDs = Enumerable.Range(0, (int)packet.ReadBits(32)).Select(x => new uint()).Cast<System.Nullable<uint>>().ToArray();
                     for (var i = 0; i < data.StateWorldEffectIDs.Length; ++i)
                     {
                         data.StateWorldEffectIDs[i] = packet.ReadUInt32("StateWorldEffectIDs", indexes, i);

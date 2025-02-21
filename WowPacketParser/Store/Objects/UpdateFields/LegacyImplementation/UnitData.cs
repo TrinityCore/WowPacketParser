@@ -149,6 +149,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         public uint? StateSpellVisualID => UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_STATE_SPELL_VISUAL_ID);
         public uint? StateAnimID => UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_STATE_ANIM_ID);
         public uint? StateAnimKitID => UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_STATE_ANIM_KIT_ID);
+        public uint? StateWorldEffectsQuestObjectiveID => null;
+        public uint?[] StateWorldEffectIDs => UpdateFields.GetValue<UnitField, uint?[]>(UnitField.UNIT_FIELD_STATE_WORLD_EFFECT_ID);
         public WowGuid Charm => GetGuidValue(UnitField.UNIT_FIELD_CHARM);
         public WowGuid Summon => GetGuidValue(UnitField.UNIT_FIELD_SUMMON);
         public WowGuid Critter => GetGuidValue(UnitField.UNIT_FIELD_CRITTER);

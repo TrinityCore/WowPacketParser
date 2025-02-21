@@ -334,7 +334,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                     Storage.LocalesQuestObjectives.Add(localesQuestObjectives, packet.TimeSpan);
                 }
 
-                Storage.QuestObjectives.Add(questInfoObjective, packet.TimeSpan);
+                Storage.QuestObjectives.Add((uint)questInfoObjective.ID, questInfoObjective, packet.TimeSpan);
             }
 
             quest.LogTitle = packet.ReadWoWString("LogTitle", logTitleLen);

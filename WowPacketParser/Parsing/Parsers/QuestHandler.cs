@@ -70,6 +70,28 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        public static void AddSpawnTrackingData(QuestPOI questPoi, TimeSpan TimeSpan)
+        {
+            // spawn_tracking_quest_objective
+            if (Storage.QuestObjectives.ContainsKey((uint)questPoi.QuestObjectiveID))
+            {
+                if (questPoi.SpawnTrackingID != 0 && questPoi.QuestObjectiveID != 0)
+                {
+                    SpawnTrackingQuestObjective spawnTrackingQuestObjective = new SpawnTrackingQuestObjective
+                    {
+                        SpawnTrackingId = (uint)questPoi.SpawnTrackingID,
+                        QuestObjectiveId = (uint)questPoi.QuestObjectiveID
+                    };
+
+                    Storage.SpawnTrackingQuestObjectives.Add(spawnTrackingQuestObjective, TimeSpan);
+                }
+            }
+
+            // spawn_tracking_template (helper to retrieve the mapId)
+            if (questPoi.SpawnTrackingID != 0)
+                Storage.SpawnTrackingMaps.Add((uint)questPoi.SpawnTrackingID, (int)questPoi.MapID);
+        }
+
         private static void ReadExtraQuestInfo510(Packet packet)
         {
             packet.ReadUInt32("Choice Item Count");

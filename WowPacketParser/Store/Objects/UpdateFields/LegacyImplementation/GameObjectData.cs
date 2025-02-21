@@ -50,11 +50,25 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         public sbyte? TypeID => (sbyte)((UpdateFields.GetValue<GameObjectField, int>(GameObjectField.GAMEOBJECT_BYTES_1) & 0x0000FF00) >> 8);
 
         public byte? PercentHealth => (byte)((UpdateFields.GetValue<GameObjectField, uint>(GameObjectField.GAMEOBJECT_BYTES_1) & 0xFF000000) >> 24);
-        
+
         public int? DisplayID => UpdateFields.GetValue<GameObjectField, int?>(GameObjectField.GAMEOBJECT_DISPLAYID);
-        
+
         public uint? ArtKit => UpdateFields.GetValue<GameObjectField, uint?>(GameObjectField.GAMEOBJECT_ARTKIT);
-        
+
         public int? Level => UpdateFields.GetValue<GameObjectField, int?>(GameObjectField.GAMEOBJECT_LEVEL);
+
+        public uint? SpellVisualID => UpdateFields.GetValue<GameObjectField, uint?>(GameObjectField.GAMEOBJECT_SPELL_VISUAL_ID);
+
+        public uint? StateSpellVisualID => UpdateFields.GetValue<GameObjectField, uint?>(GameObjectField.GAMEOBJECT_STATE_SPELL_VISUAL_ID);
+
+        public uint? SpawnTrackingStateAnimID => UpdateFields.GetValue<GameObjectField, uint?>(GameObjectField.GAMEOBJECT_STATE_ANIM_ID);
+
+        public uint? SpawnTrackingStateAnimKitID => UpdateFields.GetValue<GameObjectField, uint?>(GameObjectField.GAMEOBJECT_STATE_ANIM_KIT_ID);
+
+        public uint? StateWorldEffectsQuestObjectiveID => null;
+
+        public uint?[] StateWorldEffectIDs => UpdateFields.GetValue<GameObjectField, uint?[]>(GameObjectField.GAMEOBJECT_STATE_WORLD_EFFECT_ID);
+
+
     }
 }
