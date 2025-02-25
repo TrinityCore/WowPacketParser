@@ -255,7 +255,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     Storage.LocalesQuestObjectives.Add(localesQuestObjectives, packet.TimeSpan);
                 }
 
-                Storage.QuestObjectives.Add(questInfoObjective, packet.TimeSpan);
+                Storage.QuestObjectives.Add((uint)questInfoObjective.ID, questInfoObjective, packet.TimeSpan);
             }
 
             quest.LogTitle = packet.ReadWoWString("LogTitle", logTitleLen);
@@ -831,6 +831,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     }
 
                     Storage.QuestPOIs.Add(questPoi, packet.TimeSpan);
+
+                    CoreParsers.QuestHandler.AddSpawnTrackingData(questPoi, packet.TimeSpan);
                 }
             }
         }
@@ -849,12 +851,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadInt32("SpawnTrackingID", i);
-                packet.ReadInt32("QuestObjectID", i);
+                var spawnTrackingId = packet.ReadInt32("SpawnTrackingID", i);
+                packet.ReadInt32("ObjectID", i);
 
                 packet.ResetBitReader();
 
                 packet.ReadBit("Visible", i);
+
+                SpawnTrackingTemplate spawnTrackingTemplate = new SpawnTrackingTemplate
+                {
+                    SpawnTrackingId = (uint)spawnTrackingId,
+                    MapId = CoreParsers.MovementHandler.CurrentMapId
+                };
+
+                Storage.SpawnTrackingTemplates.Add(spawnTrackingTemplate, packet.TimeSpan);
             }
         }
     }

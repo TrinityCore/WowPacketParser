@@ -276,5 +276,60 @@ namespace WowPacketParser.SQL.Builders
                 return $"{questName} ended by {gobName}";
             });
         }
+
+        [BuilderMethod]
+        public static string SpawnTrackingTemplates()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
+            if (Storage.SpawnTrackingTemplates.IsEmpty())
+                return string.Empty;
+
+            if (Settings.UseDBC)
+            {
+                foreach (var spawnTracking in Storage.SpawnTrackingTemplates)
+                {
+                    if (Storage.SpawnTrackingMaps.TryGetValue((uint)spawnTracking.Item1.SpawnTrackingId, out int mapId) && DBC.DBC.Map.ContainsKey(mapId))
+                    {
+                        var map = DBC.DBC.Map[mapId];
+                        while (map.ParentMapID != -1 || map.CosmeticParentMapID != -1)
+                        {
+                            int parentMapId = map.ParentMapID != -1 ? map.ParentMapID : map.CosmeticParentMapID;
+                            if (!DBC.DBC.Map.ContainsKey(parentMapId))
+                                break;
+
+                            map = DBC.DBC.Map[parentMapId];
+                            mapId = parentMapId;
+                        }
+
+                        spawnTracking.Item1.MapId = (uint)mapId;
+                    }
+                }
+            }
+
+            var templatesDb = SQLDatabase.Get(Storage.SpawnTrackingTemplates);
+
+            return SQLUtil.Compare(Storage.SpawnTrackingTemplates, templatesDb, x =>
+            {
+                string phase = StoreGetters.GetName(StoreNameType.PhaseId, (int)x.PhaseId, true);
+                string map = StoreGetters.GetName(StoreNameType.Map, (int)x.MapId, true);
+                return $"Map: {map} - Phase: {phase}";
+            });
+        }
+
+        [BuilderMethod]
+        public static string SpawnTrackingQuestObjectives()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
+            if (Storage.SpawnTrackingQuestObjectives.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.SpawnTrackingQuestObjectives);
+
+            return SQLUtil.Compare(Storage.SpawnTrackingQuestObjectives, templatesDb, StoreNameType.QuestObjective);
+        }
     }
 }

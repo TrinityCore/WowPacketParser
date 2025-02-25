@@ -37,9 +37,9 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.QuestObjectives.IsEmpty())
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.QuestObjectives);
+            var templatesDb = SQLDatabase.Get(Storage.QuestObjectives.Values);
 
-            return SQLUtil.Compare(Storage.QuestObjectives, templatesDb, StoreNameType.QuestObjective);
+            return SQLUtil.Compare(Storage.QuestObjectives.Values, templatesDb, StoreNameType.QuestObjective);
         }
 
         [BuilderMethod(true)]

@@ -37,10 +37,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY)]
         public static void HandleClientEnterWorld(Packet packet)
         {
-            var mapId = packet.ReadInt32<MapId>("MapID");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("MapID");
             packet.ReadBit("Showing");
 
-            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
+            packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "LOAD_SCREEN");
         }
 
         [Parser(Opcode.SMSG_WEATHER)]

@@ -19,6 +19,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_5_57638
         public System.Nullable<uint> StateSpellVisualID { get; set; }
         public System.Nullable<uint> StateAnimID { get; set; }
         public System.Nullable<uint> StateAnimKitID { get; set; }
+        public System.Nullable<uint> StateWorldEffectsQuestObjectiveID { get; set; } = null;
         public System.Nullable<uint>[] StateWorldEffectIDs { get; set; }
         public WowGuid Charm { get; set; }
         public WowGuid Summon { get; set; }

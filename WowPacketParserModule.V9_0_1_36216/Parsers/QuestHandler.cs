@@ -273,7 +273,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     Storage.LocalesQuestObjectives.Add(localesQuestObjectives, packet.TimeSpan);
                 }
 
-                Storage.QuestObjectives.Add(questInfoObjective, packet.TimeSpan);
+                Storage.QuestObjectives.Add((uint)questInfoObjective.ID, questInfoObjective, packet.TimeSpan);
             }
 
             quest.LogTitle = packet.ReadWoWString("LogTitle", logTitleLen);
@@ -367,6 +367,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     questPoi.AlwaysAllowMergingBlobs = packet.ReadBit("AlwaysAllowMergingBlobs", i, j);
 
                     Storage.QuestPOIs.Add(questPoi, packet.TimeSpan);
+
+                    CoreParsers.QuestHandler.AddSpawnTrackingData(questPoi, packet.TimeSpan);
                 }
             }
         }
