@@ -7,6 +7,10 @@ using WowPacketParser.Enums.Version.V1_13_6_36231;
 using WowPacketParser.Enums.Version.V1_14_1_40688;
 using WowPacketParser.Enums.Version.V1_14_4_51146;
 using WowPacketParser.Enums.Version.V1_15_0_52146;
+using WowPacketParser.Enums.Version.V1_15_3_55515;
+using WowPacketParser.Enums.Version.V1_15_4_56738;
+using WowPacketParser.Enums.Version.V1_15_5_57638;
+using WowPacketParser.Enums.Version.V1_15_6_58797;
 using WowPacketParser.Enums.Version.V2_4_3_8606;
 using WowPacketParser.Enums.Version.V2_5_1_38835;
 using WowPacketParser.Enums.Version.V2_5_2_39570;
@@ -82,11 +86,8 @@ using WowPacketParser.Enums.Version.V11_0_0_55666;
 using WowPacketParser.Enums.Version.V11_0_2_55959;
 using WowPacketParser.Enums.Version.V11_0_5_57171;
 using WowPacketParser.Enums.Version.V11_0_7_58123;
+using WowPacketParser.Enums.Version.V11_1_0_59347;
 using WowPacketParser.Misc;
-using WowPacketParser.Enums.Version.V1_15_3_55515;
-using WowPacketParser.Enums.Version.V1_15_4_56738;
-using WowPacketParser.Enums.Version.V1_15_5_57638;
-using WowPacketParser.Enums.Version.V1_15_6_58797;
 
 namespace WowPacketParser.Enums.Version
 {
@@ -757,6 +758,8 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V11_0_7_59207:
                 case ClientVersionBuild.V11_0_7_59302:
                     return ClientVersionBuild.V11_0_7_58123;
+                case ClientVersionBuild.V11_1_0_59347:
+                    return ClientVersionBuild.V11_1_0_59347;
                 case ClientVersionBuild.V1_13_2_31446:
                 case ClientVersionBuild.V1_13_2_31650:
                 case ClientVersionBuild.V1_13_2_31687:
@@ -1177,6 +1180,8 @@ namespace WowPacketParser.Enums.Version
                     return Opcodes_11_0_5.Opcodes(direction);
                 case ClientVersionBuild.V11_0_7_58123:
                     return Opcodes_11_0_7.Opcodes(direction);
+                case ClientVersionBuild.V11_1_0_59347:
+                    return Opcodes_11_1_0.Opcodes(direction);
 
                 case ClientVersionBuild.V1_13_2_31446:
                     return Opcodes_1_13_2.Opcodes(direction);
