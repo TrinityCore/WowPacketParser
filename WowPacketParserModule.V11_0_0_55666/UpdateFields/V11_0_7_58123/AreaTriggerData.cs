@@ -19,7 +19,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_7_58123
         public System.Nullable<uint> TimeToTargetPos { get; set; }
         public System.Nullable<int> SpellID { get; set; }
         public System.Nullable<int> SpellForVisuals { get; set; }
-        public ISpellCastVisual SpellVisual { get; set; }
+        public System.Nullable<int> SpellXSpellVisualID { get; set; }
         public System.Nullable<float> BoundsRadius2D { get; set; }
         public System.Nullable<uint> DecalPropertiesID { get; set; }
         public WowGuid CreatingEffectGUID { get; set; }
