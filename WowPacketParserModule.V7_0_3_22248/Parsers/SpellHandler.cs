@@ -133,7 +133,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             if (hasOrient)
-                packet.ReadSingle("Orientation", idx);
+            {
+                var orientation = packet.ReadSingle("Orientation", idx);
+                if (packetSpellData != null)
+                    packetSpellData.DstOrientation = orientation;
+            }
 
             int mapID = -1;
             if (hasMapID)
