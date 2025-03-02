@@ -405,6 +405,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 packet.ReadBit("RemoteTimeValid", index);
                 var hasInertia = packet.ReadBit("HasInertia", index);
                 var hasAdvFlying = packet.ReadBit("HasAdvFlying", index);
+                var hasDriveStatus = false;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                    hasDriveStatus = packet.ReadBit("HasDriveStatus", index);
 
                 if (hasTransport)
                     movementUpdate.Transport = ReadTransportData(moveInfo, guid, packet, index);
@@ -437,6 +440,15 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         packet.ReadVector2("Fall", index);
                         packet.ReadSingle("Horizontal Speed", index);
                     }
+                }
+
+                if (hasDriveStatus)
+                {
+                    packet.ResetBitReader();
+                    packet.ReadBit("Accelerating", index, "DriveStatus");
+                    packet.ReadBit("Drifting", index, "DriveStatus");
+                    packet.ReadSingle("Speed", index, "DriveStatus");
+                    packet.ReadSingle("MovementAngle", index, "DriveStatus");
                 }
 
                 movementUpdate.WalkSpeed = moveInfo.WalkSpeed = packet.ReadSingle("WalkSpeed", index) / 2.5f;

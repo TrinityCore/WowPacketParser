@@ -1,6 +1,5 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.Substructures
 {
@@ -54,6 +53,15 @@ namespace WowPacketParserModule.Substructures
         {
             packet.ReadSingle("ForwardVelocity", idx);
             packet.ReadSingle("UpVelocity", idx);
+        }
+
+        public static void ReadDriveStatusData(Packet packet, params object[] idx)
+        {
+            packet.ResetBitReader();
+            packet.ReadBit("Accelerating", idx);
+            packet.ReadBit("Drifting", idx);
+            packet.ReadSingle("Speed", idx);
+            packet.ReadSingle("MovementAngle", idx);
         }
 
         public static MovementInfo ReadMovementStats602(Packet packet, params object[] idx)
@@ -151,6 +159,10 @@ namespace WowPacketParserModule.Substructures
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
                 hasAdvFlying = packet.ReadBit("HasAdvFlying", idx);
 
+            var hasDriveStatus = false;
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_1_0_59347))
+                hasDriveStatus = packet.ReadBit("HasDriveStatus", idx);
+
             if (hasTransport)
                 info.Transport = ReadTransportData(packet, idx, "TransportData");
 
@@ -165,6 +177,10 @@ namespace WowPacketParserModule.Substructures
 
             if (hasFall)
                 ReadFallData(packet, idx, "FallData");
+
+            if (hasDriveStatus)
+                ReadDriveStatusData(packet, idx, "DriveStatus");
+
             return info;
         }
 

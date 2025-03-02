@@ -61,9 +61,19 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             response.TypeFlags = (uint?)creature.TypeFlags ?? 0;
             creature.TypeFlags2 = response.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2");
 
-            creature.Type = packet.ReadInt32E<CreatureType>("CreatureType");
-            creature.Family = packet.ReadInt32E<CreatureFamily>("CreatureFamily");
-            creature.Rank = packet.ReadInt32E<CreatureRank>("Classification");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+            {
+                creature.Type = packet.ReadByteE<CreatureType>("CreatureType");
+                creature.Family = packet.ReadInt32E<CreatureFamily>("CreatureFamily");
+                creature.Rank = packet.ReadSByteE<CreatureRank>("Classification");
+            }
+            else
+            {
+                creature.Type = packet.ReadInt32E<CreatureType>("CreatureType");
+                creature.Family = packet.ReadInt32E<CreatureFamily>("CreatureFamily");
+                creature.Rank = packet.ReadInt32E<CreatureRank>("Classification");
+            }
+
             response.Type = (int?)creature.Type ?? 0;
             response.Family = (int?)creature.Family ?? 0;
             response.Rank = (int?)creature.Rank ?? 0;

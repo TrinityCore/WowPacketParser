@@ -199,7 +199,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packetAuraUpdate.Updates.Add(auraEntry);
                 var aura = new Aura();
 
-                auraEntry.Slot = packet.ReadByte("Slot", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                    auraEntry.Slot = packet.ReadUInt16("Slot", i);
+                else
+                    auraEntry.Slot = packet.ReadByte("Slot", i);
 
                 packet.ResetBitReader();
                 var hasAura = packet.ReadBit("HasAura", i);
@@ -216,6 +219,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     aura.Level = packet.ReadUInt16("CastLevel", i);
                     aura.Charges = packet.ReadByte("Applications", i);
                     packet.ReadInt32("ContentTuningID", i);
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                        packet.ReadVector3("DstLocation", i);
 
                     packet.ResetBitReader();
 

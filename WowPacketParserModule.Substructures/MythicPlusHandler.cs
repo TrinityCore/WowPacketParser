@@ -16,6 +16,9 @@ namespace WowPacketParserModule.Substructures
             packet.ReadInt32("BestRunLevel", indexes);
             packet.ReadInt32("BestRunDurationMS", indexes);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                packet.ReadByte("Unknown1110", indexes);
+
             packet.ResetBitReader();
             packet.ReadBit("FinishedSuccess", indexes);
         }

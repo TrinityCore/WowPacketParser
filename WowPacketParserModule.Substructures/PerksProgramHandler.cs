@@ -20,6 +20,8 @@ namespace WowPacketParserModule.Substructures
             if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_0_7_58123) || ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_6_58797))
                 packet.ReadInt32("OriginalPrice", indexes);
             packet.ReadTime64("AvailableUntil", indexes);
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_1_0_59347))
+                packet.ReadInt32("WarbandSceneID", indexes);
             packet.ReadBit("Disabled", indexes);
             if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_0_5_57171))
                 packet.ReadBit("DoesNotExpire", indexes);
