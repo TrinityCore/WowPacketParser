@@ -13,6 +13,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         {
             packet.ReadInt32("Rule", indexes);
             packet.ReadInt32("Value", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_7_58123))
+                packet.ReadSingle("ValueF", indexes);
         }
 
         public static void ReadDebugTimeInfo(Packet packet, params object[] indexes)
@@ -40,7 +42,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         {
             packet.ReadBit("Override");
         }
-        
+
         [Parser(Opcode.SMSG_SPLASH_SCREEN_SHOW_LATEST)]
         public static void HandleSplashScreenShowLastest(Packet packet)
         {
@@ -66,7 +68,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadUInt32("DaysInCycle", "RAFSystem");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_7_48676))
             {
-                packet.ReadUInt32("Unknown1007", "RAFSystem");
+                packet.ReadUInt32("RewardsVersion", "RAFSystem");
             }
             else
             {
@@ -74,25 +76,33 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadUInt32("TwitterPostThrottleCooldown");
             }
 
-            packet.ReadUInt32("TokenPollTimeSeconds");
-            packet.ReadUInt32("KioskSessionMinutes");
-            packet.ReadInt64("TokenBalanceAmount");
+            packet.ReadUInt32("CommercePricePollTimeSeconds");
+            packet.ReadUInt32("KioskSessionDurationMinutes");
+            packet.ReadInt64("RedeemForBalanceAmount");
 
-            packet.ReadUInt32("BpayStoreProductDeliveryDelay");
+            packet.ReadUInt32("BpayStorePurchaseTimeout");
 
-            packet.ReadUInt32("ClubsPresenceUpdateTimer");
-            packet.ReadUInt32("HiddenUIClubsPresenceUpdateTimer");
+            packet.ReadUInt32("ClubsPresenceDelay");
+            packet.ReadUInt32("ClubPresenceUnsubscribeDelay");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
             {
-                packet.ReadInt32("ActiveSeason");
-                var gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
+                packet.ReadInt32("ContentSetID");
+                var gameRuleValuesCount = packet.ReadUInt32("GameRulesCount");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+                {
+                    packet.ReadInt32("ActiveTimerunningSeasonID");
+                    packet.ReadInt32("RemainingTimerunningSeasonSeconds");
+                }
 
-                packet.ReadInt16("MaxPlayerNameQueriesPerPacket");
+                packet.ReadInt16("MaxPlayerGuidLookupsPerRequest");
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
-                    packet.ReadInt16("PlayerNameQueryTelemetryInterval");
+                    packet.ReadInt16("NameLookupTelemetryInterval");
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
-                    packet.ReadUInt32("PlayerNameQueryInterval");
+                    packet.ReadUInt32("NotFoundCacheTimeSeconds");
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                    packet.ReadUInt32("RealmPvpTypeOverride");
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
                 {
@@ -101,8 +111,15 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     packet.ReadInt32("AddonChatThrottle.UsedTriesPerMessage");
                 }
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                {
+                    packet.ReadSingle("AddonPerformanceMsgWarning");
+                    packet.ReadSingle("AddonPerformanceMsgError");
+                    packet.ReadSingle("AddonPerformanceMsgOverall");
+                }
+
                 for (var i = 0; i < gameRuleValuesCount; ++i)
-                    ReadGameRuleValuePair(packet, "GameRuleValues");
+                    ReadGameRuleValuePair(packet, "GameRules");
             }
 
             packet.ResetBitReader();
@@ -121,48 +138,51 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("RecruitingEnabled", "RAFSystem");
             packet.ReadBit("CharUndeleteEnabled");
             packet.ReadBit("RestrictedAccount");
-            packet.ReadBit("CommerceSystemEnabled");
-            packet.ReadBit("TutorialsEnabled");
+            packet.ReadBit("CommerceServerEnabled");
+            packet.ReadBit("TutorialEnabled");
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_7_48676))
                 packet.ReadBit("TwitterEnabled");
-            packet.ReadBit("Unk67");
-            packet.ReadBit("WillKickFromWorld");
+            packet.ReadBit("VeteranTokenRedeemWillKick");
+            packet.ReadBit("WorldTokenRedeemWillKick");
 
             packet.ReadBit("KioskModeEnabled");
             packet.ReadBit("CompetitiveModeEnabled");
-            packet.ReadBit("TokenBalanceEnabled");
-            packet.ReadBit("WarModeFeatureEnabled");
-            packet.ReadBit("ClubsEnabled");
-            packet.ReadBit("ClubsBattleNetClubTypeAllowed");
-            packet.ReadBit("ClubsCharacterClubTypeAllowed");
-            packet.ReadBit("ClubsPresenceUpdateEnabled");
+            packet.ReadBit("RedeemForBalanceAvailable");
+            packet.ReadBit("WarModeEnabled");
+            packet.ReadBit("CommunitiesEnabled");
+            packet.ReadBit("BnetGroupsEnabled");
+            packet.ReadBit("CharacterCommunitiesEnabled");
+            packet.ReadBit("ClubPresenceAllowSubscribeAll");
 
-            packet.ReadBit("VoiceChatDisabledByParentalControl");
-            packet.ReadBit("VoiceChatMutedByParentalControl");
+            packet.ReadBit("VoiceChatParentalDisabled");
+            packet.ReadBit("VoiceChatParentalMuted");
             packet.ReadBit("QuestSessionEnabled");
-            packet.ReadBit("IsMuted");
+            packet.ReadBit("IsChatMuted");
             packet.ReadBit("ClubFinderEnabled");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
                 packet.ReadBit("CommunityFinderEnabled");
-            packet.ReadBit("Unknown901CheckoutRelated");
+            packet.ReadBit("BrowserCrashReporterEnabled");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
             {
-                packet.ReadBit("TextToSpeechFeatureEnabled");
-                packet.ReadBit("ChatDisabledByDefault");
-                packet.ReadBit("ChatDisabledByPlayer");
-                packet.ReadBit("LFGListCustomRequiresAuthenticator");
+                packet.ReadBit("SpeakForMeAllowed");
+                packet.ReadBit("DoesAccountNeedAADCPrompt");
+                packet.ReadBit("IsAccountOptedInToAADC");
+                packet.ReadBit("LfgRequireAuthenticatorEnabled");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
             {
-                packet.ReadBit("AddonsDisabled");
+                packet.ReadBit("ScriptsDisallowedForBeta");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+                    packet.ReadBit("TimerunningEnabled");
+
                 packet.ReadBit("WarGamesEnabled"); // classic only
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
             {
-                packet.ReadBit("ContentTrackingEnabled");
+                packet.ReadBit("IsPlayerContentTrackingEnabled");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_7_51187))
@@ -171,19 +191,42 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
             {
                 packet.ReadBit("IsGroupFinderEnabled"); // classic only
-                packet.ReadBit("IsLFDEnabled"); // classic only
 
-                packet.ReadBit("IsLFREnabled"); // classic only
-                packet.ReadBit("IsPremadeGroupEnabled"); // classic only
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_0_7_58123))
+                {
+                    packet.ReadBit("IsLFDEnabled"); // classic only
+                    packet.ReadBit("IsLFREnabled"); // classic only
+                    packet.ReadBit("IsPremadeGroupEnabled"); // classic only
+                }
             }
 
             var unknown1027StrLen = 0u;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
             {
-                packet.ReadBit("CanShowSetRoleButton");
+                packet.ReadBit("PremadeGroupsEnabled");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_7_58123))
+                    packet.ReadBit("UseActivePlayerDataQuestCompleted");
+
                 packet.ReadBit("Unused1027_1");
-                packet.ReadBit("Unused1027_2");
+                packet.ReadBit("GuildEventsEditsEnabled");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+                    packet.ReadBit("GuildTradeSkillsEnabled");
+
                 unknown1027StrLen = packet.ReadBits(7);
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+            {
+                packet.ReadBit("BNSendWhisperUseV2Services");
+                packet.ReadBit("BNSendGameDataUseV2Services");
+                packet.ReadBit("IsAccountCurrencyTransferEnabled");
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_7_58123))
+            {
+                packet.ReadBit("Unused1107_1");
+                packet.ReadBit("LobbyMatchmakerQueueFromMainlineEnabled");
+                packet.ReadBit("CanSendLobbyMatchmakerPartyCustomizations");
             }
 
             {
@@ -241,43 +284,50 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("BpayStoreAvailable");
             packet.ReadBit("BpayStoreDisabledByParentalControls");
             packet.ReadBit("CharUndeleteEnabled");
-            packet.ReadBit("CommerceSystemEnabled");
-            packet.ReadBit("Unk14");
-            packet.ReadBit("WillKickFromWorld");
-            packet.ReadBit("IsExpansionPreorderInStore");
+            packet.ReadBit("CommerceServerEnabled");
+            packet.ReadBit("VeteranTokenRedeemWillKick");
+            packet.ReadBit("WorldTokenRedeemWillKick");
+            packet.ReadBit("ExpansionPreorderInStore");
             packet.ReadBit("KioskModeEnabled");
-            packet.ReadBit("IsCompetitiveModeEnabled");
+            packet.ReadBit("CompetitiveModeEnabled");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
-                packet.ReadBit("IsBoostEnabled");
+                packet.ReadBit("BoostEnabled");
             packet.ReadBit("TrialBoostEnabled");
-            packet.ReadBit("TokenBalanceEnabled");
+            packet.ReadBit("RedeemForBalanceAvailable");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+                packet.ReadBit("PaidCharacterTransfersBetweenBnetAccountsEnabled");
             packet.ReadBit("LiveRegionCharacterListEnabled");
             packet.ReadBit("LiveRegionCharacterCopyEnabled");
             packet.ReadBit("LiveRegionAccountCopyEnabled");
 
             packet.ReadBit("LiveRegionKeyBindingsCopyEnabled");
-            packet.ReadBit("Unknown901CheckoutRelated");
+            packet.ReadBit("BrowserCrashReporterEnabled");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
-                packet.ReadBit("Unused1002_2");
+                packet.ReadBit("IsEmployeeAccount");
             var europaTicket = packet.ReadBit("IsEuropaTicketSystemStatusEnabled");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
-                packet.ReadBit("IsNameReservationEnabled");
+                packet.ReadBit("NameReservationOnly");
             var launchEta = packet.ReadBit();
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
                 packet.ReadBit("TimerunningEnabled");
-            packet.ReadBit("AddonsDisabled");
-            packet.ReadBit("Unused1000");
+            packet.ReadBit("ScriptsDisallowedForBeta");
+            packet.ReadBit("PlayerIdentityOptionsEnabled");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_7_48676))
             {
-                packet.ReadBit("AccountSaveDataExportEnabled");
-                packet.ReadBit("AccountLockedByExport");
+                packet.ReadBit("AccountExportEnabled");
+                packet.ReadBit("AccountLockedPostExport");
             }
 
             var realmHiddenAlertLen = 0u;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
-            {
                 realmHiddenAlertLen = packet.ReadBits(11);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+            {
+                packet.ReadBit("BNSendWhisperUseV2Services");
+                packet.ReadBit("BNSendGameDataUseV2Services");
+                packet.ReadBit("CharacterSelectListModeRealmless");
             }
 
             packet.ResetBitReader();
@@ -285,14 +335,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (europaTicket)
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
 
-            packet.ReadUInt32("TokenPollTimeSeconds");
-            packet.ReadUInt32("KioskSessionMinutes");
-            packet.ReadInt64("TokenBalanceAmount");
-            packet.ReadInt32("MaxCharactersPerRealm");
+            packet.ReadUInt32("CommercePricePollTimeSeconds");
+            packet.ReadUInt32("KioskSessionDurationMinutes");
+            packet.ReadInt64("RedeemForBalanceAmount");
+            packet.ReadInt32("MaxCharactersOnThisRealm");
             var liveRegionCharacterCopySourceRegionsCount = packet.ReadUInt32("LiveRegionCharacterCopySourceRegionsCount");
-            packet.ReadUInt32("BpayStoreProductDeliveryDelay");
-            packet.ReadInt32("ActiveCharacterUpgradeBoostType");
-            packet.ReadInt32("ActiveClassTrialBoostType");
+            packet.ReadUInt32("BpayStorePurchaseTimeout");
+            packet.ReadInt32("ActiveBoostType");
+            packet.ReadInt32("TrialBoostType");
             packet.ReadInt32("MinimumExpansionLevel");
             packet.ReadInt32("MaximumExpansionLevel");
 
@@ -300,7 +350,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
             {
-                packet.ReadInt32("ActiveSeason");
+                packet.ReadInt32("ContentSetID");
                 gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
@@ -308,20 +358,20 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     packet.ReadInt32("ActiveTimerunningSeasonID");
                     packet.ReadInt32("RemainingTimerunningSeasonSeconds");
                 }
-                packet.ReadInt16("MaxPlayerNameQueriesPerPacket");
+                packet.ReadInt16("MaxPlayerGuidLookupsPerRequest");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
-                packet.ReadInt16("PlayerNameQueryTelemetryInterval");
+                packet.ReadInt16("NameLookupTelemetryInterval");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
-                packet.ReadUInt32("PlayerNameQueryInterval");
+                packet.ReadUInt32("NotFoundCacheTimeSeconds");
 
             uint debugTimeEventCount = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_7_48676))
             {
                 debugTimeEventCount = packet.ReadUInt32("DebugTimeEventCount");
-                packet.ReadInt32("Unused1007");
+                packet.ReadInt32("MostRecentTimeEventID");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_6_53840))
@@ -337,7 +387,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadUInt32("LiveRegionCharacterCopySourceRegion", i);
 
             for (var i = 0; i < gameRuleValuesCount; ++i)
-                ReadGameRuleValuePair(packet, "GameRuleValues", i);
+                ReadGameRuleValuePair(packet, "GameRules", i);
 
             for (var i = 0; i < debugTimeEventCount; ++i)
                 ReadDebugTimeInfo(packet, "DebugTimeEvent", i);
