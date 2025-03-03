@@ -40,7 +40,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadUInt32("Flags", idx);
             packet.ReadUInt32("Flags2", idx);
             packet.ReadUInt32("Flags3", idx);
-            packet.ReadByte("UnkWod61x", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                packet.ReadUInt32("Flags4", idx);
+            packet.ReadByte("CantLoginReason", idx);
             packet.ReadUInt32("PetCreatureDisplayID", idx);
             packet.ReadUInt32("PetExperienceLevel", idx);
             packet.ReadUInt32("PetCreatureFamilyID", idx);
@@ -48,7 +50,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             for (uint j = 0; j < 19; ++j)
                 ReadVisualItemInfo(packet, idx, "VisualItems", j);
 
-            packet.ReadInt32("Unknown703", idx);
+            packet.ReadInt32("SaveVersion", idx);
             packet.ReadTime64("LastPlayedTime", idx);
             packet.ReadInt32("LastLoginVersion", idx);
 
@@ -59,6 +61,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
             packet.ReadInt32("TimerunningSeasonID", idx);
             packet.ReadUInt32("OverrideSelectScreenFileDataID", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                packet.ReadUInt32("Unused1110_1", idx);
 
             for (var j = 0u; j < customizationCount; ++j)
                 V9_0_1_36216.Parsers.CharacterHandler.ReadChrCustomizationChoice(packet, idx, "Customizations", j);
@@ -67,6 +71,11 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
             var nameLength = packet.ReadBits(6);
             var firstLogin = packet.ReadBit("FirstLogin", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+            {
+                packet.ReadBit("Unused1110_2", idx);
+                packet.ReadBit("Unused1110_3", idx);
+            }
 
             var name = packet.ReadWoWString("Character Name", nameLength, idx);
 
@@ -90,7 +99,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadBit("RpeResetAvailable", idx);
             packet.ReadBit("RpeResetQuestClearAvailable", idx);
 
-            packet.ReadUInt32("Flags4", idx);
+            packet.ReadUInt32("RestrictionFlags", idx);
             var mailSenderLengths = new uint[packet.ReadUInt32()];
             var mailSenderTypes = packet.ReadUInt32();
 
@@ -116,6 +125,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             ReadBasicCharacterListEntry(packet, idx, "Basic");
             packet.ReadUInt64("Money", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                packet.ReadSingle("AvgEquippedItemLevel", idx);
+
             packet.ReadSingle("CurrentSeasonMythicPlusOverallScore", idx);
             packet.ReadInt32("CurrentSeasonBestPvpRating", idx);
             packet.ReadSByte("PvpRatingBracket", idx);
@@ -132,12 +144,48 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
         public static void ReadWarbandGroup(Packet packet, params object[] idx)
         {
+            packet.ResetBitReader();
+
             packet.ReadUInt64("GroupID", idx);
-            packet.ReadByte("Unknown_1100", idx);
+            packet.ReadByte("OrderIndex", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                packet.ReadUInt32("WarbandSceneID", idx);
+
             packet.ReadInt32("Flags", idx);
             var memberCount = packet.ReadUInt32();
             for (var i = 0u; i < memberCount; ++i)
                 ReadWarbandGroupMember(packet, idx, "Members", i);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+            {
+                var nameLength = packet.ReadBits(9);
+                packet.ReadWoWString("Name", nameLength, idx);
+            }
+        }
+
+        public static void ReadRaceLimitDisableInfo(Packet packet, params object[] idx)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                packet.ReadSByteE<Race>("RaceID", idx);
+            else
+                packet.ReadInt32E<Race>("RaceID", idx);
+
+            packet.ReadInt32("BlockReason", idx);
+        }
+
+        public static void ReadRaceUnlockData(Packet packet, params object[] idx)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                packet.ReadSByteE<Race>("RaceID", idx);
+            else
+                packet.ReadInt32E<Race>("RaceID", idx);
+
+            packet.ResetBitReader();
+            packet.ReadBit("HasExpansion", idx);
+            packet.ReadBit("HasAchievement", idx);
+            packet.ReadBit("HasHeritageArmor", idx);
+            packet.ReadBit("IsLocked", idx);
+            packet.ReadBit("Unused1027", idx);
         }
 
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
@@ -168,10 +216,11 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 V8_0_1_27101.Parsers.CharacterHandler.ReadUnlockedConditionalAppearance(packet, "UnlockedConditionalAppearances", i);
 
             for (var i = 0u; i < raceLimitDisablesCount; i++)
-                V9_0_1_36216.Parsers.CharacterHandler.ReadRaceLimitDisableInfo(packet, "RaceLimitDisableInfo", i);
+                ReadRaceLimitDisableInfo(packet, "RaceLimitDisableInfo", i);
 
-            for (var i = 0u; i < warbandGroupsCount; ++i)
-                ReadWarbandGroup(packet, i, "WarbandGroups");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_1_0_59347))
+                for (var i = 0u; i < warbandGroupsCount; ++i)
+                    ReadWarbandGroup(packet, i, "WarbandGroups");
 
             for (var i = 0u; i < charsCount; ++i)
                 ReadCharacterListEntry(packet, i, "Characters");
@@ -180,7 +229,11 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 ReadRegionwideCharacterListEntry(packet, i, "RegionwideCharacters");
 
             for (var i = 0u; i < raceUnlockCount; ++i)
-                V7_0_3_22248.Parsers.CharacterHandler.ReadRaceUnlockData(packet, i, "RaceUnlockData");
+                ReadRaceUnlockData(packet, i, "RaceUnlockData");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                for (var i = 0u; i < warbandGroupsCount; ++i)
+                    ReadWarbandGroup(packet, i, "WarbandGroups");
         }
 
         [Parser(Opcode.CMSG_STAND_STATE_CHANGE, ClientVersionBuild.V11_0_7_58123)]

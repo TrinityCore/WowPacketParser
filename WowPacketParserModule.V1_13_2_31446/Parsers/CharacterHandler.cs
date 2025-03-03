@@ -55,9 +55,9 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             packet.ReadTime("LastPlayedTime", idx);
 
             packet.ReadInt16("SpecID", idx);
-            packet.ReadInt32("Unknown703", idx);
+            packet.ReadInt32("SaveVersion", idx);
             packet.ReadInt32("InterfaceVersion", idx);
-            packet.ReadUInt32("Flags4", idx);
+            packet.ReadUInt32("RestrictionFlags", idx);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V1_13_7_38386))
                 packet.ReadBool("ExpansionChosen", idx);
@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             var nameLength = packet.ReadBits("Character Name Length", 6, idx);
             var firstLogin = packet.ReadBit("FirstLogin", idx);
             packet.ReadBit("BoostInProgress", idx);
-            packet.ReadBits("UnkWod61x", 5, idx);
+            packet.ReadBits("CantLoginReason", 5, idx);
 
             packet.ReadWoWString("Character Name", nameLength, idx);
 

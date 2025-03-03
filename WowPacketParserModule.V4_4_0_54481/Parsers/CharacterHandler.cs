@@ -132,9 +132,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ReadTime64("LastPlayedTime", idx);
             packet.ReadInt16("SpecID", idx);
-            packet.ReadInt32("Unknown703", idx);
+            packet.ReadInt32("SaveVersion", idx);
             packet.ReadInt32("LastLoginVersion", idx);
-            packet.ReadUInt32("Flags4", idx);
+            packet.ReadUInt32("RestrictionFlags", idx);
             var mailSenderLengths = new uint[packet.ReadUInt32()];
             var mailSenderTypes = new uint[packet.ReadUInt32()];
             packet.ReadUInt32("OverrideSelectScreenFileDataID", idx);
@@ -152,8 +152,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var nameLength = packet.ReadBits("Character Name Length", 6, idx);
             var firstLogin = packet.ReadBit("FirstLogin", idx);
             packet.ReadBit("BoostInProgress", idx);
-            packet.ReadBits("UnkWod61x", 5, idx);
-            packet.ReadBits("Unk440_1", 2, idx);
+            packet.ReadBits("CantLoginReason", 5, idx);
+            packet.ReadBits("EraChoiceState", 2, idx);
             packet.ReadBit("RpeResetAvailable", idx);
             packet.ReadBit("RpeResetQuestClearAvailable", idx);
 
@@ -278,7 +278,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         public static void ReadWarbandGroup(Packet packet, params object[] idx)
         {
             packet.ReadUInt64("GroupID", idx);
-            packet.ReadByte("Unknown_1100", idx);
+            packet.ReadByte("OrderIndex", idx);
             packet.ReadInt32("Flags", idx);
             var memberCount = packet.ReadUInt32();
             for (var i = 0u; i < memberCount; ++i)
@@ -304,7 +304,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("Flags", idx);
             packet.ReadUInt32("Flags2", idx);
             packet.ReadUInt32("Flags3", idx);
-            packet.ReadByte("UnkWod61x", idx);
+            packet.ReadByte("CantLoginReason", idx);
             packet.ReadUInt32("PetCreatureDisplayID", idx);
             packet.ReadUInt32("PetExperienceLevel", idx);
             packet.ReadUInt32("PetCreatureFamilyID", idx);
@@ -312,7 +312,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (uint j = 0; j < 19; ++j)
                 ReadVisualItemInfo441(packet, idx, "VisualItems", j);
 
-            packet.ReadInt32("Unknown703", idx);
+            packet.ReadInt32("SaveVersion", idx);
             packet.ReadTime64("LastPlayedTime", idx);
             packet.ReadInt32("LastLoginVersion", idx);
 
@@ -364,7 +364,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("RpeResetAvailable", idx);
             packet.ReadBit("RpeResetQuestClearAvailable", idx);
 
-            packet.ReadUInt32("Flags4", idx);
+            packet.ReadUInt32("RestrictionFlags", idx);
             var mailSenderLengths = new uint[packet.ReadUInt32()];
             var mailSenderTypes = packet.ReadUInt32();
 

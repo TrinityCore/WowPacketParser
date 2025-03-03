@@ -68,9 +68,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ReadTime64("LastPlayedTime", idx);
             packet.ReadInt16("SpecID", idx);
-            packet.ReadInt32("Unknown703", idx);
+            packet.ReadInt32("SaveVersion", idx);
             packet.ReadInt32("LastLoginVersion", idx);
-            packet.ReadUInt32("Flags4", idx);
+            packet.ReadUInt32("RestrictionFlags", idx);
             var mailSenderLengths = new uint[packet.ReadUInt32()];
             var mailSenderTypes = new uint[packet.ReadUInt32()];
             packet.ReadUInt32("OverrideSelectScreenFileDataID", idx);
@@ -86,7 +86,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             var nameLength = packet.ReadBits("Character Name Length", 6, idx);
             var firstLogin = packet.ReadBit("FirstLogin", idx);
             packet.ReadBit("BoostInProgress", idx);
-            packet.ReadBits("UnkWod61x", 5, idx);
+            packet.ReadBits("CantLoginReason", 5, idx);
             packet.ReadBits("Unk", 2, idx);
             packet.ReadBit("RpeResetAvailable", idx);
             packet.ReadBit("RpeResetQuestClearAvailable", idx);
