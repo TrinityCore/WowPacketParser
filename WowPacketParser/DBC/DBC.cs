@@ -226,7 +226,9 @@ namespace WowPacketParser.DBC
 
         public static uint GetEmptyAnimStateID()
         {
-            return (uint)AnimationData.Count;
+            if (AnimationData != null)
+                return (uint)AnimationData.Count;
+            return 0;
         }
 
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
