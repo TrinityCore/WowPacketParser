@@ -95,7 +95,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("AllowMultipleRoles");
             packet.ReadBit("QuestSessionActive");
             var len = packet.ReadBits(6);
-            packet.ReadBit("Unused440");
+            packet.ReadBit("IsCrossFaction");
 
             packet.ResetBitReader();
 
@@ -112,7 +112,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             packet.ReadPackedGuid128("InviterGuid");
             packet.ReadPackedGuid128("InviterBNetAccountID");
-            packet.ReadInt16("Unk1");
+            packet.ReadInt16("InviterCfgRealmID");
             packet.ReadByte("ProposedRoles");
             var lfgSlots = packet.ReadInt32();
             packet.ReadInt32("LfgCompletedMask");

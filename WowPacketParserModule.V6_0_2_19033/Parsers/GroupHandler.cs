@@ -377,15 +377,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("InviterCfgRealmID");
             packet.ReadInt16("Unk1");
 
-            packet.ResetBitReader();
-
-            packet.ReadBit("IsLocal");
-            packet.ReadBit("Unk2");
-
-            var bits2 = packet.ReadBits(8);
-            var bits258 = packet.ReadBits(8);
-            packet.ReadWoWString("InviterRealmNameActual", bits2);
-            packet.ReadWoWString("InviterRealmNameNormalized", bits258);
+            SessionHandler.ReadVirtualRealmNameInfo(packet, "InviterRealmName");
 
             packet.ReadInt32("ProposedRoles");
             var int32 = packet.ReadInt32("LfgSlotsCount");

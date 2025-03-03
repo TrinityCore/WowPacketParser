@@ -15,26 +15,36 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBytes("SessionKey", sessionKeyLength);
         }
 
-        [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE, ClientVersionBuild.V8_1_0_28724)]
+        public static void ReadVirtualRealmNameInfo(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            packet.ReadBit("IsLocal", indexes);
+            packet.ReadBit("IsHiddenFromPlayers", indexes);
+
+            var bitsCount = 8;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724) && ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683))
+                bitsCount = 9;
+
+            var actualNameLength = packet.ReadBits(bitsCount);
+            var normalizedNameLength = packet.ReadBits(bitsCount);
+            packet.ReadWoWString("RealmNameActual", actualNameLength, indexes);
+            packet.ReadWoWString("RealmNameNormalized", normalizedNameLength, indexes);
+        }
+
+        public static void ReadVirtualRealmInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadUInt32("RealmAddress", indexes);
+            ReadVirtualRealmNameInfo(packet, indexes, "RealmNameInfo");
+        }
+
+        [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleRealmQueryResponse(Packet packet)
         {
             packet.ReadUInt32("VirtualRealmAddress");
 
             var state = packet.ReadByte("LookupState");
             if (state == 0)
-            {
-                packet.ResetBitReader();
-
-                packet.ReadBit("IsLocal");
-                packet.ReadBit("Unk bit");
-
-                var bits2 = packet.ReadBits(9);
-                var bits258 = packet.ReadBits(9);
-                packet.ReadBit();
-
-                packet.ReadWoWString("RealmNameActual", bits2);
-                packet.ReadWoWString("RealmNameNormalized", bits258);
-            }
+                ReadVirtualRealmNameInfo(packet, "NameInfo");
         }
 
         [Parser(Opcode.SMSG_BATTLE_NET_CONNECTION_STATUS, ClientVersionBuild.V8_2_0_30898)]

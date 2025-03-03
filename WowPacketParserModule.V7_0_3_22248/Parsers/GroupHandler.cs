@@ -128,19 +128,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("MustBeBNetFriend");
             packet.ReadBit("AllowMultipleRoles");
             var len = packet.ReadBits(6);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+                packet.ReadBit("IsCrossFaction");
 
-            packet.ResetBitReader();
-            packet.ReadInt32("InviterVirtualRealmAddress");
-            packet.ReadBit("IsLocal");
-            packet.ReadBit("Unk2");
-            var bits2 = packet.ReadBits(8);
-            var bits258 = packet.ReadBits(8);
-            packet.ReadWoWString("InviterRealmNameActual", bits2);
-            packet.ReadWoWString("InviterRealmNameNormalized", bits258);
+            V6_0_2_19033.Parsers.SessionHandler.ReadVirtualRealmInfo(packet, "InviterRealmInfo");
 
             packet.ReadPackedGuid128("InviterGuid");
             packet.ReadPackedGuid128("InviterBNetAccountID");
-            packet.ReadInt16("Unk1");
+            packet.ReadInt16("InviterCfgRealmID");
             packet.ReadInt32("ProposedRoles");
             var lfgSlots = packet.ReadInt32();
             packet.ReadInt32("LfgCompletedMask");

@@ -86,16 +86,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadUInt16("NumPlayersAlliance");
 
                 for (var i = 0; i < realms; ++i)
-                {
-                    packet.ReadUInt32("RealmAddress", "VirtualRealms", i);
-                    packet.ResetBitReader();
-                    packet.ReadBit("IsLocal", "VirtualRealms", i);
-                    packet.ReadBit("IsInternalRealm", "VirtualRealms", i);
-                    var nameLen1 = packet.ReadBits(8);
-                    var nameLen2 = packet.ReadBits(8);
-                    packet.ReadWoWString("RealmNameActual", nameLen1, "VirtualRealms", i);
-                    packet.ReadWoWString("RealmNameNormalized", nameLen2, "VirtualRealms", i);
-                }
+                    V6_0_2_19033.Parsers.SessionHandler.ReadVirtualRealmInfo(packet, "VirtualRealms", i);
 
                 for (var i = 0; i < templates; ++i)
                 {
