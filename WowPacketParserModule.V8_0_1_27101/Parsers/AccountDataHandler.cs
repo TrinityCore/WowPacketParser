@@ -6,28 +6,31 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class AccountDataHandler
     {
-        public static void ReadAccountCharacterList(Packet packet, params object[] idx)
+        public static void ReadAccountCharacterData(Packet packet, params object[] idx)
         {
-            packet.ReadPackedGuid128("WowAccountGUID", idx);
-            packet.ReadPackedGuid128("CharacterGUID", idx);
+            packet.ReadPackedGuid128("WowAccount", idx);
+            packet.ReadPackedGuid128("Guid", idx);
             packet.ReadUInt32("VirtualRealmAddress", idx);
-            packet.ReadByteE<Race>("Race" ,idx);
-            packet.ReadByteE<Class>("Class", idx);
-            packet.ReadByteE<Gender>("Gender", idx);
-            packet.ReadByte("Level", idx);
+            packet.ReadByteE<Race>("RaceID", idx);
+            packet.ReadByteE<Class>("ClassID", idx);
+            packet.ReadByteE<Gender>("SexID", idx);
+            packet.ReadByte("ExperienceLevel", idx);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503) &&
+            if (!ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V9_0_5_37503) &&
                 ClientVersion.Expansion != ClientType.Classic)
-                packet.ReadTime64("LastLogin", idx);
+                packet.ReadTime64("LastActiveTime", idx);
             else
-                packet.ReadTime("LastLogin", idx);
+                packet.ReadTime("LastActiveTime", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                packet.ReadInt32("ContentSetID", idx);
 
             packet.ResetBitReader();
 
             uint characterNameLength = packet.ReadBits(6);
             uint realmNameLength = packet.ReadBits(9);
 
-            packet.ReadWoWString("CharacterName", characterNameLength, idx);
+            packet.ReadWoWString("Name", characterNameLength, idx);
             packet.ReadWoWString("RealmName", realmNameLength, idx);
         }
 
@@ -35,16 +38,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void HandleGetAccountCharacterListResult(Packet packet)
         {
             packet.ReadUInt32("Token");
-            uint count = packet.ReadUInt32("CharacterCount");
+            uint count = packet.ReadUInt32("CharactersCount");
 
             packet.ResetBitReader();
 
-            packet.ReadBit("UnkBit");
+            packet.ReadBit("ConsoleCommand");
 
             for (var i = 0; i < count; ++i)
-            {
-                ReadAccountCharacterList(packet, i);
-            }
+                ReadAccountCharacterData(packet, "Characters", i);
         }
 
         [Parser(Opcode.CMSG_REPORT_CLIENT_VARIABLES, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
