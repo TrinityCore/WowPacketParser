@@ -52,7 +52,7 @@ namespace WowPacketParserModule.Substructures
                 packet.ReadInt16("ChrSpecializationID", indexes);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
-                packet.ReadByteE<Race>("RaceID", indexes);
+                packet.ReadSByteE<Race>("RaceID", indexes);
             else
                 packet.ReadInt16E<Race>("RaceID", indexes);
 
