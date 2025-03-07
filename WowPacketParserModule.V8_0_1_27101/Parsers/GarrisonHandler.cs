@@ -25,7 +25,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             for (int i = 0; i < garrisonCount; i++)
             {
-                packet.ReadInt32E<GarrisonType>("GarrTypeID", i);
+                V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrType(packet, i);
                 packet.ReadInt32E<GarrisonSite>("GarrSiteID", i);
                 packet.ReadInt32E<GarrisonSiteLevel>("GarrSiteLevelID", i);
 
@@ -93,7 +93,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void HandleGarrisonResearchTalentResult(Packet packet)
         {
             packet.ReadInt32("Result"); // if > 0 entire packet is unhandled
-            packet.ReadInt32E<GarrisonType>("GarrTypeID");
+            V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrType(packet);
             packet.ReadBit("DontAlert");
             V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonTalents(packet, "Talent");
         }
@@ -101,7 +101,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_GARRISON_TALENT_COMPLETED)]
         public static void HandleGarrisonTalentCompleted(Packet packet)
         {
-            packet.ReadInt32E<GarrisonType>("GarrTypeID");
+            V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrType(packet);
             packet.ReadInt32("GarrTalentID");
             packet.ReadInt32("GarrTalentRank");
             packet.ReadInt32("Flags");

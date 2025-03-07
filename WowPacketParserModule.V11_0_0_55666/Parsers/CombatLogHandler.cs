@@ -22,7 +22,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
             var hasLogData = packet.ReadBit("HasLogData");
             if (hasLogData)
-                V6_0_2_19033.Parsers.SpellHandler.ReadSpellCastLogData(packet);
+                V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet);
         }
     }
 }

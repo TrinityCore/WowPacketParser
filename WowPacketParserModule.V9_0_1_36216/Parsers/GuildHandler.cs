@@ -43,9 +43,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
                 for (var j = 0; j < 2; ++j)
                 {
-                    packet.ReadUInt32("DbID", i, j);
-                    packet.ReadUInt32("Rank", i, j);
-                    packet.ReadUInt32("Step", i, j);
+                    packet.ReadUInt32("DbID", i, "Profession", j);
+                    packet.ReadUInt32("Rank", i, "Profession", j);
+                    packet.ReadUInt32("Step", i, "Profession", j);
                 }
 
                 packet.ReadUInt32("VirtualRealmAddress", i);
@@ -54,6 +54,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadByte("Level", i);
                 packet.ReadByteE<Class>("ClassID", i);
                 packet.ReadByteE<Gender>("Gender", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_5_43903))
+                {
+                    packet.ReadUInt64("GuildClubMemberID", i);
+                    packet.ReadByteE<Race>("RaceID", i);
+                }
 
                 packet.ResetBitReader();
 

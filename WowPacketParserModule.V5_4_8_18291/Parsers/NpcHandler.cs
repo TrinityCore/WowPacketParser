@@ -142,7 +142,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     OptionIndex = gossipMenuOption.OptionID.Value,
                     OptionNpc = (int)gossipMenuOption.OptionNpc,
                     BoxCoded = gossipMenuOption.BoxCoded.Value,
-                    BoxCost = gossipMenuOption.BoxMoney.Value,
+                    BoxCost = (uint)gossipMenuOption.BoxMoney.Value,
                     Text = gossipMenuOption.OptionText,
                     BoxText = gossipMenuOption.BoxText
                 });

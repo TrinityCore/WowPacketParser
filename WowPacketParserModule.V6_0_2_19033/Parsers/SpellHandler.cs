@@ -4,7 +4,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
-using WowPacketParser.SQL.Builders;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using SpellCastFailureReason = WowPacketParser.Enums.Version.V6_1_0_19678.SpellCastFailureReason;
@@ -651,7 +650,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleAuraPointsDepleted(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");
-            packet.ReadByte("Slot");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                packet.ReadUInt16("Slot");
+            else
+                packet.ReadByte("Slot");
+
             packet.ReadByte("EffectIndex");
         }
 

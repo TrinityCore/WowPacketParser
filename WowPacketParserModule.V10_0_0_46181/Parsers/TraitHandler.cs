@@ -16,13 +16,15 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
         public static void ReadTraitSubTreeCache(Packet packet, params object[] indexes)
         {
+            packet.ResetBitReader();
+
             packet.ReadInt32("TraitSubTreeID", indexes);
             var entries = packet.ReadUInt32();
 
             for (var i = 0u; i < entries; ++i)
                 ReadTraitEntry(packet, indexes, "TraitEntry", i);
 
-            packet.ReadBit("Active");
+            packet.ReadBit("Active", indexes);
         }
 
         public static void ReadTraitConfig(Packet packet, params object[] indexes)
@@ -32,7 +34,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             var entries = packet.ReadUInt32();
 
             uint subtrees = 0;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_0_0_55666)
+                || ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
                 subtrees = packet.ReadUInt32();
 
             switch (type)
@@ -53,8 +56,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             for (var i = 0u; i < entries; ++i)
                 ReadTraitEntry(packet, indexes, "TraitEntry", i);
 
-            var nameLength = packet.ReadBits(9);
             packet.ResetBitReader();
+            var nameLength = packet.ReadBits(9);
 
             for (var i = 0u; i < subtrees; ++i)
                 ReadTraitSubTreeCache(packet, indexes, "TraitSubTreeCache", i);

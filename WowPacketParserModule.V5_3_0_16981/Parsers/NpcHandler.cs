@@ -119,7 +119,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     OptionIndex = gossipOption.OptionID.Value,
                     OptionNpc = (int)gossipOption.OptionNpc,
                     BoxCoded = gossipOption.BoxCoded.Value,
-                    BoxCost = gossipOption.BoxMoney.Value,
+                    BoxCost = (uint)gossipOption.BoxMoney.Value,
                     Text = gossipOption.OptionText,
                     BoxText = gossipOption.BoxText
                 });

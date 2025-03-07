@@ -659,11 +659,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_START_MIRROR_TIMER)]
         public static void HandleStartMirrorTimer(Packet packet)
         {
-            packet.ReadUInt32("TimerType"); // Timer in magic
-            packet.ReadUInt32("InitialValue");
-            packet.ReadUInt32("MaxValue");
+            packet.ReadInt32E<MirrorTimerType>("Timer");
+            packet.ReadInt32("Value");
+            packet.ReadInt32("MaxValue");
             packet.ReadInt32("Scale");
-            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadBit("Paused");
+        }
+
+        [Parser(Opcode.SMSG_PAUSE_MIRROR_TIMER, ClientVersionBuild.V11_0_7_58123)]
+        public static void HandlePauseMirrorTimer(Packet packet)
+        {
+            packet.ReadInt32E<MirrorTimerType>("Timer");
             packet.ReadBit("Paused");
         }
 

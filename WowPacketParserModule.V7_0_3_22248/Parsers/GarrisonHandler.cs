@@ -6,6 +6,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class GarrisonHandler
     {
+        public static void ReadGarrType(Packet packet, params object[] indexes)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_5_57171))
+                packet.ReadByteE<GarrisonType>("GarrTypeID", indexes);
+            else
+                packet.ReadInt32E<GarrisonType>("GarrTypeID", indexes);
+        }
+
         public static void ReadGarrisonMission(Packet packet, params object[] indexes)
         {
             packet.ReadUInt64("DbID", indexes);
@@ -55,6 +63,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var abilityCount = packet.ReadUInt32("AbilityCount", indexes);
             packet.ReadInt32("ZoneSupportSpellID", indexes);
             packet.ReadInt32E<GarrisonFollowerStatus>("FollowerStatus", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_1_36216))
+            {
+                packet.ReadInt32("Health", indexes);
+                packet.ReadSByte("BoardIndex", indexes);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                    packet.ReadInt64("HealingTimestamp", indexes);
+                else
+                    packet.ReadInt32("HealingTimestamp", indexes);
+            }
 
             for (int i = 0; i < abilityCount; i++)
                 packet.ReadInt32("AbilityID", indexes, i);
@@ -153,7 +170,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             for (int i = 0; i < garrisonCount; i++)
             {
-                packet.ReadInt32E<GarrisonType>("GarrTypeID", i);
+                ReadGarrType(packet, i);
                 packet.ReadInt32E<GarrisonSite>("GarrSiteID", i);
                 packet.ReadInt32E<GarrisonSiteLevel>("GarrSiteLevelID", i);
 
@@ -222,7 +239,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_GARRISON_REQUEST_BLUEPRINT_AND_SPECIALIZATION_DATA_RESULT)]
         public static void HandleGarrisonRequestBlueprintAndSpecializationDataResult(Packet packet)
         {
-            packet.ReadInt32E<GarrisonType>("GarrTypeID");
+            ReadGarrType(packet);
             var int8 = packet.ReadUInt32("SpecializationsKnownCount");
             var int4 = packet.ReadUInt32("BlueprintsKnownCount");
 
@@ -236,7 +253,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_GARRISON_ADD_FOLLOWER_RESULT)]
         public static void HandleGarrisonAddFollowerResult(Packet packet)
         {
-            packet.ReadInt32E<GarrisonType>("GarrTypeID");
+            ReadGarrType(packet);
             packet.ReadInt32E<GarrisonResult>("Result");
             ReadGarrisonFollower(packet);
         }
@@ -244,7 +261,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_GARRISON_LEARN_BLUEPRINT_RESULT)]
         public static void HandleGarrisonLearnBlueprintResult(Packet packet)
         {
-            packet.ReadInt32E<GarrisonType>("GarrTypeID");
+            ReadGarrType(packet);
             packet.ReadInt32E<GarrisonResult>("Result");
             packet.ReadInt32("BuildingID");
         }
@@ -252,7 +269,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_GARRISON_PLACE_BUILDING_RESULT)]
         public static void HandleGarrisonPlaceBuildingResult(Packet packet)
         {
-            packet.ReadInt32E<GarrisonType>("GarrTypeID");
+            ReadGarrType(packet);
             packet.ReadInt32E<GarrisonResult>("Result");
             ReadGarrisonBuildingInfo(packet, "BuildingInfo");
 
@@ -359,7 +376,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_GARRISON_ADD_MISSION_RESULT)]
         public static void HandleGarrisonAddMissionResult(Packet packet)
         {
-            packet.ReadInt32E<GarrisonType>("GarrTypeId");
+            ReadGarrType(packet);
             packet.ReadInt32E<GarrisonResult>("Result");
             packet.ReadByte("State");
 
@@ -387,14 +404,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_GARRISON_FOLLOWER_FATIGUE_CLEARED)]
         public static void HandleGarrisonFollowerFatigueCleared(Packet packet)
         {
-            packet.ReadInt32E<GarrisonType>("GarrTypeID");
+            ReadGarrType(packet);
             packet.ReadInt32E<GarrisonResult>("Result");
         }
 
         [Parser(Opcode.SMSG_DELETE_EXPIRED_MISSIONS_RESULT)]
         public static void HandleDeleteExpiredMissionsResult(Packet packet)
         {
-            packet.ReadUInt32E<GarrisonType>("GarrTypeID");
+            ReadGarrType(packet);
             packet.ReadUInt32E<GarrisonResult>("Result");
             var removedMissionsCount = packet.ReadInt32("RemovedMissionsCount");
             for (int i = 0; i < removedMissionsCount; i++)
@@ -415,6 +432,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleGarrisonFollowerChangedQuality(Packet packet)
         {
             ReadGarrisonFollower(packet, "Follower");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_5_43903))
+                ReadGarrisonFollower(packet, "Follower");
         }
 
         [Parser(Opcode.CMSG_GARRISON_RESEARCH_TALENT)]
@@ -455,7 +474,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_GARRISON_CHECK_UPGRADEABLE)]
         public static void HandleGarrisonCheckUpgradeable(Packet packet)
         {
-            packet.ReadUInt32E<GarrisonType>("GarrTypeId");
+            ReadGarrType(packet);
         }
 
         [Parser(Opcode.CMSG_GARRISON_GENERATE_RECRUITS)]
@@ -540,7 +559,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_GARRISON_BUILDING_REMOVED)]
         public static void HandleGarrisonBuildingRemoved(Packet packet)
         {
-            packet.ReadUInt32E<GarrisonType>("GarrTypeId");
+            ReadGarrType(packet);
             packet.ReadUInt32E<GarrisonResult>("Result");
             packet.ReadUInt32("GarrPlotInstanceId");
             packet.ReadUInt32("GarrBuildingId");
@@ -556,7 +575,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_GARRISON_PLOT_PLACED)]
         public static void HandleGarrisonPlotPlaced(Packet packet)
         {
-            packet.ReadUInt32E<GarrisonType>("GarrTypeId");
+            ReadGarrType(packet);
             V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonPlotInfo(packet, "PlotInfo");
         }
     }

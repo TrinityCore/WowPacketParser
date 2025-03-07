@@ -144,14 +144,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS)]
         public static void HandleQuestGiverRequestItems(Packet packet)
         {
-            uint collectCount = 0u;
-            uint currencyCount = 0u;
             var requestItems = packet.Holder.QuestGiverRequestItems = new();
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_2_55959))
-            {
-                collectCount = requestItems.CollectCount = packet.ReadUInt32("CollectCount");
-                currencyCount = requestItems.CurrencyCount = packet.ReadUInt32("CurrencyCount");
-            }
             var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID");
             requestItems.QuestGiver = questgiverGUID;
             requestItems.QuestGiverEntry = (uint)packet.ReadInt32("QuestGiverCreatureID");
@@ -175,12 +168,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             requestItems.SuggestedPartyMembers = packet.ReadInt32("SuggestPartyMembers");
             requestItems.MoneyToGet = packet.ReadInt32("MoneyToGet");
 
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_0_2_55959))
-            {
-                collectCount = requestItems.CollectCount = packet.ReadUInt32("CollectCount");
-                currencyCount = requestItems.CurrencyCount = packet.ReadUInt32("CurrencyCount");
-            }
+            var collectCount = requestItems.CollectCount = packet.ReadUInt32("CollectCount");
+            var currencyCount = requestItems.CurrencyCount = packet.ReadUInt32("CurrencyCount");
             QuestStatusFlags statusFlags = packet.ReadInt32E<QuestStatusFlags>("StatusFlags");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+                packet.ReadInt32("QuestInfoID");
             requestItems.StatusFlags = (PacketQuestStatusFlags)statusFlags;
             bool isComplete = (statusFlags & (QuestStatusFlags.Complete)) == QuestStatusFlags.Complete;
             bool noRequestOnComplete = (statusFlags & QuestStatusFlags.NoRequestOnComplete) != 0;
@@ -212,9 +204,6 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ResetBitReader();
 
             requestItems.AutoLaunched = packet.ReadBit("AutoLaunched");
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_2_55959))
-                packet.ReadBit("ResetByScheduler");
 
             packet.ResetBitReader();
             packet.ReadInt32("QuestGiverCreatureID"); // questgiver entry?

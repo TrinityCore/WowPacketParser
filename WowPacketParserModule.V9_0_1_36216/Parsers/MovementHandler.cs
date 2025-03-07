@@ -31,16 +31,28 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadUInt32<AreaId>("ZoneID", idx);
             packet.ReadUInt32("WMOGroupID", idx);
             packet.ReadUInt32("WMODoodadPlacementID", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_7_58123))
+            {
+                packet.ReadSingle("HealthPercent", idx);
+                packet.ReadUInt16("RecommendedGroupSizeMin", idx);
+                packet.ReadUInt16("RecommendedGroupSizeMax", idx);
+            }
         }
 
         public static void ReadVignetteDataSet(Packet packet, params object[] idx)
         {
             var idCount = packet.ReadUInt32();
+            var dataCount = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
+                dataCount = packet.ReadUInt32();
+
             for (var i = 0u; i < idCount; ++i)
                 packet.ReadPackedGuid128("IDs", idx, i);
 
             // Added VignetteClientData
-            var dataCount = packet.ReadUInt32();
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_1_5_50232))
+                dataCount = packet.ReadUInt32();
+
             for (var i = 0u; i < dataCount; ++i)
                 ReadVignetteData(packet, idx, "Data", i);
         }

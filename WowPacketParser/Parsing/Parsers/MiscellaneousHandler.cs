@@ -514,25 +514,25 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_START_MIRROR_TIMER)]
         public static void HandleStartMirrorTimer(Packet packet)
         {
-            packet.ReadUInt32E<MirrorTimerType>("Timer Type");
-            packet.ReadUInt32("Current Value");
-            packet.ReadUInt32("Max Value");
-            packet.ReadInt32("Regen");
+            packet.ReadInt32E<MirrorTimerType>("Timer");
+            packet.ReadInt32("Value");
+            packet.ReadInt32("MaxValue");
+            packet.ReadInt32("Scale");
             packet.ReadBool("Paused");
-            packet.ReadUInt32("Spell Id");
+            packet.ReadInt32<SpellId>("SpellID");
         }
 
         [Parser(Opcode.SMSG_PAUSE_MIRROR_TIMER)]
         public static void HandlePauseMirrorTimer(Packet packet)
         {
-            packet.ReadUInt32E<MirrorTimerType>("Timer Type");
+            packet.ReadInt32E<MirrorTimerType>("Timer");
             packet.ReadBool("Paused");
         }
 
         [Parser(Opcode.SMSG_STOP_MIRROR_TIMER)]
         public static void HandleStopMirrorTimer(Packet packet)
         {
-            packet.ReadUInt32E<MirrorTimerType>("Timer Type");
+            packet.ReadInt32E<MirrorTimerType>("Timer");
         }
 
         [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]

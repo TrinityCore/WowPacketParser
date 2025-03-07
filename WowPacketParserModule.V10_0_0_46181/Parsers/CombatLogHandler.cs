@@ -1,9 +1,6 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Proto;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V10_0_0_46181.Parsers
 {
@@ -58,7 +55,32 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SPELL_HEAL_ABSORB_LOG)]
+        [Parser(Opcode.SMSG_SPELL_ABSORB_LOG, ClientVersionBuild.V10_1_5_50232)]
+        public static void HandleSpellAbsorbLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Attacker");
+            packet.ReadPackedGuid128("Victim");
+
+            packet.ReadInt32<SpellId>("AbsorbedSpellID");
+            packet.ReadInt32<SpellId>("AbsorbSpellID");
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadInt32("Absorbed");
+            packet.ReadInt32("OriginalDamage"); // OriginalDamage (before HitResult -> BeforeCrit and Armor etc)
+
+            var supportInfosCount = packet.ReadUInt32();
+            for (var i = 0; i < supportInfosCount; i++)
+                ReadSpellSupportInfo(packet, "Supporters", i);
+
+            packet.ResetBitReader();
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_3_0_33062))
+                packet.ReadBit("Crit");
+
+            var bit100 = packet.ReadBit("HasLogData");
+            if (bit100)
+                V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_HEAL_ABSORB_LOG, ClientVersionBuild.V10_1_5_50232)]
         public static void HandleSpellHealAbsorbLog(Packet packet)
         {
             packet.ReadPackedGuid128("Attacker");
@@ -80,8 +102,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
         }
 
-        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
-        public static void HandleSpellPeriodicAuraLog720(Packet packet)
+        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG, ClientVersionBuild.V10_1_5_50232)]
+        public static void HandleSpellPeriodicAuraLog(Packet packet)
         {
             packet.ReadPackedGuid128("TargetGUID");
             packet.ReadPackedGuid128("CasterGUID");
@@ -100,7 +122,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
         }
 
-        [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
+        [Parser(Opcode.SMSG_SPELL_HEAL_LOG, ClientVersionBuild.V10_1_5_50232)]
         public static void HandleSpellHealLog(Packet packet)
         {
             packet.ReadPackedGuid128("TargetGUID");
@@ -135,7 +157,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         }
 
 
-        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
+        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, ClientVersionBuild.V10_1_5_50232)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
             packet.ReadPackedGuid128("Me");
@@ -173,6 +195,22 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             if (hasContentTuning)
                 V9_0_1_36216.Parsers.CombatLogHandler.ReadContentTuningParams(packet, "ContentTuning");
+        }
+
+        [Parser(Opcode.SMSG_ATTACK_SWING_LANDED_LOG, ClientVersionBuild.V10_1_5_50232)]
+        public static void HandleAttackswingLandedLog(Packet packet)
+        {
+            var supportInfosCount = packet.ReadUInt32("SupportInfosCount");
+            for (var i = 0; i < supportInfosCount; i++)
+                ReadSpellSupportInfo(packet, "SupportInfo", i);
+
+            var hasLogData = packet.ReadBit("HasLogData");
+            if (hasLogData)
+                V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet);
+
+            packet.ReadInt32("Size");
+
+            V9_0_1_36216.Parsers.CombatLogHandler.ReadAttackRoundInfo(packet, "AttackRoundInfo");
         }
     }
 }

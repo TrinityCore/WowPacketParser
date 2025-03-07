@@ -99,7 +99,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             for (var i = 0u; i < playerCount; i++)
             {
-                packet.ReadUInt32("Roles", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_7_51187))
+                    packet.ReadByteE<LfgRoleFlag>("Roles", i);
+                else
+                    packet.ReadUInt32E<LfgRoleFlag>("Roles", i);
 
                 packet.ResetBitReader();
 
@@ -390,7 +393,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleDFJoin(Packet packet)
         {
             packet.ReadBit("QueueAsGroup");
-            packet.ReadBit("UnknownBit");
+            packet.ReadBit("Mercenary");
 
             packet.ResetBitReader();
 

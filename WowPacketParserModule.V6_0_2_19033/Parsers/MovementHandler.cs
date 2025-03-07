@@ -11,8 +11,6 @@ using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
-using MovementFlag2 = WowPacketParser.Enums.v4.MovementFlag2;
 using SplineFacingType = WowPacketParserModule.V6_0_2_19033.Enums.SplineFacingType;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
@@ -37,7 +35,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("TransportID", idx);
             packet.ReadSingle("Magnitude", idx);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_5_43903))
                 packet.ReadInt32("MovementForceID", idx);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
@@ -49,6 +47,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
             packet.ReadBitsE<MovementForceType>("Type", 2, idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185) && ClientVersion.RemovedInVersion(ClientVersionBuild.V9_2_5_43903))
+                if (packet.ReadBit())
+                    packet.ReadInt32("MovementForceID", idx);
         }
 
         public static void ReadMoveStateChange(Packet packet, params object[] idx)

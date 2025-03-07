@@ -43,5 +43,8 @@ namespace WowPacketParser.Enums
 
         DracthyrAlliance    = 52,
         DractyhrHorde       = 70,
+
+        EarthenDwarfHorde   = 84,
+        EarthenDwarfAlliance= 85,
     }
 }

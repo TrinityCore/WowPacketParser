@@ -52,7 +52,7 @@ namespace WowPacketParser.Store.Objects
         public bool? BoxCoded;
 
         [DBFieldName("BoxMoney")]
-        public uint? BoxMoney;
+        public ulong? BoxMoney;
 
         [DBFieldName("BoxText", false, false, true)]
         public string BoxText;

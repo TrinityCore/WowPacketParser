@@ -259,7 +259,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 SpellHandler.ReadSandboxScalingData(packet, "SandboxScalingData");
         }
 
-        [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG, ClientVersionBuild.V7_2_0_23826)]
+        [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG)]
         public static void HandleSpellEnergizeLog(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
@@ -269,13 +269,138 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32E<PowerType>("Type");
 
             packet.ReadInt32("Amount");
-            packet.ReadInt32("OverEnergize");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadInt32("OverEnergize");
 
             packet.ResetBitReader();
 
             var bit100 = packet.ReadBit("HasLogData");
             if (bit100)
-                V6_0_2_19033.Parsers.SpellHandler.ReadSpellCastLogData(packet);
+                SpellHandler.ReadSpellCastLogData(packet);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_EXECUTE_LOG)]
+        public static void HandleSpellLogExecute(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+
+            packet.ReadInt32<SpellId>("SpellID");
+
+            var int16 = packet.ReadInt32("EffectsCount");
+            for (var i = 0; i < int16; i++)
+            {
+                packet.ReadInt32("Effect", i);
+
+                var int4 = packet.ReadInt32("PowerDrainTargetsCount", i);
+                var int20 = packet.ReadInt32("ExtraAttacksTargetsCount", i);
+                var int36 = packet.ReadInt32("DurabilityDamageTargetsCount", i);
+                var int52 = packet.ReadInt32("GenericVictimTargetsCount", i);
+                var int68 = packet.ReadInt32("TradeSkillTargetsCount", i);
+                var int84 = packet.ReadInt32("FeedPetTargetsCount", i);
+
+                // ClientSpellLogEffectPowerDrainParams
+                for (var j = 0; j < int4; j++)
+                {
+                    packet.ReadPackedGuid128("Victim");
+                    packet.ReadInt32("Points");
+                    packet.ReadUInt32E<Powers>("PowerType");
+                    packet.ReadSingle("Amplitude");
+                }
+
+                // ClientSpellLogEffectExtraAttacksParams
+                for (var j = 0; j < int20; j++)
+                {
+                    packet.ReadPackedGuid128("Victim", i, j);
+                    packet.ReadInt32("NumAttacks", i, j);
+                }
+
+                // ClientSpellLogEffectDurabilityDamageParams
+                for (var j = 0; j < int36; j++)
+                {
+                    packet.ReadPackedGuid128("Victim", i, j);
+                    packet.ReadInt32<ItemId>("ItemID", i, j);
+                    packet.ReadInt32("Amount", i, j);
+                }
+
+                // ClientSpellLogEffectGenericVictimParams
+                for (var j = 0; j < int52; j++)
+                    packet.ReadPackedGuid128("Victim", i, j);
+
+                // ClientSpellLogEffectTradeSkillItemParams
+                for (var j = 0; j < int68; j++)
+                    packet.ReadInt32<ItemId>("ItemID", i, j);
+
+                // ClientSpellLogEffectFeedPetParams
+                for (var j = 0; j < int84; j++)
+                    packet.ReadInt32<ItemId>("ItemID", i, j);
+            }
+
+            var bit160 = packet.ReadBit("HasLogData");
+            if (bit160)
+                SpellHandler.ReadSpellCastLogData(packet);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_DAMAGE_SHIELD)]
+        public static void ReadSpellDamageShield(Packet packet)
+        {
+            packet.ReadPackedGuid128("Attacker");
+            packet.ReadPackedGuid128("Defender");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("TotalDamage");
+            packet.ReadInt32("OverKill");
+            packet.ReadInt32("SchoolMask");
+            packet.ReadInt32("LogAbsorbed");
+
+            packet.ResetBitReader();
+
+            var bit76 = packet.ReadBit("HasLogData");
+            if (bit76)
+                SpellHandler.ReadSpellCastLogData(packet);
+        }
+
+        [Parser(Opcode.SMSG_ENVIRONMENTAL_DAMAGE_LOG)]
+        public static void HandleEnvirenmentalDamageLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+
+            packet.ReadByteE<EnvironmentDamage>("Type");
+
+            packet.ReadInt32("Amount");
+            packet.ReadInt32("Resisted");
+            packet.ReadInt32("Absorbed");
+
+            packet.ResetBitReader();
+            var bit76 = packet.ReadBit("HasLogData");
+            if (bit76)
+                SpellHandler.ReadSpellCastLogData(packet);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_ABSORB_LOG)]
+        public static void HandleSpellAbsorbLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Attacker");
+            packet.ReadPackedGuid128("Victim");
+
+            packet.ReadInt32<SpellId>("AbsorbedSpellID");
+            packet.ReadInt32<SpellId>("AbsorbSpellID");
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadInt32("Absorbed");
+
+            packet.ResetBitReader();
+
+            var bit100 = packet.ReadBit("HasLogData");
+            if (bit100)
+                SpellHandler.ReadSpellCastLogData(packet);
+        }
+
+        [Parser(Opcode.SMSG_ATTACK_SWING_LANDED_LOG)]
+        public static void HandleAttackswingLandedLog(Packet packet)
+        {
+            SpellHandler.ReadSpellCastLogData(packet);
+
+            packet.ReadInt32("Size");
+
+            ReadAttackRoundInfo(packet, "AttackRoundInfo");
         }
     }
 }

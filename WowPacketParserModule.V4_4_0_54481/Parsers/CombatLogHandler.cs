@@ -397,17 +397,17 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_SPELL_ABSORB_LOG)]
         public static void HandleSpellAbsorbLog(Packet packet)
         {
+            packet.ReadPackedGuid128("Attacker");
             packet.ReadPackedGuid128("Victim");
-            packet.ReadPackedGuid128("Caster");
 
-            packet.ReadInt32("InterruptedSpellID");
-            packet.ReadInt32<SpellId>("SpellID");
-            packet.ReadPackedGuid128("ShieldTargetGUID?");
+            packet.ReadInt32<SpellId>("AbsorbedSpellID");
+            packet.ReadInt32<SpellId>("AbsorbSpellID");
+            packet.ReadPackedGuid128("Caster");
             packet.ReadInt32("Absorbed");
             packet.ReadInt32("OriginalDamage"); // OriginalDamage (before HitResult -> BeforeCrit and Armor etc)
 
             packet.ResetBitReader();
-            packet.ReadBit("UnkBit");
+            packet.ReadBit("Crit");
             var hasLogData = packet.ReadBit("HasLogData");
 
             if (hasLogData)

@@ -1,7 +1,6 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using SpellParsers = WowPacketParserModule.V6_0_2_19033.Parsers.SpellHandler;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -47,7 +46,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             if (bit76)
-                SpellParsers.ReadSpellCastLogData(packet);
+                SpellHandler.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
@@ -89,7 +88,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit56 = packet.ReadBit("HasLogData");
             if (bit56)
-                SpellParsers.ReadSpellCastLogData(packet);
+                SpellHandler.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
@@ -119,7 +118,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadSingle("CritRollNeeded");
 
             if (hasLogData)
-                SpellParsers.ReadSpellCastLogData(packet);
+                SpellHandler.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG)]
@@ -137,7 +136,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit100 = packet.ReadBit("HasLogData");
             if (bit100)
-                SpellParsers.ReadSpellCastLogData(packet);
+                SpellHandler.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_EXECUTE_LOG)]
@@ -164,10 +163,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     packet.ReadPackedGuid128("Victim");
                     packet.ReadInt32("Points");
-                    if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
-                        packet.ReadUInt32E<Powers>("PowerType");
-                    else
-                        packet.ReadByteE<Powers>("PowerType");
+                    packet.ReadUInt32E<Powers>("PowerType");
                     packet.ReadSingle("Amplitude");
                 }
 
@@ -201,7 +197,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit160 = packet.ReadBit("HasLogData");
             if (bit160)
-                SpellParsers.ReadSpellCastLogData(packet);
+                SpellHandler.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_DAMAGE_SHIELD)]
@@ -242,19 +238,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SPELL_ABSORB_LOG)]
         public static void HandleSpellAbsorbLog(Packet packet)
         {
+            packet.ReadPackedGuid128("Attacker");
             packet.ReadPackedGuid128("Victim");
-            packet.ReadPackedGuid128("Caster");
 
-            packet.ReadInt32("InterruptedSpellID");
-            packet.ReadInt32<SpellId>("SpellID");
-            packet.ReadPackedGuid128("ShieldTargetGUID?");
+            packet.ReadInt32<SpellId>("AbsorbedSpellID");
+            packet.ReadInt32<SpellId>("AbsorbSpellID");
+            packet.ReadPackedGuid128("Caster");
             packet.ReadInt32("Absorbed");
 
             packet.ResetBitReader();
 
             var bit100 = packet.ReadBit("HasLogData");
             if (bit100)
-                SpellParsers.ReadSpellCastLogData(packet);
+                SpellHandler.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)]
@@ -304,7 +300,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_ATTACK_SWING_LANDED_LOG)]
         public static void HandleAttackswingLandedLog(Packet packet)
         {
-            SpellParsers.ReadSpellCastLogData(packet);
+            SpellHandler.ReadSpellCastLogData(packet);
 
             packet.ReadInt32("Size");
 

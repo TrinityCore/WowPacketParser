@@ -58,7 +58,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             var hasAzeriteLevel = packet.ReadBit("HasAzeriteLevel");
             packet.ResetBitReader();
 
-            for (int i = 0; i < 7; i++)
+            var bracketCount = 7;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+                bracketCount = 9;
+
+            for (int i = 0; i < bracketCount; i++)
                 ReadPVPBracketData(packet, i, "PVPBracketData");
 
             if (hasGuildData)

@@ -6,6 +6,16 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 {
     public static class GarrisonHandler
     {
+        public static void ReadFollowerSoftCapInfo(Packet packet, params object[] indexes)
+        {
+            if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
+                packet.ReadInt32("GarrFollowerTypeID", indexes);
+            else
+                packet.ReadByte("GarrFollowerTypeID", indexes);
+
+            packet.ReadUInt32("Count", indexes);
+        }
+
         public static void ReadGarrisonPlotInfo(Packet packet, params object[] indexes)
         {
             packet.ReadUInt32("GarrPlotInstanceID", indexes);
@@ -124,37 +134,6 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, indexes, "OvermaxMissionRewards", i);
         }
 
-        public static void ReadGarrisonFollower(Packet packet, params object[] indexes)
-        {
-            packet.ReadUInt64("DbID", indexes);
-            packet.ReadUInt32("GarrFollowerID", indexes);
-            packet.ReadUInt32E<GarrisonFollowerQuality>("Quality", indexes);
-            packet.ReadUInt32("FollowerLevel", indexes);
-            packet.ReadUInt32("ItemLevelWeapon", indexes);
-            packet.ReadUInt32("ItemLevelArmor", indexes);
-            packet.ReadUInt32("Xp", indexes);
-            packet.ReadUInt32("Durability", indexes);
-            packet.ReadUInt32("CurrentBuildingID", indexes);
-            packet.ReadUInt32("CurrentMissionID", indexes);
-            var abilityCount = packet.ReadUInt32("AbilityCount", indexes);
-            packet.ReadUInt32("ZoneSupportSpellID", indexes);
-            packet.ReadUInt32E<GarrisonFollowerStatus>("FollowerStatus", indexes);
-            packet.ReadInt32("Health", indexes);
-            packet.ReadSByte("BoardIndex", indexes);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
-                packet.ReadInt64("HealingTimestamp", indexes);
-            else
-                packet.ReadInt32("HealingTimestamp", indexes);
-
-            for (int i = 0; i < abilityCount; i++)
-                packet.ReadUInt32("AbilityID", indexes, i);
-
-            packet.ResetBitReader();
-
-            var len = packet.ReadBits(7);
-            packet.ReadWoWString("CustomName", len, indexes);
-        }
-
         public static void ReadGarrisonMissionBonusAbility(Packet packet, params object[] indexes)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
@@ -254,19 +233,20 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_GET_GARRISON_INFO_RESULT)]
         public static void HandleGetGarrisonInfoResult(Packet packet)
         {
-            packet.ReadInt32("FactionIndex");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                packet.ReadSByte("FactionIndex");
+            else
+                packet.ReadInt32("FactionIndex");
+
             var garrisonCount = packet.ReadUInt32("GarrisonCount");
 
             var followerSoftcapCount = packet.ReadUInt32("FollowerSoftCapCount");
             for (var i = 0u; i < followerSoftcapCount; ++i)
-                V7_0_3_22248.Parsers.GarrisonHandler.ReadFollowerSoftCapInfo(packet, i);
+                ReadFollowerSoftCapInfo(packet, i);
 
             for (int i = 0; i < garrisonCount; i++)
             {
-                if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
-                    packet.ReadInt32E<GarrisonType>("GarrTypeID", i);
-                else
-                    packet.ReadByteE<GarrisonType>("GarrTypeID", i);
+                V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrType(packet, i);
                 packet.ReadInt32E<GarrisonSite>("GarrSiteID", i);
                 packet.ReadInt32E<GarrisonSiteLevel>("GarrSiteLevelID", i);
 
@@ -342,10 +322,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     packet.ReadBit("CanStartMission", i, j);
 
                 for (int j = 0; j < garrisonFollowerCount; j++)
-                    ReadGarrisonFollower(packet, i, "Follower", j);
+                    V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonFollower(packet, i, "Follower", j);
 
                 for (int j = 0; j < autoTroopCount; j++)
-                    ReadGarrisonFollower(packet, i, "AutoTroop", j);
+                    V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonFollower(packet, i, "AutoTroop", j);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_5_43903))
                     for (int j = 0; j < garrisonMissionCount; j++)
@@ -370,7 +350,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_GARRISON_ADD_MISSION_RESULT)]
         public static void HandleGarrisonAddMissionResult(Packet packet)
         {
-            packet.ReadInt32E<GarrisonType>("GarrTypeId");
+            V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrType(packet);
             packet.ReadInt32E<GarrisonResult>("Result");
             packet.ReadByte("State");
 
@@ -461,7 +441,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static void HandleGarrisonResearchTalentResult(Packet packet)
         {
             packet.ReadInt32("Result"); // if > 0 entire packet is unhandled
-            packet.ReadInt32E<GarrisonType>("GarrTypeID");
+            V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrType(packet);
             packet.ReadBit("DontAlert");
             ReadGarrisonTalents(packet, "Talent");
         }

@@ -83,7 +83,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadLfgPlayerQuestReward(Packet packet, params object[] idx)
         {
-            packet.ReadUInt32("Mask", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_7_51187))
+                packet.ReadByte("Mask", idx);
+            else
+                packet.ReadUInt32("Mask", idx);
+
             packet.ReadInt32("RewardMoney", idx);
             packet.ReadInt32("RewardXP", idx);
 
@@ -127,13 +131,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (hasRewardSpellId)
                 packet.ReadInt32("RewardSpellID", idx);
             if (hasUnused1)
-                packet.ReadInt32("Unused1", idx);
+                packet.ReadInt32("ArtifactXPCategory", idx);
             if (hasUnused2)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23706))
-                    packet.ReadUInt64("Unused2");
+                    packet.ReadUInt64("ArtifactXP");
                 else
-                    packet.ReadInt32("Unused2", idx);
+                    packet.ReadInt32("ArtifactXP", idx);
             }
             if (hasHonor)
                 packet.ReadInt32("Honor", idx);
@@ -232,7 +236,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadByte("Needs", i);
 
             var int8 = packet.ReadInt32("SlotsCount");
-            packet.ReadInt32("RequestedRoles");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_7_51187))
+                packet.ReadByteE<LfgRoleFlag>("RequestedRoles");
+            else
+                packet.ReadUInt32E<LfgRoleFlag>("RequestedRoles");
+
             var int4 = packet.ReadInt32("SuspendedPlayersCount");
 
             for (int i = 0; i < int8; i++)
@@ -249,7 +258,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("LfgJoined");
             packet.ReadBit("Queued");
             if (ClientVersion.AddedInVersion(ClientType.Legion))
-                packet.ReadBit("Unused");
+                packet.ReadBit("Brawl");
 
             if (ClientVersion.RemovedInVersion(ClientType.Legion))
             {
@@ -361,7 +370,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void ReadLFGRoleCheckUpdateMember(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("Guid", idx);
-            packet.ReadUInt32E<LfgRoleFlag>("RolesDesired", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_7_51187))
+                packet.ReadByteE<LfgRoleFlag>("RolesDesired", idx);
+            else
+                packet.ReadUInt32E<LfgRoleFlag>("RolesDesired", idx);
             packet.ReadByte("Level", idx);
             packet.ReadBit("RoleCheckComplete", idx);
 

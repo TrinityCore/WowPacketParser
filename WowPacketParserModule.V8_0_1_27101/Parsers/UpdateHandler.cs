@@ -442,24 +442,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 moveInfo.HasSplineData = packet.ReadBit("HasMovementSpline", index);
 
                 for (var i = 0; i < movementForceCount; ++i)
-                {
-                    packet.ResetBitReader();
-                    packet.ReadPackedGuid128("Id", index);
-                    packet.ReadVector3("Origin", index);
-                    packet.ReadVector3("Direction", index);
-                    packet.ReadUInt32("TransportID", index);
-                    packet.ReadSingle("Magnitude", index);
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_5_43903))
-                        packet.ReadInt32("Unused910");
-                    packet.ReadBits("Type", 2, index);
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185) && ClientVersion.RemovedInVersion(ClientVersionBuild.V9_2_5_43903))
-                    {
-                        var unused910 = packet.ReadBit();
-                        if (unused910)
-                            packet.ReadInt32("Unused910", index);
-                    }
-                }
+                    V6_0_2_19033.Parsers.MovementHandler.ReadMovementForce(packet, "MovementForces", i);
 
                 if (moveInfo.HasSplineData)
                 {

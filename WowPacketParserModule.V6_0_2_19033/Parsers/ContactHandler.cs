@@ -58,7 +58,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32<AreaId>("AreaID");
             packet.ReadInt32("Level");
-            packet.ReadInt32E<Class>("ClassID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                packet.ReadByteE<Class>("ClassID");
+            else
+                packet.ReadUInt32E<Class>("ClassID");
 
             packet.ResetBitReader();
 
@@ -81,13 +84,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadUInt32<AreaId>("AreaID", index);
             packet.ReadUInt32("Level", index);
-            packet.ReadUInt32("ClassID", index);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                packet.ReadByteE<Class>("ClassID", index);
+            else
+                packet.ReadUInt32E<Class>("ClassID", index);
 
             packet.ResetBitReader();
 
             var notesLen = packet.ReadBits(10);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
-                packet.ReadBit("Mobile");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898) && ClientVersion.RemovedInVersion(ClientVersionBuild.V11_0_5_57171))
+                packet.ReadBit("Mobile", index);
+
             packet.ReadWoWString("Notes", notesLen);
         }
 

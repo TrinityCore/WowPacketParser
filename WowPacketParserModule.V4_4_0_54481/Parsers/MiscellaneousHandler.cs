@@ -828,8 +828,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_PAUSE_MIRROR_TIMER)]
         public static void HandlePauseMirrorTimer(Packet packet)
         {
-            packet.ReadUInt32E<MirrorTimerType>("Timer Type");
-            packet.ReadBool("Paused");
+            packet.ReadInt32E<MirrorTimerType>("Timer");
+            packet.ReadBit("Paused");
         }
 
         [Parser(Opcode.SMSG_PLAY_MUSIC)]
@@ -1025,11 +1025,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_START_MIRROR_TIMER)]
         public static void HandleStartMirrorTimer(Packet packet)
         {
-            packet.ReadUInt32("Timer");
-            packet.ReadUInt32("Value");
-            packet.ReadUInt32("MaxValue");
+            packet.ReadInt32E<MirrorTimerType>("Timer");
+            packet.ReadInt32("Value");
+            packet.ReadInt32("MaxValue");
             packet.ReadInt32("Scale");
-            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadBit("Paused");
         }
 

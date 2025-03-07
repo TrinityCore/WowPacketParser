@@ -45,7 +45,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             gossipOption.OptionNpc = (GossipOptionNpc?)packet.ReadByte("OptionNPC", idx);
             gossipMessageOption.OptionNpc = (int) gossipOption.OptionNpc;
             gossipOption.BoxCoded = gossipMessageOption.BoxCoded = packet.ReadByte("OptionFlags", idx) != 0;
-            gossipOption.BoxMoney = gossipMessageOption.BoxCost = (uint)packet.ReadInt32("OptionCost", idx);
+
+            gossipOption.BoxMoney = ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347)
+                ? packet.ReadUInt64("OptionCost", idx)
+                : packet.ReadUInt32("OptionCost", idx);
+            gossipMessageOption.BoxCost = (uint)gossipOption.BoxMoney;
+
             if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V9_2_0_42423) ||
                 ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_14_1_40666) ||
                 ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812) ||
