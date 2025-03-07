@@ -38,7 +38,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("Magnitude", idx);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
-                packet.ReadInt32("Unused910", idx);
+                packet.ReadInt32("MovementForceID", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+            {
+                packet.ReadInt32("Unknown1110_1", idx);
+                packet.ReadInt32("Unknown1110_2", idx);
+                packet.ReadUInt32("Flags", idx);
+            }
 
             packet.ResetBitReader();
             packet.ReadBitsE<MovementForceType>("Type", 2, idx);
@@ -46,25 +53,48 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadMoveStateChange(Packet packet, params object[] idx)
         {
-            var opcode = packet.ReadInt16();
+            var opcode = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_5_57171))
+                opcode = packet.ReadInt32();
+            else
+                packet.ReadInt16();
+
             var opcodeName = Opcodes.GetOpcodeName(opcode, packet.Direction);
-            packet.AddValue("MessageID", $"{ opcodeName } (0x{ opcode.ToString("X4") })", idx);
+            packet.AddValue("MessageID", $"{opcodeName} (0x{opcode:X4})", idx);
 
             packet.ReadInt32("SequenceIndex", idx);
 
             packet.ResetBitReader();
 
             var hasSpeed = packet.ReadBit("HasSpeed", idx);
+            var hasRange = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+                hasRange = packet.ReadBit("HasRange", idx);
             var hasKnockBack = packet.ReadBit("HasKnockBack", idx);
             var hasVehicle = packet.ReadBit("HasVehicle", idx);
             var hasCollisionHeight = packet.ReadBit("HasCollisionHeight", idx);
             var hasMovementForce = packet.ReadBit("HasMovementForce", idx);
             var hasMovementForceGUID = packet.ReadBit("HasMovementForceGUID", idx);
-            var hasMovementInertiaGUID = packet.ReadBit("HasMovementInertiaGUID", idx);
+            var hasMovementInertiaGUID = false;
+            var hasMovementInertiaID = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+                hasMovementInertiaID = packet.ReadBit("HasMovementInertiaID", idx);
+            else
+                hasMovementInertiaGUID = packet.ReadBit("HasMovementInertiaGUID", idx);
+
             var hasMovementInertiaLifetimeMs = packet.ReadBit("HasMovementInertiaLifetimeMs", idx);
+            var hasDriveCapabilityID = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                hasDriveCapabilityID = packet.ReadBit("HasDriveCapabilityRecID", idx);
 
             if (hasSpeed)
                 packet.ReadSingle("Speed", idx);
+
+            if (hasRange)
+            {
+                packet.ReadSingle("SpeedMin", idx);
+                packet.ReadSingle("SpeedMax", idx);
+            }
 
             if (hasKnockBack)
             {
@@ -92,8 +122,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (hasMovementInertiaGUID)
                 packet.ReadPackedGuid128("MovementInertiaGUID", idx);
 
+            if (hasMovementInertiaID)
+                packet.ReadInt32("MovementInertiaID", idx);
+
             if (hasMovementInertiaLifetimeMs)
                 packet.ReadUInt32("MovementInertiaLifetimeMs", idx);
+
+            if (hasDriveCapabilityID)
+                packet.ReadInt32("DriveCapabilityRecID", idx);
         }
 
         [Parser(Opcode.CMSG_WORLD_PORT_RESPONSE)]
@@ -172,6 +208,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_STOP_TURN)]
         [Parser(Opcode.CMSG_MOVE_DOUBLE_JUMP)]
         [Parser(Opcode.CMSG_MOVE_SET_ADV_FLY)]
+        [Parser(Opcode.CMSG_MOVE_START_DRIVE_FORWARD)]
         public static void HandleClientPlayerMove(Packet packet)
         {
             var stats = Substructures.MovementHandler.ReadMovementStats(packet);
@@ -515,8 +552,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_SET_NORMAL_FALL)]
         [Parser(Opcode.SMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES)]
         [Parser(Opcode.SMSG_MOVE_UNSET_IGNORE_MOVEMENT_FORCES)]
+        [Parser(Opcode.SMSG_MOVE_ENABLE_INERTIA)]
+        [Parser(Opcode.SMSG_MOVE_DISABLE_INERTIA)]
         [Parser(Opcode.SMSG_MOVE_SET_CAN_ADV_FLY)]
         [Parser(Opcode.SMSG_MOVE_UNSET_CAN_ADV_FLY)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_CAN_DRIVE)]
         public static void HandleMovementIndex(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
@@ -616,7 +656,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_ENABLE_SWIM_TO_FLY_TRANS_ACK)]
         [Parser(Opcode.CMSG_MOVE_FEATHER_FALL_ACK)]
         [Parser(Opcode.CMSG_MOVE_SET_CAN_TURN_WHILE_FALLING_ACK)]
+        [Parser(Opcode.CMSG_MOVE_INERTIA_ENABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_INERTIA_DISABLE_ACK)]
         [Parser(Opcode.CMSG_MOVE_SET_CAN_ADV_FLY_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_DRIVE_ACK)]
         public static void HandleMovementAck(Packet packet)
         {
             var stats = ReadMovementAck(packet);

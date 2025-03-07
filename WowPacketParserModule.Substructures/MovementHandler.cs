@@ -44,8 +44,15 @@ namespace WowPacketParserModule.Substructures
 
         public static void ReadInertiaData(Packet packet, params object[] idx)
         {
-            packet.ReadPackedGuid128("GUID", idx);
-            packet.ReadVector4("Force", idx);
+            if (ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_0_0_46181)
+                || ClientVersion.RemovedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_14_4_51146)
+                || ClientVersion.RemovedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_1_47014)
+                || ClientVersion.Branch == ClientBranch.TBC)
+                packet.ReadPackedGuid128("GUID", idx);
+            else
+                packet.ReadInt32("ID", idx);
+
+            packet.ReadVector3("Force", idx);
             packet.ReadUInt32("Lifetime", idx);
         }
 
