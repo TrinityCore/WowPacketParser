@@ -28,4 +28,30 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("emotes_text_sound")]
+    public sealed record EmotesTextSoundHotfix1110 : IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("RaceID")]
+        public sbyte? RaceID;
+
+        [DBFieldName("ClassID")]
+        public sbyte? ClassID;
+
+        [DBFieldName("SexID")]
+        public sbyte? SexID;
+
+        [DBFieldName("SoundID")]
+        public uint? SoundID;
+
+        [DBFieldName("EmotesTextID")]
+        public uint? EmotesTextID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }
