@@ -374,6 +374,7 @@ namespace WowPacketParser.Hotfix
                     case "ui_splash_screen":
                     case "unit_power_bar":
                     case "vignette":
+                    case "warband_scene":
                     case "wmo_area_table":
                         break;
                     default:
