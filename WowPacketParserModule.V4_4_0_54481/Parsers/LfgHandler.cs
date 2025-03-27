@@ -99,7 +99,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("VotePassed", idx);
             packet.ReadBit("MyVoteCompleted", idx);
             packet.ReadBit("MyVote", idx);
-            var len = packet.ReadBits(8);
+
+            uint len = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+                len = packet.ReadBits(9);
+            else
+                len = packet.ReadBits(8);
             packet.ReadPackedGuid128("Target", idx);
             packet.ReadUInt32("TotalVotes", idx);
             packet.ReadUInt32("BootVotes", idx);
@@ -123,12 +128,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
         public static void ReadLFGRoleCheckUpdateMember(Packet packet, params object[] idx)
         {
+            packet.ResetBitReader();
             packet.ReadPackedGuid128("Guid", idx);
             packet.ReadByteE<LfgRoleFlag>("RolesDesired", idx);
             packet.ReadByte("Level", idx);
             packet.ReadBit("RoleCheckComplete", idx);
-
-            packet.ResetBitReader();
         }
 
         [Parser(Opcode.CMSG_DF_GET_SYSTEM_INFO)]
@@ -399,6 +403,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             ReadCliRideTicket(packet);
             packet.ReadInt64("InstanceID");
             packet.ReadInt32("ProposalID");
+
+            packet.ResetBitReader();
             packet.ReadBit("Accepted");
         }
 

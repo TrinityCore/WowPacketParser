@@ -7,12 +7,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class SessionHandler
     {
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_4_0_54481, ClientVersionBuild.V4_4_2_59185)]
         public static void HandleServerAuthChallenge(Packet packet)
         {
             for (uint i = 0; i < 8; ++i)
                 packet.ReadUInt32("DosChallenge", i);
-            packet.ReadBytes("Challenge", 16);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_2_59185))
+                packet.ReadBytes("Challenge", 32);
+            else
+                packet.ReadBytes("Challenge", 16);
             packet.ReadByte("DosZeroBits");
         }
 
@@ -229,7 +232,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadInt64("DosResponse");
             packet.ReadInt64("Key");
-            packet.ReadBytes("LocalChallenge", 16);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_2_59185))
+                packet.ReadBytes("LocalChallenge", 32);
+            else
+                packet.ReadBytes("LocalChallenge", 16);
             packet.ReadBytes("Digest", 24);
         }
 

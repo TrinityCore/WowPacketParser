@@ -1048,7 +1048,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_STOP_MIRROR_TIMER)]
         public static void HandleStopMirrorTimer(Packet packet)
         {
-            packet.ReadUInt32E<MirrorTimerType>("Timer Type");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_2_59185))
+                packet.ReadByteE<MirrorTimerType>("Timer");
+            else
+                packet.ReadUInt32E<MirrorTimerType>("Timer");
         }
 
         [Parser(Opcode.SMSG_STOP_SPEAKERBOT_SOUND)]

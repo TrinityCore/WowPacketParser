@@ -544,7 +544,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_STAND_STATE_CHANGE)]
         public static void HandleStandStateChange(Packet packet)
         {
-            packet.ReadInt32E<StandState>("StandState");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_2_59185))
+                packet.ReadByteE<StandState>("StandState");
+            else
+                packet.ReadInt32E<StandState>("StandState");
         }
 
         [Parser(Opcode.SMSG_CHARACTER_RENAME_RESULT)]
