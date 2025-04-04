@@ -29,7 +29,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_2_59185
         public System.Nullable<long> CreateTime { get; set; }
         public System.Nullable<ulong> ArtifactXP { get; set; }
         public System.Nullable<byte> ItemAppearanceModID { get; set; }
-        public System.Nullable<uint> DynamicFlags2 { get; set; }
+        public System.Nullable<uint> ZoneFlags { get; set; }
         public System.Nullable<ushort> DEBUGItemLevel { get; set; }
         public DynamicUpdateField<IArtifactPower> ArtifactPowers { get; } = new DynamicUpdateField<IArtifactPower>();
         public DynamicUpdateField<ISocketedGem> Gems { get; } = new DynamicUpdateField<ISocketedGem>();
