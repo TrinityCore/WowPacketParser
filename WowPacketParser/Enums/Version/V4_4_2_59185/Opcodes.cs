@@ -918,7 +918,7 @@ namespace WowPacketParser.Enums.Version.V4_4_2_59185
             { Opcode.SMSG_CHAT, 0x400001 },
             { Opcode.SMSG_CHAT_AUTO_RESPONDED, 0x40000C }, // NYI
             { Opcode.SMSG_CHAT_DOWN, 0x400012 }, // NYI
-            { Opcode.SMSG_CHAT_IGNORED_ACCOUNT_MUTED, 0x2BAC }, // NYI
+            { Opcode.SMSG_CHAT_IGNORED_ACCOUNT_MUTED, 0x400000 }, // NYI
             { Opcode.SMSG_CHAT_IS_DOWN, 0x400013 }, // NYI
             { Opcode.SMSG_CHAT_NOT_IN_GUILD, 0x400021 }, // NYI
             { Opcode.SMSG_CHAT_NOT_IN_PARTY, 0x400006 }, // NYI
@@ -936,9 +936,9 @@ namespace WowPacketParser.Enums.Version.V4_4_2_59185
             { Opcode.SMSG_CLEAR_SPELL_CHARGES, 0x510017 },
             { Opcode.SMSG_CLEAR_TARGET, 0x410026 },
             { Opcode.SMSG_CLUB_FINDER_ERROR_MESSAGE, 0x3B02D4 }, // NYI
-            { Opcode.SMSG_CLUB_FINDER_GET_CLUB_POSTING_IDS_RESPONSE, 0x2842 }, // NYI
+            { Opcode.SMSG_CLUB_FINDER_GET_CLUB_POSTING_IDS_RESPONSE, 0x3B02D7 }, // NYI
             { Opcode.SMSG_CLUB_FINDER_LOOKUP_CLUB_POSTINGS_LIST, 0x3B02D5 }, // NYI
-            { Opcode.SMSG_CLUB_FINDER_RESPONSE_CHARACTER_APPLICATION_LIST, 0x283D }, // NYI
+            { Opcode.SMSG_CLUB_FINDER_RESPONSE_CHARACTER_APPLICATION_LIST, 0x3B02D2 }, // NYI
             { Opcode.SMSG_CLUB_FINDER_RESPONSE_POST_RECRUITMENT_MESSAGE, 0x3B02D6 }, // NYI
             { Opcode.SMSG_CLUB_FINDER_UPDATE_APPLICATIONS, 0x3B02D3 }, // NYI
             { Opcode.SMSG_CLUB_FINDER_WHISPER_APPLICANT_RESPONSE, 0x3B030E }, // NYI
