@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
     public static class SessionHandler
     {
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_4_0_54481, ClientVersionBuild.V4_4_2_59185)]
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
         public static void HandleServerAuthChallenge(Packet packet)
         {
             for (uint i = 0; i < 8; ++i)
