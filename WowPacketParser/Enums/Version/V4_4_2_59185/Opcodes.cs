@@ -1399,8 +1399,8 @@ namespace WowPacketParser.Enums.Version.V4_4_2_59185
             { Opcode.SMSG_PLAYER_SAVE_GUILD_EMBLEM, 0x470041 },
             { Opcode.SMSG_PLAYER_SHOW_ARROW_CALLOUT, 0x4E002A }, // NYI
             { Opcode.SMSG_PLAYER_SHOW_GENERIC_WIDGET_DISPLAY, 0x4E0028 }, // NYI
-            { Opcode.SMSG_PLAYER_SHOW_PARTY_POSE_UI, 0x3021 }, // NYI
-            { Opcode.SMSG_PLAYER_SHOW_UI_EVENT_TOAST, 0x301B }, // NYI
+            { Opcode.SMSG_PLAYER_SHOW_PARTY_POSE_UI, 0x4E0029 }, // NYI
+            { Opcode.SMSG_PLAYER_SHOW_UI_EVENT_TOAST, 0x4E0023 }, // NYI
             { Opcode.SMSG_PLAYER_SKINNED, 0x4E000E }, // NYI
             { Opcode.SMSG_PLAYER_TUTORIAL_HIGHLIGHT_SPELL, 0x4E0015 }, // NYI
             { Opcode.SMSG_PLAYER_TUTORIAL_UNHIGHLIGHT_SPELL, 0x4E0014 }, // NYI
@@ -1652,7 +1652,7 @@ namespace WowPacketParser.Enums.Version.V4_4_2_59185
             { Opcode.SMSG_UNDELETE_COOLDOWN_STATUS_RESPONSE, 0x3B0267 },
             { Opcode.SMSG_UNLEARNED_SPELLS, 0x51003D },
             { Opcode.SMSG_UNLOAD_CHILD_MAP, 0x3B000E }, // NYI
-            { Opcode.SMSG_UPDATE_AADC_STATUS_RESPONSE, 0x2873 },
+            { Opcode.SMSG_UPDATE_AADC_STATUS_RESPONSE, 0x3B0308 },
             { Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x3B01A5 },
             { Opcode.SMSG_UPDATE_ACTION_BUTTONS, 0x3B0079 },
             { Opcode.SMSG_UPDATE_BNET_SESSION_KEY, 0x3B02BE },
