@@ -732,7 +732,7 @@ namespace WowPacketParser.Enums.Version.V4_4_2_59185
             { Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE, 0x3B02EB },
             { Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x3B01A6 },
             { Opcode.SMSG_ACCOUNT_EXPORT_RESPONSE, 0x3B0327 }, // NYI
-            { Opcode.SMSG_ACCOUNT_HEIRLOOM_UPDATE, 0x25B5 },
+            { Opcode.SMSG_ACCOUNT_HEIRLOOM_UPDATE, 0x3B0050 },
             { Opcode.SMSG_ACCOUNT_MOUNT_REMOVED, 0x3B0048 }, // NYI
             { Opcode.SMSG_ACCOUNT_MOUNT_UPDATE, 0x3B0047 },
             { Opcode.SMSG_ACCOUNT_NOTIFICATIONS_RESPONSE, 0x3B0305 }, // NYI
@@ -952,7 +952,7 @@ namespace WowPacketParser.Enums.Version.V4_4_2_59185
             { Opcode.SMSG_COMMERCE_TOKEN_GET_MARKET_PRICE_RESPONSE, 0x3B026E },
             { Opcode.SMSG_COMMERCE_TOKEN_UPDATE, 0x3B026D },
             { Opcode.SMSG_COMPLAINT_RESULT, 0x3B0147 },
-            { Opcode.SMSG_COMPRESSED_PACKET, 0x3052 },
+            { Opcode.SMSG_COMPRESSED_PACKET, 0x42000A },
             { Opcode.SMSG_CONFIRM_BARBERS_CHOICE, 0x3B0159 }, // NYI
             { Opcode.SMSG_CONFIRM_PARTY_INVITE, 0x3B02AF }, // NYI
             { Opcode.SMSG_CONNECT_TO, 0x420005 },
@@ -1338,7 +1338,7 @@ namespace WowPacketParser.Enums.Version.V4_4_2_59185
             { Opcode.SMSG_MOVE_UPDATE_TELEPORT, 0x4C000F },
             { Opcode.SMSG_MOVE_UPDATE_TURN_RATE, 0x4C000B },
             { Opcode.SMSG_MOVE_UPDATE_WALK_SPEED, 0x4C0006 },
-            { Opcode.SMSG_MULTIPLE_PACKETS, 0x3051 },
+            { Opcode.SMSG_MULTIPLE_PACKETS, 0x420009 },
             { Opcode.SMSG_NEUTRAL_PLAYER_FACTION_SELECT_RESULT, 0x3B0075 }, // NYI
             { Opcode.SMSG_NEW_DATA_BUILD, 0x3B032B }, // NYI
             { Opcode.SMSG_NEW_TAXI_PATH, 0x3B011A },
