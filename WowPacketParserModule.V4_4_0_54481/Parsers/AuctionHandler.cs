@@ -375,7 +375,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var taintedBy = packet.ReadBit();
 
             var bitsCount = 6;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_2_59185))
                 bitsCount = 5;
 
             var count = packet.ReadBits("ItemsCount", bitsCount);
