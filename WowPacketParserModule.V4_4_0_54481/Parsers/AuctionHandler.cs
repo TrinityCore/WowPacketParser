@@ -16,16 +16,17 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
         public static void ReadAuctionBucketKey(Packet packet, params object[] idx)
         {
+            packet.ResetBitReader();
             packet.ReadBits("ItemID", 20, idx);
             var hasBattlePetSpeciesID = packet.ReadBit("HasBattlePetSpeciesID", idx);
             packet.ReadBits("ItemLevel", 11, idx);
             var hasSuffixItemNameDescriptionID = packet.ReadBit("HasSuffixItemNameDescriptionID", idx);
 
             if (hasBattlePetSpeciesID)
-                packet.ReadUInt16("BattlePetSpeciesID");
+                packet.ReadUInt16("BattlePetSpeciesID", idx);
 
             if (hasSuffixItemNameDescriptionID)
-                packet.ReadUInt16("SuffixItemNameDescriptionID");
+                packet.ReadUInt16("SuffixItemNameDescriptionID", idx);
         }
 
         public static void ReadCliAuctionItem(Packet packet, params object[] idx)
@@ -35,6 +36,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             var enchantmentsCount = packet.ReadBits("EnchantmentsCount", 4, idx);
             var gemsCount = packet.ReadBits("GemsCount", 2, idx);
             var hasMinBid = packet.ReadBit("HasMinBid", idx);
+
             var hasMinIncrement = packet.ReadBit("HasMinIncrement", idx);
             var hasBuyoutPrice = packet.ReadBit("HasBuyoutPrice", idx);
             var hasUnitPrice = packet.ReadBit("HasUnitPrice", idx);
@@ -63,6 +65,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Owner", idx);
             packet.ReadInt32("DurationLeft", idx);
             packet.ReadByte("DeleteReason", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_2_59185))
+                packet.ReadInt32("Unk_442", idx);
 
             for (int i = 0; i < enchantmentsCount; i++)
                 Substructures.ItemHandler.ReadItemEnchantData(packet, idx, "Enchantments", i);
@@ -375,6 +380,52 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadPackedGuid128("Guid", i);
                 packet.ReadInt32("UseCount");
             }
+        }
+
+        public static void ReadBucketInfo(Packet packet, int index)
+        {
+            ReadAuctionBucketKey(packet, index, "Key");
+
+            packet.ReadInt32("TotalQuantity", index);
+            packet.ReadInt32("RequiredLevel", index);
+            packet.ReadUInt64("MinPrice", index);
+            var itemModifiedAppearanceIDsCount = packet.ReadUInt32();
+            for (var i = 0u; i < itemModifiedAppearanceIDsCount; ++i)
+                packet.ReadInt32("ItemModifiedAppearanceID", index, i);
+
+            packet.ResetBitReader();
+            var hasMaxBattlePetQuality = packet.ReadBit();
+            var hasMaxBattlePetLevel = packet.ReadBit();
+            var hasBattlePetBreedID = packet.ReadBit();
+            var hasBattlePetLevelMask = packet.ReadBit();
+            packet.ReadBit("ContainsOwnerItem", index);
+            packet.ReadBit("ContainsOnlyCollectedAppearances", index);
+
+            if (hasMaxBattlePetQuality)
+                packet.ReadByte("MaxBattlePetQuality", index);
+
+            if (hasMaxBattlePetLevel)
+                packet.ReadByte("MaxBattlePetLevel", index);
+
+            if (hasBattlePetBreedID)
+                packet.ReadByte("BattlePetBreedID", index);
+
+            if (hasBattlePetLevelMask)
+                packet.ReadUInt32("BattlePetLevelMask", index);
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_LIST_BUCKETS_RESULT)]
+        public static void HandleAuctionListBucketsResult(Packet packet)
+        {
+            var bucketCount = packet.ReadUInt32();
+            packet.ReadUInt32("DesiredDelay");
+            packet.ReadInt32("Unknown830_0");
+            packet.ReadInt32("Unknown830_1");
+            packet.ReadBit("BrowseMode");
+            packet.ReadBit("HasMoreResults");
+
+            for (var i = 0; i < bucketCount; ++i)
+                ReadBucketInfo(packet, i);
         }
 
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
