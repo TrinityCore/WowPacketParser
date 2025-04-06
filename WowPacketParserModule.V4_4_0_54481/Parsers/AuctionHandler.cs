@@ -437,6 +437,21 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadBucketInfo(packet, i);
         }
 
+        [Parser(Opcode.SMSG_AUCTION_LIST_OWNED_ITEMS_RESULT)]
+        public static void HandleAuctionListOwnedItemsResult(Packet packet)
+        {
+            var itemsCount = packet.ReadInt32();
+            var soldItemsCount = packet.ReadInt32();
+            packet.ReadUInt32("DesiredDelay");
+            packet.ReadBit("HasMoreResults");
+
+            for (var i = 0; i < itemsCount; ++i)
+                ReadCliAuctionItem(packet, "Items", i);
+
+            for (var i = 0; i < soldItemsCount; ++i)
+                ReadCliAuctionItem(packet, "SoldItems", i);
+        }
+
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
         public static void HandleAuctionZero(Packet packet)
         {
