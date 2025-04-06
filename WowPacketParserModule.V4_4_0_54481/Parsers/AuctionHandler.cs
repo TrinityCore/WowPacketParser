@@ -651,9 +651,19 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             for (var i = 0; i < bucketKeysCount; i++)
                 ReadAuctionBucketKey(packet, i);
-            
+
             for (var i = 0; i < sortCount; i++)
                 ReadAuctionSortDef(packet, i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_GET_COMMODITY_QUOTE)]
+        public static void HandleAuctionHouseGetCommodityQuote(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32<ItemId>("ItemID");
+            packet.ReadUInt32("Quantity");
+            if (packet.ReadBit())
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
         }
 
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
