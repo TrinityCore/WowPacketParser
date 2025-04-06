@@ -576,7 +576,25 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             if (taintedBy)
                 AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
-            
+
+            for (var i = 0; i < sortCount; i++)
+                ReadAuctionSortDef(packet, i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_ITEMS_BY_ITEM_ID)]
+        public static void HandleAuctionListItemsByItemID(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("ItemID");
+            packet.ReadInt32("SuffixItemNameDescriptionID");
+            packet.ReadUInt32("Offset");
+
+            var taintedBy = packet.ReadBit();
+            var sortCount = packet.ReadBits(2);
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
             for (var i = 0; i < sortCount; i++)
                 ReadAuctionSortDef(packet, i);
         }
