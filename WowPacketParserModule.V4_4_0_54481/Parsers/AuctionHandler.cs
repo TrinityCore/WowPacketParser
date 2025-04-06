@@ -463,6 +463,25 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadCliAuctionItem(packet, "Items", i);
         }
 
+        [Parser(Opcode.SMSG_AUCTION_GET_COMMODITY_QUOTE_RESULT)]
+        public static void HandleAuctionHouseGetCommodityQuoteResult(Packet packet)
+        {
+            var hasTotalPrice = packet.ReadBit();
+            var hasQuantity = packet.ReadBit();
+            var hasQuoteDuration = packet.ReadBit();
+            packet.ReadInt32("ItemID");
+            packet.ReadUInt32("DesiredDelay");
+
+            if (hasTotalPrice)
+                packet.ReadUInt64("TotalPrice");
+
+            if (hasQuantity)
+                packet.ReadUInt32("Quantity");
+
+            if (hasQuoteDuration)
+                packet.ReadInt64("QuoteDuration");
+        }
+
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
         public static void HandleAuctionZero(Packet packet)
         {
