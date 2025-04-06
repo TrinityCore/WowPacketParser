@@ -557,9 +557,28 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             for (var i = 0; i < itemClassFilterSize; i++)
                 ReadAuctionListFilterClass(packet, i, "FilterClass");
-            
+
             for (var i = 0; i < sortsSize; i++)
                 ReadAuctionSortDef(packet, i, "SortDef");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_ITEMS_BY_BUCKET_KEY)]
+        public static void HandleAuctionListItemsByBucketKey(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadUInt32("Offset");
+            packet.ReadByte("Unknown830");
+
+            var taintedBy = packet.ReadBit();
+            var sortCount = packet.ReadBits(2);
+
+            ReadAuctionBucketKey(packet, "BucketKey");
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+            
+            for (var i = 0; i < sortCount; i++)
+                ReadAuctionSortDef(packet, i);
         }
 
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
