@@ -482,6 +482,25 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadInt64("QuoteDuration");
         }
 
+        public static void ReadAuctionFavoriteInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("Order", idx);
+            packet.ReadUInt32("ItemID", idx);
+            packet.ReadUInt32("ItemLevel", idx);
+            packet.ReadUInt32("BattlePetSpeciesID", idx);
+            packet.ReadUInt32("SuffixItemNameDescriptionID", idx);
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_FAVORITE_LIST)]
+        public static void HandleAuctionFavoriteList(Packet packet)
+        {
+            packet.ReadUInt32("DesiredDelay");
+            var itemsCount = packet.ReadBits(7);
+
+            for (var i = 0; i < itemsCount; ++i)
+                ReadAuctionFavoriteInfo(packet, "FavoriteInfo", i);
+        }
+
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
         public static void HandleAuctionZero(Packet packet)
         {
