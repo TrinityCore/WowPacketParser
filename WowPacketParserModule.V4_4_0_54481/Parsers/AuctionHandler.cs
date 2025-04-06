@@ -667,6 +667,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
         }
 
+        [Parser(Opcode.CMSG_AUCTION_CANCEL_COMMODITIES_PURCHASE)]
+        public static void HandleAuctionCancelCommoditiesPurchase(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            if (packet.ReadBit())
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+        }
+
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
         public static void HandleAuctionZero(Packet packet)
         {
