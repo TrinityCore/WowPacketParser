@@ -657,6 +657,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         }
 
         [Parser(Opcode.CMSG_AUCTION_GET_COMMODITY_QUOTE)]
+        [Parser(Opcode.CMSG_AUCTION_CONFIRM_COMMODITIES_PURCHASE)]
         public static void HandleAuctionHouseGetCommodityQuote(Packet packet)
         {
             packet.ReadPackedGuid128("Auctioneer");
