@@ -636,6 +636,26 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadAuctionSortDef(packet, i);
         }
 
+        [Parser(Opcode.CMSG_AUCTION_LIST_BUCKETS_BY_BUCKET_KEYS)]
+        public static void HandleAuctionListBucketsByBucketKeys(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+
+            var taintedBy = packet.ReadBit();
+
+            var bucketKeysCount = packet.ReadBits(7);
+            var sortCount = packet.ReadBits(2);
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            for (var i = 0; i < bucketKeysCount; i++)
+                ReadAuctionBucketKey(packet, i);
+            
+            for (var i = 0; i < sortCount; i++)
+                ReadAuctionSortDef(packet, i);
+        }
+
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
         public static void HandleAuctionZero(Packet packet)
         {
