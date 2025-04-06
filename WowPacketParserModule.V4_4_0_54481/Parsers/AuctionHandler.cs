@@ -31,7 +31,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
         public static void ReadCliAuctionItem(Packet packet, params object[] idx)
         {
-
+            packet.ResetBitReader();
             var hasItem = packet.ReadBit("HasItem", idx);
             var enchantmentsCount = packet.ReadBits("EnchantmentsCount", 4, idx);
             var gemsCount = packet.ReadBits("GemsCount", 2, idx);
@@ -180,6 +180,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             for (var i = 0; i < itemsCount; i++)
                 ReadCliAuctionItem(packet, i);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_2_59185))
+            {
+                packet.ResetBitReader();
+                packet.ReadBits("ListType", 2);
+                packet.ReadBit("HasMoreResults");
+                ReadAuctionBucketKey(packet, "BucketKey");
+                packet.ReadUInt32("TotalCount");
+            }
         }
 
         [Parser(Opcode.SMSG_AUCTION_LIST_PENDING_SALES_RESULT)]
