@@ -26,7 +26,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadUInt32("RegionID");
             packet.ReadUInt32("BattlegroupID");
             packet.ReadUInt32("RealmID");
-            packet.ReadBytes("LocalChallenge", 16);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_2_59185))
+                packet.ReadBytes("LocalChallenge", 32);
+            else
+                packet.ReadBytes("LocalChallenge", 16);
+
             packet.ReadBytes("Digest", 24);
             packet.ReadBit("UseIPv6");
 
