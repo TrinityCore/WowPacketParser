@@ -343,6 +343,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("Auctioneer");
             packet.ReadInt32("AuctionID");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_2_59185))
+                packet.ReadInt32("ItemID");
+
             var taintedBy = packet.ReadBit();
 
             if (taintedBy)
