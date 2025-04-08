@@ -94,7 +94,9 @@ namespace WowPacketParser
                 try
                 {
                     var sf = new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count));
-                    parserPacketsList.Add(sf.ProcessFile());
+                    var packets = sf.ProcessFile();
+                    if (packets != null)
+                        parserPacketsList.Add(packets);
                 }
                 catch (IOException ex)
                 {

@@ -95,7 +95,7 @@ namespace WowPacketParser.Loading
                 Trace.WriteLine(_logPrefix + " " + ex.GetType());
                 Trace.WriteLine(_logPrefix + " " + ex.Message);
                 Trace.WriteLine(_logPrefix + " " + ex.StackTrace);
-                return new Packets();
+                return null;
             }
             finally
             {
@@ -174,6 +174,7 @@ namespace WowPacketParser.Loading
                     }
 
                     Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
+                    bool movementEnabled = Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_movement);
 
                     _stats.SetStartTime(DateTime.Now);
 
@@ -286,8 +287,13 @@ namespace WowPacketParser.Loading
                             // Close Writer, Stream - Dispose
                             packet.ClosePacket();
 
-                            if (_dumpFormat.IsUniversalProtobufType() || Settings.SQLOutputFlag != 0 || HotfixSettings.Instance.ShouldLog())
-                                packets.Packets_.Add(packet.Holder);
+                            if (_dumpFormat.IsUniversalProtobufType() || movementEnabled || HotfixSettings.Instance.ShouldLog())
+                            {
+                                if (_dumpFormat.IsUniversalProtobufType() || HotfixSettings.Instance.ShouldLog())
+                                    packets.Packets_.Add(packet.Holder);
+                                else if (movementEnabled && packet.Holder.MonsterMove != null)
+                                    packets.Packets_.Add(packet.Holder);
+                            }
                         }, threadCount);
 
                         pwp.WaitForFinished(Timeout.Infinite);
@@ -480,7 +486,7 @@ namespace WowPacketParser.Loading
                 }
             }
 
-            return new Packets();
+            return null;
         }
 
         public static string GetHeader(string fileName)
