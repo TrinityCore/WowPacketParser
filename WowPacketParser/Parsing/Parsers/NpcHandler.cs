@@ -111,8 +111,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (HasLastGossipOption(timeSpan, menuId))
             {
-                Storage.GossipMenuOptions[(LastGossipOption.MenuId, LastGossipOption.OptionIndex)].Item1.ActionMenuID = menuId;
-                Storage.GossipMenuOptions[(LastGossipOption.MenuId, LastGossipOption.OptionIndex)].Item1.ActionPoiID = LastGossipOption.ActionPoiId ?? 0;
+                var key = (LastGossipOption.MenuId, LastGossipOption.OptionIndex);
+                if (Storage.GossipMenuOptions.TryGetValue(key, out GossipMenuOption optionData))
+                {
+                    optionData.ActionMenuID = menuId;
+                    optionData.ActionPoiID = LastGossipOption.ActionPoiId ?? 0;
+                }
 
                 //keep temp data (for case SMSG_GOSSIP_POI is delayed)
                 TempGossipOptionPOI.Guid = LastGossipOption.Guid;
@@ -580,6 +584,8 @@ namespace WowPacketParser.Parsing.Parsers
                     Text = gossipOption.OptionText,
                     BoxText = gossipOption.BoxText
                 });
+
+                Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);
             }
 
             uint questsCount = packet.ReadUInt32("GossipQuestsCount");
