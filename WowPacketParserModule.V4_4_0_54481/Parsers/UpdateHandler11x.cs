@@ -542,7 +542,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     }
                 }
             }
-            else
+            else if (obj != null)
                 obj.EntityFragments.Remove(WowCSEntityFragments.CGObject);
         }
 
@@ -616,6 +616,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadBit("RemoteTimeValid", index);
                 var hasInertia = packet.ReadBit("Has Inertia", index);
                 var hasAdvFlying = packet.ReadBit("HasAdvFlying", index);
+                var hasDriveStatus = false;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V1_15_7_60000))
+                    hasDriveStatus = packet.ReadBit("HasDriveStatus", index);
 
                 if (hasTransport)
                     ReadTransportData(moveInfo, guid, packet, index);
@@ -649,6 +652,15 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                         packet.ReadSingle("Jump Cos Angle", index);
                         packet.ReadSingle("Jump Horizontal Speed", index);
                     }
+                }
+
+                if (hasDriveStatus)
+                {
+                    packet.ResetBitReader();
+                    packet.ReadBit("Accelerating", index, "DriveStatus");
+                    packet.ReadBit("Drifting", index, "DriveStatus");
+                    packet.ReadSingle("Speed", index, "DriveStatus");
+                    packet.ReadSingle("MovementAngle", index, "DriveStatus");
                 }
 
                 moveInfo.WalkSpeed = packet.ReadSingle("WalkSpeed", index) / 2.5f;

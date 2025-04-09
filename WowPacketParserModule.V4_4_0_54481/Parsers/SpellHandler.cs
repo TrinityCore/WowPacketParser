@@ -534,7 +534,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_AURA_UPDATE)]
+        [Parser(Opcode.SMSG_AURA_UPDATE, ClientBranch.Cata)]
         public static void HandleAuraUpdate(Packet packet)
         {
             PacketAuraUpdate packetAuraUpdate = packet.Holder.AuraUpdate = new();
@@ -565,6 +565,107 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     aura.Level = packet.ReadUInt16("CastLevel", i);
                     aura.Charges = packet.ReadByte("Applications", i);
                     packet.ReadInt32("ContentTuningID", i);
+
+                    packet.ResetBitReader();
+
+                    var hasCastUnit = packet.ReadBit("HasCastUnit", i);
+                    var hasDuration = packet.ReadBit("HasDuration", i);
+                    var hasRemaining = packet.ReadBit("HasRemaining", i);
+
+                    var hasTimeMod = packet.ReadBit("HasTimeMod", i);
+
+                    var pointsCount = packet.ReadBits("PointsCount", 6, i);
+                    var effectCount = packet.ReadBits("EstimatedPoints", 6, i);
+
+                    var hasContentTuning = packet.ReadBit("HasContentTuning", i);
+
+                    if (hasContentTuning)
+                        CombatLogHandler.ReadContentTuningParams(packet, i, "ContentTuning");
+
+                    if (hasCastUnit)
+                        auraEntry.CasterUnit = packet.ReadPackedGuid128("CastUnit", i);
+
+                    aura.Duration = hasDuration ? packet.ReadInt32("Duration", i) : 0;
+                    aura.MaxDuration = hasRemaining ? packet.ReadInt32("Remaining", i) : 0;
+
+                    if (hasDuration)
+                        auraEntry.Duration = aura.Duration;
+
+                    if (hasRemaining)
+                        auraEntry.Remaining = aura.MaxDuration;
+
+                    if (hasTimeMod)
+                        packet.ReadSingle("TimeMod");
+
+                    for (var j = 0; j < pointsCount; ++j)
+                        packet.ReadSingle("Points", i, j);
+
+                    for (var j = 0; j < effectCount; ++j)
+                        packet.ReadSingle("EstimatedPoints", i, j);
+
+                    auras.Add(aura);
+                    packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
+                }
+            }
+
+            var guid = packet.ReadPackedGuid128("UnitGUID");
+            packetAuraUpdate.Unit = guid;
+
+            if (Storage.Objects.ContainsKey(guid))
+            {
+                var unit = Storage.Objects[guid].Item1 as Unit;
+                if (unit != null)
+                {
+                    // If this is the first packet that sends auras
+                    // (hopefully at spawn time) add it to the "Auras" field,
+                    // if not create another row of auras in AddedAuras
+                    // (similar to ChangedUpdateFields)
+
+                    if (unit.Auras == null)
+                        unit.Auras = auras;
+                    else
+                        unit.AddedAuras.Add(auras);
+                }
+            }
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_AURA_UPDATE, ClientBranch.Classic)]
+        public static void HandleAuraUpdateClassic(Packet packet)
+        {
+            PacketAuraUpdate packetAuraUpdate = packet.Holder.AuraUpdate = new();
+            packet.ReadBit("UpdateAll");
+            var count = packet.ReadBits("AurasCount", 9);
+
+            var auras = new List<Aura>();
+            for (var i = 0; i < count; ++i)
+            {
+                var auraEntry = new PacketAuraUpdateEntry();
+                packetAuraUpdate.Updates.Add(auraEntry);
+                var aura = new Aura();
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V1_15_7_60000))
+                    auraEntry.Slot = packet.ReadUInt16("Slot", i);
+                else
+                    auraEntry.Slot = packet.ReadByte("Slot", i);
+
+                packet.ResetBitReader();
+                var hasAura = packet.ReadBit("HasAura", i);
+                auraEntry.Remove = !hasAura;
+                if (hasAura)
+                {
+                    packet.ReadPackedGuid128("CastID", i);
+                    aura.SpellId = auraEntry.Spell = (uint)packet.ReadInt32<SpellId>("SpellID", i);
+                    packet.ReadInt32("SpellXSpellVisualID", i);
+                    var flags = packet.ReadUInt16E<AuraFlagClassic>("Flags", i);
+                    aura.AuraFlags = flags;
+                    auraEntry.Flags = flags.ToUniversal();
+                    packet.ReadUInt32("ActiveFlags", i);
+                    aura.Level = packet.ReadUInt16("CastLevel", i);
+                    aura.Charges = packet.ReadByte("Applications", i);
+                    packet.ReadInt32("ContentTuningID", i);
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V1_15_7_60000))
+                        packet.ReadVector3("DstLocation", i);
 
                     packet.ResetBitReader();
 

@@ -6,7 +6,7 @@ using System.CodeDom.Compiler;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects.UpdateFields;
 
-namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
+namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_7_60000
 {
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
     public class UnitData : IMutableUnitData

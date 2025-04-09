@@ -10,7 +10,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing.Parsers;
 using WowPacketParser.Store.Objects.UpdateFields;
 
-namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
+namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_7_60000
 {
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
     public class UpdateFieldHandler : UpdateFieldsHandlerBase
@@ -357,64 +357,72 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
                 }
                 if (changesMask[10])
                 {
-                    data.Durability = packet.ReadUInt32("Durability", indexes);
+                    data.PropertySeed = packet.ReadInt32("PropertySeed", indexes);
                 }
                 if (changesMask[11])
                 {
-                    data.MaxDurability = packet.ReadUInt32("MaxDurability", indexes);
+                    data.RandomPropertiesID = packet.ReadInt32("RandomPropertiesID", indexes);
                 }
                 if (changesMask[12])
                 {
-                    data.CreatePlayedTime = packet.ReadUInt32("CreatePlayedTime", indexes);
+                    data.Durability = packet.ReadUInt32("Durability", indexes);
                 }
                 if (changesMask[13])
                 {
-                    data.Context = packet.ReadByte("Context", indexes);
+                    data.MaxDurability = packet.ReadUInt32("MaxDurability", indexes);
                 }
                 if (changesMask[14])
                 {
-                    data.CreateTime = packet.ReadInt64("CreateTime", indexes);
+                    data.CreatePlayedTime = packet.ReadUInt32("CreatePlayedTime", indexes);
                 }
                 if (changesMask[15])
                 {
-                    data.ArtifactXP = packet.ReadUInt64("ArtifactXP", indexes);
+                    data.Context = packet.ReadByte("Context", indexes);
                 }
                 if (changesMask[16])
                 {
-                    data.ItemAppearanceModID = packet.ReadByte("ItemAppearanceModID", indexes);
+                    data.CreateTime = packet.ReadInt64("CreateTime", indexes);
+                }
+                if (changesMask[17])
+                {
+                    data.ArtifactXP = packet.ReadUInt64("ArtifactXP", indexes);
                 }
                 if (changesMask[18])
                 {
-                    data.ZoneFlags = packet.ReadUInt32("ZoneFlags", indexes);
-                }
-                if (changesMask[19])
-                {
-                    Substructures.ItemHandler.ReadItemBonusKey(packet, indexes, "ItemBonusKey");
+                    data.ItemAppearanceModID = packet.ReadByte("ItemAppearanceModID", indexes);
                 }
                 if (changesMask[20])
                 {
+                    data.ZoneFlags = packet.ReadUInt32("ZoneFlags", indexes);
+                }
+                if (changesMask[21])
+                {
+                    Substructures.ItemHandler.ReadItemBonusKey(packet, indexes, "ItemBonusKey");
+                }
+                if (changesMask[22])
+                {
                     data.DEBUGItemLevel = packet.ReadUInt16("DEBUGItemLevel", indexes);
                 }
-                if (changesMask[17])
+                if (changesMask[19])
                 {
                     data.Modifiers = ReadUpdateItemModList(packet, indexes, "Modifiers");
                 }
             }
-            if (changesMask[21])
+            if (changesMask[23])
             {
                 for (var i = 0; i < 5; ++i)
                 {
-                    if (changesMask[22 + i])
+                    if (changesMask[24 + i])
                     {
                         data.SpellCharges[i] = packet.ReadInt32("SpellCharges", indexes, i);
                     }
                 }
             }
-            if (changesMask[27])
+            if (changesMask[29])
             {
                 for (var i = 0; i < 13; ++i)
                 {
-                    if (changesMask[28 + i])
+                    if (changesMask[30 + i])
                     {
                         data.Enchantment[i] = ReadUpdateItemEnchantment(packet, indexes, "Enchantment", i);
                     }
@@ -736,6 +744,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
             var data = new VisibleItem();
             packet.ResetBitReader();
             data.ItemID = packet.ReadInt32("ItemID", indexes);
+            data.SecondaryItemModifiedAppearanceID = packet.ReadInt32("SecondaryItemModifiedAppearanceID", indexes);
+            data.ConditionalItemAppearanceID = packet.ReadInt32("ConditionalItemAppearanceID", indexes);
             data.ItemAppearanceModID = packet.ReadUInt16("ItemAppearanceModID", indexes);
             data.ItemVisual = packet.ReadUInt16("ItemVisual", indexes);
             return data;
@@ -853,7 +863,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
             data.ScalingLevelMin = packet.ReadInt32("ScalingLevelMin", indexes);
             data.ScalingLevelMax = packet.ReadInt32("ScalingLevelMax", indexes);
             data.ScalingLevelDelta = packet.ReadInt32("ScalingLevelDelta", indexes);
-            data.ScalingFactionGroup = packet.ReadInt32("ScalingFactionGroup", indexes);
+            data.ScalingFactionGroup = packet.ReadByte("ScalingFactionGroup", indexes);
             data.FactionTemplate = packet.ReadInt32("FactionTemplate", indexes);
             for (var i = 0; i < 3; ++i)
             {
@@ -977,6 +987,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
             data.FlightCapabilityID = packet.ReadInt32("FlightCapabilityID", indexes);
             data.GlideEventSpeedDivisor = packet.ReadSingle("GlideEventSpeedDivisor", indexes);
             data.SilencedSchoolMask = packet.ReadUInt32("SilencedSchoolMask", indexes);
+            packet.ReadUInt32("UNK", indexes);
             data.CurrentAreaID = packet.ReadUInt32("CurrentAreaID", indexes);
             if ((flags & UpdateFieldFlag.Owner) != UpdateFieldFlag.None)
             {
@@ -1209,7 +1220,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
                 }
                 if (changesMask[39])
                 {
-                    data.ScalingFactionGroup = packet.ReadInt32("ScalingFactionGroup", indexes);
+                    data.ScalingFactionGroup = packet.ReadByte("ScalingFactionGroup", indexes);
                 }
                 if (changesMask[40])
                 {
@@ -1503,106 +1514,110 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
                 }
                 if (changesMask[113])
                 {
-                    data.CurrentAreaID = packet.ReadUInt32("CurrentAreaID", indexes);
+                    packet.ReadUInt32("unk", indexes);
                 }
                 if (changesMask[114])
                 {
-                    data.ComboTarget = packet.ReadPackedGuid128("ComboTarget", indexes);
+                    data.CurrentAreaID = packet.ReadUInt32("CurrentAreaID", indexes);
                 }
                 if (changesMask[115])
                 {
-                    data.Field_2F0 = packet.ReadSingle("Field_2F0", indexes);
+                    data.ComboTarget = packet.ReadPackedGuid128("ComboTarget", indexes);
                 }
                 if (changesMask[116])
+                {
+                    data.Field_2F0 = packet.ReadSingle("Field_2F0", indexes);
+                }
+                if (changesMask[117])
                 {
                     data.Field_2F4 = packet.ReadSingle("Field_2F4", indexes);
                 }
             }
-            if (changesMask[117])
+            if (changesMask[118])
             {
                 for (var i = 0; i < 10; ++i)
                 {
-                    if (changesMask[118 + i])
+                    if (changesMask[119 + i])
                     {
                         data.PowerRegenFlatModifier[i] = packet.ReadSingle("PowerRegenFlatModifier", indexes, i);
                     }
-                    if (changesMask[128 + i])
+                    if (changesMask[129 + i])
                     {
                         data.PowerRegenInterruptedFlatModifier[i] = packet.ReadSingle("PowerRegenInterruptedFlatModifier", indexes, i);
                     }
-                    if (changesMask[138 + i])
+                    if (changesMask[139 + i])
                     {
                         data.Power[i] = packet.ReadInt32("Power", indexes, i);
                     }
-                    if (changesMask[148 + i])
+                    if (changesMask[149 + i])
                     {
                         data.MaxPower[i] = packet.ReadInt32("MaxPower", indexes, i);
                     }
-                    if (changesMask[158 + i])
+                    if (changesMask[159 + i])
                     {
                         data.ModPowerRegen[i] = packet.ReadSingle("ModPowerRegen", indexes, i);
                     }
                 }
             }
-            if (changesMask[168])
+            if (changesMask[169])
             {
                 for (var i = 0; i < 3; ++i)
                 {
-                    if (changesMask[169 + i])
+                    if (changesMask[170 + i])
                     {
                         data.VirtualItems[i] = ReadUpdateVisibleItem(packet, indexes, "VirtualItems", i);
                     }
                 }
             }
-            if (changesMask[172])
+            if (changesMask[173])
             {
                 for (var i = 0; i < 3; ++i)
                 {
-                    if (changesMask[173 + i])
+                    if (changesMask[174 + i])
                     {
                         data.AttackRoundBaseTime[i] = packet.ReadUInt32("AttackRoundBaseTime", indexes, i);
                     }
                 }
             }
-            if (changesMask[176])
+            if (changesMask[177])
             {
                 for (var i = 0; i < 5; ++i)
                 {
-                    if (changesMask[177 + i])
+                    if (changesMask[178 + i])
                     {
                         data.Stats[i] = packet.ReadInt32("Stats", indexes, i);
                     }
-                    if (changesMask[182 + i])
+                    if (changesMask[183 + i])
                     {
                         data.StatPosBuff[i] = packet.ReadInt32("StatPosBuff", indexes, i);
                     }
-                    if (changesMask[187 + i])
+                    if (changesMask[188 + i])
                     {
                         data.StatNegBuff[i] = packet.ReadInt32("StatNegBuff", indexes, i);
                     }
                 }
             }
-            if (changesMask[192])
+            if (changesMask[193])
             {
                 for (var i = 0; i < 7; ++i)
                 {
-                    if (changesMask[193 + i])
+                    if (changesMask[194 + i])
                     {
                         data.Resistances[i] = packet.ReadInt32("Resistances", indexes, i);
                     }
-                    if (changesMask[200 + i])
+                    if (changesMask[201 + i])
                     {
                         data.ResistanceBuffModsPositive[i] = packet.ReadInt32("ResistanceBuffModsPositive", indexes, i);
                     }
-                    if (changesMask[207 + i])
+                    if (changesMask[208 + i])
                     {
                         data.ResistanceBuffModsNegative[i] = packet.ReadInt32("ResistanceBuffModsNegative", indexes, i);
                     }
-                    if (changesMask[214 + i])
+                    if (changesMask[215 + i])
                     {
                         data.PowerCostModifier[i] = packet.ReadInt32("PowerCostModifier", indexes, i);
                     }
-                    if (changesMask[221 + i])
+                    if (changesMask[222 + i])
                     {
                         data.PowerCostMultiplier[i] = packet.ReadSingle("PowerCostMultiplier", indexes, i);
                     }
@@ -4064,7 +4079,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
             data.LifetimeMaxRank = packet.ReadByte("LifetimeMaxRank", indexes);
             data.NumRespecs = packet.ReadByte("NumRespecs", indexes);
             data.AmmoID = packet.ReadInt32("AmmoID", indexes);
-            data.PvpMedals = packet.ReadUInt32("PvpMedals", indexes);
+            data.PvpMedals = packet.ReadByte("PvpMedals", indexes);
             for (var i = 0; i < 12; ++i)
             {
                 data.BuybackPrice[i] = packet.ReadUInt32("BuybackPrice", indexes, i);
