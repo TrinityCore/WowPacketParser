@@ -865,6 +865,13 @@ namespace WowPacketParser.Enums
         V3_4_3_53788 = 53788, // live
         V3_4_3_54261 = 54261, // live
 
+        V3_4_4_59817 = 59817, // live
+        V3_4_4_59853 = 59853, // live
+        V3_4_4_59887 = 59887, // live
+        V3_4_4_60003 = 60003, // live
+        V3_4_4_60063 = 60063, // live
+        V3_4_4_60190 = 60190, // live
+
         V4_4_0_54481 = 54481, // both live and ptr
         V4_4_0_54500 = 54500, // both live and ptr
         V4_4_0_54501 = 54501, // both live and ptr

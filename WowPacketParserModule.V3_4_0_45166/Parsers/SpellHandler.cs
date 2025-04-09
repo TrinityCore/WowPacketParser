@@ -252,10 +252,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 // SpecID 2 = Index 1 (SpecGroup)
                 packet.ReadByte("SpecID", idx, i);
 
+                if (ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_4_59817))
+                    packet.ReadUInt32("PrimarySpecialization", idx, i);
+
                 for (var j = 0; j < talentCount; ++j)
                 {
                     packet.ReadUInt32("TalentID", idx, i, "TalentInfo", j);
-                    packet.ReadByte("Rank", idx, i, "TalentInfo", j);
+                    if (ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_4_59817))
+                        packet.ReadUInt32("Rank", idx, i, "TalentInfo", j);
+                    else
+                        packet.ReadByte("Rank", idx, i, "TalentInfo", j);
                 }
 
                 for (var k = 0; k < glyphCount; ++k)
