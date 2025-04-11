@@ -34,8 +34,10 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_1_47014
         public System.Nullable<float>[] AvgItemLevel { get; } = new System.Nullable<float>[6];
         public System.Nullable<byte> CurrentBattlePetBreedQuality { get; set; }
         public System.Nullable<int> HonorLevel { get; set; }
+        public System.Nullable<long> LogoutTime { get; set; }
         public DynamicUpdateField<IChrCustomizationChoice> Customizations { get; } = new DynamicUpdateField<IChrCustomizationChoice>();
         public DynamicUpdateField<IArenaCooldown> ArenaCooldowns { get; } = new DynamicUpdateField<IArenaCooldown>();
+        public DynamicUpdateField<System.Nullable<int>> VisualItemReplacements { get; } = new DynamicUpdateField<System.Nullable<int>>();
     }
 }
 

@@ -121,7 +121,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             var hasAmmoDisplayId = packet.ReadBit("HasAmmoDisplayId", idx);
             var hasAmmoInventoryType = packet.ReadBit("HasAmmoInventoryType", idx);
 
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_4_1_47014))
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_4_3_51505))
                 for (var i = 0; i < missStatusCount; ++i)
                     V6_0_2_19033.Parsers.SpellHandler.ReadSpellMissStatus(packet, idx, "MissStatus", i);
 
@@ -133,7 +133,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             for (var i = 0; i < missTargetsCount; ++i)
                 packetSpellData.MissedTargets.Add(packet.ReadPackedGuid128("MissTarget", idx, i));
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_3_51505))
                 for (var i = 0; i < missStatusCount; ++i)
                     ReadSpellMissStatus(packet, idx, "MissStatus", i);
 

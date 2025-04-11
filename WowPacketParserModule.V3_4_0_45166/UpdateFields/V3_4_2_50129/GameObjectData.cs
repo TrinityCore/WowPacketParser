@@ -26,6 +26,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
         public System.Nullable<uint> ArtKit { get; set; }
         public System.Nullable<uint> CustomParam { get; set; }
         public DynamicUpdateField<System.Nullable<int>> EnableDoodadSets { get; } = new DynamicUpdateField<System.Nullable<int>>();
+        public DynamicUpdateField<System.Nullable<int>> WorldEffects { get; } = new DynamicUpdateField<System.Nullable<int>>();
     }
 }
 

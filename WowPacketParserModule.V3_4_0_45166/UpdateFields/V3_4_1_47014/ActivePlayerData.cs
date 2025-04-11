@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_1_47014
 {
     public class ActivePlayerData : IActivePlayerData
     {
-        public WowGuid[] InvSlots { get; } = new WowGuid[129];
+        public WowGuid[] InvSlots { get; } = new WowGuid[141];
         public WowGuid FarsightObject { get; set; }
         public WowGuid ComboTarget { get; set; }
         public System.Nullable<ulong> Coinage { get; set; }
