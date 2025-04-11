@@ -1178,7 +1178,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.SMSG_START_MIRROR_TIMER)]
         public static void HandleStartMirrorTimer(Packet packet)
         {
-            packet.ReadInt32E<MirrorTimerType>("Timer");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_2_59185))
+                packet.ReadByteE<MirrorTimerType>("Timer");
+            else
+                packet.ReadInt32E<MirrorTimerType>("Timer");
+
             packet.ReadInt32("Value");
             packet.ReadInt32("MaxValue");
             packet.ReadInt32("Scale");
