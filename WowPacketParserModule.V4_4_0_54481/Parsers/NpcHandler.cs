@@ -333,7 +333,11 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         public static void HandleVendorInventory(Packet packet)
         {
             uint entry = packet.ReadPackedGuid128("VendorGUID").GetEntry();
-            packet.ReadByte("Reason");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_2_59185))
+                packet.ReadInt32("Reason");
+            else
+                packet.ReadByte("Reason");
+
             int count = packet.ReadInt32("VendorItems");
 
             for (int i = 0; i < count; ++i)
@@ -346,7 +350,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 packet.ReadInt64("Price", i);
                 vendor.Slot = packet.ReadInt32("Muid", i);
                 vendor.Type = (uint)packet.ReadInt32("Type", i);
-                packet.ReadInt32("Durability", i);
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_4_2_59185))
+                    packet.ReadInt32("Durability", i);
                 int buyCount = packet.ReadInt32("StackCount", i);
                 int maxCount = packet.ReadInt32("Quantity", i);
                 vendor.ExtendedCost = packet.ReadUInt32("ExtendedCostID", i);
