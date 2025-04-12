@@ -1339,6 +1339,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<AreaTableHotfix440> AreaTableHotfixes440 = new DataBag<AreaTableHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AreaTriggerHotfix440> AreaTriggerHotfixes440 = new DataBag<AreaTriggerHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AreaTriggerHotfix441> AreaTriggerHotfixes441 = new DataBag<AreaTriggerHotfix441>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<AreaTriggerHotfix442> AreaTriggerHotfixes442 = new DataBag<AreaTriggerHotfix442>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AreaTriggerActionSetHotfix440> AreaTriggerActionSetHotfixes440 = new DataBag<AreaTriggerActionSetHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ArmorLocationHotfix440> ArmorLocationHotfixes440 = new DataBag<ArmorLocationHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<AuctionHouseHotfix440> AuctionHouseHotfixes440 = new DataBag<AuctionHouseHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -1366,11 +1367,13 @@ namespace WowPacketParser.Store
         public static readonly DataBag<ChrClassUiDisplayHotfix440> ChrClassUiDisplayHotfixes440 = new DataBag<ChrClassUiDisplayHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ChrClassesHotfix440> ChrClassesHotfixes440 = new DataBag<ChrClassesHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ChrClassesHotfix441> ChrClassesHotfixes441 = new DataBag<ChrClassesHotfix441>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<ChrClassesHotfix442> ChrClassesHotfixes442 = new DataBag<ChrClassesHotfix442>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ChrClassesXPowerTypesHotfix440> ChrClassesXPowerTypesHotfixes440 = new DataBag<ChrClassesXPowerTypesHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ChrCustomizationChoiceHotfix440> ChrCustomizationChoiceHotfixes440 = new DataBag<ChrCustomizationChoiceHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ChrCustomizationDisplayInfoHotfix440> ChrCustomizationDisplayInfoHotfixes440 = new DataBag<ChrCustomizationDisplayInfoHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ChrCustomizationElementHotfix440> ChrCustomizationElementHotfixes440 = new DataBag<ChrCustomizationElementHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ChrCustomizationOptionHotfix440> ChrCustomizationOptionHotfixes440 = new DataBag<ChrCustomizationOptionHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<ChrCustomizationOptionHotfix442> ChrCustomizationOptionHotfixes442 = new DataBag<ChrCustomizationOptionHotfix442>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ChrCustomizationReqHotfix440> ChrCustomizationReqHotfixes440 = new DataBag<ChrCustomizationReqHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ChrCustomizationReqChoiceHotfix440> ChrCustomizationReqChoiceHotfixes440 = new DataBag<ChrCustomizationReqChoiceHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ChrModelHotfix440> ChrModelHotfixes440 = new DataBag<ChrModelHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -1482,6 +1485,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<LanguageWordsHotfix440> LanguageWordsHotfixes440 = new DataBag<LanguageWordsHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<LanguagesHotfix440> LanguagesHotfixes440 = new DataBag<LanguagesHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<LfgDungeonsHotfix440> LfgDungeonsHotfixes440 = new DataBag<LfgDungeonsHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<LfgDungeonsHotfix442> LfgDungeonsHotfixes442 = new DataBag<LfgDungeonsHotfix442>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<LightHotfix440> LightHotfixes440 = new DataBag<LightHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<LiquidTypeHotfix440> LiquidTypeHotfixes440 = new DataBag<LiquidTypeHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<LocationHotfix440> LocationHotfixes440 = new DataBag<LocationHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -1491,6 +1495,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<MapHotfix441> MapHotfixes441 = new DataBag<MapHotfix441>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<MapChallengeModeHotfix440> MapChallengeModeHotfixes440 = new DataBag<MapChallengeModeHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<MapDifficultyHotfix440> MapDifficultyHotfixes440 = new DataBag<MapDifficultyHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<MapDifficultyHotfix442> MapDifficultyHotfixes442 = new DataBag<MapDifficultyHotfix442>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<MapDifficultyXConditionHotfix440> MapDifficultyXConditionHotfixes440 = new DataBag<MapDifficultyXConditionHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ModifierTreeHotfix440> ModifierTreeHotfixes440 = new DataBag<ModifierTreeHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<MountHotfix440> MountHotfixes440 = new DataBag<MountHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -1516,6 +1521,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<PhaseXPhaseGroupHotfix440> PhaseXPhaseGroupHotfixes440 = new DataBag<PhaseXPhaseGroupHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PlayerConditionHotfix440> PlayerConditionHotfixes440 = new DataBag<PlayerConditionHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PlayerConditionHotfix441> PlayerConditionHotfixes441 = new DataBag<PlayerConditionHotfix441>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<PlayerConditionHotfix442> PlayerConditionHotfixes442 = new DataBag<PlayerConditionHotfix442>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PowerDisplayHotfix440> PowerDisplayHotfixes440 = new DataBag<PowerDisplayHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PowerDisplayHotfix441> PowerDisplayHotfixes441 = new DataBag<PowerDisplayHotfix441>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PowerTypeHotfix440> PowerTypeHotfixes440 = new DataBag<PowerTypeHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -1539,6 +1545,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<RewardPackXItemHotfix440> RewardPackXItemHotfixes440 = new DataBag<RewardPackXItemHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ScenarioHotfix440> ScenarioHotfixes440 = new DataBag<ScenarioHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ScenarioStepHotfix440> ScenarioStepHotfixes440 = new DataBag<ScenarioStepHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<ScenarioStepHotfix442> ScenarioStepHotfixes442 = new DataBag<ScenarioStepHotfix442>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SceneScriptHotfix440> SceneScriptHotfixes440 = new DataBag<SceneScriptHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SceneScriptGlobalTextHotfix440> SceneScriptGlobalTextHotfixes440 = new DataBag<SceneScriptGlobalTextHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SceneScriptPackageHotfix440> SceneScriptPackageHotfixes440 = new DataBag<SceneScriptPackageHotfix440>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -3382,6 +3389,7 @@ namespace WowPacketParser.Store
             AreaTableHotfixes440.Clear();
             AreaTriggerHotfixes440.Clear();
             AreaTriggerHotfixes441.Clear();
+            AreaTriggerHotfixes442.Clear();
             AreaTriggerActionSetHotfixes440.Clear();
             ArmorLocationHotfixes440.Clear();
             AuctionHouseHotfixes440.Clear();
@@ -3409,11 +3417,13 @@ namespace WowPacketParser.Store
             ChrClassUiDisplayHotfixes440.Clear();
             ChrClassesHotfixes440.Clear();
             ChrClassesHotfixes441.Clear();
+            ChrClassesHotfixes442.Clear();
             ChrClassesXPowerTypesHotfixes440.Clear();
             ChrCustomizationChoiceHotfixes440.Clear();
             ChrCustomizationDisplayInfoHotfixes440.Clear();
             ChrCustomizationElementHotfixes440.Clear();
             ChrCustomizationOptionHotfixes440.Clear();
+            ChrCustomizationOptionHotfixes442.Clear();
             ChrCustomizationReqHotfixes440.Clear();
             ChrCustomizationReqChoiceHotfixes440.Clear();
             ChrModelHotfixes440.Clear();
@@ -3525,6 +3535,7 @@ namespace WowPacketParser.Store
             LanguageWordsHotfixes440.Clear();
             LanguagesHotfixes440.Clear();
             LfgDungeonsHotfixes440.Clear();
+            LfgDungeonsHotfixes442.Clear();
             LightHotfixes440.Clear();
             LiquidTypeHotfixes440.Clear();
             LocationHotfixes440.Clear();
@@ -3534,6 +3545,7 @@ namespace WowPacketParser.Store
             MapHotfixes441.Clear();
             MapChallengeModeHotfixes440.Clear();
             MapDifficultyHotfixes440.Clear();
+            MapDifficultyHotfixes442.Clear();
             MapDifficultyXConditionHotfixes440.Clear();
             ModifierTreeHotfixes440.Clear();
             MountHotfixes440.Clear();

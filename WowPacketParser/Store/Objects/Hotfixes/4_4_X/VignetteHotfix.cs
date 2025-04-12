@@ -37,6 +37,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardQuestID")]
         public int? RewardQuestID;
 
+        [DBFieldName("Unknown1156")]
+        public sbyte? Unknown1156;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
