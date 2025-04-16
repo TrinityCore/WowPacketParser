@@ -1697,7 +1697,7 @@ namespace WowPacketParser.Enums.Version.V1_15_7_60000
             { Opcode.SMSG_NPC_INTERACTION_OPEN_RESULT, 0x370307 },
             { Opcode.SMSG_OFFER_PETITION_ERROR, 0x37014E },
             { Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, 0x37017D },
-            { Opcode.SMSG_ON_MONSTER_MOVE, 0x4C0002 },
+            { Opcode.SMSG_ON_MONSTER_MOVE, 0x4D0002 },
             { Opcode.SMSG_OPEN_ARTIFACT_FORGE, 0x370233 },
             { Opcode.SMSG_OPEN_CONTAINER, 0x4E0006 },
             { Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x450015 },
