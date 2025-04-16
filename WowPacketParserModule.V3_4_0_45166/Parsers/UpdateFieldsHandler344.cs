@@ -3222,7 +3222,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_4_59817
                 rawMaskMask[i] = packet.ReadInt32();
             rawMaskMask[1] = (int)packet.ReadBits(13);
             var maskMask = new BitArray(rawMaskMask);
-            for (var i = 0; i < 46; ++i)
+            for (var i = 0; i < 45; ++i)
                 if (maskMask[i])
                     rawChangesMask[i] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
@@ -4021,7 +4021,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_4_59817
                 {
                     Substructures.PerksProgramHandler.ReadPerksVendorItem(packet, indexes, "FrozenPerksVendorItem");
                 }
-                if (changesMask[30])
+                if (changesMask[130])
                 {
                     if (hasPetStable)
                     {
