@@ -3735,6 +3735,8 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_7_60000
             data.DisplayID = packet.ReadUInt32("DisplayID", indexes);
             data.ExperienceLevel = packet.ReadUInt32("ExperienceLevel", indexes);
             data.PetFlags = packet.ReadByte("PetFlags", indexes);
+            data.Field_96 = packet.ReadByte("Field_96", indexes);
+            packet.ReadUInt32("Unk", indexes);
             data.Name = new string('*', (int)packet.ReadBits(8));
             data.Name = packet.ReadWoWString("Name", data.Name.Length, indexes);
             return data;
@@ -4175,6 +4177,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_7_60000
             data.Transmog.Resize(packet.ReadUInt32());
             data.ConditionalTransmog.Resize(packet.ReadUInt32());
             data.SelfResSpells.Resize(packet.ReadUInt32());
+            data.TransmogIllusions.Resize(packet.ReadUInt32());
             data.CharacterRestrictions.Resize(packet.ReadUInt32());
             data.SpellPctModByLabel.Resize(packet.ReadUInt32());
             data.SpellFlatModByLabel.Resize(packet.ReadUInt32());
@@ -4236,6 +4239,10 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_7_60000
             for (var i = 0; i < data.SelfResSpells.Count; ++i)
             {
                 data.SelfResSpells[i] = packet.ReadInt32("SelfResSpells", indexes, i);
+            }
+            for (var i = 0; i < data.TransmogIllusions.Count; ++i)
+            {
+                data.TransmogIllusions[i] = packet.ReadUInt32("TransmogIllusions", indexes, i);
             }
             for (var i = 0; i < data.SpellPctModByLabel.Count; ++i)
             {

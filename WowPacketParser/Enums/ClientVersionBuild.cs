@@ -760,6 +760,7 @@ namespace WowPacketParser.Enums
         V1_15_7_60013 = 60013, // ptr
         V1_15_7_60141 = 60141, // ptr and live
         V1_15_7_60191 = 60191, // live
+        V1_15_7_60277 = 60277, // live
 
         // TBC Classic
         V2_5_1_38598 = 38598, // ptr

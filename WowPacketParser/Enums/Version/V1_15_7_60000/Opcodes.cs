@@ -1700,7 +1700,7 @@ namespace WowPacketParser.Enums.Version.V1_15_7_60000
             { Opcode.SMSG_ON_MONSTER_MOVE, 0x4D0002 },
             { Opcode.SMSG_OPEN_ARTIFACT_FORGE, 0x370233 },
             { Opcode.SMSG_OPEN_CONTAINER, 0x4E0006 },
-            { Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x450015 },
+            { Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x450015 },  
             { Opcode.SMSG_OPEN_SHIPMENT_NPC_RESULT, 0x37022B },
             { Opcode.SMSG_OVERRIDE_LIGHT, 0x370153 },
             { Opcode.SMSG_PAGE_TEXT, 0x3701B0 },
