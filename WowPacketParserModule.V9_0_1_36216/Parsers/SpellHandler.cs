@@ -108,6 +108,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             packetSpellData.Flags = packet.ReadUInt32("CastFlags", idx);
             packetSpellData.Flags2 = packet.ReadUInt32("CastFlagsEx", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_5_60392))
+                packet.ReadUInt32("CastFlagsEx2", idx);
+
             packetSpellData.CastTime = packet.ReadUInt32("CastTime", idx);
 
             V6_0_2_19033.Parsers.SpellHandler.ReadMissileTrajectoryResult(packet, idx, "MissileTrajectory");

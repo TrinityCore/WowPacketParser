@@ -626,7 +626,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 soundKitId = packet.ReadUInt32("SoundKitID");
             packet.ResetBitReader();
             var questionLength = packet.ReadBits(8);
-            packet.ReadBit("CloseChoiceFrame");
+            packet.ReadBit("InfiniteRange");
             var hideWarboardHeader = packet.ReadBit("HideWarboardHeader");
             var keepOpenAfterChoice = packet.ReadBit("KeepOpenAfterChoice");
 

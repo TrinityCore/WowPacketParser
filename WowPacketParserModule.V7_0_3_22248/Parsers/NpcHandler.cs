@@ -35,6 +35,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (ClientVersion.AddedInVersion(ClientType.TheWarWithin))
                 packet.ReadInt32("QuestFlags", idx, 2);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_5_60392))
+                packet.ReadInt32("QuestFlags", idx, 3);
+
             packet.ResetBitReader();
 
             packet.ReadBit("Repeatable", idx);

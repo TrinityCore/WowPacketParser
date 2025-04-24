@@ -77,6 +77,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             quest.Flags = packet.ReadUInt32E<QuestFlags>("Flags");
             quest.FlagsEx = packet.ReadUInt32E<QuestFlagsEx>("FlagsEx");
             quest.FlagsEx2 = packet.ReadUInt32E<QuestFlagsEx2>("FlagsEx2");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_5_60392))
+                quest.FlagsEx3 = packet.ReadUInt32E<QuestFlagsEx3>("FlagsEx3");
 
             quest.RewardItem = new uint?[4];
             quest.RewardAmount = new uint?[4];

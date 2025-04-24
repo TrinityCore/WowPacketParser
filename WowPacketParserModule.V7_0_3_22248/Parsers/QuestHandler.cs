@@ -654,7 +654,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ResetBitReader();
             var questionLength = packet.ReadBits(8);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
-                packet.ReadBit("CloseChoiceFrame");
+                packet.ReadBit("InfiniteRange");
 
             var hideWarboardHeader = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))

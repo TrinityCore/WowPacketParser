@@ -111,6 +111,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             {
                 for (int i = 0; i < 3; i++)
                     packet.ReadInt32("QuestFlags", indexes, i);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_5_60392))
+                    packet.ReadInt32("QuestFlags", indexes, 3);
             }
 
             packet.ReadInt32("QuestGiverCreatureID", indexes);
@@ -177,6 +180,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
             for (int i = 0; i < 3; i++)
                 packet.ReadInt32("QuestFlags", i);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_5_60392))
+                packet.ReadInt32("QuestFlags", 3);
 
             packet.ReadInt32("SuggestedPartyMembers");
             var learnSpellsCount = packet.ReadUInt32("LearnSpellsCount");
@@ -252,6 +258,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             requestItems.QuestFlags = packet.ReadUInt32("QuestFlags", 0);
             requestItems.QuestFlags2 = packet.ReadUInt32("QuestFlags", 1);
             packet.ReadUInt32("QuestFlags", 2);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_5_60392))
+                packet.ReadUInt32("QuestFlags", 3);
             QuestStatusFlags statusFlags = packet.ReadInt32E<QuestStatusFlags>("StatusFlags");
             requestItems.QuestGiverEntry = (uint)packet.ReadInt32("QuestGiverCreatureID");
 

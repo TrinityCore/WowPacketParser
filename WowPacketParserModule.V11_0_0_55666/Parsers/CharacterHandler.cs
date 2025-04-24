@@ -25,7 +25,11 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             var playerGuid = packet.ReadPackedGuid128("Guid", idx);
             packet.ReadUInt32("VirtualRealmAddress", idx);
-            packet.ReadByte("ListPosition", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_5_60392))
+                packet.ReadUInt16("ListPosition", idx);
+            else
+                packet.ReadByte("ListPosition", idx);
+
             var race = packet.ReadByteE<Race>("RaceID", idx);
             packet.ReadByteE<Gender>("SexID", idx);
             var @class = packet.ReadByteE<Class>("ClassID", idx);

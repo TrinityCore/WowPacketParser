@@ -563,7 +563,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var pendingChoiceTextLength = 0u;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
                 pendingChoiceTextLength = packet.ReadBits(8);
-            packet.ReadBit("CloseChoiceFrame");
+            packet.ReadBit("InfiniteRange");
             var hideWarboardHeader = packet.ReadBit("HideWarboardHeader");
             var keepOpenAfterChoice = packet.ReadBit("KeepOpenAfterChoice");
 
@@ -617,7 +617,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
             {
                 var hasRarity = packet.ReadBit();
-                var hasRarityColor = packet.ReadBit();
+                var hasRarityColor = ClientVersion.RemovedInVersion(ClientVersionBuild.V11_1_5_60392) && packet.ReadBit();
 
                 if (hasRarity)
                     packet.ReadInt32("Rarity", indexes);
