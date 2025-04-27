@@ -96,7 +96,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                             {
                                 if (!Storage.SpellTargetPositions.ContainsKey(spellTargetPosition))
                                 {
-                                    spellTargetPosition.OrderIndex = "0";
+                                    spellTargetPosition.OrderIndex = 0;
                                     Storage.SpellTargetPositions.Add(spellTargetPosition);
                                 }
                             }
