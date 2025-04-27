@@ -157,7 +157,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("FlagsEx2", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.AnyClassic)]
         public QuestFlagsEx2? FlagsEx2;
 
-        [DBFieldName("FlagsEx2", TargetedDatabaseFlag.SinceTheWarWithin)]
+        [DBFieldName("FlagsEx3", TargetedDatabaseFlag.SinceTheWarWithin)]
         public QuestFlagsEx3? FlagsEx3;
 
         [DBFieldName("MinimapTargetMark", TargetedDatabaseFlag.Cataclysm)]
