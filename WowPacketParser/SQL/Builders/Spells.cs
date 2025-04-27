@@ -31,7 +31,7 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spell_target_position))
                 return string.Empty;
 
-            var rows = new RowList<SpellTargetPosition>();
+            var rows = new RowList<SpellTargetPositionMulti>();
             Dictionary<uint, uint> idCount = new Dictionary<uint, uint>();
 
             foreach (var spellTargetPosition in Storage.SpellTargetMultiplePositions.OrderBy(t => t.Key))
@@ -39,20 +39,20 @@ namespace WowPacketParser.SQL.Builders
                 foreach (var spellTargetPositionValue in spellTargetPosition.Value)
                 {
                     idCount.TryGetValue(spellTargetPosition.Key, out uint count);
-                    var duplicatedRow = rows.Where(spellTargetPosition2 =>
+                    var duplicatedRow = rows.Any(spellTargetPosition2 =>
                         spellTargetPosition2.Data.ID == spellTargetPosition.Key &&
                         spellTargetPosition2.Data.PositionX == spellTargetPositionValue.Item1.PositionX &&
                         spellTargetPosition2.Data.PositionY == spellTargetPositionValue.Item1.PositionY &&
                         spellTargetPosition2.Data.PositionZ == spellTargetPositionValue.Item1.PositionZ &&
                         spellTargetPosition2.Data.MapID == spellTargetPositionValue.Item1.MapID
-                    ).Any();
+                    );
 
                     if (duplicatedRow)
                         continue;
 
-                    var row = new Row<SpellTargetPosition>
+                    var row = new Row<SpellTargetPositionMulti>
                     {
-                        Data = new SpellTargetPosition
+                        Data = new SpellTargetPositionMulti
                         {
                             ID = spellTargetPosition.Key,
                             EffectIndex = spellTargetPositionValue.Item1.EffectIndex,
@@ -70,7 +70,7 @@ namespace WowPacketParser.SQL.Builders
                     rows.Add(row);
                 }
             }
-            return new SQLInsert<SpellTargetPosition>(rows, false).Build();
+            return new SQLInsert<SpellTargetPositionMulti>(rows, false).Build();
         }
     }
 }
