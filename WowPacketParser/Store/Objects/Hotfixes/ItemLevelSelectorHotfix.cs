@@ -22,21 +22,4 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
-
-    [Hotfix]
-    [DBTableName("item_level_selector")]
-    public sealed record ItemLevelSelectorHotfix340: IDataModel
-    {
-        [DBFieldName("ID", true)]
-        public uint? ID;
-
-        [DBFieldName("MinItemLevel")]
-        public ushort? MinItemLevel;
-
-        [DBFieldName("ItemLevelSelectorQualitySetID")]
-        public ushort? ItemLevelSelectorQualitySetID;
-
-        [DBFieldName("VerifiedBuild")]
-        public int? VerifiedBuild = ClientVersion.BuildInt;
-    }
 }

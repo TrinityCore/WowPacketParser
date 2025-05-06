@@ -16,18 +16,4 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
-
-    [Hotfix]
-    [DBTableName("pvp_talent_category")]
-    public sealed record PvpTalentCategoryHotfix340: IDataModel
-    {
-        [DBFieldName("ID", true)]
-        public uint? ID;
-
-        [DBFieldName("TalentSlotMask")]
-        public byte? TalentSlotMask;
-
-        [DBFieldName("VerifiedBuild")]
-        public int? VerifiedBuild = ClientVersion.BuildInt;
-    }
 }
