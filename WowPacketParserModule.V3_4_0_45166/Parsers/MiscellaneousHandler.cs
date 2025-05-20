@@ -252,15 +252,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             for (var i = 0; i < debugTimeEventsCount; ++i)
                 ReadDebugTimeInfo(packet, "DebugTimeEvent", i);
-
-            for (int i = 0; i < debugTimeEventsCount; i++)
-            {
-                packet.ReadUInt32("TimeEvent", i);
-                var textlength = packet.ReadBits("TextLength", 7, i);
-                packet.ResetBitReader();
-
-                packet.ReadWoWString("Text", textlength, i);
-            }
         }
 
         [Parser(Opcode.SMSG_TRIGGER_CINEMATIC)]
