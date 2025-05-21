@@ -342,6 +342,7 @@ namespace WowPacketParser.Hotfix
                     case "map_difficulty_x_condition":
                     case "map":
                     case "mount":
+                    case "perks_activity":
                     case "player_condition":
                     case "prestige_level_info":
                     case "pvp_stat":
