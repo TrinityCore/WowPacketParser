@@ -13,6 +13,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         public static void HandleActionButton(Packet packet)
         {
             var data = packet.ReadInt32();
+
             packet.AddValue("Type", (ActionButtonType)((data & 0xFF000000) >> 24));
             packet.AddValue("ID", data & 0x00FFFFFF);
             packet.ReadByte("Button");
@@ -61,6 +62,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
 
             packet.ReadByte("Reason");
+        }
+
+        [Parser(Opcode.CMSG_SET_ACTION_BAR_TOGGLES, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleSetActionBarToggles(Packet packet)
+        {
+            packet.ReadByte("ActionBar");
         }
     }
 }

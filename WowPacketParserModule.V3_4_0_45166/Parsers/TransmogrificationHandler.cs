@@ -1,4 +1,4 @@
-﻿using WowPacketParser.Enums;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -11,6 +11,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt32("ItemModifiedAppearanceID");
             packet.ReadUInt32("Slot");
             packet.ReadInt32("SpellItemEnchantmentId");
+            packet.ReadInt32("SecondaryItemModifiedAppearanceID");
         }
 
         [Parser(Opcode.CMSG_TRANSMOGRIFY_ITEMS)]

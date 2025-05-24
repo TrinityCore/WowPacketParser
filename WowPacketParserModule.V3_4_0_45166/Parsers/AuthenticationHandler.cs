@@ -112,16 +112,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V3_4_4_59817)]
-        public static void HandleServerAuthChallenge(Packet packet)
-        {
-            for (uint i = 0; i < 8; ++i)
-                packet.ReadUInt32("DosChallenge", i);
-
-            packet.ReadBytes("Challenge", 32);
-            packet.ReadByte("DosZeroBits");
-        }
-
         [Parser(Opcode.SMSG_ENTER_ENCRYPTED_MODE, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleEnterEncryptedMode(Packet packet)
         {

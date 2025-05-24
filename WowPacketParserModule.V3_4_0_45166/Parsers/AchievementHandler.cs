@@ -8,6 +8,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 {
     public static class AchievementHandler
     {
+        public static void ReadEarnedAchievement(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32<AchievementId>("Id", idx);
+            packet.ReadPackedTime("Date", idx);
+            packet.ReadPackedGuid128("Owner", idx);
+            packet.ReadInt32("VirtualRealmAddress", idx);
+            packet.ReadInt32("NativeRealmAddress", idx);
+        }
+
         public static void ReadCriteriaProgress(Packet packet, params object[] indexes)
         {
             var criteriaId = packet.ReadInt32<CriteriaId>("CriteriaID", indexes);
@@ -36,7 +45,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             var progressCount = packet.ReadUInt32("ProgressCount", idx);
 
             for (var i = 0; i < earnedCount; ++i)
-                V6_0_2_19033.Parsers.AchievementHandler.ReadEarnedAchievement(packet, idx, "Earned", i);
+                ReadEarnedAchievement(packet, idx, "Earned", i);
 
             for (var i = 0; i < progressCount; ++i)
                 ReadCriteriaProgress(packet, idx, "Progress", i);
@@ -94,6 +103,44 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadUInt32("EarnerNativeRealm");
             packet.ReadUInt32("EarnerVirtualRealm");
             packet.ReadBit("Initial");
+        }
+
+        [Parser(Opcode.SMSG_ALL_ACCOUNT_CRITERIA, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleAllAchievementCriteriaDataAccount(Packet packet)
+        {
+            var count = packet.ReadUInt32("ProgressCount");
+
+            for (var i = 0; i < count; ++i)
+                ReadCriteriaProgress(packet, "Progress", i);
+        }
+
+        [Parser(Opcode.SMSG_BROADCAST_ACHIEVEMENT, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleBroadcastAchievement(Packet packet)
+        {
+            var nameLength = packet.ReadBits(7);
+            packet.ReadBit("GuildAchievement");
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadUInt32("AchievementID");
+            packet.ReadWoWString("Name", nameLength);
+        }
+
+        [Parser(Opcode.SMSG_CRITERIA_DELETED, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleDeleted(Packet packet)
+        {
+            packet.ReadInt32("CriteriaID");
+        }
+
+        [Parser(Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleRespondInspectAchievements(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+            ReadAllAchievements(packet, "Data");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleQueryInspectAchievements(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
         }
     }
 }
