@@ -36,7 +36,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 packet.ReadUInt32("ItemModifiedAppearanceId", "FavoriteAppearances", i);
         }
 
-        [Parser(Opcode.SMSG_ACCOUNT_TRANSMOG_UPDATE]
+        [Parser(Opcode.SMSG_ACCOUNT_TRANSMOG_UPDATE)]
         public static void HandleAccountTransmogUpdate(Packet packet)
         {
             packet.ReadBit("IsFullUpdate");
