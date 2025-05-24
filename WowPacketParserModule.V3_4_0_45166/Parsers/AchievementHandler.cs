@@ -70,5 +70,30 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                     if (DBC.Criteria[criteriaId].Type == 46)
                         CoreParsers.AchievementHandler.FactionReputationStore[DBC.Criteria[criteriaId].Asset] = quantity;
         }
+
+        [Parser(Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE)]
+        public static void HandleCriteriaUpdateAccount(Packet packet)
+        {
+            ReadCriteriaProgress(packet, "Progress");
+        }
+
+        [Parser(Opcode.SMSG_ACHIEVEMENT_DELETED)]
+        public static void HandleAchievementDeleted(Packet packet)
+        {
+            packet.ReadUInt32("AchievementID");
+            packet.ReadUInt32("Immunities"); // Garbage
+        }
+
+        [Parser(Opcode.SMSG_ACHIEVEMENT_EARNED)]
+        public static void HandleAchievementEarned(Packet packet)
+        {
+            packet.ReadPackedGuid128("Sender");
+            packet.ReadPackedGuid128("Earner");
+            packet.ReadUInt32<AchievementId>("AchievementID");
+            packet.ReadPackedTime("Time");
+            packet.ReadUInt32("EarnerNativeRealm");
+            packet.ReadUInt32("EarnerVirtualRealm");
+            packet.ReadBit("Initial");
+        }
     }
 }

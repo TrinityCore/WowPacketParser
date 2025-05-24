@@ -155,6 +155,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             return packetSpellData;
         }
 
+        public static void ReadGlyphBinding(Packet packet, params object[] index)
+        {
+            packet.ReadUInt32("SpellID", index);
+            packet.ReadUInt16("GlyphID", index);
+        }
+
         [Parser(Opcode.CMSG_CAST_SPELL)]
         public static void HandleCastSpell(Packet packet)
         {
@@ -308,6 +314,37 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             for (var i = 0; i < spellCount; ++i)
                 ReadLearnedSpellInfo(packet, "ClientLearnedSpellData", i);
+        }
+
+        [Parser(Opcode.SMSG_ACTIVE_GLYPHS)]
+        public static void HandleActiveGlyphs(Packet packet)
+        {
+            var count = packet.ReadUInt32("GlyphsCount");
+            for (int i = 0; i < count; i++)
+                ReadGlyphBinding(packet, i);
+            packet.ResetBitReader();
+            packet.ReadBit("IsFullUpdate");
+        }
+
+        [Parser(Opcode.SMSG_ADD_LOSS_OF_CONTROL)]
+        public static void HandleAddLossOfControl(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadPackedGuid128("Caster");
+
+            packet.ReadUInt32("Duration");
+            packet.ReadUInt32("DurationRemaining");
+            packet.ReadUInt32E<SpellSchoolMask>("LockoutSchoolMask");
+
+            packet.ReadByteE<SpellMechanic>("Mechanic");
+            packet.ReadByte("Type");
+        }
+
+        [Parser(Opcode.SMSG_ADD_RUNE_POWER)]
+        public static void HandleAddRunePower(Packet packet)
+        {
+            packet.ReadUInt32("RuneMask");
         }
     }
 }

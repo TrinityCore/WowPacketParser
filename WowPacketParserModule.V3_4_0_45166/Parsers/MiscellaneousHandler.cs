@@ -527,5 +527,38 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             if (hasInstanceGroupSize)
                 packet.ReadUInt32("InstanceGroupSize");
         }
+
+        [Parser(Opcode.SMSG_ACCOUNT_HEIRLOOM_UPDATE)]
+        public static void HandleAccountHeirloomUpdate(Packet packet)
+        {
+            packet.ReadBit("IsFullUpdate");
+
+            packet.ReadInt32("Unk");
+
+            uint itemCount = packet.ReadUInt32("ItemCount");
+            uint flagCount = packet.ReadUInt32("FlagsCount");
+
+            for (uint i = 0u; i < itemCount; i++)
+                packet.ReadInt32<ItemId>("ItemID", i);
+
+            for (uint i = 0u; i < flagCount; i++)
+                packet.ReadUInt32("Flags", i);
+        }
+
+        [Parser(Opcode.SMSG_ACCOUNT_MOUNT_UPDATE)]
+        public static void HandleAccountMountUpdate(Packet packet)
+        {
+            packet.ReadBit("IsFullUpdate");
+
+            var mountSpellIDsCount = packet.ReadInt32("MountSpellIDsCount");
+
+            for (int i = 0; i < mountSpellIDsCount; i++)
+            {
+                packet.ReadInt32("MountSpellIDs", i);
+
+                packet.ResetBitReader();
+                packet.ReadBits("Flags", 4, i);
+            }
+        }
     }
 }

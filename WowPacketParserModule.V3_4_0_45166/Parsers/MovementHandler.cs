@@ -237,5 +237,17 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             ReadMovementMonsterSpline(packet, pos, "MovementMonsterSpline");
         }
+
+        [Parser(Opcode.SMSG_ADJUST_SPLINE_DURATION)]
+        public static void HandleAdjustSplineDuration(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadSingle("Scale");
+        }
+
+        [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
+        public static void HandleAbortNewWorld(Packet packet)
+        {
+        }
     }
 }
