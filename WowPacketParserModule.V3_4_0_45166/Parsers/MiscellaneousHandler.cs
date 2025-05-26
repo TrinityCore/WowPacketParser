@@ -598,7 +598,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         public static void HandleAlliedRaceDetails(Packet packet)
         {
             packet.ReadPackedGuid128("GUID"); // Creature or GameObject
-            packet.ReadInt32("RaceID");
+            packet.ReadByteE<Race>("RaceID");
         }
 
         [Parser(Opcode.SMSG_AREA_POI_UPDATE_RESPONSE, ClientVersionBuild.V3_4_4_59817)]

@@ -218,6 +218,13 @@ namespace WowPacketParserModule.Substructures
 
         public static ItemInstance ReadItemInstance(Packet packet, params object[] indexes)
         {
+            if (ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build))
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817))
+                    return ReadItemInstance441(packet, indexes);
+                else
+                    return ReadItemInstance251(packet, indexes);
+            }
             if (ClientVersion.IsCataClientVersionBuild(ClientVersion.Build))
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_4_1_57294))
@@ -227,8 +234,7 @@ namespace WowPacketParserModule.Substructures
             }
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_1_38835) &&
                (ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build) ||
-                ClientVersion.IsClassicSeasonOfMasteryClientVersionBuild(ClientVersion.Build) ||
-                ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build)))
+                ClientVersion.IsClassicSeasonOfMasteryClientVersionBuild(ClientVersion.Build)))
                 return ReadItemInstance251(packet, indexes);
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683) || ClientVersion.IsClassicVanillaClientVersionBuild(ClientVersion.Build))
                 return ReadItemInstance602(packet, indexes);

@@ -171,7 +171,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
                 packet.ReadSingle("Unk Float", indexes);
 
-            ReadCombatLogContentTuning(packet, indexes, "ContentTuning");
+            ReadContentTuningParams(packet, indexes, "ContentTuning");
         }
 
         public static void ReadSpellSupportInfo(Packet packet, params object[] idx)
@@ -271,7 +271,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ReadInt32("Size");
 
-            ReadAttackRoundInfo(packet, "AttackRoundInfo");
+            ReadAttackRoundInfo344(packet, "AttackRoundInfo");
         }
 
         [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG, ClientVersionBuild.V3_4_4_59817)]

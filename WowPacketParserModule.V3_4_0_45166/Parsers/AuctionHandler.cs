@@ -174,10 +174,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 ReadCliAuctionItem(packet, i);
 
             packet.ResetBitReader();
-            packet.ReadBits("ListType", 2);
-            packet.ReadBit("HasMoreResults");
-            ReadAuctionBucketKey(packet, "BucketKey");
-            packet.ReadUInt32("TotalCount");
+            packet.ReadBit("OnlyUsable");
         }
 
         [Parser(Opcode.SMSG_AUCTION_LIST_PENDING_SALES_RESULT, ClientVersionBuild.V3_4_4_59817)]
