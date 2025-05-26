@@ -1270,6 +1270,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 Substructures.MovementHandler.ReadMovementStats(packet, "Status");
         }
 
+        [Parser(Opcode.SMSG_AURA_POINTS_DEPLETED, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleAuraPointsDepleted(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadUInt16("Slot");
+
+            packet.ReadByte("EffectIndex");
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA, ClientVersionBuild.V3_4_4_59817)]
