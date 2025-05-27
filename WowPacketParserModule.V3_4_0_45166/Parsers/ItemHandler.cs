@@ -50,7 +50,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         {
             packet.ReadPackedGuid128("VendorGUID");
             packet.ReadUInt32<ItemId>("Muid");
-            packet.ReadByteE<BuyResult>("Reason");
+            packet.ReadInt32E<BuyResult>("Reason");
         }
 
         [Parser(Opcode.SMSG_BUY_SUCCEEDED, ClientVersionBuild.V3_4_4_59817)]

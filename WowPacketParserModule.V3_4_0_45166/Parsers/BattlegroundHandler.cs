@@ -234,9 +234,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt32<MapId>("Mapid");
             packet.ReadInt32("ShutdownTimer");
             packet.ReadInt32("StartTimer");
+            packet.ReadByte("ArenaFaction");
 
             packet.ResetBitReader();
-            packet.ReadBit("ArenaFaction");
             packet.ReadBit("LeftEarly");
             packet.ReadBit("IsInBrawl");
         }
