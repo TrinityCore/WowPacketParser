@@ -1256,6 +1256,8 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadBit("CloseChoiceFrame");
             var hideWarboardHeader = packet.ReadBit("HideWarboardHeader");
             var keepOpenAfterChoice = packet.ReadBit("KeepOpenAfterChoice");
+            packet.ReadBit("Unknown_1115_1");
+            packet.ReadBit("Unknown_1115_2");
 
             for (var i = 0u; i < responseCount; ++i)
                 ReadPlayerChoiceResponse(packet, choiceId, i, "PlayerChoiceResponse", i);
