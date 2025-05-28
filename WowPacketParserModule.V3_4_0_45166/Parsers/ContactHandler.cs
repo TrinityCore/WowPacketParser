@@ -19,12 +19,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ReadUInt32<AreaId>("AreaID", index);
             packet.ReadUInt32("Level", index);
-            packet.ReadUInt32("ClassID", index);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817))
+                packet.ReadByteE<Class>("ClassID", index);
+            else
+                packet.ReadUInt32("ClassID", index);
 
             packet.ResetBitReader();
 
             var notesLen = packet.ReadBits(10);
-            packet.ReadBit("Mobile");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_4_4_59817))
+                packet.ReadBit("Mobile");
             packet.ReadWoWString("Notes", notesLen);
         }
 
