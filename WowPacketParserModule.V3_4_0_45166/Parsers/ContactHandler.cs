@@ -62,12 +62,11 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ReadInt32<AreaId>("AreaID");
             packet.ReadInt32("Level");
-            packet.ReadInt32E<Class>("ClassID");
+            packet.ReadByteE<Class>("ClassID");
 
             packet.ResetBitReader();
 
             var notesLen = packet.ReadBits(10);
-            packet.ReadBit("Mobile");
             packet.ReadWoWString("Notes", notesLen);
         }
 
