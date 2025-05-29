@@ -813,6 +813,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             if (type == 0)
             {
                 packet.ReadBit("BonusRoll");
+                packet.ReadBit("ForceToast");
                 Substructures.ItemHandler.ReadItemInstance(packet);
                 packet.ReadInt32("LootSpec");
                 packet.ReadSByte("Gender");
