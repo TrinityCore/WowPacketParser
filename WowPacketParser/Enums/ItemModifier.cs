@@ -60,6 +60,8 @@
         CraftingReagentSlot12 = 55,
         CraftingReagentSlot13 = 56,
         CraftingReagentSlot14 = 57,
-        Reforge = 58
+        Reforge = 58,
+        DbIdHigh = 59,
+        DbIdLow = 60
     }
 }
