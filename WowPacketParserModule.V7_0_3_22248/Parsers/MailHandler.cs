@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var bodyLen = packet.ReadBits(13);
 
             for (var i = 0; i < attachmentsCount; ++i) // Attachments
-                ReadMailAttachedItem(packet, idx, i, "MailAttachedItem");
+                ReadMailAttachedItem(packet, idx, "Attachments", i);
 
             if (hasSenderCharacter)
                 packet.ReadPackedGuid128("SenderCharacter", idx);
@@ -83,16 +83,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadByte("Position", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_5_47777))
-                packet.ReadUInt64("AttachID");
+                packet.ReadUInt64("AttachID", idx);
             else
-                packet.ReadInt32("AttachID");
+                packet.ReadInt32("AttachID", idx);
             packet.ReadInt32("Count", idx);
             packet.ReadInt32("Charges", idx);
             packet.ReadInt32("MaxDurability", idx);
             packet.ReadInt32("Durability", idx);
 
             // ItemInstance
-            Substructures.ItemHandler.ReadItemInstance(packet, idx);
+            Substructures.ItemHandler.ReadItemInstance(packet, idx, "Item");
 
             packet.ResetBitReader();
 
@@ -101,10 +101,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("Unlocked", idx);
 
             for (var i = 0; i < bits1; i++)
-                Substructures.ItemHandler.ReadItemGemData(packet, idx, i);
+                Substructures.ItemHandler.ReadItemGemData(packet, idx, "Enchants", i);
 
             for (var i = 0; i < bits2; i++)
-                Substructures.ItemHandler.ReadItemEnchantData(packet, idx, i);
+                Substructures.ItemHandler.ReadItemEnchantData(packet, idx, "Gems", i);
         }
 
         [Parser(Opcode.SMSG_MAIL_LIST_RESULT)]
@@ -114,7 +114,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("TotalNumRecords");
 
             for (var i = 0; i < mailsCount; ++i)
-                ReadMailListEntry(packet, i, "MailListEntry");
+                ReadMailListEntry(packet, "Mails", i);
         }
     }
 }
