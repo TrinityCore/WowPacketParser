@@ -1118,6 +1118,18 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt32("GoldAwarded");
         }
 
+        [Parser(Opcode.SMSG_GUILD_INVITE_DECLINED)]
+        public static void HandleGuildInviteDeclined(Packet packet)
+        {
+            var nameLength = packet.ReadBits("NameLength", 6);
+            packet.ReadBit("AutoDecline");
+
+            packet.ResetBitReader();
+
+            packet.ReadUInt32("VirtualRealmAddress");
+            packet.ReadWoWString("Name", nameLength);
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED, ClientVersionBuild.V3_4_4_59817)]
