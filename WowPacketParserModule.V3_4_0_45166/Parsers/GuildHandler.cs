@@ -290,8 +290,8 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         [Parser(Opcode.SMSG_GUILD_COMMAND_RESULT, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleGuildCommandResult(Packet packet)
         {
-            packet.ReadUInt32E<GuildCommandError>("Result");
-            packet.ReadUInt32E<GuildCommandType>("Command");
+            packet.ReadByteE<GuildCommandError>("Result");
+            packet.ReadByteE<GuildCommandType>("Command");
             var len = packet.ReadBits(8);
             packet.ReadWoWString("Name", len);
         }
