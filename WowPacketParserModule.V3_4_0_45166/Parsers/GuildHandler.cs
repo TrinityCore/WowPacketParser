@@ -1109,6 +1109,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadPackedGuid128("GuildGUID");
         }
 
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_COMPLETED)]
+        public static void HandleGuildChallengeCompleted(Packet packet)
+        {
+            packet.ReadInt32("ChallengeType");
+            packet.ReadInt32("CurrentCount");
+            packet.ReadInt32("MaxCount");
+            packet.ReadInt32("GoldAwarded");
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED, ClientVersionBuild.V3_4_4_59817)]
