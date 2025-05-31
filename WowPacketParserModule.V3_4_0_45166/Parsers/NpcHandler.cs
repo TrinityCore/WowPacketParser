@@ -622,5 +622,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt32("TrainerID");
             packet.ReadInt32<SpellId>("SpellID");
         }
+
+        [Parser(Opcode.SMSG_GOSSIP_QUEST_UPDATE, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleGossipQuestUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("GossipGUID");
+            ReadGossipQuestTextData344(packet);
+        }
     }
 }
