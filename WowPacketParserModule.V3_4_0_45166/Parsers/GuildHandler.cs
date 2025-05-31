@@ -1130,6 +1130,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadWoWString("Name", nameLength);
         }
 
+        [Parser(Opcode.SMSG_GUILD_MEMBERS_WITH_RECIPE)]
+        public static void HandleGuildMembersWithRecipe(Packet packet)
+        {
+            packet.ReadUInt32("SkillLineID");
+            packet.ReadUInt32<SpellId>("SpellID");
+            var count = packet.ReadInt32("MembersCount");
+            for (var i = 0; i < count; ++i)
+                packet.ReadPackedGuid128("Member", i);
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED, ClientVersionBuild.V3_4_4_59817)]
