@@ -54,7 +54,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         [Parser(Opcode.SMSG_GROUP_DECLINE, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleGroupDecline(Packet packet)
         {
-            // CONFIRM IN SNIFFS
             var nameLength = packet.ReadBits(9);
             packet.ReadWoWString("Name", nameLength);
         }
