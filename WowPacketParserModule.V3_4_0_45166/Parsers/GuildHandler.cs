@@ -1151,6 +1151,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 packet.ReadByte("SkillLineBitArray", i);
         }
 
+        [Parser(Opcode.SMSG_GUILD_REPUTATION_REACTION_CHANGED)]
+        public static void HandleGuildReputationReactionChanged(Packet packet)
+        {
+            packet.ReadPackedGuid128("MemberGUID");
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED, ClientVersionBuild.V3_4_4_59817)]
