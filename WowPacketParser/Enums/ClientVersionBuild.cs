@@ -927,6 +927,7 @@ namespace WowPacketParser.Enums
         V4_4_2_59962 = 59962, // live
         V4_4_2_60142 = 60142, // live
         V4_4_2_60192 = 60192, // live
+        V4_4_2_60895 = 60895, // live
 
         // Battle.net - should probably not mix this but oh well
         BattleNetV37165 = 37165,
