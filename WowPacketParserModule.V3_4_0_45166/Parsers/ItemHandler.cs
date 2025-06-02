@@ -513,6 +513,14 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             ReadInvUpdate(packet, "InvUpdate");
         }
 
+        [Parser(Opcode.SMSG_ITEM_CHANGED)]
+        public static void HandleItemChanged(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+            Substructures.ItemHandler.ReadItemInstance(packet, "ItemInstanceBefore");
+            Substructures.ItemHandler.ReadItemInstance(packet, "ItemInstanceAfter");
+        }
+
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleItemZero(Packet packet)
