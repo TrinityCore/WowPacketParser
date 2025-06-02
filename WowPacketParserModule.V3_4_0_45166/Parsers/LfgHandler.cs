@@ -420,6 +420,14 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadBit("TeleportOut");
         }
 
+        [Parser(Opcode.SMSG_LFG_LIST_UPDATE_EXPIRATION)]
+        public static void HandleLfgListUpdateExpiration(Packet packet)
+        {
+            ReadCliRideTicket(packet, "Ticket");
+            packet.ReadTime64("TimeoutTime");
+            packet.ReadByte("Status");
+        }
+
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_DF_GET_JOIN_STATUS, ClientVersionBuild.V3_4_4_59817)]
