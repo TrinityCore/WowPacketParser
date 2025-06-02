@@ -888,6 +888,28 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadByte("RankProgress");
         }
 
+        [Parser(Opcode.SMSG_INSPECT_PVP, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleInspectPVP(Packet packet)
+        {
+            packet.ReadPackedGuid128("ClientGUID");
+
+            var bracketCount = packet.ReadUInt32();
+            var teamInspectCount = packet.ReadBits(2);
+
+            for (var i = 0; i < bracketCount; i++)
+                ReadPVPBracketData(packet, i, "PVPBracketData");
+
+            for (var i = 0; i < teamInspectCount; i++)
+            {
+                packet.ReadPackedGuid128("GUID", i, "ArenaTeamInspectData");
+                packet.ReadUInt32("TeamRating", i, "ArenaTeamInspectData");
+                packet.ReadUInt32("TeamPlayed", i, "ArenaTeamInspectData");
+                packet.ReadUInt32("TeamWins", i, "ArenaTeamInspectData");
+                packet.ReadUInt32("PlayerPlayer", i, "ArenaTeamInspectData");
+                packet.ReadUInt32("PlayerRating", i, "ArenaTeamInspectData");
+            }
+        }
+
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleCharNull(Packet packet)
