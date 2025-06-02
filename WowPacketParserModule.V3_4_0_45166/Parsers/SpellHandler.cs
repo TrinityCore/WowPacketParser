@@ -1279,6 +1279,20 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadByte("EffectIndex");
         }
 
+        [Parser(Opcode.SMSG_LEARN_PVP_TALENT_FAILED, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleLearnPvPTalentFailed(Packet packet)
+        {
+            packet.ReadBits("Reason", 4);
+            packet.ReadUInt32<SpellId>("SpellID");
+
+            var talentCount = packet.ReadUInt32("TalentCount");
+            for (int i = 0; i < talentCount; i++)
+            {
+                packet.ReadUInt16("PvPTalentID", i);
+                packet.ReadByte("Slot", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA, ClientVersionBuild.V3_4_4_59817)]
