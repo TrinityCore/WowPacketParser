@@ -532,13 +532,13 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         {
             packet.ReadInt32<SpellId>("SpellID", indexes);
             packet.ReadBit("IsFavorite", indexes);
-            var hasField8 = packet.ReadBit();
+            var hasEquipableSpellInvSlot = packet.ReadBit();
             var hasSuperceded = packet.ReadBit();
             var hasTraitDefinition = packet.ReadBit();
             packet.ResetBitReader();
 
-            if (hasField8)
-                packet.ReadInt32("field_8", indexes);
+            if (hasEquipableSpellInvSlot)
+                packet.ReadInt32("EquipableSpellInvSlot", indexes);
 
             if (hasSuperceded)
                 packet.ReadInt32<SpellId>("Superceded", indexes);
