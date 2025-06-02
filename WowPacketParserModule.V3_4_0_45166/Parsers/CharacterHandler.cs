@@ -866,6 +866,28 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadPackedGuid128("CharacterGuid");
         }
 
+        [Parser(Opcode.SMSG_INSPECT_HONOR_STATS, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleInspectHonorStats(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadByte("LifetimeMaxRank");
+            packet.ReadInt16("SessionHK");
+            packet.ReadInt16("SessionDK");
+            packet.ReadInt16("YesterdayHK");
+            packet.ReadInt16("YesterdayDK");
+            packet.ReadInt16("LastWeekHK");
+            packet.ReadInt16("LastWeekDK");
+            packet.ReadInt16("ThisWeekHK");
+            packet.ReadInt16("ThisWeekDK");
+            packet.ReadInt32("LifetimeHK");
+            packet.ReadInt32("LifetimeDK");
+            packet.ReadInt32("YesterdayHonor");
+            packet.ReadInt32("LastWeekHonor");
+            packet.ReadInt32("ThisWeekHonor");
+            packet.ReadInt32("LastweekStanding");
+            packet.ReadByte("RankProgress");
+        }
+
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleCharNull(Packet packet)
