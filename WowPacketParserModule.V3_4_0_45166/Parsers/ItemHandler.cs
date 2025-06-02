@@ -118,7 +118,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         [Parser(Opcode.SMSG_INVENTORY_CHANGE_FAILURE, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleInventoryChangeFailure(Packet packet)
         {
-            var result = packet.ReadByteE<InventoryResult440>("BagResult");
+            var result = packet.ReadInt32E<InventoryResult440>("BagResult");
 
             for (int i = 0; i < 2; i++)
                 packet.ReadPackedGuid128("Item", i);
