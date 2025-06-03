@@ -1293,6 +1293,21 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleLossOfControlAuraUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("AffectedGUID");
+            var count = packet.ReadInt32();
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadUInt32("Duration", i);
+                packet.ReadUInt16("AuraSlot", i);
+                packet.ReadByte("EffectIndex", i);
+                packet.ReadByteE<LossOfControlType>("LocType", i);
+                packet.ReadByteE<SpellMechanic>("Mechanic", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA, ClientVersionBuild.V3_4_4_59817)]
