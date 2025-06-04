@@ -391,6 +391,14 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadVector3("ModelPosition");
         }
 
+        [Parser(Opcode.SMSG_PET_GUIDS, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandlePetGuids(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+            for (var i = 0; i < count; ++i)
+                packet.ReadPackedGuid128("PetGUID", i);
+        }
+
         [Parser(Opcode.CMSG_REQUEST_PET_INFO, ClientVersionBuild.V3_4_4_59817)]
         public static void HandlePetNull(Packet packet)
         {
