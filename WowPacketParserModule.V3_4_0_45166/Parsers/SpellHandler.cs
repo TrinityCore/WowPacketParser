@@ -1329,6 +1329,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_MOUNT_AURA, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_QUEUED_SPELL, ClientVersionBuild.V3_4_4_59817)]
+        [Parser(Opcode.SMSG_PET_CLEAR_SPELLS)]
         public static void HandleSpellNull(Packet packet)
         {
         }
