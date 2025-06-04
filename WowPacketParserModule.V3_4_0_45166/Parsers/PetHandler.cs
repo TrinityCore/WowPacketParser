@@ -406,6 +406,14 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 packet.ReadPackedGuid128("PetGUID", i);
         }
 
+        [Parser(Opcode.SMSG_PET_NEWLY_TAMED)]
+        public static void HandlePetNewlyTamed(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ResetBitReader();
+            packet.ReadBit("SuppressLevelUpAnim");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_PET_INFO, ClientVersionBuild.V3_4_4_59817)]
         public static void HandlePetNull(Packet packet)
         {
