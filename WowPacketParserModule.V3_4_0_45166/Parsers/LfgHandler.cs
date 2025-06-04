@@ -428,6 +428,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadByte("Status");
         }
 
+        [Parser(Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER)]
+        public static void HandleOpenLfgFinder(Packet packet)
+        {
+            packet.ReadLfgEntry("LfgEntry");
+        }
+
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_DF_GET_JOIN_STATUS, ClientVersionBuild.V3_4_4_59817)]
