@@ -230,6 +230,20 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadBit("IdleLogout");
         }
 
+        [Parser(Opcode.SMSG_MOTD)]
+        public static void HandleMessageOfTheDay(Packet packet)
+        {
+            var lineCount = packet.ReadBits("Line Count", 4);
+
+            packet.ResetBitReader();
+            for (var i = 0; i < lineCount; i++)
+            {
+                var lineLength = (int)packet.ReadBits(7);
+                packet.ResetBitReader();
+                packet.ReadWoWString("Line", lineLength, i);
+            }
+        }
+
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH, ClientVersionBuild.V3_4_4_59817)]
