@@ -910,6 +910,13 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_NEUTRAL_PLAYER_FACTION_SELECT_RESULT, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleNeutralPlayerFactionSelectResult(Packet packet)
+        {
+            packet.ReadBit("Success");
+            packet.ReadByteE<Race>("NewRaceID");
+        }
+
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleCharNull(Packet packet)
