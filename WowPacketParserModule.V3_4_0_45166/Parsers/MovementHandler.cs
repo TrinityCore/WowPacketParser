@@ -337,9 +337,18 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             var hasCollisionHeight = packet.ReadBit("HasCollisionHeight", idx);
             var hasMovementForce = packet.ReadBit("HasMovementForce", idx);
             var hasMovementForceGUID = packet.ReadBit("HasMovementForceGUID", idx);
-            var hasMovementInertiaGUID = packet.ReadBit("HasMovementInertiaGUID", idx);
-            var hasMovementInertiaLifetimeMs = packet.ReadBit("HasMovementInertiaLifetimeMs", idx);
 
+            var hasMovementInertiaGUID = false;
+            var hasMovementInertiaID = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817))
+                hasMovementInertiaID = packet.ReadBit("HasMovementInertiaID", idx);
+            else
+                hasMovementInertiaGUID = packet.ReadBit("HasMovementInertiaGUID", idx);
+
+            var hasMovementInertiaLifetimeMs = packet.ReadBit("HasMovementInertiaLifetimeMs", idx);
+            var hasDriveCapabilityID = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817))
+                hasDriveCapabilityID = packet.ReadBit("HasDriveCapabilityRecID", idx);
 
             if (hasMovementForce)
                 ReadMovementForce(packet, "MovementForce", idx);
@@ -376,8 +385,14 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             if (hasMovementInertiaGUID)
                 packet.ReadPackedGuid128("MovementInertiaGUID", idx);
 
+            if (hasMovementInertiaID)
+                packet.ReadUInt32("MovementInertiaID", idx);
+
             if (hasMovementInertiaLifetimeMs)
                 packet.ReadUInt32("MovementInertiaLifetimeMs", idx);
+
+            if (hasDriveCapabilityID)
+                packet.ReadInt32("DriveCapabilityRecID", idx);
         }
 
         public static MovementInfo ReadMovementAck(Packet packet, params object[] idx)
