@@ -521,6 +521,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             Substructures.ItemHandler.ReadItemInstance(packet, "ItemInstanceAfter");
         }
 
+        [Parser(Opcode.SMSG_OPEN_CONTAINER)]
+        public static void HandleOpenContainer(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+        }
+
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleItemZero(Packet packet)
