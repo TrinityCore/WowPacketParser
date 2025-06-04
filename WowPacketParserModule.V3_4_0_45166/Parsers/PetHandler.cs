@@ -204,7 +204,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         [Parser(Opcode.SMSG_PET_STABLE_RESULT, ClientVersionBuild.V3_4_4_59817)]
         public static void HandlePetStableResult(Packet packet)
         {
-            packet.ReadByteE<PetStableResult>("Result");
+            packet.ReadUInt32E<PetStableResult>("Result");
         }
 
         [Parser(Opcode.SMSG_PET_ACTION_FEEDBACK, ClientVersionBuild.V3_4_4_59817)]
