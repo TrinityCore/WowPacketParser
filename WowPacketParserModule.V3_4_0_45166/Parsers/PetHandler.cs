@@ -305,7 +305,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt16("Specialization");
             packet.ReadInt32("TimeLimit");
 
-            ReadPetFlags(packet, "PetModeAndOrders");
+            ReadPetFlags344(packet, "PetModeAndOrders");
 
             const int maxCreatureSpells = 10;
             for (var i = 0; i < maxCreatureSpells; i++) // Read pet / vehicle spell ids
