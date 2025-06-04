@@ -383,6 +383,14 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadPackedGuid128("StableMaster");
         }
 
+        [Parser(Opcode.SMSG_PET_DISMISS_SOUND, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandlePetDismissSound(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("CreatureDisplayInfoID");
+            packet.ReadVector3("ModelPosition");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_PET_INFO, ClientVersionBuild.V3_4_4_59817)]
         public static void HandlePetNull(Packet packet)
         {
