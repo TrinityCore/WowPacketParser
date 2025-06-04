@@ -37,6 +37,13 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.AddValue("Flag", flag, idx);
         }
 
+        public static void ReadPetFlags344(Packet packet, params object[] idx)
+        {
+            packet.ReadByteE<CommandState>("CommandState");
+            packet.ReadByte("Flag");
+            packet.ReadByteE<ReactState>("ReactState");
+        }
+
         public static void ReadPetSpellCooldownData(Packet packet, params object[] idx)
         {
             packet.ReadInt32("SpellID", idx);
@@ -228,7 +235,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         public static void HandlePetMode(Packet packet)
         {
             packet.ReadPackedGuid128("PetGUID");
-            ReadPetFlags(packet, "PetModeAndOrders");
+            ReadPetFlags344(packet, "PetModeAndOrders");
         }
 
         [Parser(Opcode.SMSG_PET_NAME_INVALID, ClientVersionBuild.V3_4_4_59817)]
