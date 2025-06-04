@@ -1308,6 +1308,22 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_NOTIFY_DEST_LOC_SPELL_CAST)]
+        public static void HandleNotifyDestLocSpellCast(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("DestTransport");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadUInt32("SpellXSpellVisualID");
+            packet.ReadVector3("SourceLoc");
+            packet.ReadVector3("DestLoc");
+            packet.ReadSingle("MissileTrajectoryPitch");
+            packet.ReadSingle("MissileTrajectorySpeed");
+            packet.ReadInt32("TravelTime");
+            packet.ReadByte("DestLocSpellCastIndex");
+            packet.ReadPackedGuid128("CastID");
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA, ClientVersionBuild.V3_4_4_59817)]
