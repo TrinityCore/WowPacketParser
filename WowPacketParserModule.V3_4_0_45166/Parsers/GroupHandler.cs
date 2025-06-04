@@ -150,9 +150,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             ReadPhaseInfos(packet, "Phase");
 
-            packet.ReadUInt32("ContentTuningConditionMask", "CTROptions");
-            packet.ReadInt32("Unused901", "CTROptions");
-            packet.ReadUInt32("ExpansionLevelMask", "CTROptions");
+            packet.ReadUInt32("ConditionalFlags", "CTROptions");
+            packet.ReadByte("FactionGroup ", "CTROptions");
+            packet.ReadUInt32("ChromieTimeExpansionMask", "CTROptions");
 
             for (int i = 0; i < auraCount; i++)
                 ReadAuraInfos(packet, "Aura", i);
