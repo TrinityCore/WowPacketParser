@@ -52,6 +52,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_NOTIFY_MONEY)]
+        public static void HandleNotifyMoney(Packet packet)
+        {
+            packet.ReadUInt64("Money");
+        }
+
         [Parser(Opcode.SMSG_RESET_WEEKLY_CURRENCY, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleCurrencyZero(Packet packet)
         {
