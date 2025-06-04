@@ -561,7 +561,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt32("ContentSetID");
 
             var gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
-            
+
             packet.ReadInt32("ActiveTimerunningSeasonID");
             packet.ReadInt32("RemainingTimerunningSeasonSeconds");
 
@@ -999,7 +999,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         [Parser(Opcode.SMSG_PAUSE_MIRROR_TIMER, ClientVersionBuild.V3_4_4_59817)]
         public static void HandlePauseMirrorTimer(Packet packet)
         {
-            packet.ReadInt32E<MirrorTimerType>("Timer");
+            packet.ReadByteE<MirrorTimerType>("Timer");
             packet.ReadBit("Paused");
         }
 
