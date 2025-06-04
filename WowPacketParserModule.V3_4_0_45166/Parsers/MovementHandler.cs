@@ -995,6 +995,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadBit("Accept");
         }
 
+        [Parser(Opcode.SMSG_MOVE_APPLY_INERTIA, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleMoveApplyMovementInertia(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadUInt32("SequenceIndex");
+            packet.ReadUInt32("IntertiaID");
+            packet.ReadUInt32("InertiaLifetimeMs");
+        }
+
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
         [Parser(Opcode.CMSG_WORLD_PORT_RESPONSE)]
         public static void HandleAbortNewWorld(Packet packet)
