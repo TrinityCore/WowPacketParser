@@ -524,6 +524,120 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 packet.ReadByte("PartyIndex");
         }
 
+        [Parser(Opcode.SMSG_PARTY_MEMBER_PARTIAL_STATE, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandlePartyMemberPartialState(Packet packet)
+        {
+            packet.ReadBit("ForEnemyChanged");
+            packet.ReadBit("SetPvPInactive"); // adds GroupMemberStatusFlag 0x0020 if true, removes 0x0020 if false
+            packet.ReadBit("Unk901_1");
+
+            var partyTypeChanged = packet.ReadBit("PartyTypeChanged");
+            var flagsChanged = packet.ReadBit("FlagsChanged");
+            var powerTypeChanged = packet.ReadBit("PowerTypeChanged");
+            var overrideDisplayPowerChanged = packet.ReadBit("OverrideDisplayPowerChanged");
+            var currentHealthChanged = packet.ReadBit("CurrentHealthChanged");
+            var maxHealthChanged = packet.ReadBit("MaxHealthChanged");
+            var powerChanged = packet.ReadBit("PowerChanged");
+            var maxPowerChanged = packet.ReadBit("MaxPowerChanged");
+            var levelChanged = packet.ReadBit("LevelChanged");
+            var specChanged = packet.ReadBit("SpecChanged");
+            var areaIdChanged = packet.ReadBit("AreaIdChanged");
+            var wmoGroupIdChanged = packet.ReadBit("WmoGroupIdChanged");
+            var wmoDoodadPlacementIdChanged = packet.ReadBit("WmoDoodadPlacementIdChanged");
+            var positionChanged = packet.ReadBit("PositionChanged");
+            var vehicleSeatRecIdChanged = packet.ReadBit("VehicleSeatRecIdChanged");
+            var aurasChanged = packet.ReadBit("AurasChanged");
+            var petChanged = packet.ReadBit("PetChanged");
+            var phaseChanged = packet.ReadBit("PhaseChanged");
+            var ctrOptionsChanged = packet.ReadBit("CTROptionsChanged");
+
+            if (petChanged)
+            {
+                packet.ResetBitReader();
+                var petGuidChanged = packet.ReadBit("GuidChanged", "Pet");
+                var petNameChanged = packet.ReadBit("NameChanged", "Pet");
+                var petDisplayIdChanged = packet.ReadBit("DisplayIdChanged", "Pet");
+                var petMaxHealthChanged = packet.ReadBit("MaxHealthChanged", "Pet");
+                var petHealthChanged = packet.ReadBit("HealthChanged", "Pet");
+                var petAurasChanged = packet.ReadBit("AurasChanged", "Pet");
+                if (petNameChanged)
+                {
+                    packet.ResetBitReader();
+                    var len = packet.ReadBits(8);
+                    packet.ReadWoWString("NewPetName", len, "Pet");
+                }
+                if (petGuidChanged)
+                    packet.ReadPackedGuid128("NewPetGuid", "Pet");
+                if (petDisplayIdChanged)
+                    packet.ReadUInt32("PetDisplayID", "Pet");
+                if (petMaxHealthChanged)
+                    packet.ReadUInt32("PetMaxHealth", "Pet");
+                if (petHealthChanged)
+                    packet.ReadUInt32("PetHealth", "Pet");
+                if (petAurasChanged)
+                {
+                    var cnt = packet.ReadInt32("AuraCount", "Pet", "Aura");
+                    for (int i = 0; i < cnt; i++)
+                        ReadAuraInfos(packet, "Pet", "Aura", i);
+                }
+            }
+
+            packet.ReadPackedGuid128("AffectedGUID");
+            if (partyTypeChanged)
+            {
+                for (int i = 0; i < 2; i++)
+                    packet.ReadByte("PartyType", i);
+            }
+
+            if (flagsChanged)
+                packet.ReadUInt16E<GroupMemberStatusFlag>("Flags");
+            if (powerTypeChanged)
+                packet.ReadByte("PowerType");
+            if (overrideDisplayPowerChanged)
+                packet.ReadUInt16("OverrideDisplayPower");
+            if (currentHealthChanged)
+                packet.ReadUInt32("CurrentHealth");
+            if (maxHealthChanged)
+                packet.ReadUInt32("MaxHealth");
+            if (powerChanged)
+                packet.ReadUInt16("Power");
+            if (maxPowerChanged)
+                packet.ReadUInt16("MaxPower");
+            if (levelChanged)
+                packet.ReadUInt16("Level");
+            if (specChanged)
+                packet.ReadUInt16("Spec");
+            if (areaIdChanged)
+                packet.ReadUInt16("AreaID");
+            if (wmoGroupIdChanged)
+                packet.ReadUInt16("WmoGroupID");
+            if (wmoDoodadPlacementIdChanged)
+                packet.ReadUInt32("WmoDoodadPlacementID");
+            if (positionChanged)
+            {
+                packet.ReadUInt16("PositionX");
+                packet.ReadUInt16("PositionY");
+                packet.ReadUInt16("PositionZ");
+            }
+            if (vehicleSeatRecIdChanged)
+                packet.ReadUInt32("VehicleSeatRecID");
+            if (aurasChanged)
+            {
+                var cnt = packet.ReadInt32("AuraCount", "Aura");
+                for (int i = 0; i < cnt; i++)
+                    ReadAuraInfos(packet, "Aura", i);
+            }
+            if (phaseChanged)
+                ReadPhaseInfos(packet, "Phase");
+
+            if (ctrOptionsChanged)
+            {
+                packet.ReadUInt32("ConditionalFlags", "CTROptions");
+                packet.ReadByte("FactionGroup ", "CTROptions");
+                packet.ReadUInt32("ChromieTimeExpansionMask", "CTROptions");
+            }
+        }
+
         [Parser(Opcode.CMSG_REQUEST_RAID_INFO, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GROUP_DESTROYED, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GROUP_UNINVITE, ClientVersionBuild.V3_4_4_59817)]
