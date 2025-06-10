@@ -1417,6 +1417,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadBit("FreeRepop");
         }
 
+        [Parser(Opcode.SMSG_PROPOSE_LEVEL_GRANT)]
+        public static void HandleGrantLevel(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST, ClientVersionBuild.V3_4_4_59817)]
