@@ -129,7 +129,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt32("OriginalHonor");
             packet.ReadInt32("Honor");
             packet.ReadPackedGuid128("Target");
-            packet.ReadInt32("Rank");
+            packet.ReadByte("Rank");
 
             packet.ResetBitReader();
             packet.ReadBit("ForceHonorable");
