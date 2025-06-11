@@ -6,6 +6,13 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 {
     public static class BattlegroundHandler
     {
+        public static void ReadHonorData(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("HonorKills", idx);
+            packet.ReadUInt32("Deaths", idx);
+            packet.ReadUInt32("ContributionPoints", idx);
+        }
+
         public static void ReadRatedPvpBracketInfo(Packet packet, params object[] idx)
         {
             packet.ReadInt32("PersonalRating", idx);
@@ -61,8 +68,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             var statsCount = packet.ReadUInt32("StatsCount", idx);
             packet.ReadInt32("PrimaryTalentTree", idx);
             packet.ReadByteE<Gender>("Sex", idx);
-            packet.ReadInt32E<Race>("Race", idx);
-            packet.ReadInt32E<Class>("Class", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817))
+            {
+                packet.ReadByteE<Race>("Race", idx);
+                packet.ReadByteE<Class>("Class", idx);
+            }
+            else
+            {
+                packet.ReadInt32E<Race>("Race", idx);
+                packet.ReadInt32E<Class>("Class", idx);
+            }
             packet.ReadInt32("CreatureID", idx);
             packet.ReadInt32("HonorLevel", idx);
             packet.ReadInt32("Role", idx);
@@ -84,7 +99,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ResetBitReader();
 
             if (hasHonor)
-                V6_0_2_19033.Parsers.BattlegroundHandler.ReadHonorData(packet, "Honor");
+                ReadHonorData(packet, "Honor");
 
             if (hasPreMatchRating)
                 packet.ReadUInt32("PreMatchRating", idx);
@@ -156,7 +171,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
 
             if (hasWinner)
-                packet.ReadByte("Winner");
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817))
+                    packet.ReadUInt32("Winner");
+                else
+                    packet.ReadByte("Winner");
+            }
 
             for (int i = 0; i < statisticsCount; i++)
                 ReadPvPMatchPlayerStatistics(packet, "Statistics", i);
