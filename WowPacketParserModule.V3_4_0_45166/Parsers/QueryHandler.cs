@@ -554,5 +554,48 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             for (int i = 0; i < 8; ++i)
                 proto.Texts.Add(new PacketNpcTextEntry() { Probability = npcText.Probabilities[i], BroadcastTextId = npcText.BroadcastTextId[i] });
         }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_QUERY_PAGE_TEXT_RESPONSE)]
+        public static void HandlePageTextResponse(Packet packet)
+        {
+            packet.ReadUInt32("PageTextID");
+            packet.ResetBitReader();
+
+            Bit hasData = packet.ReadBit("Allow");
+            if (!hasData)
+                return; // nothing to do
+
+            var pagesCount = packet.ReadInt32("PagesCount");
+
+            for (int i = 0; i < pagesCount; i++)
+            {
+                PageText pageText = new PageText();
+
+                uint entry = packet.ReadUInt32("ID", i);
+                pageText.ID = entry;
+                pageText.NextPageID = packet.ReadUInt32("NextPageID", i);
+
+                pageText.PlayerConditionID = packet.ReadInt32("PlayerConditionID", i);
+                pageText.Flags = packet.ReadByte("Flags", i);
+
+                packet.ResetBitReader();
+                uint textLen = packet.ReadBits(12);
+                pageText.Text = packet.ReadWoWString("Text", textLen, i);
+
+                packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
+                Storage.PageTexts.Add(pageText, packet.TimeSpan);
+
+                if (ClientLocale.PacketLocale != LocaleConstant.enUS && pageText.Text != string.Empty)
+                {
+                    PageTextLocale localesPageText = new PageTextLocale
+                    {
+                        ID = pageText.ID,
+                        Text = pageText.Text
+                    };
+                    Storage.LocalesPageText.Add(localesPageText, packet.TimeSpan);
+                }
+            }
+        }
     }
 }
