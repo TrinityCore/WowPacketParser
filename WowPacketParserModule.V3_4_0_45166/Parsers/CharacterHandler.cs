@@ -297,7 +297,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             data.Gender = packet.ReadByteE<Gender>("Gender", idx);
             data.Class = packet.ReadByteE<Class>("Class", idx);
             data.Level = packet.ReadByte("Level", idx);
-            packet.ReadByte("Unused915", idx);
+            packet.ReadByte("PvpFaction", idx);
             packet.ReadInt32("TimerunningSeasonID");
 
             data.Name = packet.ReadWoWString("Name", nameLength, idx);
