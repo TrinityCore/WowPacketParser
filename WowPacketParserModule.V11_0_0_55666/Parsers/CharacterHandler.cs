@@ -255,5 +255,20 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadInt32<CurrencyId>("CurrencyID", i);
         }
+
+        [Parser(Opcode.SMSG_CURRENCY_TRANSFER_LOG)]
+        public static void HandleCurrencyTransferLog(Packet packet)
+        {
+            var count = packet.ReadUInt32("TransferCount");
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadPackedGuid128("Player", i);
+                packet.ReadPackedGuid128("Owner", i);
+                packet.ReadInt32<CurrencyId>("CurrencyID", i);
+                packet.ReadInt32("QuantityBefore", i);
+                packet.ReadInt32("QuantityAfter", i);
+                packet.ReadInt64("TransferID", i);
+            }
+        }
     }
 }
