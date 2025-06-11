@@ -77,12 +77,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ResetBitReader();
 
-            var lenTitle = packet.ReadBits(7);
+            int lenBits = ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817) ? 8 : 7;
+            int lenChoicetextBits = ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817) ? 7 : 6;
+
+            var lenTitle = packet.ReadBits(lenBits);
             var lenBodyText = packet.ReadBits(12);
 
             var lenChoicetext = new uint[10];
             for (int i = 0; i < 10; i++)
-                lenChoicetext[i] = packet.ReadBits(6);
+                lenChoicetext[i] = packet.ReadBits(lenChoicetextBits);
             for (int i = 0; i < 10; i++)
                 packet.ReadWoWString("Choicetext", lenChoicetext[i]);
 
