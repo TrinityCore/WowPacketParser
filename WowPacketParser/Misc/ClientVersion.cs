@@ -1428,6 +1428,10 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_4_60320:
                 case ClientVersionBuild.V3_4_4_60430:
                 case ClientVersionBuild.V3_4_4_60842:
+                case ClientVersionBuild.V3_4_4_60892:
+                case ClientVersionBuild.V3_4_4_61075:
+                case ClientVersionBuild.V3_4_4_61187:
+                case ClientVersionBuild.V3_4_4_61256:
                 case ClientVersionBuild.V1_15_0_52146:
                 case ClientVersionBuild.V1_15_0_52186:
                 case ClientVersionBuild.V1_15_0_52212:
@@ -1561,6 +1565,9 @@ namespace WowPacketParser.Misc
         public static bool HasFallback(ClientVersionBuild definingBuild)
         {
             if (IsCataClientVersionBuild(definingBuild))
+                return false;
+
+            if (IsWotlkChinaClientVersionBuild(definingBuild))
                 return false;
 
             return true;
@@ -2064,6 +2071,10 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_4_60320:
                 case ClientVersionBuild.V3_4_4_60430:
                 case ClientVersionBuild.V3_4_4_60842:
+                case ClientVersionBuild.V3_4_4_60892:
+                case ClientVersionBuild.V3_4_4_61075:
+                case ClientVersionBuild.V3_4_4_61187:
+                case ClientVersionBuild.V3_4_4_61256:
                     return true;
                 default:
                     return false;
@@ -2111,6 +2122,30 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V4_4_2_60142:
                 case ClientVersionBuild.V4_4_2_60192:
                 case ClientVersionBuild.V4_4_2_60895:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsWotlkChinaClientVersionBuild(ClientVersionBuild build)
+        {
+            switch (build)
+            {
+                case ClientVersionBuild.V3_4_4_59817:
+                case ClientVersionBuild.V3_4_4_59853:
+                case ClientVersionBuild.V3_4_4_59887:
+                case ClientVersionBuild.V3_4_4_60003:
+                case ClientVersionBuild.V3_4_4_60063:
+                case ClientVersionBuild.V3_4_4_60190:
+                case ClientVersionBuild.V3_4_4_60273:
+                case ClientVersionBuild.V3_4_4_60320:
+                case ClientVersionBuild.V3_4_4_60430:
+                case ClientVersionBuild.V3_4_4_60842:
+                case ClientVersionBuild.V3_4_4_60892:
+                case ClientVersionBuild.V3_4_4_61075:
+                case ClientVersionBuild.V3_4_4_61187:
+                case ClientVersionBuild.V3_4_4_61256:
                     return true;
                 default:
                     return false;
