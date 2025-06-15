@@ -1063,6 +1063,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadWoWString("Str", len);
         }
 
+        [Parser(Opcode.SMSG_REFER_A_FRIEND_EXPIRED, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleReferAFriendExpired(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
         [Parser(Opcode.SMSG_SET_AI_ANIM_KIT, ClientVersionBuild.V3_4_4_59817)]
         public static void SetAIAnimKitId(Packet packet)
         {
