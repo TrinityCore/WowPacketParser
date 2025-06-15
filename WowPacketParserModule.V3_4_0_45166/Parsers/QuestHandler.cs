@@ -1027,7 +1027,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             var conditionalQuestDescriptionCount = packet.ReadUInt32();
             var conditionalQuestCompletionLogCount = packet.ReadUInt32();
-            
+
             for (uint i = 0; i < treasurePickerCount; ++i)
             {
                 var treasurePickerID = packet.ReadInt32("TreasurePickerID");
@@ -1074,7 +1074,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                     ID = (uint)objectiveId.Key,
                     QuestID = (uint)id.Key
                 };
-                
+
                 questInfoObjective.Type = packet.ReadInt32E<QuestRequirementType>("Quest Requirement Type", i);
                 questInfoObjective.StorageIndex = packet.ReadSByte("StorageIndex", i);
                 questInfoObjective.Order = i;
@@ -1338,7 +1338,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         public static void QuestGiverOfferReward(Packet packet)
         {
             QuestOfferReward questOfferReward;
-            questOfferReward = ReadQuestGiverOfferRewardData(packet);
+            questOfferReward = ReadQuestGiverOfferRewardData344(packet);
 
             packet.ReadInt32("QuestPackageID");
             packet.ReadInt32("PortraitGiver");
@@ -1472,7 +1472,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadBit("ResetByScheduler");
             packet.ReadBit("StartCheat");
             packet.ReadBit("DisplayPopup");
-            
+
             ReadQuestRewards(packet, "QuestRewards");
 
             packet.ReadWoWString("QuestTitle", questTitleLen);
