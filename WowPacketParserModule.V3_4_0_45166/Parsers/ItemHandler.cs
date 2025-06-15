@@ -527,6 +527,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadPackedGuid128("ItemGUID");
         }
 
+        [Parser(Opcode.SMSG_REFORGE_RESULT)]
+        public static void HandleItemReforgeResult(Packet packet)
+        {
+            packet.ReadBit("Successful");
+        }
+
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleItemZero(Packet packet)
