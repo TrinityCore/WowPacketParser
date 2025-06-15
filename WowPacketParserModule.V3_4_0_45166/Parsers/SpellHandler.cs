@@ -1334,6 +1334,25 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt32<SpellId>("SpellID");
         }
 
+        [Parser(Opcode.SMSG_RESUME_CAST_BAR)]
+        public static void HandleResumeCastBar(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadPackedGuid128("Target");
+
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisualID");
+            packet.ReadUInt32("TimeRemaining");
+            packet.ReadUInt32("TotalTime");
+
+            var result = packet.ReadBit("HasInterruptImmunities");
+            if (result)
+            {
+                packet.ReadUInt32("SchoolImmunities");
+                packet.ReadUInt32("Immunities");
+            }
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA, ClientVersionBuild.V3_4_4_59817)]
