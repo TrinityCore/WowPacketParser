@@ -454,6 +454,22 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadByteE<LfgRoleFlag>("Roles");
         }
 
+        [Parser(Opcode.SMSG_REQUEST_SCHEDULED_PVP_INFO_RESPONSE, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleRequestScheduledPVPInfoResponse(Packet packet)
+        {
+            packet.ReadInt32("TimeToBrawl");
+            packet.ReadInt32("BattlegroundID");
+            packet.ReadInt32("LFGDungeonID");
+            packet.ResetBitReader();
+            packet.ReadBit("Active");
+            var titleLen = packet.ReadBits(9);
+            var typeLen = packet.ReadBits(10);
+            var objectiveLen = packet.ReadBits(14);
+            packet.ReadWoWString("Title", titleLen);
+            packet.ReadWoWString("Type", typeLen);
+            packet.ReadWoWString("Objective", objectiveLen);
+        }
+
         [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_GET_PVP_OPTIONS_ENABLED, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_HEARTH_AND_RESURRECT, ClientVersionBuild.V3_4_4_59817)]
