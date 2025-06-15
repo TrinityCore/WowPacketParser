@@ -1473,7 +1473,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadBit("StartCheat");
             packet.ReadBit("DisplayPopup");
 
-            ReadQuestRewards(packet, "QuestRewards");
+            ReadQuestRewards344(packet, "QuestRewards");
 
             packet.ReadWoWString("QuestTitle", questTitleLen);
             packet.ReadWoWString("DescriptionText", descriptionTextLen);
