@@ -288,8 +288,8 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadByte("PartyIndex");
             packet.ReadPackedGuid128("From");
             packet.ReadPackedGuid128("ChangedUnit");
-            packet.ReadInt32E<LfgRoleFlag>("OldRole");
-            packet.ReadInt32E<LfgRoleFlag>("NewRole");
+            packet.ReadByteE<LfgRoleFlag>("OldRole");
+            packet.ReadByteE<LfgRoleFlag>("NewRole");
         }
 
         [Parser(Opcode.SMSG_ROLE_POLL_INFORM, ClientVersionBuild.V3_4_4_59817)]
