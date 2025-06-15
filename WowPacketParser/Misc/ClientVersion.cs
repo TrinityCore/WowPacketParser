@@ -1662,7 +1662,7 @@ namespace WowPacketParser.Misc
 
                 ClientVersionBuild tmpFallback = FallbackVersionDefiningBuild(VersionDefiningBuild, VersionDefiningBuild);
 
-                if (HasFallback(VersionDefiningBuild))
+                if (HasFallback(version))
                 {
                     Handler.LoadDefaultHandlers();
 
