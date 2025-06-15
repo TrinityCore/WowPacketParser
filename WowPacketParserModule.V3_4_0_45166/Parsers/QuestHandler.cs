@@ -1514,7 +1514,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             uint greetingLen = packet.ReadBits(11);
 
             for (int i = 0; i < questsCount; i++)
-                NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests");
+                NpcHandler.ReadGossipQuestTextData344(packet, i, "GossipQuests");
 
             questGreeting.Greeting = packet.ReadWoWString("Greeting", greetingLen);
 
@@ -1798,6 +1798,36 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadPackedGuid128("SenderGUID");
             packet.ReadInt32<QuestId>("QuestID");
             packet.ReadByteE<QuestPushReason915>("Result");
+        }
+
+        [Parser(Opcode.SMSG_QUEST_POI_UPDATE_RESPONSE, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleQuestPOIUpdateResponse(Packet packet)
+        {
+            var count = packet.ReadUInt32("SpawnTrackingCount");
+
+            for (var i = 0; i < count; i++)
+            {
+                var spawnTrackingId = packet.ReadUInt32("SpawnTrackingID", i);
+                packet.ReadInt32("ObjectID", i);
+                var phaseId = packet.ReadInt32("PhaseID", i);
+                var phaseGroup = packet.ReadInt32("PhaseGroupID", i);
+                var phaseUseFlags = packet.ReadInt32("PhaseUseFlags", i);
+
+                packet.ResetBitReader();
+
+                packet.ReadBit("Visible", i);
+
+                SpawnTrackingTemplate spawnTrackingTemplate = new SpawnTrackingTemplate
+                {
+                    SpawnTrackingId = spawnTrackingId,
+                    MapId = CoreParsers.MovementHandler.CurrentMapId,
+                    PhaseId = phaseId,
+                    PhaseGroup = phaseGroup,
+                    PhaseUseFlags = (byte)phaseUseFlags
+                };
+
+                Storage.SpawnTrackingTemplates.Add(spawnTrackingTemplate, packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET, ClientVersionBuild.V3_4_4_59817)]
