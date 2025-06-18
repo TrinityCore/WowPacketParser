@@ -8,8 +8,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
     {
         public static void ReadPVPBracketData(Packet packet, params object[] idx)
         {
+            packet.ResetBitReader();
             packet.ReadByte("Bracket", idx);
-            packet.ReadInt32("Unused3", idx);
+            packet.ReadInt32("RatingID", idx);
             packet.ReadInt32("Rating", idx);
             packet.ReadInt32("Rank", idx);
             packet.ReadInt32("WeeklyPlayed", idx);
@@ -17,18 +18,20 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadInt32("SeasonPlayed", idx);
             packet.ReadInt32("SeasonWon", idx);
             packet.ReadInt32("WeeklyBestRating", idx);
+            packet.ReadInt32("LastWeeksBestRating", idx);
+            packet.ReadInt32("Tier", idx);
+            packet.ReadInt32("WeeklyBestTier", idx);
             packet.ReadInt32("SeasonBestRating", idx);
-            packet.ReadInt32("PvpTierID", idx);
-            packet.ReadInt32("WeeklyBestWinPvpTierID", idx);
-            packet.ReadInt32("Unused1", idx);
-            packet.ReadInt32("Unused2", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491))
+                packet.ReadByte("SeasonBestTierEnum", idx);
+            else
+                packet.ReadInt32("SeasonBestTierEnum", idx);
             packet.ReadInt32("RoundsSeasonPlayed", idx);
             packet.ReadInt32("RoundsSeasonWon", idx);
             packet.ReadInt32("RoundsWeeklyPlayed", idx);
             packet.ReadInt32("RoundsWeeklyWon", idx);
 
             packet.ReadBit("Disqualified", idx);
-            packet.ResetBitReader();
         }
 
         [Parser(Opcode.SMSG_INSPECT_RESULT)]
@@ -54,9 +57,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             for (int i = 0; i < pvpTalentCount; i++)
                 packet.ReadUInt16("PvpTalents", i);
 
+            packet.ResetBitReader();
             var hasGuildData = packet.ReadBit("HasGuildData");
             var hasAzeriteLevel = packet.ReadBit("HasAzeriteLevel");
-            packet.ResetBitReader();
 
             var bracketCount = 7;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))

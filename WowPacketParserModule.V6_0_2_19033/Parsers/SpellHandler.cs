@@ -817,13 +817,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("IsPet");
         }
 
-        [Parser(Opcode.SMSG_CLEAR_COOLDOWNS)]
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWNS, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
         public static void HandleClearCooldowns(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
             var count = packet.ReadInt32("SpellCount");
             for (int i = 0; i < count; i++)
                 packet.ReadUInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWNS, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleClearCooldowns612(Packet packet)
+        {
+            var count = packet.ReadInt32("SpellCount");
+            for (int i = 0; i < count; i++)
+                packet.ReadUInt32<SpellId>("SpellID");
+
+            packet.ReadBit("IsPet");
         }
 
         [Parser(Opcode.SMSG_BREAK_TARGET)]
