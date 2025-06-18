@@ -255,5 +255,13 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadInt32<CurrencyId>("CurrencyID", i);
         }
+
+        [Parser(Opcode.SMSG_UNDELETE_COOLDOWN_STATUS_RESPONSE, ClientVersionBuild.V11_1_7_61491)]
+        public static void HandleUndeleteCooldownStatusResponse(Packet packet)
+        {
+            packet.ReadUInt32("MaxCooldown");
+            packet.ReadUInt32("CurrentCooldown");
+            packet.ReadBit("OnCooldown");
+        }
     }
 }

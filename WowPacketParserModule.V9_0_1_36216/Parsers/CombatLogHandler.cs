@@ -17,6 +17,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadUInt32("ScalingHealthItemLevelCurveID", idx);
             else
                 packet.ReadUInt16("ScalingHealthItemLevelCurveID", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491))
+            {
+                packet.ReadUInt32("Unused1117", idx);
+                packet.ReadUInt32("ScalingHealthPrimaryStatCurveID", idx);
+            }
+
             packet.ReadByte("TargetLevel", idx);
             packet.ReadByte("Expansion", idx);
 
@@ -38,7 +45,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
-                packet.ReadInt32("Unused927", idx);
+                packet.ReadInt32("TargetHealingContentTuningID", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491))
+                packet.ReadSingle("PlayerPrimaryStatToExpectedRatio", idx);
 
             packet.ReadBits("Type", 4, idx);
 

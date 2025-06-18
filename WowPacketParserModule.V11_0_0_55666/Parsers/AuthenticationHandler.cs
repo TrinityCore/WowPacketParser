@@ -39,11 +39,19 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadBytes("RealmJoinTicket", realmJoinTicketSize);
         }
 
-        [Parser(Opcode.SMSG_ENTER_ENCRYPTED_MODE, ClientVersionBuild.V11_1_0_59347)]
+        [Parser(Opcode.SMSG_ENTER_ENCRYPTED_MODE, ClientVersionBuild.V11_1_0_59347, ClientVersionBuild.V11_1_7_61491)]
         public static void HandleEnterEncryptedMode(Packet packet)
         {
             packet.ReadBytes("Signature (ED25519)", 64);
             packet.ReadInt32("RegionGroup");
+            packet.ReadBit("Enabled");
+        }
+
+        [Parser(Opcode.SMSG_ENTER_ENCRYPTED_MODE, ClientVersionBuild.V11_1_7_61491)]
+        public static void HandleEnterEncryptedMode1117(Packet packet)
+        {
+            packet.ReadInt32("RegionGroup");
+            packet.ReadBytes("Signature (ED25519)", 64);
             packet.ReadBit("Enabled");
         }
     }

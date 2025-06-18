@@ -88,7 +88,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleSetRaidDifficulty(Packet packet)
         {
             packet.ReadInt32<DifficultyId>("DifficultyID");
-            packet.ReadByte("Force");
+            packet.ReadByte("Legacy");
         }
 
         [Parser(Opcode.SMSG_INSTANCE_INFO)]

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Reflection;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -53,6 +54,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             return jump;
         }
 
+        public static void ReadMonsterSplineTurnData(Packet packet, params object[] indexes)
+        {
+            packet.ReadSingle("StartFacing", indexes);
+            packet.ReadSingle("TotalTurnRads", indexes);
+            packet.ReadSingle("RadsPerSec", indexes);
+        }
+
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
@@ -88,7 +96,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var hasSplineFilter = packet.ReadBit("HasSplineFilter", indexes);
             var hasSpellEffectExtraData = packet.ReadBit("HasSpellEffectExtraData", indexes);
             var hasJumpExtraData = packet.ReadBit("HasJumpExtraData", indexes);
-
+            var hasTurnData = ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491) && packet.ReadBit("HasTurnData");
             var hasAnimTier = false;
             if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
                 hasAnimTier = packet.ReadBit("HasAnimTierTransition", indexes);
@@ -159,9 +167,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 ReadMonsterSplineSpellEffectExtraData(packet, indexes, "MonsterSplineSpellEffectExtra");
 
             if (hasJumpExtraData)
-            {
                 monsterMove.Jump = ReadMonsterSplineJumpExtraData(packet, indexes, "MonsterSplineJumpExtraData");
-            }
+
+            if (hasTurnData)
+                ReadMonsterSplineTurnData(packet, indexes, "MonsterSplineTurnData");
 
             if (hasAnimTier)
             {

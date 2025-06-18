@@ -15,5 +15,13 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             for (var i = 0; i < 17; ++i)
                 packet.ReadTime64($"[{(AccountDataType)i}] Time", i);
         }
+
+        [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE)]
+        public static void HandleUpdateAccountDataComplete(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+            packet.ReadInt32E<AccountDataType>("DataType");
+            packet.ReadInt32("Result");
+        }
     }
 }

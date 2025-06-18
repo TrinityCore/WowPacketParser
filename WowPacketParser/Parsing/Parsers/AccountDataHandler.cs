@@ -66,8 +66,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE)]
         public static void HandleUpdateAccountDataComplete(Packet packet)
         {
-            packet.ReadInt32E<AccountDataType>("Data Type");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32E<AccountDataType>("DataType");
+            packet.ReadInt32("Result");
         }
 
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]

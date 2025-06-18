@@ -70,8 +70,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             {
                 packet.ResetBitReader();
 
-                packet.ReadByte("MyFlags");
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_1_7_61491))
+                    packet.ReadByte("MyFlags");
+
                 packet.ReadUInt32("Slot");
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491))
+                    packet.ReadByte("MyFlags");
+
                 packet.ReadUInt32("MyRandomSlot");
                 packet.ReadByte("MyPartialClear");
                 packet.ReadSingle("MyGearDiff");

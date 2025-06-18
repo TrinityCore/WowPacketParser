@@ -28,6 +28,12 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
         public static void ReadGarrisonBuildingInfo(Packet packet, params object[] indexes)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491))
+            {
+                ReadGarrisonBuildingInfo1117(packet, indexes);
+                return;
+            }
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
             {
                 ReadGarrisonBuildingInfo905(packet, indexes);
@@ -35,6 +41,19 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
 
             V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonBuildingInfo(packet, indexes);
+        }
+
+        public static void ReadGarrisonBuildingInfo1117(Packet packet, params object[] indexes)
+        {
+            packet.ReadTime64("TimeBuilt", indexes);
+            packet.ReadUInt32("GarrPlotInstanceID", indexes);
+            packet.ReadUInt32("GarrBuildingID", indexes);
+            packet.ReadUInt32("CurrentGarSpecID", indexes);
+            packet.ReadTime64("TimeSpecCooldown", indexes);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Active", indexes);
         }
 
         public static void ReadGarrisonBuildingInfo905(Packet packet, params object[] indexes)

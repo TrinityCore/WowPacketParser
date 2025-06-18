@@ -229,9 +229,20 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadBit("CanSendLobbyMatchmakerPartyCustomizations");
             }
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                packet.ReadBit("AddonProfilerEnabled");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491))
+            {
+                packet.ReadBit("Unused_11_1_7_1");
+                packet.ReadBit("Unused_11_1_7_2");
+            }
+
             {
                 packet.ResetBitReader();
-                packet.ReadBit("ToastsDisabled", "QuickJoinConfig");
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_1_7_61491))
+                    packet.ReadBit("ToastsDisabled", "QuickJoinConfig");
+
                 packet.ReadSingle("ToastDuration", "QuickJoinConfig");
                 packet.ReadSingle("DelayDuration", "QuickJoinConfig");
                 packet.ReadSingle("QueueMultiplier", "QuickJoinConfig");
@@ -254,6 +265,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadSingle("ThrottleRfIlvlScalingAbove", "QuickJoinConfig");
                 packet.ReadSingle("ThrottleDfMaxItemLevel", "QuickJoinConfig");
                 packet.ReadSingle("ThrottleDfBestPriority", "QuickJoinConfig");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491))
+                    packet.ReadBit("ToastsDisabled", "QuickJoinConfig");
             }
 
             if (hasSessionAlert)
@@ -328,6 +341,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadBit("BNSendWhisperUseV2Services");
                 packet.ReadBit("BNSendGameDataUseV2Services");
                 packet.ReadBit("CharacterSelectListModeRealmless");
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491))
+            {
+                packet.ReadBit("WowTokenLimitedMode");
+                packet.ReadBit("Unused_11_1_7_1");
+                packet.ReadBit("Unused_11_1_7_2");
+                packet.ReadBit("PandarenLevelBoostAllowed");
             }
 
             packet.ResetBitReader();
