@@ -96,7 +96,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var hasSplineFilter = packet.ReadBit("HasSplineFilter", indexes);
             var hasSpellEffectExtraData = packet.ReadBit("HasSpellEffectExtraData", indexes);
             var hasJumpExtraData = packet.ReadBit("HasJumpExtraData", indexes);
-            var hasTurnData = ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491) && packet.ReadBit("HasTurnData");
+            var hasTurnData = ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491) && packet.ReadBit("HasTurnData", indexes);
             var hasAnimTier = false;
             if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
                 hasAnimTier = packet.ReadBit("HasAnimTierTransition", indexes);

@@ -526,7 +526,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         var hasSplineFilterKey = packet.ReadBit("HasSplineFilterKey", index);
                         var hasSpellEffectExtraData = packet.ReadBit("HasSpellEffectExtraData", index);
                         var hasJumpExtraData = packet.ReadBit("HasJumpExtraData", index);
-                        var hasTurnData = ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491) && packet.ReadBit("HasTurnData");
+                        var hasTurnData = ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491) && packet.ReadBit("HasTurnData", index);
                         var hasAnimationTierTransition = packet.ReadBit("HasAnimationTierTransition", index);
                         var hasUnknown901 = packet.ReadBit("Unknown901", index);
 
