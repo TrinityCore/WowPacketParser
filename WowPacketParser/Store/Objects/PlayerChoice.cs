@@ -19,7 +19,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CloseSoundKitId", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
         public uint? CloseSoundKitId;
 
-        [DBFieldName("Duration", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("Duration", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic, nullable: true)]
         public long? Duration;
 
         [DBFieldName("Question", LocaleConstant.enUS)]
@@ -28,11 +28,20 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("PendingChoiceText", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic, LocaleConstant.enUS)]
         public string PendingChoiceText;
 
+        [DBFieldName("InfiniteRange", TargetedDatabaseFlag.SinceTheWarWithin)]
+        public int InfiniteRange;
+
         [DBFieldName("HideWarboardHeader", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.CataClassic)]
         public int HideWarboardHeader;
 
         [DBFieldName("KeepOpenAfterChoice", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
         public int KeepOpenAfterChoice;
+
+        [DBFieldName("ShowChoicesAsList", TargetedDatabaseFlag.SinceTheWarWithin)]
+        public int ShowChoicesAsList;
+
+        [DBFieldName("ForceDontShowChoicesAsList", TargetedDatabaseFlag.SinceTheWarWithin)]
+        public int ForceDontShowChoicesAsList;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
@@ -47,10 +56,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ResponseId", true)]
         public int? ResponseId;
 
-        [DBFieldName("ResponseIdentifier", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("ResponseIdentifier", TargetedDatabaseFlag.Shadowlands | TargetedDatabaseFlag.Dragonflight | TargetedDatabaseFlag.CataClassic)]
         public short? ResponseIdentifier;
 
-        [DBFieldName("Index", true)]
+        [DBFieldName("Index")]
         public uint? Index;
 
         [DBFieldName("ChoiceArtFileId")]

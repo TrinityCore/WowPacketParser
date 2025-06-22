@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -557,15 +558,29 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadByte("NumRerolls");
             long? duration = null;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
-                duration = packet.ReadInt64("Duration");
+            {
+                var expireTimeUtc = packet.ReadTime64("ExpireTime");
+                if (expireTimeUtc != DateTime.UnixEpoch)
+                {
+                    duration = (long)Math.Round((expireTimeUtc - TimeZoneInfo.ConvertTimeToUtc(packet.Time, TimeZoneInfo.Local)).TotalSeconds, MidpointRounding.AwayFromZero);
+                    packet.AddValue("Duration", duration);
+                }
+            }
             packet.ResetBitReader();
             var questionLength = packet.ReadBits(8);
             var pendingChoiceTextLength = 0u;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
                 pendingChoiceTextLength = packet.ReadBits(8);
-            packet.ReadBit("InfiniteRange");
+            var infiniteRange = packet.ReadBit("InfiniteRange");
             var hideWarboardHeader = packet.ReadBit("HideWarboardHeader");
             var keepOpenAfterChoice = packet.ReadBit("KeepOpenAfterChoice");
+            byte showChoicesAsList = 0;
+            byte forceDontShowChoicesAsList = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_5_60392))
+            {
+                showChoicesAsList = packet.ReadBit("ShowChoicesAsList");
+                forceDontShowChoicesAsList = packet.ReadBit("ForceDontShowChoicesAsList");
+            }
 
             for (var i = 0u; i < responseCount; ++i)
                 ReadPlayerChoiceResponse(packet, choiceId, i, "PlayerChoiceResponse", i);
@@ -584,8 +599,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 Duration = duration,
                 Question = question,
                 PendingChoiceText = pendingChoiceText,
+                InfiniteRange = infiniteRange,
                 HideWarboardHeader = hideWarboardHeader,
-                KeepOpenAfterChoice = keepOpenAfterChoice
+                KeepOpenAfterChoice = keepOpenAfterChoice,
+                ShowChoicesAsList = showChoicesAsList,
+                ForceDontShowChoicesAsList = forceDontShowChoicesAsList
             }, packet.TimeSpan);
 
             if (ClientLocale.PacketLocale != LocaleConstant.enUS)
@@ -611,7 +629,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadInt32("Rarity", indexes);
                 packet.ReadUInt32("RarityColor", indexes);
             }
-            packet.ReadInt32("Unused901_2", indexes);
+            packet.ReadInt32("BorderUiTextureAtlasMemberID", indexes);
             packet.ReadInt32("SpellID", indexes);
             packet.ReadInt32("MaxStacks", indexes);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
