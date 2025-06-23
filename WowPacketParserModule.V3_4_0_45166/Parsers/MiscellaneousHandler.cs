@@ -1429,6 +1429,38 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadPackedGuid128("GUID");
         }
 
+        [Parser(Opcode.SMSG_UPDATE_EXPANSION_LEVEL, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleUpdateExpansionLevel(Packet packet)
+        {
+            var hasActiveExpansionLevel = packet.ReadBit();
+            var hasAccountExpansionLevel = packet.ReadBit();
+            var hasUpgradingFromExpansionTrial = packet.ReadBit();
+
+            if (hasUpgradingFromExpansionTrial)
+                packet.ReadBit("UpgradingFromExpansionTrial");
+
+            var availableClasses = packet.ReadInt32("AvailableClasses");
+
+            if (hasActiveExpansionLevel)
+                packet.ReadByteE<ClientType>("ActiveExpansionLevel");
+
+            if (hasAccountExpansionLevel)
+                packet.ReadByteE<ClientType>("AccountExpansionLevel");
+
+            for (var i = 0; i < availableClasses; i++)
+            {
+                packet.ReadByteE<Race>("RaceID", "AvailableClasses", i);
+                var classesForRace = packet.ReadUInt32();
+                for (var j = 0u; j < classesForRace; ++j)
+                {
+                    packet.ReadByteE<Class>("ClassID", "AvailableClasses", i, "Classes", j);
+                    packet.ReadByteE<ClientType>("ActiveExpansionLevel", "AvailableClasses", i, "Classes", j);
+                    packet.ReadByteE<ClientType>("AccountExpansionLevel", "AvailableClasses", i, "Classes", j);
+                    packet.ReadByte("MinActiveExpansionLevel", "AvailableClasses", i, "Classes", j);
+                }
+            }
+        }
+
         [Parser(Opcode.SMSG_RESUME_COMMS, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST, ClientVersionBuild.V3_4_4_59817)]
