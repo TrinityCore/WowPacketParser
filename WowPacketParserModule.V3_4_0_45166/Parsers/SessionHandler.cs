@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         {
             for (uint i = 0; i < 8; ++i)
                 packet.ReadUInt32("DosChallenge", i);
-            
+
             packet.ReadBytes("Challenge", 32);
             packet.ReadByte("DosZeroBits");
         }
@@ -205,7 +205,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         {
             packet.ReadInt32("WaitCount");
             packet.ReadInt32("WaitTime");
-            packet.ReadInt32("AllowedFactionGroupForCharacterCreate");
+            packet.ReadByte("AllowedFactionGroupForCharacterCreate");
             packet.ReadBit("HasFCM");
             packet.ReadBit("CanCreateOnlyIfExisting");
         }
