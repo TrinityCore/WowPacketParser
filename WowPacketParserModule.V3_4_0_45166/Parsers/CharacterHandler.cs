@@ -917,6 +917,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadByteE<Race>("NewRaceID");
         }
 
+        [Parser(Opcode.SMSG_XP_GAIN_ABORTED)]
+        public static void HandleXPGainAborted(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+
+            packet.ReadInt32("XpToAdd");
+            packet.ReadInt32("XpGainReason");
+            packet.ReadInt32("XpAbortReason");
+        }
+
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleCharNull(Packet packet)
