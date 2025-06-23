@@ -898,6 +898,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             var hasShipTransferPending = packet.ReadBit();
             var hasTransferSpell = packet.ReadBit();
+            var hasTaxiPathID = packet.ReadBit();
 
             if (hasShipTransferPending)
             {
@@ -907,6 +908,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             if (hasTransferSpell)
                 packet.ReadUInt32<SpellId>("TransferSpellID");
+
+            if (hasTaxiPathID)
+                packet.ReadUInt32("TaxiPathID");
         }
 
         [Parser(Opcode.CMSG_MOVE_APPLY_MOVEMENT_FORCE_ACK, ClientVersionBuild.V3_4_4_59817)]
