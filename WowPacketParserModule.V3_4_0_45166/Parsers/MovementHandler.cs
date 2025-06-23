@@ -285,6 +285,13 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadUInt32<AreaId>("ZoneID", idx);
             packet.ReadUInt32("WMOGroupID", idx);
             packet.ReadUInt32("WMODoodadPlacementID", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817))
+            {
+                packet.ReadSingle("HealthPercent", idx);
+                packet.ReadUInt16("RecommendedGroupSizeMin", idx);
+                packet.ReadUInt16("RecommendedGroupSizeMax", idx);
+            }
         }
 
         public static void ReadVignetteDataSet(Packet packet, params object[] idx)
