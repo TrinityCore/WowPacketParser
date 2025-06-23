@@ -1353,6 +1353,23 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_UPDATE_CHARGE_CATEGORY_COOLDOWN)]
+        public static void HandleUpdateChargeCategoryCooldown(Packet packet)
+        {
+            packet.ReadInt32("Category");
+            packet.ReadSingle("ModChange");
+            packet.ReadSingle("ModRate");
+            packet.ReadBit("Snapshot");
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_COOLDOWN)]
+        public static void HandleUpdateCooldown(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellId");
+            packet.ReadSingle("ModChange");
+            packet.ReadSingle("ModRate");
+        }
+
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA, ClientVersionBuild.V3_4_4_59817)]
