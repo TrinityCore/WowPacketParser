@@ -407,7 +407,10 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         [Parser(Opcode.CMSG_CAST_SPELL)]
         public static void HandleCastSpell(Packet packet)
         {
-            ReadSpellCastRequest(packet, "Cast");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817))
+                ReadSpellCastRequest344(packet, "Cast");
+            else
+                ReadSpellCastRequest(packet, "Cast");
         }
 
         [Parser(Opcode.SMSG_CAST_FAILED)]
