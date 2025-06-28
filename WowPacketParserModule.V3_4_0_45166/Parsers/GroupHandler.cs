@@ -638,6 +638,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_DO_COUNTDOWN, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleDoCountdown(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit();
+            packet.ReadInt32("TotalTime");
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_RAID_INFO, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GROUP_DESTROYED, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GROUP_UNINVITE, ClientVersionBuild.V3_4_4_59817)]
