@@ -229,7 +229,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             switch (result)
             {
                 case 0: // Mail
-                    packet.ReadInt32("MailID");
+                    packet.ReadInt64("MailID");
                     break;
                 case 1: // Chat
                     ReadComplaintChat(packet, "Chat");
