@@ -622,7 +622,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         [Parser(Opcode.SMSG_OFFER_PETITION_ERROR, ClientVersionBuild.V3_4_4_59817)]
         public static void HandlePetitionError(Packet packet)
         {
-            packet.ReadGuid("PetitionGUID");
+            packet.ReadPackedGuid128("PetitionGUID");
         }
 
         [Parser(Opcode.SMSG_PETITION_ALREADY_SIGNED, ClientVersionBuild.V3_4_4_59817)]
@@ -747,7 +747,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         [Parser(Opcode.CMSG_GUILD_BANK_WITHDRAW_MONEY, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleGuildBankDepositMoney(Packet packet)
         {
-            packet.ReadGuid("GUID");
+            packet.ReadPackedGuid128("GUID");
             packet.ReadUInt64("Money");
         }
 
