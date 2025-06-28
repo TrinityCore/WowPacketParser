@@ -373,8 +373,8 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         public static void HandleDFJoin(Packet packet)
         {
             packet.ReadBit("QueueAsGroup");
-            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
-            packet.ReadBit("UnknownBit");
+            var hasPartyIndex = packet.ReadBit();
+            packet.ReadBit("Mercenary");
             packet.ResetBitReader();
 
             packet.ReadByteE<LfgRoleFlag>("Roles");
