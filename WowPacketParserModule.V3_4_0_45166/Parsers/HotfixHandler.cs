@@ -9671,5 +9671,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.CMSG_DB_QUERY_BULK)]
+        public static void HandleDbQueryBulk(Packet packet)
+        {
+            packet.ReadInt32E<DB2Hash>("TableHash");
+
+            var count = packet.ReadBits("Count", 13);
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("RecordID", i);
+        }
     }
 }
