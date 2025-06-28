@@ -407,7 +407,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         [Parser(Opcode.CMSG_DF_SET_ROLES, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleDFSetRoles(Packet packet)
         {
-            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            var hasPartyIndex = packet.ReadBit();
             packet.ReadByteE<LfgRoleFlag>("RolesDesired");
 
             if (hasPartyIndex)
