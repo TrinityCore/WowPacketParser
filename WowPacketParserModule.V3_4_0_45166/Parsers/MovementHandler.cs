@@ -1044,6 +1044,12 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadUInt32("IntertiaID");
         }
 
+        [Parser(Opcode.CMSG_DISCARDED_TIME_SYNC_ACKS)]
+        public static void HandleDiscardedTimeSyncAcks(Packet packet)
+        {
+            packet.ReadUInt32("MaxSequenceIndex");
+        }
+
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
         [Parser(Opcode.CMSG_WORLD_PORT_RESPONSE)]
         public static void HandleAbortNewWorld(Packet packet)
