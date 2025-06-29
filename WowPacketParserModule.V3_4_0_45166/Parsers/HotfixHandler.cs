@@ -9681,5 +9681,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadInt32("RecordID", i);
         }
+
+        [Parser(Opcode.CMSG_HOTFIX_REQUEST)]
+        public static void HandleHotfixRequest905(Packet packet)
+        {
+            packet.ReadUInt32("CurrentBuild");
+            packet.ReadUInt32("InternalBuild");
+            var hotfixCount = packet.ReadUInt32("HotfixCount");
+            for (var i = 0u; i < hotfixCount; ++i)
+                packet.ReadInt32("HotfixID", i);
+        }
     }
 }
