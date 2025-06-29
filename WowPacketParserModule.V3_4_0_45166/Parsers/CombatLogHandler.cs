@@ -559,5 +559,17 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         {
             packet.ReadBit("Enable");
         }
+
+        [Parser(Opcode.SMSG_ATTACK_SWING_LANDED_LOG, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleAttackswingLandedLog(Packet packet)
+        {
+            var hasLogData = packet.ReadBit("HasLogData");
+            if (hasLogData)
+                SpellHandler.ReadSpellCastLogData(packet);
+
+            packet.ReadInt32("Size");
+
+            ReadAttackRoundInfo(packet, "AttackRoundInfo");
+        }
     }
 }
