@@ -504,7 +504,10 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             useItem.ItemSlot = packet.ReadByte("Slot");
             useItem.CastItem = packet.ReadPackedGuid128("CastItem");
 
-            useItem.SpellId = SpellHandler.ReadSpellCastRequest(packet, "Cast");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817))
+                useItem.SpellId = SpellHandler.ReadSpellCastRequest344(packet, "Cast");
+            else
+                useItem.SpellId = SpellHandler.ReadSpellCastRequest(packet, "Cast");
         }
 
         [Parser(Opcode.CMSG_WRAP_ITEM, ClientVersionBuild.V3_4_4_59817)]
