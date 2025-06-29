@@ -1174,7 +1174,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         [Parser(Opcode.SMSG_GUILD_EVENT_TAB_ADDED, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_GUILD_CHALLENGE_UPDATE_REQUEST, ClientVersionBuild.V3_4_4_59817)]
-        [Parser(Opcode.CMSG_GUILD_DECLINE_INVITATION, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_GUILD_DELETE, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_GUILD_GET_ROSTER, ClientVersionBuild.V3_4_4_59817)]
