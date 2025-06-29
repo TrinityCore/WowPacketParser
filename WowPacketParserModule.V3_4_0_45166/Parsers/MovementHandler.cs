@@ -227,6 +227,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
         }
 
+        public static void ReadDriveStatusData(Packet packet, params object[] idx)
+        {
+            packet.ResetBitReader();
+            packet.ReadBit("Accelerating", idx);
+            packet.ReadBit("Drifting", idx);
+            packet.ReadSingle("Speed", idx);
+            packet.ReadSingle("MovementAngle", idx);
+        }
+
         public static MovementInfo ReadMovementStats(Packet packet, params object[] idx)
         {
             MovementInfo info = new();
@@ -260,6 +269,10 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             var hasInertia = packet.ReadBit("HasInertia", idx);
             var hasAdvFlying = packet.ReadBit("HasAdvFlying", idx);
 
+            var hasDriveStatus = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817))
+                hasDriveStatus = packet.ReadBit("HasDriveStatus", idx);
+
             if (hasTransport)
                 info.Transport = ReadTransportData(packet, idx, "TransportData");
 
@@ -274,6 +287,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             if (hasFall)
                 ReadFallData(packet, idx, "FallData");
+
+            if (hasDriveStatus)
+                ReadDriveStatusData(packet, idx, "DriveStatus");
             return info;
         }
 
@@ -1048,6 +1064,14 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         public static void HandleDiscardedTimeSyncAcks(Packet packet)
         {
             packet.ReadUInt32("MaxSequenceIndex");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_APPLY_INERTIA_ACK, ClientVersionBuild.V3_4_4_59817)]
+        public static void HandleMoveApplyMovementInertiaAck(Packet packet)
+        {
+            ReadMovementAck(packet, "Data");
+            packet.ReadInt32("InertiaID");
+            packet.ReadUInt32("InertiaLifetimeMs");
         }
 
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
