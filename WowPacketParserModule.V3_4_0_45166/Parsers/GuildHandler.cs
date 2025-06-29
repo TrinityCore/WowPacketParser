@@ -896,7 +896,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadUInt32E<GuildRankRightsFlag>("Flags");
             packet.ReadUInt32("WithdrawGoldLimit");
 
-            for (var i = 0; i < 8; ++i)
+            for (var i = 0; i < 6; ++i)
             {
                 packet.ReadUInt32E<GuildBankRightsFlag>("TabFlags", i);
                 packet.ReadUInt32("TabWithdrawItemLimit", i);
