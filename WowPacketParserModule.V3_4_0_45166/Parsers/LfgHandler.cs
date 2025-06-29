@@ -434,6 +434,30 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadLfgEntry("LfgEntry");
         }
 
+        [Parser(Opcode.CMSG_LFG_LIST_APPLY_TO_GROUP)]
+        public static void HandleLfgListApplyToGroup(Packet packet)
+        {
+            ReadCliRideTicket(packet, "RideTicket");
+            packet.ReadInt32("GroupFinderActivityId");
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+            packet.ResetBitReader();
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Comment", len);
+        }
+
+        [Parser(Opcode.CMSG_LFG_LIST_CANCEL_APPLICATION)]
+        public static void HandleLfgListCancelApplication(Packet packet)
+        {
+            ReadCliRideTicket(packet, "RideTicket");
+        }
+
+        [Parser(Opcode.CMSG_LFG_LIST_DECLINE_APPLICANT)]
+        public static void HandleLfgListDeclineApplicant(Packet packet)
+        {
+            ReadCliRideTicket(packet, "LFGListRideTicket");
+            ReadCliRideTicket(packet, "ApplicationRideTicket");
+        }
+
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_DF_GET_JOIN_STATUS, ClientVersionBuild.V3_4_4_59817)]
