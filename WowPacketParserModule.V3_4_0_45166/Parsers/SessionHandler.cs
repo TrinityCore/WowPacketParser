@@ -244,6 +244,13 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_LOG_STREAMING_ERROR)]
+        public static void HandleRouterClientLogStreamingError(Packet packet)
+        {
+            var bits16 = packet.ReadBits(9);
+            packet.ReadWoWString("Error", bits16);
+        }
+
         [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH, ClientVersionBuild.V3_4_4_59817)]
