@@ -458,7 +458,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             ReadCliRideTicket(packet, "ApplicationRideTicket");
         }
 
-        [Parser(Opcode.CMSG_LFG_LIST_INVITE_APPLICANT, ClientVersionBuild.V3_4_4_59817))]
+        [Parser(Opcode.CMSG_LFG_LIST_INVITE_APPLICANT, ClientVersionBuild.V3_4_4_59817)]
         public static void HandleLfgListInviteApplicant(Packet packet)
         {
             ReadCliRideTicket(packet, "LFGListRideTicket");
@@ -471,6 +471,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             }
 
             ReadCliRideTicket(packet, "ApplicationRideTicket");
+        }
+
+        [Parser(Opcode.CMSG_LFG_LIST_INVITE_RESPONSE)]
+        public static void HandleLFGListInviteResponse(Packet packet)
+        {
+            ReadCliRideTicket(packet, "RideTicket");
+
+            packet.ResetBitReader();
+            packet.ReadBit("Accept");
         }
 
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS, ClientVersionBuild.V3_4_4_59817)]
