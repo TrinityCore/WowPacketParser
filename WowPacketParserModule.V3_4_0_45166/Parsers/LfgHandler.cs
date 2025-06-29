@@ -458,6 +458,21 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             ReadCliRideTicket(packet, "ApplicationRideTicket");
         }
 
+        [Parser(Opcode.CMSG_LFG_LIST_INVITE_APPLICANT, ClientVersionBuild.V3_4_4_59817))]
+        public static void HandleLfgListInviteApplicant(Packet packet)
+        {
+            ReadCliRideTicket(packet, "LFGListRideTicket");
+            var memberNum = packet.ReadUInt32("PartyMemberNum");
+
+            for (int i = 0; i < memberNum; i++)
+            {
+                packet.ReadPackedGuid128("PlayerGUID", i);
+                packet.ReadByteE<LfgRoleFlag>("ChosenRoles", i);
+            }
+
+            ReadCliRideTicket(packet, "ApplicationRideTicket");
+        }
+
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST, ClientVersionBuild.V3_4_4_59817)]
         [Parser(Opcode.CMSG_DF_GET_JOIN_STATUS, ClientVersionBuild.V3_4_4_59817)]
