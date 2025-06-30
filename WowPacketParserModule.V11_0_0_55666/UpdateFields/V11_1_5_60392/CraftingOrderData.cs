@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_1_5_60392
         public System.Nullable<int> Field_0 { get; set; }
         public System.Nullable<ulong> OrderID { get; set; }
         public System.Nullable<int> SkillLineAbilityID { get; set; }
-        public System.Nullable<byte> OrderState { get; set; }
+        public System.Nullable<int> OrderState { get; set; }
         public System.Nullable<byte> OrderType { get; set; }
         public System.Nullable<byte> MinQuality { get; set; }
         public System.Nullable<long> ExpirationTime { get; set; }

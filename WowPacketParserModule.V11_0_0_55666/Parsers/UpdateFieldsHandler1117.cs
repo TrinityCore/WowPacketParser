@@ -3431,7 +3431,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_1_7_61491
             data.Field_0 = packet.ReadInt32("Field_0", indexes);
             data.OrderID = packet.ReadUInt64("OrderID", indexes);
             data.SkillLineAbilityID = packet.ReadInt32("SkillLineAbilityID", indexes);
-            data.OrderState = packet.ReadByte("OrderState", indexes);
+            data.OrderState = packet.ReadInt32("OrderState", indexes);
             data.OrderType = packet.ReadByte("OrderType", indexes);
             data.MinQuality = packet.ReadByte("MinQuality", indexes);
             data.ExpirationTime = packet.ReadInt64("ExpirationTime", indexes);
@@ -3520,7 +3520,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_1_7_61491
                 }
                 if (changesMask[5])
                 {
-                    data.OrderState = packet.ReadByte("OrderState", indexes);
+                    data.OrderState = packet.ReadInt32("OrderState", indexes);
                 }
             }
             if (changesMask[6])
@@ -5013,6 +5013,10 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_1_7_61491
                         }
                     }
                 }
+            }
+            packet.ResetBitReader();
+            if (changesMask[32])
+            {
                 if (changesMask[41])
                 {
                     data.AccountBankTabSettings.ReadUpdateMask(packet, 3);
@@ -5435,6 +5439,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_1_7_61491
                     data.RequiredMountCapabilityFlags = packet.ReadByte("RequiredMountCapabilityFlags", indexes);
                 }
             }
+            packet.ResetBitReader();
             if (changesMask[102])
             {
                 hasQuestSession = packet.ReadBit("HasQuestSession", indexes);
@@ -5445,7 +5450,6 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_1_7_61491
                 hasWalkInData = packet.ReadBit("HasWalkInData", indexes);
                 hasDelveData = packet.ReadBit("HasDelveData", indexes);
             }
-            packet.ResetBitReader();
             if (changesMask[102])
             {
                 if (changesMask[125])

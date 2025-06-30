@@ -4864,12 +4864,12 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_2_7_54577
                     data.RequiredMountCapabilityFlags = packet.ReadByte("RequiredMountCapabilityFlags", indexes);
                 }
             }
+            packet.ResetBitReader();
             if (changesMask[104])
             {
                 hasQuestSession = packet.ReadBit("HasQuestSession", indexes);
                 hasPetStable = packet.ReadBit("HasPetStable", indexes);
             }
-            packet.ResetBitReader();
             if (changesMask[104])
             {
                 if (changesMask[118])

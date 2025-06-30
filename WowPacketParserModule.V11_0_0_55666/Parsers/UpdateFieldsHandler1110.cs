@@ -4980,6 +4980,10 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_1_0_59347
                         }
                     }
                 }
+            }
+            packet.ResetBitReader();
+            if (changesMask[32])
+            {
                 if (changesMask[40])
                 {
                     data.AccountBankTabSettings.ReadUpdateMask(packet, 3);
@@ -5422,6 +5426,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_1_0_59347
                     data.RequiredMountCapabilityFlags = packet.ReadByte("RequiredMountCapabilityFlags", indexes);
                 }
             }
+            packet.ResetBitReader();
             if (changesMask[102])
             {
                 hasQuestSession = packet.ReadBit("HasQuestSession", indexes);
@@ -5432,7 +5437,6 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_1_0_59347
                 hasWalkInData = packet.ReadBit("HasWalkInData", indexes);
                 hasDelveData = packet.ReadBit("HasDelveData", indexes);
             }
-            packet.ResetBitReader();
             if (changesMask[102])
             {
                 if (changesMask[124])
