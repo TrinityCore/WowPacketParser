@@ -20,7 +20,7 @@ namespace WowPacketParserModule.Substructures
             if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_0_7_58123) || ClientVersion.AddedInVersion(ClientBranch.Cata, ClientVersionBuild.V4_4_2_59185) || ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_6_58797) || ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_4_59817))
                 packet.ReadInt32("OriginalPrice", indexes);
             packet.ReadTime64("AvailableUntil", indexes);
-            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_1_0_59347) || ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_7_60000))
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_1_0_59347) || ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_7_60000) || ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_4_59817))
                 packet.ReadInt32("WarbandSceneID", indexes);
             packet.ReadBit("Disabled", indexes);
             if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_0_5_57171) || ClientVersion.AddedInVersion(ClientBranch.Cata, ClientVersionBuild.V4_4_2_59185) || ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_4_59817))
