@@ -181,6 +181,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                             if (vendorFragment >= 0 && changedFragments[vendorFragment])
                                 if (!WowCSUtilities.IsIndirect(WowCSEntityFragments.FVendor_C) || changedFragments[vendorFragment + 1])
                                     handler.ReadUpdateVendorData(fieldsData, i);
+
+                            if (fieldsData.Position != fieldsData.Length)
+                                packet.WriteLine($"Updatefields not fully read! Remaining: {fieldsData.Length - fieldsData.Position} Length: {fieldsData.Length} Pos: {fieldsData.Position}");
                         }
                         updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, TextStartOffset = partWriter.StartOffset, TextLength = partWriter.Length, Text = partWriter.Text});
                         break;
