@@ -183,7 +183,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                                     handler.ReadUpdateVendorData(fieldsData, i);
 
                             if (fieldsData.Position != fieldsData.Length)
-                                packet.WriteLine($"Updatefields not fully read! Remaining: {fieldsData.Length - fieldsData.Position} Length: {fieldsData.Length} Pos: {fieldsData.Position}");
+                                packet.WriteLine($"Updatefields not fully read! Current position: {fieldsData.Position} Length: {fieldsData.Length} Bytes remaining: {fieldsData.Length - fieldsData.Position}");
                         }
                         updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, TextStartOffset = partWriter.StartOffset, TextLength = partWriter.Length, Text = partWriter.Text});
                         break;
@@ -297,6 +297,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 if (obj.EntityFragments.Contains(WowCSEntityFragments.FVendor_C))
                     if (!WowCSUtilities.IsIndirect(WowCSEntityFragments.FVendor_C) || fieldsData.ReadBool("IndirectFragmentActive [FVendor_C]", index))
                         handler.ReadCreateVendorData(fieldsData, flags, index);
+
+                if (fieldsData.Position != fieldsData.Length)
+                    packet.WriteLine($"Updatefields not fully read! Current position: {fieldsData.Position} Length: {fieldsData.Length} Bytes remaining: {fieldsData.Length - fieldsData.Position}");
             }
 
             // If this is the second time we see the same object (same guid,
