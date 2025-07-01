@@ -1557,7 +1557,6 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_4_59817
             {
                 data.Name[i] = new string('*', (int)packet.ReadBits(10));
             }
-            packet.ResetBitReader();
             for (var i = 0; i < 5; ++i)
             {
                 data.Name[i] = packet.ReadWoWString("Name", data.Name[i].Length, indexes, i);
@@ -1577,7 +1576,6 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_4_59817
                 rawChangesMask[0] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
 
-            packet.ResetBitReader();
             if (changesMask[0])
             {
                 for (var i = 0; i < 5; ++i)

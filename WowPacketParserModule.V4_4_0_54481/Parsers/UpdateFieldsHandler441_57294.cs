@@ -1537,7 +1537,6 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57294
             {
                 data.Name[i] = new string('*', (int)packet.ReadBits(10));
             }
-            packet.ResetBitReader();
             for (var i = 0; i < 5; ++i)
             {
                 data.Name[i] = packet.ReadWoWString("Name", data.Name[i].Length, indexes, i);
@@ -1557,7 +1556,6 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57294
                 rawChangesMask[0] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
 
-            packet.ResetBitReader();
             if (changesMask[0])
             {
                 for (var i = 0; i < 5; ++i)
@@ -2823,7 +2821,6 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57294
             rawChangesMask[0] = (int)packet.ReadBits(4);
             var changesMask = new BitArray(rawChangesMask);
 
-            packet.ResetBitReader();
             if (changesMask[0])
             {
                 data.Name = new string('*', (int)packet.ReadBits(7));
@@ -2836,6 +2833,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57294
             {
                 data.Description = new string('*', (int)packet.ReadBits(14));
             }
+            packet.ResetBitReader();
             if (changesMask[3])
             {
                 data.DepositFlags = packet.ReadInt32("DepositFlags", indexes);
@@ -3491,10 +3489,18 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V4_4_1_57294
                         }
                     }
                 }
+            }
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
                 if (changesMask[22])
                 {
                     data.AccountBankTabSettings.ReadUpdateMask(packet, 3);
                 }
+            }
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
                 if (changesMask[4])
                 {
                     for (var i = 0; i < data.CharacterDataElements.Count; ++i)
