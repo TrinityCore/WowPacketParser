@@ -5003,6 +5003,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_1_5_60392
                     data.AccountBankTabSettings.ReadUpdateMask(packet, 3);
                 }
             }
+            packet.ResetBitReader();
             if (changesMask[0])
             {
                 if (changesMask[10])
