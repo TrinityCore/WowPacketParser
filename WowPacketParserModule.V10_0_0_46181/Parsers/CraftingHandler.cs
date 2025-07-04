@@ -83,6 +83,18 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 packet.ReadByte("DataSlotIndex", indexes);
         }
 
+        public static void ReadCraftingOrderCustomer(Packet packet, params object[] indexes)
+        {
+            packet.ReadPackedGuid128("CustomerGUID", indexes);
+            packet.ReadPackedGuid128("CustomerAccountGUID", indexes);
+        }
+
+        public static void ReadCraftingOrderNpcCustomer(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt64("NpcCraftingOrderCustomerID", indexes);
+            packet.ReadInt32("NpcCraftingOrderSetFlags", indexes);
+        }
+
         public static void ReadCraftingOrderData(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("field_0", indexes);
@@ -103,29 +115,26 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadUInt32("Flags", indexes);
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_0_2_55959))
-            {
-                packet.ReadPackedGuid128("CustomerGUID", indexes);
-                packet.ReadPackedGuid128("CustomerAccountGUID", indexes);
-            }
+                ReadCraftingOrderCustomer(packet, indexes, "Customer");
 
             packet.ReadPackedGuid128("CrafterGUID", indexes);
             packet.ReadPackedGuid128("PersonalCrafterGUID", indexes);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_2_55959))
             {
-                packet.ReadInt32("NpcCraftingOrderSetId", indexes);
-                packet.ReadInt32("NpcCraftingTreasureId", indexes);
+                packet.ReadInt32("NpcCraftingOrderSetID", indexes);
+                packet.ReadInt32("NpcTreasureID", indexes);
             }
 
             var reagentsCount = packet.ReadUInt32();
             var customerNotesLength = packet.ReadBits(10);
 
-            var hasCustomerGuid = false;
+            var hasCustomer = false;
             var hasNpcCraftingData = false;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_2_55959))
             {
-                hasCustomerGuid = packet.ReadBit("HasCustomerGuid", indexes);
-                hasNpcCraftingData = packet.ReadBit("HasNpcCraftingData", indexes);
+                hasCustomer = packet.ReadBit();
+                hasNpcCraftingData = packet.ReadBit();
             }
 
             var hasOutputItem = packet.ReadBit();
@@ -138,17 +147,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             packet.ReadWoWString("CustomerNotes", customerNotesLength, indexes);
 
-            if (hasCustomerGuid)
-            {
-                packet.ReadPackedGuid128("CustomerGUID", indexes);
-                packet.ReadPackedGuid128("CustomerAccountGUID", indexes);
-            }
+            if (hasCustomer)
+                ReadCraftingOrderCustomer(packet, indexes, "Customer");
 
             if (hasNpcCraftingData)
-            {
-                packet.ReadUInt64("NpcCraftingCustomerId", indexes);
-                packet.ReadUInt32("NpcCraftingOrderSetFlags", indexes);
-            }
+                ReadCraftingOrderNpcCustomer(packet, indexes, "NpcCustomer");
 
             if (hasOutputItem)
                 ReadCraftingOrderItem(packet, indexes, "OutputItem");
