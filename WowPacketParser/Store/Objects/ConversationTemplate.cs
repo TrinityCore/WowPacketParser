@@ -97,6 +97,49 @@ namespace WowPacketParser.Store.Objects
                 Storage.ConversationLineTemplates.Add(line);
                 Storage.ConversationActors.Add(actor);
             }
+
+            if (Settings.UseDBC && Settings.DBCLocale == ClientLocale.PacketLocaleString)
+            {
+                var conversationTime = LastLineEndTime;
+                for (var i = lines.Length - 1; i >= 0; --i)
+                {
+                    var lineId = lines[i].ConversationLineID;
+                    if (DBC.DBC.ConversationLine.ContainsKey(lineId))
+                    {
+                        var conversationLine = DBC.DBC.ConversationLine[lineId];
+                        var wowLocale = WowLocaleUtilities.GetWowLocale(ClientLocale.PacketLocale);
+
+                        var hasDB2Data = false;
+                        if (DBC.DBC.BroadcastTextDurations.ContainsKey((int)conversationLine.BroadcastTextID))
+                        {
+                            var broadcastTextDurations = DBC.DBC.BroadcastTextDurations[(int)conversationLine.BroadcastTextID];
+                            foreach (var broadcastTextDurationLocale in broadcastTextDurations)
+                            {
+                                if (broadcastTextDurationLocale == wowLocale)
+                                {
+                                    hasDB2Data = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (hasDB2Data)
+                            continue;
+
+                        var duration = conversationTime - lines[i].StartTime - conversationLine.AdditionalDuration;
+
+                        BroadcastTextDurationHotfixServerside hotfix = new BroadcastTextDurationHotfixServerside();
+                        hotfix.ID = $"@BTDID+";
+                        hotfix.BroadcastTextID = conversationLine.BroadcastTextID;
+                        hotfix.Locale = wowLocale;
+                        hotfix.Duration = (int)duration;
+
+                        Storage.BroadcastTextDurationHotfixesServerside.Add(hotfix);
+                    }
+
+                    conversationTime = lines[i].StartTime;
+                }
+            }
         }
     }
 }

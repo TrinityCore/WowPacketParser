@@ -36,4 +36,28 @@ namespace WowPacketParser.Enums
         ptBR = (1 << 10),
         itIT = (1 << 11),
     }
+
+    public static class WowLocaleUtilities
+    {
+        public static int GetWowLocale(LocaleConstant localeConstant)
+        {
+            var wowLocale = -1;
+            switch (localeConstant)
+            {
+                case LocaleConstant.enUS: return 1;
+                case LocaleConstant.koKR: return 2;
+                case LocaleConstant.frFR: return 4;
+                case LocaleConstant.deDE: return 5;
+                case LocaleConstant.zhCN: return 6;
+                case LocaleConstant.zhTW: return 8;
+                case LocaleConstant.esES: return 7;
+                case LocaleConstant.esMX: return 12;
+                case LocaleConstant.ruRU: return 13;
+                case LocaleConstant.ptBR: return 14;
+                case LocaleConstant.itIT: return 15;
+            }
+
+            return wowLocale;
+        }
+    }
 }
