@@ -53,6 +53,20 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string BroadcastTextDurationServerside()
+        {
+            if (Storage.BroadcastTextDurationHotfixesServerside.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.conversation_line_template))
+                return string.Empty;
+
+            var hotfixes = SQLDatabase.Get(Storage.BroadcastTextDurationHotfixesServerside, Settings.HotfixesDatabase);
+
+            return SQLUtil.Compare(Storage.BroadcastTextDurationHotfixesServerside, hotfixes, StoreNameType.None);
+        }
+
+        [BuilderMethod]
         public static string ConversationTemplateData()
         {
             var conversations = Storage.Objects.IsEmpty()

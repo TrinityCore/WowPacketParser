@@ -17,6 +17,8 @@ namespace WowPacketParser.DBC
         public static Storage<AchievementEntry> Achievement { get; set; }
         public static Storage<AnimationDataEntry> AnimationData { get; set; }
         public static Storage<BroadcastTextEntry> BroadcastText { get; set; }
+        public static Storage<BroadcastTextDurationEntry> BroadcastTextDuration { get; set; }
+        public static Storage<ConversationLineEntry> ConversationLine { get; set; }
         public static Storage<CreatureEntry> Creature { get; set; }
         public static Storage<CreatureDifficultyEntry> CreatureDifficulty { get; set; }
         public static Storage<CreatureFamilyEntry> CreatureFamily { get; set; }
@@ -199,6 +201,16 @@ namespace WowPacketParser.DBC
                         else
                             Phases[phase.Value.PhaseGroupID].Add(phase.Value.PhaseID);
                     }
+            }), Task.Run(() =>
+            {
+                if (BroadcastTextDuration != null)
+                    foreach (var broadcastTextDuration in BroadcastTextDuration)
+                    {
+                        if (!BroadcastTextDurations.ContainsKey(broadcastTextDuration.Value.BroadcastTextID))
+                            BroadcastTextDurations.Add(broadcastTextDuration.Value.BroadcastTextID, [broadcastTextDuration.Value.Locale]);
+                        else
+                            BroadcastTextDurations[broadcastTextDuration.Value.BroadcastTextID].Add(broadcastTextDuration.Value.Locale);
+                    }
             }));
         }
 
@@ -238,5 +250,6 @@ namespace WowPacketParser.DBC
         public static readonly Dictionary<uint, FactionEntry> FactionStores = new Dictionary<uint, FactionEntry>();
         public static readonly Dictionary<Tuple<uint, uint>, SpellEffectEntry> SpellEffectStores = new Dictionary<Tuple<uint, uint>, SpellEffectEntry>();
         public static readonly Dictionary<int, List<ushort>> Phases = new Dictionary<int, List<ushort>>();
+        public static readonly Dictionary<int, HashSet<int>> BroadcastTextDurations = new Dictionary<int, HashSet<int>>();
     }
 }

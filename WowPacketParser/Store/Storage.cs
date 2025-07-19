@@ -139,6 +139,8 @@ namespace WowPacketParser.Store
         public static readonly DataBag<HotfixBlob> HotfixBlobs = new DataBag<HotfixBlob>(new List<SQLOutput> { SQLOutput.hotfix_blob });
         public static readonly DataBag<HotfixOptionalData> HotfixOptionalDatas = new DataBag<HotfixOptionalData>(new List<SQLOutput> { SQLOutput.hotfix_optional_data });
 
+        public static readonly DataBag<BroadcastTextDurationHotfixServerside> BroadcastTextDurationHotfixesServerside = new DataBag<BroadcastTextDurationHotfixServerside>(new List<SQLOutput> { SQLOutput.conversation_line_template });
+
         // Scenes
         public static readonly DataBag<SceneTemplate> Scenes = new DataBag<SceneTemplate>(new List<SQLOutput> { SQLOutput.scene_template });
 
@@ -2222,6 +2224,8 @@ namespace WowPacketParser.Store
             HotfixDatas.Clear();
             HotfixBlobs.Clear();
             HotfixOptionalDatas.Clear();
+
+            BroadcastTextDurationHotfixesServerside.Clear();
 
             Scenes.Clear();
 
