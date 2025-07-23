@@ -18,7 +18,8 @@ namespace WowPacketParser.Enums
         // chose higher value to have some room for future
         Classic             = 20,
         WotlkClassic        = 21,
-        CataClassic         = 22
+        CataClassic         = 22,
+        MoPClassic          = 23
     }
 
     [Flags]
@@ -41,7 +42,8 @@ namespace WowPacketParser.Enums
         Classic                           = 1 << TargetedDatabase.Classic,
         WotlkClassic                      = 1 << TargetedDatabase.WotlkClassic,
         CataClassic                       = 1 << TargetedDatabase.CataClassic,
-        AnyClassic                        = Classic | WotlkClassic | CataClassic,
+        MoPClassic                        = 1 << TargetedDatabase.MoPClassic,
+        AnyClassic                        = Classic | WotlkClassic | CataClassic | MoPClassic,
 
         Any                               = AnyRetail | AnyClassic,
 
@@ -67,6 +69,8 @@ namespace WowPacketParser.Enums
         SinceCataclysm                    = Cataclysm | SinceWarlordsOfDraenor,
 
         SinceWarlordsOfDraenorTillShadowLands = WarlordsOfDraenor | Legion | BattleForAzeroth | Shadowlands,
-        SinceBattleForAzerothTillDragonflight = BattleForAzeroth | Shadowlands | Dragonflight
+        SinceBattleForAzerothTillDragonflight = BattleForAzeroth | Shadowlands | Dragonflight,
+
+        SinceCataClassic                  = CataClassic | MoPClassic
     }
 }

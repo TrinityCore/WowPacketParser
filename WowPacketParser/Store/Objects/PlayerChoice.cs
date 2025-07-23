@@ -10,37 +10,37 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ChoiceId", true)]
         public int? ChoiceId;
 
-        [DBFieldName("UiTextureKitId", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("UiTextureKitId", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.SinceCataClassic)]
         public int? UiTextureKitId;
 
-        [DBFieldName("SoundKitId", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("SoundKitId", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.SinceCataClassic)]
         public uint? SoundKitId;
 
-        [DBFieldName("CloseSoundKitId", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("CloseSoundKitId", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.SinceCataClassic)]
         public uint? CloseSoundKitId;
 
-        [DBFieldName("Duration", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic, nullable: true)]
+        [DBFieldName("Duration", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.SinceCataClassic, nullable: true)]
         public long? Duration;
 
         [DBFieldName("Question", LocaleConstant.enUS)]
         public string Question;
 
-        [DBFieldName("PendingChoiceText", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic, LocaleConstant.enUS)]
+        [DBFieldName("PendingChoiceText", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.SinceCataClassic, LocaleConstant.enUS)]
         public string PendingChoiceText;
 
         [DBFieldName("InfiniteRange", TargetedDatabaseFlag.SinceTheWarWithin)]
         public int InfiniteRange;
 
-        [DBFieldName("HideWarboardHeader", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("HideWarboardHeader", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.SinceCataClassic)]
         public int HideWarboardHeader;
 
-        [DBFieldName("KeepOpenAfterChoice", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("KeepOpenAfterChoice", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.SinceCataClassic)]
         public int KeepOpenAfterChoice;
 
-        [DBFieldName("ShowChoicesAsList", TargetedDatabaseFlag.SinceTheWarWithin)]
+        [DBFieldName("ShowChoicesAsList", TargetedDatabaseFlag.SinceTheWarWithin | TargetedDatabaseFlag.MoPClassic)]
         public int ShowChoicesAsList;
 
-        [DBFieldName("ForceDontShowChoicesAsList", TargetedDatabaseFlag.SinceTheWarWithin)]
+        [DBFieldName("ForceDontShowChoicesAsList", TargetedDatabaseFlag.SinceTheWarWithin | TargetedDatabaseFlag.MoPClassic)]
         public int ForceDontShowChoicesAsList;
 
         [DBFieldName("VerifiedBuild")]
@@ -56,7 +56,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ResponseId", true)]
         public int? ResponseId;
 
-        [DBFieldName("ResponseIdentifier", TargetedDatabaseFlag.Shadowlands | TargetedDatabaseFlag.Dragonflight | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("ResponseIdentifier", TargetedDatabaseFlag.Shadowlands | TargetedDatabaseFlag.Dragonflight | TargetedDatabaseFlag.SinceCataClassic)]
         public short? ResponseIdentifier;
 
         [DBFieldName("Index")]
@@ -65,28 +65,28 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ChoiceArtFileId")]
         public int? ChoiceArtFileId;
 
-        [DBFieldName("Flags", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("Flags", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.SinceCataClassic)]
         public int? Flags;
 
-        [DBFieldName("WidgetSetId", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("WidgetSetId", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.SinceCataClassic)]
         public uint? WidgetSetId;
 
-        [DBFieldName("UiTextureAtlasElementID", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("UiTextureAtlasElementID", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.SinceCataClassic)]
         public uint? UiTextureAtlasElementID;
 
-        [DBFieldName("SoundKitId", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("SoundKitId", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.SinceCataClassic)]
         public uint? SoundKitId;
 
-        [DBFieldName("GroupId", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("GroupId", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.SinceCataClassic)]
         public int? GroupId;
 
-        [DBFieldName("Header", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.CataClassic, LocaleConstant.enUS)]
+        [DBFieldName("Header", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.SinceCataClassic, LocaleConstant.enUS)]
         public string Header;
 
-        [DBFieldName("Subheader", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("Subheader", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.SinceCataClassic)]
         public string Subheader;
 
-        [DBFieldName("ButtonTooltip", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic, LocaleConstant.enUS)]
+        [DBFieldName("ButtonTooltip", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.SinceCataClassic, LocaleConstant.enUS)]
         public string ButtonTooltip;
 
         [DBFieldName("Answer", LocaleConstant.enUS)]
@@ -95,13 +95,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Description", LocaleConstant.enUS)]
         public string Description;
 
-        [DBFieldName("Confirmation", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.CataClassic, LocaleConstant.enUS)]
+        [DBFieldName("Confirmation", TargetedDatabaseFlag.SinceLegion | TargetedDatabaseFlag.SinceCataClassic, LocaleConstant.enUS)]
         public string Confirmation;
 
-        [DBFieldName("RewardQuestID", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("RewardQuestID", TargetedDatabaseFlag.SinceBattleForAzeroth | TargetedDatabaseFlag.SinceCataClassic)]
         public uint? RewardQuestID;
 
-        [DBFieldName("UiTextureKitID", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("UiTextureKitID", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.SinceCataClassic)]
         public uint? UiTextureKitID;
 
         [DBFieldName("VerifiedBuild")]
