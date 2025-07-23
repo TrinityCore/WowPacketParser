@@ -1038,7 +1038,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_COMMERCE_TOKEN_UPDATE, 0x3C0271 },
             { Opcode.SMSG_COMPLAINT_RESULT, 0x3C014A },
             { Opcode.SMSG_COMPLETE_SHIPMENT_RESPONSE, 0x3C023D },
-            { Opcode.SMSG_COMPRESSED_PACKET, 0x43000A },
+            { Opcode.SMSG_COMPRESSED_PACKET, 0x43000A }, // NYI
             { Opcode.SMSG_CONFIRM_BARBERS_CHOICE, 0x3C015C },
             { Opcode.SMSG_CONFIRM_PARTY_INVITE, 0x3C02B3 },
             { Opcode.SMSG_CONNECT_TO, 0x430005 },
@@ -1233,7 +1233,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_GET_VAS_ACCOUNT_CHARACTER_LIST_RESULT, 0x3C028E },
             { Opcode.SMSG_GET_VAS_TRANSFER_TARGET_REALM_LIST_RESULT, 0x3C028F },
             { Opcode.SMSG_GM_PLAYER_INFO, 0x4F000D },
-            { Opcode.SMSG_GM_REQUEST_PLAYER_INFO, 0x4F0003 },
+            { Opcode.SMSG_GM_REQUEST_PLAYER_INFO, 0x4F0003 }, // NYI
             { Opcode.SMSG_GM_TICKET_CASE_STATUS, 0x3C0142 },
             { Opcode.SMSG_GM_TICKET_SYSTEM_STATUS, 0x3C0141 },
             { Opcode.SMSG_GOD_MODE, 0x3C019B },
@@ -1753,7 +1753,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_REQUEST_PVP_BRAWL_INFO_RESPONSE, 0x420018 },
             { Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, 0x420017 },
             { Opcode.SMSG_REQUEST_SCHEDULED_PVP_INFO_RESPONSE, 0x420019 },
-            { Opcode.SMSG_RESET_COMPRESSION_CONTEXT, 0x430007 },
+            { Opcode.SMSG_RESET_COMPRESSION_CONTEXT, 0x430007 }, // NYI
             { Opcode.SMSG_RESET_FAILED_NOTIFY, 0x3C0156 },
             { Opcode.SMSG_RESET_QUEST_POI, 0x500020 },
             { Opcode.SMSG_RESET_RANGED_COMBAT_TIMER, 0x420027 },

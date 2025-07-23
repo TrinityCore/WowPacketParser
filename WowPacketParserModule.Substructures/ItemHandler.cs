@@ -232,6 +232,8 @@ namespace WowPacketParserModule.Substructures
                 else
                     return ReadItemInstance251(packet, indexes);
             }
+            if (ClientVersion.IsMoPClassicClientVersionBuild(ClientVersion.Build))
+                    return ReadItemInstance441(packet, indexes);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_1_38835) &&
                (ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build) ||
                 ClientVersion.IsClassicSeasonOfMasteryClientVersionBuild(ClientVersion.Build)))
