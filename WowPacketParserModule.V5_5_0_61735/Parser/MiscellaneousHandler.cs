@@ -6,6 +6,15 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 {
     public static class MiscellaneousHandler
     {
+        public static void ReadAreaPoiData(Packet packet, params object[] idx)
+        {
+            packet.ReadTime64("StartTime", idx);
+            packet.ReadInt32("AreaPoiID", idx);
+            packet.ReadInt32("DurationSec", idx);
+            packet.ReadUInt32("WorldStateVariableID", idx);
+            packet.ReadUInt32("WorldStateValue", idx);
+        }
+
         [Parser(Opcode.SMSG_PONG)]
         public static void HandleServerPong(Packet packet)
         {
@@ -40,6 +49,27 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             }
             packet.WriteLine("}");
+        }
+
+        [Parser(Opcode.SMSG_INVALIDATE_PLAYER)]
+        public static void HandleReadGuid(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.SMSG_PLAYER_SKINNED)]
+        public static void HandlePlayerSkinned(Packet packet)
+        {
+            packet.ReadBit("FreeRepop");
+        }
+
+        [Parser(Opcode.SMSG_AREA_POI_UPDATE_RESPONSE)]
+        public static void HandleAreaPOIUpdateResponse(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+
+            for (var i = 0; i < count; i++)
+                ReadAreaPoiData(packet, i);
         }
     }
 }

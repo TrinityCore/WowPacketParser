@@ -243,5 +243,20 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 }, packet.TimeSpan);
             }
         }
+
+        [Parser(Opcode.SMSG_WORLD_QUEST_UPDATE_RESPONSE)]
+        public static void HandleWorldQuestUpdateResponse(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadTime64("LastUpdate", i);
+                packet.ReadUInt32<QuestId>("QuestID", i);
+                packet.ReadUInt32("Timer", i);
+                packet.ReadInt32("VariableID", i);
+                packet.ReadInt32("Value", i);
+            }
+        }
     }
 }
