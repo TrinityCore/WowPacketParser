@@ -585,11 +585,11 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             pos.X = packet.ReadSingle();        // +4
             packet.ReadInt32("Move Ticks");     // +10
             pos.Y = packet.ReadSingle();        // +5
-            packet.ReadSingle("Float12");       // +12
-            packet.ReadSingle("Float13");       // +13
-            packet.ReadSingle("Float11");       // +11
+            packet.ReadSingle("TransportY");       // +12
+            packet.ReadSingle("TransportZ");       // +13
+            packet.ReadSingle("TransportX");       // +11
 
-            var bit21 = !packet.ReadBit();      // +21
+            var parabolic = !packet.ReadBit();      // +21
             ownerGUID[0] = packet.ReadBit();    // +32 - 0
 
             var splineType = (int)packet.ReadBits(3);   // +68
@@ -602,13 +602,13 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             var splineCount = (int)packet.ReadBits(20); // +92
 
-            var bit16 = !packet.ReadBit();      // +16
+            var splineFlags = !packet.ReadBit();      // +16
 
             ownerGUID[3] = packet.ReadBit();    // +35 - 3
             var bit108 = !packet.ReadBit();     // +108
             var bit22 = !packet.ReadBit();      // +22
             var bit109 = !packet.ReadBit();     // +109
-            var bit20 = !packet.ReadBit();      // +20
+            var hasDuration = !packet.ReadBit();      // +20
             ownerGUID[7] = packet.ReadBit();    // +39 - 7
             ownerGUID[4] = packet.ReadBit();    // +36 - 4
             var bit18 = !packet.ReadBit();      // +18
@@ -677,8 +677,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.ReadXORByte(ownerGUID, 5);   // +37 - 5
 
-            if (bit21)
-                packet.ReadSingle("Float21");   // +21
+            if (parabolic)
+                packet.ReadSingle("vertical_acceleration");   // +21
 
             if (bit176)
             {
@@ -702,12 +702,11 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.ReadXORByte(ownerGUID, 3);   // +35 - 3
 
-            if (bit16)
+            if (splineFlags)
                 monsterMove.Flags = packet.ReadInt32E<SplineFlag>("Spline Flags").ToUniversal(); // +16
 
             if (bit69)
                 packet.ReadByte("Byte69");      // +69
-
 
             packet.ReadXORByte(ownerGUID, 6);   // +38 - 6
 
@@ -735,7 +734,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.ReadXORByte(ownerGUID, 4);   // +36 - 4
 
-            if (bit20)
+            if (hasDuration)
                 monsterMove.MoveTime = (uint)packet.ReadInt32("Move Time");      // +20
 
             // Calculate mid pos
