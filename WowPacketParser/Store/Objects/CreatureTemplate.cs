@@ -158,7 +158,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CreatureEntry", true)]
         public uint? CreatureEntry;
 
-        [DBFieldName("DifficultyID", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, true)]
+        [DBFieldName("DifficultyID", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.SinceCataClassic, true)]
         public uint? DifficultyID;
 
         [DBFieldName("Idx", true)]
@@ -167,7 +167,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ItemId")]
         public uint? ItemId;
 
-        [DBFieldName("VerifiedBuild", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("VerifiedBuild", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.SinceCataClassic)]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 
