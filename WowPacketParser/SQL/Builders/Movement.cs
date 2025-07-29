@@ -1,12 +1,12 @@
-﻿using WowPacketParser.Enums;
-using WowPacketParser.Misc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing.Proto;
 using WowPacketParser.Proto;
-using WowPacketParser.PacketStructures;
-using System.IO;
-using Org.BouncyCastle.Crypto.Digests;
 
 namespace WowPacketParser.SQL.Builders
 {
@@ -16,7 +16,7 @@ namespace WowPacketParser.SQL.Builders
         private struct Waypoint
         {
             public Vec3 Position { get; init; }
-            public float Orientation { get; init; }
+            public float? Orientation { get; init; }
             public bool Point { get; init; }
         }
 
@@ -78,25 +78,22 @@ namespace WowPacketParser.SQL.Builders
                 Type = movementType
             };
 
-            for (var index = 0; index < packet.PackedPoints.Count; index++)
+            foreach (var node in packet.PackedPoints)
             {
-                var node = packet.PackedPoints[index];
-                bool finalP = packet.Destination == null && packet.PackedPoints.Count - 1 != index;
                 path.Waypoints.Add(new Waypoint()
                 {
                     Position = node,
-                    Orientation = 100,
+                    Orientation = null,
                     Point = false
                 });
             }
 
-            for (var index = 0; index < packet.Points.Count; index++)
+            foreach (var node in packet.Points)
             {
-                var node = packet.Points[index];
                 path.Waypoints.Add(new Waypoint()
                 {
                     Position = node,
-                    Orientation = 100,
+                    Orientation = null,
                     Point = true
                 });
             }
@@ -104,7 +101,7 @@ namespace WowPacketParser.SQL.Builders
             bool dest = false;
             if (packet.Destination != null && !(packet.Destination.X == 0 && packet.Destination.Y == 0 && packet.Destination.Z == 0))
             {
-                float ori = packet.HasLookOrientation ? packet.LookOrientation : 100f;
+                float? ori = packet.HasLookOrientation ? packet.LookOrientation : null;
                 path.Waypoints.Add(new Waypoint()
                 {
                     Position = packet.Destination,
@@ -131,7 +128,7 @@ namespace WowPacketParser.SQL.Builders
         protected override string GenerateQuery()
         {
             StringBuilder output = new();
-            output.AppendLine("SET @MOVID = 0;");
+            output.AppendLine("SET @MOVID := SET_VALUE_MANUALLY_HERE;");
             int pathIdCounter = 0;
             foreach (var (mover, paths) in pathsPerGuid)
             {
@@ -144,30 +141,32 @@ namespace WowPacketParser.SQL.Builders
                 }
                 else if (Settings.TargetedProject == TargetedProject.TrinityCore)
                 {
-                    output.AppendLine("INSERT INTO waypoint_path_node (PathId, NodeId, PositionX, PositionY, PositionZ, Orientation, Delay) VALUES");
+                    var types = paths.Paths.Select(k => k.Type).Distinct().ToArray();
+                    var flags = types.Length == 1 && types[0] is PathType.ExactPath or PathType.ExactPathFlying or PathType.ExactPathFlyingCyclic ? 2 : 0;
+
+                    output.AppendLine("INSERT INTO waypoint_path (`PathId`, `MoveType`, `Flags`, `Velocity`, `Comment`) VALUES");
+                    output.AppendLine($"(@MOVID + {pathIdCounter}, 0, {flags}, NULL, '{SQLUtil.EscapeString(StoreGetters.GetName(Utilities.ObjectTypeToStore(mover.Type.ToObjectType()), (int)mover.Entry))}');");
+                    output.AppendLine("INSERT INTO waypoint_path_node (`PathId`, `NodeId`, `PositionX`, `PositionY`, `PositionZ`, `Orientation`) VALUES");
                 }
                 int pointIdCounter = 1;
                 foreach (var path in paths.Paths)
-                {                    
+                {
                     foreach (var node in path.Waypoints)
                     {
                         if (node.Point == false)
                         {
-                            if (Settings.SkipIntermediatePoints == true)
+                            if (Settings.SkipIntermediatePoints)
                                 continue;
                             output.Append("-- ");
                         }
 
                         var isLast = pointIdCounter == paths.PointCount;
                         if (Settings.TargetedProject == TargetedProject.Cmangos)
-                            output.Append($"(@MOVID + {pathIdCounter}, '{pointIdCounter}', '{node.Position.X}', '{node.Position.Y}', '{node.Position.Z}', '{node.Orientation}', '0', '0', NULL)");
+                            output.Append($"(@MOVID + {pathIdCounter}, '{pointIdCounter}', '{node.Position.X}', '{node.Position.Y}', '{node.Position.Z}', '{node.Orientation ?? 100.0f}', '0', '0', NULL)");
                         else if (Settings.TargetedProject == TargetedProject.TrinityCore)
-                            output.Append($"(@MOVID + {pathIdCounter}, '{pointIdCounter}', '{node.Position.X}', '{node.Position.Y}', '{node.Position.Z}', '{node.Orientation}')");
+                            output.Append($"(@MOVID + {pathIdCounter}, {pointIdCounter}, {node.Position.X}, {node.Position.Y}, {node.Position.Z}, {(node.Orientation.HasValue ? node.Orientation.Value.ToString(CultureInfo.InvariantCulture) : "NULL")})");
 
-                        if (!isLast)
-                            output.Append(",");
-                        else
-                            output.Append(";");
+                        output.Append(!isLast ? ',' : ';');
 
                         if (pointIdCounter == 1)
                             output.Append($" -- PathType: {path.Type}");
@@ -177,7 +176,7 @@ namespace WowPacketParser.SQL.Builders
                         ++pointIdCounter;
                     }
                 }
-                
+
                 output.AppendLine();
 
                 ++pathIdCounter;
