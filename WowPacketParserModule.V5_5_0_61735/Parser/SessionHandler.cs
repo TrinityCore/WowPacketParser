@@ -28,5 +28,19 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadWoWString("RealmNameNormalized", bits258);
             }
         }
+
+        [Parser(Opcode.SMSG_MOTD)]
+        public static void HandleMessageOfTheDay(Packet packet)
+        {
+            var lineCount = packet.ReadBits("Line Count", 4);
+
+            packet.ResetBitReader();
+            for (var i = 0; i < lineCount; i++)
+            {
+                var lineLength = (int)packet.ReadBits(7);
+                packet.ResetBitReader();
+                packet.ReadWoWString("Line", lineLength, i);
+            }
+        }
     }
 }

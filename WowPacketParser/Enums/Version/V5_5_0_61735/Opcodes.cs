@@ -923,7 +923,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_BOSS_KILL, 0x42002F },
             { Opcode.SMSG_BREAK_TARGET, 0x42001A },
             { Opcode.SMSG_BROADCAST_ACHIEVEMENT, 0x410012 },
-            { Opcode.SMSG_BROADCAST_LEVELUP, 0x410013 },
+            { Opcode.SMSG_BROADCAST_LEVELUP, 0x410013 }, // NYI
             { Opcode.SMSG_BROADCAST_SUMMON_CAST, 0x3C02CF },
             { Opcode.SMSG_BROADCAST_SUMMON_RESPONSE, 0x3C02D0 },
             { Opcode.SMSG_BUY_FAILED, 0x3C0166 },
@@ -964,8 +964,8 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_CAPTURE_POINT_REMOVED, 0x420008 },
             { Opcode.SMSG_CAS_REFRESH_REMOTE_DATA, 0x3C0115 },
             { Opcode.SMSG_CAST_FAILED, 0x520046 },
-            { Opcode.SMSG_CAUTIONARY_CHANNEL_MESSAGE, 0x410009 },
-            { Opcode.SMSG_CAUTIONARY_CHAT_MESSAGE, 0x410008 },
+            { Opcode.SMSG_CAUTIONARY_CHANNEL_MESSAGE, 0x410009 }, // NYI
+            { Opcode.SMSG_CAUTIONARY_CHAT_MESSAGE, 0x410008 }, // NYI
             { Opcode.SMSG_CHAIN_MISSILE_BOUNCE, 0x3C0062 },
             { Opcode.SMSG_CHALLENGE_MODE_COMPLETE, 0x3C00A4 },
             { Opcode.SMSG_CHALLENGE_MODE_NEW_PLAYER_RECORD, 0x3C00A5 },
@@ -979,7 +979,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_CHANNEL_NOTIFY, 0x410017 },
             { Opcode.SMSG_CHANNEL_NOTIFY_JOINED, 0x410019 },
             { Opcode.SMSG_CHANNEL_NOTIFY_LEFT, 0x41001A },
-            { Opcode.SMSG_CHANNEL_NOTIFY_NPE_JOINED_BATCH, 0x410018 },
+            { Opcode.SMSG_CHANNEL_NOTIFY_NPE_JOINED_BATCH, 0x410018 }, // NYI
             { Opcode.SMSG_CHAR_CUSTOMIZE_FAILURE, 0x3C0181 },
             { Opcode.SMSG_CHAR_CUSTOMIZE_SUCCESS, 0x3C0182 },
             { Opcode.SMSG_CHAR_FACTION_CHANGE_RESULT, 0x3C024B },
@@ -992,17 +992,17 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_CHARACTER_UPGRADE_MANUAL_UNREVOKE_RESULT, 0x3C0262 },
             { Opcode.SMSG_CHARACTER_UPGRADE_STARTED, 0x3C025E },
             { Opcode.SMSG_CHAT, 0x410001 },
-            { Opcode.SMSG_CHAT_AUTO_RESPONDED, 0x41000E },
+            { Opcode.SMSG_CHAT_AUTO_RESPONDED, 0x41000E }, // NYI
             { Opcode.SMSG_CHAT_CAN_LOCAL_WHISPER_TARGET_RESPONSE, 0x410022 },
-            { Opcode.SMSG_CHAT_DOWN, 0x410014 },
+            { Opcode.SMSG_CHAT_DOWN, 0x410014 }, // NYI
             { Opcode.SMSG_CHAT_IGNORED_ACCOUNT_MUTED, 0x410000 },
-            { Opcode.SMSG_CHAT_IS_DOWN, 0x410015 },
-            { Opcode.SMSG_CHAT_NOT_IN_GUILD, 0x410023 },
+            { Opcode.SMSG_CHAT_IS_DOWN, 0x410015 }, // NYI
+            { Opcode.SMSG_CHAT_NOT_IN_GUILD, 0x410023 }, // NYI
             { Opcode.SMSG_CHAT_NOT_IN_PARTY, 0x410006 },
             { Opcode.SMSG_CHAT_PLAYER_AMBIGUOUS, 0x410004 },
             { Opcode.SMSG_CHAT_PLAYER_NOTFOUND, 0x41000D },
-            { Opcode.SMSG_CHAT_RECONNECT, 0x410016 },
-            { Opcode.SMSG_CHAT_REGIONAL_SERVICE_STATUS, 0x41001D },
+            { Opcode.SMSG_CHAT_RECONNECT, 0x410016 }, // NYI
+            { Opcode.SMSG_CHAT_REGIONAL_SERVICE_STATUS, 0x41001D }, // NYI
             { Opcode.SMSG_CHAT_RESTRICTED, 0x410007 },
             { Opcode.SMSG_CHAT_SERVER_MESSAGE, 0x41001C },
             { Opcode.SMSG_CHEAT_IGNORE_DIMISHING_RETURNS, 0x520002 },
@@ -1112,7 +1112,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_ENUM_VAS_PURCHASE_STATES_RESPONSE, 0x3C0292 },
             { Opcode.SMSG_ENVIRONMENTAL_DAMAGE_LOG, 0x52000E },
             { Opcode.SMSG_EQUIPMENT_SET_ID, 0x3C0151 },
-            { Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x410005 },
+            { Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x410005 }, // NYI
             { Opcode.SMSG_EXPLORATION_EXPERIENCE, 0x3C01FE },
             { Opcode.SMSG_EXPORT_ACCOUNT_PROFILE, 0x3C00F0 },
             { Opcode.SMSG_EXTERNAL_TRANSACTION_ID_GENERATED, 0x3C0300 },
@@ -1674,7 +1674,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_PVP_MATCH_STATISTICS, 0x420010 },
             { Opcode.SMSG_PVP_OPTIONS_ENABLED, 0x420016 },
             { Opcode.SMSG_PVP_TIER_RECORD, 0x3C030C },
-            { Opcode.SMSG_QUERY_ARENA_TEAM_RESPONSE, 0x400012 },
+            { Opcode.SMSG_QUERY_ARENA_TEAM_RESPONSE, 0x400012 }, // NYI
             { Opcode.SMSG_QUERY_BATTLE_PET_NAME_RESPONSE, 0x40000C },
             { Opcode.SMSG_QUERY_CREATURE_RESPONSE, 0x400006 },
             { Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, 0x400007 },

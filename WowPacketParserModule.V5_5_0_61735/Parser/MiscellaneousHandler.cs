@@ -15,6 +15,22 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("WorldStateValue", idx);
         }
 
+        public static void ReadWhoEntry(Packet packet, params object[] idx)
+        {
+            CharacterHandler.ReadPlayerGuidLookupData(packet, idx);
+
+            packet.ReadPackedGuid128("GuildGUID", idx);
+
+            packet.ReadUInt32("GuildVirtualRealmAddress", idx);
+            packet.ReadInt32<AreaId>("AreaID", idx);
+
+            packet.ResetBitReader();
+            var guildNameLen = packet.ReadBits(7);
+            packet.ReadBit("IsGM", idx);
+
+            packet.ReadWoWString("GuildName", guildNameLen, idx);
+        }
+
         [Parser(Opcode.SMSG_PONG)]
         public static void HandleServerPong(Packet packet)
         {
@@ -76,6 +92,22 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         public static void HandleClientCacheVersion(Packet packet)
         {
             packet.ReadInt32("Version");
+        }
+
+        [Parser(Opcode.SMSG_WHO)]
+        public static void HandleWho(Packet packet)
+        {
+            packet.ReadUInt32("RequestID");
+            var entriesCount = packet.ReadBits("EntriesCount", 6);
+
+            for (var i = 0; i < entriesCount; ++i)
+                ReadWhoEntry(packet, i);
+        }
+
+        [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
+        public static void HandleZoneUpdate(Packet packet)
+        {
+            packet.ReadInt32<AreaId>("AreaID");
         }
     }
 }
