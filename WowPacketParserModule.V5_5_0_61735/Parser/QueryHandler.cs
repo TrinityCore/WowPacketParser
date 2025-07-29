@@ -40,6 +40,48 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             return response;
         }
 
+        public static void ReadPetitionInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("PetitionID", indexes);
+            packet.ReadPackedGuid128("Petitioner", indexes);
+
+            packet.ReadInt32("MinSignatures", indexes);
+            packet.ReadInt32("MaxSignatures", indexes);
+            packet.ReadInt32("DeadLine", indexes);
+            packet.ReadInt32("IssueDate", indexes);
+
+            packet.ReadInt32("AllowedGuildID", indexes);
+            packet.ReadInt32("AllowedClasses", indexes);
+            packet.ReadInt32("AllowedRaces", indexes);
+            packet.ReadInt16("AllowedGender", indexes);
+            packet.ReadInt32("AllowedMinLevel", indexes);
+            packet.ReadInt32("AllowedMaxLevel", indexes);
+
+            packet.ReadInt32("NumChoices", indexes);
+            packet.ReadInt32("StaticType", indexes);
+            packet.ReadUInt32("Muid", indexes);
+
+            packet.ResetBitReader();
+
+            var lenTitle = packet.ReadBits(8);
+            var lenBodyText = packet.ReadBits(12);
+
+            var lenChoicetext = new uint[10];
+            for (int i = 0; i < 10; i++)
+                lenChoicetext[i] = packet.ReadBits(7);
+            for (int i = 0; i < 10; i++)
+                packet.ReadWoWString("Choicetext", lenChoicetext[i]);
+
+            packet.ReadWoWString("Title", lenTitle);
+            packet.ReadWoWString("BodyText", lenBodyText);
+        }
+
+        public static void ReadCliItemTextCache(Packet packet, params object[] idx)
+        {
+            var length = packet.ReadBits("TextLength", 13, idx);
+            packet.ReadWoWString("Text", length, idx);
+        }
+
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAMES_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
@@ -228,6 +270,241 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 Name = creature.Name
             };
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE)]
+        public static void HandleGameObjectQueryResponse1141(Packet packet)
+        {
+            var entry = packet.ReadEntry("Entry");
+            if (entry.Value) // entry is masked
+                return;
+
+            packet.ReadPackedGuid128("GUID");
+
+            GameObjectTemplate gameObject = new GameObjectTemplate
+            {
+                Entry = (uint)entry.Key
+            };
+            var query = packet.Holder.QueryGameObjectResponse = new() { Entry = (uint)entry.Key };
+
+            packet.ReadBit("Allow");
+
+            int dataSize = packet.ReadInt32("DataSize");
+            query.HasData = dataSize > 0;
+            if (dataSize == 0)
+                return;
+
+            gameObject.Type = packet.ReadInt32E<GameObjectType>("Type");
+
+            gameObject.DisplayID = (uint)packet.ReadInt32("Display ID");
+
+            var name = new string[4];
+            for (int i = 0; i < 4; i++)
+                name[i] = packet.ReadCString("Name", i);
+            gameObject.Name = name[0];
+
+            gameObject.IconName = packet.ReadCString("Icon Name");
+            gameObject.CastCaption = packet.ReadCString("Cast Caption");
+            gameObject.UnkString = packet.ReadCString("Unk String");
+
+            gameObject.Data = new int?[35];
+            for (int i = 0; i < gameObject.Data.Length; i++)
+                gameObject.Data[i] = packet.ReadInt32("Data", i);
+
+            gameObject.Size = packet.ReadSingle("Size");
+
+            byte questItemsCount = packet.ReadByte("QuestItemsCount");
+            for (uint i = 0; i < questItemsCount; i++)
+            {
+                GameObjectTemplateQuestItem questItem = new GameObjectTemplateQuestItem
+                {
+                    GameObjectEntry = (uint)entry.Key,
+                    Idx = i,
+                    ItemId = (uint)packet.ReadInt32<ItemId>("QuestItem", i)
+                };
+
+                query.Items.Add(questItem.ItemId.Value);
+                Storage.GameObjectTemplateQuestItems.Add(questItem, packet.TimeSpan);
+            }
+
+            gameObject.ContentTuningId = query.ContentTuningId = packet.ReadInt32("ContentTuningId");
+            packet.ReadInt32("Unk550");
+
+            packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
+
+            Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
+
+            ObjectName objectName = new ObjectName
+            {
+                ObjectType = StoreNameType.GameObject,
+                ID = entry.Key,
+                Name = gameObject.Name
+            };
+
+            Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+
+            query.Type = (uint)gameObject.Type.Value;
+            query.Model = gameObject.DisplayID.Value;
+            query.Name = gameObject.Name;
+            query.IconName = gameObject.IconName;
+            query.CastCaption = gameObject.CastCaption;
+            query.Size = gameObject.Size.Value;
+            foreach (var data in gameObject.Data)
+                query.Data.Add(data.Value);
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_QUERY_NPC_TEXT_RESPONSE)]
+        public static void HandleNpcTextUpdate(Packet packet)
+        {
+            var entry = packet.ReadEntry("Entry");
+            if (entry.Value) // Can be masked
+                return;
+
+            Bit hasData = packet.ReadBit("Has Data");
+            int size = packet.ReadInt32("Size");
+
+            if (!hasData || size == 0)
+                return; // nothing to do
+
+            NpcTextMop npcText = new NpcTextMop
+            {
+                ID = (uint)entry.Key
+            };
+
+            var data = packet.ReadBytes(size);
+
+            Packet pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            npcText.Probabilities = new float[8];
+            npcText.BroadcastTextId = new uint[8];
+            for (int i = 0; i < 8; ++i)
+                npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
+            for (int i = 0; i < 8; ++i)
+                npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
+
+            pkt.ClosePacket(false);
+
+            packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
+
+            Storage.NpcTextsMop.Add(npcText, packet.TimeSpan);
+            var proto = packet.Holder.NpcText = new() { Entry = npcText.ID.Value };
+            for (int i = 0; i < 8; ++i)
+                proto.Texts.Add(new PacketNpcTextEntry() { Probability = npcText.Probabilities[i], BroadcastTextId = npcText.BroadcastTextId[i] });
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_QUERY_PAGE_TEXT_RESPONSE)]
+        public static void HandlePageTextResponse(Packet packet)
+        {
+            packet.ReadUInt32("PageTextID");
+            packet.ResetBitReader();
+
+            Bit hasData = packet.ReadBit("Allow");
+            if (!hasData)
+                return; // nothing to do
+
+            var pagesCount = packet.ReadInt32("PagesCount");
+
+            for (int i = 0; i < pagesCount; i++)
+            {
+                PageText pageText = new PageText();
+
+                uint entry = packet.ReadUInt32("ID", i);
+                pageText.ID = entry;
+                pageText.NextPageID = packet.ReadUInt32("NextPageID", i);
+
+                pageText.PlayerConditionID = packet.ReadInt32("PlayerConditionID", i);
+                pageText.Flags = packet.ReadByte("Flags", i);
+
+                packet.ResetBitReader();
+                uint textLen = packet.ReadBits(12);
+                pageText.Text = packet.ReadWoWString("Text", textLen, i);
+
+                packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
+                Storage.PageTexts.Add(pageText, packet.TimeSpan);
+
+                if (ClientLocale.PacketLocale != LocaleConstant.enUS && pageText.Text != string.Empty)
+                {
+                    PageTextLocale localesPageText = new PageTextLocale
+                    {
+                        ID = pageText.ID,
+                        Text = pageText.Text
+                    };
+                    Storage.LocalesPageText.Add(localesPageText, packet.TimeSpan);
+                }
+            }
+        }
+
+        [Parser(Opcode.SMSG_QUERY_PET_NAME_RESPONSE)]
+        public static void HandlePetNameQueryResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetID");
+
+            var hasData = packet.ReadBit("HasData");
+            if (!hasData)
+                return;
+
+            var len = packet.ReadBits(8);
+            packet.ReadBit("HasDeclined");
+
+            const int maxDeclinedNameCases = 5;
+            var declinedNameLen = new int[maxDeclinedNameCases];
+            for (var i = 0; i < maxDeclinedNameCases; ++i)
+                declinedNameLen[i] = (int)packet.ReadBits(7);
+
+            for (var i = 0; i < maxDeclinedNameCases; ++i)
+                packet.ReadWoWString("DeclinedNames", declinedNameLen[i], i);
+
+            packet.ReadTime64("Timestamp");
+            packet.ReadWoWString("Petname", len);
+        }
+
+        [Parser(Opcode.SMSG_QUERY_BATTLE_PET_NAME_RESPONSE)]
+        public static void HandleBattlePetQueryResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetID");
+
+            packet.ReadInt32("CreatureID");
+            packet.ReadTime64("Timestamp");
+
+            packet.ResetBitReader();
+            var nonEmpty = packet.ReadBit("Allow");
+            if (!nonEmpty)
+                return;
+
+            var nameLength = packet.ReadBits(8);
+
+            packet.ReadBit("HasDeclined");
+            var declinedNameLengths = new uint[5];
+            for (int i = 0; i < 5; i++)
+                declinedNameLengths[i] = packet.ReadBits(7);
+
+            for (int i = 0; i < 5; i++)
+                packet.ReadWoWString("DeclinedNames", declinedNameLengths[i]);
+
+            packet.ReadWoWString("Name", nameLength);
+        }
+
+        [Parser(Opcode.SMSG_QUERY_PETITION_RESPONSE)]
+        public static void HandleQueryPetitionResponse(Packet packet)
+        {
+            packet.ReadInt32("PetitionID");
+
+            packet.ResetBitReader();
+            var hasAllow = packet.ReadBit("Allow");
+            if (hasAllow)
+                ReadPetitionInfo(packet, "PetitionInfo");
+        }
+
+        [Parser(Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE)]
+        public static void HandleQueryItemTextResponse(Packet packet)
+        {
+            packet.ReadBit("Valid");
+            packet.ResetBitReader();
+
+            ReadCliItemTextCache(packet, "Item");
+            packet.ReadPackedGuid128("Id");
         }
     }
 }

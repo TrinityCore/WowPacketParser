@@ -38,13 +38,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Data", TargetedDatabaseFlag.Cataclysm, 32, true)]
         [DBFieldName("Data", TargetedDatabaseFlag.WarlordsOfDraenor | TargetedDatabaseFlag.Legion, 33, true)]
         [DBFieldName("Data", TargetedDatabaseFlag.BattleForAzeroth, 34, true)]
-        [DBFieldName("Data", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic, 35, true)]
+        [DBFieldName("Data", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.SinceCataClassic, 35, true)]
         public int?[] Data;
 
         [DBFieldName("RequiredLevel", TargetedDatabaseFlag.FromCataclysmTillBattleForAzeroth)]
         public int? RequiredLevel;
 
-        [DBFieldName("ContentTuningId", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("ContentTuningId", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.SinceCataClassic)]
         public int? ContentTuningId;
 
         [DBFieldName("VerifiedBuild")]
@@ -63,7 +63,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ItemId")]
         public uint? ItemId;
 
-        [DBFieldName("VerifiedBuild", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("VerifiedBuild", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.SinceCataClassic)]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

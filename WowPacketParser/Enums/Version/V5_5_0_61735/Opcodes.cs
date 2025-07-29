@@ -1339,7 +1339,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_INSTANCE_SAVE_CREATED, 0x3C0220 },
             { Opcode.SMSG_INTERRUPT_POWER_REGEN, 0x520048 },
             { Opcode.SMSG_INVALID_PROMOTION_CODE, 0x3C01F2 },
-            { Opcode.SMSG_INVALIDATE_PAGE_TEXT, 0x40000A },
+            { Opcode.SMSG_INVALIDATE_PAGE_TEXT, 0x40000A }, // NYI
             { Opcode.SMSG_INVALIDATE_PLAYER, 0x4F0007 },
             { Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x530005 },
             { Opcode.SMSG_INVENTORY_FIXUP_COMPLETE, 0x3C02B2 },

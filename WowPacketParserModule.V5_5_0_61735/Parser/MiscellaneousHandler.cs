@@ -71,5 +71,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             for (var i = 0; i < count; i++)
                 ReadAreaPoiData(packet, i);
         }
+
+        [Parser(Opcode.SMSG_CACHE_VERSION)]
+        public static void HandleClientCacheVersion(Packet packet)
+        {
+            packet.ReadInt32("Version");
+        }
     }
 }
