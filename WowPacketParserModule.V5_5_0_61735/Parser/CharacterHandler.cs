@@ -67,6 +67,28 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("IsHeartEquipped");
         }
 
+        [Parser(Opcode.SMSG_INSPECT_HONOR_STATS)]
+        public static void HandleInspectHonorStats(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadByte("LifetimeMaxRank");
+            packet.ReadInt16("SessionHK");
+            packet.ReadInt16("SessionDK");
+            packet.ReadInt16("YesterdayHK");
+            packet.ReadInt16("YesterdayDK");
+            packet.ReadInt16("LastWeekHK");
+            packet.ReadInt16("LastWeekDK");
+            packet.ReadInt16("ThisWeekHK");
+            packet.ReadInt16("ThisWeekDK");
+            packet.ReadInt32("LifetimeHK");
+            packet.ReadInt32("LifetimeDK");
+            packet.ReadInt32("YesterdayHonor");
+            packet.ReadInt32("LastWeekHonor");
+            packet.ReadInt32("ThisWeekHonor");
+            packet.ReadInt32("LastweekStanding");
+            packet.ReadByte("RankProgress");
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         public static void HandleEmpty(Packet packet)
         {

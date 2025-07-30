@@ -18,5 +18,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("Extended");
             packet.ReadWoWString("Message", messageLen);
         }
+
+        [Parser(Opcode.SMSG_BOSS_KILL)]
+        public static void HandleBossKill(Packet packet)
+        {
+            packet.ReadUInt32("DungeonEncounterID");
+        }
     }
 }

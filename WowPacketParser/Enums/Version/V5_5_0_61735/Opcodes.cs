@@ -899,11 +899,11 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_BATTLEFIELD_PORT_DENIED, 0x42000B },
             { Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE, 0x420001 },
             { Opcode.SMSG_BATTLEFIELD_STATUS_FAILED, 0x420004 },
-            { Opcode.SMSG_BATTLEFIELD_STATUS_GROUP_PROPOSAL_FAILED, 0x42000E },
+            { Opcode.SMSG_BATTLEFIELD_STATUS_GROUP_PROPOSAL_FAILED, 0x42000E }, // NYI
             { Opcode.SMSG_BATTLEFIELD_STATUS_NEED_CONFIRMATION, 0x420000 },
             { Opcode.SMSG_BATTLEFIELD_STATUS_NONE, 0x420003 },
             { Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED, 0x420002 },
-            { Opcode.SMSG_BATTLEFIELD_STATUS_WAIT_FOR_GROUPS, 0x42000D },
+            { Opcode.SMSG_BATTLEFIELD_STATUS_WAIT_FOR_GROUPS, 0x42000D }, // NYI
             { Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED, 0x42000C },
             { Opcode.SMSG_BATTLEGROUND_INIT, 0x42002D },
             { Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED, 0x420009 },
@@ -1093,7 +1093,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_DISPLAY_WORLD_TEXT, 0x3C028D },
             { Opcode.SMSG_DONT_AUTO_PUSH_SPELLS_TO_ACTION_BAR, 0x3C007B },
             { Opcode.SMSG_DROP_NEW_CONNECTION, 0x430004 },
-            { Opcode.SMSG_DUEL_ARRANGED, 0x42001F },
+            { Opcode.SMSG_DUEL_ARRANGED, 0x42001F }, // NYI
             { Opcode.SMSG_DUEL_COMPLETE, 0x420023 },
             { Opcode.SMSG_DUEL_COUNTDOWN, 0x420022 },
             { Opcode.SMSG_DUEL_IN_BOUNDS, 0x420021 },
@@ -1667,10 +1667,10 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_PUSH_SPELL_TO_ACTION_BAR, 0x520040 },
             { Opcode.SMSG_PVP_CREDIT, 0x420028 },
             { Opcode.SMSG_PVP_LOG_DATA, 0x420012 },
-            { Opcode.SMSG_PVP_MATCH_COMPLETE, 0x420033 },
+            { Opcode.SMSG_PVP_MATCH_COMPLETE, 0x420033 }, // NYI
             { Opcode.SMSG_PVP_MATCH_INITIALIZE, 0x420034 },
             { Opcode.SMSG_PVP_MATCH_SET_STATE, 0x420032 },
-            { Opcode.SMSG_PVP_MATCH_START, 0x420031 },
+            { Opcode.SMSG_PVP_MATCH_START, 0x420031 }, // NYI
             { Opcode.SMSG_PVP_MATCH_STATISTICS, 0x420010 },
             { Opcode.SMSG_PVP_OPTIONS_ENABLED, 0x420016 },
             { Opcode.SMSG_PVP_TIER_RECORD, 0x3C030C },
@@ -1750,7 +1750,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_REPLACE_TROPHY_RESPONSE, 0x3C0264 },
             { Opcode.SMSG_REPORT_PVP_PLAYER_AFK_RESULT, 0x4F0009 },
             { Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x3C0026 },
-            { Opcode.SMSG_REQUEST_PVP_BRAWL_INFO_RESPONSE, 0x420018 },
+            { Opcode.SMSG_REQUEST_PVP_BRAWL_INFO_RESPONSE, 0x420018 }, // NYI
             { Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, 0x420017 },
             { Opcode.SMSG_REQUEST_SCHEDULED_PVP_INFO_RESPONSE, 0x420019 },
             { Opcode.SMSG_RESET_COMPRESSION_CONTEXT, 0x430007 }, // NYI
@@ -1971,8 +1971,8 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_WARDEN3_DISABLED, 0x3C02C0 },
             { Opcode.SMSG_WARDEN3_ENABLED, 0x3C02BF },
             { Opcode.SMSG_WARFRONT_COMPLETE, 0x3C01FD },
-            { Opcode.SMSG_WARGAME_REQUEST_OPPONENT_RESPONSE, 0x420015 },
-            { Opcode.SMSG_WARGAME_REQUEST_SUCCESSFULLY_SENT_TO_OPPONENT, 0x420013 },
+            { Opcode.SMSG_WARGAME_REQUEST_OPPONENT_RESPONSE, 0x420015 }, // NYI
+            { Opcode.SMSG_WARGAME_REQUEST_SUCCESSFULLY_SENT_TO_OPPONENT, 0x420013 }, // NYI
             { Opcode.SMSG_WEATHER, 0x3C0145 },
             { Opcode.SMSG_WEEKLY_REWARD_CLAIM_RESULT, 0x3C02FC },
             { Opcode.SMSG_WEEKLY_REWARDS_PROGRESS_RESULT, 0x3C02FD },
