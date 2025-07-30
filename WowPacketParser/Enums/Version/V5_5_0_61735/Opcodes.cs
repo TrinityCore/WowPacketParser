@@ -1088,7 +1088,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_DISPLAY_GAME_ERROR, 0x3C0036 },
             { Opcode.SMSG_DISPLAY_PLAYER_CHOICE, 0x4F0004 },
             { Opcode.SMSG_DISPLAY_PROMOTION, 0x3C00E8 },
-            { Opcode.SMSG_DISPLAY_QUEST_POPUP, 0x50001E },
+            { Opcode.SMSG_DISPLAY_QUEST_POPUP, 0x50001E }, // NYI
             { Opcode.SMSG_DISPLAY_TOAST, 0x3C00C0 },
             { Opcode.SMSG_DISPLAY_WORLD_TEXT, 0x3C028D },
             { Opcode.SMSG_DONT_AUTO_PUSH_SPELLS_TO_ACTION_BAR, 0x3C007B },
@@ -1241,7 +1241,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_GOSSIP_MESSAGE, 0x500018 },
             { Opcode.SMSG_GOSSIP_OPTION_NPC_INTERACTION, 0x500028 },
             { Opcode.SMSG_GOSSIP_POI, 0x3C0237 },
-            { Opcode.SMSG_GOSSIP_QUEST_UPDATE, 0x500019 },
+            { Opcode.SMSG_GOSSIP_QUEST_UPDATE, 0x500019 }, // NYI
             { Opcode.SMSG_GOSSIP_REFRESH_OPTIONS, 0x500027 },
             { Opcode.SMSG_GROUP_ACTION_THROTTLED, 0x3C0025 },
             { Opcode.SMSG_GROUP_AUTO_KICK, 0x3C0234 },
@@ -1344,7 +1344,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x530005 },
             { Opcode.SMSG_INVENTORY_FIXUP_COMPLETE, 0x3C02B2 },
             { Opcode.SMSG_INVENTORY_FULL_OVERFLOW, 0x3C02C3 },
-            { Opcode.SMSG_IS_QUEST_COMPLETE_RESPONSE, 0x500004 },
+            { Opcode.SMSG_IS_QUEST_COMPLETE_RESPONSE, 0x500004 }, // NYI
             { Opcode.SMSG_ISLAND_AZERITE_GAIN, 0x3C01FB },
             { Opcode.SMSG_ISLAND_COMPLETE, 0x3C01FC },
             { Opcode.SMSG_ITEM_CHANGED, 0x3C018A },
@@ -1703,9 +1703,9 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, 0x500013 },
             { Opcode.SMSG_QUEST_GIVER_STATUS, 0x50001B },
             { Opcode.SMSG_QUEST_GIVER_STATUS_MULTIPLE, 0x500011 },
-            { Opcode.SMSG_QUEST_ITEM_USABILITY_RESPONSE, 0x500002 },
+            { Opcode.SMSG_QUEST_ITEM_USABILITY_RESPONSE, 0x500002 }, // NYI
             { Opcode.SMSG_QUEST_LOG_FULL, 0x500007 },
-            { Opcode.SMSG_QUEST_NON_LOG_UPDATE_COMPLETE, 0x500008 },
+            { Opcode.SMSG_QUEST_NON_LOG_UPDATE_COMPLETE, 0x500008 }, // NYI
             { Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x50001D },
             { Opcode.SMSG_QUEST_POI_UPDATE_RESPONSE, 0x50001F },
             { Opcode.SMSG_QUEST_PUSH_RESULT, 0x500010 },
@@ -1717,7 +1717,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT_SIMPLE, 0x50000D },
             { Opcode.SMSG_QUEST_UPDATE_ADD_PVP_CREDIT, 0x50000E },
             { Opcode.SMSG_QUEST_UPDATE_COMPLETE, 0x500009 },
-            { Opcode.SMSG_QUEST_UPDATE_FAILED, 0x50000A },
+            { Opcode.SMSG_QUEST_UPDATE_FAILED, 0x50000A }, // NYI
             { Opcode.SMSG_QUEST_UPDATE_FAILED_TIMER, 0x50000B },
             { Opcode.SMSG_QUEUE_SUMMARY_UPDATE, 0x3C02B1 },
             { Opcode.SMSG_RAF_ACCOUNT_INFO, 0x3C02DF },
@@ -1755,7 +1755,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_REQUEST_SCHEDULED_PVP_INFO_RESPONSE, 0x420019 },
             { Opcode.SMSG_RESET_COMPRESSION_CONTEXT, 0x430007 }, // NYI
             { Opcode.SMSG_RESET_FAILED_NOTIFY, 0x3C0156 },
-            { Opcode.SMSG_RESET_QUEST_POI, 0x500020 },
+            { Opcode.SMSG_RESET_QUEST_POI, 0x500020 }, // NYI
             { Opcode.SMSG_RESET_RANGED_COMBAT_TIMER, 0x420027 },
             { Opcode.SMSG_RESET_WEEKLY_CURRENCY, 0x3C0009 },
             { Opcode.SMSG_RESPEC_WIPE_CONFIRM, 0x3C00AE },
@@ -1834,7 +1834,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_SETUP_CURRENCY, 0x3C0007 },
             { Opcode.SMSG_SHIPMENT_FACTION_UPDATE_RESULT, 0x46003B },
             { Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI, 0x3C0075 },
-            { Opcode.SMSG_SHOW_QUEST_COMPLETION_TEXT, 0x500015 },
+            { Opcode.SMSG_SHOW_QUEST_COMPLETION_TEXT, 0x500015 }, // NYI
             { Opcode.SMSG_SHOW_TAXI_NODES, 0x3C016C },
             { Opcode.SMSG_SHOW_TRADE_SKILL_RESPONSE, 0x3C0214 },
             { Opcode.SMSG_SOCIAL_CONTRACT_REQUEST_RESPONSE, 0x3C031B },
