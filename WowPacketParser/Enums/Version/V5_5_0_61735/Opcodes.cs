@@ -858,7 +858,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_AURA_POINTS_DEPLETED, 0x520012 },
             { Opcode.SMSG_AURA_UPDATE, 0x520011 },
             { Opcode.SMSG_AUTH_CHALLENGE, 0x430000 },
-            { Opcode.SMSG_AUTH_FAILED, 0x3C0000 },
+            { Opcode.SMSG_AUTH_FAILED, 0x3C0000 }, // NYI
             { Opcode.SMSG_AUTH_RESPONSE, 0x3C0001 },
             { Opcode.SMSG_AVAILABLE_HOTFIXES, 0x400001 },
             { Opcode.SMSG_BACKPACK_DEFAULT_SIZE_CHANGED, 0x3C0328 },
@@ -1427,7 +1427,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_MAP_OBJECTIVES_INIT, 0x42002E },
             { Opcode.SMSG_MASTER_LOOT_CANDIDATE_LIST, 0x3C00BB },
             { Opcode.SMSG_MEETING_STONE_FAILED, 0x3C031A },
-            { Opcode.SMSG_MESSAGE_BOX, 0x3C000A },
+            { Opcode.SMSG_MESSAGE_BOX, 0x3C000A }, // NYI
             { Opcode.SMSG_MINIMAP_PING, 0x3C016D },
             { Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA, 0x520004 },
             { Opcode.SMSG_MIRROR_IMAGE_CREATURE_DATA, 0x520003 },
