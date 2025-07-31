@@ -151,7 +151,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ResetBitReader();
             packet.ReadBit("BoostInProgress", idx);
-            packet.ReadBits("Unk550", 2, idx);
+            packet.ReadBits("EraChoiceState", 2, idx);
             packet.ReadBit("RpeResetAvailable", idx);
             packet.ReadBit("RpeResetQuestClearAvailable", idx);
 
