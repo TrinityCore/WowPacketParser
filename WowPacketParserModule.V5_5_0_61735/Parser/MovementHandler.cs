@@ -95,5 +95,14 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             CoreParsers.MovementHandler.WritePhaseChanges(packet);
         }
+
+        [Parser(Opcode.SMSG_BIND_POINT_UPDATE)]
+        public static void HandleBindPointUpdate(Packet packet)
+        {
+            packet.ReadVector3("Position");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadUInt32<MapId>("Map");
+            packet.ReadInt32<AreaId>("AreaId");
+
+        }
     }
 }

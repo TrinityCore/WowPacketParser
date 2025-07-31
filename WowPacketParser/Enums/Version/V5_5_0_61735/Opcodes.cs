@@ -1657,7 +1657,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_PONG, 0x430006 },
             { Opcode.SMSG_POWER_UPDATE, 0x3C0171 },
             { Opcode.SMSG_PRE_RESSURECT, 0x3C020A },
-            { Opcode.SMSG_PRELOAD_CHILD_MAP, 0x3C000D },
+            { Opcode.SMSG_PRELOAD_CHILD_MAP, 0x3C000D }, // NYI
             { Opcode.SMSG_PRELOAD_WORLD, 0x3C002D },
             { Opcode.SMSG_PREPOPULATE_NAME_CACHE, 0x3C02D1 },
             { Opcode.SMSG_PRINT_NOTIFICATION, 0x3C0064 },
@@ -1923,7 +1923,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_UNDELETE_CHARACTER_RESPONSE, 0x3C026A },
             { Opcode.SMSG_UNDELETE_COOLDOWN_STATUS_RESPONSE, 0x3C026B },
             { Opcode.SMSG_UNLEARNED_SPELLS, 0x52003D },
-            { Opcode.SMSG_UNLOAD_CHILD_MAP, 0x3C000E },
+            { Opcode.SMSG_UNLOAD_CHILD_MAP, 0x3C000E }, // NYI
             { Opcode.SMSG_UPDATE_AADC_STATUS_RESPONSE, 0x3C030D },
             { Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x3C01A8 },
             { Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x3C01A9 },

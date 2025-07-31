@@ -40,5 +40,34 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadPackedGuid128("Guid");
         }
+
+        [Parser(Opcode.SMSG_MOUNT_RESULT)]
+        public static void HandleMountResult(Packet packet)
+        {
+            packet.ReadInt32E<MountResult>("Result");
+        }
+
+        [Parser(Opcode.SMSG_DISMOUNT_RESULT)]
+        public static void HandleDismountResult(Packet packet)
+        {
+            packet.ReadUInt32("Result");
+        }
+
+        [Parser(Opcode.SMSG_RESURRECT_REQUEST)]
+        public static void HandleResurrectRequest(Packet packet)
+        {
+            packet.ReadPackedGuid128("ResurrectOffererGUID");
+
+            packet.ReadUInt32("ResurrectOffererVirtualRealmAddress");
+            packet.ReadUInt32("PetNumber");
+            packet.ReadInt32<SpellId>("SpellID");
+
+            var len = packet.ReadBits(11);
+
+            packet.ReadBit("UseTimer");
+            packet.ReadBit("Sickness");
+
+            packet.ReadWoWString("Name", len);
+        }
     }
 }

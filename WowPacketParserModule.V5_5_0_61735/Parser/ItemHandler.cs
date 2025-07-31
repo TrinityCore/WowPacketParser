@@ -12,5 +12,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("UiEventToastID", args);
             packet.ReadInt32("Asset", args);
         }
+
+        [Parser(Opcode.SMSG_REFORGE_RESULT)]
+        public static void HandleItemReforgeResult(Packet packet)
+        {
+            packet.ReadBit("Successful");
+        }
     }
 }

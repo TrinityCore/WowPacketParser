@@ -109,5 +109,17 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadInt32<AreaId>("AreaID");
         }
+
+        [Parser(Opcode.SMSG_INITIAL_SETUP)]
+        public static void HandleInitialSetup(Packet packet)
+        {
+            packet.ReadByte("ServerExpansionLevel");
+            packet.ReadByte("ServerExpansionTier");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
+        public static void HandleMiscZero(Packet packet)
+        {
+        }
     }
 }
