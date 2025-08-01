@@ -110,6 +110,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadInt32("OverflownCurrencyID");
         }
 
+        [Parser(Opcode.SMSG_NOTIFY_MONEY)]
+        public static void HandleNotifyMoney(Packet packet)
+        {
+            packet.ReadUInt64("Money");
+        }
+
         [Parser(Opcode.SMSG_RESET_WEEKLY_CURRENCY)]
         public static void HandleCurrencyZero(Packet packet)
         {

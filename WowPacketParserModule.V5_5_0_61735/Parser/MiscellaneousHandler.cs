@@ -117,6 +117,16 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByte("ServerExpansionTier");
         }
 
+        [Parser(Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE)]
+        public static void HandleRequestCemeteryListResponse(Packet packet)
+        {
+            packet.ReadBit("IsTriggered");
+
+            var count = packet.ReadUInt32("Count");
+            for (int i = 0; i < count; ++i)
+                packet.ReadInt32("CemeteryID", i);
+        }
+
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
         public static void HandleMiscZero(Packet packet)
         {

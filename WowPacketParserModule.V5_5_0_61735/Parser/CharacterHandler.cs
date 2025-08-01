@@ -313,6 +313,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 ReadWarbandGroup(packet, i, "WarbandGroups");
         }
 
+        [Parser(Opcode.SMSG_CHECK_CHARACTER_NAME_AVAILABILITY_RESULT)]
+        public static void HandleCheckCharacterNameAvailabilityResult(Packet packet)
+        {
+            packet.ReadUInt32("SequenceIndex");
+            packet.ReadUInt32("Result");
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         public static void HandleEmpty(Packet packet)
         {

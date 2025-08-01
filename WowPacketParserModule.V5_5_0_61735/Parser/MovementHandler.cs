@@ -104,5 +104,31 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32<AreaId>("AreaId");
 
         }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NEW_WORLD)]
+        public static void HandleNewWorld(Packet packet)
+        {
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
+            packet.ReadVector4("Position");
+            packet.ReadUInt32("Reason");
+            packet.ReadVector3("MovementOffset");
+            packet.ReadInt32("Counter");
+
+            packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
+        }
+
+        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
+        public static void HandleLoginVerifyWorld(Packet packet)
+        {
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
+            packet.ReadVector4("Position");
+            packet.ReadUInt32("Reason");
+        }
+
+        [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
+        public static void HandleMovementZero(Packet packet)
+        {
+        }
     }
 }

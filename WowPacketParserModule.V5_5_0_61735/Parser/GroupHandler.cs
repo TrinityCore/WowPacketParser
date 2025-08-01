@@ -36,5 +36,22 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                     break;
             }
         }
+
+        [Parser(Opcode.SMSG_ROLE_CHANGED_INFORM)]
+        public static void HandleRoleChangedInform(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("From");
+            packet.ReadPackedGuid128("ChangedUnit");
+            packet.ReadByteE<LfgRoleFlag>("OldRole");
+            packet.ReadByteE<LfgRoleFlag>("NewRole");
+        }
+
+        [Parser(Opcode.SMSG_ROLE_POLL_INFORM)]
+        public static void HandleRolePollInform(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("From");
+        }
     }
 }
