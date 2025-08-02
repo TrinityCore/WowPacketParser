@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_5_0_61735.Parsers
 {
@@ -125,6 +126,61 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             var count = packet.ReadUInt32("Count");
             for (int i = 0; i < count; ++i)
                 packet.ReadInt32("CemeteryID", i);
+        }
+
+        [Parser(Opcode.SMSG_DISPLAY_GAME_ERROR)]
+        public static void HandleDisplayGameError(Packet packet)
+        {
+            packet.ReadUInt32("Error");
+            var hasArg = packet.ReadBit("HasArg");
+            var hasArg2 = packet.ReadBit("HasArg2");
+
+            if (hasArg)
+                packet.ReadUInt32("Arg");
+
+            if (hasArg2)
+                packet.ReadUInt32("Arg2");
+        }
+
+        [Parser(Opcode.SMSG_STREAMING_MOVIES)]
+        public static void HandleStreamingMovie(Packet packet)
+        {
+            var count = packet.ReadInt32("MovieCount");
+            for (var i = 0; i < count; i++)
+                packet.ReadInt16("MovieIDs", i);
+        }
+
+        [Parser(Opcode.SMSG_START_TIMER)]
+        public static void HandleStartTimer(Packet packet)
+        {
+            packet.ReadInt64("TotalTime");
+            packet.ReadUInt32E<TimerType>("Type");
+            packet.ReadInt64("TimeLeft");
+
+            var hasPlayerGUID = packet.ReadBit("HasPlayerGUID");
+            if (hasPlayerGUID)
+                packet.ReadPackedGuid128("PlayerGUID");
+        }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
+        public static void HandleWorldServerInfo(Packet packet)
+        {
+            CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
+
+            packet.ReadBit("IsTournamentRealm");
+            packet.ReadBit("XRealmPvpAlert");
+            var hasRestrictedAccountMaxLevel = packet.ReadBit("HasRestrictedAccountMaxLevel");
+            var hasRestrictedAccountMaxMoney = packet.ReadBit("HasRestrictedAccountMaxMoney");
+            var hasInstanceGroupSize = packet.ReadBit("HasInstanceGroupSize");
+
+            if (hasRestrictedAccountMaxLevel)
+                packet.ReadUInt32("RestrictedAccountMaxLevel");
+
+            if (hasRestrictedAccountMaxMoney)
+                packet.ReadUInt64("RestrictedAccountMaxMoney");
+
+            if (hasInstanceGroupSize)
+                packet.ReadUInt32("InstanceGroupSize");
         }
 
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]

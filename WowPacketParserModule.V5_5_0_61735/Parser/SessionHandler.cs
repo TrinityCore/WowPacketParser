@@ -72,6 +72,14 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("CanCreateOnlyIfExisting");
         }
 
+        [Parser(Opcode.SMSG_SUSPEND_TOKEN)]
+        [Parser(Opcode.SMSG_RESUME_TOKEN)]
+        public static void HandleResumeTokenPacket(Packet packet)
+        {
+            packet.ReadUInt32("Sequence");
+            packet.ReadBits("Reason", 2);
+        }
+
         [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH)]
         public static void HandleSessionZero(Packet packet)
         {

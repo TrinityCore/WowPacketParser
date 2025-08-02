@@ -956,7 +956,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x3C017D },
             { Opcode.SMSG_CANCEL_COMBAT, 0x420029 },
             { Opcode.SMSG_CANCEL_ORPHAN_SPELL_VISUAL, 0x520035 },
-            { Opcode.SMSG_CANCEL_PING_PIN, 0x3C003C },
+            { Opcode.SMSG_CANCEL_PING_PIN, 0x3C003C }, // NYI
             { Opcode.SMSG_CANCEL_PRELOAD_WORLD, 0x3C002F }, // NYI
             { Opcode.SMSG_CANCEL_SCENE, 0x3C00D3 },
             { Opcode.SMSG_CANCEL_SPELL_VISUAL, 0x520033 },
@@ -1736,8 +1736,8 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_READY_CHECK_STARTED, 0x3C0090 },
             { Opcode.SMSG_REALM_QUERY_RESPONSE, 0x400005 },
             { Opcode.SMSG_REATTACH_RESURRECT, 0x3C01EA },
-            { Opcode.SMSG_RECEIVE_PING_UNIT, 0x3C003A },
-            { Opcode.SMSG_RECEIVE_PING_WORLD_POINT, 0x3C003B },
+            { Opcode.SMSG_RECEIVE_PING_UNIT, 0x3C003A }, // NYI
+            { Opcode.SMSG_RECEIVE_PING_WORLD_POINT, 0x3C003B }, // NYI
             { Opcode.SMSG_RECRUIT_A_FRIEND_FAILURE, 0x3C0160 },
             { Opcode.SMSG_REFER_A_FRIEND_EXPIRED, 0x3C01C2 },
             { Opcode.SMSG_REFORGE_RESULT, 0x3C0015 },
@@ -1882,7 +1882,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_STOP_ELAPSED_TIMER, 0x3C009F },
             { Opcode.SMSG_STOP_MIRROR_TIMER, 0x3C01B1 },
             { Opcode.SMSG_STOP_SPEAKERBOT_SOUND, 0x3C0210 },
-            { Opcode.SMSG_STOP_TIMER, 0x3C003F },
+            { Opcode.SMSG_STOP_TIMER, 0x3C003F }, // NYI
             { Opcode.SMSG_STREAMING_MOVIES, 0x3C003D },
             { Opcode.SMSG_SUGGEST_INVITE_INFORM, 0x3C0236 },
             { Opcode.SMSG_SUMMON_CANCEL, 0x3C014F },

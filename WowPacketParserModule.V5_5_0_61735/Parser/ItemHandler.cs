@@ -70,5 +70,21 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadPackedGuid128("ItemGUID");
         }
+
+        [Parser(Opcode.SMSG_ADD_ITEM_PASSIVE)]
+        [Parser(Opcode.SMSG_REMOVE_ITEM_PASSIVE)]
+        public static void HandleItemPassive(Packet packet)
+        {
+            packet.ReadUInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.SMSG_SEND_ITEM_PASSIVES)]
+        public static void HandleSendItemPassives(Packet packet)
+        {
+            var spellCount = packet.ReadUInt32("SpellCount");
+
+            for (var i = 0; i < spellCount; ++i)
+                packet.ReadInt32("SpellID", i);
+        }
     }
 }

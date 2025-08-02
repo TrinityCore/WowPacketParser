@@ -53,5 +53,20 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByte("PartyIndex");
             packet.ReadPackedGuid128("From");
         }
+
+        [Parser(Opcode.SMSG_RAID_MARKERS_CHANGED)]
+        public static void HandleRaidMarkersChanged(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadInt32("ActiveMarkers");
+
+            var count = packet.ReadBits(4);
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadPackedGuid128("TransportGUID");
+                packet.ReadInt32("MapID");
+                packet.ReadVector3("Position");
+            }
+        }
     }
 }

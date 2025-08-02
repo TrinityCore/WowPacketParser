@@ -116,6 +116,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt64("Money");
         }
 
+        [Parser(Opcode.SMSG_SET_MAX_WEEKLY_QUANTITY)]
+        public static void HandleSetMaxWeeklyQuantity(Packet packet)
+        {
+            packet.ReadInt32("Type");
+            packet.ReadInt32("MaxWeeklyQuantity");
+        }
+
         [Parser(Opcode.SMSG_RESET_WEEKLY_CURRENCY)]
         public static void HandleCurrencyZero(Packet packet)
         {

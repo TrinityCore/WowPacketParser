@@ -69,5 +69,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             packet.ReadWoWString("Name", len);
         }
+
+        [Parser(Opcode.SMSG_DISENCHANT_CREDIT)]
+        public static void HandleDisenchantCredit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Disenchanter");
+            Substructures.ItemHandler.ReadItemInstance(packet);
+        }
     }
 }
