@@ -123,5 +123,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("WhisperTarget");
             packet.ReadInt32E<ChatWhisperTargetStatus>("Status");
         }
+
+        [Parser(Opcode.SMSG_PRINT_NOTIFICATION)]
+        public static void HandlePrintNotification(Packet packet)
+        {
+            var notifyTextLen = packet.ReadBits(12);
+
+            packet.ReadWoWString("NotifyText", notifyTextLen);
+        }
     }
 }

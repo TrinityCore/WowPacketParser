@@ -320,8 +320,26 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("Result");
         }
 
+        [Parser(Opcode.SMSG_XP_GAIN_ABORTED)]
+        public static void HandleXPGainAborted(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+
+            packet.ReadInt32("XpToAdd");
+            packet.ReadInt32("XpGainReason");
+            packet.ReadInt32("XpAbortReason");
+        }
+
+        [Parser(Opcode.SMSG_NEUTRAL_PLAYER_FACTION_SELECT_RESULT)]
+        public static void HandleNeutralPlayerFactionSelectResult(Packet packet)
+        {
+            packet.ReadBit("Success");
+            packet.ReadByteE<Race>("NewRaceID");
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
-        public static void HandleEmpty(Packet packet)
+        [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
+        public static void HandleCharacterEmpty(Packet packet)
         {
         }
     }

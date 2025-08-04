@@ -126,6 +126,38 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("Reason");
         }
 
+        [Parser(Opcode.SMSG_TRANSFER_PENDING)]
+        public static void HandleTransferPending(Packet packet)
+        {
+            packet.ReadInt32<MapId>("MapID");
+            packet.ReadVector3("OldMapPosition");
+
+            packet.ResetBitReader();
+
+            var hasShipTransferPending = packet.ReadBit();
+            var hasTransferSpell = packet.ReadBit();
+            var hasTaxiPathID = packet.ReadBit();
+
+            if (hasShipTransferPending)
+            {
+                packet.ReadUInt32<GOId>("ID");
+                packet.ReadInt32<MapId>("OriginMapID");
+            }
+
+            if (hasTransferSpell)
+                packet.ReadUInt32<SpellId>("TransferSpellID");
+
+            if (hasTaxiPathID)
+                packet.ReadUInt32("TaxiPathID");
+        }
+
+        [Parser(Opcode.SMSG_ADJUST_SPLINE_DURATION)]
+        public static void HandleAdjustSplineDuration(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadSingle("Scale");
+        }
+
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
         public static void HandleMovementZero(Packet packet)
         {

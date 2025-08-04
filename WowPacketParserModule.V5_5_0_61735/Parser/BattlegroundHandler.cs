@@ -470,10 +470,26 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ResetBitReader();
             packet.ReadBit("Registered");
             packet.ReadBit("AffectsRating");
-            
+
             var hasDeserterPenalty = packet.ReadBit("HasRatedMatchDeserterPenalty");
             if (hasDeserterPenalty)
                 ReadRatedMatchDeserterPenalty(packet, "RatedMatchDeserterPenalty");
+        }
+
+        [Parser(Opcode.SMSG_SEASON_INFO)]
+        public static void HandleSeasonInfo(Packet packet)
+        {
+            packet.ReadInt32("MythicPlusDisplaySeasonID");
+            packet.ReadInt32("MythicPlusMilestoneSeasonID");
+            packet.ReadInt32("CurrentArenaSeason");
+            packet.ReadInt32("PreviousArenaSeason");
+            packet.ReadInt32("ConquestWeeklyProgressCurrencyID");
+            packet.ReadInt32("PvpSeasonID");
+            packet.ReadInt32("Unknown1027_1");
+
+            packet.ReadBit("WeeklyRewardChestsEnabled");
+            packet.ReadBit("CurrentArenaSeasonUsesTeams");
+            packet.ReadBit("PreviousArenaSeasonUsesTeams");
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]

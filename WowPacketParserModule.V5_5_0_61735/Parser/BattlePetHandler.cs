@@ -1,0 +1,426 @@
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
+using WowPacketParser.Parsing;
+
+namespace WowPacketParserModule.V5_5_0_61735.Parsers
+{
+    public static class BattlePetHandler
+    {
+        public static void ReadPetBattlePetUpdate(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID", idx);
+
+            packet.ReadInt32("SpeciesID", idx);
+            packet.ReadInt32("DisplayID", idx);
+            packet.ReadInt32("CollarID", idx);
+
+            packet.ReadInt16("Level", idx);
+            packet.ReadInt16("Xp", idx);
+
+            packet.ReadInt32("CurHealth", idx);
+            packet.ReadInt32("MaxHealth", idx);
+            packet.ReadInt32("Power", idx);
+            packet.ReadInt32("Speed", idx);
+            packet.ReadInt32("NpcTeamMemberID", idx);
+
+            packet.ReadByte("BreedQuality", idx);
+
+            packet.ReadInt16("StatusFlags", idx);
+
+            packet.ReadSByte("Slot", idx);
+
+            var abilitiesCount = packet.ReadUInt32("AbilitiesCount", idx);
+            var aurasCount = packet.ReadUInt32("AurasCount", idx);
+            var statesCount = packet.ReadUInt32("StatesCount", idx);
+
+            for (var i = 0; i < abilitiesCount; ++i)
+                ReadPetBattleActiveAbility(packet, idx, "Abilities", i);
+
+            for (var i = 0; i < aurasCount; ++i)
+                ReadPetBattleActiveAura(packet, idx, "Auras", i);
+
+            for (var i = 0; i < statesCount; ++i)
+                ReadPetBattleActiveState(packet, idx, "States", i);
+
+            packet.ResetBitReader();
+
+            var bits57 = packet.ReadBits(7);
+            packet.ReadWoWString("CustomName", bits57, idx);
+        }
+
+        public static void ReadPetBattlePlayerUpdate(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("CharacterID", idx);
+
+            packet.ReadInt32("TrapAbilityID", idx);
+            packet.ReadInt32("TrapStatus", idx);
+
+            packet.ReadUInt16("RoundTimeSecs", idx);
+
+            packet.ReadSByte("FrontPet", idx);
+            packet.ReadByte("InputFlags", idx);
+
+            packet.ResetBitReader();
+
+            var petsCount = packet.ReadBits("PetsCount", 2, idx);
+
+            for (var i = 0; i < petsCount; ++i)
+                ReadPetBattlePetUpdate(packet, idx, "Pets", i);
+        }
+
+        public static void ReadPetBattleActiveState(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("StateID", idx);
+            packet.ReadInt32("StateValue", idx);
+        }
+
+        public static void ReadPetBattleActiveAbility(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("AbilityID", idx);
+            packet.ReadInt16("CooldownRemaining", idx);
+            packet.ReadInt16("LockdownRemaining", idx);
+            packet.ReadSByte("AbilityIndex", idx);
+            packet.ReadByte("Pboid", idx);
+        }
+
+        public static void ReadPetBattleActiveAura(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("AbilityID", idx);
+            packet.ReadUInt32("InstanceID", idx);
+            packet.ReadInt32("RoundsRemaining", idx);
+            packet.ReadInt32("CurrentRound", idx);
+            packet.ReadByte("CasterPBOID", idx);
+        }
+
+        public static void ReadPetBattleEnviroUpdate(Packet packet, params object[] idx)
+        {
+            var aurasCount = packet.ReadInt32("AurasCount", idx);
+            var statesCount = packet.ReadInt32("StatesCount", idx);
+
+            for (var i = 0; i < aurasCount; ++i) // Auras
+                ReadPetBattleActiveAura(packet, idx, i);
+
+            for (var i = 0; i < statesCount; ++i) // States
+                ReadPetBattleActiveState(packet, idx, i);
+        }
+
+        public static void ReadPetBattleFullUpdate(Packet packet, params object[] idx)
+        {
+            for (var i = 0; i < 2; ++i)
+                ReadPetBattlePlayerUpdate(packet, idx, "Players", i);
+
+            for (var i = 0; i < 3; ++i)
+                ReadPetBattleEnviroUpdate(packet, idx, "Enviros", i);
+
+            packet.ReadInt16("WaitingForFrontPetsMaxSecs", idx);
+            packet.ReadInt16("PvpMaxRoundTime", idx);
+
+            packet.ReadInt32("CurRound", idx);
+            packet.ReadUInt32("NpcCreatureID", idx);
+            packet.ReadUInt32("NpcDisplayID", idx);
+
+            packet.ReadSByte("CurPetBattleState", idx);
+            packet.ReadByte("ForfeitPenalty", idx);
+
+            packet.ReadPackedGuid128("InitialWildPetGUID", idx);
+
+            packet.ReadBit("IsPVP", idx);
+            packet.ReadBit("CanAwardXP", idx);
+        }
+
+        public static void ReadPetBattleEffectTarget(Packet packet, params object[] idx)
+        {
+            packet.ResetBitReader();
+            var type = packet.ReadBits("Type", 4, idx); // enum PetBattleEffectTargetEx
+            packet.ReadByte("Petx", idx);
+
+            switch (type)
+            {
+                case 1:
+                    packet.ReadUInt32("AuraInstanceID", idx);
+                    packet.ReadUInt32("AuraAbilityID", idx);
+                    packet.ReadInt32("RoundsRemaining", idx);
+                    packet.ReadInt32("CurrentRound", idx);
+                    break;
+                case 2:
+                    packet.ReadUInt32("StateID", idx);
+                    packet.ReadInt32("StateValue", idx);
+                    break;
+                case 3:
+                    packet.ReadInt32("Health", idx);
+                    break;
+                case 4:
+                    packet.ReadInt32("NewStatValue", idx);
+                    break;
+                case 5:
+                    packet.ReadInt32("TriggerAbilityID", idx);
+                    break;
+                case 6:
+                    packet.ReadInt32("ChangedAbilityID", idx);
+                    packet.ReadInt32("CooldownRemaining", idx);
+                    packet.ReadInt32("LockdownRemaining", idx);
+                    break;
+                case 7:
+                    packet.ReadInt32("BroadcastTextID", idx);
+                    break;
+                case 8:
+                    ReadPetBattlePetUpdate(packet, idx, "Pets");
+                    break;
+                case 9:
+                    packet.ReadInt32("Type9_Unk1", idx);
+                    packet.ReadInt32("Type9_Unk2", idx);
+                    break;
+            }
+        }
+
+        public static void ReadPetBattleEffect(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("AbilityEffectID", idx);
+            packet.ReadUInt16("Flags", idx);
+            packet.ReadUInt16("SourceAuraInstanceID", idx);
+            packet.ReadUInt16("TurnInstanceID", idx);
+            packet.ReadSByte("PetBattleEffectType", idx);
+            packet.ReadByte("CasterPBOID", idx);
+            packet.ReadByte("StackDepth", idx);
+
+            var targetsCount = packet.ReadInt32("TargetsCount", idx);
+
+            for (var i = 0; i < targetsCount; ++i)
+                ReadPetBattleEffectTarget(packet, i);
+        }
+
+        public static void ReadPetBattleRoundResult(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("CurRound", idx);
+            packet.ReadSByte("NextPetBattleState", idx);
+
+            var effectsCount = packet.ReadUInt32("EffectsCount", idx);
+
+            for (var i = 0; i < 2; ++i)
+            {
+                packet.ReadByte("NextInputFlags", idx, i);
+                packet.ReadSByte("NextTrapStatus", idx, i);
+                packet.ReadUInt16("RoundTimeSecs", idx, i);
+            }
+
+            var cooldownsCount = packet.ReadUInt32("CooldownsCount", idx);
+
+            for (var i = 0; i < cooldownsCount; ++i)
+                ReadPetBattleActiveAbility(packet, idx, "Cooldowns", i);
+
+            packet.ResetBitReader();
+            var petXDiedCount = packet.ReadBits("PetXDied", 3, idx);
+
+            for (var i = 0; i < effectsCount; ++i)
+                ReadPetBattleEffect(packet, idx, "Effects", i);
+
+            for (var i = 0; i < petXDiedCount; ++i)
+                packet.ReadSByte("PetXDied", idx, i);
+        }
+
+        public static void ReadPetBattleFinalPet(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("Guid", idx);
+            packet.ReadUInt16("Level", idx);
+            packet.ReadUInt16("Xp", idx);
+            packet.ReadInt32("Health", idx);
+            packet.ReadInt32("MaxHealth", idx);
+            packet.ReadUInt16("InitialLevel", idx);
+            packet.ReadByte("Pboid", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Captured | Caged | SeenAction", idx);
+            packet.ReadBit("Captured | Caged | SeenAction", idx);
+            packet.ReadBit("Captured | Caged | SeenAction", idx);
+            packet.ReadBit("AwardedXP", idx);
+
+            packet.ResetBitReader();
+        }
+
+        public static void ReadPetBattleFinalRound(Packet packet, params object[] idx)
+        {
+            packet.ReadBit("Abandoned | PvpBattle", idx);
+            packet.ReadBit("Abandoned | PvpBattle", idx);
+
+            for (var i = 0; i < 2; ++i) // Winners
+                packet.ReadBit("Winner", idx, i);
+
+            packet.ResetBitReader();
+
+            for (var i = 0; i < 2; ++i) // Winners
+                packet.ReadInt32<UnitId>("NpcCreatureID", idx, i);
+
+            var petsCount = packet.ReadInt32("PetsCount", idx);
+
+            for (var i = 0; i < petsCount; ++i)
+                ReadPetBattleFinalPet(packet, idx, "Pets", i);
+        }
+
+        public static void ReadClientBattlePetOwnerInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("Guid", idx);
+            packet.ReadUInt32("PlayerVirtualRealm", idx);
+            packet.ReadUInt32("PlayerNativeRealm", idx);
+        }
+
+        public static void ReadClientBattlePet(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID", idx);
+
+            packet.ReadInt32("SpeciesID", idx);
+            packet.ReadInt32("CreatureID", idx);
+            packet.ReadInt32("DisplayID", idx);
+
+            packet.ReadInt16("BreedID", idx);
+            packet.ReadInt16("Level", idx);
+            packet.ReadInt16("Xp", idx);
+            packet.ReadInt16("BattlePetDBFlags", idx);
+
+            packet.ReadInt32("Power", idx);
+            packet.ReadInt32("Health", idx);
+            packet.ReadInt32("MaxHealth", idx);
+            packet.ReadInt32("Speed", idx);
+
+            packet.ReadByte("BreedQuality", idx);
+
+            packet.ResetBitReader();
+
+            var customNameLength = packet.ReadBits(7);
+            var hasOwnerInfo = packet.ReadBit("HasOwnerInfo", idx);
+            packet.ReadBit("NoRename", idx);
+
+            packet.ReadWoWString("CustomName", customNameLength, idx);
+
+            if (hasOwnerInfo)
+                ReadClientBattlePetOwnerInfo(packet, "OwnerInfo", idx);
+        }
+
+        public static void ReadClientPetBattleSlot(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID", idx);
+
+            packet.ReadInt32("CollarID", idx);
+            packet.ReadByte("SlotIndex", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Locked", idx);
+        }
+
+        public static void ReadPetBattleLocations(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("LocationResult", idx);
+            packet.ReadVector3("BattleOrigin", idx);
+            packet.ReadSingle("BattleFacing", idx);
+
+            for (var i = 0; i < 2; ++i)
+                packet.ReadVector3("PlayerPositions", idx, i);
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_PET_UPDATES)]
+        public static void HandleBattlePetUpdates(Packet packet)
+        {
+            var petsCount = packet.ReadInt32("PetsCount");
+            packet.ReadBit("AddedPet");
+            packet.ResetBitReader();
+
+            for (var i = 0; i < petsCount; ++i)
+                ReadClientBattlePet(packet, i);
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_SLOT_UPDATES)]
+        public static void HandlePetBattleSlotUpdates(Packet packet)
+        {
+            var petBattleSlotCount = packet.ReadInt32("PetBattleSlotCount");
+
+            packet.ReadBit("NewSlotUnlocked");
+            packet.ReadBit("AutoSlotted");
+
+            for (int i = 0; i < petBattleSlotCount; i++)
+                ReadClientPetBattleSlot(packet, i, "PetBattleSlot");
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL)]
+        public static void HandleBattlePetJournal(Packet packet)
+        {
+            packet.ReadInt16("TrapLevel");
+
+            var slotsCount = packet.ReadInt32("SlotsCount");
+            var petsCount = packet.ReadInt32("PetsCount");
+
+            packet.ReadBit("HasJournalLock");
+            packet.ResetBitReader();
+
+            for (var i = 0; i < slotsCount; i++)
+                ReadClientPetBattleSlot(packet, i);
+
+            for (var i = 0; i < petsCount; i++)
+                ReadClientBattlePet(packet, i);
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_PET_DELETED)]
+        [Parser(Opcode.SMSG_BATTLE_PET_REVOKED)]
+        [Parser(Opcode.SMSG_BATTLE_PET_RESTORED)]
+        public static void HandleBattlePetDeletePet(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_REQUEST_FAILED)]
+        public static void HandlePetBattleRequestFailed(Packet packet)
+        {
+            packet.ReadByte("Reason"); // TODO: enum
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_PVP_CHALLENGE)]
+        public static void HandlePetBattlePVPChallenge(Packet packet)
+        {
+            packet.ReadPackedGuid128("ChallengerGUID");
+            ReadPetBattleLocations(packet, "Location");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_FINALIZE_LOCATION)]
+        public static void HandlePetBattleFinalizeLocation(Packet packet)
+        {
+            ReadPetBattleLocations(packet, "Location");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_INITIAL_UPDATE)]
+        public static void HandlePetBattleInitialUpdate(Packet packet)
+        {
+            ReadPetBattleFullUpdate(packet, "MsgData");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_FIRST_ROUND)]
+        [Parser(Opcode.SMSG_PET_BATTLE_ROUND_RESULT)]
+        [Parser(Opcode.SMSG_PET_BATTLE_REPLACEMENTS_MADE)]
+        public static void HandlePetBattleRound(Packet packet)
+        {
+            ReadPetBattleRoundResult(packet, "MsgData");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_FINAL_ROUND)]
+        public static void HandleSceneObjectPetBattleFinalRound(Packet packet)
+        {
+            ReadPetBattleFinalRound(packet, "MsgData");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_MAX_GAME_LENGTH_WARNING)]
+        public static void HandleBattlePetMaxGameLengthWarning(Packet packet)
+        {
+            // either seconds or rounds
+            packet.ReadUInt64("SecondsLeft");
+            packet.ReadUInt32("RoundsLeft");
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
+        [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED)]
+        [Parser(Opcode.SMSG_BATTLE_PETS_HEALED)]
+        [Parser(Opcode.SMSG_PET_BATTLE_FINISHED)]
+        [Parser(Opcode.SMSG_PET_BATTLE_CHAT_RESTRICTED)]
+        public static void HandleBattlePetZero(Packet packet)
+        {
+        }
+    }
+}
