@@ -34,5 +34,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadUInt32E<PetStableResult>("Result");
         }
+
+        [Parser(Opcode.SMSG_SET_PET_SPECIALIZATION)]
+        public static void HandleSetPetSpecialization(Packet packet)
+        {
+            packet.ReadUInt16("SpecID");
+        }
     }
 }

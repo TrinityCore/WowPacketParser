@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParserModule.V5_5_0_61735.Enums;
 
 namespace WowPacketParserModule.V5_5_0_61735.Parsers
 {
@@ -414,11 +415,40 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("RoundsLeft");
         }
 
+        [Parser(Opcode.SMSG_BATTLE_PET_ERROR)]
+        public static void HandleBattlePetError(Packet packet)
+        {
+            packet.ReadBitsE<BattlePetError>("Result", 4);
+            packet.ReadInt32("CreatureID");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_QUEUE_STATUS)]
+        public static void HandlePetBattleQueueStatus(Packet packet)
+        {
+            packet.ReadInt32("Status");
+            var slotResultCount = packet.ReadInt32("SlotResultCount");
+
+            for (int i = 0; i < slotResultCount; i++)
+                packet.ReadInt32("SlotResult", i);
+
+            LfgHandler.ReadCliRideTicket(packet, "RideTicket");
+
+            var bit64 = packet.ReadBit("HasClientWaitTime");
+            var bit56 = packet.ReadBit("HasAverageWaitTime");
+
+            if (bit64)
+                packet.ReadUInt64("ClientWaitTime");
+
+            if (bit56)
+                packet.ReadUInt64("AverageWaitTime");
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED)]
         [Parser(Opcode.SMSG_BATTLE_PETS_HEALED)]
         [Parser(Opcode.SMSG_PET_BATTLE_FINISHED)]
         [Parser(Opcode.SMSG_PET_BATTLE_CHAT_RESTRICTED)]
+        [Parser(Opcode.SMSG_PET_BATTLE_QUEUE_PROPOSE_MATCH)]
         public static void HandleBattlePetZero(Packet packet)
         {
         }

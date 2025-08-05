@@ -28,5 +28,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadPackedGuid128("ObjectGUID");
         }
+
+        [Parser(Opcode.SMSG_FORCE_OBJECT_RELINK)]
+        public static void HandleForceObjectRelink(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
+        }
     }
 }

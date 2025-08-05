@@ -187,5 +187,34 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByte("PartyIndex");
             packet.ReadPackedGuid128("PartyGUID");
         }
+
+        [Parser(Opcode.SMSG_GROUP_NEW_LEADER)]
+        public static void HandleGroupNewLeader(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            var len = packet.ReadBits(9);
+            packet.ReadWoWString("Name", len);
+        }
+
+        [Parser(Opcode.SMSG_SEND_RAID_TARGET_UPDATE_ALL)]
+        public static void HandleSendRaidTargetUpdateAll(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            var raidTargetSymbolCount = packet.ReadInt32("RaidTargetSymbolCount");
+            for (int i = 0; i < raidTargetSymbolCount; i++)
+            {
+                packet.ReadPackedGuid128("Target", i);
+                packet.ReadByte("Symbol", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_SEND_RAID_TARGET_UPDATE_SINGLE)]
+        public static void HandleSendRaidTargetUpdateSingle(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadByte("Symbol");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("ChangedBy");
+        }
     }
 }

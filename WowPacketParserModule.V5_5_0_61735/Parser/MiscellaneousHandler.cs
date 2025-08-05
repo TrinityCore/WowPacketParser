@@ -549,6 +549,81 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 ReadElaspedTimer(packet, i);
         }
 
+        [Parser(Opcode.SMSG_DISPLAY_TOAST)]
+        public static void HandleDisplayToast(Packet packet)
+        {
+            packet.ReadUInt64("Quantity");
+            packet.ReadUInt32("DisplayToastMethod");
+
+            packet.ReadUInt32("QuestID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Mailed");
+            var type = packet.ReadBits("Type", 2);
+            packet.ReadBit("IsSecondaryResult");
+
+            if (type == 0)
+            {
+                packet.ReadBit("BonusRoll");
+                packet.ReadBit("ForceToast");
+                Substructures.ItemHandler.ReadItemInstance(packet);
+                packet.ReadInt32("LootSpec");
+                packet.ReadSByte("Gender");
+            }
+
+            if (type == 1)
+                packet.ReadUInt32("CurrencyID");
+        }
+
+        [Parser(Opcode.SMSG_RANDOM_ROLL)]
+        public static void HandleRandomRollResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("Roller");
+            packet.ReadPackedGuid128("RollerWowAccount");
+            packet.ReadInt32("Min");
+            packet.ReadInt32("Max");
+            packet.ReadInt32("Result");
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_EXPANSION_LEVEL)]
+        public static void HandleUpdateExpansionLevel(Packet packet)
+        {
+            var hasActiveExpansionLevel = packet.ReadBit();
+            var hasAccountExpansionLevel = packet.ReadBit();
+            var hasUpgradingFromExpansionTrial = packet.ReadBit();
+
+            if (hasUpgradingFromExpansionTrial)
+                packet.ReadBit("UpgradingFromExpansionTrial");
+
+            var availableClasses = packet.ReadInt32("AvailableClasses");
+
+            if (hasActiveExpansionLevel)
+                packet.ReadByteE<ClientType>("ActiveExpansionLevel");
+
+            if (hasAccountExpansionLevel)
+                packet.ReadByteE<ClientType>("AccountExpansionLevel");
+
+            for (var i = 0; i < availableClasses; i++)
+            {
+                packet.ReadByteE<Race>("RaceID", "AvailableClasses", i);
+                var classesForRace = packet.ReadUInt32();
+                for (var j = 0u; j < classesForRace; ++j)
+                {
+                    packet.ReadByteE<Class>("ClassID", "AvailableClasses", i, "Classes", j);
+                    packet.ReadByteE<ClientType>("ActiveExpansionLevel", "AvailableClasses", i, "Classes", j);
+                    packet.ReadByteE<ClientType>("AccountExpansionLevel", "AvailableClasses", i, "Classes", j);
+                    packet.ReadByte("MinActiveExpansionLevel", "AvailableClasses", i, "Classes", j);
+                }
+            }
+        }
+
+        [Parser(Opcode.SMSG_DISPLAY_PROMOTION)]
+        public static void HandleDisplayPromotion(Packet packet)
+        {
+            packet.ReadUInt32("PromotionID");
+        }
+
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         public static void HandleMiscZero(Packet packet)

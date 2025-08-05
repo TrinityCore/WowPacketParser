@@ -36,5 +36,32 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadPackedGuid128("SceneObjectGUID");
         }
+
+        [Parser(Opcode.SMSG_PLAY_SCENE)]
+        public static void HandlePlayScene(Packet packet)
+        {
+            var sceneId = packet.ReadInt32("SceneID");
+            SceneTemplate scene = new SceneTemplate
+            {
+                SceneID = (uint)sceneId
+            };
+
+            scene.Flags = (uint)packet.ReadInt32("PlaybackFlags");
+            packet.ReadInt32("SceneInstanceID");
+            scene.ScriptPackageID = (uint)packet.ReadInt32("SceneScriptPackageID");
+            packet.ReadPackedGuid128("TransportGUID");
+            packet.ReadVector4("Location");
+            packet.ReadInt32("MovieID");
+            scene.Encrypted = packet.ReadBit("Encrypted");
+
+            if (sceneId != 0) // SPELL_EFFECT_195 plays scenes by SceneScriptPackageID and sets SceneID = 0 (there are no Scenes which have SceneID = 0)
+                Storage.Scenes.Add(scene, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_CANCEL_SCENE)]
+        public static void HandleMiscScene(Packet packet)
+        {
+            packet.ReadUInt32("SceneInstanceID");
+        }
     }
 }
