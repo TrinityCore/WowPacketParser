@@ -131,5 +131,15 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             packet.ReadWoWString("NotifyText", notifyTextLen);
         }
+
+        [Parser(Opcode.SMSG_TEXT_EMOTE)]
+        public static void HandleTextEmoteServer(Packet packet)
+        {
+            packet.ReadPackedGuid128("SourceGUID");
+            packet.ReadPackedGuid128("SourceAccountGUID");
+            packet.ReadInt32E<EmoteTextType>("EmoteID");
+            packet.ReadInt32("SoundIndex");
+            packet.ReadPackedGuid128("TargetGUID");
+        }
     }
 }

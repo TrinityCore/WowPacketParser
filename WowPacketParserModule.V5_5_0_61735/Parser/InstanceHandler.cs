@@ -96,5 +96,24 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadBit("Extended", i);
             }
         }
+
+        [Parser(Opcode.SMSG_INSTANCE_RESET)]
+        public static void HandleInstanceReset(Packet packet)
+        {
+            packet.ReadInt32<MapId>("MapID");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_RESET_FAILED)]
+        public static void HandleInstanceResetFailed(Packet packet)
+        {
+            packet.ReadInt32<MapId>("MapID");
+            packet.ReadBits("ResetFailedReason", 2);
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_LAST_INSTANCE)]
+        public static void HandleUpdateLastInstance(Packet packet)
+        {
+            packet.ReadInt32<MapId>("MapID");
+        }
     }
 }

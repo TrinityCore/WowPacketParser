@@ -202,5 +202,35 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("Cost");
             packet.ReadPackedGuid128("RespecMaster");
         }
+
+        [Parser(Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE)]
+        public static void HandleLossOfControlAuraUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("AffectedGUID");
+            var count = packet.ReadInt32();
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadUInt32("Duration", i);
+                packet.ReadUInt16("AuraSlot", i);
+                packet.ReadByte("EffectIndex", i);
+                packet.ReadByteE<LossOfControlType>("LocType", i);
+                packet.ReadByteE<SpellMechanic>("Mechanic", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_ADD_LOSS_OF_CONTROL)]
+        public static void HandleAddLossOfControl(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadPackedGuid128("Caster");
+
+            packet.ReadUInt32("Duration");
+            packet.ReadUInt32("DurationRemaining");
+            packet.ReadUInt32E<SpellSchoolMask>("LockoutSchoolMask");
+
+            packet.ReadByteE<SpellMechanic>("Mechanic");
+            packet.ReadByte("Type");
+        }
     }
 }

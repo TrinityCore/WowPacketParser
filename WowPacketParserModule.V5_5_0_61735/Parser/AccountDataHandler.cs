@@ -27,5 +27,10 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             packet.ReadWoWString("Signature", signatureLen);
         }
+
+        [Parser(Opcode.SMSG_LOGOUT_CANCEL_ACK)]
+        public static void HandleAccountNull(Packet packet)
+        {
+        }
     }
 }

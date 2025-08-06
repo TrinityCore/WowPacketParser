@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Google.Protobuf.WellKnownTypes;
+using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -24,6 +25,25 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadUInt32("RealmAddress", indexes);
             ReadVirtualRealmNameInfo(packet, indexes, "RealmNameInfo");
+        }
+
+        public static void ReadGameModeData(Packet packet, params object[] indexes)
+        {
+            packet.ReadUInt32("Unknown_1107_0", indexes);
+            packet.ReadPackedGuid128("Guid", indexes);
+            packet.ReadByte("GameMode", indexes);
+            packet.ReadInt32("MapID", indexes);
+            packet.ReadByte("Unknown_1107_1", indexes);
+            packet.ReadByte("Unknown_1107_2", indexes);
+            packet.ReadByte("Unknown_1107_3", indexes);
+            var customizationsCount = packet.ReadUInt32("CustomizationsCount", indexes);
+            var unkCount = packet.ReadUInt32("Unknown_1107_4_Count", indexes);
+
+            for (var i = 0; i < customizationsCount; i++)
+                CharacterHandler.ReadChrCustomizationChoice(packet, indexes, "Customizations", i);
+
+            for (var i = 0; i < unkCount; i++)
+                CharacterHandler.ReadChrCustomizationChoice(packet, indexes, "Unknown_1107_4", i);
         }
 
         [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
@@ -78,6 +98,42 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadUInt32("Sequence");
             packet.ReadBits("Reason", 2);
+        }
+
+        [Parser(Opcode.SMSG_SET_TIME_ZONE_INFORMATION)]
+        public static void HandleSetTimeZoneInformation(Packet packet)
+        {
+            var gameTimeTZLength = packet.ReadBits(7);
+            var serverTimeTZLength = packet.ReadBits(7);
+            var serverRegionalTimeTZLength = packet.ReadBits(7);
+
+            packet.ReadWoWString("GameTimeTZ", gameTimeTZLength);
+            packet.ReadWoWString("ServerTimeTZ", serverTimeTZLength);
+            packet.ReadWoWString("ServerRegionalTimeTZ", serverRegionalTimeTZLength);
+        }
+
+        [Parser(Opcode.SMSG_LOGOUT_RESPONSE)]
+        public static void HandlePlayerLogoutResponse(Packet packet)
+        {
+            packet.ReadInt32("Reason");
+            packet.ReadBit("Instant");
+            // From TC:
+            // Reason 1: IsInCombat
+            // Reason 2: InDuel or frozen by GM
+            // Reason 3: Jumping or Falling
+        }
+
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
+        public static void HandleLogoutComplete(Packet packet)
+        {
+            var switchGameMode = packet.ReadBit("SwitchGameMode");
+            if (switchGameMode)
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("IsFastLogin");
+                ReadGameModeData(packet, "CurrentGameMode");
+                ReadGameModeData(packet, "NewGameMode");
+            }
         }
 
         [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH)]

@@ -884,7 +884,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_BATTLE_PAY_START_DISTRIBUTION_ASSIGN_TO_TARGET_RESPONSE, 0x3C0224 },
             { Opcode.SMSG_BATTLE_PAY_START_PURCHASE_RESPONSE, 0x3C0223 },
             { Opcode.SMSG_BATTLE_PAY_VALIDATE_PURCHASE_RESPONSE, 0x3C02B5 },
-            { Opcode.SMSG_BATTLE_PET_CAGE_DATE_ERROR, 0x3C0117 },
+            { Opcode.SMSG_BATTLE_PET_CAGE_DATE_ERROR, 0x3C0117 }, // NYI
             { Opcode.SMSG_BATTLE_PET_DELETED, 0x3C008A },
             { Opcode.SMSG_BATTLE_PET_ERROR, 0x3C00D4 },
             { Opcode.SMSG_BATTLE_PET_JOURNAL, 0x3C0089 },
@@ -962,7 +962,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_CANCEL_SPELL_VISUAL, 0x520033 },
             { Opcode.SMSG_CANCEL_SPELL_VISUAL_KIT, 0x520037 },
             { Opcode.SMSG_CAPTURE_POINT_REMOVED, 0x420008 },
-            { Opcode.SMSG_CAS_REFRESH_REMOTE_DATA, 0x3C0115 },
+            { Opcode.SMSG_CAS_REFRESH_REMOTE_DATA, 0x3C0115 }, // NYI
             { Opcode.SMSG_CAST_FAILED, 0x520046 },
             { Opcode.SMSG_CAUTIONARY_CHANNEL_MESSAGE, 0x410009 }, // NYI
             { Opcode.SMSG_CAUTIONARY_CHAT_MESSAGE, 0x410008 }, // NYI
@@ -1074,7 +1074,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_DAMAGE_CALC_LOG, 0x520051 },
             { Opcode.SMSG_DB_REPLY, 0x400000 },
             { Opcode.SMSG_DEATH_RELEASE_LOC, 0x3C0172 },
-            { Opcode.SMSG_DEBUG_MENU_MANAGER_FULL_UPDATE, 0x3C00F3 },
+            { Opcode.SMSG_DEBUG_MENU_MANAGER_FULL_UPDATE, 0x3C00F3 }, // NYI
             { Opcode.SMSG_DEFENSE_MESSAGE, 0x41000C },
             { Opcode.SMSG_DELETE_CHAR, 0x3C01A1 },
             { Opcode.SMSG_DELETE_EXPIRED_MISSIONS_RESULT, 0x460022 },
@@ -1114,7 +1114,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_EQUIPMENT_SET_ID, 0x3C0151 },
             { Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x410005 }, // NYI
             { Opcode.SMSG_EXPLORATION_EXPERIENCE, 0x3C01FE },
-            { Opcode.SMSG_EXPORT_ACCOUNT_PROFILE, 0x3C00F0 },
+            { Opcode.SMSG_EXPORT_ACCOUNT_PROFILE, 0x3C00F0 }, // NYI
             { Opcode.SMSG_EXTERNAL_TRANSACTION_ID_GENERATED, 0x3C0300 },
             { Opcode.SMSG_FACTION_BONUS_INFO, 0x3C01C4 },
             { Opcode.SMSG_FAILED_PLAYER_CONDITION, 0x4F0002 },
@@ -1146,7 +1146,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_GAME_OBJECT_RESET_STATE, 0x3C01BD },
             { Opcode.SMSG_GAME_OBJECT_SET_STATE_LOCAL, 0x3C02A3 },
             { Opcode.SMSG_GAME_OBJECT_UI_LINK, 0x3C01BA },
-            { Opcode.SMSG_GAME_SPEED_SET, 0x3C0120 },
+            { Opcode.SMSG_GAME_SPEED_SET, 0x3C0120 }, // NYI
             { Opcode.SMSG_GAME_TIME_SET, 0x3C01AC },
             { Opcode.SMSG_GAME_TIME_UPDATE, 0x3C01AB },
             { Opcode.SMSG_GARRISON_ACTIVATE_MISSION_BONUS_ABILITY, 0x460024 },
@@ -1355,7 +1355,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 0x3C0033 },
             { Opcode.SMSG_ITEM_PUSH_RESULT, 0x3C00BF },
             { Opcode.SMSG_ITEM_TIME_UPDATE, 0x3C01F3 },
-            { Opcode.SMSG_KICK_REASON, 0x3C0128 },
+            { Opcode.SMSG_KICK_REASON, 0x3C0128 }, // NYI
             { Opcode.SMSG_LATENCY_REPORT_PING, 0x3C030B },
             { Opcode.SMSG_LEARN_PVP_TALENT_FAILED, 0x3C006E },
             { Opcode.SMSG_LEARN_TALENT_FAILED, 0x3C006D },
@@ -1587,7 +1587,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_PET_ACTION_FEEDBACK, 0x3C01E8 },
             { Opcode.SMSG_PET_ACTION_SOUND, 0x3C013F },
             { Opcode.SMSG_PET_BATTLE_CHAT_RESTRICTED, 0x3C009C },
-            { Opcode.SMSG_PET_BATTLE_DEBUG_QUEUE_DUMP_RESPONSE, 0x3C0113 },
+            { Opcode.SMSG_PET_BATTLE_DEBUG_QUEUE_DUMP_RESPONSE, 0x3C0113 }, // NYI
             { Opcode.SMSG_PET_BATTLE_FINAL_ROUND, 0x3C009A },
             { Opcode.SMSG_PET_BATTLE_FINALIZE_LOCATION, 0x3C0095 },
             { Opcode.SMSG_PET_BATTLE_FINISHED, 0x3C009B },
@@ -1604,7 +1604,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_PET_CAST_FAILED, 0x520047 },
             { Opcode.SMSG_PET_CLEAR_SPELLS, 0x520013 },
             { Opcode.SMSG_PET_DISMISS_SOUND, 0x3C0140 },
-            { Opcode.SMSG_PET_GOD_MODE, 0x3C011A },
+            { Opcode.SMSG_PET_GOD_MODE, 0x3C011A }, // NYI
             { Opcode.SMSG_PET_GUIDS, 0x3C01A3 },
             { Opcode.SMSG_PET_LEARNED_SPELLS, 0x52003E },
             { Opcode.SMSG_PET_MODE, 0x3C001F },
@@ -1741,7 +1741,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_RECRUIT_A_FRIEND_FAILURE, 0x3C0160 },
             { Opcode.SMSG_REFER_A_FRIEND_EXPIRED, 0x3C01C2 },
             { Opcode.SMSG_REFORGE_RESULT, 0x3C0015 },
-            { Opcode.SMSG_REFRESH_COMPONENT, 0x3C00ED },
+            { Opcode.SMSG_REFRESH_COMPONENT, 0x3C00ED }, // NYI
             { Opcode.SMSG_REFRESH_SPELL_HISTORY, 0x52001B },
             { Opcode.SMSG_REGIONWIDE_CHARACTER_MAIL_DATA, 0x3C001A }, // NYI
             { Opcode.SMSG_REGIONWIDE_CHARACTER_RESTRICTIONS_DATA, 0x3C0019 }, // NYI
@@ -1801,7 +1801,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_SEND_SPELL_HISTORY, 0x52001A },
             { Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x52001D },
             { Opcode.SMSG_SERVER_FIRST_ACHIEVEMENTS, 0x3C00EA }, // NYI
-            { Opcode.SMSG_SERVER_TIME, 0x3C0121 },
+            { Opcode.SMSG_SERVER_TIME, 0x3C0121 }, // NYI
             { Opcode.SMSG_SERVER_TIME_OFFSET, 0x3C01B4 },
             { Opcode.SMSG_SET_AI_ANIM_KIT, 0x3C01CF },
             { Opcode.SMSG_SET_ANIM_TIER, 0x3C01D3 },
