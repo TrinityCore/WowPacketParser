@@ -120,5 +120,42 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             Substructures.ItemHandler.ReadItemInstance(packet);
         }
+
+        [Parser(Opcode.SMSG_CROSSED_INEBRIATION_THRESHOLD)]
+        public static void HandleCrossedInebriationThreshold(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32("Threshold");
+            packet.ReadInt32<ItemId>("ItemID");
+        }
+
+        [Parser(Opcode.SMSG_SELL_RESPONSE)]
+        public static void HandleSellResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            var itemGuidCount = packet.ReadUInt32("ItemGuidCount");
+
+            packet.ReadInt32E<SellResult>("Reason");
+
+            for (var i = 0; i < itemGuidCount; ++i)
+                packet.ReadPackedGuid128("ItemGuid", i);
+        }
+
+        [Parser(Opcode.SMSG_BUY_SUCCEEDED)]
+        public static void HandleBuyItemResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            packet.ReadUInt32("Muid");
+            packet.ReadInt32("NewQuantity");
+            packet.ReadUInt32("QuantityBought");
+        }
+
+        [Parser(Opcode.SMSG_BUY_FAILED)]
+        public static void HandleBuyFailed(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            packet.ReadUInt32<ItemId>("Muid");
+            packet.ReadInt32E<BuyResult>("Reason");
+        }
     }
 }

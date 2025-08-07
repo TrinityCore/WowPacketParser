@@ -232,5 +232,66 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByteE<SpellMechanic>("Mechanic");
             packet.ReadByte("Type");
         }
+
+        [Parser(Opcode.SMSG_NOTIFY_MISSILE_TRAJECTORY_COLLISION)]
+        public static void HandleNotifyMissileTrajectoryCollision(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadVector3("CollisionPos");
+        }
+
+        [Parser(Opcode.SMSG_DISMOUNT)]
+        public static void HandleDismount(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.SMSG_ADD_RUNE_POWER)]
+        public static void HandleAddRunePower(Packet packet)
+        {
+            packet.ReadUInt32("RuneMask");
+        }
+
+        [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
+        public static void HandleCooldownEvent(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadBit("IsPet");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWN)]
+        public static void HandleClearCooldown(Packet packet)
+        {
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadBit("ClearOnHold");
+            packet.ReadBit("IsPet");
+        }
+
+        [Parser(Opcode.SMSG_TOTEM_CREATED)]
+        public static void HandleTotemCreated(Packet packet)
+        {
+            packet.ReadByte("Slot");
+            packet.ReadPackedGuid128("Totem");
+            packet.ReadUInt32("Duration");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadSingle("TimeMod");
+
+            packet.ResetBitReader();
+            packet.ReadBit("CannotDismiss");
+        }
+
+        [Parser(Opcode.SMSG_TOTEM_MOVED)]
+        public static void HandleTotemMoved(Packet packet)
+        {
+            packet.ReadByte("Slot");
+            packet.ReadByte("NewSlot");
+            packet.ReadPackedGuid128("Totem");
+        }
+
+        [Parser(Opcode.SMSG_SUMMON_CANCEL)]
+        public static void HandleSpellEmpty(Packet packet)
+        {
+        }
     }
 }

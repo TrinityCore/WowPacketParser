@@ -1,6 +1,8 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_5_0_61735.Parsers
@@ -622,6 +624,90 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         public static void HandleDisplayPromotion(Packet packet)
         {
             packet.ReadUInt32("PromotionID");
+        }
+
+        [Parser(Opcode.SMSG_SPECIAL_MOUNT_ANIM)]
+        public static void HandleSpecialMountAnim(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            var spellVisualKitIdCount = packet.ReadUInt32("SpellVisualKitIdCount");
+            packet.ReadInt32("SequenceVariation");
+
+            for (var i = 0; i < spellVisualKitIdCount; i++)
+                packet.ReadUInt32("SpellVisualKitID", i);
+        }
+
+        [Parser(Opcode.SMSG_WHO_IS)]
+        public static void HandleWhoIsResponse(Packet packet)
+        {
+            var accNameLen = packet.ReadBits(11);
+            packet.ReadWoWString("AccountName", accNameLen);
+        }
+
+        [Parser(Opcode.SMSG_WEATHER)]
+        public static void HandleWeatherStatus(Packet packet)
+        {
+            WeatherState state = packet.ReadInt32E<WeatherState>("State");
+            float grade = packet.ReadSingle("Intensity");
+            Bit unk = packet.ReadBit("Abrupt"); // Type
+
+            Storage.WeatherUpdates.Add(new WeatherUpdate
+            {
+                MapId = CoreParsers.MovementHandler.CurrentMapId,
+                ZoneId = 0, // fixme
+                State = state,
+                Grade = grade,
+                Unk = unk
+            }, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_START_LIGHTNING_STORM)]
+        [Parser(Opcode.SMSG_END_LIGHTNING_STORM)]
+        public static void HandleLightningStorm(Packet packet)
+        {
+            packet.ReadUInt32("LightningStormId");
+        }
+
+        [Parser(Opcode.SMSG_OVERRIDE_LIGHT)]
+        public static void HandleOverrideLight(Packet packet)
+        {
+            packet.ReadUInt32("AreaLightID");
+            packet.ReadUInt32("OverrideLightID");
+            packet.ReadUInt32("TransitionMilliseconds");
+        }
+
+        [Parser(Opcode.SMSG_ENABLE_BARBER_SHOP)]
+        public static void HandleEnableBarberShop(Packet packet)
+        {
+            packet.ReadUInt32("CustomizationFeatureMask");
+        }
+
+        [Parser(Opcode.SMSG_CONFIRM_BARBERS_CHOICE)]
+        public static void HandleConfirmBarbersChoice(Packet packet)
+        {
+            packet.ReadUInt32("Cost");
+        }
+
+        [Parser(Opcode.SMSG_BARBER_SHOP_RESULT)]
+        public static void HandleBarberShopResult(Packet packet)
+        {
+            packet.ReadInt32E<BarberShopResult>("Result");
+            packet.ReadBit("IgnoreChair");
+        }
+
+        [Parser(Opcode.SMSG_RECRUIT_A_FRIEND_FAILURE)]
+        public static void HandleRaFFailure(Packet packet)
+        {
+            packet.ReadInt32("Reason");
+            packet.ResetBitReader();
+            var len = packet.ReadBits(6);
+            packet.ReadWoWString("Str", len);
+        }
+
+        [Parser(Opcode.SMSG_TRIGGER_MOVIE)]
+        public static void HandleTriggerMovie(Packet packet)
+        {
+            packet.ReadInt32("CinematicID");
         }
 
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]

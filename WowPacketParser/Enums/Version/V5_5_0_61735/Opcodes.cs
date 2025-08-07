@@ -1904,7 +1904,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_TITLE_EARNED, 0x3C0176 },
             { Opcode.SMSG_TITLE_LOST, 0x3C0177 },
             { Opcode.SMSG_TOTEM_CREATED, 0x3C0167 },
-            { Opcode.SMSG_TOTEM_DURATION_CHANGED, 0x3C0168 },
+            { Opcode.SMSG_TOTEM_DURATION_CHANGED, 0x3C0168 }, // NYI
             { Opcode.SMSG_TOTEM_MOVED, 0x3C0169 },
             { Opcode.SMSG_TRADE_STATUS, 0x3C0017 },
             { Opcode.SMSG_TRADE_UPDATED, 0x3C0016 },
