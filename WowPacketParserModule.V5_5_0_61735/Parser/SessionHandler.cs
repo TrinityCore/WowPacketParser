@@ -136,6 +136,18 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_QUERY_TIME_RESPONSE)]
+        public static void HandleQueryTimeResponse(Packet packet)
+        {
+            packet.ReadTime64("CurrentTime");
+        }
+
+        [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]
+        public static void HandleLoginFailed(Packet packet)
+        {
+            packet.ReadByteE<ResponseCode>("Code");
+        }
+
         [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH)]
         public static void HandleSessionZero(Packet packet)
         {

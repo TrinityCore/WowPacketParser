@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Google.Protobuf.WellKnownTypes;
+using System.Linq;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -163,6 +164,42 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadPackedGuid128("Unit");
             packet.ReadBit("On");
+        }
+
+        [Parser(Opcode.SMSG_TRANSFER_ABORTED)]
+        public static void HandleTransferAborted(Packet packet)
+        {
+            packet.ReadInt32<MapId>("MapID");
+            packet.ReadByte("Arg");
+            packet.ReadInt32("MapDifficultyXConditionID");
+            packet.ReadBitsE<TransferAbortReason>("TransfertAbort", 6);
+        }
+
+        [Parser(Opcode.SMSG_GAME_TIME_UPDATE)]
+        public static void HandleGameTimeUpdate(Packet packet)
+        {
+            packet.ReadPackedTime("ServerTime");
+            packet.ReadPackedTime("GameTime");
+            packet.ReadInt32("ServerTimeHolidayOffset");
+            packet.ReadInt32("GameTimeHolidayOffset");
+        }
+
+        [Parser(Opcode.SMSG_GAME_TIME_SET)]
+        public static void HandleGameTimeSet(Packet packet)
+        {
+            packet.ReadPackedTime("ServerTime");
+            packet.ReadPackedTime("GameTime");
+        }
+
+        [Parser(Opcode.SMSG_LOGIN_SET_TIME_SPEED)]
+        public static void HandleLoginSetTimeSpeed(Packet packet)
+        {
+            PacketLoginSetTimeSpeed setTime = packet.Holder.LoginSetTimeSpeed = new();
+            setTime.ServerTime = packet.ReadPackedTime("ServerTime").ToUniversalTime().ToTimestamp();
+            setTime.GameTime = packet.ReadPackedTime("GameTime").ToUniversalTime().ToTimestamp();
+            setTime.NewSpeed = packet.ReadSingle("NewSpeed");
+            setTime.ServerTimeHolidayOffset = packet.ReadInt32("ServerTimeHolidayOffset");
+            setTime.GameTimeHolidayOffset = packet.ReadInt32("GameTimeHolidayOffset");
         }
 
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]

@@ -113,6 +113,54 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             aiReaction.Reaction = (WowPacketParser.Proto.AIReaction)packet.ReadInt32E<WowPacketParser.Enums.AIReaction>("Reaction");
         }
 
+        [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
+        public static void HandleHighestThreatlistUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadPackedGuid128("HighestThreatGUID");
+
+            var count = packet.ReadUInt32("ThreatListCount");
+
+            // ThreatInfo
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadPackedGuid128("UnitGUID", i);
+                packet.ReadInt64("Threat", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_THREAT_UPDATE)]
+        public static void HandleThreatlistUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            var count = packet.ReadInt32("ThreatListCount");
+
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadPackedGuid128("TargetGUID", i);
+                packet.ReadInt64("Threat", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_THREAT_REMOVE)]
+        public static void HandleRemoveThreatlist(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadPackedGuid128("AboutGUID");
+        }
+
+        [Parser(Opcode.SMSG_THREAT_CLEAR)]
+        public static void HandleClearThreatlist(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+        }
+
+        [Parser(Opcode.SMSG_CANCEL_AUTO_REPEAT)]
+        public static void HandleCancelAutoRepeat(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
         [Parser(Opcode.SMSG_DUEL_OUT_OF_BOUNDS)]
         [Parser(Opcode.SMSG_DUEL_IN_BOUNDS)]
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]

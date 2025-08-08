@@ -157,5 +157,37 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32<ItemId>("Muid");
             packet.ReadInt32E<BuyResult>("Reason");
         }
+
+        [Parser(Opcode.SMSG_ITEM_CHANGED)]
+        public static void HandleItemChanged(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+            Substructures.ItemHandler.ReadItemInstance(packet, "ItemInstanceBefore");
+            Substructures.ItemHandler.ReadItemInstance(packet, "ItemInstanceAfter");
+        }
+
+        [Parser(Opcode.SMSG_ENCHANTMENT_LOG)]
+        public static void HandleEnchantmentLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Owner");
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("ItemGUID");
+            packet.ReadUInt32<ItemId>("ItemID");
+            packet.ReadUInt32("Enchantment");
+            packet.ReadUInt32("EnchantSlot");
+        }
+
+        [Parser(Opcode.SMSG_SOCKET_GEMS_SUCCESS)]
+        public static void HandleSocketGemsSuccess(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+        }
+
+        [Parser(Opcode.SMSG_SET_PROFICIENCY)]
+        public static void HandleSetProficency(Packet packet)
+        {
+            packet.ReadUInt32E<UnknownFlags>("ProficiencyMask");
+            packet.ReadByteE<ItemClass>("ProficiencyClass");
+        }
     }
 }

@@ -289,7 +289,20 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("Totem");
         }
 
+        [Parser(Opcode.SMSG_TALENTS_INVOLUNTARILY_RESET)]
+        public static void HandleTalentsInvoluntarilyReset(Packet packet)
+        {
+            packet.ReadBit("IsPetTalents");
+        }
+
+        [Parser(Opcode.SMSG_COOLDOWN_CHEAT)]
+        public static void HandleCooldownCheat(Packet packet)
+        {
+            packet.ReadBit("PetBar");
+        }
+
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
+        [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         public static void HandleSpellEmpty(Packet packet)
         {
         }

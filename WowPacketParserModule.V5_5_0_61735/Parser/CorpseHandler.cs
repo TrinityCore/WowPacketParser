@@ -19,5 +19,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("Transport");
             packet.ReadVector3("Position");
         }
+
+        [Parser(Opcode.SMSG_CORPSE_TRANSPORT_QUERY)]
+        public static void HandleCorpseTransportQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+            packet.ReadVector3("Position");
+            packet.ReadSingle("Facing");
+        }
     }
 }

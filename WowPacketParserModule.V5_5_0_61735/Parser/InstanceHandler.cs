@@ -128,6 +128,21 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("IOwnInstance");
         }
 
+        [Parser(Opcode.SMSG_PENDING_RAID_LOCK)]
+        public static void HandlePendingRaidLock(Packet packet)
+        {
+            packet.ReadInt32("TimeUntilLock");
+            packet.ReadUInt32("CompletedMask");
+            packet.ReadBit("Extending");
+            packet.ReadBit("WarningOnly");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_GROUP_SIZE_CHANGED)]
+        public static void HandleInstanceGroupSizeChanged(Packet packet)
+        {
+            packet.ReadUInt32("GroupSize");
+        }
+
         [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
         public static void HandleInstanceZero(Packet packet)
         {

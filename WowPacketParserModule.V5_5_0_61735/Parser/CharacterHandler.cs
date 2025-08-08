@@ -471,6 +471,132 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             TraitHandler.ReadTraitConfig(packet, "TraitInspectData", "Traits");
         }
 
+        [Parser(Opcode.SMSG_HEALTH_UPDATE)]
+        public static void HandleHealthUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt64("Health");
+        }
+
+        [Parser(Opcode.SMSG_POWER_UPDATE)]
+        public static void HandlePowerUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+
+            var int32 = packet.ReadInt32("Count");
+            for (var i = 0; i < int32; i++)
+            {
+                packet.ReadByteE<PowerType>("PowerType", i);
+                packet.ReadInt32("Power", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_PLAYED_TIME)]
+        public static void HandleServerPlayedTime(Packet packet)
+        {
+            packet.ReadInt32("TotalTime");
+            packet.ReadInt32("LevelTime");
+
+            packet.ReadBit("TriggerEvent");
+        }
+
+        [Parser(Opcode.SMSG_TITLE_EARNED)]
+        [Parser(Opcode.SMSG_TITLE_LOST)]
+        public static void HandleTitleEarned(Packet packet)
+        {
+            packet.ReadUInt32("Index");
+        }
+
+        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE_FAILURE)]
+        public static void HandleServerCharCustomizeResult(Packet packet)
+        {
+            packet.ReadByte("Result");
+            packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE_SUCCESS)]
+        public static void HandleServerCharCustomize(Packet packet)
+        {
+            packet.ReadPackedGuid128("CharGUID");
+            packet.ReadByte("SexID");
+
+            var customizationCount = packet.ReadUInt32();
+            for (var j = 0u; j < customizationCount; ++j)
+                ReadChrCustomizationChoice(packet, "Customizations", j);
+
+            packet.ResetBitReader();
+            var bits55 = packet.ReadBits(6);
+            packet.ReadWoWString("Name", bits55);
+        }
+
+        [Parser(Opcode.SMSG_LOG_XP_GAIN)]
+        public static void HandleLogXPGain(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+            packet.ReadInt32("Original");
+            packet.ReadByte("Reason");
+            packet.ReadInt32("Amount");
+            packet.ReadSingle("GroupBonus");
+        }
+
+        [Parser(Opcode.SMSG_LEVEL_UP_INFO)]
+        public static void HandleLevelUpInfo(Packet packet)
+        {
+            packet.ReadInt32("Level");
+            packet.ReadInt32("HealthDelta");
+
+            for (var i = 0; i < 10; i++)
+                packet.ReadInt32("PowerDelta", (PowerType)i);
+
+            for (var i = 0; i < 5; i++)
+                packet.ReadInt32("StatDelta", (StatType)i);
+
+            packet.ReadInt32("NumNewTalents");
+            packet.ReadInt32("NumNewPvpTalentSlots");
+        }
+
+        [Parser(Opcode.SMSG_CREATE_CHAR)]
+        public static void HandleCreateChar(Packet packet)
+        {
+            packet.ReadByteE<ResponseCode>("Response");
+            packet.ReadPackedGuid128("GUID");
+        }
+
+        [Parser(Opcode.SMSG_DELETE_CHAR)]
+        public static void HandleDeleteChar(Packet packet)
+        {
+            packet.ReadByteE<ResponseCode>("Response");
+        }
+
+        [Parser(Opcode.SMSG_STAND_STATE_UPDATE)]
+        public static void HandleStandStateUpdate(Packet packet)
+        {
+            packet.ReadByteE<StandState>("State");
+            packet.ReadInt32("AnimKitID");
+        }
+
+        [Parser(Opcode.SMSG_INSPECT_PVP)]
+        public static void HandleInspectPVP(Packet packet)
+        {
+            packet.ReadPackedGuid128("ClientGUID");
+
+            var bracketCount = packet.ReadUInt32();
+            var teamInspectCount = packet.ReadBits(2);
+
+            for (var i = 0; i < bracketCount; i++)
+                ReadPVPBracketData(packet, i, "PVPBracketData");
+
+            for (var i = 0; i < teamInspectCount; i++)
+            {
+                packet.ReadPackedGuid128("GUID", i, "ArenaTeamInspectData");
+                packet.ReadUInt32("TeamRating", i, "ArenaTeamInspectData");
+                packet.ReadUInt32("TeamPlayed", i, "ArenaTeamInspectData");
+                packet.ReadUInt32("TeamWins", i, "ArenaTeamInspectData");
+                packet.ReadUInt32("PlayerPlayer", i, "ArenaTeamInspectData");
+                packet.ReadUInt32("PlayerRating", i, "ArenaTeamInspectData");
+            }
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
         public static void HandleCharacterEmpty(Packet packet)

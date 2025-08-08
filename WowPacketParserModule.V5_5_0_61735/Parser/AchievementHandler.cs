@@ -95,5 +95,23 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("EarnerVirtualRealm");
             packet.ReadBit("Initial");
         }
+
+        [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
+        public static void HandleCriteriaPlayer(Packet packet)
+        {
+            ReadCriteriaProgress(packet);
+        }
+
+        [Parser(Opcode.SMSG_CRITERIA_DELETED)]
+        public static void HandleDeleted(Packet packet)
+        {
+            packet.ReadInt32("CriteriaID");
+        }
+
+        [Parser(Opcode.SMSG_ACHIEVEMENT_DELETED)]
+        public static void HandleAchievementDeleted(Packet packet)
+        {
+            packet.ReadUInt32("AchievementID");
+        }
     }
 }

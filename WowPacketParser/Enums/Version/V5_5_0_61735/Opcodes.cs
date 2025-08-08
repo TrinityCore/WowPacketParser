@@ -950,7 +950,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_CALENDAR_SEND_CALENDAR, 0x3C012A },
             { Opcode.SMSG_CALENDAR_SEND_EVENT, 0x3C012B },
             { Opcode.SMSG_CALENDAR_SEND_NUM_PENDING, 0x3C013B },
-            { Opcode.SMSG_CAMERA_EFFECT, 0x3C01C5 },
+            { Opcode.SMSG_CAMERA_EFFECT, 0x3C01C5 }, // NYI
             { Opcode.SMSG_CAN_DUEL_RESULT, 0x420025 },
             { Opcode.SMSG_CAN_REDEEM_TOKEN_FOR_BALANCE_RESPONSE, 0x3C02B4 },
             { Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x3C017D },
@@ -1029,9 +1029,9 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_CLUB_FINDER_WHISPER_APPLICANT_RESPONSE, 0x3C0313 },
             { Opcode.SMSG_COIN_REMOVED, 0x3C00B3 },
             { Opcode.SMSG_COMBAT_EVENT_FAILED, 0x42001D },
-            { Opcode.SMSG_COMMENTATOR_MAP_INFO, 0x3C01A6 },
-            { Opcode.SMSG_COMMENTATOR_PLAYER_INFO, 0x3C01A7 },
-            { Opcode.SMSG_COMMENTATOR_STATE_CHANGED, 0x3C01A5 },
+            { Opcode.SMSG_COMMENTATOR_MAP_INFO, 0x3C01A6 }, // NYI
+            { Opcode.SMSG_COMMENTATOR_PLAYER_INFO, 0x3C01A7 }, // NYI
+            { Opcode.SMSG_COMMENTATOR_STATE_CHANGED, 0x3C01A5 }, // NYI
             { Opcode.SMSG_COMMERCE_TOKEN_GET_COUNT_RESPONSE, 0x3C0270 },
             { Opcode.SMSG_COMMERCE_TOKEN_GET_LOG_RESPONSE, 0x3C027C },
             { Opcode.SMSG_COMMERCE_TOKEN_GET_MARKET_PRICE_RESPONSE, 0x3C0272 },
@@ -1132,7 +1132,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_FORCE_OBJECT_RELINK, 0x3C00E7 },
             { Opcode.SMSG_FORCE_RANDOM_TRANSMOG_TOAST, 0x3C004B }, // NYI
             { Opcode.SMSG_FORCE_SPAWN_TRACKING_UPDATE, 0x500021 },
-            { Opcode.SMSG_FORCED_DEATH_UPDATE, 0x3C0173 },
+            { Opcode.SMSG_FORCED_DEATH_UPDATE, 0x3C0173 }, // NYI
             { Opcode.SMSG_FRIEND_STATUS, 0x3C022C },
             { Opcode.SMSG_GAIN_MAW_POWER, 0x3C0281 },
             { Opcode.SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT, 0x3C005D },
@@ -1145,7 +1145,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_GAME_OBJECT_PLAY_SPELL_VISUAL_KIT, 0x520039 },
             { Opcode.SMSG_GAME_OBJECT_RESET_STATE, 0x3C01BD },
             { Opcode.SMSG_GAME_OBJECT_SET_STATE_LOCAL, 0x3C02A3 },
-            { Opcode.SMSG_GAME_OBJECT_UI_LINK, 0x3C01BA },
+            { Opcode.SMSG_GAME_OBJECT_UI_LINK, 0x3C01BA }, // NYI
             { Opcode.SMSG_GAME_SPEED_SET, 0x3C0120 }, // NYI
             { Opcode.SMSG_GAME_TIME_SET, 0x3C01AC },
             { Opcode.SMSG_GAME_TIME_UPDATE, 0x3C01AB },
@@ -1236,7 +1236,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_GM_REQUEST_PLAYER_INFO, 0x4F0003 }, // NYI
             { Opcode.SMSG_GM_TICKET_CASE_STATUS, 0x3C0142 },
             { Opcode.SMSG_GM_TICKET_SYSTEM_STATUS, 0x3C0141 },
-            { Opcode.SMSG_GOD_MODE, 0x3C019B },
+            { Opcode.SMSG_GOD_MODE, 0x3C019B }, // NYI
             { Opcode.SMSG_GOSSIP_COMPLETE, 0x500017 },
             { Opcode.SMSG_GOSSIP_MESSAGE, 0x500018 },
             { Opcode.SMSG_GOSSIP_OPTION_NPC_INTERACTION, 0x500028 },
@@ -1629,7 +1629,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_PLAY_SPEAKERBOT_SOUND, 0x3C020F },
             { Opcode.SMSG_PLAY_SPELL_VISUAL, 0x520034 },
             { Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x520038 },
-            { Opcode.SMSG_PLAY_TIME_WARNING, 0x3C019D },
+            { Opcode.SMSG_PLAY_TIME_WARNING, 0x3C019D }, // NYI
             { Opcode.SMSG_PLAYED_TIME, 0x3C0174 },
             { Opcode.SMSG_PLAYER_ACKNOWLEDGE_ARROW_CALLOUT, 0x4F002D }, // NYI
             { Opcode.SMSG_PLAYER_AZERITE_ITEM_EQUIPPED_STATUS_CHANGED, 0x4F001F },
@@ -1809,7 +1809,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_SET_CURRENCY, 0x3C0008 },
             { Opcode.SMSG_SET_DF_FAST_LAUNCH_RESULT, 0x4A0012 },
             { Opcode.SMSG_SET_DUNGEON_DIFFICULTY, 0x3C0143 },
-            { Opcode.SMSG_SET_FACTION_AT_WAR, 0x3C019F },
+            { Opcode.SMSG_SET_FACTION_AT_WAR, 0x3C019F }, // NYI
             { Opcode.SMSG_SET_FACTION_NOT_VISIBLE, 0x3C01CA },
             { Opcode.SMSG_SET_FACTION_STANDING, 0x3C01CB },
             { Opcode.SMSG_SET_FACTION_VISIBLE, 0x3C01C9 },
@@ -1838,10 +1838,10 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_SHOW_TAXI_NODES, 0x3C016C },
             { Opcode.SMSG_SHOW_TRADE_SKILL_RESPONSE, 0x3C0214 },
             { Opcode.SMSG_SOCIAL_CONTRACT_REQUEST_RESPONSE, 0x3C031B },
-            { Opcode.SMSG_SOCKET_GEMS_FAILURE, 0x3C01C7 },
+            { Opcode.SMSG_SOCKET_GEMS_FAILURE, 0x3C01C7 }, // NYI
             { Opcode.SMSG_SOCKET_GEMS_SUCCESS, 0x3C01C6 },
             { Opcode.SMSG_SOR_START_EXPERIENCE_INCOMPLETE, 0x3C0077 }, // NYI
-            { Opcode.SMSG_SPEC_INVOLUNTARILY_CHANGED, 0x3C01B8 },
+            { Opcode.SMSG_SPEC_INVOLUNTARILY_CHANGED, 0x3C01B8 }, // NYI
             { Opcode.SMSG_SPECIAL_MOUNT_ANIM, 0x3C013E },
             { Opcode.SMSG_SPECTATE_END, 0x3C032F },
             { Opcode.SMSG_SPECTATE_PLAYER, 0x3C032E },

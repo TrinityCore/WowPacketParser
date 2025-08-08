@@ -123,5 +123,10 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("AreaTriggerID");
             packet.ReadBit("Entered");
         }
+
+        [Parser(Opcode.SMSG_AREA_TRIGGER_NO_CORPSE)]
+        public static void HandleAreaTriggerNull(Packet packet)
+        {
+        }
     }
 }

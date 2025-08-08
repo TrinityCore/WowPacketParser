@@ -216,5 +216,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("Target");
             packet.ReadPackedGuid128("ChangedBy");
         }
+
+        [Parser(Opcode.SMSG_MINIMAP_PING)]
+        public static void HandleServerMinimapPing(Packet packet)
+        {
+            packet.ReadPackedGuid128("Sender");
+            packet.ReadVector2("Position");
+        }
     }
 }

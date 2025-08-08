@@ -492,6 +492,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("PreviousArenaSeasonUsesTeams");
         }
 
+        [Parser(Opcode.SMSG_AREA_SPIRIT_HEALER_TIME)]
+        public static void HandleAreaSpiritHealerTime(Packet packet)
+        {
+            packet.ReadPackedGuid128("HealerGuid");
+            packet.ReadUInt32("TimeLeft");
+        }
+
         [Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]
         [Parser(Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED)]
         public static void HandleBattlegroundZero(Packet packet)

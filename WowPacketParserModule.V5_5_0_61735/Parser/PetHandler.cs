@@ -90,5 +90,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByte("Result");
             ReadPetRenameData(packet);
         }
+
+        [Parser(Opcode.SMSG_PET_GUIDS)]
+        public static void HandlePetGuids(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+            for (var i = 0; i < count; ++i)
+                packet.ReadPackedGuid128("PetGUID", i);
+        }
     }
 }
