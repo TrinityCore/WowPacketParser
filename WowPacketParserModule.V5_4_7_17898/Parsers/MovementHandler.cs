@@ -95,7 +95,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var dest = new Vector3();
 
             var ownerGUID = new byte[8];
-            var guid2 = new byte[8];
+            var transportGuid = new byte[8];
             var factingTargetGUID = new byte[8];
 
             dest.Y = packet.ReadSingle();
@@ -110,12 +110,12 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.AddValue("Destination", dest);
 
             ownerGUID[3] = packet.ReadBit();
-            var bit40 = !packet.ReadBit();
+            bool hasFlags = !packet.ReadBit();
             ownerGUID[6] = packet.ReadBit();
-            var bit45 = !packet.ReadBit();
-            var bit6D = !packet.ReadBit();
-            var splineType = packet.ReadBits(3);
-            var bit78 = !packet.ReadBit();
+            bool hasAnimTier = !packet.ReadBit();
+            var hasVehicleExitVoluntary = !packet.ReadBit();
+            var splineType = packet.ReadBits("Face", 3);
+            var hasVehicleSeat = !packet.ReadBit();
             ownerGUID[2] = packet.ReadBit();
             ownerGUID[7] = packet.ReadBit();
             ownerGUID[5] = packet.ReadBit();
@@ -123,36 +123,39 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             if (splineType == 3)
                 packet.StartBitStream(factingTargetGUID, 6, 7, 0, 5, 2, 3, 4, 1);
 
-            var bit58 = !packet.ReadBit();
+            bool hasSpecialTime = !packet.ReadBit();
             ownerGUID[4] = packet.ReadBit();
             var waypointCount = packet.ReadBits(22);
-            var bit4C = !packet.ReadBit();
+            bool hasElapsed = !packet.ReadBit();
             packet.ReadBit(); // fake bit
             ownerGUID[0] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
-            guid2[6] = packet.ReadBit();
-            guid2[5] = packet.ReadBit();
-            guid2[0] = packet.ReadBit();
-            guid2[1] = packet.ReadBit();
-            guid2[2] = packet.ReadBit();
-            guid2[4] = packet.ReadBit();
-            guid2[7] = packet.ReadBit();
-            var bit6C = !packet.ReadBit();
-            var bit54 = !packet.ReadBit();
+
+            transportGuid[3] = packet.ReadBit();
+            transportGuid[6] = packet.ReadBit();
+            transportGuid[5] = packet.ReadBit();
+            transportGuid[0] = packet.ReadBit();
+            transportGuid[1] = packet.ReadBit();
+            transportGuid[2] = packet.ReadBit();
+            transportGuid[4] = packet.ReadBit();
+            transportGuid[7] = packet.ReadBit();
+
+            bool hasMode = !packet.ReadBit();
+            var hasJumpGravity = !packet.ReadBit();
             var bit48 = !packet.ReadBit();
             var splineCount = (int)packet.ReadBits(20);
             ownerGUID[1] = packet.ReadBit();
-            var bitB0 = packet.ReadBit();
+            var hasSplineFilter = packet.ReadBit();
 
             var bits8C = 0u;
-            if (bitB0)
+            if (hasSplineFilter)
             {
                 bits8C = packet.ReadBits(22);
                 packet.ReadBits("SplineFilterFlags", 2);
             }
 
-            var bit38 = packet.ReadBit();
-            var bit50 = !packet.ReadBit();
+            packet.ReadBit("CrzTeleport");
+            var hasMoveTime = !packet.ReadBit();
+
             if (splineType == 3)
             {
                 packet.ParseBitStream(factingTargetGUID, 5, 3, 6, 1, 4, 2, 0, 7);
@@ -162,10 +165,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ReadXORByte(ownerGUID, 3);
 
-            packet.ParseBitStream(guid2, 7, 3, 2, 0, 6, 4, 5, 1);
+            packet.ParseBitStream(transportGuid, 7, 3, 2, 0, 6, 4, 5, 1);
 
 
-            if (bitB0)
+            if (hasSplineFilter)
             {
                 packet.ReadSingle("SplineFilterBaseSpeed");
 
@@ -180,21 +183,24 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt16("FilterAddedToStart");
             }
 
-            if (bit6D)
+            if (hasVehicleExitVoluntary)
                 packet.ReadByte("VehicleExitVoluntary");
 
             if (splineType == 4)
                 monsterMove.LookOrientation = packet.ReadSingle("Facing Angle");
 
-            if (bit40)
+            if (hasFlags)
                 packet.ReadInt32("Flags");
 
             packet.ReadXORByte(ownerGUID, 7);
-            if (bit78)
+
+            if (hasVehicleSeat)
                 packet.ReadByte("VehicleSeat");
-            if (bit4C)
+
+            if (hasElapsed)
                 packet.ReadInt32("Elapsed");
-            if (bit45)
+
+            if (hasAnimTier)
                 packet.ReadByte("AnimTier");
 
             var waypoints = new Vector3[waypointCount];
@@ -234,7 +240,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ReadXORByte(ownerGUID, 6);
 
-            if (bit50)
+            if (hasMoveTime)
                 packet.ReadInt32("MoveTime");
 
             if (splineType == 2)
@@ -242,15 +248,15 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 monsterMove.LookPosition = packet.ReadVector3("Facing Spot");
             }
 
-            if (bit54)
+            if (hasJumpGravity)
                 packet.ReadSingle("JumpGravity");
 
-            if (bit6C)
+            if (hasMode)
                 packet.ReadByte("Mode");
 
             packet.ReadXORByte(ownerGUID, 0);
 
-            if (bit58)
+            if (hasSpecialTime)
                 packet.ReadInt32("SpecialTime");
 
             packet.ReadXORByte(ownerGUID, 4);
@@ -273,7 +279,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
 
             monsterMove.Mover = packet.WriteGuid("Owner GUID", ownerGUID);
-            packet.WriteGuid("Transport GUID", guid2);
+            packet.WriteGuid("Transport GUID", transportGuid);
             monsterMove.Position = pos;
         }
 
