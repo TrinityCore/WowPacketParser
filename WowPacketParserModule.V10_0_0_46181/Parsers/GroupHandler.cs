@@ -45,5 +45,19 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                     break;
             }
         }
+
+        [Parser(Opcode.CMSG_PARTY_INVITE_RESPONSE, ClientVersionBuild.V10_1_7_51187)]
+        public static void HandlePartyInviteResponse(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadBit("Accept");
+            var hasRolesDesired = packet.ReadBit("HasRolesDesired");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+
+            if (hasRolesDesired)
+                packet.ReadByte("RolesDesired");
+        }
     }
 }
