@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -10,33 +11,33 @@ namespace WowPacketParser.Hotfix
         public static HotfixSettings Instance { get; } = new HotfixSettings();
 
         private HotfixSection Section => (HotfixSection)ConfigurationManager.GetSection("Hotfix");
-        private HotfixElementCollection Hashes => Section.FileHashes;
+        private IReadOnlySet<string> _hashes;
+
+        public void LoadHashes()
+        {
+            var enabledTables = new HashSet<string>();
+
+            foreach (HotfixElement sectionFileHash in Section.FileHashes)
+                if (sectionFileHash.Enabled)
+                    enabledTables.Add(sectionFileHash.FileHash);
+
+            _hashes = enabledTables;
+        }
 
         public bool ShouldLog(DB2Hash fileHash)
         {
-            for (var i = 0; i < Hashes.Count; ++i)
-            {
-                if (Settings.ParseAllHotfixes == true)
-                    return true;
+            if (Settings.ParseAllHotfixes)
+                return true;
 
-                var currentElement = Hashes[i];
-                if (currentElement.FileHash == fileHash.ToString())
-                    return currentElement.Enabled;
-            }
-            return false;
+            return _hashes.Contains(fileHash.ToString());
         }
 
         public bool ShouldLog()
         {
-            for (var i = 0; i < Hashes.Count; ++i)
-            {
-                if (Settings.ParseAllHotfixes == true)
-                    return true;
+            if (Settings.ParseAllHotfixes)
+                return true;
 
-                if (Hashes[i].Enabled)
-                    return true;
-            }
-            return false;
+            return _hashes.Count > 0;
         }
     }
 

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using WowPacketParser.Hotfix;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing.Parsers;
@@ -78,6 +79,8 @@ namespace WowPacketParser
                 Filters.Initialize();
 
             SQLConnector.ReadDB();
+
+            HotfixSettings.Instance.LoadHashes();
 
             List<Packets> parserPacketsList = new();
 
