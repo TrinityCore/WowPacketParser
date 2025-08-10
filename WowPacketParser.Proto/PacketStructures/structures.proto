@@ -753,6 +753,7 @@ message PacketQueryCreatureResponse {
   string nameAlt = 5;
   uint32 typeFlags = 6;
   uint32 typeFlags2 = 7;
+  uint32 typeFlags3 = 22;
   int32 type = 8;
   int32 family = 9;
   int32 rank = 10;

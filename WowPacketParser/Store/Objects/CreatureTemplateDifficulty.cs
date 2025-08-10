@@ -33,6 +33,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("TypeFlags2", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.SinceCataClassic)]
         public uint? TypeFlags2;
 
+        [DBFieldName("TypeFlags3", TargetedDatabaseFlag.SinceTheWarWithin)]
+        public uint? TypeFlags3;
+
         public bool WDBEqualsSkipDifficultySkipHealthScalingExpansion(CreatureTemplateDifficultyWDB rhs)
         {
             if (rhs == null)
@@ -43,7 +46,8 @@ namespace WowPacketParser.Store.Objects
                 Math.Abs(ManaModifier.Value - rhs.ManaModifier.Value) < 0.01f &&
                 CreatureDifficultyID == rhs.CreatureDifficultyID &&
                 TypeFlags == rhs.TypeFlags &&
-                TypeFlags2 == rhs.TypeFlags2;
+                TypeFlags2 == rhs.TypeFlags2 &&
+                TypeFlags3 == rhs.TypeFlags3;
         }
     }
 

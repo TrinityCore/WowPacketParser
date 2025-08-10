@@ -60,6 +60,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             creature.TypeFlags = packet.ReadUInt32E<CreatureTypeFlag>("Type Flags");
             response.TypeFlags = (uint?)creature.TypeFlags ?? 0;
             creature.TypeFlags2 = response.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213))
+                creature.TypeFlags3 = response.TypeFlags3 = packet.ReadUInt32("Creature Type Flags 3");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
             {
@@ -186,7 +188,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 ManaModifier = creature.ManaModifier,
                 CreatureDifficultyID = creature.CreatureDifficultyID,
                 TypeFlags = creature.TypeFlags,
-                TypeFlags2 = creature.TypeFlags2
+                TypeFlags2 = creature.TypeFlags2,
+                TypeFlags3 = creature.TypeFlags3
             };
             creatureTemplateDifficultyWDB = WowPacketParser.SQL.SQLDatabase.CheckCreatureTemplateDifficultyWDBFallbacks(creatureTemplateDifficultyWDB, creatureTemplateDifficultyWDB.DifficultyID);
             Storage.CreatureTemplateDifficultiesWDB.Add(creatureTemplateDifficultyWDB);

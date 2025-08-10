@@ -12,6 +12,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadInt32("TraitNodeEntryID", indexes);
             packet.ReadInt32("Rank", indexes);
             packet.ReadInt32("GrantedRanks", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213))
+                packet.ReadInt32("BonusRanks", indexes);
         }
 
         public static void ReadTraitSubTreeCache(Packet packet, params object[] indexes)
