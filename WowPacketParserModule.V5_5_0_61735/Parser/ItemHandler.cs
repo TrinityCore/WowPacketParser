@@ -189,5 +189,43 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32E<UnknownFlags>("ProficiencyMask");
             packet.ReadByteE<ItemClass>("ProficiencyClass");
         }
+
+        [Parser(Opcode.SMSG_ITEM_TIME_UPDATE)]
+        public static void HandleItemTimeUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadUInt32("DurationLeft");
+        }
+
+        [Parser(Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE)]
+        public static void HandleItemEnchantTimeUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item Guid");
+            packet.ReadUInt32("DurationLeft");
+            packet.ReadUInt32("Slot");
+            packet.ReadPackedGuid128("Player Guid");
+        }
+
+        [Parser(Opcode.SMSG_READ_ITEM_RESULT_OK)]
+        public static void HandleReadItemResultOk(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+        }
+
+        [Parser(Opcode.SMSG_READ_ITEM_RESULT_FAILED)]
+        public static void HandleReadItemResultFailed(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+            packet.ReadUInt32("Delay");
+            packet.ReadBits("Subcode", 2);
+        }
+
+        [Parser(Opcode.SMSG_ITEM_COOLDOWN)]
+        public static void HandleItemCooldown(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGuid");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("Cooldown");
+        }
     }
 }

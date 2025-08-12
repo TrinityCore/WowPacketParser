@@ -98,5 +98,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadPackedGuid128("PetGUID", i);
         }
+
+        [Parser(Opcode.SMSG_PET_ACTION_FEEDBACK)]
+        public static void HandlePetActionFeedback(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadByteE<PetFeedback>("Response");
+        }
     }
 }

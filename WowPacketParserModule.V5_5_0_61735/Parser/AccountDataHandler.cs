@@ -6,6 +6,27 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 {
     public static class AccountDataHandler
     {
+        public static void ReadAccountCharacterData(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("WowAccount", idx);
+            packet.ReadPackedGuid128("Guid", idx);
+            packet.ReadUInt32("VirtualRealmAddress", idx);
+            packet.ReadByteE<Race>("RaceID", idx);
+            packet.ReadByteE<Class>("ClassID", idx);
+            packet.ReadByteE<Gender>("SexID", idx);
+            packet.ReadByte("ExperienceLevel", idx);
+            packet.ReadTime64("LastActiveTime", idx);
+            packet.ReadInt32("ContentSetID", idx);
+
+            packet.ResetBitReader();
+
+            uint characterNameLength = packet.ReadBits(6);
+            uint realmNameLength = packet.ReadBits(9);
+
+            packet.ReadWoWString("CharacterName", characterNameLength, idx);
+            packet.ReadWoWString("RealmName", realmNameLength, idx);
+        }
+
         [Parser(Opcode.SMSG_CACHE_INFO)]
         public static void HandleCacheInfo(Packet packet)
         {
@@ -59,6 +80,20 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             for (var i = 0; i < 17; ++i)
                 packet.ReadTime64($"[{(AccountDataType)i}] Time", i);
+        }
+
+        [Parser(Opcode.SMSG_GET_ACCOUNT_CHARACTER_LIST_RESULT)]
+        public static void HandleGetAccountCharacterListResult(Packet packet)
+        {
+            packet.ReadUInt32("Token");
+            uint count = packet.ReadUInt32("CharactersCount");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("ConsoleCommand");
+
+            for (var i = 0; i < count; ++i)
+                ReadAccountCharacterData(packet, "Characters", i);
         }
 
         [Parser(Opcode.SMSG_LOGOUT_CANCEL_ACK)]

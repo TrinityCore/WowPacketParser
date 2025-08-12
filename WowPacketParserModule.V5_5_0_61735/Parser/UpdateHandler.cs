@@ -19,5 +19,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadInt32(byte20 == 1 ? "Unk3" : "Unk4", i);
             }
         }
+
+        [Parser(Opcode.SMSG_DESTROY_ARENA_UNIT)]
+        public static void HandleDestroyArenaUnit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
     }
 }

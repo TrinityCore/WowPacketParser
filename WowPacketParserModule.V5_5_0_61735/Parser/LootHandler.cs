@@ -165,6 +165,22 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("MainSpec");
         }
 
+        [Parser(Opcode.SMSG_LOOT_LIST)]
+        public static void HandleLootList(Packet packet)
+        {
+            packet.ReadPackedGuid128("Owner");
+            packet.ReadPackedGuid128("LootObj");
+
+            var hasMaster = packet.ReadBit("HasMaster");
+            var hasRoundRobin = packet.ReadBit("HasRoundRobinWinner");
+
+            if (hasMaster)
+                packet.ReadPackedGuid128("Master");
+
+            if (hasRoundRobin)
+                packet.ReadPackedGuid128("RoundRobinWinner");
+        }
+
         [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
         [Parser(Opcode.SMSG_LOOT_RELEASE_ALL)]
         public static void HandleLootZero(Packet packet)

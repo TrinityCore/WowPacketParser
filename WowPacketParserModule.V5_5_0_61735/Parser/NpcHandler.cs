@@ -347,5 +347,50 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadUInt32("TrainerFailedReason");
         }
+
+        [Parser(Opcode.SMSG_GOSSIP_POI)]
+        public static void HandleGossipPoi(Packet packet)
+        {
+            var protoPoi = packet.Holder.GossipPoi = new();
+            PointsOfInterest gossipPOI = new PointsOfInterest();
+
+            gossipPOI.ID = protoPoi.Id = packet.ReadInt32("ID");
+            gossipPOI.Flags = protoPoi.Flags = (uint)packet.ReadInt32("Flags");
+            Vector3 pos = packet.ReadVector3("Coordinates");
+            gossipPOI.PositionX = pos.X;
+            gossipPOI.PositionY = pos.Y;
+            gossipPOI.PositionZ = pos.Z;
+            protoPoi.Coordinates = new Vec2() { X = pos.X, Y = pos.Y };
+            protoPoi.Height = pos.Z;
+
+            gossipPOI.Icon = packet.ReadInt32E<GossipPOIIcon>("Icon");
+            gossipPOI.Importance = protoPoi.Importance = (uint)packet.ReadInt32("Importance");
+            protoPoi.Icon = (uint)gossipPOI.Icon;
+            gossipPOI.WMOGroupID = packet.ReadInt32("WMOGroupID");
+
+            packet.ResetBitReader();
+            uint bit84 = packet.ReadBits(6);
+            gossipPOI.Name = protoPoi.Name = packet.ReadWoWString("Name", bit84);
+
+            Storage.GossipPOIs.Add(gossipPOI, packet.TimeSpan);
+            CoreParsers.NpcHandler.UpdateTempGossipOptionActionPOI(packet.TimeSpan, gossipPOI.ID);
+        }
+
+        [Parser(Opcode.SMSG_COVENANT_PREVIEW_OPEN_NPC)]
+        public static void HandleGarrisonCovenantPreviewOpenNpc(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadInt32("CovenantID");
+        }
+
+        [Parser(Opcode.SMSG_RUNEFORGE_LEGENDARY_CRAFTING_OPEN_NPC)]
+        public static void HandleRuneforgeLegendaryCraftingOpenNpc(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadBit("IsUpgrade"); // Correct?
+
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
+        }
     }
 }

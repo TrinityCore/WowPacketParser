@@ -148,6 +148,39 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByteE<ResponseCode>("Code");
         }
 
+        [Parser(Opcode.SMSG_BATTLENET_CHALLENGE_START)]
+        public static void HandleBattlenetChallengeStart(Packet packet)
+        {
+            packet.ReadUInt32("Token");
+            var bits16 = packet.ReadBits(9);
+            packet.ReadWoWString("ChallengeURL", bits16);
+        }
+
+        [Parser(Opcode.SMSG_BATTLENET_CHALLENGE_ABORT)]
+        public static void HandleBattlenetChallengeAbort(Packet packet)
+        {
+            packet.ReadUInt32("Token");
+            packet.ReadBit("Timeout");
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_NET_CONNECTION_STATUS)]
+        public static void HandleBattleNetConnectionStatus(Packet packet)
+        {
+            packet.ReadBits("State", 2); // TODO: enum
+            packet.ReadBit("SuppressNotification");
+        }
+
+        [Parser(Opcode.SMSG_CHANGE_REALM_TICKET_RESPONSE)]
+        public static void HandleChangeRealmTicketResponse(Packet packet)
+        {
+            packet.ReadUInt32("Token");
+            packet.ResetBitReader();
+            packet.ReadBit("Allow");
+
+            int protoSize = packet.ReadInt32();
+            packet.ReadBytesTable("Ticket", protoSize);
+        }
+
         [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH)]
         public static void HandleSessionZero(Packet packet)
         {

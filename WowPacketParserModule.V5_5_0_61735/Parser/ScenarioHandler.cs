@@ -107,5 +107,26 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.SMSG_SCENARIO_VACATE)]
+        public static void HandleScenarioVacate(Packet packet)
+        {
+            packet.ReadPackedGuid128("ScenarioGUID");
+            packet.ReadInt32("ScenarioID");
+            packet.ReadInt32("TimeRemain");
+            packet.ReadBits("Reason", 2);
+        }
+
+        [Parser(Opcode.SMSG_SCENARIO_COMPLETED)]
+        public static void HandleScenarioCompleted(Packet packet)
+        {
+            packet.ReadInt32("ScenarioID");
+        }
+
+        [Parser(Opcode.SMSG_SCENARIO_SHOW_CRITERIA)]
+        public static void HandleScenarioShowCriteria(Packet packet)
+        {
+            packet.ReadBit("ShowCriteria");
+        }
     }
 }

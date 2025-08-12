@@ -52,5 +52,19 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             for (int i = 0; i < signaturesCount; i++)
                 ReadPetitionSignature(packet, i, "PetitionSignature");
         }
+
+        [Parser(Opcode.SMSG_PETITION_SIGN_RESULTS)]
+        public static void HandlePetitionSignResults(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+            packet.ReadPackedGuid128("Player");
+            packet.ReadBits("Error", 4);
+        }
+
+        [Parser(Opcode.SMSG_TURN_IN_PETITION_RESULT)]
+        public static void HandlePetitionTurnInResults(Packet packet)
+        {
+            packet.ReadBitsE<PetitionResultType>("Result", 4);
+        }
     }
 }

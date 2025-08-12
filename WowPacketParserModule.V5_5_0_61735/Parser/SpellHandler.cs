@@ -301,6 +301,49 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("PetBar");
         }
 
+        [Parser(Opcode.SMSG_MODIFY_COOLDOWN)]
+        public static void HandleModifyCooldown(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("DeltaTime");
+            packet.ReadBit("IsPet");
+            packet.ReadBit("WithoutCategoryCooldown");
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_CHARGE_CATEGORY_COOLDOWN)]
+        public static void HandleUpdateChargeCategoryCooldown(Packet packet)
+        {
+            packet.ReadInt32("Category");
+            packet.ReadSingle("ModChange");
+            packet.ReadSingle("ModRate");
+            packet.ReadBit("Snapshot");
+        }
+
+        [Parser(Opcode.SMSG_SHOW_TRADE_SKILL_RESPONSE)]
+        public static void HandleShowTradeSkillResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+
+            var int4 = packet.ReadInt32("SkillLineCount");
+            var int20 = packet.ReadInt32("SkillRankCount");
+            var int36 = packet.ReadInt32("SkillMaxRankCount");
+            var int52 = packet.ReadInt32("KnownAbilitySpellCount");
+
+            for (int i = 0; i < int4; i++)
+                packet.ReadInt32("SkillLineIDs", i);
+
+            for (int i = 0; i < int20; i++)
+                packet.ReadInt32("SkillRanks", i);
+
+            for (int i = 0; i < int36; i++)
+                packet.ReadInt32("SkillMaxRanks", i);
+
+            for (int i = 0; i < int52; i++)
+                packet.ReadInt32("KnownAbilitySpellIDs", i);
+        }
+
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         public static void HandleSpellEmpty(Packet packet)

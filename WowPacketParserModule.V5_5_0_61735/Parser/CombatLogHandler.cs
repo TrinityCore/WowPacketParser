@@ -81,7 +81,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
                 packet.ReadSingle("Unk Float", indexes);
-            
+
             ReadContentTuningParams(packet, indexes, "ContentTuning");
         }
 
@@ -96,6 +96,31 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("Size");
 
             ReadAttackRoundInfo(packet, "AttackRoundInfo");
+        }
+
+        [Parser(Opcode.SMSG_PARTY_KILL_LOG)]
+        public static void HandlePartyKillLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadPackedGuid128("VictimGUID");
+        }
+
+        [Parser(Opcode.SMSG_PROC_RESIST)]
+        public static void HandleProcResist(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("Target");
+
+            packet.ReadInt32<SpellId>("SpellID");
+
+            var bit20 = packet.ReadBit("HasRolled");    // unconfirmed order
+            var bit32 = packet.ReadBit("HasNeeded");    // unconfirmed order
+
+            if (bit20)
+                packet.ReadSingle("Rolled");            // unconfirmed order
+
+            if (bit32)
+                packet.ReadSingle("Needed");            // unconfirmed order
         }
     }
 }

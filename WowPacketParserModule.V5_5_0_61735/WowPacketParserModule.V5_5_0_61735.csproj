@@ -11,6 +11,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\WowPacketParserModule.Substructures\WowPacketParserModule.Substructures.csproj" />
+        <ProjectReference Include="..\WowPacketParserModule.V10_0_0_46181\WowPacketParserModule.V10_0_0_46181.csproj" />
         <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
             <Private>false</Private>
             <EmbedInteropTypes>false</EmbedInteropTypes>

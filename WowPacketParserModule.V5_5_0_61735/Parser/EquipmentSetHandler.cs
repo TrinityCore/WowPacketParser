@@ -55,5 +55,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadWoWString("SetIcon", setIconLen, i);
             }
         }
+
+        [Parser(Opcode.SMSG_USE_EQUIPMENT_SET_RESULT)]
+        public static void HandleUseEquipmentSetResult(Packet packet)
+        {
+            packet.ReadInt32("Reason");
+            packet.ReadUInt64("Guid");
+        }
     }
 }

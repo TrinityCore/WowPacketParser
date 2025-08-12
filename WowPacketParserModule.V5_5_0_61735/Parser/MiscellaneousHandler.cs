@@ -2,6 +2,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -706,6 +707,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         }
 
         [Parser(Opcode.SMSG_TRIGGER_MOVIE)]
+        [Parser(Opcode.SMSG_TRIGGER_CINEMATIC)]
         public static void HandleTriggerMovie(Packet packet)
         {
             packet.ReadInt32("CinematicID");
@@ -828,10 +830,106 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBits("Tier", 3);
         }
 
+        [Parser(Opcode.SMSG_DURABILITY_DAMAGE_DEATH)]
+        public static void HandleDurabilityDamageDeath(Packet packet)
+        {
+            packet.ReadInt32("Percent");
+        }
+
+        [Parser(Opcode.SMSG_EXPLORATION_EXPERIENCE)]
+        public static void HandleExplorationExperience(Packet packet)
+        {
+            packet.ReadUInt32<AreaId>("AreaID");
+            packet.ReadUInt32("Experience");
+        }
+
+        [Parser(Opcode.SMSG_PRE_RESSURECT)]
+        public static void HandlePreRessurect(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SOUND)]
+        public static void HandlePlaySound(Packet packet)
+        {
+            PacketPlaySound packetPlaySound = packet.Holder.PlaySound = new PacketPlaySound();
+            var sound = packetPlaySound.Sound = (uint)packet.ReadInt32<SoundId>("SoundKitID");
+            packetPlaySound.Source = packet.ReadPackedGuid128("SourceObjectGUID").ToUniversalGuid();
+            packetPlaySound.BroadcastTextId = (uint)packet.ReadInt32("BroadcastTextID");
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_PLAY_MUSIC)]
+        public static void HandlePlayMusic(Packet packet)
+        {
+            PacketPlayMusic packetMusic = packet.Holder.PlayMusic = new PacketPlayMusic();
+            uint sound = packetMusic.Music = packet.ReadUInt32<SoundId>("SoundKitID");
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_PLAY_OBJECT_SOUND)]
+        public static void HandlePlayObjectSound(Packet packet)
+        {
+            PacketPlayObjectSound packetSound = packet.Holder.PlayObjectSound = new PacketPlayObjectSound();
+            uint sound = packetSound.Sound = packet.ReadUInt32<SoundId>("SoundId");
+            packetSound.Source = packet.ReadPackedGuid128("SourceObjectGUID");
+            packetSound.Target = packet.ReadPackedGuid128("TargetObjectGUID");
+            packet.ReadVector3("Position");
+            packet.ReadInt32("BroadcastTextID");
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SPEAKERBOT_SOUND)]
+        public static void HandlePlaySpeakerbotSound(Packet packet)
+        {
+            packet.ReadPackedGuid128("SourceObjectGUID");
+            packet.ReadUInt32("SoundId");
+        }
+
+        [Parser(Opcode.SMSG_STOP_SPEAKERBOT_SOUND)]
+        public static void HandleStopSpeakerbotSound(Packet packet)
+        {
+            packet.ReadPackedGuid128("SourceObjectGUID");
+        }
+
+        [Parser(Opcode.SMSG_XP_GAIN_ENABLED)]
+        public static void HandleXpGainEnabled(Packet packet)
+        {
+            packet.ReadBit("Enabled");
+        }
+
+        [Parser(Opcode.SMSG_TUTORIAL_FLAGS)]
+        public static void HandleTutorialFlags(Packet packet)
+        {
+            for (var i = 0; i < 32; i++)
+                packet.ReadByte("TutorialData", i);
+        }
+
+        [Parser(Opcode.SMSG_DISPLAY_WORLD_TEXT)]
+        public static void HandleDisplayWorldText(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32("Arg1");
+            packet.ReadInt32("Arg2");
+            var length = packet.ReadBits("TextLength", 12);
+            packet.ReadWoWString("Text", length);
+        }
+
+        [Parser(Opcode.SMSG_ALLIED_RACE_DETAILS)]
+        public static void HandleAlliedRaceDetails(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadByteE<Race>("RaceID");
+        }
+
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
         [Parser(Opcode.SMSG_FISH_ESCAPED)]
+        [Parser(Opcode.SMSG_INVALID_PROMOTION_CODE)]
         public static void HandleMiscZero(Packet packet)
         {
         }

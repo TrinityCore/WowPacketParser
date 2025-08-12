@@ -143,7 +143,88 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("GroupSize");
         }
 
+        [Parser(Opcode.SMSG_INSTANCE_SAVE_CREATED)]
+        public static void HandleInstanceSaveCreated(Packet packet)
+        {
+            packet.ReadBit("Gm");
+        }
+
+        [Parser(Opcode.SMSG_RAID_DIFFICULTY_SET)]
+        public static void HandleSetRaidDifficulty(Packet packet)
+        {
+            packet.ReadInt32("Legacy");
+            packet.ReadInt32<DifficultyId>("DifficultyID");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_ENGAGE_UNIT)]
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_CHANGE_PRIORITY)]
+        public static void HandleInstanceEncounterChangePriority(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadByte("TargetFramePriority");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_DISENGAGE_UNIT)]
+        public static void HandleInstanceEncounterDisengageUnit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_TIMER_START)]
+        public static void HandleInstanceEncounterTimerStart(Packet packet)
+        {
+            packet.ReadInt32("TimeRemaining");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_OBJECTIVE_COMPLETE)]
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_OBJECTIVE_START)]
+        public static void HandleInstanceEncounterObjectiveComplete(Packet packet)
+        {
+            packet.ReadInt32("ObjectiveID");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_START)]
+        public static void HandleInstanceEncounterStart(Packet packet)
+        {
+            packet.ReadInt32("InCombatResCount");
+            packet.ReadInt32("MaxInCombatResCount");
+            packet.ReadInt32("CombatResChargeRecovery");
+            packet.ReadInt32("NextCombatResChargeTime");
+
+            packet.ResetBitReader();
+            packet.ReadBit("InProgress");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_UPDATE_SUPPRESS_RELEASE)]
+        public static void HandleInstanceEncounterUpdateSuppressRelease(Packet packet)
+        {
+            packet.ReadBit("ReleaseSuppressed");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_UPDATE_ALLOW_RELEASE_IN_PROGRESS)]
+        public static void HandleInstanceEncounterUpdateAllowReleaseInProgress(Packet packet)
+        {
+            packet.ReadBit("ReleaseAllowed");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_OBJECTIVE_UPDATE)]
+        public static void HandleInstanceEncounterObjectiveUpdate(Packet packet)
+        {
+            packet.ReadInt32("ObjectiveID");
+            packet.ReadInt32("ProgressAmount");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_GAIN_COMBAT_RESURRECTION_CHARGE)]
+        public static void HandleInstanceEncounterGainCombatResurrectionCharge(Packet packet)
+        {
+            packet.ReadInt32("InCombatResCount");
+            packet.ReadUInt32("CombatResChargeRecovery");
+        }
+
         [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_END)]
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_IN_COMBAT_RESURRECTION)]
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_PHASE_SHIFT_CHANGED)]
         public static void HandleInstanceZero(Packet packet)
         {
         }

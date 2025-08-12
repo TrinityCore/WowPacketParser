@@ -27,5 +27,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadVector3("Position");
             packet.ReadSingle("Facing");
         }
+
+        [Parser(Opcode.SMSG_CORPSE_RECLAIM_DELAY)]
+        public static void HandleCorpseReclaimDelay(Packet packet)
+        {
+            packet.ReadInt32("Delay");
+        }
     }
 }

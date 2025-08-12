@@ -56,5 +56,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadPackedGuid128("ObjectGUID");
         }
+
+        [Parser(Opcode.SMSG_GAME_OBJECT_SET_STATE_LOCAL)]
+        public static void HandleGameObjectSetStateLocal(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadByte("State");
+        }
     }
 }

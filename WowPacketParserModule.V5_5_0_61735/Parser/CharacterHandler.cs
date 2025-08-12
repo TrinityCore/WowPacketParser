@@ -4,6 +4,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using WowPacketParserModule.V5_5_0_61735.Enums;
 
 namespace WowPacketParserModule.V5_5_0_61735.Parsers
 {
@@ -595,6 +596,82 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadUInt32("PlayerPlayer", i, "ArenaTeamInspectData");
                 packet.ReadUInt32("PlayerRating", i, "ArenaTeamInspectData");
             }
+        }
+
+        [Parser(Opcode.SMSG_CHARACTER_RENAME_RESULT)]
+        public static void HandleServerCharRename(Packet packet)
+        {
+            packet.ReadByte("Result");
+
+            packet.ResetBitReader();
+            var hasGuid = packet.ReadBit("HasGuid");
+            var nameLength = packet.ReadBits(6);
+
+            if (hasGuid)
+                packet.ReadPackedGuid128("Guid");
+
+            packet.ReadWoWString("Name", nameLength);
+        }
+
+        [Parser(Opcode.SMSG_CHAR_FACTION_CHANGE_RESULT)]
+        public static void HandleCharFactionChangeResult(Packet packet)
+        {
+            packet.ReadByte("Result");
+            packet.ReadPackedGuid128("Guid");
+
+            packet.ResetBitReader();
+
+            var bit72 = packet.ReadBit("HasDisplayInfo");
+            if (bit72)
+            {
+                packet.ResetBitReader();
+                var nameLength = packet.ReadBits(6);
+
+                packet.ReadByte("SexID");
+                packet.ReadByte("RaceID");
+                var customizationCount = packet.ReadUInt32();
+                packet.ReadWoWString("Name", nameLength);
+
+                for (var j = 0u; j < customizationCount; ++j)
+                    ReadChrCustomizationChoice(packet, "Customizations", j);
+            }
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_CHARACTER_FLAGS)]
+        public static void HandleUpdateCharacterFlags(Packet packet)
+        {
+            var flags1 = packet.ReadBit();
+            var flags2 = packet.ReadBit();
+            var flags3 = packet.ReadBit();
+            var flags4 = packet.ReadBit();
+
+            if (flags1)
+                packet.ReadUInt32("Flags1");
+
+            if (flags2)
+                packet.ReadUInt32("Flags2");
+
+            if (flags3)
+                packet.ReadUInt32("Flags3");
+
+            if (flags4)
+                packet.ReadUInt32("Flags4");
+        }
+
+        [Parser(Opcode.SMSG_UNDELETE_CHARACTER_RESPONSE)]
+        public static void HandleUndeleteCharacterResponse(Packet packet)
+        {
+            packet.ReadInt32("ClientToken");
+            packet.ReadInt32E<CharacterUndeleteResult>("Result");
+            packet.ReadPackedGuid128("CharacterGuid");
+        }
+
+        [Parser(Opcode.SMSG_UNDELETE_COOLDOWN_STATUS_RESPONSE)]
+        public static void HandleUndeleteCooldownStatusResponse(Packet packet)
+        {
+            packet.ReadUInt32("MaxCooldown");
+            packet.ReadUInt32("CurrentCooldown");
+            packet.ReadBit("OnCooldown");
         }
 
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
