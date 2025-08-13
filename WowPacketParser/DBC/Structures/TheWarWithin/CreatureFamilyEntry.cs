@@ -14,6 +14,7 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public sbyte MaxScaleLevel;
         public short PetFoodMask;
         public sbyte PetTalentType;
+        public int CategoryEnumID;
         public int IconFileID;
         [Cardinality(2)]
         public short[] SkillLine = new short[2];

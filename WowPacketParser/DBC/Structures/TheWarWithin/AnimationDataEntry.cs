@@ -8,7 +8,7 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         [Index(true)]
         public uint ID;
         public ushort Fallback;
-        public byte BehaviorTier;
+        public sbyte BehaviorTier;
         public short BehaviorID;
         [Cardinality(2)]
         public int[] Flags = new int[2];
