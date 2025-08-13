@@ -462,6 +462,19 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("Reason");
         }
 
+        [Parser(Opcode.SMSG_BROADCAST_SUMMON_CAST)]
+        public static void HandleBroadcastSummonCast(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+        }
+
+        [Parser(Opcode.SMSG_BROADCAST_SUMMON_RESPONSE)]
+        public static void HandleBroadcastSummonResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+            packet.ReadBit("Accepted");
+        }
+
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
         public static void HandleGroupNull(Packet packet)
         {

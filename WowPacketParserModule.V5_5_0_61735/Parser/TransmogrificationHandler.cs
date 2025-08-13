@@ -28,5 +28,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             for (int i = 0; i < count; i++)
                 packet.ReadUInt32("ItemModifiedAppearanceId", "FavoriteAppearances", i);
         }
+
+        [Parser(Opcode.SMSG_ACCOUNT_COSMETIC_ADDED)]
+        public static void HandleAccountCosmeticAdded(Packet packet)
+        {
+            packet.ReadInt32("ItemModifiedAppearanceID");
+        }
     }
 }

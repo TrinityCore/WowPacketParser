@@ -67,5 +67,10 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             if (hasHonor)
                 packet.ReadInt32("Honor", idx);
         }
+
+        [Parser(Opcode.SMSG_PARTY_NOTIFY_LFG_LEADER_CHANGE)]
+        public static void HandleLfgZero(Packet packet)
+        {
+        }
     }
 }

@@ -113,5 +113,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadUInt32("AchievementID");
         }
+
+        [Parser(Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE)]
+        public static void HandleCriteriaUpdateAccount(Packet packet)
+        {
+            ReadCriteriaProgress(packet, "Progress");
+        }
     }
 }

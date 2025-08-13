@@ -27,6 +27,14 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadWoWString("RealmName", realmNameLength, idx);
         }
 
+        public static void ItemCollectionItemData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("ID", idx);
+            packet.ReadByte("Type", idx);
+            packet.ReadInt64("Unknown1110", idx);
+            packet.ReadInt32("Flags", idx);
+        }
+
         [Parser(Opcode.SMSG_CACHE_INFO)]
         public static void HandleCacheInfo(Packet packet)
         {
@@ -94,6 +102,20 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             for (var i = 0; i < count; ++i)
                 ReadAccountCharacterData(packet, "Characters", i);
+        }
+
+        [Parser(Opcode.SMSG_ACCOUNT_ITEM_COLLECTION_DATA)]
+        public static void HandleAccountItemCollectionData(Packet packet)
+        {
+            packet.ReadUInt32("Unknown1110_1");
+            packet.ReadByte("Type");
+            uint count = packet.ReadUInt32("ItemsCount");
+
+            for (var i = 0; i < count; ++i)
+                ItemCollectionItemData(packet, "Items", i);
+
+            packet.ResetBitReader();
+            packet.ReadBit("Unknown1110_2");
         }
 
         [Parser(Opcode.SMSG_LOGOUT_CANCEL_ACK)]

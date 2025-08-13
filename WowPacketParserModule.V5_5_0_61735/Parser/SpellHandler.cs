@@ -344,6 +344,14 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadInt32("KnownAbilitySpellIDs", i);
         }
 
+        [Parser(Opcode.SMSG_APPLY_MOUNT_EQUIPMENT_RESULT)]
+        public static void HandleApplyMountEquipmentResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+            packet.ReadInt32("ItemID");
+            packet.ReadBit("Result");
+        }
+
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         public static void HandleSpellEmpty(Packet packet)

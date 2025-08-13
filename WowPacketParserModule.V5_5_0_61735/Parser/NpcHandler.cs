@@ -392,5 +392,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             CoreParsers.NpcHandler.LastGossipOption.Reset();
             CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
         }
+
+        [Parser(Opcode.SMSG_NPC_INTERACTION_OPEN_RESULT)]
+        public static void HandleNpcInteractionOpenResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32("InteractionType");
+            packet.ReadBit("Success");
+        }
     }
 }

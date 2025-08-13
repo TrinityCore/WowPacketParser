@@ -181,6 +181,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadPackedGuid128("RoundRobinWinner");
         }
 
+        [Parser(Opcode.SMSG_LEGACY_LOOT_RULES)]
+        public static void HandleLegacyLootRules(Packet packet)
+        {
+            packet.ReadBit("LegacyRulesActive");
+        }
+
         [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
         [Parser(Opcode.SMSG_LOOT_RELEASE_ALL)]
         public static void HandleLootZero(Packet packet)

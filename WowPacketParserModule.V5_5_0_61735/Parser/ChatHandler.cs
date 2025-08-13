@@ -160,5 +160,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packetEmote.Emote = (int)emote;
             packetEmote.Sender = guid.ToUniversalGuid();
         }
+
+        [Parser(Opcode.SMSG_UPDATE_AADC_STATUS_RESPONSE)]
+        public static void HandleUpdateAadcStatusResponse(Packet packet)
+        {
+            packet.ResetBitReader();
+            packet.ReadBit("Success");
+            packet.ReadBit("ChatDisabled");
+        }
     }
 }

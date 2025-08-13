@@ -64,5 +64,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("TrophyID");
             packet.ReadBit("Success");
         }
+
+        [Parser(Opcode.SMSG_COVENANT_RENOWN_SEND_CATCHUP_STATE)]
+        public static void HandleGarrisonCovenantRenownSendCatchupState(Packet packet)
+        {
+            packet.ReadBit("CatchupState");
+        }
     }
 }

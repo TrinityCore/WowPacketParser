@@ -116,6 +116,47 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             Substructures.ItemHandler.ReadItemInstance(packet, idx, "Item");
         }
 
+        public static void ReadBucketInfo(Packet packet, int index)
+        {
+            ReadAuctionBucketKey(packet, index, "Key");
+
+            packet.ReadInt32("TotalQuantity", index);
+            packet.ReadInt32("RequiredLevel", index);
+            packet.ReadUInt64("MinPrice", index);
+            var itemModifiedAppearanceIDsCount = packet.ReadUInt32();
+            for (var i = 0u; i < itemModifiedAppearanceIDsCount; ++i)
+                packet.ReadInt32("ItemModifiedAppearanceID", index, i);
+
+            packet.ResetBitReader();
+            var hasMaxBattlePetQuality = packet.ReadBit();
+            var hasMaxBattlePetLevel = packet.ReadBit();
+            var hasBattlePetBreedID = packet.ReadBit();
+            var hasBattlePetLevelMask = packet.ReadBit();
+            packet.ReadBit("ContainsOwnerItem", index);
+            packet.ReadBit("ContainsOnlyCollectedAppearances", index);
+
+            if (hasMaxBattlePetQuality)
+                packet.ReadByte("MaxBattlePetQuality", index);
+
+            if (hasMaxBattlePetLevel)
+                packet.ReadByte("MaxBattlePetLevel", index);
+
+            if (hasBattlePetBreedID)
+                packet.ReadByte("BattlePetBreedID", index);
+
+            if (hasBattlePetLevelMask)
+                packet.ReadUInt32("BattlePetLevelMask", index);
+        }
+
+        public static void ReadAuctionFavoriteInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("Order", idx);
+            packet.ReadUInt32("ItemID", idx);
+            packet.ReadUInt32("ItemLevel", idx);
+            packet.ReadUInt32("BattlePetSpeciesID", idx);
+            packet.ReadUInt32("SuffixItemNameDescriptionID", idx);
+        }
+
         [Parser(Opcode.SMSG_AUCTION_HELLO_RESPONSE)]
         public static void HandleServerAuctionHello(Packet packet)
         {
@@ -187,6 +228,92 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             packet.ReadUInt64("MinIncrement");
             packet.ReadPackedGuid128("Bidder");
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_LIST_BUCKETS_RESULT)]
+        public static void HandleAuctionListBucketsResult(Packet packet)
+        {
+            var bucketCount = packet.ReadUInt32();
+            packet.ReadUInt32("DesiredDelay");
+            packet.ReadInt32("Unknown830_0");
+            packet.ReadInt32("Unknown830_1");
+            packet.ReadBit("BrowseMode");
+            packet.ReadBit("HasMoreResults");
+
+            for (var i = 0; i < bucketCount; ++i)
+                ReadBucketInfo(packet, i);
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_LIST_ITEMS_RESULT)]
+        public static void HandleListItemsResult(Packet packet)
+        {
+            var itemsCount = packet.ReadInt32("ItemsCount");
+            packet.ReadInt32("Unknown830");
+            packet.ReadInt32("DesiredDelay");
+
+            for (var i = 0; i < itemsCount; i++)
+                ReadCliAuctionItem(packet, i);
+
+            packet.ResetBitReader();
+            packet.ReadBits("ListType", 2);
+            packet.ReadBit("HasMoreResults");
+            ReadAuctionBucketKey(packet, "BucketKey");
+            packet.ReadUInt32("TotalCount");
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_LIST_OWNED_ITEMS_RESULT)]
+        public static void HandleAuctionListOwnedItemsResult(Packet packet)
+        {
+            var itemsCount = packet.ReadInt32();
+            var soldItemsCount = packet.ReadInt32();
+            packet.ReadUInt32("DesiredDelay");
+            packet.ReadBit("HasMoreResults");
+
+            for (var i = 0; i < itemsCount; ++i)
+                ReadCliAuctionItem(packet, "Items", i);
+
+            for (var i = 0; i < soldItemsCount; ++i)
+                ReadCliAuctionItem(packet, "SoldItems", i);
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_LIST_BIDDED_ITEMS_RESULT)]
+        public static void HandleAuctionListBiddedItemsResult(Packet packet)
+        {
+            var itemsCount = packet.ReadInt32();
+            packet.ReadUInt32("DesiredDelay");
+            packet.ReadBit("HasMoreResults");
+
+            for (var i = 0; i < itemsCount; ++i)
+                ReadCliAuctionItem(packet, "Items", i);
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_GET_COMMODITY_QUOTE_RESULT)]
+        public static void HandleAuctionHouseGetCommodityQuoteResult(Packet packet)
+        {
+            var hasTotalPrice = packet.ReadBit();
+            var hasQuantity = packet.ReadBit();
+            var hasQuoteDuration = packet.ReadBit();
+            packet.ReadInt32("ItemID");
+            packet.ReadUInt32("DesiredDelay");
+
+            if (hasTotalPrice)
+                packet.ReadUInt64("TotalPrice");
+
+            if (hasQuantity)
+                packet.ReadUInt32("Quantity");
+
+            if (hasQuoteDuration)
+                packet.ReadInt64("QuoteDuration");
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_FAVORITE_LIST)]
+        public static void HandleAuctionFavoriteList(Packet packet)
+        {
+            packet.ReadUInt32("DesiredDelay");
+            var itemsCount = packet.ReadBits(7);
+
+            for (var i = 0; i < itemsCount; ++i)
+                ReadAuctionFavoriteInfo(packet, "FavoriteInfo", i);
         }
     }
 }

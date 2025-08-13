@@ -181,6 +181,15 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBytesTable("Ticket", protoSize);
         }
 
+        [Parser(Opcode.SMSG_UPDATE_BNET_SESSION_KEY)]
+        public static void HandleUpdateBnetSessionKey(Packet packet)
+        {
+            var sessionKeyLength = (int)packet.ReadBits(7);
+
+            packet.ReadBytes("Digest", 32);
+            packet.ReadBytes("SessionKey", sessionKeyLength);
+        }
+
         [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH)]
         public static void HandleSessionZero(Packet packet)
         {

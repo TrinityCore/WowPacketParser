@@ -925,6 +925,18 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByteE<Race>("RaceID");
         }
 
+        [Parser(Opcode.SMSG_SPLASH_SCREEN_SHOW_LATEST)]
+        public static void HandleSplashScreenShowLastest(Packet packet)
+        {
+            packet.ReadInt32("SplashScreenID");
+        }
+
+        [Parser(Opcode.SMSG_SOCIAL_CONTRACT_REQUEST_RESPONSE)]
+        public static void HandleSocialContractRequestResponse(Packet packet)
+        {
+            packet.ReadBit("ShowSocialContract");
+        }
+
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
