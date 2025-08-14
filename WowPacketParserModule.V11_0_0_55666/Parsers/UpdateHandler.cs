@@ -657,9 +657,12 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         if (hasAnimationTierTransition)
                         {
                             packet.ReadInt32("TierTransitionID", index);
+                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213))
+                                packet.ReadByte("AnimTier", index);
                             packet.ReadInt32("StartTime", index);
                             packet.ReadInt32("EndTime", index);
-                            packet.ReadByte("AnimTier", index);
+                            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_2_0_62213))
+                                packet.ReadByte("AnimTier", index);
                         }
 
                         if (hasUnknown901)

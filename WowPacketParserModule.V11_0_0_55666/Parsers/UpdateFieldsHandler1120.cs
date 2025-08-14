@@ -6338,11 +6338,11 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_0_62213
             var data = new AreaTriggerSplineCalculator();
             packet.ResetBitReader();
             data.Points.Resize(packet.ReadBits(16));
+            data.Catmullrom = packet.ReadBit("Catmullrom", indexes);
             for (var i = 0; i < data.Points.Count; ++i)
             {
                 data.Points[i] = packet.ReadVector3("Points", indexes, i);
             }
-            data.Catmullrom = packet.ReadBit("Catmullrom", indexes);
             return data;
         }
 

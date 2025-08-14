@@ -29,5 +29,12 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             packet.ReadByteE<MirrorTimerType>("Timer");
         }
+
+        [Parser(Opcode.SMSG_SET_ANIM_TIER, ClientVersionBuild.V11_2_0_62213)]
+        public static void HandleSetAnimTier(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadByte("Tier");
+        }
     }
 }
