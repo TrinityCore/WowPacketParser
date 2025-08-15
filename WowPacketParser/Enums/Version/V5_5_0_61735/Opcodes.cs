@@ -1365,30 +1365,30 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_LEVEL_UP_INFO, 0x3C0188 },
             { Opcode.SMSG_LFG_BOOT_PLAYER, 0x4A0019 },
             { Opcode.SMSG_LFG_DISABLED, 0x4A0017 },
-            { Opcode.SMSG_LFG_EXPAND_SEARCH_PROMPT, 0x4A001F },
+            { Opcode.SMSG_LFG_EXPAND_SEARCH_PROMPT, 0x4A001F }, // NYI
             { Opcode.SMSG_LFG_INSTANCE_SHUTDOWN_COUNTDOWN, 0x4A0009 },
-            { Opcode.SMSG_LFG_JOIN_LOBBY_MATCHMAKER_QUEUE, 0x4A0020 },
+            { Opcode.SMSG_LFG_JOIN_LOBBY_MATCHMAKER_QUEUE, 0x4A0020 }, // NYI
             { Opcode.SMSG_LFG_JOIN_RESULT, 0x4A0000 },
-            { Opcode.SMSG_LFG_LIST_APPLICANT_LIST_UPDATE, 0x4A000F },
-            { Opcode.SMSG_LFG_LIST_APPLICATION_STATUS_UPDATE, 0x4A000C },
-            { Opcode.SMSG_LFG_LIST_APPLY_TO_GROUP_RESULT, 0x4A000D },
+            { Opcode.SMSG_LFG_LIST_APPLICANT_LIST_UPDATE, 0x4A000F }, // NYI
+            { Opcode.SMSG_LFG_LIST_APPLICATION_STATUS_UPDATE, 0x4A000C }, // NYI
+            { Opcode.SMSG_LFG_LIST_APPLY_TO_GROUP_RESULT, 0x4A000D }, // NYI
             { Opcode.SMSG_LFG_LIST_JOIN_RESULT, 0x4A0001 },
-            { Opcode.SMSG_LFG_LIST_SEARCH_RESULTS, 0x4A0002 },
-            { Opcode.SMSG_LFG_LIST_SEARCH_RESULTS_UPDATE, 0x4A0010 },
+            { Opcode.SMSG_LFG_LIST_SEARCH_RESULTS, 0x4A0002 }, // NYI
+            { Opcode.SMSG_LFG_LIST_SEARCH_RESULTS_UPDATE, 0x4A0010 }, // NYI
             { Opcode.SMSG_LFG_LIST_SEARCH_STATUS, 0x4A0003 },
             { Opcode.SMSG_LFG_LIST_UPDATE_BLACKLIST, 0x4A000E },
             { Opcode.SMSG_LFG_LIST_UPDATE_EXPIRATION, 0x4A000B },
-            { Opcode.SMSG_LFG_LIST_UPDATE_STATUS, 0x4A000A },
+            { Opcode.SMSG_LFG_LIST_UPDATE_STATUS, 0x4A000A }, // NYI
             { Opcode.SMSG_LFG_OFFER_CONTINUE, 0x4A0018 },
             { Opcode.SMSG_LFG_PARTY_INFO, 0x4A001A },
             { Opcode.SMSG_LFG_PLAYER_INFO, 0x4A001B },
             { Opcode.SMSG_LFG_PLAYER_REWARD, 0x4A001C },
             { Opcode.SMSG_LFG_PROPOSAL_UPDATE, 0x4A0011 },
             { Opcode.SMSG_LFG_QUEUE_STATUS, 0x4A0004 },
-            { Opcode.SMSG_LFG_READY_CHECK_RESULT, 0x4A001E },
-            { Opcode.SMSG_LFG_READY_CHECK_UPDATE, 0x4A0006 },
+            { Opcode.SMSG_LFG_READY_CHECK_RESULT, 0x4A001E }, // NYI
+            { Opcode.SMSG_LFG_READY_CHECK_UPDATE, 0x4A0006 }, // NYI
             { Opcode.SMSG_LFG_ROLE_CHECK_UPDATE, 0x4A0005 },
-            { Opcode.SMSG_LFG_SLOT_INVALID, 0x4A0014 },
+            { Opcode.SMSG_LFG_SLOT_INVALID, 0x4A0014 }, // NYI
             { Opcode.SMSG_LFG_TELEPORT_DENIED, 0x4A0016 },
             { Opcode.SMSG_LFG_UPDATE_STATUS, 0x4A0008 },
             { Opcode.SMSG_LIVE_REGION_ACCOUNT_RESTORE_RESULT, 0x3C0212 }, // NYI
@@ -1807,7 +1807,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_SET_ANIM_TIER, 0x3C01D3 },
             { Opcode.SMSG_SET_CHR_UPGRADE_TIER, 0x3C0079 }, // NYI
             { Opcode.SMSG_SET_CURRENCY, 0x3C0008 },
-            { Opcode.SMSG_SET_DF_FAST_LAUNCH_RESULT, 0x4A0012 },
+            { Opcode.SMSG_SET_DF_FAST_LAUNCH_RESULT, 0x4A0012 }, // NYI
             { Opcode.SMSG_SET_DUNGEON_DIFFICULTY, 0x3C0143 },
             { Opcode.SMSG_SET_FACTION_AT_WAR, 0x3C019F }, // NYI
             { Opcode.SMSG_SET_FACTION_NOT_VISIBLE, 0x3C01CA },
