@@ -2788,6 +2788,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.AnimationDataHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.AnimationDataHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AnimationDataHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AnimationDataHotfixes1120, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.AnimKitHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.AnimKitHotfixes1100, Settings.HotfixesDatabase);
@@ -3012,11 +3019,32 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.BankBagSlotPricesHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.BankTabHotfixes1100.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BankTabHotfixes1100, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BankTabHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BankTabHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BankTabHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BankTabHotfixes1120, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.BannedAddonsHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.BannedAddonsHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.BannedAddonsHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BannedAddonsHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BannedAddonsHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BannedAddonsHotfixes1120, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.BarberShopStyleHotfixes1100.IsEmpty())
@@ -3131,6 +3159,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.CfgRegionsHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.CfgRegionsHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CfgRegionsHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CfgRegionsHotfixes1120, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ChallengeModeItemBonusOverrideHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ChallengeModeItemBonusOverrideHotfixes1100, Settings.HotfixesDatabase);
@@ -3164,6 +3199,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.CharTitlesHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.CharTitlesHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CharTitlesHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CharTitlesHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CharTitlesHotfixes1120, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.CharacterLoadoutHotfixes1100.IsEmpty())
@@ -3227,6 +3269,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ChrClassesHotfixes1115, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ChrClassesHotfixes1115, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrClassesHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrClassesHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrClassesHotfixes1120, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ChrClassesXPowerTypesHotfixes1100.IsEmpty())
@@ -3439,6 +3488,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.CreatureFamilyHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.CreatureFamilyHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureFamilyHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureFamilyHotfixes1120, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.CreatureLabelHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.CreatureLabelHotfixes1100, Settings.HotfixesDatabase);
@@ -3612,6 +3668,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ExpectedStatHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ExpectedStatHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ExpectedStatHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ExpectedStatHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ExpectedStatHotfixes1120, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ExpectedStatModHotfixes1100.IsEmpty())
@@ -3936,6 +3999,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ItemHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ItemHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemHotfixes1120, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ItemAppearanceHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ItemAppearanceHotfixes1100, Settings.HotfixesDatabase);
@@ -4195,6 +4265,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ItemSetSpellHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ItemSetSpellHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSetSpellHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSetSpellHotfixes1120, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ItemSparseHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ItemSparseHotfixes1100, Settings.HotfixesDatabase);
@@ -4375,6 +4452,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.MapChallengeModeHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.MapChallengeModeHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MapChallengeModeHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapChallengeModeHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapChallengeModeHotfixes1120, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.MapDifficultyHotfixes1100.IsEmpty())
@@ -5007,6 +5091,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.SpellCategoryHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.SpellCategoryHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellCategoryHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellCategoryHotfixes1120, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.SpellClassOptionsHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.SpellClassOptionsHotfixes1100, Settings.HotfixesDatabase);
@@ -5054,6 +5145,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.SpellEquippedItemsHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.SpellEquippedItemsHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellEquippedItemsHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellEquippedItemsHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellEquippedItemsHotfixes1120, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.SpellFocusObjectHotfixes1100.IsEmpty())
@@ -5264,6 +5362,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.SpellVisualKitHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.SpellVisualKitHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellVisualKitHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellVisualKitHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellVisualKitHotfixes1120, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.SpellXSpellVisualHotfixes1100.IsEmpty())
@@ -5637,6 +5742,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.UnitPowerBarHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.UnitPowerBarHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UnitPowerBarHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UnitPowerBarHotfixes1120, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.VehicleHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.VehicleHotfixes1100, Settings.HotfixesDatabase);
@@ -5684,6 +5796,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.WarbandSceneHotfixes1110, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.WarbandSceneHotfixes1110, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.WarbandSceneHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.WarbandSceneHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.WarbandSceneHotfixes1120, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.WmoAreaTableHotfixes1100.IsEmpty())
@@ -11363,6 +11482,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.CharTitlesHotfixesLocale1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.CharTitlesHotfixesLocale1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CharTitlesHotfixesLocale1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CharTitlesHotfixesLocale1120, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ChatChannelsHotfixesLocale1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ChatChannelsHotfixesLocale1100, Settings.HotfixesDatabase);
@@ -11396,6 +11522,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ChrClassesHotfixesLocale1115, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ChrClassesHotfixesLocale1115, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrClassesHotfixesLocale1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrClassesHotfixesLocale1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrClassesHotfixesLocale1120, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ChrCustomizationChoiceHotfixesLocale1100.IsEmpty())
@@ -11459,6 +11592,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.CreatureFamilyHotfixesLocale1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.CreatureFamilyHotfixesLocale1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CreatureFamilyHotfixesLocale1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureFamilyHotfixesLocale1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureFamilyHotfixesLocale1120, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.CreatureTypeHotfixesLocale1100.IsEmpty())
@@ -11790,6 +11930,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.MapChallengeModeHotfixesLocale1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.MapChallengeModeHotfixesLocale1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapChallengeModeHotfixesLocale1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapChallengeModeHotfixesLocale1120, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.MapDifficultyHotfixesLocale1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.MapDifficultyHotfixesLocale1100, Settings.HotfixesDatabase);
@@ -11956,6 +12103,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.SpellCategoryHotfixesLocale1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.SpellCategoryHotfixesLocale1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellCategoryHotfixesLocale1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellCategoryHotfixesLocale1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellCategoryHotfixesLocale1120, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.SpellFocusObjectHotfixesLocale1100.IsEmpty())
@@ -12126,6 +12280,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.UnitPowerBarHotfixesLocale1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.UnitPowerBarHotfixesLocale1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UnitPowerBarHotfixesLocale1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UnitPowerBarHotfixesLocale1120, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.VignetteHotfixesLocale1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.VignetteHotfixesLocale1100, Settings.HotfixesDatabase);
@@ -12145,6 +12306,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.WarbandSceneHotfixesLocale1110, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.WarbandSceneHotfixesLocale1110, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.WarbandSceneHotfixesLocale1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.WarbandSceneHotfixesLocale1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.WarbandSceneHotfixesLocale1120, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.WmoAreaTableHotfixesLocale1100.IsEmpty())
