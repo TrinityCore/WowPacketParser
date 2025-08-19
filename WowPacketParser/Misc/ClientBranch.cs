@@ -13,5 +13,6 @@ namespace WowPacketParser.Misc
         TBC     = 2,
         WotLK   = 3,
         Cata    = 4,
+        MoP     = 5,
     }
 }

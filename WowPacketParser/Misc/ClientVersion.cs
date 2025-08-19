@@ -1668,6 +1668,8 @@ namespace WowPacketParser.Misc
                 return ClientBranch.WotLK;
             if (IsCataClientVersionBuild(build))
                 return ClientBranch.Cata;
+            if (IsMoPClassicClientVersionBuild(build))
+                return ClientBranch.MoP;
 
             return ClientBranch.Retail;
         }
