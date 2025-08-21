@@ -61,9 +61,7 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.conversation_line_template))
                 return string.Empty;
 
-            var hotfixes = SQLDatabase.Get(Storage.BroadcastTextDurationHotfixesServerside, Settings.HotfixesDatabase);
-
-            return SQLUtil.Compare(Storage.BroadcastTextDurationHotfixesServerside, hotfixes, StoreNameType.None);
+            return SQLUtil.Compare(Storage.BroadcastTextDurationHotfixesServerside, new RowList<BroadcastTextDurationHotfixServerside>(), StoreNameType.None);
         }
 
         [BuilderMethod]
