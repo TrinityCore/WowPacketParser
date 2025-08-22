@@ -2866,8 +2866,8 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_1_7_61491
         {
             var data = new CompletedProject();
             packet.ResetBitReader();
-            data.ProjectID = packet.ReadUInt32("ProjectID", indexes);
             data.FirstCompleted = packet.ReadInt64("FirstCompleted", indexes);
+            data.ProjectID = packet.ReadUInt32("ProjectID", indexes);
             data.CompletionCount = packet.ReadUInt32("CompletionCount", indexes);
             return data;
         }
@@ -2885,11 +2885,11 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_1_7_61491
             {
                 if (changesMask[1])
                 {
-                    data.ProjectID = packet.ReadUInt32("ProjectID", indexes);
+                    data.FirstCompleted = packet.ReadInt64("FirstCompleted", indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.FirstCompleted = packet.ReadInt64("FirstCompleted", indexes);
+                    data.ProjectID = packet.ReadUInt32("ProjectID", indexes);
                 }
                 if (changesMask[3])
                 {

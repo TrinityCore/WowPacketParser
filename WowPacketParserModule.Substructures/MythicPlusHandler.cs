@@ -78,6 +78,9 @@ namespace WowPacketParserModule.Substructures
             else
                 packet.ReadInt32("RunScore", indexes);
 
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_2_0_62213))
+                packet.ReadInt32("Unknown_1120", indexes);
+
             for (var i = 0u; i < memberCount; ++i)
                 ReadMythicPlusMember(packet, indexes, i, "Member");
 

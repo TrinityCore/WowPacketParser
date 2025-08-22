@@ -2975,8 +2975,8 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_0_62213
         {
             var data = new CompletedProject();
             packet.ResetBitReader();
-            data.ProjectID = packet.ReadUInt32("ProjectID", indexes);
             data.FirstCompleted = packet.ReadInt64("FirstCompleted", indexes);
+            data.ProjectID = packet.ReadUInt32("ProjectID", indexes);
             data.CompletionCount = packet.ReadUInt32("CompletionCount", indexes);
             return data;
         }
@@ -2994,11 +2994,11 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_0_62213
             {
                 if (changesMask[1])
                 {
-                    data.ProjectID = packet.ReadUInt32("ProjectID", indexes);
+                    data.FirstCompleted = packet.ReadInt64("FirstCompleted", indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.FirstCompleted = packet.ReadInt64("FirstCompleted", indexes);
+                    data.ProjectID = packet.ReadUInt32("ProjectID", indexes);
                 }
                 if (changesMask[3])
                 {
@@ -6802,7 +6802,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_0_62213
             {
                 data.Box = ReadCreateAreaTriggerBox(packet, indexes, "Box");
             }
-            if (data.ShapeType == 3)
+            if (data.ShapeType == 2 || data.ShapeType == 3 || data.ShapeType == 5 || data.ShapeType == 6)
             {
                 data.Polygon = ReadCreateAreaTriggerPolygon(packet, indexes, "Polygon");
             }
@@ -6987,7 +6987,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_0_62213
                     {
                         data.Box = ReadUpdateAreaTriggerBox(packet, indexes, "Box");
                     }
-                    if (data.ShapeType == 3)
+                    if (data.ShapeType == 2 || data.ShapeType == 3 || data.ShapeType == 5 || data.ShapeType == 6)
                     {
                         data.Polygon = ReadUpdateAreaTriggerPolygon(packet, indexes, "Polygon");
                     }
