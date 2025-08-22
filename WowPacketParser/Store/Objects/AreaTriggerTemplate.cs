@@ -17,7 +17,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Type", TargetedDatabaseFlag.Shadowlands)] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
         public byte? Type;
 
-        [DBFieldName("Flags")]
+        [DBFieldName("Flags", TargetedDatabaseFlag.Shadowlands)] // Dragonflight and up changed the meaning of this field, no longer updated by WPP
         public uint? Flags;
 
         [DBFieldName("Data", TargetedDatabaseFlag.Shadowlands, 8, true)] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers

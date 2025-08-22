@@ -370,6 +370,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                     AreaTriggerHandler.ProcessAreaTriggerSpline(createProperties, createProperties.AreaTriggerData, packet, index);
                 else if (createProperties.AreaTriggerData.Orbit != null)
                     AreaTriggerHandler.ProcessAreaTriggerOrbit(createProperties, createProperties.AreaTriggerData, packet, index);
+
+                Storage.AreaTriggerTemplates.Add(areaTriggerTemplate);
             }
 
             // If this is the second time we see the same object (same guid,
