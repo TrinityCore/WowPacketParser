@@ -37,6 +37,47 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 ReadVignetteData(packet, idx, "Data", i);
         }
 
+        public static void ReadMovementForce(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("ID", idx);
+            packet.ReadVector3("Origin", idx);
+            packet.ReadVector3("Direction", idx);
+            packet.ReadUInt32("TransportID", idx);
+            packet.ReadSingle("Magnitude", idx);
+            packet.ReadInt32("MovementForceID", idx);
+            packet.ReadInt32("Unknown1110_1", idx);
+            packet.ReadInt32("Unknown1110_2", idx);
+            packet.ReadUInt32("Flags", idx);
+
+            packet.ResetBitReader();
+            packet.ReadBitsE<MovementForceType>("Type", 2, idx);
+        }
+
+        public static void ReadMonsterSplineSpellEffectExtraData(Packet packet, params object[] indexes)
+        {
+            packet.ReadPackedGuid128("TargetGUID", indexes);
+            packet.ReadUInt32("SpellVisualID", indexes);
+            packet.ReadUInt32("ProgressCurveID", indexes);
+            packet.ReadUInt32("ParabolicCurveID", indexes);
+            packet.ReadSingle("JumpGravity", indexes);
+        }
+
+        public static SplineJump ReadMonsterSplineJumpExtraData(Packet packet, params object[] indexes)
+        {
+            SplineJump jump = new();
+            jump.Gravity = packet.ReadSingle("JumpGravity", indexes);
+            jump.StartTime = packet.ReadUInt32("StartTime", indexes);
+            jump.Duration = packet.ReadUInt32("Duration", indexes);
+            return jump;
+        }
+
+        public static void ReadMonsterSplineTurnData(Packet packet, params object[] indexes)
+        {
+            packet.ReadSingle("StartFacing", indexes);
+            packet.ReadSingle("TotalTurnRads", indexes);
+            packet.ReadSingle("RadsPerSec", indexes);
+        }
+
         [Parser(Opcode.SMSG_VIGNETTE_UPDATE)]
         public static void HandleVignetteUpdate(Packet packet)
         {
