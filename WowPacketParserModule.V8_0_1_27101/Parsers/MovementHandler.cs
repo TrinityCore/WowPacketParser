@@ -214,6 +214,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ResetBitReader();
 
             packet.ReadBit("CrzTeleport", indexes);
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_1_7_61491))
+                packet.ReadBit("StopUseFaceDirection", indexes);
             packet.ReadBits("StopDistanceTolerance", 3, indexes);
 
             ReadMovementSpline(packet, pos, indexes, "MovementSpline");
