@@ -1005,7 +1005,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_CHAT_REGIONAL_SERVICE_STATUS, 0x41001D }, // NYI
             { Opcode.SMSG_CHAT_RESTRICTED, 0x410007 },
             { Opcode.SMSG_CHAT_SERVER_MESSAGE, 0x41001C },
-            { Opcode.SMSG_CHEAT_IGNORE_DIMISHING_RETURNS, 0x520002 },
+            { Opcode.SMSG_CHEAT_IGNORE_DIMISHING_RETURNS, 0x520002 }, // NYI
             { Opcode.SMSG_CHECK_ABANDON_NPE, 0x4F0023 }, // NYI
             { Opcode.SMSG_CHECK_CHARACTER_NAME_AVAILABILITY_RESULT, 0x3C001B },
             { Opcode.SMSG_CHECK_WARGAME_ENTRY, 0x3C0028 }, // NYI
@@ -1126,7 +1126,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_FISH_ESCAPED, 0x3C016F },
             { Opcode.SMSG_FISH_NOT_HOOKED, 0x3C016E },
             { Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x4D005B },
-            { Opcode.SMSG_FLUSH_COMBAT_LOG_FILE, 0x520010 },
+            { Opcode.SMSG_FLUSH_COMBAT_LOG_FILE, 0x520010 }, // NYI
             { Opcode.SMSG_FORCE_ANIM, 0x3C01F0 }, // NYI
             { Opcode.SMSG_FORCE_ANIMATIONS, 0x3C01F1 }, // NYI
             { Opcode.SMSG_FORCE_OBJECT_RELINK, 0x3C00E7 },
@@ -1830,7 +1830,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_SET_SPELL_CHARGES, 0x520018 },
             { Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x3C0116 },
             { Opcode.SMSG_SET_VEHICLE_REC_ID, 0x3C0196 },
-            { Opcode.SMSG_SETUP_COMBAT_LOG_FILE_FLUSH, 0x52000F },
+            { Opcode.SMSG_SETUP_COMBAT_LOG_FILE_FLUSH, 0x52000F }, // NYI
             { Opcode.SMSG_SETUP_CURRENCY, 0x3C0007 },
             { Opcode.SMSG_SHIPMENT_FACTION_UPDATE_RESULT, 0x46003B },
             { Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI, 0x3C0075 },
@@ -1846,7 +1846,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_SPECTATE_END, 0x3C032F }, // NYI
             { Opcode.SMSG_SPECTATE_PLAYER, 0x3C032E }, // NYI
             { Opcode.SMSG_SPELL_ABSORB_LOG, 0x52000C },
-            { Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x520006 },
+            { Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x520006 }, // NYI
             { Opcode.SMSG_SPELL_CHANNEL_START, 0x520023 },
             { Opcode.SMSG_SPELL_CHANNEL_UPDATE, 0x520024 },
             { Opcode.SMSG_SPELL_COOLDOWN, 0x520005 },

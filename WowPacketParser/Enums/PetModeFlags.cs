@@ -35,4 +35,12 @@ namespace WowPacketParser.Enums
         Abandon = 3,
         ToMove  = 4
     }
+
+    [Flags]
+    public enum SpellActionFlags
+    {
+        Passive = 0x0,
+        AutoCast = 0x40,
+        Castable = 0x80,
+    }
 }
