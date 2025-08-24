@@ -1435,18 +1435,18 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_MODIFY_COOLDOWN, 0x3C0207 },
             { Opcode.SMSG_MOTD, 0x410003 },
             { Opcode.SMSG_MOUNT_RESULT, 0x3C000F },
-            { Opcode.SMSG_MOVE_ADD_IMPULSE, 0x4D0062 },
+            { Opcode.SMSG_MOVE_ADD_IMPULSE, 0x4D0062 }, // NYI
             { Opcode.SMSG_MOVE_APPLY_INERTIA, 0x4D005E },
             { Opcode.SMSG_MOVE_APPLY_MOVEMENT_FORCE, 0x4D0045 },
             { Opcode.SMSG_MOVE_DISABLE_COLLISION, 0x4D0041 },
             { Opcode.SMSG_MOVE_DISABLE_DOUBLE_JUMP, 0x4D002B },
-            { Opcode.SMSG_MOVE_DISABLE_FULL_SPEED_TURNING, 0x4D0075 },
+            { Opcode.SMSG_MOVE_DISABLE_FULL_SPEED_TURNING, 0x4D0075 }, // NYI
             { Opcode.SMSG_MOVE_DISABLE_GRAVITY, 0x4D003D },
             { Opcode.SMSG_MOVE_DISABLE_INERTIA, 0x4D003F },
             { Opcode.SMSG_MOVE_DISABLE_TRANSITION_BETWEEN_SWIM_AND_FLY, 0x4D003C },
             { Opcode.SMSG_MOVE_ENABLE_COLLISION, 0x4D0042 },
             { Opcode.SMSG_MOVE_ENABLE_DOUBLE_JUMP, 0x4D002A },
-            { Opcode.SMSG_MOVE_ENABLE_FULL_SPEED_TURNING, 0x4D0074 },
+            { Opcode.SMSG_MOVE_ENABLE_FULL_SPEED_TURNING, 0x4D0074 }, // NYI
             { Opcode.SMSG_MOVE_ENABLE_GRAVITY, 0x4D003E },
             { Opcode.SMSG_MOVE_ENABLE_INERTIA, 0x4D0040 },
             { Opcode.SMSG_MOVE_ENABLE_TRANSITION_BETWEEN_SWIM_AND_FLY, 0x4D003B },
@@ -1472,7 +1472,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_MOVE_SET_CAN_DRIVE, 0x4D0076 },
             { Opcode.SMSG_MOVE_SET_CAN_FLY, 0x4D0033 },
             { Opcode.SMSG_MOVE_SET_CAN_TURN_WHILE_FALLING, 0x4D0037 },
-            { Opcode.SMSG_MOVE_SET_CANT_SWIM, 0x4D0035 },
+            { Opcode.SMSG_MOVE_SET_CANT_SWIM, 0x4D0035 }, // NYI
             { Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT, 0x4D0043 },
             { Opcode.SMSG_MOVE_SET_COMPOUND_STATE, 0x4D0047 },
             { Opcode.SMSG_MOVE_SET_FEATHER_FALL, 0x4D002D },
@@ -1526,11 +1526,11 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_MOVE_UNSET_CAN_DRIVE, 0x4D0077 },
             { Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x4D0034 },
             { Opcode.SMSG_MOVE_UNSET_CAN_TURN_WHILE_FALLING, 0x4D0038 },
-            { Opcode.SMSG_MOVE_UNSET_CANT_SWIM, 0x4D0036 },
+            { Opcode.SMSG_MOVE_UNSET_CANT_SWIM, 0x4D0036 }, // NYI
             { Opcode.SMSG_MOVE_UNSET_HOVERING, 0x4D0030 },
             { Opcode.SMSG_MOVE_UNSET_IGNORE_MOVEMENT_FORCES, 0x4D003A },
             { Opcode.SMSG_MOVE_UPDATE, 0x4D000E },
-            { Opcode.SMSG_MOVE_UPDATE_ADD_IMPULSE, 0x4D0063 },
+            { Opcode.SMSG_MOVE_UPDATE_ADD_IMPULSE, 0x4D0063 }, // NYI
             { Opcode.SMSG_MOVE_UPDATE_APPLY_INERTIA, 0x4D0060 },
             { Opcode.SMSG_MOVE_UPDATE_APPLY_MOVEMENT_FORCE, 0x4D0012 },
             { Opcode.SMSG_MOVE_UPDATE_COLLISION_HEIGHT, 0x4D000D },
@@ -1899,7 +1899,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_THREAT_CLEAR, 0x3C017B },
             { Opcode.SMSG_THREAT_REMOVE, 0x3C017A },
             { Opcode.SMSG_THREAT_UPDATE, 0x3C0179 },
-            { Opcode.SMSG_TIME_ADJUSTMENT, 0x4D0001 },
+            { Opcode.SMSG_TIME_ADJUSTMENT, 0x4D0001 }, // NYI
             { Opcode.SMSG_TIME_SYNC_REQUEST, 0x4D0000 },
             { Opcode.SMSG_TITLE_EARNED, 0x3C0176 },
             { Opcode.SMSG_TITLE_LOST, 0x3C0177 },
