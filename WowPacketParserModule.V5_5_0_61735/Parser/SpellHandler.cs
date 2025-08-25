@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
@@ -166,6 +168,212 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("RecoveryTime", idx);
             packet.ReadSingle("ChargeModRate", idx);
             packet.ReadSByte("ConsumedCharges", idx);
+        }
+
+        public static void ReadMissileTrajectoryResult(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("TravelTime", idx);
+            packet.ReadSingle("Pitch", idx);
+        }
+
+        public static void ReadCreatureImmunities(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("School", idx);
+            packet.ReadUInt32("Value", idx);
+        }
+
+        public static void ReadSpellHealPrediction(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Points", idx);
+            packet.ReadByte("Type", idx);
+            packet.ReadPackedGuid128("BeaconGUID", idx);
+        }
+
+        public static Vector3 ReadLocation(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("Transport", idx);
+            return packet.ReadVector3("Location", idx);
+        }
+
+        public static void ReadSpellTargetData(Packet packet, PacketSpellData packetSpellData, uint spellID, params object[] idx)
+        {
+            packet.ResetBitReader();
+
+            packet.ReadBitsE<TargetFlag>("Flags", 28, idx);
+            var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);
+            var hasDstLoc = packet.ReadBit("HasDstLocation", idx);
+            var hasOrient = packet.ReadBit("HasOrientation", idx);
+            var hasMapID = packet.ReadBit("hasMapID ", idx);
+            var nameLength = packet.ReadBits(7);
+
+            var targetUnit = packet.ReadPackedGuid128("Unit", idx);
+            if (packetSpellData != null)
+                packetSpellData.TargetUnit = targetUnit;
+            packet.ReadPackedGuid128("Item", idx);
+
+            if (hasSrcLoc)
+                ReadLocation(packet, idx, "SrcLocation");
+
+            Vector3? dstLocation = null;
+            if (hasDstLoc)
+            {
+                ReadLocation(packet, idx, "DstLocation");
+                if (packetSpellData != null)
+                    packetSpellData.DstLocation = dstLocation;
+            }
+
+            if (hasOrient)
+                packet.ReadSingle("Orientation", idx);
+
+            int mapID = -1;
+            if (hasMapID)
+                mapID = (ushort)packet.ReadInt32("MapID", idx);
+
+            if (Settings.UseDBC && dstLocation != null && mapID != -1)
+            {
+                for (uint i = 0; i < 32; i++)
+                {
+                    var tuple = Tuple.Create(spellID, i);
+                    if (DBC.SpellEffectStores.ContainsKey(tuple))
+                    {
+                        var effect = DBC.SpellEffectStores[tuple];
+                        if ((Targets)effect.ImplicitTarget[0] == Targets.TARGET_DEST_DB || (Targets)effect.ImplicitTarget[1] == Targets.TARGET_DEST_DB)
+                        {
+                            string effectHelper = $"Spell: {StoreGetters.GetName(StoreNameType.Spell, (int)spellID)} Efffect: {effect.Effect} ({(SpellEffects)effect.Effect})";
+
+                            var spellTargetPosition = new SpellTargetPosition
+                            {
+                                ID = spellID,
+                                EffectIndex = (byte)i,
+                                PositionX = dstLocation.Value.X,
+                                PositionY = dstLocation.Value.Y,
+                                PositionZ = dstLocation.Value.Z,
+                                MapID = (ushort)mapID,
+                                EffectHelper = effectHelper
+                            };
+
+                            if (!Storage.SpellTargetPositions.ContainsKey(spellTargetPosition))
+                                Storage.SpellTargetPositions.Add(spellTargetPosition);
+                        }
+                    }
+                }
+            }
+
+            packet.ReadWoWString("Name", nameLength, idx);
+        }
+
+        public static void ReadSpellMissStatus(Packet packet, params object[] idx)
+        {
+            var reason = packet.ReadByte("Reason", idx); // TODO enum
+            if (reason == 11)
+                packet.ReadByte("ReflectStatus", idx);
+        }
+
+        public static void ReadSpellPowerData(Packet packet, params object[] idx)
+        {
+            packet.ReadByteE<PowerType>("Type", idx);
+            packet.ReadInt32("Cost", idx);
+        }
+
+        public static void ReadRuneData(Packet packet, params object[] indexes)
+        {
+            packet.ReadByte("Start", indexes);
+            packet.ReadByte("Count", indexes);
+
+            var cooldownCount = packet.ReadUInt32("CooldownCount", indexes);
+            for (var i = 0; i < cooldownCount; ++i)
+                packet.ReadByte("Cooldown", indexes);
+        }
+
+        public static PacketSpellData ReadSpellCastData(Packet packet, params object[] idx)
+        {
+            var packetSpellData = new PacketSpellData();
+            packet.ReadPackedGuid128("CasterGUID", idx);
+            packetSpellData.Caster = packet.ReadPackedGuid128("CasterUnit", idx);
+
+            packetSpellData.CastGuid = packet.ReadPackedGuid128("CastID", idx);
+            packet.ReadPackedGuid128("OriginalCastID", idx);
+
+            var spellID = packetSpellData.Spell = packet.ReadUInt32<SpellId>("SpellID", idx);
+            packet.ReadUInt32("SpellXSpellVisualID", idx);
+
+            packetSpellData.Flags = packet.ReadUInt32("CastFlags", idx);
+            packetSpellData.Flags2 = packet.ReadUInt32("CastFlagsEx", idx);
+            packet.ReadUInt32("CastFlagsEx2", idx);
+            packetSpellData.CastTime = packet.ReadUInt32("CastTime", idx);
+
+            ReadMissileTrajectoryResult(packet, idx, "MissileTrajectory");
+
+            packet.ReadByte("DestLocSpellCastIndex", idx);
+
+            ReadCreatureImmunities(packet, idx, "Immunities");
+
+            ReadSpellHealPrediction(packet, idx, "Predict");
+
+            packet.ResetBitReader();
+
+            var hitTargetsCount = packet.ReadBits("HitTargetsCount", 16, idx);
+            var missTargetsCount = packet.ReadBits("MissTargetsCount", 16, idx);
+            var missStatusCount = packet.ReadBits("MissStatusCount", 16, idx);
+            var remainingPowerCount = packet.ReadBits("RemainingPowerCount", 9, idx);
+
+            var hasRuneData = packet.ReadBit("HasRuneData", idx);
+            var targetPointsCount = packet.ReadBits("TargetPointsCount", 16, idx);
+            var hasAmmoDisplayId = packet.ReadBit("HasAmmoDisplayId", idx);
+            var hasAmmoInventoryType = packet.ReadBit("HasAmmoInventoryType", idx);
+
+            ReadSpellTargetData(packet, packetSpellData, spellID, idx, "Target");
+
+            for (var i = 0; i < hitTargetsCount; ++i)
+                packetSpellData.HitTargets.Add(packet.ReadPackedGuid128("HitTarget", idx, i));
+
+            for (var i = 0; i < missTargetsCount; ++i)
+                packetSpellData.MissedTargets.Add(packet.ReadPackedGuid128("MissTarget", idx, i));
+
+            for (var i = 0; i < missStatusCount; ++i)
+                ReadSpellMissStatus(packet, idx, "MissStatus", i);
+
+            for (var i = 0; i < remainingPowerCount; ++i)
+                ReadSpellPowerData(packet, idx, "RemainingPower", i);
+
+            if (hasRuneData)
+                ReadRuneData(packet, idx, "RemainingRunes");
+
+            for (var i = 0; i < targetPointsCount; ++i)
+                packetSpellData.TargetPoints.Add(ReadLocation(packet, idx, "TargetPoints", i));
+
+            if (hasAmmoDisplayId)
+                packetSpellData.AmmoDisplayId = packet.ReadInt32("AmmoDisplayId", idx);
+
+            if (hasAmmoInventoryType)
+                packetSpellData.AmmoInventoryType = (uint)packet.ReadInt32E<InventoryType>("InventoryType", idx);
+
+            return packetSpellData;
+        }
+
+        public static void ReadLearnedSpellInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32<SpellId>("SpellID", indexes);
+            packet.ReadBit("IsFavorite", indexes);
+            var hasEquipableSpellInvSlot = packet.ReadBit();
+            var hasSuperceded = packet.ReadBit();
+            var hasTraitDefinition = packet.ReadBit();
+            packet.ResetBitReader();
+
+            if (hasEquipableSpellInvSlot)
+                packet.ReadInt32("EquipableSpellInvSlot", indexes);
+
+            if (hasSuperceded)
+                packet.ReadInt32<SpellId>("Superceded", indexes);
+
+            if (hasTraitDefinition)
+                packet.ReadInt32("TraitDefinitionID", indexes);
+        }
+
+        public static void ReadGlyphBinding(Packet packet, params object[] index)
+        {
+            packet.ReadUInt32("SpellID", index);
+            packet.ReadUInt16("GlyphID", index);
         }
 
         [Parser(Opcode.SMSG_PLAYER_BOUND)]
@@ -762,6 +970,266 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             var failedSpellsCount = packet.ReadUInt32();
             for (int i = 0; i < failedSpellsCount; i++)
                 packet.ReadUInt32<SpellId>("FailedSpellID", i);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_CHANNEL_UPDATE)]
+        public static void HandleSpellChannelUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadInt32("TimeRemaining");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_PREPARE)]
+        public static void SpellPrepare(Packet packet)
+        {
+            packet.ReadPackedGuid128("ClientCastID");
+            packet.ReadPackedGuid128("ServerCastID");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_GO)]
+        public static void HandleSpellGo(Packet packet)
+        {
+            PacketSpellGo packetSpellGo = new();
+            packetSpellGo.Data = ReadSpellCastData(packet, "Cast");
+            packet.Holder.SpellGo = packetSpellGo;
+
+            packet.ResetBitReader();
+            var hasLog = packet.ReadBit();
+            if (hasLog)
+                ReadSpellCastLogData(packet, "LogData");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_START)]
+        public static void HandleSpellStart(Packet packet)
+        {
+            ReadSpellCastData(packet, "Cast");
+        }
+
+        [Parser(Opcode.SMSG_RESUME_CAST)]
+        public static void HandleResumeCast(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadInt32("SpellXSpellVisualID");
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.SMSG_RESUME_CAST_BAR)]
+        public static void HandleResumeCastBar(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadPackedGuid128("Target");
+
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisualID");
+            packet.ReadUInt32("TimeRemaining");
+            packet.ReadUInt32("TotalTime");
+
+            var result = packet.ReadBit("HasInterruptImmunities");
+            if (result)
+            {
+                packet.ReadUInt32("SchoolImmunities");
+                packet.ReadUInt32("Immunities");
+            }
+        }
+
+        [Parser(Opcode.SMSG_SPELL_DELAYED)]
+        public static void HandleSpellDelayed(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadInt32("ActualDelay");
+        }
+
+        [Parser(Opcode.SMSG_NOTIFY_DEST_LOC_SPELL_CAST)]
+        public static void HandleNotifyDestLocSpellCast(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("DestTransport");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadUInt32("SpellXSpellVisualID");
+            packet.ReadVector3("SourceLoc");
+            packet.ReadVector3("DestLoc");
+            packet.ReadSingle("MissileTrajectoryPitch");
+            packet.ReadSingle("MissileTrajectorySpeed");
+            packet.ReadInt32("TravelTime");
+            packet.ReadByte("DestLocSpellCastIndex");
+            packet.ReadPackedGuid128("CastID");
+        }
+
+        [Parser(Opcode.SMSG_CANCEL_SPELL_VISUAL)]
+        public static void HandleCancelSpellVisual(Packet packet)
+        {
+            packet.ReadPackedGuid128("Source");
+            packet.ReadInt32("SpellVisualID");
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL)]
+        public static void HandleCastVisual(Packet packet)
+        {
+            packet.ReadPackedGuid128("Source");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("Transport");
+
+            packet.ReadVector3("TargetPosition");
+
+            packet.ReadInt32("SpellVisualID");
+            packet.ReadSingle("TravelSpeed");
+            packet.ReadUInt16("HitReason");
+            packet.ReadUInt16("MissReason");
+            packet.ReadUInt16("ReflectStatus");
+
+            packet.ReadSingle("LaunchDelay");
+            packet.ReadSingle("MinDuration");
+
+            packet.ReadBit("SpeedAsTime");
+        }
+
+        [Parser(Opcode.SMSG_CANCEL_ORPHAN_SPELL_VISUAL)]
+        public static void HandleCancelOrphanSpellVisual(Packet packet)
+        {
+            packet.ReadInt32("SpellVisualID");
+        }
+
+        [Parser(Opcode.SMSG_PLAY_ORPHAN_SPELL_VISUAL)]
+        public static void HandlePlayOrphanSpellVisual(Packet packet)
+        {
+            packet.ReadVector3("SourceLocation");
+            packet.ReadVector3("SourceOrientation");
+            packet.ReadVector3("TargetLocation");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("TargetTransport");
+            packet.ReadInt32("SpellVisualID");
+            packet.ReadSingle("TravelSpeed");
+            packet.ReadSingle("LaunchDelay");
+            packet.ReadSingle("MinDuration");
+            packet.ReadBit("SpeedAsTime");
+        }
+
+        [Parser(Opcode.SMSG_CANCEL_SPELL_VISUAL_KIT)]
+        public static void HandleCancelSpellVisualKit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Source");
+            packet.ReadInt32("SpellVisualKitID");
+            packet.ReadBit("MountedVisual");
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)]
+        public static void HandleCastVisualKit(Packet packet)
+        {
+            var playSpellVisualKit = packet.Holder.PlaySpellVisualKit = new();
+            playSpellVisualKit.Unit = packet.ReadPackedGuid128("Unit");
+            playSpellVisualKit.KitRecId = packet.ReadInt32("KitRecID");
+            playSpellVisualKit.KitType = packet.ReadInt32("KitType");
+            playSpellVisualKit.Duration = packet.ReadUInt32("Duration");
+            packet.ReadBit("MountedVisual");
+        }
+
+        [Parser(Opcode.SMSG_SUPERCEDED_SPELLS)]
+        public static void HandleSupercededSpells(Packet packet)
+        {
+            var spellCount = packet.ReadUInt32();
+
+            for (var i = 0; i < spellCount; ++i)
+                ReadLearnedSpellInfo(packet, "ClientLearnedSpellData", i);
+        }
+
+        [Parser(Opcode.SMSG_LEARNED_SPELLS)]
+        public static void HandleLearnedSpells(Packet packet)
+        {
+            var spellCount = packet.ReadUInt32();
+            packet.ReadUInt32("SpecializationID");
+            packet.ReadBit("SuppressMessaging");
+            packet.ResetBitReader();
+
+            for (var i = 0; i < spellCount; ++i)
+                ReadLearnedSpellInfo(packet, "ClientLearnedSpellData", i);
+        }
+
+        [Parser(Opcode.SMSG_UNLEARNED_SPELLS)]
+        public static void HandleUnlearnedSpells(Packet packet)
+        {
+            var count = packet.ReadInt32("UnlearnedSpellCount");
+            for (int i = 0; i < count; i++)
+                packet.ReadUInt32<SpellId>("SpellID");
+
+            packet.ReadBit("SuppressMessaging");
+        }
+
+        [Parser(Opcode.SMSG_PET_LEARNED_SPELLS)]
+        [Parser(Opcode.SMSG_PET_UNLEARNED_SPELLS)]
+        public static void HandlePetSpellsLearnedRemoved(Packet packet)
+        {
+            var count = packet.ReadUInt32("Spell Count");
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32<SpellId>("Spell ID", i);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_FAILURE)]
+        [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
+        public static void HandleSpellFailure(Packet packet)
+        {
+            var spellFail = packet.Holder.SpellFailure = new();
+            spellFail.Caster = packet.ReadPackedGuid128("CasterUnit");
+            spellFail.CastGuid = packet.ReadPackedGuid128("CastID");
+            spellFail.Spell = (uint)packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisual");
+            spellFail.Success = packet.ReadInt16("Reason") == 0;
+        }
+
+        [Parser(Opcode.SMSG_ACTIVE_GLYPHS)]
+        public static void HandleActiveGlyphs(Packet packet)
+        {
+            var count = packet.ReadUInt32("GlyphsCount");
+            for (int i = 0; i < count; i++)
+                ReadGlyphBinding(packet, i);
+            packet.ResetBitReader();
+            packet.ReadBit("IsFullUpdate");
+        }
+
+        [Parser(Opcode.SMSG_CAST_FAILED)]
+        public static void HandleCastFailed(Packet packet)
+        {
+            var spellFail = packet.Holder.SpellCastFailed = new();
+            spellFail.CastGuid = packet.ReadPackedGuid128("CastID");
+            spellFail.Spell = (uint)packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisual");
+            spellFail.Success = packet.ReadInt32("Reason") == 0;
+            packet.ReadInt32("FailedArg1");
+            packet.ReadInt32("FailedArg2");
+        }
+
+        [Parser(Opcode.SMSG_PET_CAST_FAILED)]
+        public static void HandlePetCastFailed(Packet packet)
+        {
+            var spellFail = packet.Holder.SpellCastFailed = new();
+            spellFail.CastGuid = packet.ReadPackedGuid128("CastID");
+            spellFail.Spell = (uint)packet.ReadInt32<SpellId>("SpellID");
+            spellFail.Success = packet.ReadInt32("Reason") == 0;
+            packet.ReadInt32("FailedArg1");
+            packet.ReadInt32("FailedArg2");
+        }
+
+        [Parser(Opcode.SMSG_INTERRUPT_POWER_REGEN)]
+        public static void HandleInterruptPowerRegen(Packet packet)
+        {
+            packet.ReadByteE<PowerType>("PowerType");
+        }
+
+        [Parser(Opcode.SMSG_RESYNC_RUNES)]
+        public static void HandleResyncRunes(Packet packet)
+        {
+            ReadRuneData(packet, "RuneData");
+        }
+
+        [Parser(Opcode.SMSG_CONVERT_RUNE)]
+        public static void HandleConvertRune(Packet packet)
+        {
+            ReadRuneData(packet, "RuneData");
+
+            packet.ReadUInt32("Index");
+            packet.ReadUInt32("Rune");
         }
 
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]

@@ -76,5 +76,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadInt32("InteractionType");
         }
+
+        [Parser(Opcode.SMSG_GAME_OBJECT_PLAY_SPELL_VISUAL)]
+        public static void HandleGameObjectPlaySpellVisual(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
+            packet.ReadPackedGuid128("ActivatorGUID");
+            packet.ReadInt32("SpellVisualID");
+        }
     }
 }

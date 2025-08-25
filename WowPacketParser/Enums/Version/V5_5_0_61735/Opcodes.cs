@@ -1071,7 +1071,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_CURRENCY_TRANSFER_RESULT, 0x3C033C }, // NYI
             { Opcode.SMSG_CUSTOM_LOAD_SCREEN, 0x3C0065 },
             { Opcode.SMSG_DAILY_QUESTS_RESET, 0x500000 },
-            { Opcode.SMSG_DAMAGE_CALC_LOG, 0x520051 },
+            { Opcode.SMSG_DAMAGE_CALC_LOG, 0x520051 }, // NYI
             { Opcode.SMSG_DB_REPLY, 0x400000 },
             { Opcode.SMSG_DEATH_RELEASE_LOC, 0x3C0172 },
             { Opcode.SMSG_DEBUG_MENU_MANAGER_FULL_UPDATE, 0x3C00F3 }, // NYI
@@ -1142,7 +1142,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_GAME_OBJECT_DESPAWN, 0x3C005F },
             { Opcode.SMSG_GAME_OBJECT_INTERACTION, 0x3C0311 },
             { Opcode.SMSG_GAME_OBJECT_PLAY_SPELL_VISUAL, 0x52003A },
-            { Opcode.SMSG_GAME_OBJECT_PLAY_SPELL_VISUAL_KIT, 0x520039 },
+            { Opcode.SMSG_GAME_OBJECT_PLAY_SPELL_VISUAL_KIT, 0x520039 }, // NYI
             { Opcode.SMSG_GAME_OBJECT_RESET_STATE, 0x3C01BD },
             { Opcode.SMSG_GAME_OBJECT_SET_STATE_LOCAL, 0x3C02A3 },
             { Opcode.SMSG_GAME_OBJECT_UI_LINK, 0x3C01BA }, // NYI
@@ -1664,7 +1664,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_PROC_RESIST, 0x3C01FA },
             { Opcode.SMSG_PROFESSION_GOSSIP, 0x3C029E }, // NYI
             { Opcode.SMSG_PROPOSE_LEVEL_GRANT, 0x3C017C },
-            { Opcode.SMSG_PUSH_SPELL_TO_ACTION_BAR, 0x520040 },
+            { Opcode.SMSG_PUSH_SPELL_TO_ACTION_BAR, 0x520040 }, // NYI
             { Opcode.SMSG_PVP_CREDIT, 0x420028 },
             { Opcode.SMSG_PVP_LOG_DATA, 0x420012 },
             { Opcode.SMSG_PVP_MATCH_COMPLETE, 0x420033 }, // NYI
@@ -1746,7 +1746,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_REGIONWIDE_CHARACTER_MAIL_DATA, 0x3C001A }, // NYI
             { Opcode.SMSG_REGIONWIDE_CHARACTER_RESTRICTIONS_DATA, 0x3C0019 }, // NYI
             { Opcode.SMSG_REMOVE_ITEM_PASSIVE, 0x3C0044 },
-            { Opcode.SMSG_REMOVE_SPELL_FROM_ACTION_BAR, 0x520041 },
+            { Opcode.SMSG_REMOVE_SPELL_FROM_ACTION_BAR, 0x520041 }, // NYI
             { Opcode.SMSG_REPLACE_TROPHY_RESPONSE, 0x3C0264 },
             { Opcode.SMSG_REPORT_PVP_PLAYER_AFK_RESULT, 0x4F0009 },
             { Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x3C0026 },
@@ -1760,7 +1760,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_RESET_WEEKLY_CURRENCY, 0x3C0009 },
             { Opcode.SMSG_RESPEC_WIPE_CONFIRM, 0x3C00AE },
             { Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x3C0006 },
-            { Opcode.SMSG_RESTART_GLOBAL_COOLDOWN, 0x520050 },
+            { Opcode.SMSG_RESTART_GLOBAL_COOLDOWN, 0x520050 }, // NYI
             { Opcode.SMSG_RESTRICTED_ACCOUNT_WARNING, 0x3C0053 }, // NYI
             { Opcode.SMSG_RESUME_CAST, 0x52002A },
             { Opcode.SMSG_RESUME_CAST_BAR, 0x52002D },
@@ -1790,7 +1790,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_REPLACEMENTS_MADE, 0x3C0080 },
             { Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_ROUND_RESULT, 0x3C007F },
             { Opcode.SMSG_SCHEDULED_AREA_POI_UPDATE_RESPONSE, 0x4F0019 }, // NYI
-            { Opcode.SMSG_SCRIPT_CAST, 0x520045 },
+            { Opcode.SMSG_SCRIPT_CAST, 0x520045 }, // NYI
             { Opcode.SMSG_SEASON_INFO, 0x3C005B },
             { Opcode.SMSG_SELL_RESPONSE, 0x3C0164 },
             { Opcode.SMSG_SEND_ITEM_PASSIVES, 0x3C0045 },
@@ -1857,7 +1857,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_SPELL_EXECUTE_LOG, 0x52002F },
             { Opcode.SMSG_SPELL_FAILED_OTHER, 0x520044 },
             { Opcode.SMSG_SPELL_FAILURE, 0x520042 },
-            { Opcode.SMSG_SPELL_FAILURE_MESSAGE, 0x520049 },
+            { Opcode.SMSG_SPELL_FAILURE_MESSAGE, 0x520049 }, // NYI
             { Opcode.SMSG_SPELL_GO, 0x520028 },
             { Opcode.SMSG_SPELL_HEAL_ABSORB_LOG, 0x52000B },
             { Opcode.SMSG_SPELL_HEAL_LOG, 0x52000A },

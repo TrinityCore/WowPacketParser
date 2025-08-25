@@ -120,6 +120,32 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             }
         }
 
+        public static void ReadSpellNonMeleeDebugData(Packet packet, params object[] idx)
+        {
+            packet.ReadSingle("CritRoll", idx);
+            packet.ReadSingle("CritNeeded", idx);
+            packet.ReadSingle("HitRoll", idx);
+            packet.ReadSingle("HitNeeded", idx);
+            packet.ReadSingle("MissChance", idx);
+            packet.ReadSingle("DodgeChance", idx);
+            packet.ReadSingle("ParryChance", idx);
+            packet.ReadSingle("BlockChance", idx);
+            packet.ReadSingle("GlanceChance", idx);
+            packet.ReadSingle("CrushChance", idx);
+        }
+
+        public static void ReadSpellChannelStartInterruptImmunities(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("SchoolImmunities", idx);
+            packet.ReadInt32("Immunities", idx);
+        }
+
+        public static void ReadSpellTargetedHealPrediction(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("TargetGUID", idx);
+            SpellHandler.ReadSpellHealPrediction(packet, idx, "Predict");
+        }
+
         [Parser(Opcode.SMSG_ATTACK_SWING_LANDED_LOG)]
         [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE)]
         public static void HandleAttackswingLandedLog(Packet packet)
@@ -319,6 +345,174 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             var hasLogData = packet.ReadBit("HasLogData");
             if (hasLogData)
                 SpellHandler.ReadSpellCastLogData(packet);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
+        public static void HandleSpellNonMeleeDmgLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Me");
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadPackedGuid128("CastID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisual");
+            packet.ReadInt32("Damage");
+            packet.ReadInt32("OriginalDamage");
+            packet.ReadInt32("OverKill");
+
+            packet.ReadByte("SchoolMask");
+
+            packet.ReadInt32("Absorbed");
+            packet.ReadInt32("Resisted");
+            packet.ReadInt32("ShieldBlock");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Periodic");
+
+            packet.ReadBitsE<AttackerStateFlags>("Flags", 7);
+
+            var hasDebugData = packet.ReadBit("HasDebugData");
+            var hasLogData = packet.ReadBit("HasLogData");
+            var hasContentTuning = packet.ReadBit("HasContentTuning");
+
+            if (hasLogData)
+                SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
+
+            if (hasDebugData)
+                ReadSpellNonMeleeDebugData(packet, "DebugData");
+
+            if (hasContentTuning)
+                ReadContentTuningParams(packet, "ContentTuning");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_INSTAKILL_LOG)]
+        public static void HandleSpellInstakillLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadUInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_CHANNEL_START)]
+        public static void HandleSpellChannelStart(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisual");
+            packet.ReadInt32("ChannelDuration");
+
+            var hasInterruptImmunities = packet.ReadBit("HasInterruptImmunities");
+            var hasHealPrediction = packet.ReadBit("HasHealPrediction");
+
+            if (hasInterruptImmunities)
+                ReadSpellChannelStartInterruptImmunities(packet, "InterruptImmunities");
+
+            if (hasHealPrediction)
+                ReadSpellTargetedHealPrediction(packet, "HealPrediction");
+        }
+
+        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER)]
+        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER)]
+        public static void HandleSetSpellModifierFlat(Packet packet)
+        {
+            var modCount = packet.ReadUInt32("SpellModifierCount");
+
+            for (var j = 0; j < modCount; ++j)
+            {
+                packet.ReadByteE<SpellModOp>("SpellMod", j);
+
+                var modTypeCount = packet.ReadUInt32("SpellModifierDataCount", j);
+                for (var i = 0; i < modTypeCount; ++i)
+                {
+                    packet.ReadSingle("ModifierValue", j, i);
+                    packet.ReadByte("ClassIndex", j, i);
+                }
+            }
+        }
+
+        [Parser(Opcode.SMSG_SPELL_EXECUTE_LOG)]
+        public static void HandleSpellLogExecute(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+
+            packet.ReadInt32<SpellId>("SpellID");
+
+            var int16 = packet.ReadInt32("EffectsCount");
+            for (var i = 0; i < int16; i++)
+            {
+                packet.ReadInt32("Effect", i);
+
+                var int4 = packet.ReadInt32("PowerDrainTargetsCount", i);
+                var int20 = packet.ReadInt32("ExtraAttacksTargetsCount", i);
+                var int36 = packet.ReadInt32("DurabilityDamageTargetsCount", i);
+                var int52 = packet.ReadInt32("GenericVictimTargetsCount", i);
+                var int68 = packet.ReadInt32("TradeSkillTargetsCount", i);
+                var int84 = packet.ReadInt32("FeedPetTargetsCount", i);
+
+                // ClientSpellLogEffectPowerDrainParams
+                for (var j = 0; j < int4; j++)
+                {
+                    packet.ReadPackedGuid128("Victim");
+                    packet.ReadInt32("Points");
+                    packet.ReadByteE<PowerType>("Type");
+                    packet.ReadSingle("Amplitude");
+                }
+
+                // ClientSpellLogEffectExtraAttacksParams
+                for (var j = 0; j < int20; j++)
+                {
+                    packet.ReadPackedGuid128("Victim", i, j);
+                    packet.ReadInt32("NumAttacks", i, j);
+                }
+
+                // ClientSpellLogEffectDurabilityDamageParams
+                for (var j = 0; j < int36; j++)
+                {
+                    packet.ReadPackedGuid128("Victim", i, j);
+                    packet.ReadInt32<ItemId>("ItemID", i, j);
+                    packet.ReadInt32("Amount", i, j);
+                }
+
+                // ClientSpellLogEffectGenericVictimParams
+                for (var j = 0; j < int52; j++)
+                    packet.ReadPackedGuid128("Victim", i, j);
+
+                // ClientSpellLogEffectTradeSkillItemParams
+                for (var j = 0; j < int68; j++)
+                    packet.ReadInt32<ItemId>("ItemID", i, j);
+
+                // ClientSpellLogEffectFeedPetParams
+                for (var j = 0; j < int84; j++)
+                    packet.ReadInt32<ItemId>("ItemID", i, j);
+            }
+
+            var bit160 = packet.ReadBit("HasLogData");
+            if (bit160)
+                SpellHandler.ReadSpellCastLogData(packet);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_MISS_LOG)]
+        public static void HandleSpellMissLog(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadPackedGuid128("Caster");
+
+            var spellLogMissEntryCount = packet.ReadInt32("SpellLogMissEntryCount");
+            for (int i = 0; i < spellLogMissEntryCount; i++)
+            {
+                packet.ReadPackedGuid128("Victim", i);
+                packet.ReadByte("MissReason", i);
+
+                packet.ResetBitReader();
+
+                var hasSpellLogMissDebug = packet.ReadBit("HasSpellLogMissDebug", i);
+                if (hasSpellLogMissDebug)
+                {
+                    packet.ReadSingle("HitRoll", i);
+                    packet.ReadSingle("HitRollNeededHitRollNeeded", i);
+                }
+            }
         }
     }
 }
