@@ -26,5 +26,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             for (int i = 0; i < fanfareCount; i++)
                 packet.ReadBit("HasFanfare", i);
         }
+
+        [Parser(Opcode.CMSG_TOY_CLEAR_FANFARE)]
+        public static void HandleCalendarSendCalendar(Packet packet)
+        {
+            packet.ReadUInt32("ItemID");
+        }
     }
 }

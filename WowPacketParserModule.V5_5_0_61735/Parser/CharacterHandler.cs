@@ -674,6 +674,16 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("OnCooldown");
         }
 
+        [Parser(Opcode.CMSG_REQUEST_STORE_FRONT_INFO_UPDATE)]
+        public static void HandleRequestStoreFrontInfoUpdate(Packet packet)
+        {
+            packet.ReadUInt32("StoreFrontID");
+
+            var count = packet.ReadUInt32("CurrencyCount");
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32<CurrencyId>("CurrencyID", i);
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
         public static void HandleCharacterEmpty(Packet packet)

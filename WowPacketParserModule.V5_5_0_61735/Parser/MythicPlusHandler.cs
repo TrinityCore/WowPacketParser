@@ -108,5 +108,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("CompletionTime"); // in ms
             packet.ReadUInt32("KeystoneLevel");
         }
+
+        [Parser(Opcode.CMSG_MYTHIC_PLUS_REQUEST_MAP_STATS)]
+        public static void HandleMythicPlusRequestMapStats(Packet packet)
+        {
+            packet.ReadPackedGuid128("BnetAccountGUID");
+            packet.ReadUInt64("GuildClubMemberID");
+        }
     }
 }

@@ -443,6 +443,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadUInt64("AverageWaitTime");
         }
 
+        [Parser(Opcode.CMSG_BATTLE_PET_CLEAR_FANFARE)]
+        public static void HandleBattlePetClearFanfare(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED)]
         [Parser(Opcode.SMSG_BATTLE_PETS_HEALED)]

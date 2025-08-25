@@ -111,5 +111,45 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadByte("Flags", i);
             }
         }
+
+        [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL)]
+        public static void HandleChannelJoin(Packet packet)
+        {
+            packet.ReadInt32("ChatChannelId");
+            packet.ReadBit("CreateVoiceSession");
+            packet.ReadBit("Internal");
+
+            var channelLength = packet.ReadBits(7);
+            var passwordLength = packet.ReadBits(7);
+
+            packet.ReadWoWString("ChannelName", channelLength);
+            packet.ReadWoWString("Password", passwordLength);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_LEAVE_CHANNEL)]
+        public static void HandleChannelLeave(Packet packet)
+        {
+            packet.ReadInt32("ZoneChannelID");
+            var length = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", length);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_BAN)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_INVITE)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_KICK)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_MODERATOR)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_SET_OWNER)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_SILENCE_ALL)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_UNBAN)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_UNMODERATOR)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_UNSILENCE_ALL)]
+        public static void HandleChannelMisc1(Packet packet)
+        {
+            var lenChannelName = packet.ReadBits(7);
+            var lenName = packet.ReadBits(9);
+
+            packet.ReadWoWString("ChannelName", lenChannelName);
+            packet.ReadWoWString("Name", lenName);
+        }
     }
 }

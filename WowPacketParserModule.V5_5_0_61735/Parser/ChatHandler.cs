@@ -9,6 +9,18 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 {
     public static class ChatHandler
     {
+        public static void ReadChatAddonMessageParams(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            var prefixLen = packet.ReadBits(5);
+            var textLen = packet.ReadBits(8);
+            packet.ReadBit("IsLogged", indexes);
+
+            packet.ReadInt32("Type", indexes);
+            packet.ReadWoWString("Prefix", prefixLen, indexes);
+            packet.ReadWoWString("Text", textLen, indexes);
+        }
+
         [Parser(Opcode.SMSG_CHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
@@ -167,6 +179,122 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ResetBitReader();
             packet.ReadBit("Success");
             packet.ReadBit("ChatDisabled");
+        }
+
+        [Parser(Opcode.CMSG_CHAT_REPORT_IGNORED)]
+        public static void HandleChatIgnored(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadByte("Reason");
+        }
+
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_CHANNEL)]
+        public static void HandleChatAddonMessageChannel(Packet packet)
+        {
+            packet.ReadInt32E<Language>("Language");
+            packet.ReadPackedGuid128("ChannelGUID");
+            var channelNameLen = packet.ReadBits(9);
+            var msgLen = packet.ReadBits(11);
+
+            var isSecure = packet.ReadBit();
+
+            if (isSecure)
+                packet.ReadBit("IsSecure");
+
+            packet.ReadWoWString("Target", channelNameLen);
+            packet.ReadWoWString("Text", msgLen);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_WHISPER)]
+        public static void HandleClientChatMessageWhisper(Packet packet)
+        {
+            packet.ReadInt32E<Language>("Language");
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadUInt32("TargetVirtualRealmAddress");
+
+            var targetLen = packet.ReadBits(7);
+            var textLen = packet.ReadBits(11);
+
+            packet.ReadDynamicString("Target", targetLen);
+            packet.ReadDynamicString("Text", textLen);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_GUILD)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_OFFICER)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_YELL)]
+        public static void HandleClientChatMessage(Packet packet)
+        {
+            packet.ReadInt32E<Language>("Language");
+            var len = packet.ReadBits(11);
+            packet.ReadWoWString("Text", len);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_DND)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_EMOTE)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_AFK)]
+        public static void HandleMessageChat(Packet packet)
+        {
+            var len = packet.ReadBits(11);
+            packet.ReadWoWString("Message", len);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_ANNOUNCEMENTS)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_DECLINE_INVITE)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_DISPLAY_LIST)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_LIST)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_OWNER)]
+        public static void HandleChannelMisc2(Packet packet)
+        {
+            var length = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", length);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_PASSWORD)]
+        public static void HandleChannelPassword(Packet packet)
+        {
+            var lenChannelName = packet.ReadBits(7);
+            var lenName = packet.ReadBits(7);
+
+            packet.ReadWoWString("ChannelName", lenChannelName);
+            packet.ReadWoWString("Name", lenName);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_INSTANCE_CHAT)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_PARTY)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID_WARNING)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_SAY)]
+        public static void HandleClientChatMessageInstance(Packet packet)
+        {
+            packet.ReadInt32E<Language>("Language");
+            var len = packet.ReadBits(11);
+            packet.ReadBit("IsSecure");
+            packet.ReadWoWString("Text", len);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE)]
+        public static void HandleAddonMessage(Packet packet)
+        {
+            ReadChatAddonMessageParams(packet);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_TARGETED)]
+        public static void HandleChatAddonMessageTargeted(Packet packet)
+        {
+            ReadChatAddonMessageParams(packet, "Params");
+
+            packet.ReadPackedGuid128("ChannelGUID");
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadUInt32("PlayerVirtualRealmAddress");
+
+            var playerNameLen = packet.ReadBits(7);
+            var channelNameLen = packet.ReadBits(7);
+
+            if (playerNameLen > 1)
+                packet.ReadDynamicString("PlayerName", playerNameLen);
+
+            if (channelNameLen > 1)
+                packet.ReadDynamicString("ChannelName", channelNameLen);
         }
     }
 }

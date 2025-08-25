@@ -153,7 +153,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.CMSG_CANCEL_TEMP_ENCHANTMENT, 0x360086 },
             { Opcode.CMSG_CANCEL_TRADE, 0x350007 },
             { Opcode.CMSG_CAST_SPELL, 0x35015A },
-            { Opcode.CMSG_CHALLENGE_MODE_REQUEST_LEADERS, 0x320001 },
+            { Opcode.CMSG_CHALLENGE_MODE_REQUEST_LEADERS, 0x320001 }, // NYI
             { Opcode.CMSG_CHANGE_REALM_TICKET, 0x3A012F },
             { Opcode.CMSG_CHANGE_SUB_GROUP, 0x3A0078 },
             { Opcode.CMSG_CHAR_CREATE_FINALIZE_REINCARNATION, 0x3A0194 },
@@ -173,7 +173,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.CMSG_CHAT_CHANNEL_INVITE, 0x31001B },
             { Opcode.CMSG_CHAT_CHANNEL_KICK, 0x31001C },
             { Opcode.CMSG_CHAT_CHANNEL_LIST, 0x310011 },
-            { Opcode.CMSG_CHAT_CHANNEL_MODERATE, 0x310016 },
+            { Opcode.CMSG_CHAT_CHANNEL_MODERATE, 0x310016 }, // NYI
             { Opcode.CMSG_CHAT_CHANNEL_MODERATOR, 0x310017 },
             { Opcode.CMSG_CHAT_CHANNEL_OWNER, 0x310015 },
             { Opcode.CMSG_CHAT_CHANNEL_PASSWORD, 0x310013 },
@@ -182,7 +182,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.CMSG_CHAT_CHANNEL_UNBAN, 0x31001E },
             { Opcode.CMSG_CHAT_CHANNEL_UNMODERATOR, 0x310018 },
             { Opcode.CMSG_CHAT_CHANNEL_UNSILENCE_ALL, 0x310021 },
-            { Opcode.CMSG_CHAT_DROP_CAUTIONARY_CHAT_MESSAGE, 0x31000A },
+            { Opcode.CMSG_CHAT_DROP_CAUTIONARY_CHAT_MESSAGE, 0x31000A }, // NYI
             { Opcode.CMSG_CHAT_JOIN_CHANNEL, 0x310000 },
             { Opcode.CMSG_CHAT_LEAVE_CHANNEL, 0x310001 },
             { Opcode.CMSG_CHAT_MESSAGE_AFK, 0x31000F },
@@ -199,14 +199,14 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.CMSG_CHAT_MESSAGE_WHISPER, 0x310008 },
             { Opcode.CMSG_CHAT_MESSAGE_YELL, 0x310025 },
             { Opcode.CMSG_CHAT_REGISTER_ADDON_PREFIXES, 0x310005 },
-            { Opcode.CMSG_CHAT_REPORT_FILTERED, 0x310004 },
+            { Opcode.CMSG_CHAT_REPORT_FILTERED, 0x310004 }, // NYI
             { Opcode.CMSG_CHAT_REPORT_IGNORED, 0x310003 },
-            { Opcode.CMSG_CHAT_SEND_CAUTIONARY_CHANNEL_MESSAGE, 0x31000B },
-            { Opcode.CMSG_CHAT_SEND_CAUTIONARY_CHAT_MESSAGE, 0x310009 },
+            { Opcode.CMSG_CHAT_SEND_CAUTIONARY_CHANNEL_MESSAGE, 0x31000B }, // NYI
+            { Opcode.CMSG_CHAT_SEND_CAUTIONARY_CHAT_MESSAGE, 0x310009 }, // NYI
             { Opcode.CMSG_CHAT_UNREGISTER_ALL_ADDON_PREFIXES, 0x310006 },
             { Opcode.CMSG_CHECK_IS_ADVENTURE_MAP_POI_VALID, 0x350101 },
             { Opcode.CMSG_CHOICE_RESPONSE, 0x350160 },
-            { Opcode.CMSG_CLEAR_NEW_APPEARANCE, 0x2F0005 },
+            { Opcode.CMSG_CLEAR_NEW_APPEARANCE, 0x2F0005 }, // NYI
             { Opcode.CMSG_CLEAR_RAID_MARKER, 0x350052 },
             { Opcode.CMSG_CLEAR_TRADE_ITEM, 0x350009 },
             { Opcode.CMSG_CLIENT_PORT_GRAVEYARD, 0x3600BE },
@@ -408,7 +408,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.CMSG_MERGE_ITEM_WITH_GUILD_BANK_ITEM, 0x360046 },
             { Opcode.CMSG_MINIMAP_PING, 0x3A0077 },
             { Opcode.CMSG_MISSILE_TRAJECTORY_COLLISION, 0x350038 },
-            { Opcode.CMSG_MOUNT_CLEAR_FANFARE, 0x2F0003 },
+            { Opcode.CMSG_MOUNT_CLEAR_FANFARE, 0x2F0003 }, // NYI
             { Opcode.CMSG_MOUNT_SET_FAVORITE, 0x3A005C },
             { Opcode.CMSG_MOUNT_SPECIAL_ANIM, 0x35013C },
             { Opcode.CMSG_MOVE_ADD_IMPULSE_ACK, 0x38006D },
