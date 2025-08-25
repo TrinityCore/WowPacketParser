@@ -1341,7 +1341,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_INVALID_PROMOTION_CODE, 0x3C01F2 },
             { Opcode.SMSG_INVALIDATE_PAGE_TEXT, 0x40000A }, // NYI
             { Opcode.SMSG_INVALIDATE_PLAYER, 0x4F0007 },
-            { Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x530005 },
+            { Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x530005 }, // NYI
             { Opcode.SMSG_INVENTORY_FIXUP_COMPLETE, 0x3C02B2 }, // NYI
             { Opcode.SMSG_INVENTORY_FULL_OVERFLOW, 0x3C02C3 },
             { Opcode.SMSG_IS_QUEST_COMPLETE_RESPONSE, 0x500004 }, // NYI

@@ -228,7 +228,44 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("Cooldown");
         }
 
+        [Parser(Opcode.SMSG_INVENTORY_CHANGE_FAILURE)]
+        public static void HandleInventoryChangeFailure(Packet packet)
+        {
+            var result = packet.ReadInt32E<InventoryResult440>("BagResult");
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadPackedGuid128("Item", i);
+
+            packet.ReadByte("ContainerBSlot");
+
+
+            switch (result)
+            {
+                case InventoryResult440.CantEquipLevel:
+                case InventoryResult440.PurchaseLevelTooLow:
+                {
+                    packet.ReadInt32("Level");
+                    break;
+                }
+                case InventoryResult440.EventAutoEquipBindConfirm:
+                {
+                    packet.ReadPackedGuid128("SrcContainer");
+                    packet.ReadInt32("SrcSlot");
+                    packet.ReadPackedGuid128("DstContainer");
+                    break;
+                }
+                case InventoryResult440.ItemMaxLimitCategoryCountExceededIs:
+                case InventoryResult440.ItemMaxLimitCategorySocketedExceededIs:
+                case InventoryResult440.ItemMaxLimitCategoryEquippedExceededIs:
+                {
+                    packet.ReadInt32("LimitCategory");
+                    break;
+                }
+            }
+        }
+
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW)]
+        [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
         public static void HandleItemZero(Packet packet)
         {
         }
