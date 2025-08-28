@@ -1300,6 +1300,18 @@ namespace WowPacketParser.Enums.Version
                 {
                     return "V3_4_4_59817";
                 }
+                case ClientVersionBuild.V3_4_5_61815:
+                case ClientVersionBuild.V3_4_5_61934:
+                case ClientVersionBuild.V3_4_5_61937:
+                case ClientVersionBuild.V3_4_5_61996:
+                case ClientVersionBuild.V3_4_5_62072:
+                case ClientVersionBuild.V3_4_5_62256:
+                case ClientVersionBuild.V3_4_5_62386:
+                case ClientVersionBuild.V3_4_5_62423:
+                case ClientVersionBuild.V3_4_5_62544:
+                {
+                    return "V3_4_5_61815";
+                }
                 case ClientVersionBuild.V4_4_0_54481:
                 case ClientVersionBuild.V4_4_0_54500:
                 case ClientVersionBuild.V4_4_0_54501:
