@@ -953,6 +953,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             quest.FlagsEx = packet.ReadInt32E<QuestFlagsEx>("FlagsEx");
             quest.FlagsEx2 = packet.ReadInt32E<QuestFlagsEx2>("FlagsEx2");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_5_61815))
+                quest.FlagsEx3 = packet.ReadInt32E<QuestFlagsEx3>("FlagsEx3");
+
             quest.RewardItem = new uint?[4];
             quest.RewardAmount = new uint?[4];
             quest.ItemDrop = new uint?[4];

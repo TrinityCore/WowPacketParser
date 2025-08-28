@@ -243,6 +243,9 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             response.TypeFlags = (uint?)creature.TypeFlags ?? 0;
             creature.TypeFlags2 = response.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_5_61815))
+                packet.ReadUInt32("Creature Type Flags 3");
+
             creature.Type = packet.ReadByteE<CreatureType>("CreatureType");
             creature.Family = packet.ReadInt32E<CreatureFamily>("CreatureFamily");
             creature.Rank = packet.ReadByteE<CreatureRank>("Classification");
