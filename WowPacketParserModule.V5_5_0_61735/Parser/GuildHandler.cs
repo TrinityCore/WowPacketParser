@@ -146,6 +146,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.CMSG_GUILD_QUERY_RECIPES)]
         [Parser(Opcode.CMSG_GUILD_QUERY_NEWS)]
         [Parser(Opcode.CMSG_GUILD_GET_RANKS)]
+        [Parser(Opcode.CMSG_GUILD_REQUEST_RENAME_STATUS)]
         public static void HandleGuildGuildGUid(Packet packet)
         {
             packet.ReadPackedGuid128("GuildGUID");
@@ -173,6 +174,53 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("AchievementID");
         }
 
+        [Parser(Opcode.CMSG_GUILD_GET_ACHIEVEMENT_MEMBERS)]
+        public static void HandleGuildGetAchievementMembers(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadInt32("AchievementID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SET_MEMBER_NOTE)]
+        public static void HandleGuildSetMemberNote(Packet packet)
+        {
+            packet.ReadPackedGuid128("NoteeGUID");
+            var nameLength = packet.ReadBits(8);
+            packet.ReadBit("IsPublic");
+            packet.ReadWoWString("Note", nameLength);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_UPDATE_INFO_TEXT)]
+        [Parser(Opcode.CMSG_GUILD_UPDATE_MOTD_TEXT)]
+        public static void HandleGuildUpdateInfoText(Packet packet)
+        {
+            var nameLength = packet.ReadBits(11);
+            packet.ReadWoWString("InfoText", nameLength);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_CHANGE_NAME_REQUEST)]
+        public static void HandleGuildChangeNameResult(Packet packet)
+        {
+            var len = packet.ReadBits(7);
+            packet.ReadWoWString("NewName", len);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_LOG_QUERY)]
+        [Parser(Opcode.CMSG_GUILD_BANK_TEXT_QUERY)]
+        public static void HandleGuildBankLogQuery(Packet packet)
+        {
+            packet.ReadInt32("Tab");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_SET_TAB_TEXT)]
+        public static void HandleGuildSetBankText(Packet packet)
+        {
+            packet.ReadInt32("Tab");
+            var len = packet.ReadBits(14);
+            packet.ReadWoWString("TabText", len);
+        }
+
         [Parser(Opcode.CMSG_GUILD_CHALLENGE_UPDATE_REQUEST)]
         [Parser(Opcode.CMSG_GUILD_DECLINE_INVITATION)]
         [Parser(Opcode.CMSG_GUILD_DELETE)]
@@ -181,6 +229,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.CMSG_GUILD_LEAVE)]
         [Parser(Opcode.CMSG_GUILD_PERMISSIONS_QUERY)]
         [Parser(Opcode.CMSG_GUILD_REPLACE_GUILD_MASTER)]
+        [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         public static void HandleGuildZero(Packet packet)
         {
         }

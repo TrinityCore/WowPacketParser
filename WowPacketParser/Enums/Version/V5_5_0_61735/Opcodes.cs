@@ -124,7 +124,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.CMSG_BUY_BACK_ITEM, 0x36002F },
             { Opcode.CMSG_BUY_BANK_SLOT, 0x36003F },
             { Opcode.CMSG_BUY_ITEM, 0x36002E },
-            { Opcode.CMSG_BUY_STABLE_SLOT, 0x350013 },
+            { Opcode.CMSG_BUY_STABLE_SLOT, 0x350013 }, // NYI
             { Opcode.CMSG_CAGE_BATTLE_PET, 0x35009F },
             { Opcode.CMSG_CALENDAR_ADD_EVENT, 0x3A00A9 },
             { Opcode.CMSG_CALENDAR_COMMUNITY_INVITE, 0x3A009D },
@@ -298,7 +298,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.CMSG_GM_TICKET_GET_CASE_STATUS, 0x3A00BA },
             { Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS, 0x3A00B9 },
             { Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x36001F },
-            { Opcode.CMSG_GUILD_ADD_BATTLENET_FRIEND, 0x330020 },
+            { Opcode.CMSG_GUILD_ADD_BATTLENET_FRIEND, 0x330020 }, // NYI
             { Opcode.CMSG_GUILD_ADD_RANK, 0x330005 },
             { Opcode.CMSG_GUILD_ASSIGN_MEMBER_RANK, 0x330002 },
             { Opcode.CMSG_GUILD_BANK_ACTIVATE, 0x360040 },
@@ -331,9 +331,9 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.CMSG_GUILD_QUERY_NEWS, 0x33000D },
             { Opcode.CMSG_GUILD_QUERY_RECIPES, 0x33000B },
             { Opcode.CMSG_GUILD_REPLACE_GUILD_MASTER, 0x33001F },
-            { Opcode.CMSG_GUILD_REQUEST_RENAME, 0x330023 },
-            { Opcode.CMSG_GUILD_REQUEST_RENAME_NAME_CHECK, 0x330022 },
-            { Opcode.CMSG_GUILD_REQUEST_RENAME_REFUND, 0x330024 },
+            { Opcode.CMSG_GUILD_REQUEST_RENAME, 0x330023 }, // NYI
+            { Opcode.CMSG_GUILD_REQUEST_RENAME_NAME_CHECK, 0x330022 }, // NYI
+            { Opcode.CMSG_GUILD_REQUEST_RENAME_REFUND, 0x330024 }, // NYI
             { Opcode.CMSG_GUILD_REQUEST_RENAME_STATUS, 0x330021 },
             { Opcode.CMSG_GUILD_SET_ACHIEVEMENT_TRACKING, 0x330010 },
             { Opcode.CMSG_GUILD_SET_FOCUSED_ACHIEVEMENT, 0x330011 },

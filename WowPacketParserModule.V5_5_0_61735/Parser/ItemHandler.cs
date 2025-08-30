@@ -264,6 +264,15 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_REFORGE_ITEM)]
+        public static void HandleReforgeItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("ReforgerGUID");
+            packet.ReadInt32("ContainerId");
+            packet.ReadInt32("SlotNum");
+            packet.ReadInt32("ItemReforgeRecId");
+        }
+
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW)]
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
         public static void HandleItemZero(Packet packet)

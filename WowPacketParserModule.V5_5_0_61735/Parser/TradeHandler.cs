@@ -95,5 +95,54 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                     break;
             }
         }
+
+        [Parser(Opcode.CMSG_INITIATE_TRADE)]
+        public static void HandleInitiateTrade(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+        }
+
+        [Parser(Opcode.CMSG_ACCEPT_TRADE)]
+        public static void HandleAcceptTrade(Packet packet)
+        {
+            packet.ReadUInt32("StateIndex");
+        }
+
+        [Parser(Opcode.CMSG_SET_TRADE_ITEM)]
+        public static void HandleTradeItem(Packet packet)
+        {
+            packet.ReadByte("TradeSlot");
+            packet.ReadByte("PackSlot");
+            packet.ReadByte("ItemSlotInPack");
+        }
+
+        [Parser(Opcode.CMSG_CLEAR_TRADE_ITEM)]
+        public static void HandleClearTradeItem(Packet packet)
+        {
+            packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_SET_TRADE_GOLD)]
+        public static void HandleTradeGold(Packet packet)
+        {
+            packet.ReadUInt64("Coinage");
+        }
+
+        [Parser(Opcode.CMSG_SET_PET_SLOT)]
+        public static void HandleSetPetSlot(Packet packet)
+        {
+            packet.ReadUInt32("PetNumber");
+            packet.ReadByte("DestSlot");
+            packet.ReadPackedGuid128("StableMaster");
+        }
+
+        [Parser(Opcode.CMSG_BEGIN_TRADE)]
+        [Parser(Opcode.CMSG_BUSY_TRADE)]
+        [Parser(Opcode.CMSG_CANCEL_TRADE)]
+        [Parser(Opcode.CMSG_IGNORE_TRADE)]
+        [Parser(Opcode.CMSG_UNACCEPT_TRADE)]
+        public static void HandleTradeNull(Packet packet)
+        {
+        }
     }
 }

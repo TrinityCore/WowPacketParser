@@ -105,5 +105,18 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadByteE<PetFeedback>("Response");
         }
+
+        [Parser(Opcode.CMSG_SET_PET_SPECIALIZATION)]
+        public static void HandleClientSetPetSpecialization(Packet packet)
+        {
+            packet.ReadUInt32("SpecIndex");
+        }
+
+        [Parser(Opcode.CMSG_LEARN_PET_SPECIALIZATION_GROUP)]
+        public static void HandlePetSetSpecialization(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadInt32("SpecIndex");
+        }
     }
 }
