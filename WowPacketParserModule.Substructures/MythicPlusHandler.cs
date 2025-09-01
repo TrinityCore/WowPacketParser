@@ -5,6 +5,18 @@ namespace WowPacketParserModule.Substructures
 {
     public static class MythicPlusHandler
     {
+        public static void ReadDungeonScoreMapSummary550(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("ChallengeModeID", indexes);
+            packet.ReadSingle("MapScore", indexes);
+            packet.ReadInt32("BestRunLevel", indexes);
+            packet.ReadInt32("BestRunDurationMS", indexes);
+            packet.ReadByte("Unknown1110", indexes);
+
+            packet.ResetBitReader();
+            packet.ReadBit("FinishedSuccess", indexes);
+        }
+
         public static void ReadDungeonScoreMapSummary(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("ChallengeModeID", indexes);
@@ -23,19 +35,34 @@ namespace WowPacketParserModule.Substructures
             packet.ReadBit("FinishedSuccess", indexes);
         }
 
-        public static void ReadDungeonScoreSummary(Packet packet, params object[] indexes)
+        public static void ReadDungeonScoreSummary550(Packet packet, params object[] indexes)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
-                packet.ReadSingle("OverallScoreCurrentSeason", indexes);
-            else
-                packet.ReadInt32("OverallScoreCurrentSeason", indexes);
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
-                packet.ReadSingle("LadderScoreCurrentSeason", indexes);
+            packet.ReadSingle("OverallScoreCurrentSeason", indexes);
+            packet.ReadSingle("LadderScoreCurrentSeason", indexes);
 
             var runCount = packet.ReadUInt32("RunCount", indexes);
             for (var i = 0u; i < runCount; ++i)
-                ReadDungeonScoreMapSummary(packet, indexes, i, "Run");
+                ReadDungeonScoreMapSummary550(packet, indexes, i, "Run");
+        }
+
+        public static void ReadDungeonScoreSummary(Packet packet, params object[] indexes)
+        {
+            if (ClientVersion.IsMoPClassicClientVersionBuild(ClientVersion.Build))
+                ReadDungeonScoreSummary550(packet, indexes);
+            else
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+                    packet.ReadSingle("OverallScoreCurrentSeason", indexes);
+                else
+                    packet.ReadInt32("OverallScoreCurrentSeason", indexes);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                    packet.ReadSingle("LadderScoreCurrentSeason", indexes);
+
+                var runCount = packet.ReadUInt32("RunCount", indexes);
+                for (var i = 0u; i < runCount; ++i)
+                    ReadDungeonScoreMapSummary(packet, indexes, i, "Run");
+            }
         }
 
         public static void ReadMythicPlusMember(Packet packet, params object[] indexes)
