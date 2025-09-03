@@ -13,8 +13,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("IsCustom", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, true)]
         public byte? IsCustom;
 
-        [DBFieldName("StartDelay")]
+        [DBFieldName("StartDelay", TargetedDatabaseFlag.TillDragonflight)]
         public uint? StartDelay;
+
+        [DBFieldName("ExtraTimeForBlending", TargetedDatabaseFlag.SinceTheWarWithin)]
+        public int? ExtraTimeForBlending;
 
         [DBFieldName("CircleRadius")]
         public float? CircleRadius;

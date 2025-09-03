@@ -60,7 +60,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             var orbit = new AreaTriggerCreatePropertiesOrbit
             {
                 CreateProperties = createProperties,
-                StartDelay = (uint?)(data.Orbit.ExtraTimeForBlending ?? createProperties.AreaTriggerData.Orbit?.ExtraTimeForBlending),
+                ExtraTimeForBlending = data.Orbit.ExtraTimeForBlending ?? createProperties.AreaTriggerData.Orbit?.ExtraTimeForBlending,
                 CircleRadius = data.Orbit.Radius ?? createProperties.AreaTriggerData.Orbit?.Radius,
                 BlendFromRadius = data.Orbit.BlendFromRadius ?? createProperties.AreaTriggerData.Orbit?.BlendFromRadius,
                 InitialAngle = data.Orbit.InitialAngle ?? createProperties.AreaTriggerData.Orbit?.InitialAngle,
