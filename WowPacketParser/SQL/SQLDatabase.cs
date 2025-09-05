@@ -151,13 +151,19 @@ namespace WowPacketParser.SQL
                         var text = Convert.ToString(reader["Text"]);
                         var text1 = Convert.ToString(reader["Text1"]);
 
-                        if (!BroadcastTexts.ContainsKey(text))
-                            BroadcastTexts[text] = new List<int>();
-                        BroadcastTexts[text].Add(id);
-
-                        if (!BroadcastText1s.ContainsKey(text1))
-                            BroadcastText1s[text1] = new List<int>();
-                        BroadcastText1s[text1].Add(id);
+                        // conversion of entry.ID from uint to int when adding to BroadcastTexts and BroadcastText1s
+                        if (!string.IsNullOrEmpty(text))
+                        {
+                            if (!BroadcastTexts.ContainsKey(text))
+                                BroadcastTexts[text] = new List<int>();
+                            BroadcastTexts[text].Add((int)id); // conversion to int
+                        }
+                        if (!string.IsNullOrEmpty(text1))
+                        {
+                            if (!BroadcastText1s.ContainsKey(text1))
+                                BroadcastText1s[text1] = new List<int>();
+                            BroadcastText1s[text1].Add((int)id); // conversion to int
+                        }
 
                         if (!Settings.UseDBC)
                             continue;
