@@ -60,6 +60,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 if (slot == 7 && spellId != 2 || slot == 6 && spellId < 10)
                     continue;
 
+                var creatureTemplateSpell = new CreatureTemplateSpell
+                {
+                    CreatureID = petGuid.GetEntry(),
+                    Index = (byte)(i),
+                    Spell = spellId
+                };
+                Storage.CreatureTemplateSpells.Add(creatureTemplateSpell);
+
                 // pets do not have npc entry available in sniff - skip
                 if (petGuid.GetHighType() == HighGuidType.Pet)
                     continue;
