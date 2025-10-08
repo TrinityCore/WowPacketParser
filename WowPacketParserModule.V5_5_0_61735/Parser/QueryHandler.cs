@@ -305,8 +305,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             gameObject.Name = name[0];
 
             gameObject.IconName = packet.ReadCString("Icon Name");
-            gameObject.CastCaption = packet.ReadCString("Cast Caption");
-            gameObject.UnkString = packet.ReadCString("Unk String");
+            gameObject.OpeningText = packet.ReadCString("Opening Text");
+            gameObject.ClosingText = packet.ReadCString("Closing Text");
 
             gameObject.Data = new int?[35];
             for (int i = 0; i < gameObject.Data.Length; i++)
@@ -348,7 +348,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             query.Model = gameObject.DisplayID.Value;
             query.Name = gameObject.Name;
             query.IconName = gameObject.IconName;
-            query.CastCaption = gameObject.CastCaption;
+            query.OpeningText = gameObject.OpeningText;
             query.Size = gameObject.Size.Value;
             foreach (var data in gameObject.Data)
                 query.Data.Add(data.Value);

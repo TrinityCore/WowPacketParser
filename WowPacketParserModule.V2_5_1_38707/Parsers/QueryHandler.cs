@@ -236,8 +236,8 @@ namespace WowPacketParserModule.V2_5_1_38835.Parsers
             gameObject.Name = name[0];
 
             gameObject.IconName = packet.ReadCString("Icon Name");
-            gameObject.CastCaption = packet.ReadCString("Cast Caption");
-            gameObject.UnkString = packet.ReadCString("Unk String");
+            gameObject.OpeningText = packet.ReadCString("Opening Text");
+            gameObject.ClosingText = packet.ReadCString("Closing Text");
 
             gameObject.Data = new int?[35];
             for (int i = 0; i < gameObject.Data.Length; i++)

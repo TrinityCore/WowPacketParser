@@ -23,10 +23,10 @@ namespace WowPacketParser.Store.Objects
         public string IconName;
 
         [DBFieldName("castBarCaption", LocaleConstant.enUS)] // ToDo: Add locale support
-        public string CastCaption;
+        public string OpeningText;
 
         [DBFieldName("unk1")]
-        public string UnkString;
+        public string ClosingText;
 
         [DBFieldName("size")]
         public float? Size;

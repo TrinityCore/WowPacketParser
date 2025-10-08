@@ -735,7 +735,7 @@ message PacketQueryGameObjectResponse {
   uint32 model = 4;
   string name = 5;
   string iconName = 6;
-  string castCaption = 7;
+  string openingText = 7;
   repeated int32 data = 8;
   float size = 9;
   repeated uint32 items = 10;
