@@ -479,7 +479,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void ReadSpellHealPrediction(Packet packet, params object[] idx)
         {
             packet.ReadInt32("Points", idx);
-            packet.ReadByte("Type", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                packet.ReadInt32("Type", idx);
+            else
+                packet.ReadByte("Type", idx);
             packet.ReadPackedGuid128("BeaconGUID", idx);
         }
 

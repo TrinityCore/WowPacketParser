@@ -55,6 +55,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 ReadVisualItemInfo(packet, idx, "VisualItems", j);
 
             packet.ReadInt32("SaveVersion", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                packet.ReadTime64("CreateTime", idx);
             packet.ReadTime64("LastPlayedTime", idx);
             packet.ReadInt32("LastLoginVersion", idx);
 

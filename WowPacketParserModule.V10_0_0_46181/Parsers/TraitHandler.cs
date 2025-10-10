@@ -52,6 +52,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                     break;
                 case 3:
                     packet.ReadInt32("TraitSystemID", indexes);
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                        packet.ReadInt32("VariationID", indexes);
                     break;
             }
 

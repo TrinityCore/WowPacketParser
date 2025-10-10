@@ -17,7 +17,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ResetBitReader();
 
-            if (ClientVersion.AddedInVersion(ClientType.Dragonflight) || ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                packet.ReadUInt32E<TargetFlag>("Flags", idx);
+            else if (ClientVersion.AddedInVersion(ClientType.Dragonflight) || ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
                 packet.ReadBitsE<TargetFlag>("Flags", 28, idx);
             else if (ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build))
                 packet.ReadBitsE<TargetFlag>("Flags", 27, idx);
@@ -26,16 +28,28 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             else
                 packet.ReadBitsE<TargetFlag>("Flags", 25, idx);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+            {
+                var targetUnit = packet.ReadPackedGuid128("Unit", idx);
+                if (packetSpellData != null)
+                    packetSpellData.TargetUnit = targetUnit;
+                packet.ReadPackedGuid128("Item", idx);
+            }
+
             var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);
             var hasDstLoc = packet.ReadBit("HasDstLocation", idx);
             var hasOrient = packet.ReadBit("HasOrientation", idx);
             var hasMapID = packet.ReadBit("hasMapID ", idx);
             var nameLength = packet.ReadBits(7);
 
-            var targetUnit = packet.ReadPackedGuid128("Unit", idx);
-            if (packetSpellData != null)
-                packetSpellData.TargetUnit = targetUnit;
-            packet.ReadPackedGuid128("Item", idx);
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_2_5_63506))
+            {
+                var targetUnit = packet.ReadPackedGuid128("Unit", idx);
+                if (packetSpellData != null)
+                    packetSpellData.TargetUnit = targetUnit;
+                packet.ReadPackedGuid128("Item", idx);
+            }
 
             if (hasSrcLoc)
                 V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, idx, "SrcLocation");
@@ -384,10 +398,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ReadInt32("SpellVisualID");
             packet.ReadSingle("TravelSpeed");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
-                packet.ReadUInt16("HitReason");
-            packet.ReadUInt16("MissReason");
-            packet.ReadUInt16("ReflectStatus");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+            {
+                packet.ReadByte("HitReason");
+                packet.ReadByte("MissReason");
+                packet.ReadByte("ReflectStatus");
+            }
+            else
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                    packet.ReadUInt16("HitReason");
+                packet.ReadUInt16("MissReason");
+                packet.ReadUInt16("ReflectStatus");
+            }
 
             packet.ReadSingle("LaunchDelay");
             packet.ReadSingle("MinDuration");

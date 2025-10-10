@@ -36,5 +36,26 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadPackedGuid128("Unit");
             packet.ReadByte("Tier");
         }
+
+        public static void ReadMirrorVarSingle(Packet packet, params object[] idx)
+        {
+            packet.ResetBitReader();
+            packet.ReadBits("UpdateType", 1, idx);
+            var nameLength = (int)packet.ReadBits(24);
+            var valueLength = (int)packet.ReadBits(24);
+
+            var name = packet.ReadDynamicString(nameLength);
+            var value = packet.ReadDynamicString(valueLength);
+
+            packet.AddValue(name, value, idx);
+        }
+
+        [Parser(Opcode.SMSG_MIRROR_VARS)]
+        public static void HandleMirrorVars(Packet packet)
+        {
+            var count = packet.ReadUInt32();
+            for (var i = 0u; i < count; ++i)
+                ReadMirrorVarSingle(packet, i);
+        }
     }
 }

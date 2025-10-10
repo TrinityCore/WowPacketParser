@@ -25,10 +25,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadTime64("Time");
 
             var decompCount = packet.ReadInt32();
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_6_53840))
-                packet.ReadInt32E<AccountDataType>("DataType");
-            else
-                packet.ReadBitsE<AccountDataType>("Data Type", 4);
+            packet.ReadBitsE<AccountDataType>("Data Type", 4);
             var compCount = packet.ReadInt32();
 
             var pkt = packet.Inflate(compCount, decompCount, false);
@@ -55,10 +52,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadTime64("Time");
 
             var decompCount = packet.ReadInt32();
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_6_53840))
-                packet.ReadInt32E<AccountDataType>("DataType");
-            else
-                packet.ReadBitsE<AccountDataType>("Data Type", 4);
+            packet.ReadBitsE<AccountDataType>("Data Type", 4);
             var compCount = packet.ReadInt32();
 
             var pkt = packet.Inflate(compCount, decompCount, false);

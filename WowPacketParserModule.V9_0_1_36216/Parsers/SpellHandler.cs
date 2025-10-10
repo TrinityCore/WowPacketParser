@@ -35,6 +35,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static uint ReadSpellCastRequest(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("CastID", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                packet.ReadByte("SendCastFlags", idx);
 
             for (var i = 0; i < 2; i++)
                 packet.ReadInt32("Misc", idx, i);
@@ -59,21 +61,30 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             for (var j = 0; j < optionalCurrenciesCount; ++j)
                 ReadOptionalCurrency(packet, idx, "OptionalCurrency", j);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                V8_0_1_27101.Parsers.SpellHandler.ReadSpellTargetData(packet, null, spellId, idx, "Target");
+
             packet.ResetBitReader();
-            packet.ReadBits("SendCastFlags", 5, idx);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_2_5_63506))
+                packet.ReadBits("SendCastFlags", 5, idx);
+
             var hasMoveUpdate = packet.ReadBit("HasMoveUpdate", idx);
             var weightCount = packet.ReadBits("WeightCount", 2, idx);
             var hasCraftingOrderID = false;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
                 hasCraftingOrderID = packet.ReadBit("HasCrafingOrderID", idx);
 
-            V8_0_1_27101.Parsers.SpellHandler.ReadSpellTargetData(packet, null, spellId, idx, "Target");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_2_5_63506))
+                V8_0_1_27101.Parsers.SpellHandler.ReadSpellTargetData(packet, null, spellId, idx, "Target");
 
-            if (hasCraftingOrderID)
+            if (hasCraftingOrderID && ClientVersion.RemovedInVersion(ClientVersionBuild.V11_2_5_63506))
                 packet.ReadUInt64("CraftingOrderID", idx);
 
             for (var i = 0; i < optionalReagentsCount; ++i)
                 ReadOptionalReagent(packet, idx, "OptionalReagent", i);
+
+            if (hasCraftingOrderID && ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                packet.ReadUInt64("CraftingOrderID", idx);
 
             for (var i = 0; i < removedModificationsCount; ++i)
                 ReadOptionalReagent(packet, idx, "RemovedModifications", i);
@@ -228,6 +239,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     packet.ResetBitReader();
 
                     var hasCastUnit = packet.ReadBit("HasCastUnit", i);
+                    var hasCastItem = ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506) && packet.ReadBit("HasCastItem", i);
                     var hasDuration = packet.ReadBit("HasDuration", i);
                     var hasRemaining = packet.ReadBit("HasRemaining", i);
 
@@ -243,6 +255,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
                     if (hasCastUnit)
                         auraEntry.CasterUnit = packet.ReadPackedGuid128("CastUnit", i);
+
+                    if (hasCastItem)
+                        packet.ReadPackedGuid128("CastItem", i);
 
                     aura.Duration = hasDuration ? packet.ReadInt32("Duration", i) : 0;
                     aura.MaxDuration = hasRemaining ? packet.ReadInt32("Remaining", i) : 0;

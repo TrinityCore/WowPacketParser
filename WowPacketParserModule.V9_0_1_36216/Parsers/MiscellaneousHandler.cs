@@ -112,6 +112,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     packet.ReadInt32("AddonChatThrottle.UsedTriesPerMessage");
                 }
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                {
+                    packet.ReadInt32("GuildChatThrottle.UsedTriesPerMessage");
+                    packet.ReadInt32("GuildChatThrottle.TriesRestoredPerSecond");
+                    packet.ReadInt32("GroupChatThrottle.UsedTriesPerMessage");
+                    packet.ReadInt32("GroupChatThrottle.TriesRestoredPerSecond");
+                }
+
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
                 {
                     packet.ReadSingle("AddonPerformanceMsgWarning");
@@ -384,6 +392,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     packet.ReadInt32("ActiveTimerunningSeasonID");
                     packet.ReadInt32("RemainingTimerunningSeasonSeconds");
                 }
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                {
+                    packet.ReadInt32("TimerunningConversionMinCharacterAge");
+                    packet.ReadInt32("TimerunningConversionMaxSeasonID");
+                }
+
                 packet.ReadInt16("MaxPlayerGuidLookupsPerRequest");
             }
 

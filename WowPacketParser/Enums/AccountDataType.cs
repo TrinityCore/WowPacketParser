@@ -19,5 +19,8 @@ namespace WowPacketParser.Enums
         PerCharacterEditModeCache       = 14,
         GlobalFrontendChatSettings      = 15,
         GlobalCharacterListOrder        = 16,
+        GlobalCooldownManager           = 17,
+        PerCharacterCooldownManager     = 18,
+        GlobalShop2PendingOrders        = 19,
     }
 }

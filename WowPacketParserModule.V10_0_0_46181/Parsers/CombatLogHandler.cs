@@ -172,6 +172,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadInt32("Absorbed");
             packet.ReadInt32("Resisted");
             packet.ReadInt32("ShieldBlock");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                packet.ReadInt32E<AttackerStateFlags>("Flags");
             var worldTextViewersCount = packet.ReadUInt32("WorldTextViewersCount");
             var supportInfosCount = packet.ReadUInt32("SupportInfosCount");
             for (var i = 0; i < supportInfosCount; i++)
@@ -179,7 +181,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             packet.ResetBitReader();
             packet.ReadBit("Periodic");
-            packet.ReadBitsE<AttackerStateFlags>("Flags", 7);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_2_5_63506))
+                packet.ReadBitsE<AttackerStateFlags>("Flags", 7);
             var hasDebugData = packet.ReadBit("HasDebugData");
             var hasLogData = packet.ReadBit("HasLogData");
             var hasContentTuning = packet.ReadBit("HasContentTuning");
