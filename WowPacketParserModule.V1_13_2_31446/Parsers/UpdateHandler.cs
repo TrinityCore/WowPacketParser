@@ -403,8 +403,8 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                 if (packet.ReadBit("HasAnimKitID", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAnimKitId;
 
-                if (packet.ReadBit("unkbit50", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.Unk3;
+                if (packet.ReadBit("HasVisualAnimIsDecay", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay;
 
                 bool hasAnimProgress = packet.ReadBit("HasAnimProgress", index);
 
@@ -425,8 +425,9 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                 if (packet.ReadBit("HasAreaTriggerOrbit", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasOrbit;
 
-                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesFlags.Unk3) != 0)
-                    packet.ReadBit();
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay) != 0)
+                    if (!packet.ReadBit("VisualAnimIsDecay", index))
+                        areaTriggerTemplate.Flags &= ~(uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay;
 
                 if (hasAreaTriggerSpline)
                     foreach (var splinePoint in V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerSpline(spellAreaTrigger, packet, index, "AreaTriggerSpline"))

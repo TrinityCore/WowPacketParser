@@ -13,7 +13,7 @@ namespace WowPacketParser.Enums
         Unk1                    = 0x00020,
         HasTargetRollPitchYaw   = 0x00040,
         HasAnimId               = 0x00080,
-        Unk3                    = 0x00100,
+        VisualAnimIsDecay       = 0x00100,
         HasAnimKitId            = 0x00200,
         HasOrbit                = 0x00400,
         HasMovementScript       = 0x00800

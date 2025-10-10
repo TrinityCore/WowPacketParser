@@ -102,6 +102,9 @@ namespace WowPacketParser.Store.Objects
 
                     if (AreaTriggerData.VisualAnim.AnimKitID != 0)
                         AnimKitId = (int)AreaTriggerData.VisualAnim.AnimKitID;
+
+                    if (AreaTriggerData.VisualAnim.IsDecay == true)
+                        Flags |= (uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay;
                 }
             }
 

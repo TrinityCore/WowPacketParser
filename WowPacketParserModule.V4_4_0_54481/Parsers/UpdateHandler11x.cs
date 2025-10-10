@@ -910,8 +910,8 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     if (packet.ReadBit("HasAnimKitID", index))
                         createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAnimKitId;
 
-                    if (packet.ReadBit("unkbit50", index))
-                        createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.Unk3;
+                    if (packet.ReadBit("HasVisualAnimIsDecay", index))
+                        createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay;
 
                     hasAnimProgress = packet.ReadBit("HasAnimProgress", index);
                 }
@@ -947,8 +947,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
                 {
-                    if ((createProperties.Flags & (uint)AreaTriggerCreatePropertiesFlags.Unk3) != 0)
-                        packet.ReadBit();
+                    if ((createProperties.Flags & (uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay) != 0)
+                        if (!packet.ReadBit("VisualAnimIsDecay", index))
+                            createProperties.Flags &= ~(uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay;
                 }
 
                 if (hasAreaTriggerSpline)
