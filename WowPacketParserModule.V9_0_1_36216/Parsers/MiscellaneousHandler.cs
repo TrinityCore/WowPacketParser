@@ -421,8 +421,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (launchEta)
                 packet.ReadInt32("LaunchETA");
 
-            if (realmHiddenAlertLen > 0)
-                packet.ReadWoWString("RealmHiddenAlert", realmHiddenAlertLen);
+            packet.ReadDynamicString("RealmHiddenAlert", realmHiddenAlertLen);
 
             for (int i = 0; i < liveRegionCharacterCopySourceRegionsCount; i++)
                 packet.ReadUInt32("LiveRegionCharacterCopySourceRegion", i);
