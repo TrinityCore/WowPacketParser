@@ -145,6 +145,14 @@ namespace WowPacketParser.Parsing.Parsers
             obj.EntityFragments = newObj.EntityFragments;
             if (guid.GetHighType() == HighGuidType.Creature) // skip if not an unit
             {
+                // sometimes CreateObject2 is sent after CreateObject1 for the same guid
+                // in those cases orientation of CreateObject1 is 0, so we force the 2nd orientation
+                if (newObj.CreateType == CreateObjectType.Spawn && obj.Movement.Position.Equals(newObj.Movement.Position))
+                {
+                    obj.CreateType = CreateObjectType.Spawn;
+                    obj.Movement.Orientation = newObj.Movement.Orientation;
+                }
+
                 if (!obj.Movement.HasWpsOrRandMov)
                     if (obj.Movement.Position != newObj.Movement.Position)
                         if (((obj as Unit).UnitData.Flags & (uint) UnitFlags.IsInCombat) == 0) // movement could be because of aggro so ignore that
