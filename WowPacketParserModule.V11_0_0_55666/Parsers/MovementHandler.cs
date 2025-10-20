@@ -154,7 +154,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             ReadMovementSpline(packet, pos, indexes, "MovementSpline");
         }
 
-        [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
+        [Parser(Opcode.SMSG_ON_MONSTER_MOVE, ClientVersionBuild.V11_2_5_63506)]
         public static void HandleOnMonsterMove(Packet packet)
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove = new();
