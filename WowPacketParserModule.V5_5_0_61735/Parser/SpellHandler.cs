@@ -805,7 +805,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByte("EffectIndex");
         }
 
-        [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE)]
+        [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE, ClientBranch.MoP)]
         public static void HandlePetSpells(Packet packet)
         {
             var petGuid = packet.ReadPackedGuid128("PetGUID");
