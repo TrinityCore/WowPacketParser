@@ -17,7 +17,7 @@ using MovementFlag2 = WowPacketParser.Enums.v7.MovementFlag2;
 
 namespace WowPacketParserModule.V5_5_0_61735.Parsers
 {
-    public static class UpdateHandler
+    public static class UpdateHandler1158
     {
         [Parser(Opcode.SMSG_MAP_OBJ_EVENTS)]
         public static void HandleMapObjEvents(Packet packet)
@@ -40,7 +40,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         }
 
         [HasSniffData] // in ReadCreateObjectBlock
-        [Parser(Opcode.SMSG_UPDATE_OBJECT, ClientBranch.MoP)]
+        [Parser(Opcode.SMSG_UPDATE_OBJECT, ClientBranch.Classic)]
         public static void HandleUpdateObject(Packet packet)
         {
             var updateObject = packet.Holder.UpdateObject = new();
@@ -441,6 +441,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("NoBirthAnim", index);
             packet.ReadBit("EnablePortals", index);
             packet.ReadBit("PlayHoverAnim", index);
+            packet.ReadBit("ThisIsYou", index);
 
             var hasMovementUpdate = packet.ReadBit("HasMovementUpdate", index);
             var hasMovementTransport = packet.ReadBit("HasMovementTransport", index);
@@ -454,8 +455,6 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             var hasAreaTrigger = packet.ReadBit("HasAreaTrigger", index);
             var hasGameObject = packet.ReadBit("HasGameObject", index);
             var hasSmoothPhasing = packet.ReadBit("HasSmoothPhasing", index);
-
-            packet.ReadBit("ThisIsYou", index);
 
             var sceneObjCreate = packet.ReadBit("SceneObjCreate", index);
             var playerCreateData = packet.ReadBit("HasPlayerCreateData", index);
@@ -571,7 +570,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 moveInfo.HasSplineData = packet.ReadBit("HasMovementSpline", index);
 
                 for (var i = 0; i < movementForceCount; ++i)
-                    MovementHandler.ReadMovementForce(packet, "MovementForces", i);
+                    MovementHandler1158.ReadMovementForce(packet, "MovementForces", i);
 
                 if (moveInfo.HasSplineData)
                 {
@@ -638,13 +637,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                             moveData.Points.Add(packet.ReadVector3("Points", index, i));
 
                         if (hasSpellEffectExtraData)
-                            MovementHandler.ReadMonsterSplineSpellEffectExtraData(packet, index);
+                            MovementHandler1158.ReadMonsterSplineSpellEffectExtraData(packet, index);
 
                         if (hasJumpExtraData)
-                            moveData.Jump = MovementHandler.ReadMonsterSplineJumpExtraData(packet, index);
+                            moveData.Jump = MovementHandler1158.ReadMonsterSplineJumpExtraData(packet, index);
 
                         if (hasTurnData)
-                            MovementHandler.ReadMonsterSplineTurnData(packet, index, "MonsterSplineTurnData");
+                            MovementHandler1158.ReadMonsterSplineTurnData(packet, index, "MonsterSplineTurnData");
 
                         if (hasAnimationTierTransition)
                         {

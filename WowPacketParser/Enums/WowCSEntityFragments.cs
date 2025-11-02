@@ -58,6 +58,7 @@ namespace WowPacketParser.Enums
                     return true;
                 case WowCSEntityFragments.FVendor_C:
                     return ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_0_7_58630) ||
+                        ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_8_63829) ||
                         ClientVersion.AddedInVersion(ClientBranch.MoP, ClientVersionBuild.V5_5_0_61735) ||
                         ClientVersion.AddedInVersion(ClientBranch.Cata, ClientVersionBuild.V4_4_2_59185) ||
                         ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_4_59817);
