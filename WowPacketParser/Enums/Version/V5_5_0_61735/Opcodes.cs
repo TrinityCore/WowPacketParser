@@ -1944,7 +1944,7 @@ namespace WowPacketParser.Enums.Version.V5_5_0_61735
             { Opcode.SMSG_UPDATE_PRIMARY_SPEC, 0x3C0072 }, // NYI
             { Opcode.SMSG_UPDATE_RECENT_PLAYER_GUIDS, 0x3C008F }, // NYI
             { Opcode.SMSG_UPDATE_TALENT_DATA, 0x3C0070 },
-            { Opcode.SMSG_UPDATE_TALENT_DATA_CLASSIC, 0x3C0071 },
+            { Opcode.SMSG_UPDATE_CLASSIC_TALENT_DATA, 0x3C0071 },
             { Opcode.SMSG_UPDATE_WORLD_STATE, 0x3C01E7 },
             { Opcode.SMSG_USE_EQUIPMENT_SET_RESULT, 0x3C01EE },
             { Opcode.SMSG_USERLIST_ADD, 0x41000F },
