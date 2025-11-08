@@ -45,10 +45,10 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         {
             get
             {
-                var field = new DynamicUpdateField<IConversationActor>();
+                var updateField = new DynamicUpdateField<IConversationActor>();
                 var actors = DynamicUpdateFields.GetValue<ConversationDynamicField, uint>(ConversationDynamicField.CONVERSATION_DYNAMIC_FIELD_ACTORS).ToList();
                 var ActorSize = 6;
-                field.Resize((uint)(actors.Count / ActorSize));
+                updateField.Resize((uint)(actors.Count / ActorSize));
 
                 for (var i = 0; i + ActorSize <= actors.Count; i += ActorSize)
                 {
@@ -76,10 +76,10 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
                         }
                     }
 
-                    field[i / ActorSize] = actor;
+                    updateField[i / ActorSize] = actor;
                 }
 
-                return field;
+                return updateField;
             }
         }
 
