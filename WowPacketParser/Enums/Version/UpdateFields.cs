@@ -1187,6 +1187,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V1_15_8_63829:
                 case ClientVersionBuild.V1_15_8_64057:
                 case ClientVersionBuild.V1_15_8_64130:
+                case ClientVersionBuild.V1_15_8_64272:
                 {
                     return "V1_15_8_63829";
                 }
