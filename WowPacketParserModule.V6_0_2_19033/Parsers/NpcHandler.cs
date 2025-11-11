@@ -426,7 +426,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     }
                 }
 
-            trainer.Type = packet.ReadInt32E<TrainerType>("TrainerType");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63704))
+                trainer.Type = packet.ReadByteE<TrainerType>("TrainerType");
+            else
+                trainer.Type = packet.ReadInt32E<TrainerType>("TrainerType");
             trainer.Id = packet.ReadUInt32("TrainerID");
 
             var count = packet.ReadUInt32("Spells");
