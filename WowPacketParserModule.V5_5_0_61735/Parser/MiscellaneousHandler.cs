@@ -298,7 +298,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt64("RedeemForBalanceAmount");
             packet.ReadUInt32("BpayStorePurchaseTimeout");
             packet.ReadUInt32("ClubsPresenceDelay");
-            packet.ReadUInt32("ClubPresenceUnsubscribeDelay");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V5_5_1_63311))
+                packet.ReadUInt32("ClubPresenceUnsubscribeDelay");
             packet.ReadInt32("ContentSetID");
 
             var gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
