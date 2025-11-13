@@ -195,10 +195,20 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             if (hasAnimTier)
             {
-                packet.ReadInt32("TierTransitionID", indexes);
-                packet.ReadUInt32("StartTime", indexes);
-                packet.ReadUInt32("EndTime", indexes);
-                packet.ReadByte("AnimTier", indexes);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_1_63311))
+                {
+                    packet.ReadInt32("TierTransitionID", indexes);
+                    packet.ReadByte("AnimTier", indexes);
+                    packet.ReadUInt32("StartTime", indexes);
+                    packet.ReadUInt32("EndTime", indexes);
+                }
+                else
+                {
+                    packet.ReadInt32("TierTransitionID", indexes);
+                    packet.ReadUInt32("StartTime", indexes);
+                    packet.ReadUInt32("EndTime", indexes);
+                    packet.ReadByte("AnimTier", indexes);
+                }
             }
 
             if (endpos.X != 0 && endpos.Y != 0 && endpos.Z != 0)

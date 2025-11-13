@@ -298,7 +298,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt64("RedeemForBalanceAmount");
             packet.ReadUInt32("BpayStorePurchaseTimeout");
             packet.ReadUInt32("ClubsPresenceDelay");
-            packet.ReadUInt32("ClubPresenceUnsubscribeDelay");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V5_5_1_63311))
+                packet.ReadUInt32("ClubPresenceUnsubscribeDelay");
             packet.ReadInt32("ContentSetID");
 
             var gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
@@ -437,7 +438,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN)]
         public static void HandleFeatureSystemStatusGlueScreen(Packet packet)
         {
-            packet.ReadBit("BpayStoreEnabled");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V5_5_1_63311))
+                packet.ReadBit("BpayStoreEnabled");
             packet.ReadBit("BpayStoreAvailable");
             packet.ReadBit("BpayStoreDisabledByParentalControls");
             packet.ReadBit("CharUndeleteEnabled");
@@ -494,7 +496,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt64("TokenBalanceAmount");
             packet.ReadInt32("MaxCharactersPerRealm");
             var liveRegionCharacterCopySourceRegionsCount = packet.ReadUInt32("LiveRegionCharacterCopySourceRegionsCount");
-            packet.ReadUInt32("BpayStoreProductDeliveryDelay");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V5_5_1_63311))
+                packet.ReadUInt32("BpayStoreProductDeliveryDelay");
             packet.ReadInt32("ActiveCharacterUpgradeBoostType");
             packet.ReadInt32("ActiveClassTrialBoostType");
             packet.ReadInt32("MinimumExpansionLevel");
