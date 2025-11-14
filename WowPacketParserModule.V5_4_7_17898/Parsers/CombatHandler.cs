@@ -263,5 +263,25 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             packet.ReadBits("bits10", 2);
         }
+
+        [Parser(Opcode.SMSG_PVP_CREDIT)]
+        public static void HandlePvPCredit(Packet packet)
+        {
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 7, 0, 1, 3, 5, 4, 2, 6);
+
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadInt32("Rank");
+            packet.ReadXORByte(guid, 3);
+            packet.ReadInt32("Honor");
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 2);
+
+            packet.WriteGuid("Target", guid);
+        }
     }
 }
