@@ -111,7 +111,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 case 0:
                     AddValue("Unk", reader.ReadByte(), values);
-                    AddValue("Token id", Convert.ToHexString(reader.ReadBytes(8).Reverse().ToArray()), values);
+                    AddValue("Token id", Convert.ToHexString(reader.ReadBytes(8).AsEnumerable().Reverse().ToArray()), values);
                     AddValue("Unk counter", reader.ReadByte(), values);
                     AddValue("Crypt entropy", Convert.ToHexString(reader.ReadBytes(16)), values);
                     return false;
@@ -123,7 +123,7 @@ namespace WowPacketParser.Parsing.Parsers
                     AddValue("data", Convert.ToHexString(reader.ReadBytes(36)), values);
                     return true;
                 case 3:
-                    AddValue("Token id", Convert.ToHexString(reader.ReadBytes(8).Reverse().ToArray()), values);
+                    AddValue("Token id", Convert.ToHexString(reader.ReadBytes(8).AsEnumerable().Reverse().ToArray()), values);
                     AddValue("Crypt entropy", Convert.ToHexString(reader.ReadBytes(16)), values);
                     AddValue("Token key", Convert.ToHexString(reader.ReadBytes(8)), values);
                     AddValue("Token data", Convert.ToHexString(reader.ReadBytes(16)), values);
@@ -174,7 +174,7 @@ namespace WowPacketParser.Parsing.Parsers
             var count = reader.ReadUInt32();
             for (var i = 0; i < count; ++i)
             {
-                AddValue("Data", Encoding.ASCII.GetString(reader.ReadBytes(4).Reverse().ToArray()).Trim('\0'), values.Concat(new object[] { i }).ToArray());
+                AddValue("Data", Encoding.ASCII.GetString(reader.ReadBytes(4).AsEnumerable().Reverse().ToArray()).Trim('\0'), values.Concat(new object[] { i }).ToArray());
                 AddValue("Value", reader.ReadUInt32(), values.Concat(new object[] { i }).ToArray());
             }
 
@@ -188,14 +188,14 @@ namespace WowPacketParser.Parsing.Parsers
             switch (state)
             {
                 case 0:
-                    AddValue("Server challenge", Convert.ToHexString(reader.ReadBytes(16).Reverse().ToArray()), values);
+                    AddValue("Server challenge", Convert.ToHexString(reader.ReadBytes(16).AsEnumerable().Reverse().ToArray()), values);
                     return false;
                 case 1:
-                    AddValue("Client challenge", Convert.ToHexString(reader.ReadBytes(16).Reverse().ToArray()), values);
-                    AddValue("Client proof", Convert.ToHexString(reader.ReadBytes(32).Reverse().ToArray()), values);
+                    AddValue("Client challenge", Convert.ToHexString(reader.ReadBytes(16).AsEnumerable().Reverse().ToArray()), values);
+                    AddValue("Client proof", Convert.ToHexString(reader.ReadBytes(32).AsEnumerable().Reverse().ToArray()), values);
                     break;
                 case 2:
-                    AddValue("Server proof", Convert.ToHexString(reader.ReadBytes(32).Reverse().ToArray()), values);
+                    AddValue("Server proof", Convert.ToHexString(reader.ReadBytes(32).AsEnumerable().Reverse().ToArray()), values);
                     break;
             }
 
