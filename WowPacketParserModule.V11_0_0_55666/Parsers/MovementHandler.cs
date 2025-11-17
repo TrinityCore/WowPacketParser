@@ -1,9 +1,10 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
 using WowPacketParserModule.V6_0_2_19033.Enums;
+using static WowPacketParserModule.V7_0_3_22248.Enums.ProtoExtensions;
+using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V11_0_0_55666.Parsers
 {

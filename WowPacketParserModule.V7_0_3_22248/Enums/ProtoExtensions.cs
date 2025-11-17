@@ -1,3 +1,5 @@
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.Proto;
 
 namespace WowPacketParserModule.V7_0_3_22248.Enums
@@ -7,12 +9,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Enums
         public static UniversalSplineFlag ToUniversal(this SplineFlag flags)
         {
             UniversalSplineFlag universal = UniversalSplineFlag.SplineFlagNone;
-            if (flags.HasFlag(SplineFlag.AnimTierSwim))
-                universal |= UniversalSplineFlag.AnimTierSwim;
-            if (flags.HasFlag(SplineFlag.AnimTierHover))
-                universal |= UniversalSplineFlag.AnimTierHover;
-            if (flags.HasFlag(SplineFlag.AnimTierSubmerged))
-                universal |= UniversalSplineFlag.AnimTierSubmerged;
+            if (ClientVersion.RemovedInVersion(ClientType.Shadowlands))
+            {
+                if (flags.HasFlag(SplineFlag.AnimTierSwim))
+                    universal |= UniversalSplineFlag.AnimTierSwim;
+                if (flags.HasFlag(SplineFlag.AnimTierHover))
+                    universal |= UniversalSplineFlag.AnimTierHover;
+                if (flags.HasFlag(SplineFlag.AnimTierSubmerged))
+                    universal |= UniversalSplineFlag.AnimTierSubmerged;
+            }
             if (flags.HasFlag(SplineFlag.FallingSlow))
                 universal |= UniversalSplineFlag.FallingSlow;
             if (flags.HasFlag(SplineFlag.Done))
@@ -31,7 +36,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Enums
                 universal |= UniversalSplineFlag.Cyclic;
             if (flags.HasFlag(SplineFlag.EnterCycle))
                 universal |= UniversalSplineFlag.EnterCycle;
-            if (flags.HasFlag(SplineFlag.Frozen))
+            if (flags.HasFlag(SplineFlag.Turning))
                 universal |= UniversalSplineFlag.Frozen;
             if (flags.HasFlag(SplineFlag.TransportEnter))
                 universal |= UniversalSplineFlag.TransportEnter;

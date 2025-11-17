@@ -1,15 +1,10 @@
-﻿using System;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Reflection;
+﻿using System.Linq;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
-using WowPacketParser.Store;
-using WowPacketParserModule.V6_0_2_19033.Parsers;
-using WowPacketParserModule.V7_0_3_22248.Enums;
+using static WowPacketParserModule.V7_0_3_22248.Enums.ProtoExtensions;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using SplineFacingType = WowPacketParserModule.V6_0_2_19033.Enums.SplineFacingType;
 using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
