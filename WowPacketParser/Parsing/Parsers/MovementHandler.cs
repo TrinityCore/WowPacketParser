@@ -296,8 +296,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(SplineFlag.Trajectory))
             {
-                packet.ReadSingle("JumpGravity");
-                packet.ReadInt32("SpecialTime");
+                monsterMove.Jump = new();
+                monsterMove.Jump.Gravity = packet.ReadSingle("JumpGravity");
+                monsterMove.Jump.StartTime = packet.ReadUInt32("SpecialTime");
             }
 
             double distance = 0;
@@ -335,8 +336,43 @@ namespace WowPacketParser.Parsing.Parsers
                 distance += Vector3.GetDistance(start, endpos);
             }
 
-            packet.WriteLine("Computed Distance: " + distance);
-            packet.WriteLine("Computed Speed: " + distance / monsterMove.MoveTime * 1000);
+            PrintComputedSplineMovementParams(packet, distance, monsterMove);
+        }
+
+        public static void PrintComputedSplineMovementParams(Packet packet, double distance, PacketMonsterMove monsterMove, params object[] indexes)
+        {
+            packet.AddValue("Computed Distance", distance, indexes);
+            packet.AddValue("Computed Speed", (distance / monsterMove.MoveTime) * 1000, indexes);
+            if (monsterMove.Jump != null && monsterMove.Flags.HasFlag(UniversalSplineFlag.Parabolic))
+            {
+                const double defaultGravity = 19.29110336303710937;
+
+                static double ComputeFallElevation(double timePassed, double startVelocity, double gravity)
+                {
+                    const double termVel = 60.148003;
+
+                    if (startVelocity > termVel)
+                        startVelocity = termVel;
+
+                    var terminalTime = (termVel - startVelocity) / gravity; // the time that needed to reach terminalVelocity
+
+                    if (timePassed > terminalTime)
+                        return termVel * (timePassed - terminalTime) +
+                               startVelocity * terminalTime +
+                               gravity * terminalTime * terminalTime * 0.5f;
+
+                    return timePassed * (startVelocity + timePassed * gravity * 0.5f);
+                }
+
+                var speedZ = monsterMove.MoveTime * monsterMove.Jump.Gravity / 2.0 / 1000.0;
+                var height = -ComputeFallElevation(monsterMove.MoveTime / 2.0 / 1000.0, -speedZ, monsterMove.Jump.Gravity);
+
+                var speedZWithDefaultGravity = monsterMove.MoveTime * defaultGravity / 2.0 / 1000.0;
+                var heightWithDefaultGravity = -ComputeFallElevation(monsterMove.MoveTime / 2.0 / 1000.0, -speedZWithDefaultGravity, defaultGravity);
+
+                packet.AddValue("Computed Jump Height", height, indexes);
+                packet.AddValue("Computed Jump Height (with default gravity)", heightWithDefaultGravity, indexes);
+            }
         }
 
         private static void ReadSplineMovement510(Packet packet, Vector3 pos)

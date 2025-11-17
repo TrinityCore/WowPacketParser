@@ -153,10 +153,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 ReadMonsterSplineSpellEffectExtraData(packet, "MonsterSplineSpellEffectExtra");
 
             if (endpos.X != 0 && endpos.Y != 0 && endpos.Z != 0)
-            {
-                packet.AddValue("Computed Distance", distance, indexes);
-                packet.AddValue("Computed Speed", (distance / monsterMove.MoveTime) * 1000, indexes);
-            }
+                WowPacketParser.Parsing.Parsers.MovementHandler.PrintComputedSplineMovementParams(packet, distance, monsterMove, indexes);
         }
 
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
