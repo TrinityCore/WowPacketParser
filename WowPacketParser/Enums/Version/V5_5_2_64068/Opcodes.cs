@@ -1735,6 +1735,7 @@ namespace WowPacketParser.Enums.Version.V5_5_2_64068
             { Opcode.SMSG_UPDATE_GAME_TIME_STATE, 0x3A02C9 },
             { Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0x3A014C },
             { Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x3A012B },
+            { Opcode.SMSG_UPDATE_OBJECT, 0x4A0000 },
             { Opcode.SMSG_UPDATE_PRIMARY_SPEC, 0x3A0072 },
             { Opcode.SMSG_UPDATE_TALENT_DATA, 0x3A0070 },
             { Opcode.SMSG_UPDATE_WORLD_STATE, 0x3A01EB },
