@@ -19,7 +19,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 {
     public static class UpdateHandler1158
     {
-        [Parser(Opcode.SMSG_MAP_OBJ_EVENTS)]
+        [Parser(Opcode.SMSG_MAP_OBJ_EVENTS, ClientBranch.Classic)]
         public static void HandleMapObjEvents(Packet packet)
         {
             packet.ReadInt32("UniqueID");
@@ -33,7 +33,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_DESTROY_ARENA_UNIT)]
+        [Parser(Opcode.SMSG_DESTROY_ARENA_UNIT, ClientBranch.Classic)]
         public static void HandleDestroyArenaUnit(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
