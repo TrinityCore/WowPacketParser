@@ -441,6 +441,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("NoBirthAnim", index);
             packet.ReadBit("EnablePortals", index);
             packet.ReadBit("PlayHoverAnim", index);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_1_63311))
+                packet.ReadBit("ThisIsYou", index);
 
             var hasMovementUpdate = packet.ReadBit("HasMovementUpdate", index);
             var hasMovementTransport = packet.ReadBit("HasMovementTransport", index);
@@ -455,7 +457,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             var hasGameObject = packet.ReadBit("HasGameObject", index);
             var hasSmoothPhasing = packet.ReadBit("HasSmoothPhasing", index);
 
-            packet.ReadBit("ThisIsYou", index);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V5_5_1_63311))
+                packet.ReadBit("ThisIsYou", index);
 
             var sceneObjCreate = packet.ReadBit("SceneObjCreate", index);
             var playerCreateData = packet.ReadBit("HasPlayerCreateData", index);
