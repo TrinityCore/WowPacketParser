@@ -1394,7 +1394,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V5_5_1_63311
             {
                 for (var i = 0; i < 3; ++i)
                 {
-                    if (changesMask[1475 + i])
+                    if (changesMask[175 + i])
                     {
                         data.AttackRoundBaseTime[i] = packet.ReadUInt32("AttackRoundBaseTime", indexes, i);
                     }
