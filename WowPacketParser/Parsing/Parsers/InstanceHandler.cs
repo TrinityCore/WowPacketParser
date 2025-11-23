@@ -63,8 +63,8 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Direction != Direction.ServerToClient)
                 return;
 
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("In Group");
+            packet.ReadInt32("Toggle Difficulty");
+            packet.ReadInt32("Set Group Setting");
         }
 
         [Parser(Opcode.SMSG_INSTANCE_DIFFICULTY)]
