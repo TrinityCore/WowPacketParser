@@ -360,7 +360,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGroupInvite(Packet packet)
         {
             packet.ReadCString("Name");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Proposed Roles");
         }
 
         [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
