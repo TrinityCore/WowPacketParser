@@ -57,13 +57,15 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBitsE<MovementForceType>("Type", 2, idx);
         }
 
-        public static void ReadMonsterSplineSpellEffectExtraData(Packet packet, params object[] indexes)
+        public static SplineSpellEffect ReadMonsterSplineSpellEffectExtraData(Packet packet, params object[] indexes)
         {
-            packet.ReadPackedGuid128("TargetGUID", indexes);
-            packet.ReadUInt32("SpellVisualID", indexes);
-            packet.ReadUInt32("ProgressCurveID", indexes);
-            packet.ReadUInt32("ParabolicCurveID", indexes);
-            packet.ReadSingle("JumpGravity", indexes);
+            SplineSpellEffect effect = new();
+            effect.Target = packet.ReadPackedGuid128("TargetGUID", indexes);
+            effect.SpellVisualID = packet.ReadUInt32("SpellVisualID", indexes);
+            effect.ProgressCurveID = packet.ReadUInt32("ProgressCurveID", indexes);
+            effect.ParabolicCurveID = packet.ReadUInt32("ParabolicCurveID", indexes);
+            effect.JumpGravity = packet.ReadSingle("JumpGravity", indexes);
+            return effect;
         }
 
         public static SplineJump ReadMonsterSplineJumpExtraData(Packet packet, params object[] indexes)
@@ -186,7 +188,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             }
 
             if (hasSpellEffectExtraData)
-                ReadMonsterSplineSpellEffectExtraData(packet, indexes, "MonsterSplineSpellEffectExtra");
+                monsterMove.SpellEffect = ReadMonsterSplineSpellEffectExtraData(packet, indexes, "MonsterSplineSpellEffectExtra");
 
             if (hasJumpExtraData)
                 monsterMove.Jump = ReadMonsterSplineJumpExtraData(packet, indexes, "MonsterSplineJumpExtraData");
@@ -199,7 +201,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_1_63311))
                 {
                     packet.ReadInt32("TierTransitionID", indexes);
-                    packet.ReadByte("AnimTier", indexes);
+                    monsterMove.AnimTier = packet.ReadByte("AnimTier", indexes);
                     packet.ReadUInt32("StartTime", indexes);
                     packet.ReadUInt32("EndTime", indexes);
                 }
@@ -208,7 +210,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                     packet.ReadInt32("TierTransitionID", indexes);
                     packet.ReadUInt32("StartTime", indexes);
                     packet.ReadUInt32("EndTime", indexes);
-                    packet.ReadByte("AnimTier", indexes);
+                    monsterMove.AnimTier = packet.ReadByte("AnimTier", indexes);
                 }
             }
 

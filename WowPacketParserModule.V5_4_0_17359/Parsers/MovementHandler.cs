@@ -176,7 +176,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 monsterMove.Flags = packet.ReadInt32E<SplineFlag434>("Spline Flags").ToUniversal();
 
             if (hasAnimationState)
-                packet.ReadByteE<MovementAnimationState>("Animation State");
+                monsterMove.AnimTier = (uint)packet.ReadByteE<MovementAnimationState>("Animation State");
 
             packet.ReadXORByte(ownerGUID, 0);
             if (bit6D)

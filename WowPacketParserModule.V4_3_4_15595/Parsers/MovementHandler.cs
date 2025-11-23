@@ -77,7 +77,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             if (flags.HasAnyFlag(SplineFlag.Animation))
             {
-                packet.ReadSByteE<MovementAnimationState>("AnimTier", indexes);
+                monsterMove.AnimTier = (uint)packet.ReadSByteE<MovementAnimationState>("AnimTier", indexes);
                 packet.ReadInt32("TierTransStartTime", indexes); // Async-time in ms
             }
 

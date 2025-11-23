@@ -364,6 +364,8 @@ message PacketMonsterMove {
   repeated Vec3 packedPoints = 14;
   optional SplineJump jump = 15;
   bool creationSpline = 16;
+  optional uint32 animTier = 17;
+  optional SplineSpellEffect spellEffect = 18;
 }
 
 message SplineJump {
@@ -375,6 +377,14 @@ message SplineJump {
 message SplineLookTarget {
   UniversalGuid target = 1;
   optional float orientation = 2;
+}
+
+message SplineSpellEffect {
+  UniversalGuid target = 1;
+  uint32 spellVisualID = 2;
+  uint32 progressCurveID = 3;
+  uint32 parabolicCurveID = 4;
+  float jumpGravity = 5;
 }
 
 message PacketPhaseShift {

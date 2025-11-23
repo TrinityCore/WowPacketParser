@@ -59,12 +59,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBits("FilterFlags", 2, indexes);
         }
 
-        public static void ReadMonsterSplineSpellEffectExtraData(Packet packet, params object[] indexes)
+        public static SplineSpellEffect ReadMonsterSplineSpellEffectExtraData(Packet packet, params object[] indexes)
         {
-            packet.ReadPackedGuid128("TargetGUID", indexes);
-            packet.ReadUInt32("SpellVisualID", indexes);
-            packet.ReadUInt32("ProgressCurveID", indexes);
-            packet.ReadUInt32("ParabolicCurveID", indexes);
+            SplineSpellEffect effect = new();
+            effect.Target = packet.ReadPackedGuid128("TargetGUID", indexes);
+            effect.SpellVisualID = packet.ReadUInt32("SpellVisualID", indexes);
+            effect.ProgressCurveID = packet.ReadUInt32("ProgressCurveID", indexes);
+            effect.ParabolicCurveID = packet.ReadUInt32("ParabolicCurveID", indexes);
+            return effect;
         }
 
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
@@ -72,7 +74,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
             SplineJump jump = monsterMove.Jump = new();
             monsterMove.Flags = packet.ReadInt32E<SplineFlag>("Flags", indexes).ToUniversal();
-            packet.ReadByte("AnimTier", indexes);
+            var animTier = packet.ReadByte("AnimTier", indexes);
             packet.ReadUInt32("TierTransStartTime", indexes);
             monsterMove.ElapsedTime = packet.ReadInt32("Elapsed", indexes);
             monsterMove.MoveTime = packet.ReadUInt32("MoveTime", indexes);
@@ -84,6 +86,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             monsterMove.TransportGuid = packet.ReadPackedGuid128("TransportGUID", indexes);
             monsterMove.VehicleSeat = packet.ReadSByte("VehicleSeat", indexes);
+
+            if (monsterMove.Flags.HasFlag(UniversalSplineFlag.Animation))
+                monsterMove.AnimTier = animTier;
 
             packet.ResetBitReader();
 
@@ -150,7 +155,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             if (hasSpellEffectExtraData)
-                ReadMonsterSplineSpellEffectExtraData(packet, "MonsterSplineSpellEffectExtra");
+                monsterMove.SpellEffect = ReadMonsterSplineSpellEffectExtraData(packet, "MonsterSplineSpellEffectExtra");
 
             if (endpos.X != 0 && endpos.Y != 0 && endpos.Z != 0)
                 WowPacketParser.Parsing.Parsers.MovementHandler.PrintComputedSplineMovementParams(packet, distance, monsterMove, indexes);

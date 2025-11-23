@@ -239,7 +239,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadInt32("Async-time in ms");
 
             if (hasAnimationState)
-                packet.ReadByteE<MovementAnimationState>("Animation State");
+                monsterMove.AnimTier = (uint)packet.ReadByteE<MovementAnimationState>("Animation State");
 
             if (hasTime)
                 monsterMove.MoveTime = (uint)packet.ReadInt32("Move Time in ms");

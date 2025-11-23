@@ -297,12 +297,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                             splineMove.Points.Add(packet.ReadVector3("Points", index, i));
 
                         if (hasSpellEffectExtraData)
-                        {
-                            packet.ReadPackedGuid128("TargetGUID", index);
-                            packet.ReadUInt32("SpellVisualID", index);
-                            packet.ReadUInt32("ProgressCurveID", index);
-                            packet.ReadUInt32("ParabolicCurveID", index);
-                        }
+                            MovementHandler.ReadMonsterSplineSpellEffectExtraData(packet, index);
                     }
                 }
             }

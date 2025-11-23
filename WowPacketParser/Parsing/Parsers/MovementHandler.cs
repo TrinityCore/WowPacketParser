@@ -288,7 +288,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
-                packet.ReadByteE<MovementAnimationState>("AnimTier");
+                monsterMove.AnimTier = (uint)packet.ReadByteE<MovementAnimationState>("AnimTier");
                 packet.ReadInt32("TierTransStartTime");
             }
 
@@ -463,7 +463,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(SplineFlag422.AnimationTier))
             {
-                packet.ReadByteE<MovementAnimationState>("AnimTier");
+                monsterMove.AnimTier = (uint)packet.ReadByteE<MovementAnimationState>("AnimTier");
                 packet.ReadInt32("TierTransStartTime");
             }
 

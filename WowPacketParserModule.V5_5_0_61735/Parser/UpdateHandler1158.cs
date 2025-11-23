@@ -637,13 +637,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                             moveData.Points.Add(packet.ReadVector3("Points", index, i));
 
                         if (hasSpellEffectExtraData)
-                            MovementHandler1158.ReadMonsterSplineSpellEffectExtraData(packet, index);
+                            MovementHandler.ReadMonsterSplineSpellEffectExtraData(packet, index);
 
                         if (hasJumpExtraData)
-                            moveData.Jump = MovementHandler1158.ReadMonsterSplineJumpExtraData(packet, index);
+                            moveData.Jump = MovementHandler.ReadMonsterSplineJumpExtraData(packet, index);
 
                         if (hasTurnData)
-                            MovementHandler1158.ReadMonsterSplineTurnData(packet, index, "MonsterSplineTurnData");
+                            MovementHandler.ReadMonsterSplineTurnData(packet, index, "MonsterSplineTurnData");
 
                         if (hasAnimationTierTransition)
                         {
