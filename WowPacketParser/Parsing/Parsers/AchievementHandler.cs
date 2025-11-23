@@ -39,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleCriteriaUpdate(Packet packet)
         {
             packet.ReadInt32("Criteria ID");
-            packet.ReadPackedGuid("Criteria Counter");
+            packet.ReadPackedUInt64("Criteria Counter");
             packet.ReadPackedGuid("Player GUID");
             packet.ReadInt32("Criteria Flags");
             packet.ReadPackedTime("Time");
