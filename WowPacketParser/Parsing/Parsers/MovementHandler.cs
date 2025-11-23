@@ -343,35 +343,40 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddValue("Computed Distance", distance, indexes);
             packet.AddValue("Computed Speed", (distance / monsterMove.MoveTime) * 1000, indexes);
             if (monsterMove.Jump != null && monsterMove.Flags.HasAnyFlag(UniversalSplineFlag.Parabolic))
+                PrintComputedSplineMovementJumpHeight(packet, monsterMove.MoveTime, monsterMove.Jump.Gravity, indexes);
+            else if (monsterMove.SpellEffect != null && monsterMove.SpellEffect.JumpGravity > 0)
+                PrintComputedSplineMovementJumpHeight(packet, monsterMove.MoveTime, monsterMove.SpellEffect.JumpGravity, indexes);
+        }
+
+        private static void PrintComputedSplineMovementJumpHeight(Packet packet, uint moveTime, float jumpGravity, params object[] indexes)
+        {
+            const double defaultGravity = 19.29110336303710937;
+
+            static double ComputeFallElevation(double timePassed, double startVelocity, double gravity)
             {
-                const double defaultGravity = 19.29110336303710937;
+                const double termVel = 60.148003;
 
-                static double ComputeFallElevation(double timePassed, double startVelocity, double gravity)
-                {
-                    const double termVel = 60.148003;
+                if (startVelocity > termVel)
+                    startVelocity = termVel;
 
-                    if (startVelocity > termVel)
-                        startVelocity = termVel;
+                var terminalTime = (termVel - startVelocity) / gravity; // the time that needed to reach terminalVelocity
 
-                    var terminalTime = (termVel - startVelocity) / gravity; // the time that needed to reach terminalVelocity
+                if (timePassed > terminalTime)
+                    return termVel * (timePassed - terminalTime) +
+                           startVelocity * terminalTime +
+                           gravity * terminalTime * terminalTime * 0.5f;
 
-                    if (timePassed > terminalTime)
-                        return termVel * (timePassed - terminalTime) +
-                               startVelocity * terminalTime +
-                               gravity * terminalTime * terminalTime * 0.5f;
-
-                    return timePassed * (startVelocity + timePassed * gravity * 0.5f);
-                }
-
-                var speedZ = monsterMove.MoveTime * monsterMove.Jump.Gravity / 2.0 / 1000.0;
-                var height = -ComputeFallElevation(monsterMove.MoveTime / 2.0 / 1000.0, -speedZ, monsterMove.Jump.Gravity);
-
-                var speedZWithDefaultGravity = monsterMove.MoveTime * defaultGravity / 2.0 / 1000.0;
-                var heightWithDefaultGravity = -ComputeFallElevation(monsterMove.MoveTime / 2.0 / 1000.0, -speedZWithDefaultGravity, defaultGravity);
-
-                packet.AddValue("Computed Jump Height", height, indexes);
-                packet.AddValue("Computed Jump Height (with default gravity)", heightWithDefaultGravity, indexes);
+                return timePassed * (startVelocity + timePassed * gravity * 0.5f);
             }
+
+            var speedZ = moveTime * jumpGravity / 2.0 / 1000.0;
+            var height = -ComputeFallElevation(moveTime / 2.0 / 1000.0, -speedZ, jumpGravity);
+
+            var speedZWithDefaultGravity = moveTime * defaultGravity / 2.0 / 1000.0;
+            var heightWithDefaultGravity = -ComputeFallElevation(moveTime / 2.0 / 1000.0, -speedZWithDefaultGravity, defaultGravity);
+
+            packet.AddValue("Computed Jump Height", height, indexes);
+            packet.AddValue("Computed Jump Height (with default gravity)", heightWithDefaultGravity, indexes);
         }
 
         private static void ReadSplineMovement510(Packet packet, Vector3 pos)
