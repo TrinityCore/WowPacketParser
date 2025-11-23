@@ -122,7 +122,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Cast Time");
 
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Total Time");
         }
 
         [Parser(Opcode.SMSG_SEND_KNOWN_SPELLS, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
