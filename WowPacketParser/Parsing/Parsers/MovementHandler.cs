@@ -343,7 +343,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddValue("Computed Distance", distance, indexes);
             packet.AddValue("Computed Speed", (distance / monsterMove.MoveTime) * 1000, indexes);
             if (monsterMove.Jump != null && monsterMove.Flags.HasAnyFlag(UniversalSplineFlag.Parabolic))
-                PrintComputedSplineMovementJumpHeight(packet, monsterMove.MoveTime, monsterMove.Jump.Gravity, indexes);
+                PrintComputedSplineMovementJumpHeight(packet, monsterMove.MoveTime - monsterMove.Jump.StartTime, monsterMove.Jump.Gravity, indexes);
             else if (monsterMove.SpellEffect != null && monsterMove.SpellEffect.JumpGravity > 0)
                 PrintComputedSplineMovementJumpHeight(packet, monsterMove.MoveTime, monsterMove.SpellEffect.JumpGravity, indexes);
         }
