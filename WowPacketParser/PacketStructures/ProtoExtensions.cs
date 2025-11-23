@@ -99,43 +99,37 @@ namespace WowPacketParser.PacketStructures
         public static UniversalSplineFlag ToUniversal(this SplineFlag422 flags)
         {
             UniversalSplineFlag universal = UniversalSplineFlag.SplineFlagNone;
-            if (flags.HasFlag(SplineFlag422.AnimTierSwim))
-                universal |= UniversalSplineFlag.AnimTierSwim;
-            if (flags.HasFlag(SplineFlag422.AnimTierHover))
-                universal |= UniversalSplineFlag.AnimTierHover;
-            if (flags.HasFlag(SplineFlag422.AnimTierSubmerged))
-                universal |= UniversalSplineFlag.AnimTierSubmerged;
             if (flags.HasFlag(SplineFlag422.Falling))
                 universal |= UniversalSplineFlag.Falling;
             if (flags.HasFlag(SplineFlag422.NoSpline))
                 universal |= UniversalSplineFlag.NoSpline;
-            if (flags.HasFlag(SplineFlag422.Trajectory))
-                universal |= UniversalSplineFlag.Trajectory;
-            if (flags.HasFlag(SplineFlag422.Walking))
-                universal |= UniversalSplineFlag.Walkmode;
+            if (flags.HasFlag(SplineFlag422.Parabolic))
+                universal |= UniversalSplineFlag.Parabolic;
+            if (flags.HasFlag(SplineFlag422.CanSwim))
+                universal |= UniversalSplineFlag.CanSwim;
             if (flags.HasFlag(SplineFlag422.Flying))
                 universal |= UniversalSplineFlag.Flying;
-            if (flags.HasFlag(SplineFlag422.FixedOrientation))
+            if (flags.HasFlag(SplineFlag422.OrientationFixed))
                 universal |= UniversalSplineFlag.OrientationFixed;
             if (flags.HasFlag(SplineFlag422.FinalPoint))
                 universal |= UniversalSplineFlag.FinalPoint;
             if (flags.HasFlag(SplineFlag422.FinalTarget))
                 universal |= UniversalSplineFlag.FinalTarget;
-            if (flags.HasFlag(SplineFlag422.FinalOrientation))
+            if (flags.HasFlag(SplineFlag422.FinalAngle))
                 universal |= UniversalSplineFlag.FinalAngle;
             if (flags.HasFlag(SplineFlag422.CatmullRom))
-                universal |= UniversalSplineFlag.Catmullrom;
+                universal |= UniversalSplineFlag.CatmullRom;
             if (flags.HasFlag(SplineFlag422.Cyclic))
                 universal |= UniversalSplineFlag.Cyclic;
             if (flags.HasFlag(SplineFlag422.EnterCicle))
                 universal |= UniversalSplineFlag.EnterCycle;
             if (flags.HasFlag(SplineFlag422.AnimationTier))
-                universal |= UniversalSplineFlag.AnimationTier;
+                universal |= UniversalSplineFlag.Animation;
             if (flags.HasFlag(SplineFlag422.Frozen))
                 universal |= UniversalSplineFlag.Frozen;
-            if (flags.HasFlag(SplineFlag422.MovingBackwards))
-                universal |= UniversalSplineFlag.OrientationInversed;
-            if (flags.HasFlag(SplineFlag422.UsePathSmoothing))
+            if (flags.HasFlag(SplineFlag422.Backward))
+                universal |= UniversalSplineFlag.Backward;
+            if (flags.HasFlag(SplineFlag422.SmoothGroundPath))
                 universal |= UniversalSplineFlag.SmoothGroundPath;
             if (flags.HasFlag(SplineFlag422.Animation))
                 universal |= UniversalSplineFlag.Animation;
@@ -147,12 +141,8 @@ namespace WowPacketParser.PacketStructures
         public static UniversalSplineFlag ToUniversal(this SplineFlag434 flags)
         {
             UniversalSplineFlag universal = UniversalSplineFlag.SplineFlagNone;
-            if (flags.HasFlag(SplineFlag434.AnimTierSwim))
-                universal |= UniversalSplineFlag.AnimTierSwim;
-            if (flags.HasFlag(SplineFlag434.AnimTierHover))
-                universal |= UniversalSplineFlag.AnimTierHover;
-            if (flags.HasFlag(SplineFlag434.AnimTierSubmerged))
-                universal |= UniversalSplineFlag.AnimTierSubmerged;
+            if (flags.HasFlag(SplineFlag434.FallingSlow))
+                universal |= UniversalSplineFlag.FallingSlow;
             if (flags.HasFlag(SplineFlag434.Done))
                 universal |= UniversalSplineFlag.Done;
             if (flags.HasFlag(SplineFlag434.Falling))
@@ -163,8 +153,8 @@ namespace WowPacketParser.PacketStructures
                 universal |= UniversalSplineFlag.Flying;
             if (flags.HasFlag(SplineFlag434.OrientationFixed))
                 universal |= UniversalSplineFlag.OrientationFixed;
-            if (flags.HasFlag(SplineFlag434.Catmullrom))
-                universal |= UniversalSplineFlag.Catmullrom;
+            if (flags.HasFlag(SplineFlag434.CatmullRom))
+                universal |= UniversalSplineFlag.CatmullRom;
             if (flags.HasFlag(SplineFlag434.Cyclic))
                 universal |= UniversalSplineFlag.Cyclic;
             if (flags.HasFlag(SplineFlag434.EnterCycle))
@@ -175,10 +165,12 @@ namespace WowPacketParser.PacketStructures
                 universal |= UniversalSplineFlag.TransportEnter;
             if (flags.HasFlag(SplineFlag434.TransportExit))
                 universal |= UniversalSplineFlag.TransportExit;
-            if (flags.HasFlag(SplineFlag434.OrientationInversed))
-                universal |= UniversalSplineFlag.OrientationInversed;
-            if (flags.HasFlag(SplineFlag434.Walkmode))
-                universal |= UniversalSplineFlag.Walkmode;
+            if (flags.HasFlag(SplineFlag434.Backward))
+                universal |= UniversalSplineFlag.Backward;
+            if (flags.HasFlag(SplineFlag434.SmoothGroundPath))
+                universal |= UniversalSplineFlag.SmoothGroundPath;
+            if (flags.HasFlag(SplineFlag434.CanSwim))
+                universal |= UniversalSplineFlag.CanSwim;
             if (flags.HasFlag(SplineFlag434.UncompressedPath))
                 universal |= UniversalSplineFlag.UncompressedPath;
             if (flags.HasFlag(SplineFlag434.Animation))
@@ -197,54 +189,42 @@ namespace WowPacketParser.PacketStructures
         public static UniversalSplineFlag ToUniversal(this SplineFlag flags)
         {
             UniversalSplineFlag universal = UniversalSplineFlag.SplineFlagNone;
-            if (flags.HasFlag(SplineFlag.AnimTierSwim))
-                universal |= UniversalSplineFlag.AnimTierSwim;
-            if (flags.HasFlag(SplineFlag.AnimTierHover))
-                universal |= UniversalSplineFlag.AnimTierHover;
-            if (flags.HasFlag(SplineFlag.AnimTierSubmerged))
-                universal |= UniversalSplineFlag.AnimTierSubmerged;
             if (flags.HasFlag(SplineFlag.Done))
                 universal |= UniversalSplineFlag.Done;
             if (flags.HasFlag(SplineFlag.Falling))
                 universal |= UniversalSplineFlag.Falling;
             if (flags.HasFlag(SplineFlag.NoSpline))
                 universal |= UniversalSplineFlag.NoSpline;
-            if (flags.HasFlag(SplineFlag.Trajectory))
-                universal |= UniversalSplineFlag.Trajectory;
-            if (flags.HasFlag(SplineFlag.WalkMode))
-                universal |= UniversalSplineFlag.Walkmode;
+            if (flags.HasFlag(SplineFlag.Parabolic))
+                universal |= UniversalSplineFlag.Parabolic;
+            if (flags.HasFlag(SplineFlag.CanSwim))
+                universal |= UniversalSplineFlag.CanSwim;
             if (flags.HasFlag(SplineFlag.Flying))
                 universal |= UniversalSplineFlag.Flying;
-            if (flags.HasFlag(SplineFlag.Knockback))
-                universal |= UniversalSplineFlag.Knockback;
+            if (flags.HasFlag(SplineFlag.OrientationFixed))
+                universal |= UniversalSplineFlag.OrientationFixed;
             if (flags.HasFlag(SplineFlag.FinalPoint))
                 universal |= UniversalSplineFlag.FinalPoint;
             if (flags.HasFlag(SplineFlag.FinalTarget))
                 universal |= UniversalSplineFlag.FinalTarget;
-            if (flags.HasFlag(SplineFlag.FinalOrientation))
+            if (flags.HasFlag(SplineFlag.FinalAngle))
                 universal |= UniversalSplineFlag.FinalAngle;
             if (flags.HasFlag(SplineFlag.CatmullRom))
-                universal |= UniversalSplineFlag.Catmullrom;
+                universal |= UniversalSplineFlag.CatmullRom;
             if (flags.HasFlag(SplineFlag.Cyclic))
                 universal |= UniversalSplineFlag.Cyclic;
-            if (flags.HasFlag(SplineFlag.EnterCicle))
+            if (flags.HasFlag(SplineFlag.EnterCycle))
                 universal |= UniversalSplineFlag.EnterCycle;
-            if (flags.HasFlag(SplineFlag.AnimationTier))
-                universal |= UniversalSplineFlag.AnimationTier;
+            if (flags.HasFlag(SplineFlag.Animation))
+                universal |= UniversalSplineFlag.Animation;
             if (flags.HasFlag(SplineFlag.Frozen))
                 universal |= UniversalSplineFlag.Frozen;
             if (flags.HasFlag(SplineFlag.Transport))
                 universal |= UniversalSplineFlag.TransportEnter;
             if (flags.HasFlag(SplineFlag.TransportExit))
                 universal |= UniversalSplineFlag.TransportExit;
-            if (flags.HasFlag(SplineFlag.OrientationInverted))
-                universal |= UniversalSplineFlag.OrientationInversed;
-            if (flags.HasFlag(SplineFlag.UsePathSmoothing))
-                universal |= UniversalSplineFlag.SmoothGroundPath;
-            if (flags.HasFlag(SplineFlag.Animation))
-                universal |= UniversalSplineFlag.Animation;
-            if (flags.HasFlag(SplineFlag.UncompressedPath))
-                universal |= UniversalSplineFlag.UncompressedPath;
+            if (flags.HasFlag(SplineFlag.Backward))
+                universal |= UniversalSplineFlag.Backward;
             return universal;
         }
 

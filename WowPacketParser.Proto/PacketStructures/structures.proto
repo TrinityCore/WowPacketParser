@@ -313,36 +313,33 @@ message PacketAuraUpdateAll {
 
 enum UniversalSplineFlag {
   SplineFlagNone      = 0x00000000;
-  AnimTierSwim        = 0x00000001;
-  AnimTierHover       = 0x00000002;
-  AnimTierSubmerged   = 0x00000004;
-  Trajectory          = 0x00000008;
-  FallingSlow         = 0x00000010;
-  Done                = 0x00000020;
-  Falling             = 0x00000040;
-  NoSpline            = 0x00000080;
-  Knockback           = 0x00000100;
-  Flying              = 0x00000200;
-  OrientationFixed    = 0x00000400;
-  Catmullrom          = 0x00000800;
-  Cyclic              = 0x00001000;
-  EnterCycle          = 0x00002000;
+  Done                = 0x00000001;
+  Falling             = 0x00000002;
+  NoSpline            = 0x00000004;
+  Parabolic           = 0x00000008;
+  CanSwim             = 0x00000010;
+  Flying              = 0x00000020;
+  OrientationFixed    = 0x00000040;
+  FinalPoint          = 0x00000080;
+  FinalTarget         = 0x00000100;
+  FinalAngle          = 0x00000200;
+  CatmullRom          = 0x00000400;
+  Cyclic              = 0x00000800;
+  EnterCycle          = 0x00001000;
+  Animation           = 0x00002000;
   Frozen              = 0x00004000;
   TransportEnter      = 0x00008000;
   TransportExit       = 0x00010000;
-  AnimationTier       = 0x00020000;
-  OrientationInversed = 0x00080000;
-  SmoothGroundPath    = 0x00100000;
-  Walkmode            = 0x00200000;
-  UncompressedPath    = 0x00400000;
-  CanSwim             = 0x00800000;
-  Animation           = 0x01000000;
-  Parabolic           = 0x02000000;
-  FinalPoint          = 0x04000000;
-  FinalTarget         = 0x08000000;
-  FinalAngle          = 0x10000000;
-  FadeObject          = 0x20000000;
-  Steering            = 0x40000000;
+  Backward            = 0x00020000;
+  SmoothGroundPath    = 0x00040000;
+  UncompressedPath    = 0x00080000;
+  FallingSlow         = 0x00100000;
+  FadeObject          = 0x00200000;
+  Steering            = 0x00400000;
+  FastSteering        = 0x00800000;
+  UnlimitedSpeed      = 0x01000000;
+  JumpOrientationFixed= 0x02000000;
+  Turning             = 0x04000000;
 }
 
 message PacketMonsterMove {

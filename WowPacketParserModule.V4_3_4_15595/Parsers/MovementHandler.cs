@@ -3,6 +3,7 @@ using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
@@ -11,7 +12,6 @@ using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
 using MovementFlagExtra = WowPacketParser.Enums.v4.MovementFlag2;
 using SetCollisionHeightReason = WowPacketParserModule.V4_3_4_15595.Enums.SetCollisionHeightReason;
-using SplineFlag = WowPacketParserModule.V4_3_4_15595.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V4_3_4_15595.Parsers
 {
@@ -72,10 +72,10 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     return;
             }
 
-            var flags = packet.ReadInt32E<SplineFlag>("Flags", indexes);
+            var flags = packet.ReadInt32E<SplineFlag434>("Flags", indexes);
             monsterMove.Flags = flags.ToUniversal();
 
-            if (flags.HasAnyFlag(SplineFlag.Animation))
+            if (flags.HasAnyFlag(SplineFlag434.Animation))
             {
                 monsterMove.AnimTier = (uint)packet.ReadSByteE<MovementAnimationState>("AnimTier", indexes);
                 packet.ReadInt32("TierTransStartTime", indexes); // Async-time in ms
@@ -83,7 +83,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             monsterMove.MoveTime = (uint)packet.ReadInt32("MoveTime", indexes);
 
-            if (flags.HasAnyFlag(SplineFlag.Parabolic))
+            if (flags.HasAnyFlag(SplineFlag434.Parabolic))
             {
                 var jump = monsterMove.Jump = new();
                 jump.Gravity = packet.ReadSingle("JumpGravity", indexes);
@@ -92,7 +92,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             var pointsCount = packet.ReadInt32("PointsCount", indexes);
 
-            if (flags.HasAnyFlag(SplineFlag.UncompressedPath))
+            if (flags.HasAnyFlag(SplineFlag434.UncompressedPath))
             {
                 for (var i = 0; i < pointsCount; i++)
                     monsterMove.Points.Add(packet.ReadVector3("Waypoints", indexes, i));
@@ -7376,60 +7376,6 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 0);
             packet.WriteGuid("MoverGUID", guid);
-        }
-
-        private static UniversalSplineFlag ToUniversal(this SplineFlag flags)
-        {
-            UniversalSplineFlag universal = UniversalSplineFlag.SplineFlagNone;
-            if (flags.HasFlag(SplineFlag.AnimTierSwim))
-                universal |= UniversalSplineFlag.AnimTierSwim;
-            if (flags.HasFlag(SplineFlag.AnimTierHover))
-                universal |= UniversalSplineFlag.AnimTierHover;
-            if (flags.HasFlag(SplineFlag.AnimTierSubmerged))
-                universal |= UniversalSplineFlag.AnimTierSubmerged;
-            if (flags.HasFlag(SplineFlag.FallingSlow))
-                universal |= UniversalSplineFlag.FallingSlow;
-            if (flags.HasFlag(SplineFlag.Done))
-                universal |= UniversalSplineFlag.Done;
-            if (flags.HasFlag(SplineFlag.Falling))
-                universal |= UniversalSplineFlag.Falling;
-            if (flags.HasFlag(SplineFlag.No_Spline))
-                universal |= UniversalSplineFlag.NoSpline;
-            if (flags.HasFlag(SplineFlag.Flying))
-                universal |= UniversalSplineFlag.Flying;
-            if (flags.HasFlag(SplineFlag.OrientationFixed))
-                universal |= UniversalSplineFlag.OrientationFixed;
-            if (flags.HasFlag(SplineFlag.Catmullrom))
-                universal |= UniversalSplineFlag.Catmullrom;
-            if (flags.HasFlag(SplineFlag.Cyclic))
-                universal |= UniversalSplineFlag.Cyclic;
-            if (flags.HasFlag(SplineFlag.Enter_Cycle))
-                universal |= UniversalSplineFlag.EnterCycle;
-            if (flags.HasFlag(SplineFlag.Frozen))
-                universal |= UniversalSplineFlag.Frozen;
-            if (flags.HasFlag(SplineFlag.TransportEnter))
-                universal |= UniversalSplineFlag.TransportEnter;
-            if (flags.HasFlag(SplineFlag.TransportExit))
-                universal |= UniversalSplineFlag.TransportExit;
-            if (flags.HasFlag(SplineFlag.Backward))
-                universal |= UniversalSplineFlag.OrientationInversed;
-            if (flags.HasFlag(SplineFlag.SmoothGroundPath))
-                universal |= UniversalSplineFlag.SmoothGroundPath;
-            if (flags.HasFlag(SplineFlag.CanSwim))
-                universal |= UniversalSplineFlag.CanSwim;
-            if (flags.HasFlag(SplineFlag.UncompressedPath))
-                universal |= UniversalSplineFlag.UncompressedPath;
-            if (flags.HasFlag(SplineFlag.Animation))
-                universal |= UniversalSplineFlag.Animation;
-            if (flags.HasFlag(SplineFlag.Parabolic))
-                universal |= UniversalSplineFlag.Parabolic;
-            if (flags.HasFlag(SplineFlag.Final_Point))
-                universal |= UniversalSplineFlag.FinalPoint;
-            if (flags.HasFlag(SplineFlag.Final_Target))
-                universal |= UniversalSplineFlag.FinalTarget;
-            if (flags.HasFlag(SplineFlag.Final_Angle))
-                universal |= UniversalSplineFlag.FinalAngle;
-            return universal;
         }
     }
 }

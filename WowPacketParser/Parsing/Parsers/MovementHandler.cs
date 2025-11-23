@@ -286,7 +286,7 @@ namespace WowPacketParser.Parsing.Parsers
             var flags = packet.ReadInt32E<SplineFlag>("Flags");
             monsterMove.Flags = flags.ToUniversal();
 
-            if (flags.HasAnyFlag(SplineFlag.AnimationTier))
+            if (flags.HasAnyFlag(SplineFlag.Animation))
             {
                 monsterMove.AnimTier = (uint)packet.ReadByteE<MovementAnimationState>("AnimTier");
                 packet.ReadInt32("TierTransStartTime");
@@ -294,7 +294,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             monsterMove.MoveTime = (uint)packet.ReadInt32("MoveTime");
 
-            if (flags.HasAnyFlag(SplineFlag.Trajectory))
+            if (flags.HasAnyFlag(SplineFlag.Parabolic))
             {
                 monsterMove.Jump = new();
                 monsterMove.Jump.Gravity = packet.ReadSingle("JumpGravity");
@@ -342,7 +342,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.AddValue("Computed Distance", distance, indexes);
             packet.AddValue("Computed Speed", (distance / monsterMove.MoveTime) * 1000, indexes);
-            if (monsterMove.Jump != null && monsterMove.Flags.HasAnyFlag(UniversalSplineFlag.Trajectory | UniversalSplineFlag.Parabolic))
+            if (monsterMove.Jump != null && monsterMove.Flags.HasAnyFlag(UniversalSplineFlag.Parabolic))
             {
                 const double defaultGravity = 19.29110336303710937;
 
@@ -469,7 +469,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             monsterMove.MoveTime = (uint)packet.ReadInt32("Move Time");
 
-            if (flags.HasAnyFlag(SplineFlag422.Trajectory))
+            if (flags.HasAnyFlag(SplineFlag422.Parabolic))
             {
                 monsterMove.Jump = new();
                 monsterMove.Jump.Gravity = packet.ReadSingle("JumpGravity");
@@ -478,7 +478,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             double distance = 0;
 
-            if (flags.HasAnyFlag(SplineFlag422.UsePathSmoothing))
+            if (flags.HasAnyFlag(SplineFlag422.UncompressedPath))
             {
                 var waypoints = packet.ReadInt32("PointsCount");
 
