@@ -32,7 +32,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Player GUID");
             packet.ReadInt32<AchievementId>("Achievement Id");
             packet.ReadPackedTime("Time");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("SkipEffect");
         }
 
         [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
@@ -41,7 +41,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Criteria ID");
             packet.ReadPackedGuid("Criteria Counter");
             packet.ReadPackedGuid("Player GUID");
-            packet.ReadInt32("Unk Int32"); // some flag... & 1 -> delete
+            packet.ReadInt32("Criteria Flags");
             packet.ReadPackedTime("Time");
 
             for (var i = 0; i < 2; i++)
@@ -69,7 +69,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadPackedUInt64("Criteria Counter");
                 packet.ReadPackedGuid("Player GUID");
-                packet.ReadInt32("Unk Int32"); // Unk flag, same as in SMSG_CRITERIA_UPDATE
+                packet.ReadInt32("Criteria Flags");
                 packet.ReadPackedTime("Criteria Time");
 
                 for (var i = 0; i < 2; i++)
