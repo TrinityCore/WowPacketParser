@@ -1,6 +1,6 @@
 using WowPacketParser.Proto;
 
-namespace WowPacketParserModule.V7_0_3_22248.Enums
+namespace WowPacketParserModule.V6_0_2_19033.Enums
 {
     public static class ProtoExtensions
     {

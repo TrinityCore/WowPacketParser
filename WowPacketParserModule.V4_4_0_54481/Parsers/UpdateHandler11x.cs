@@ -10,12 +10,12 @@ using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParser.Store.Objects.UpdateFields;
-using WowPacketParserModule.V7_0_3_22248.Enums;
+using WowPacketParserModule.V6_0_2_19033.Enums;
 using CoreFields = WowPacketParser.Enums.Version;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
 using MovementFlag2 = WowPacketParser.Enums.v7.MovementFlag2;
-using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
+using SplineFlag = WowPacketParserModule.V6_0_2_19033.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {

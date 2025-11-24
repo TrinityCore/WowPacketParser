@@ -5,13 +5,14 @@ using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using WowPacketParserModule.V6_0_2_19033.Enums;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using SplineFacingType = WowPacketParserModule.V6_0_2_19033.Enums.SplineFacingType;
+using SplineFlag = WowPacketParserModule.V6_0_2_19033.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -248,7 +249,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
             SplineJump jump = monsterMove.Jump = new();
-            monsterMove.Flags = packet.ReadInt32E<SplineFlag434>("Flags", indexes).ToUniversal();
+            monsterMove.Flags = packet.ReadInt32E<SplineFlag>("Flags", indexes).ToUniversal();
             packet.ReadByte("AnimTier", indexes);
             packet.ReadUInt32("TierTransStartTime", indexes);
             monsterMove.ElapsedTime = packet.ReadInt32("Elapsed", indexes);

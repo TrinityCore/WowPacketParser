@@ -5,17 +5,16 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
-using WowPacketParser.Parsing.Parsers;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParser.Store.Objects.UpdateFields;
-using WowPacketParserModule.V7_0_3_22248.Enums;
+using WowPacketParserModule.V6_0_2_19033.Enums;
 using CoreFields = WowPacketParser.Enums.Version;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
 using MovementFlag2 = WowPacketParser.Enums.v7.MovementFlag2;
-using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
+using SplineFlag = WowPacketParserModule.V6_0_2_19033.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V3_4_4_59817.Parsers
 {
@@ -523,7 +522,7 @@ namespace WowPacketParserModule.V3_4_4_59817.Parsers
                         var moveData = splineData.MoveData = new();
                         packet.ResetBitReader();
 
-                        moveData.Flags = packet.ReadUInt32E<V7_0_3_22248.Enums.SplineFlag>("SplineFlags", index).ToUniversal();
+                        moveData.Flags = packet.ReadUInt32E<SplineFlag>("SplineFlags", index).ToUniversal();
                         moveData.Elapsed = packet.ReadInt32("Elapsed", index);
                         moveData.Duration = packet.ReadUInt32("Duration", index);
                         moveData.DurationModifier = packet.ReadSingle("DurationModifier", index);

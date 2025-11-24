@@ -6,10 +6,10 @@ using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
-using static WowPacketParserModule.V7_0_3_22248.Enums.ProtoExtensions;
+using static WowPacketParserModule.V6_0_2_19033.Enums.ProtoExtensions;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using SplineFacingType = WowPacketParserModule.V6_0_2_19033.Enums.SplineFacingType;
-using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
+using SplineFlag = WowPacketParserModule.V6_0_2_19033.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V4_4_0_54481.Parsers
 {
