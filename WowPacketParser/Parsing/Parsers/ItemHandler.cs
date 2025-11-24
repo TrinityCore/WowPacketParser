@@ -1291,5 +1291,11 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt32("ItemId");
         }
+
+        [Parser(Opcode.SMSG_OPEN_CONTAINER)]
+        public static void HandleOpenContainer(Packet packet)
+        {
+            packet.ReadGuid("ItemGUID");
+        }
     }
 }
