@@ -684,6 +684,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadInt32<CurrencyId>("CurrencyID", i);
         }
 
+        [Parser(Opcode.CMSG_SET_CURRENCY_FLAGS)]
+        public static void HandleSetCurrencyFlags(Packet packet)
+        {
+            packet.ReadUInt32("Flags");
+            packet.ReadUInt32<CurrencyId>("CurrencyID");
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
         public static void HandleCharacterEmpty(Packet packet)

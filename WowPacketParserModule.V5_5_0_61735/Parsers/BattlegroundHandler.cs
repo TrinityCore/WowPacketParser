@@ -501,6 +501,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
         [Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]
         [Parser(Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED)]
+        [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]
         public static void HandleBattlegroundZero(Packet packet)
         {
         }

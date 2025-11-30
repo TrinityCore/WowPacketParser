@@ -1186,6 +1186,15 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS)]
+        public static void HandleQueryQuestCompletionNpcs(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+
+            for (var i = 0; i < count; i++)
+                packet.ReadInt32<QuestId>("QuestID", i);
+        }
+
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
         [Parser(Opcode.SMSG_QUEST_LOG_FULL)]
         public static void HandleQuestZeroLengthPackets(Packet packet)
