@@ -1232,9 +1232,26 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("Rune");
         }
 
+        [Parser(Opcode.CMSG_MISSILE_TRAJECTORY_COLLISION)]
+        public static void HandleMissileTrajectoryCollision(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadVector3("CollisionPos");
+        }
+
+        [Parser(Opcode.CMSG_CANCEL_AURA)]
+        public static void HandleCanelAura(Packet packet)
+        {
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadPackedGuid128("CasterGUID");
+        }
+
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         [Parser(Opcode.SMSG_PET_CLEAR_SPELLS)]
+        [Parser(Opcode.CMSG_CANCEL_QUEUED_SPELL)]
         public static void HandleSpellEmpty(Packet packet)
         {
         }

@@ -1036,5 +1036,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             return moveInfo;
         }
+
+        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED)]
+        [Parser(Opcode.CMSG_OBJECT_UPDATE_RESCUED)]
+        public static void HandleObjectUpdateOrRescued(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
+        }
     }
 }

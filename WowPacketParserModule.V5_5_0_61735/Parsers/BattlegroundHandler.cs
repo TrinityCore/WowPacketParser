@@ -499,9 +499,24 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("TimeLeft");
         }
 
+        [Parser(Opcode.CMSG_JOIN_RATED_BATTLEGROUND)]
+        public static void HandleJoinRatedBattleground(Packet packet)
+        {
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEFIELD_LIST)]
+        public static void HandleBattlefieldListClient(Packet packet)
+        {
+            packet.ReadInt32<BgId>("ListID");
+        }
+
         [Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]
         [Parser(Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED)]
         [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]
+        [Parser(Opcode.CMSG_PVP_LOG_DATA)]
+        [Parser(Opcode.CMSG_REQUEST_PVP_REWARDS)]
+        [Parser(Opcode.CMSG_REQUEST_SCHEDULED_PVP_INFO)]
         public static void HandleBattlegroundZero(Packet packet)
         {
         }

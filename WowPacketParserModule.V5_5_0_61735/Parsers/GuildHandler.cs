@@ -789,6 +789,18 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadWoWString("TabText", len);
         }
 
+        [Parser(Opcode.CMSG_REQUEST_GUILD_REWARDS_LIST)]
+        public static void HandleRequestGuildRewardsList(Packet packet)
+        {
+            packet.ReadTime64("CurrentVersion");
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE)]
+        public static void HandleGuildUpdatePartyState(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+        }
+
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_RANKS_UPDATED)]

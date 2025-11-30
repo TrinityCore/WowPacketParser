@@ -691,6 +691,24 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32<CurrencyId>("CurrencyID");
         }
 
+        [Parser(Opcode.CMSG_REQUEST_HONOR_STATS)]
+        public static void HandleRequestHonorStats(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+        }
+
+        [Parser(Opcode.CMSG_STAND_STATE_CHANGE)]
+        public static void HandleStandStateChange(Packet packet)
+        {
+            packet.ReadByteE<StandState>("StandState");
+        }
+
+        [Parser(Opcode.CMSG_UNLEARN_SPECIALIZATION)]
+        public static void HandleUnlearnSpecialization(Packet packet)
+        {
+            packet.ReadByte("SpecIndex");
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
         public static void HandleCharacterEmpty(Packet packet)

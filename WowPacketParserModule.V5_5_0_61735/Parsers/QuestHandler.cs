@@ -1195,6 +1195,15 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadInt32<QuestId>("QuestID", i);
         }
 
+        [Parser(Opcode.CMSG_QUERY_QUEST_ITEM_USABILITY)]
+        public static void QueryQuestItemUsability(Packet packet)
+        {
+            packet.ReadPackedGuid128("CreatureGUID");
+            var itemGuidCount = packet.ReadUInt32("ItemGuidCount");
+            for (var i = 0; i < itemGuidCount; ++i)
+                packet.ReadPackedGuid128("ItemGUID", i);
+        }
+
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
         [Parser(Opcode.SMSG_QUEST_LOG_FULL)]
         public static void HandleQuestZeroLengthPackets(Packet packet)

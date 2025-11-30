@@ -26,6 +26,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         }
 
         [Parser(Opcode.SMSG_LOAD_CUF_PROFILES)]
+        [Parser(Opcode.CMSG_SAVE_CUF_PROFILES)]
         public static void HandleCUFProfiles(Packet packet)
         {
             var count = packet.ReadUInt32("Count");

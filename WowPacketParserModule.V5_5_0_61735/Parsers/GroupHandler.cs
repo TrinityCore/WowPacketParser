@@ -475,6 +475,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("Accepted");
         }
 
+        [Parser(Opcode.CMSG_CLEAR_RAID_MARKER)]
+        public static void HandleClearRaidMarker(Packet packet)
+        {
+            packet.ReadByte("MarkerId");
+        }
+
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
         public static void HandleGroupNull(Packet packet)
         {

@@ -940,11 +940,31 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("ShowSocialContract");
         }
 
+        [Parser(Opcode.CMSG_SET_PREFERRED_CEMETERY)]
+        public static void HandleSetPreferedCemetery(Packet packet)
+        {
+            packet.ReadUInt32("CemeteryID");
+        }
+
+        [Parser(Opcode.CMSG_VIOLENCE_LEVEL)]
+        public static void HandleSetViolenceLevel(Packet packet)
+        {
+            packet.ReadByte("Level");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_COUNTDOWN_TIMER)]
+        public static void HandleQueryCountdownTimer(Packet packet)
+        {
+            packet.ReadInt32("TimerType");
+        }
+
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
         [Parser(Opcode.SMSG_FISH_ESCAPED)]
         [Parser(Opcode.SMSG_INVALID_PROMOTION_CODE)]
+        [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
+        [Parser(Opcode.CMSG_USED_FOLLOW)]
         public static void HandleMiscZero(Packet packet)
         {
         }
