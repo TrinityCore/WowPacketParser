@@ -62,5 +62,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("Reason");
             packet.ReadUInt64("Guid");
         }
+
+        [Parser(Opcode.CMSG_ASSIGN_EQUIPMENT_SET_SPEC)]
+        public static void HandleAssignEquipmentSetSpec(Packet packet)
+        {
+            packet.ReadUInt64("Guid");
+            packet.ReadInt32("SpecID");
+        }
     }
 }

@@ -965,6 +965,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.SMSG_INVALID_PROMOTION_CODE)]
         [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
         [Parser(Opcode.CMSG_USED_FOLLOW)]
+        [Parser(Opcode.CMSG_GAME_EVENT_DEBUG_ENABLE)]
+        [Parser(Opcode.CMSG_GAME_EVENT_DEBUG_DISABLE)]
         public static void HandleMiscZero(Packet packet)
         {
         }

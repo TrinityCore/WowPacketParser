@@ -28,5 +28,10 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             for (var i = 0u; i < entryCount; ++i)
                 ReadAdventureJournalEntry(packet, "AdventureJournalEntry", i);
         }
+
+        [Parser(Opcode.CMSG_ADVENTURE_JOURNAL_OPEN_QUEST)]
+        public static void HandleAdventureZero(Packet packet)
+        {
+        }
     }
 }

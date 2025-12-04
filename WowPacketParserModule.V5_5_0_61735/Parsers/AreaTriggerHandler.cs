@@ -201,6 +201,17 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("MessageID");
         }
 
+        [Parser(Opcode.CMSG_AREA_TRIGGER)]
+        public static void HandleClientAreaTrigger(Packet packet)
+        {
+            var entry = packet.ReadEntry("AreaTriggerID");
+            var entered = packet.ReadBit("Entered");
+            packet.ReadBit("FromClient");
+
+            packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
+            packet.Holder.ClientAreaTrigger = new() { Enter = entered, AreaTrigger = (uint)entry.Key };
+        }
+
         [Parser(Opcode.SMSG_AREA_TRIGGER_NO_CORPSE)]
         public static void HandleAreaTriggerNull(Packet packet)
         {

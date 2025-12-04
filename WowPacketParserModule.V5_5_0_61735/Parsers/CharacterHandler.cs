@@ -709,8 +709,15 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByte("SpecIndex");
         }
 
+        [Parser(Opcode.CMSG_NEUTRAL_PLAYER_SELECT_FACTION)]
+        public static void HandleNeutralPlayerSelectFaction(Packet packet)
+        {
+            packet.ReadByte("Faction");
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
+        [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE)]
         public static void HandleCharacterEmpty(Packet packet)
         {
         }

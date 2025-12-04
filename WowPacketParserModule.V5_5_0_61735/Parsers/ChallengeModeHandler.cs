@@ -53,5 +53,10 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             for (int i = 0; i < int9; i++)
                 ReadChallengeModeAttempt(packet, i, "RealmLeaders");
         }
+
+        [Parser(Opcode.CMSG_RESET_CHALLENGE_MODE)]
+        public static void HandleChallengeModeZero(Packet packet)
+        {
+        }
     }
 }

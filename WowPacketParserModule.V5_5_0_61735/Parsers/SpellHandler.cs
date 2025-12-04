@@ -1248,6 +1248,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("CasterGUID");
         }
 
+        [Parser(Opcode.CMSG_CONFIRM_RESPEC_WIPE)]
+        public static void HandleConfirmRespecWipe(Packet packet)
+        {
+            packet.ReadPackedGuid128("RespecMaster");
+            packet.ReadByte("RespecType");
+        }
+
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         [Parser(Opcode.SMSG_PET_CLEAR_SPELLS)]

@@ -187,6 +187,59 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("LegacyRulesActive");
         }
 
+        [Parser(Opcode.CMSG_LOOT_UNIT)]
+        public static void HandleLoot(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+        }
+
+        [Parser(Opcode.CMSG_LOOT_MONEY)]
+        public static void HandleLootMoney(Packet packet)
+        {
+            packet.ReadBit("IsSoftInteract");
+        }
+
+        [Parser(Opcode.CMSG_LOOT_ITEM)]
+        public static void HandleAutoStoreLootItem(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadPackedGuid128("Object", i);
+                packet.ReadByte("LootListID", i);
+            }
+
+            packet.ReadBit("IsSoftInteract");
+        }
+
+        [Parser(Opcode.CMSG_MASTER_LOOT_ITEM)]
+        public static void HandleMasterLootItem(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+            packet.ReadPackedGuid128("Target");
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadPackedGuid128("Object", i);
+                packet.ReadByte("LootListID", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_LOOT_RELEASE)]
+        public static void HandleLootRelease(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
+        }
+
+        [Parser(Opcode.CMSG_LOOT_ROLL)]
+        public static void HandleLootRoll(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            packet.ReadByte("LootListID");
+            packet.ReadByteE<LootRollType>("RollType");
+        }
+
         [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
         [Parser(Opcode.SMSG_LOOT_RELEASE_ALL)]
         public static void HandleLootZero(Packet packet)

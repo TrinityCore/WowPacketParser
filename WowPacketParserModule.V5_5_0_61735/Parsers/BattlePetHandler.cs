@@ -363,6 +363,9 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.SMSG_BATTLE_PET_DELETED)]
         [Parser(Opcode.SMSG_BATTLE_PET_REVOKED)]
         [Parser(Opcode.SMSG_BATTLE_PET_RESTORED)]
+        [Parser(Opcode.CMSG_BATTLE_PET_CLEAR_FANFARE)]
+        [Parser(Opcode.CMSG_BATTLE_PET_UPDATE_NOTIFY)]
+        [Parser(Opcode.CMSG_CAGE_BATTLE_PET)]
         public static void HandleBattlePetDeletePet(Packet packet)
         {
             packet.ReadPackedGuid128("BattlePetGUID");
@@ -443,10 +446,31 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadUInt64("AverageWaitTime");
         }
 
-        [Parser(Opcode.CMSG_BATTLE_PET_CLEAR_FANFARE)]
-        public static void HandleBattlePetClearFanfare(Packet packet)
+        [Parser(Opcode.CMSG_PET_BATTLE_REQUEST_WILD)]
+        public static void HandlePetBattleRequestWild(Packet packet)
         {
-            packet.ReadPackedGuid128("BattlePetGUID");
+            packet.ReadPackedGuid128("TargetGUID");
+            ReadPetBattleLocations(packet, "Location");
+        }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_REQUEST_PVP)]
+        public static void HandlePetBattleRequestPVP(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            ReadPetBattleLocations(packet, "OpponentCharacterID");
+        }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_REQUEST_UPDATE)]
+        public static void HandlePetBattleRequestUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadBit("Canceled");
+        }
+
+        [Parser(Opcode.CMSG_LEAVE_PET_BATTLE_QUEUE)]
+        public static void HandleLeavePetBattleQueue(Packet packet)
+        {
+            LfgHandler.ReadCliRideTicket(packet, "RideTicket");
         }
 
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
@@ -455,6 +479,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.SMSG_PET_BATTLE_FINISHED)]
         [Parser(Opcode.SMSG_PET_BATTLE_CHAT_RESTRICTED)]
         [Parser(Opcode.SMSG_PET_BATTLE_QUEUE_PROPOSE_MATCH)]
+        [Parser(Opcode.CMSG_JOIN_PET_BATTLE_QUEUE)]
+        [Parser(Opcode.CMSG_BATTLE_PET_UPDATE_DISPLAY_NOTIFY)]
+        [Parser(Opcode.CMSG_PET_BATTLE_QUIT_NOTIFY)]
+        [Parser(Opcode.CMSG_PET_BATTLE_FINAL_NOTIFY)]
+        [Parser(Opcode.CMSG_PET_BATTLE_SCRIPT_ERROR_NOTIFY)]
         public static void HandleBattlePetZero(Packet packet)
         {
         }

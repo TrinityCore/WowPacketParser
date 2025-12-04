@@ -115,5 +115,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("BnetAccountGUID");
             packet.ReadUInt64("GuildClubMemberID");
         }
+
+        [Parser(Opcode.CMSG_REQUEST_MYTHIC_PLUS_AFFIXES)]
+        [Parser(Opcode.CMSG_REQUEST_MYTHIC_PLUS_SEASON_DATA)]
+        public static void HandleMythicPlusZero(Packet packet)
+        {
+        }
     }
 }

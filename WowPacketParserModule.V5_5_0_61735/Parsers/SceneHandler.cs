@@ -63,5 +63,21 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadUInt32("SceneInstanceID");
         }
+
+        [Parser(Opcode.CMSG_SCENE_PLAYBACK_CANCELED)]
+        [Parser(Opcode.CMSG_SCENE_PLAYBACK_COMPLETE)]
+        public static void HandlScenePlaybackCanceled(Packet packet)
+        {
+            packet.ReadUInt32("SceneInstanceID");
+            packet.ReadUInt32("TimePassed");
+        }
+
+        [Parser(Opcode.CMSG_SCENE_TRIGGER_EVENT)]
+        public static void HandleSceneTriggerEvent(Packet packet)
+        {
+            var len = packet.ReadBits(6);
+            packet.ReadUInt32("SceneInstanceID");
+            packet.ReadWoWString("Event", len);
+        }
     }
 }
