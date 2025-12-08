@@ -16,7 +16,11 @@ namespace WowPacketParser.Enums
         AreaTrigger             = 11,
         SceneObject             = 12,
         Conversation            = 13,
-        Map                     = 14
+        Map                     = 14,
+        MeshObject              = 15,
+        AiGroup                 = 16,
+        Scenario                = 17,
+        LootObject              = 18
     }
 
     public enum ObjectTypeLegacy
@@ -49,7 +53,13 @@ namespace WowPacketParser.Enums
         Corpse                  = 10,
         AreaTrigger             = 11,
         SceneObject             = 12,
-        Conversation            = 13
+        Conversation            = 13,
+        MeshObject              = 14,
+        AiGroup                 = 15,
+        Scenario                = 16,
+        LootObject              = 17,
+
+        Max
     }
 
     public enum ObjectTypeBCC
