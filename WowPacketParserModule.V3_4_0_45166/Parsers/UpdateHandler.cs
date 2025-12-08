@@ -120,7 +120,7 @@ namespace WowPacketParserModule.V3_4_4_59817.Parsers
                             WoWObject obj;
                             Storage.Objects.TryGetValue(guid, out obj);
 
-                            var fragments = obj != null ? obj.EntityFragments : [WowCSEntityFragments.CGObject];
+                            var fragments = obj != null ? obj.EntityFragments : [new WowCSEntityFragment(WowCSEntityFragments1100.CGObject)];
 
                             fieldsData.ReadBool("IsOwned", i);
                             if (fieldsData.ReadBool("HasFragmentUpdates", i))
@@ -144,11 +144,11 @@ namespace WowPacketParserModule.V3_4_4_59817.Parsers
                             var fragmentBitCount = 0;
                             foreach (var existingFragment in fragments)
                             {
-                                if (!WowCSUtilities.IsUpdateable(existingFragment))
+                                if (!WowCSUtilities.IsUpdateable(existingFragment.UniversalValue))
                                     continue;
 
                                 ++fragmentBitCount;
-                                if (WowCSUtilities.IsIndirect(existingFragment))
+                                if (WowCSUtilities.IsIndirect(existingFragment.UniversalValue))
                                     ++fragmentBitCount;
                             }
 
@@ -224,7 +224,7 @@ namespace WowPacketParserModule.V3_4_4_59817.Parsers
                                 }
                             }
                             else
-                                obj?.EntityFragments.Remove(WowCSEntityFragments.CGObject);
+                                obj?.EntityFragments.RemoveAll(f => f.UniversalValue == WowCSEntityFragments.CGObject);
 
                             var vendorFragment = WowCSUtilities.GetUpdateBitIndex(fragments, WowCSEntityFragments.FVendor_C);
                             if (vendorFragment >= 0 && changedFragments[vendorFragment])
@@ -258,12 +258,12 @@ namespace WowPacketParserModule.V3_4_4_59817.Parsers
             }
         }
 
-        private static List<WowCSEntityFragments> ReadEntityFragments(Packet packet, string name, int idx)
+        private static List<WowCSEntityFragment> ReadEntityFragments(Packet packet, string name, int idx)
         {
-            var fragmentIds = new List<WowCSEntityFragments>();
-            WowCSEntityFragments fragmentId;
-            while ((fragmentId = packet.ReadByteE<WowCSEntityFragments>()) != WowCSEntityFragments.End)
-                fragmentIds.Add(packet.AddValue(name, fragmentId, idx, fragmentIds.Count));
+            var fragmentIds = new List<WowCSEntityFragment>();
+            WowCSEntityFragments1100 fragmentId;
+            while ((fragmentId = packet.ReadByteE<WowCSEntityFragments1100>()) != WowCSEntityFragments1100.End)
+                fragmentIds.Add(new WowCSEntityFragment(packet.AddValue(name, fragmentId, idx, fragmentIds.Count)));
 
             return fragmentIds;
         }
@@ -284,7 +284,7 @@ namespace WowPacketParserModule.V3_4_4_59817.Parsers
                 var flags = fieldsData.ReadByteE<UpdateFieldFlag>("FieldFlags", index);
                 obj.EntityFragments = ReadEntityFragments(fieldsData, "EntityFragmentID", index);
                 var handler = CoreFields.UpdateFields.GetHandler();
-                if (obj.EntityFragments.Contains(WowCSEntityFragments.CGObject))
+                if (obj.EntityFragments.Exists(f => f.UniversalValue == WowCSEntityFragments.CGObject))
                 {
                     if (fieldsData.ReadBool("IndirectFragmentActive [CGObject]", index))
                     {
@@ -346,9 +346,9 @@ namespace WowPacketParserModule.V3_4_4_59817.Parsers
                         }
                     }
                     else
-                        obj.EntityFragments.Remove(WowCSEntityFragments.CGObject);
+                        obj.EntityFragments.RemoveAll(f => f.UniversalValue == WowCSEntityFragments.CGObject);
                 }
-                if (obj.EntityFragments.Contains(WowCSEntityFragments.FVendor_C))
+                if (obj.EntityFragments.Exists(f => f.UniversalValue == WowCSEntityFragments.FVendor_C))
                     if (!WowCSUtilities.IsIndirect(WowCSEntityFragments.FVendor_C) || fieldsData.ReadBool("IndirectFragmentActive [FVendor_C]", index))
                         handler.ReadCreateVendorData(fieldsData, flags, index);
             }
