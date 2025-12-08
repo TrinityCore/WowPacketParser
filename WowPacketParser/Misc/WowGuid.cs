@@ -7,9 +7,9 @@ namespace WowPacketParser.Misc
 {
     public abstract class WowGuid
     {
-        public ulong Low { get; protected set; }
-        public HighGuid HighGuid { get; protected set; }
-        public ulong High { get; protected set; }
+        public ulong Low { get; protected init; }
+        public HighGuidType HighGuid { get; protected init; }
+        public ulong High { get; protected init; }
 
         public bool HasEntry()
         {
@@ -32,7 +32,7 @@ namespace WowPacketParser.Misc
 
         public HighGuidType GetHighType()
         {
-            return HighGuid.GetHighGuidType();
+            return HighGuid;
         }
 
         public ObjectType GetObjectType()
@@ -78,7 +78,7 @@ namespace WowPacketParser.Misc
 
         public override bool Equals(object obj)
         {
-            return obj is WowGuid && Equals((WowGuid)obj);
+            return obj is WowGuid wowGuid && Equals(wowGuid);
         }
 
         public bool Equals(WowGuid other)
@@ -107,12 +107,12 @@ namespace WowPacketParser.Misc
         {
             Low = low;
             High = high;
-            if (ClientVersion.Build >= ClientVersionBuild.V7_0_3_22248)
-                HighGuid = new HighGuid703((byte)((High >> 58) & 0x3F));
-            else if (ClientVersion.Build >= ClientVersionBuild.V6_2_4_21315)
-                HighGuid = new HighGuid624((byte)((High >> 58) & 0x3F));
-            else
-                HighGuid = new HighGuid623((byte)((High >> 58) & 0x3F));
+            HighGuid = ClientVersion.Build switch
+            {
+                >= ClientVersionBuild.V7_0_3_22248 => WowPacketParser.Misc.HighGuid.ToGeneric((HighGuidType703)((High >> 58) & 0x3F)),
+                >= ClientVersionBuild.V6_2_4_21315 => WowPacketParser.Misc.HighGuid.ToGeneric((HighGuidType624)((High >> 58) & 0x3F)),
+                _ => WowPacketParser.Misc.HighGuid.ToGeneric((HighGuidType623)((High >> 58) & 0x3F))
+            };
         }
 
         public byte GetSubType() // move to base?
@@ -182,12 +182,12 @@ namespace WowPacketParser.Misc
 
     public class WowGuid64 : WowGuid
     {
-        public static WowGuid Empty = new WowGuid64(0);
+        public static readonly WowGuid Empty = new WowGuid64(0);
 
         public WowGuid64(ulong id)
         {
             Low = id;
-            HighGuid = new HighGuidLegacy(GetHighGuidTypeLegacy());
+            HighGuid = WowPacketParser.Misc.HighGuid.ToGeneric(GetHighGuidTypeLegacy());
         }
 
         public override ulong GetLow()

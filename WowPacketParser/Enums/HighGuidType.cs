@@ -55,6 +55,11 @@ namespace WowPacketParser.Enums
         ToolsClient,
         WorldLayer,
         ArenaTeam,
+        LMMParty,
+        LMMLobby,
+        Housing,
+        MeshObject,
+        Entity,
         Invalid
     };
 
@@ -212,6 +217,11 @@ namespace WowPacketParser.Enums
         ToolsClient      = 50,
         WorldLayer       = 51,
         ArenaTeam        = 52,
+        LMMParty         = 53,
+        LMMLobby         = 54,
+        Housing          = 55,
+        MeshObject       = 56,
+        Entity           = 57,
 
         Invalid          = 63
     }

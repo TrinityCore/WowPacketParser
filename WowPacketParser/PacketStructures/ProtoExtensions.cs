@@ -13,7 +13,7 @@ namespace WowPacketParser.PacketStructures
             return new UniversalGuid()
             {
                 Entry = guid.GetEntry(),
-                Type = (UniversalHighGuid)(int)guid.HighGuid.GetHighGuidType(),
+                Type = (UniversalHighGuid)(int)guid.GetHighType(),
                 Guid128 = new UniversalGuid128()
                 {
                     Low = guid.Low,
@@ -27,7 +27,7 @@ namespace WowPacketParser.PacketStructures
             return new UniversalGuid()
             {
                 Entry = guid.GetEntry(),
-                Type = (UniversalHighGuid)(int)guid.HighGuid.GetHighGuidType(),
+                Type = (UniversalHighGuid)(int)guid.GetHighType(),
                 Guid64 = new UniversalGuid64()
                 {
                     Low = guid.Low,
