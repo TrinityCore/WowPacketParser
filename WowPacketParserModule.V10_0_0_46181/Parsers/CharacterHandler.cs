@@ -34,6 +34,39 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadBit("Disqualified", idx);
         }
 
+        public static void ReadClassicTalentGroupInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadByte("NumTalents", idx);
+            var talentCount = packet.ReadUInt32();
+            packet.ReadByte("NumGlyphs", idx);
+            var glyphCount = packet.ReadUInt32();
+            packet.ReadByte("Role", idx);
+            packet.ReadUInt32("PrimarySpecialization", idx);
+
+            for (var j = 0; j < talentCount; ++j)
+            {
+                packet.ReadUInt32("TalentID", idx, "Talent", j);
+                packet.ReadUInt32("Rank", idx, "Talent", j);
+            }
+
+            for (var k = 0; k < glyphCount; ++k)
+                packet.ReadUInt16("Glyph", idx, k);
+        }
+
+        public static void ReadClassicTalentInfoUpdate(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("UnspentTalentPoints", idx);
+            packet.ReadByte("ActiveSpecGroup", idx);
+
+            var specCount = packet.ReadUInt32();
+
+            for (var i = 0; i < specCount; ++i)
+                ReadClassicTalentGroupInfo(packet, idx, "TalentGroup", i);
+
+            packet.ResetBitReader();
+            packet.ReadBit("IsPetTalents", idx);
+        }
+
         [Parser(Opcode.SMSG_INSPECT_RESULT)]
         public static void HandleInspectResult(Packet packet)
         {
@@ -56,6 +89,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             for (int i = 0; i < pvpTalentCount; i++)
                 packet.ReadUInt16("PvpTalents", i);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213))
+                ReadClassicTalentInfoUpdate(packet, "TalentInfo");
 
             packet.ResetBitReader();
             var hasGuildData = packet.ReadBit("HasGuildData");
