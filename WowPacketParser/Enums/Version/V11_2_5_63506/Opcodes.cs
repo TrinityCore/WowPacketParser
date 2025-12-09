@@ -923,6 +923,7 @@ namespace WowPacketParser.Enums.Version.V11_2_5_63506
             { Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE, 0x3602E8 },
             { Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x3601A8 },
             { Opcode.SMSG_ACCOUNT_EXPORT_RESPONSE, 0x360338 },
+            { Opcode.SMSG_ACCOUNT_HEIRLOOM_UPDATE, 0x360049 },
             { Opcode.SMSG_ACCOUNT_ITEM_COLLECTION_DATA, 0x360352 },
             { Opcode.SMSG_ACCOUNT_MOUNT_REMOVED, 0x360047 },
             { Opcode.SMSG_ACCOUNT_MOUNT_UPDATE, 0x360046 },
