@@ -39,7 +39,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);
             var hasDstLoc = packet.ReadBit("HasDstLocation", idx);
             var hasOrient = packet.ReadBit("HasOrientation", idx);
-            var hasMapID = packet.ReadBit("hasMapID ", idx);
+            var hasMapID = packet.ReadBit("HasMapID", idx);
             var nameLength = packet.ReadBits(7);
 
 

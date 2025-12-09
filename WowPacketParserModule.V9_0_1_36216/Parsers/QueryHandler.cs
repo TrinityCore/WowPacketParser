@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadByte("Result", idx);
             packet.ReadPackedGuid128("Player", idx);
             var hasPlayerGuidLookupData = packet.ReadBit("HasPlayerGuidLookupData", idx);
-            var hasThingy = packet.ReadBit("HasNameCacheUnused920", idx);
+            var hasGuildGuidLookupData = packet.ReadBit("HasGuildGuidLookupData", idx);
 
             if (hasPlayerGuidLookupData)
             {
@@ -26,13 +26,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 response.HasData = true;
             }
 
-            if (hasThingy)
+            if (hasGuildGuidLookupData)
             {
                 packet.ResetBitReader();
-                packet.ReadUInt32("Unused1", idx, "NameCacheUnused920");
-                packet.ReadPackedGuid128("Unused2", idx, "NameCacheUnused920");
+                packet.ReadUInt32("VirtualRealmAddress", idx, "GuildGuidLookupData");
+                packet.ReadPackedGuid128("Guid", idx, "GuildGuidLookupData");
                 var length = packet.ReadBits(7);
-                packet.ReadWoWString("Unused3", length, idx, "NameCacheUnused920");
+                packet.ReadWoWString("Name", length, idx, "GuildGuidLookupData");
             }
 
             return response;

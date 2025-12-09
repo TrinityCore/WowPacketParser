@@ -122,7 +122,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             data.Level = packet.ReadByte("Level", idx);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
-                packet.ReadByte("Unused915", idx);
+                packet.ReadByte("PvpFaction", idx);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
                 packet.ReadInt32("TimerunningSeasonID", idx);
