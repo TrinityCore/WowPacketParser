@@ -213,12 +213,24 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             }
         }
 
+        private static WowCSEntityFragment TransformFragment1100(Packet packet, string name, byte fragmentId, int idx, int fragmentIdx) =>
+            new (packet.AddValue(name, (WowCSEntityFragments1100)fragmentId, idx, fragmentIdx));
+
+        private static WowCSEntityFragment TransformFragment1127(Packet packet, string name, byte fragmentId, int idx, int fragmentIdx) =>
+            new (packet.AddValue(name, (WowCSEntityFragments1127)fragmentId, idx, fragmentIdx));
+
         private static List<WowCSEntityFragment> ReadEntityFragments(Packet packet, string name, int idx)
         {
+            Func<Packet, string, byte, int, int, WowCSEntityFragment> fragmentTransformer;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                fragmentTransformer = TransformFragment1127;
+            else
+                fragmentTransformer = TransformFragment1100;
+
             var fragmentIds = new List<WowCSEntityFragment>();
-            WowCSEntityFragments1100 fragmentId;
-            while ((fragmentId = packet.ReadByteE<WowCSEntityFragments1100>()) != WowCSEntityFragments1100.End)
-                fragmentIds.Add(new WowCSEntityFragment(packet.AddValue(name, fragmentId, idx, fragmentIds.Count)));
+            byte fragmentId;
+            while ((fragmentId = packet.ReadByte()) != 255)
+                fragmentIds.Add(fragmentTransformer(packet, name, fragmentId, idx, fragmentIds.Count));
 
             return fragmentIds;
         }
