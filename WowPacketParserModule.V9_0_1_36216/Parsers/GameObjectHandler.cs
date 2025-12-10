@@ -65,6 +65,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
 
             gameObject.ContentTuningId = query.ContentTuningId = packet.ReadInt32("ContentTuningId");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                gameObject.RequiredLevel = query.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
