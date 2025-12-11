@@ -43,9 +43,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Player GUID");
             packet.ReadInt32("Criteria Flags");
             packet.ReadPackedTime("Time");
-
-            for (var i = 0; i < 2; i++)
-                packet.ReadInt32("Timer " + i);
+            var createdDiff = packet.ReadInt32("CreatedDiff");
+            var updatedDiff = packet.ReadInt32("UpdatedDiff");
+            packet.AddValue("CreatedTime", packet.Time.AddSeconds(-createdDiff));
+            packet.AddValue("UpdatedTime", packet.Time.AddSeconds(-updatedDiff));
         }
 
         public static void ReadAllAchievementData(Packet packet)
