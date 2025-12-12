@@ -222,6 +222,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("CombatResChargeRecovery");
         }
 
+        [Parser(Opcode.CMSG_SET_DIFFICULTY_ID)]
+        public static void HandleSetDifficultyId(Packet packet)
+        {
+            packet.ReadInt32<DifficultyId>("DifficultyID");
+        }
+
         [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_END)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_IN_COMBAT_RESURRECTION)]

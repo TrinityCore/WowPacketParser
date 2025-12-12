@@ -958,6 +958,35 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("TimerType");
         }
 
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_SWITCH_SEAT)]
+        public static void HandleRequestVehicleSwitchSeat(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vehicle");
+            packet.ReadByte("SeatIndex");
+        }
+
+        [Parser(Opcode.CMSG_RIDE_VEHICLE_INTERACT)]
+        public static void HandleRideVehicleInteract(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vehicle");
+        }
+
+        [Parser(Opcode.CMSG_EJECT_PASSENGER)]
+        public static void HandleEjectPassenger(Packet packet)
+        {
+            packet.ReadPackedGuid128("Passenger");
+        }
+
+        [Parser(Opcode.CMSG_MOUNT_SPECIAL_ANIM)]
+        public static void HandleMountSpecialAnim(Packet packet)
+        {
+            var count = packet.ReadUInt32();
+            packet.ReadInt32("SequenceVariation");
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("SpellVisualKitID", i);
+        }
+
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
@@ -967,6 +996,9 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.CMSG_USED_FOLLOW)]
         [Parser(Opcode.CMSG_GAME_EVENT_DEBUG_ENABLE)]
         [Parser(Opcode.CMSG_GAME_EVENT_DEBUG_DISABLE)]
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_EXIT)]
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_PREV_SEAT)]
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_NEXT_SEAT)]
         public static void HandleMiscZero(Packet packet)
         {
         }

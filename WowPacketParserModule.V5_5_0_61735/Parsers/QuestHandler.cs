@@ -1204,6 +1204,19 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadPackedGuid128("ItemGUID", i);
         }
 
+        [Parser(Opcode.CMSG_SPAWN_TRACKING_UPDATE)]
+        public static void HandleSpawnTrackingVignette(Packet packet)
+        {
+            var count = packet.ReadUInt32("SpawnTrackingCount");
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadInt32("ObjectTypeMask", i);
+                packet.ReadInt32("ObjectID", i);
+                packet.ReadUInt32("SpawnTrackingID", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
         [Parser(Opcode.SMSG_QUEST_LOG_FULL)]
         public static void HandleQuestZeroLengthPackets(Packet packet)

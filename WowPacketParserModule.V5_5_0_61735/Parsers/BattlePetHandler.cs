@@ -473,6 +473,19 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             LfgHandler.ReadCliRideTicket(packet, "RideTicket");
         }
 
+        [Parser(Opcode.CMSG_PET_BATTLE_QUEUE_PROPOSE_MATCH_RESULT)]
+        public static void HandlePetBattleQueueProposeMatchResult(Packet packet)
+        {
+            packet.ReadBit("Accepted");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_BATTLE_PET_NAME)]
+        public static void HandleBattlePetQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetID");
+            packet.ReadPackedGuid128("UnitGUID");
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED)]
         [Parser(Opcode.SMSG_BATTLE_PETS_HEALED)]

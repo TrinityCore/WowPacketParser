@@ -506,5 +506,21 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             ReadCliItemTextCache(packet, "Item");
             packet.ReadPackedGuid128("Id");
         }
+
+        [Parser(Opcode.CMSG_QUERY_CREATURE)]
+        public static void HandleCreatureQuery(Packet packet)
+        {
+            packet.ReadInt32("Entry");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_GAME_OBJECT)]
+        [Parser(Opcode.CMSG_QUERY_NPC_TEXT)]
+        [Parser(Opcode.CMSG_QUERY_QUEST_INFO)]
+        [Parser(Opcode.CMSG_QUERY_PAGE_TEXT)]
+        public static void HandleGameObjectQuery(Packet packet)
+        {
+            packet.ReadInt32("Entry");
+            packet.ReadPackedGuid128("GUID");
+        }
     }
 }

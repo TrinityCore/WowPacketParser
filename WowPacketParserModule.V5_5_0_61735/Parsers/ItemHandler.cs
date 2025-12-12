@@ -273,6 +273,49 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("ItemReforgeRecId");
         }
 
+        [Parser(Opcode.CMSG_MAKE_CONTITIONAL_APPEARANCE_PERMANENT)]
+        public static void HandleMakeContitionalAppearancePermanent(Packet packet)
+        {
+            packet.ReadInt32("ItemModifiedAppearanceID");
+        }
+
+        [Parser(Opcode.CMSG_USE_CRITTER_ITEM)]
+        public static void HandleUseCritterItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+        }
+
+        [Parser(Opcode.CMSG_DESTROY_ITEM)]
+        public static void HandleDestroyItem(Packet packet)
+        {
+            packet.ReadUInt32("Count");
+            packet.ReadByte("ContainerId");
+            packet.ReadByte("SlotNum");
+        }
+
+        [Parser(Opcode.CMSG_USE_ITEM)]
+        public static void HandleUseItem(Packet packet)
+        {
+            var useItem = packet.Holder.ClientUseItem = new();
+            useItem.PackSlot = packet.ReadByte("PackSlot");
+            useItem.ItemSlot = packet.ReadByte("Slot");
+            useItem.CastItem = packet.ReadPackedGuid128("CastItem");
+
+            useItem.SpellId = SpellHandler.ReadSpellCastRequest(packet, "Cast");
+        }
+
+        [Parser(Opcode.CMSG_ADD_TOY)]
+        public static void HandleAddToy(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.CMSG_USE_TOY)]
+        public static void HandleUseToy(Packet packet)
+        {
+            SpellHandler.ReadSpellCastRequest(packet, "Cast");
+        }
+
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW)]
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]
         public static void HandleItemZero(Packet packet)

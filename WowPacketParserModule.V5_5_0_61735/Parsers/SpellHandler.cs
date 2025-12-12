@@ -370,6 +370,84 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadInt32("TraitDefinitionID", indexes);
         }
 
+        public static void ReadMissileTrajectoryRequest(Packet packet, params object[] idx)
+        {
+            packet.ReadSingle("Pitch", idx);
+            packet.ReadSingle("Speed", idx);
+        }
+
+        public static void ReadOptionalCurrency(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("CurrencyID", indexes);
+            packet.ReadInt32("Count", indexes);
+        }
+
+        public static void ReadOptionalReagent(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32<ItemId>("ItemID", indexes);
+            packet.ReadInt32("DataSlotIndex", indexes);
+            packet.ReadInt32("Quantity", indexes);
+
+            if (packet.ReadBit())
+                packet.ReadByte("Unknown_1000", indexes);
+        }
+
+        public static void ReadSpellWeight(Packet packet, params object[] idx)
+        {
+            packet.ResetBitReader();
+            packet.ReadBits("Type", 2, idx); // Enum SpellweightTokenTypes
+            packet.ReadInt32("ID", idx);
+            packet.ReadUInt32("Quantity", idx);
+        }
+
+        public static uint ReadSpellCastRequest(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("CastID", idx);
+
+            for (var i = 0; i < 2; i++)
+                packet.ReadInt32("Misc", idx, i);
+
+            var spellId = packet.ReadUInt32<SpellId>("SpellID", idx);
+            packet.ReadInt32("SpellXSpellVisual", idx);
+
+            ReadMissileTrajectoryRequest(packet, idx, "MissileTrajectory");
+
+            packet.ReadPackedGuid128("CraftingNPC", idx);
+
+            var optionalCurrenciesCount = packet.ReadUInt32("OptionalCurrenciesCount", idx);
+            var optionalReagentsCount = packet.ReadUInt32("OptionalReagentsCount", idx);
+            var removedModificationsCount = packet.ReadUInt32("RemovedModificationsCount", idx);
+            
+            packet.ReadByte("CraftingFlags", idx);
+
+            for (var j = 0; j < optionalCurrenciesCount; ++j)
+                ReadOptionalCurrency(packet, idx, "OptionalCurrency", j);
+
+            packet.ResetBitReader();
+            packet.ReadBits("SendCastFlags", 6, idx);
+            var hasMoveUpdate = packet.ReadBit("HasMoveUpdate", idx);
+            var weightCount = packet.ReadBits("WeightCount", 2, idx);
+            var hasCraftingOrderID = packet.ReadBit("HasCrafingOrderID", idx);
+
+            ReadSpellTargetData(packet, null, spellId, idx, "Target");
+
+            if (hasCraftingOrderID)
+                packet.ReadUInt64("CraftingOrderID", idx);
+
+            for (var i = 0; i < optionalReagentsCount; ++i)
+                ReadOptionalReagent(packet, idx, "OptionalReagent", i);
+
+            for (var i = 0; i < removedModificationsCount; ++i)
+                ReadOptionalReagent(packet, idx, "RemovedModifications", i);
+
+            if (hasMoveUpdate)
+                MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");
+
+            for (var i = 0; i < weightCount; ++i)
+                ReadSpellWeight(packet, idx, "Weight", i);
+
+            return spellId;
+        }
         public static void ReadGlyphBinding(Packet packet, params object[] index)
         {
             packet.ReadUInt32("SpellID", index);
@@ -1255,10 +1333,45 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByte("RespecType");
         }
 
+        [Parser(Opcode.CMSG_KEYBOUND_OVERRIDE)]
+        public static void HandleKeyboundOverride(Packet packet)
+        {
+            packet.ReadUInt16("OverrideID");
+        }
+
+        [Parser(Opcode.CMSG_CANCEL_CHANNELLING)]
+        public static void HandleCancelChanneling(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("Reason");
+        }
+
+        [Parser(Opcode.CMSG_GET_MIRROR_IMAGE_DATA)]
+        public static void HandleGetMirrorImageData(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("DisplayID");
+        }
+
+        [Parser(Opcode.CMSG_PET_CAST_SPELL)]
+        public static void HandlePetCastSpell(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            ReadSpellCastRequest(packet, "Cast");
+        }
+
+        [Parser(Opcode.CMSG_CAST_SPELL)]
+        public static void HandleCastSpell(Packet packet)
+        {
+            ReadSpellCastRequest(packet, "Cast");
+        }
+
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         [Parser(Opcode.SMSG_PET_CLEAR_SPELLS)]
         [Parser(Opcode.CMSG_CANCEL_QUEUED_SPELL)]
+        [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA)]
+        [Parser(Opcode.CMSG_CANCEL_MOUNT_AURA)]
         public static void HandleSpellEmpty(Packet packet)
         {
         }

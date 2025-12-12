@@ -29,6 +29,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 ReadAdventureJournalEntry(packet, "AdventureJournalEntry", i);
         }
 
+        [Parser(Opcode.CMSG_CHECK_IS_ADVENTURE_MAP_POI_VALID)]
+        public static void HandleCheckIsAdventureMapPOIValid(Packet packet)
+        {
+            packet.ReadUInt32("AdventureMapPoiID");
+        }
+
         [Parser(Opcode.CMSG_ADVENTURE_JOURNAL_OPEN_QUEST)]
         public static void HandleAdventureZero(Packet packet)
         {

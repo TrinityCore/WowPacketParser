@@ -715,6 +715,18 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByte("Faction");
         }
 
+        [Parser(Opcode.CMSG_REQUEST_PLAYED_TIME)]
+        public static void HandleClientPlayedTime(Packet packet)
+        {
+            packet.ReadBit("TriggerScriptEvent");
+        }
+
+        [Parser(Opcode.CMSG_SET_TITLE)]
+        public static void HandleSetTitle(Packet packet)
+        {
+            packet.ReadInt32("TitleID");
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE)]

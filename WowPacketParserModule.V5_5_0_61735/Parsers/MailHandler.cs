@@ -115,5 +115,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadInt32("StationeryID", i);
             }
         }
+
+        [Parser(Opcode.CMSG_MAIL_DELETE)]
+        public static void HandleMailDelete(Packet packet)
+        {
+            packet.ReadUInt64("MailID");
+            packet.ReadInt32("DeleteReason");
+        }
     }
 }

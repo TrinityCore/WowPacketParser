@@ -118,5 +118,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("PetGUID");
             packet.ReadInt32("SpecIndex");
         }
+
+        [Parser(Opcode.CMSG_QUERY_PET_NAME)]
+        public static void HandlePetNameQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetID");
+        }
     }
 }

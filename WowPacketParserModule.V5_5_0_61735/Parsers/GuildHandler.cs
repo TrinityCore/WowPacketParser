@@ -801,6 +801,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("GuildGUID");
         }
 
+        [Parser(Opcode.CMSG_QUERY_PETITION)]
+        public static void HandleQueryPetition(Packet packet)
+        {
+            packet.ReadUInt32("PetitionID");
+            packet.ReadPackedGuid128("ItemGUID");
+        }
+
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_RANKS_UPDATED)]

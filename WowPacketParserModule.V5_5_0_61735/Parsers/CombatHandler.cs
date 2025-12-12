@@ -161,9 +161,16 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("Guid");
         }
 
+        [Parser(Opcode.CMSG_ATTACK_SWING)]
+        public static void HandleAttackSwing(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+        }
+
         [Parser(Opcode.SMSG_DUEL_OUT_OF_BOUNDS)]
         [Parser(Opcode.SMSG_DUEL_IN_BOUNDS)]
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
+        [Parser(Opcode.CMSG_ATTACK_STOP)]
         public static void HandleCombatNull(Packet packet)
         {
         }
