@@ -43,7 +43,25 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
         }
 
+        [Parser(Opcode.CMSG_TAXI_NODE_STATUS_QUERY)]
+        [Parser(Opcode.CMSG_ENABLE_TAXI_NODE)]
+        [Parser(Opcode.CMSG_TAXI_QUERY_AVAILABLE_NODES)]
+        public static void HandleTaxinodeStatusQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+        }
+
+        [Parser(Opcode.CMSG_ACTIVATE_TAXI)]
+        public static void HandleActivateTaxi(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vendor");
+            packet.ReadUInt32("Node");
+            packet.ReadUInt32("GroundMountID");
+            packet.ReadUInt32("FlyingMountID");
+        }
+
         [Parser(Opcode.SMSG_NEW_TAXI_PATH)]
+        [Parser(Opcode.CMSG_TAXI_REQUEST_EARLY_LANDING)]
         public static void HandleTaxiNull(Packet packet)
         {
         }

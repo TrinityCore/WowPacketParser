@@ -727,6 +727,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("TitleID");
         }
 
+        [Parser(Opcode.CMSG_SET_PVP)]
+        public static void HandleSetPVP(Packet packet)
+        {
+            packet.ReadBit("EnablePVP");
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE)]

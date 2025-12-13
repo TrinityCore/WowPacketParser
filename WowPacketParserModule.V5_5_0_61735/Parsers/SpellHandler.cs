@@ -1366,6 +1366,27 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             ReadSpellCastRequest(packet, "Cast");
         }
 
+        [Parser(Opcode.CMSG_UPDATE_SPELL_VISUAL)]
+        public static void HandleUpdateSpellVisual(Packet packet)
+        {
+            packet.ReadUInt32("SpellID");
+            packet.ReadUInt32("SpellXSpellVisualID");
+            packet.ReadPackedGuid128("GUID");
+        }
+
+        [Parser(Opcode.CMSG_CANCEL_CAST)]
+        public static void HandleCancelCast(Packet packet)
+        {
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadUInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.CMSG_REMOVE_GLYPH)]
+        public static void HandleRemoveGlyph(Packet packet)
+        {
+            packet.ReadByte("GlyphSlot");
+        }
+
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         [Parser(Opcode.SMSG_PET_CLEAR_SPELLS)]

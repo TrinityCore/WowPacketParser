@@ -68,5 +68,18 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadBits("Reason", 4);
         }
+
+        [Parser(Opcode.CMSG_TRAITS_COMMIT_CONFIG)]
+        public static void ReadTraitsCommitConfig(Packet packet)
+        {
+            ReadTraitConfig(packet, "Config");
+            packet.ReadInt32("SavedConfigID");
+            packet.ReadInt32("SavedLocalIdentifier");
+        }
+
+        [Parser(Opcode.CMSG_CLOSE_TRAIT_SYSTEM_INTERACTION)]
+        public static void ReadTraitEmpty(Packet packet)
+        {
+        }
     }
 }

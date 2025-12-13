@@ -394,8 +394,15 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("Accepted");
         }
 
+        [Parser(Opcode.CMSG_LFG_LIST_SET_ROLES)]
+        public static void HandleLfgListSetRoles(Packet packet)
+        {
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+        }
+
         [Parser(Opcode.SMSG_PARTY_NOTIFY_LFG_LEADER_CHANGE)]
         [Parser(Opcode.SMSG_LFG_DISABLED)]
+        [Parser(Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST)]
         public static void HandleLfgZero(Packet packet)
         {
         }

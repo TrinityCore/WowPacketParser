@@ -511,6 +511,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32<BgId>("ListID");
         }
 
+        [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY)]
+        [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE)]
+        public static void HandleAreaSpiritHealer(Packet packet)
+        {
+            packet.ReadPackedGuid128("HealerGuid");
+        }
+
         [Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]
         [Parser(Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED)]
         [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]

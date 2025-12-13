@@ -999,6 +999,9 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.CMSG_REQUEST_VEHICLE_EXIT)]
         [Parser(Opcode.CMSG_REQUEST_VEHICLE_PREV_SEAT)]
         [Parser(Opcode.CMSG_REQUEST_VEHICLE_NEXT_SEAT)]
+        [Parser(Opcode.CMSG_REQUEST_AREA_POI_UPDATE)]
+        [Parser(Opcode.CMSG_REPORT_SERVER_LAG)]
+        [Parser(Opcode.CMSG_SEAMLESS_TRANSFER_COMPLETE)]
         public static void HandleMiscZero(Packet packet)
         {
         }

@@ -35,6 +35,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("AdventureMapPoiID");
         }
 
+        [Parser(Opcode.CMSG_ADVENTURE_MAP_START_QUEST)]
+        public static void HandleAdventureMapStartQuest(Packet packet)
+        {
+            packet.ReadInt32<QuestId>("QuestID");
+        }
+
         [Parser(Opcode.CMSG_ADVENTURE_JOURNAL_OPEN_QUEST)]
         public static void HandleAdventureZero(Packet packet)
         {
