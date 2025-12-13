@@ -940,6 +940,27 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt64("Money");
         }
 
+        [Parser(Opcode.CMSG_PETITION_SHOW_LIST)]
+        public static void HandlePetitionShowListClient(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionUnit");
+        }
+
+        [Parser(Opcode.CMSG_PETITION_BUY)]
+        public static void HandlePetitionBuy(Packet packet)
+        {
+            var length = packet.ReadBits(8);
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadUInt32("Index");
+            packet.ReadWoWString("Title", length);
+        }
+
+        [Parser(Opcode.CMSG_PETITION_SHOW_SIGNATURES)]
+        public static void HandleClientPetitionShowSignatures(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGuid");
+        }
+
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_RANKS_UPDATED)]

@@ -987,6 +987,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadInt32("SpellVisualKitID", i);
         }
 
+        [Parser(Opcode.CMSG_FAR_SIGHT)]
+        public static void HandleFarSight(Packet packet)
+        {
+            packet.ReadBit("Apply");
+        }
+
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
@@ -1002,6 +1008,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.CMSG_REQUEST_AREA_POI_UPDATE)]
         [Parser(Opcode.CMSG_REPORT_SERVER_LAG)]
         [Parser(Opcode.CMSG_SEAMLESS_TRANSFER_COMPLETE)]
+        [Parser(Opcode.CMSG_QUERY_TIME)]
+        [Parser(Opcode.CMSG_COMPLETE_MOVIE)]
         public static void HandleMiscZero(Packet packet)
         {
         }

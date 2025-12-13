@@ -174,6 +174,14 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("Animate");
         }
 
+        [Parser(Opcode.CMSG_DUEL_RESPONSE)]
+        public static void HandleDuelResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("ArbiterGUID");
+            packet.ReadBit("Accepted");
+            packet.ReadBit("Forfeited");
+        }
+
         [Parser(Opcode.SMSG_DUEL_OUT_OF_BOUNDS)]
         [Parser(Opcode.SMSG_DUEL_IN_BOUNDS)]
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]

@@ -157,6 +157,34 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("SuffixItemNameDescriptionID", idx);
         }
 
+        public static void ReadAuctionListFilterSubClass(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt64("InvTypeMask", idx);
+            packet.ReadInt32("ItemSubclass", idx);
+        }
+
+        public static void ReadAuctionListFilterClass(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("FilterClass", idx);
+            packet.ResetBitReader();
+            var subClassFilterCount = packet.ReadBits("SubClassFilterCount", 5, idx);
+            for (var i = 0; i < subClassFilterCount; i++)
+                ReadAuctionListFilterSubClass(packet, i, "SubClassFilter", i, idx);
+        }
+
+        public static void ReadAuctionSortDef(Packet packet, params object[] idx)
+        {
+            packet.ResetBitReader();
+            packet.ReadByte("SortOrder", idx);
+            packet.ReadBit("ReverseSort", idx);
+        }
+
+        public static void ReadAuctionItemForSale(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("Guid", idx);
+            packet.ReadUInt32("UseCount", idx);
+        }
+
         [Parser(Opcode.SMSG_AUCTION_HELLO_RESPONSE)]
         public static void HandleServerAuctionHello(Packet packet)
         {
@@ -314,6 +342,328 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             for (var i = 0; i < itemsCount; ++i)
                 ReadAuctionFavoriteInfo(packet, "FavoriteInfo", i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_HELLO_REQUEST)]
+        public static void HandleClientAuctionHello(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_SELL_ITEM)]
+        public static void HandleAuctionSellItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt64("MinBit");
+            packet.ReadInt64("BuyoutPrice");
+            packet.ReadInt32("RunTime");
+
+            var taintedBy = packet.ReadBit();
+
+            var count = packet.ReadBits("ItemsCount", 6);
+            packet.ResetBitReader();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadPackedGuid128("Guid", i);
+                packet.ReadInt32("UseCount");
+            }
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_REMOVE_ITEM)]
+        public static void HandleAuctionRemoveItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("AuctionID");
+            packet.ReadInt32("ItemID");
+
+            var taintedBy = packet.ReadBit();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_ITEMS)]
+        public static void HandleAuctionListItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("Offset");
+            packet.ReadByte("MinLevel");
+            packet.ReadByte("MaxLevel");
+            packet.ReadInt32E<ItemQuality>("Quality");
+            var sort = packet.ReadByte("SortCount");
+            var knownPetsCount = packet.ReadUInt32("KnownPetsCount");
+            packet.ReadSByte("MaxPetLevel");
+
+            for (int i = 0; i < knownPetsCount; ++i)
+                packet.ReadByte("KnownPets", i);
+
+            var taintedBy = packet.ReadBit();
+            var nameLength = packet.ReadBits(8);
+
+            packet.ResetBitReader();
+            packet.ReadWoWString("Name", nameLength);
+
+            var classFiltersCount = packet.ReadBits("ClassFiltersCount", 3);
+
+            packet.ReadBit("OnlyUsable");
+            packet.ReadBit("ExactMatch");
+
+            packet.ResetBitReader();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            for (int i = 0; i < classFiltersCount; ++i)
+            {
+                packet.ReadInt32E<ItemClass>("ItemClass", "ClassFilters", i);
+
+                var subClassFiltersCount = packet.ReadBits("SubClassFiltersCount", 5, "ClassFilters", i);
+                for (int j = 0; j < subClassFiltersCount; ++j)
+                {
+                    packet.ReadUInt64("ItemSubclass", "ClassFilters", i, "SubClassFilters", j);
+                    packet.ReadUInt32("InvTypeMask", "ClassFilters", i, "SubClassFilters", j);
+                }
+            }
+
+            var size = packet.ReadInt32("DataSize");
+            var data = packet.ReadBytes(size);
+            var sorts = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            for (var i = 0; i < sort; ++i)
+            {
+                sorts.ReadByte("Type", i);
+                sorts.ReadByte("Direction", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_REPLICATE_ITEMS)]
+        public static void HandleAuctionReplicateItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("ChangeNumberGlobal");
+            packet.ReadInt32("ChangeNumberCursor");
+            packet.ReadInt32("ChangeNumberTombstone");
+            packet.ReadInt32("Count");
+
+            var taintedBy = packet.ReadBit();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_OWNER_ITEMS)]
+        public static void HandleAuctionListOwnerItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadUInt32("Offset");
+
+            var taintedBy = packet.ReadBit();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_BIDDER_ITEMS)]
+        public static void HandleAuctionListBidderItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadUInt32("Offset");
+
+            var auctionIdsCount = packet.ReadBits(7);
+            var taintedBy = packet.ReadBit();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            for (var i = 0; i < auctionIdsCount; i++)
+                packet.ReadUInt32("AuctionID", i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_PLACE_BID)]
+        public static void HandleAuctionPlaceBid(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("AuctionID");
+            packet.ReadInt64("BidAmount");
+
+            var taintedBy = packet.ReadBit();
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_BROWSE_QUERY)]
+        public static void HandleAuctionBrowseQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadUInt32("Offset");
+            packet.ReadByte("MinLevel");
+            packet.ReadByte("MaxLevel");
+            packet.ReadByte("Unused1007_1");
+            packet.ReadByte("Unused1007_2");
+            packet.ReadUInt32("Filters");
+
+            var knownPetsSize = packet.ReadUInt32();
+            packet.ReadSByte("MaxPetLevel");
+            packet.ReadUInt32("Unused1026");
+
+            for (var i = 0; i < knownPetsSize; i++)
+                packet.ReadByte("KnownPetMask", i);
+
+            packet.ResetBitReader();
+            var taintedBy = packet.ReadBit("TaintedBy");
+            var nameLen = packet.ReadBits(8);
+            var itemClassFilterSize = packet.ReadBits(3);
+            var sortsSize = packet.ReadBits(2);
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            packet.ReadWoWString("Name", nameLen);
+
+            for (var i = 0; i < itemClassFilterSize; i++)
+                ReadAuctionListFilterClass(packet, i, "FilterClass");
+
+            for (var i = 0; i < sortsSize; i++)
+                ReadAuctionSortDef(packet, i, "SortDef");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_ITEMS_BY_BUCKET_KEY)]
+        public static void HandleAuctionListItemsByBucketKey(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadUInt32("Offset");
+            packet.ReadByte("Unknown830");
+
+            var taintedBy = packet.ReadBit();
+            var sortCount = packet.ReadBits(2);
+
+            ReadAuctionBucketKey(packet, "BucketKey");
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            for (var i = 0; i < sortCount; i++)
+                ReadAuctionSortDef(packet, i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_ITEMS_BY_ITEM_ID)]
+        public static void HandleAuctionListItemsByItemID(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("ItemID");
+            packet.ReadInt32("SuffixItemNameDescriptionID");
+            packet.ReadUInt32("Offset");
+
+            var taintedBy = packet.ReadBit();
+            var sortCount = packet.ReadBits(2);
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            for (var i = 0; i < sortCount; i++)
+                ReadAuctionSortDef(packet, i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_OWNED_ITEMS)]
+        public static void HandleAuctionListOwnedItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadUInt32("Offset");
+
+            var taintedBy = packet.ReadBit();
+            var sortCount = packet.ReadBits(2);
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            for (var i = 0; i < sortCount; i++)
+                ReadAuctionSortDef(packet, i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_BIDDED_ITEMS)]
+        public static void HandleAuctionListBiddedItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadUInt32("Offset");
+
+            var taintedBy = packet.ReadBit();
+
+            var auctionIdsCount = packet.ReadBits(7);
+            var sortCount = packet.ReadBits(2);
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            for (var i = 0; i < auctionIdsCount; i++)
+                packet.ReadUInt32("AuctionID", i);
+
+            for (var i = 0; i < sortCount; i++)
+                ReadAuctionSortDef(packet, i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_BUCKETS_BY_BUCKET_KEYS)]
+        public static void HandleAuctionListBucketsByBucketKeys(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+
+            var taintedBy = packet.ReadBit();
+
+            var bucketKeysCount = packet.ReadBits(7);
+            var sortCount = packet.ReadBits(2);
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            for (var i = 0; i < bucketKeysCount; i++)
+                ReadAuctionBucketKey(packet, i);
+
+            for (var i = 0; i < sortCount; i++)
+                ReadAuctionSortDef(packet, i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_GET_COMMODITY_QUOTE)]
+        [Parser(Opcode.CMSG_AUCTION_CONFIRM_COMMODITIES_PURCHASE)]
+        public static void HandleAuctionHouseGetCommodityQuote(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32<ItemId>("ItemID");
+            packet.ReadUInt32("Quantity");
+            if (packet.ReadBit())
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_CANCEL_COMMODITIES_PURCHASE)]
+        public static void HandleAuctionCancelCommoditiesPurchase(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            if (packet.ReadBit())
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_SELL_COMMODITY)]
+        public static void HandleAuctionSellCommodity(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadUInt64("UnitPrice");
+            packet.ReadUInt32("Runtime");
+
+            var taintedBy = packet.ReadBit();
+            var itemsCount = packet.ReadBits(6);
+
+            if (taintedBy)
+                AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+
+            for (var i = 0; i < itemsCount; i++)
+                ReadAuctionItemForSale(packet, i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
+        public static void HandleAuctionZero(Packet packet)
+        {
         }
     }
 }

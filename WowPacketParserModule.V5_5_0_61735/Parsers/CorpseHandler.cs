@@ -33,5 +33,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadInt32("Delay");
         }
+
+        [Parser(Opcode.CMSG_RECLAIM_CORPSE)]
+        public static void HandleReclaimCorpse(Packet packet)
+        {
+            packet.ReadPackedGuid128("CorpseGUID");
+        }
     }
 }

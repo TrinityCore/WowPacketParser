@@ -393,6 +393,23 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("Slot");
         }
 
+        [Parser(Opcode.CMSG_SOCKET_GEMS)]
+        public static void HandleSocketGems(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            for (var i = 0; i < 3; ++i)
+                packet.ReadPackedGuid128("Gem GUID", i);
+        }
+
+        [Parser(Opcode.CMSG_REPAIR_ITEM)]
+        public static void HandleRepairItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadPackedGuid128("ItemGUID");
+
+            packet.ResetBitReader();
+            packet.ReadBit("UseGuildBank");
+        }
 
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW)]
         [Parser(Opcode.SMSG_BAG_CLEANUP_FINISHED)]

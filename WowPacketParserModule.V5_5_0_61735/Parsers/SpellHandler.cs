@@ -1387,12 +1387,19 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByte("GlyphSlot");
         }
 
+        [Parser(Opcode.CMSG_UNLEARN_SKILL)]
+        public static void HandleUnlearnSkill(Packet packet)
+        {
+            packet.ReadInt32("SkillLine");
+        }
+
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         [Parser(Opcode.SMSG_PET_CLEAR_SPELLS)]
         [Parser(Opcode.CMSG_CANCEL_QUEUED_SPELL)]
         [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA)]
         [Parser(Opcode.CMSG_CANCEL_MOUNT_AURA)]
+        [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL)]
         public static void HandleSpellEmpty(Packet packet)
         {
         }
