@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.Misc
 {
-    public class MapUpdateField<TKey, TValue> where TKey : notnull, new()
+    public class MapUpdateField<TKey, TValue> where TKey : notnull
     {
         private readonly Dictionary<TKey, TValue> _values = new();
 

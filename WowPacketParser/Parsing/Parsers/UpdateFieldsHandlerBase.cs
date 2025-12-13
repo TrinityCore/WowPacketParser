@@ -146,12 +146,132 @@ namespace WowPacketParser.Parsing.Parsers
             return null;
         }
 
+        public virtual IMeshObjectData ReadCreateMeshObjectData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IMeshObjectData ReadUpdateMeshObjectData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
+
         public virtual IVendorData ReadCreateVendorData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             return null;
         }
 
         public virtual IVendorData ReadUpdateVendorData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingDecorData ReadCreateHousingDecorData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingDecorData ReadUpdateHousingDecorData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingRoomData ReadCreateHousingRoomData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingRoomData ReadUpdateHousingRoomData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingRoomComponentMeshData ReadCreateHousingRoomComponentMeshData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingRoomComponentMeshData ReadUpdateHousingRoomComponentMeshData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingPlayerHouseData ReadCreateHousingPlayerHouseData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingPlayerHouseData ReadUpdateHousingPlayerHouseData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingCornerstoneData ReadCreateHousingCornerstoneData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingCornerstoneData ReadUpdateHousingCornerstoneData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingPlotAreaTriggerData ReadCreateHousingPlotAreaTriggerData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingPlotAreaTriggerData ReadUpdateHousingPlotAreaTriggerData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual INeighborhoodMirrorData ReadCreateNeighborhoodMirrorData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual INeighborhoodMirrorData ReadUpdateNeighborhoodMirrorData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IMirroredPositionData ReadCreateMirroredPositionData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IMirroredPositionData ReadUpdateMirroredPositionData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IPlayerHouseInfoComponentData ReadCreatePlayerHouseInfoComponentData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IPlayerHouseInfoComponentData ReadUpdatePlayerHouseInfoComponentData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingStorageData ReadCreateHousingStorageData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingStorageData ReadUpdateHousingStorageData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingFixtureData ReadCreateHousingFixtureData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IHousingFixtureData ReadUpdateHousingFixtureData(Packet packet, params object[] indexes)
         {
             return null;
         }
