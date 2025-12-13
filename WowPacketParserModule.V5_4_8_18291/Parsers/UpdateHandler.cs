@@ -124,23 +124,23 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var guid7 = new byte[8];
 
             var bit160 = false;
-            var bit528 = false;
-            var bit600 = false;
-            var bit544 = false;
+            var unk = false;
+            var hasAreaTriggerBox = false;
+            var hasMorphCurveID = false;
             var bit526 = false;
-            var bit552 = false;
+            var hasFacingCurveID = false;
             var bit524 = false;
-            var bit572 = false;
+            var hasAreaTriggerSphere = false;
             var bit525 = false;
-            var bit664 = false;
+            var hasAreaTriggerSpline = false;
             var bit527 = false;
-            var bit536 = false;
-            var bit644 = false;
-            var bit560 = false;
+            var hasScaleCurveID = false;
+            var hasAreaTriggerPolygon = false;
+            var hasMoveCurveID = false;
 
-            var hasAnimKit1 = false;
-            var hasAnimKit2 = false;
-            var hasAnimKit3 = false;
+            var hasAIAnimKitId = false;
+            var hasMovementAnimKitId = false;
+            var hasMeleeAnimKitId = false;
             var hasFullSpline = false;
             var hasSplineStartTime = false;
             var hasSplineVerticalAcceleration = false;
@@ -163,31 +163,31 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var splineCount = 0u;
             var bits138 = 0u;
             var bits98 = 0u;
-            var bits25C = 0u;
-            var bits26C = 0u;
-            var bits288 = 0u;
+            var polygonVerticesCount = 0u;
+            var polygonVerticesTargetCount = 0u;
+            var areaTriggerSplineCount = 0u;
             var bits418 = 0u;
             var bits2AA = 0u;
             var splineType = SplineType.Stop;
 
-            var bit676 = packet.ReadBit("bit676", index);
-            var hasAnimKits = packet.ReadBit("Has Anim Kits", index); // 498
+            var hasWorldEffect = packet.ReadBit("Has World Effect", index);
+            var animKitCreate = packet.ReadBit("Has Anim Kits", index); // 498
             var isLiving = packet.ReadBit("Is Living", index); // 368
-            var bit810 = packet.ReadBit("bit810", index);
-            packet.ReadBit(); //fake bit
+            var hasSceneScript = packet.ReadBit("Has Scene Script", index);
+            var playHoverAnim = packet.ReadBit("Has Hover Anim");
             var transportFrames = packet.ReadBits("Transport Frames Count", 22, index); // 1068
             var hasVehicleData = packet.ReadBit("Has Vehicle Data", index); // 488
             var bit1044 = packet.ReadBit("bit1044", index);
-            packet.ReadBit(); //fake bit
-            var bit476 = packet.ReadBit("bit476", index);
+            var enablePortals = packet.ReadBit("Enable Portals");
+            var hasServerTime = packet.ReadBit("Has Server Time", index);
             var hasGameObjectRotation = packet.ReadBit("Has GameObject Rotation", index); // 512
-            packet.ReadBit(); //fake bit
-            var bit680 = packet.ReadBit("bit680", index);
+            packet.ReadBit("Is Suppressing Greetings");
+            var thisIsYou = packet.ReadBit("This Is You", index);
             var hasAttackingTarget = packet.ReadBit("Has Attacking Target", index); // 464
-            var hasSceneObjectData = packet.ReadBit("Has Scene Object Data", index); // 1032
+            var hasSceneObjectData = packet.ReadBit("Is Scene Object", index); // 1032
             var bit1064 = packet.ReadBit("bit1064", index);
-            packet.ReadBit(); //fake bit
-            var bit668 = packet.ReadBit("bit668", index);
+            packet.ReadBit("No Birth Anim");
+            var hasAreaTrigger = packet.ReadBit("Has AreaTrigger", index);
             var hasTransportPosition = packet.ReadBit("Has Transport Position", index); // 424
             var bit681 = packet.ReadBit("bit681", index);
             var hasStationaryPosition = packet.ReadBit("Has Stationary Position", index); // 448
@@ -287,38 +287,38 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             }
 
-            if (bit668)
+            if (hasAreaTrigger)
             {
-                bit528 = packet.ReadBit();
-                bit600 = packet.ReadBit();
-                bit544 = packet.ReadBit();
-                bit526 = packet.ReadBit();
-                bit552 = packet.ReadBit();
-                bit524 = packet.ReadBit();
-                bit572 = packet.ReadBit();
-                bit525 = packet.ReadBit();
-                bit664 = packet.ReadBit();
-                bit527 = packet.ReadBit();
+                unk = packet.ReadBit();
+                hasAreaTriggerBox = packet.ReadBit();
+                hasMorphCurveID = packet.ReadBit();
+                packet.ReadBit("Attached");
+                hasFacingCurveID = packet.ReadBit();
+                packet.ReadBit("AbsoluteOrientation");
+                hasAreaTriggerSphere = packet.ReadBit();
+                packet.ReadBit("DynamicShape");
+                hasAreaTriggerSpline = packet.ReadBit();
+                packet.ReadBit("FaceMovementDir");
 
-                if (bit664)
-                    bits288 = packet.ReadBits(20);
+                if (hasAreaTriggerSpline)
+                    areaTriggerSplineCount = packet.ReadBits(20);
 
-                bit536 = packet.ReadBit();
-                bit644 = packet.ReadBit();
-                bit560 = packet.ReadBit();
+                hasScaleCurveID = packet.ReadBit();
+                hasAreaTriggerPolygon = packet.ReadBit();
+                hasMoveCurveID = packet.ReadBit();
 
-                if (bit644)
+                if (hasAreaTriggerPolygon)
                 {
-                    bits25C = packet.ReadBits(21); //604
-                    bits26C = packet.ReadBits(21); //624
+                    polygonVerticesCount = packet.ReadBits(21);
+                    polygonVerticesTargetCount = packet.ReadBits(21);
                 }
             }
 
-            if (hasAnimKits)
+            if (animKitCreate)
             {
-                hasAnimKit2 = !packet.ReadBit();
-                hasAnimKit3 = !packet.ReadBit();
-                hasAnimKit1 = !packet.ReadBit();
+                hasMovementAnimKitId = !packet.ReadBit();
+                hasMeleeAnimKitId = !packet.ReadBit();
+                hasAIAnimKitId = !packet.ReadBit();
             }
 
             if (hasAttackingTarget)
@@ -327,7 +327,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             if (bit1064)
                 bits418 = packet.ReadBits(22);
 
-            if (bit810)
+            if (hasSceneScript)
                 bits2AA = packet.ReadBits(7);
 
             packet.ResetBitReader();
@@ -455,6 +455,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     packet.ReadUInt32("Spline ID", index); //208
                     moveInfo.Position.Y = packet.ReadSingle(); //216
                 }
+
                 packet.ReadSingle("Fly Speed", index); //188
 
                 if (bit160)
@@ -514,64 +515,64 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.AddValue("Position", moveInfo.Position, index);
 
-            if (bit668)
+            if (hasAreaTrigger)
             {
-                if (bit664)
+                if (hasAreaTriggerSpline)
                 {
-                    for (var i = 0; i < bits288; ++i)
+                    for (var i = 0; i < areaTriggerSplineCount; ++i)
                     {
-                        packet.ReadSingle("Float652+4", index, i);
-                        packet.ReadSingle("Float652", index, i);
-                        packet.ReadSingle("Float652+8", index, i);
+                        packet.ReadSingle("SplineY", index, i);
+                        packet.ReadSingle("SplineX", index, i);
+                        packet.ReadSingle("SplineZ", index, i);
                     }
                 }
 
-                if (bit600)
+                if (hasAreaTriggerBox)
                 {
-                    packet.ReadSingle("Float584", index);
-                    packet.ReadSingle("Float580", index);
-                    packet.ReadSingle("Float596", index);
-                    packet.ReadSingle("Float592", index);
-                    packet.ReadSingle("Float576", index);
-                    packet.ReadSingle("Float588", index);
+                    packet.ReadSingle("m_BoxDatas.m_Extent[2]", index);
+                    packet.ReadSingle("m_BoxDatas.m_Extent[1]", index);
+                    packet.ReadSingle("m_BoxDatas.m_ExtentTarget[2]", index);
+                    packet.ReadSingle("m_BoxDatas.m_ExtentTarget[1]", index);
+                    packet.ReadSingle("m_BoxDatas.m_Extent[0]", index);
+                    packet.ReadSingle("m_BoxDatas.m_ExtentTarget[0]", index);
                 }
 
-                if (bit644)
+                if (hasAreaTriggerPolygon)
                 {
-                    for (var i = 0; i < bits25C; ++i)
+                    for (var i = 0; i < polygonVerticesCount; ++i)
                     {
-                        packet.ReadSingle("Float608", index, i);
-                        packet.ReadSingle("Float608+4", index, i);
+                        packet.ReadSingle("m_PolygonDatas.m_Vertices[0]", index, i);
+                        packet.ReadSingle("m_PolygonDatas.m_Vertices[1]", index, i);
                     }
 
-                    for (var i = 0; i < bits26C; ++i)
+                    for (var i = 0; i < polygonVerticesTargetCount; ++i)
                     {
-                        packet.ReadSingle("Float260+0", index, i);
-                        packet.ReadSingle("Float260+1", index, i);
+                        packet.ReadSingle("m_PolygonDatas.m_VerticesTarget[0]", index, i);
+                        packet.ReadSingle("m_PolygonDatas.m_VerticesTarget[1]", index, i);
                     }
 
-                    packet.ReadSingle("Float624", index);
-                    packet.ReadSingle("Float624+4", index);
+                    packet.ReadSingle("m_PolygonDatas.m_HeightTarget", index);
+                    packet.ReadSingle("m_PolygonDatas.m_Height", index);
                 }
 
-                packet.ReadUInt32("unk520", index);
+                packet.ReadUInt32("AreaTriggerCreateTime", index);
 
-                if (bit544)
-                    packet.ReadUInt32("unk544", index);
+                if (hasMorphCurveID)
+                    packet.ReadUInt32("MorphCurveID", index);
 
-                if (bit552)
-                    packet.ReadUInt32("unk548", index);
+                if (hasFacingCurveID)
+                    packet.ReadUInt32("FacingCurveID", index);
 
-                if (bit536)
-                    packet.ReadUInt32("unk532", index);
+                if (hasScaleCurveID)
+                    packet.ReadUInt32("ScaleCurveID", index);
 
-                if (bit560)
-                    packet.ReadUInt32("unk556", index);
+                if (hasMoveCurveID)
+                    packet.ReadUInt32("MoveCurveID", index);
 
-                if (bit572)
+                if (hasAreaTriggerSphere)
                 {
-                    packet.ReadSingle("Float564", index);
-                    packet.ReadSingle("Float568", index);
+                    packet.ReadSingle("ScaleX", index);
+                    packet.ReadSingle("ScaleY", index);
                 }
             }
 
@@ -624,23 +625,23 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.AddValue("Stationary Position", moveInfo.Position, index);
             }
 
-            if (bit676)
+            if (hasWorldEffect)
                 packet.ReadUInt32("unk672");
 
-            if (hasAnimKits)
+            if (animKitCreate)
             {
-                if (hasAnimKit1)
+                if (hasAIAnimKitId)
                     packet.ReadUInt16("Anim Kit 1", index);
-                if (hasAnimKit3)
+                if (hasMeleeAnimKitId)
                     packet.ReadUInt16("Anim Kit 3", index);
-                if (hasAnimKit2)
+                if (hasMovementAnimKitId)
                     packet.ReadUInt16("Anim Kit 2", index);
             }
 
-            if (bit810)
+            if (hasSceneScript)
                 packet.ReadBytes("Bytes", (int)bits2AA);
 
-            if (bit476)
+            if (hasServerTime)
                 packet.ReadUInt32("unk472");
 
             if (bit1064)

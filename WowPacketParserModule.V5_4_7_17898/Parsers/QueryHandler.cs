@@ -23,25 +23,26 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         public static void HandleCreatureQueryResponse(Packet packet)
         {
             PacketQueryCreatureResponse response = packet.Holder.QueryCreatureResponse = new PacketQueryCreatureResponse();
-            var entry = packet.ReadEntry("Entry");
+            var entry = packet.ReadEntry("CreatureID");
 
             CreatureTemplate creature = new CreatureTemplate
             {
                 Entry = (uint)entry.Key
             };
+
             response.Entry = (uint) entry.Key;
 
-            Bit hasData = packet.ReadBit();
-            response.HasData = hasData;
-            if (!hasData)
+            bool allow = packet.ReadBit();
+            response.HasData = allow;
+            if (!allow)
                 return; // nothing to do
 
             creature.ModelIDs = new uint?[4];
             creature.KillCredits = new uint?[2];
 
-            creature.RacialLeader = packet.ReadBit("Racial Leader");
+            creature.RacialLeader = packet.ReadBit("Leader");
 
-            uint bits2C = packet.ReadBits(6);
+            uint cursorNamesSize = packet.ReadBits(6);
 
             var stringLens = new int[4][];
             for (int i = 0; i < 4; i++)
@@ -52,25 +53,26 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
 
             uint qItemCount = packet.ReadBits(22);
-            uint bits24 = packet.ReadBits(11);
-            uint bits1C = packet.ReadBits(11);
+            uint titleSize = packet.ReadBits(11);
+            uint titleAltSize = packet.ReadBits(11);
 
-            creature.ManaModifier = packet.ReadSingle("Modifier 2");
+            creature.ManaModifier = packet.ReadSingle("EnergyMulti");
 
             var name = new string[4];
-            var femaleName = new string[4];
+            var nameAlt = new string[4];
             for (int i = 0; i < 4; ++i)
             {
                 if (stringLens[i][0] > 1)
                     name[i] = packet.ReadCString("Name", i);
+
                 if (stringLens[i][1] > 1)
-                    femaleName[i] = packet.ReadCString("Female Name", i);
+                    nameAlt[i] = packet.ReadCString("NameAlt", i);
             }
 
             creature.Name = name[0];
-            creature.FemaleName = femaleName[0];
+            creature.FemaleName = nameAlt[0];
 
-            creature.HealthModifier = packet.ReadSingle("Modifier 1");
+            creature.HealthModifier = packet.ReadSingle("HpMulti");
 
             creature.KillCredits[1] = packet.ReadUInt32();
             creature.ModelIDs[2] = packet.ReadUInt32();
@@ -80,29 +82,29 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             for (int i = 0; i < qItemCount; ++i)
                 /*creature.QuestItems[i] = (uint)*/response.QuestItems.Add((uint)packet.ReadInt32<ItemId>("Quest Item", i));
 
-            creature.Type = packet.ReadInt32E<CreatureType>("Type");
+            creature.Type = packet.ReadInt32E<CreatureType>("CreatureType");
 
-            if (bits2C > 1)
-                creature.IconName = packet.ReadCString("Icon Name");
+            if (cursorNamesSize > 1)
+                creature.IconName = packet.ReadCString("CursorName");
 
             creature.TypeFlags = packet.ReadUInt32E<CreatureTypeFlag>("Type Flags");
             creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
 
             creature.KillCredits[0] = packet.ReadUInt32();
-            creature.Family = packet.ReadInt32E<CreatureFamily>("Family");
-            creature.MovementID = packet.ReadUInt32("Movement ID");
-            creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("Expansion");
+            creature.Family = packet.ReadInt32E<CreatureFamily>("CreatureFamily");
+            creature.MovementID = packet.ReadUInt32("CreatureMovementInfoID");
+            creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("RequiredExpansion");
 
             creature.ModelIDs[0] = packet.ReadUInt32();
             creature.ModelIDs[1] = packet.ReadUInt32();
 
-            if (bits1C > 1)
+            if (titleAltSize > 1)
                 creature.TitleAlt = packet.ReadCString("TitleAlt");
 
-            creature.Rank = packet.ReadInt32E<CreatureRank>("Rank");
+            creature.Rank = packet.ReadInt32E<CreatureRank>("Classification");
 
-            if (bits24 > 1)
-                creature.SubName = packet.ReadCString("Sub Name");
+            if (titleSize > 1)
+                creature.SubName = packet.ReadCString("Title");
 
             creature.ModelIDs[3] = packet.ReadUInt32();
 
