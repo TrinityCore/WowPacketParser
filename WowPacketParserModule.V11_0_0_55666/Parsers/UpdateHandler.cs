@@ -72,7 +72,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                             WoWObject obj;
                             Storage.Objects.TryGetValue(guid, out obj);
 
-                            var fragments = obj != null ? obj.EntityFragments : [new WowCSEntityFragment(WowCSEntityFragments1100.CGObject)];
+                            var fragments = obj?.EntityFragments ?? [new WowCSEntityFragment(WowCSEntityFragments1100.CGObject)];
 
                             fieldsData.ReadBool("IsOwned", i);
                             if (fieldsData.ReadBool("HasFragmentUpdates", i))
@@ -87,109 +87,13 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                                     case 1:
                                         fragments.AddRange(ReadEntityFragments(fieldsData, "NewEntityFragmentID", i));
                                         foreach (var removedFragment in ReadEntityFragments(fieldsData, "RemovedEntityFragmentID", i))
-                                            fragments.RemoveAll(f => f == removedFragment);
+                                            fragments.RemoveAll(f => f.UniversalValue == removedFragment.UniversalValue);
                                         fragments.Sort();
                                         break;
                                 }
                             }
 
-                            var fragmentBitCount = 0;
-                            foreach (var existingFragment in fragments)
-                            {
-                                if (!WowCSUtilities.IsUpdateable(existingFragment.UniversalValue))
-                                    continue;
-
-                                ++fragmentBitCount;
-                                if (WowCSUtilities.IsIndirect(existingFragment.UniversalValue))
-                                    ++fragmentBitCount;
-                            }
-
-                            var changedFragments = new BitArray(fieldsData.ReadBytes((fragmentBitCount + 7) / 8));
-
-                            var objectIndirectFragment = WowCSUtilities.GetUpdateBitIndex(fragments, WowCSEntityFragments.CGObject);
-                            if (objectIndirectFragment >= 0 && changedFragments[objectIndirectFragment])
-                            {
-                                if (changedFragments[objectIndirectFragment + 1])
-                                {
-                                    var updateTypeFlag = fieldsData.ReadUInt32();
-                                    if ((updateTypeFlag & 0x0001) != 0)
-                                    {
-                                        var data = handler.ReadUpdateObjectData(fieldsData, i);
-                                        if (obj is { ObjectData: IMutableObjectData mut })
-                                            mut.UpdateData(data);
-                                        else if (obj != null)
-                                            obj.ObjectData = data;
-
-                                        updateValues.Fields.UpdateData(data);
-                                    }
-                                    if ((updateTypeFlag & 0x0002) != 0)
-                                        handler.ReadUpdateItemData(fieldsData, i);
-                                    if ((updateTypeFlag & 0x0004) != 0)
-                                        handler.ReadUpdateContainerData(fieldsData, i);
-                                    if ((updateTypeFlag & 0x0008) != 0)
-                                        handler.ReadUpdateAzeriteEmpoweredItemData(fieldsData, i);
-                                    if ((updateTypeFlag & 0x0010) != 0)
-                                        handler.ReadUpdateAzeriteItemData(fieldsData, i);
-                                    if ((updateTypeFlag & 0x0020) != 0)
-                                    {
-                                        var unit = obj as Unit;
-                                        var data = handler.ReadUpdateUnitData(fieldsData, i);
-                                        if (unit is { UnitData: IMutableUnitData mut })
-                                            mut.UpdateData(data);
-                                        else if (unit != null)
-                                            unit.UnitData = data;
-
-                                        updateValues.Fields.UpdateData(data);
-                                    }
-                                    if ((updateTypeFlag & 0x0040) != 0)
-                                        handler.ReadUpdatePlayerData(fieldsData, i);
-                                    if ((updateTypeFlag & 0x0080) != 0)
-                                        handler.ReadUpdateActivePlayerData(fieldsData, i);
-                                    if ((updateTypeFlag & 0x0100) != 0)
-                                    {
-                                        var go = obj as GameObject;
-                                        var data = handler.ReadUpdateGameObjectData(fieldsData, i);
-                                        if (go is { GameObjectData: IMutableGameObjectData mut })
-                                            mut.UpdateData(data);
-                                        else if (go != null)
-                                            go.GameObjectData = data;
-
-                                        updateValues.Fields.UpdateData(data);
-                                    }
-                                    if ((updateTypeFlag & 0x0200) != 0)
-                                        handler.ReadUpdateDynamicObjectData(fieldsData, i);
-                                    if ((updateTypeFlag & 0x0400) != 0)
-                                        handler.ReadUpdateCorpseData(fieldsData, i);
-                                    if ((updateTypeFlag & 0x0800) != 0)
-                                    {
-                                        var at = obj as AreaTriggerCreateProperties;
-                                        var data = handler.ReadUpdateAreaTriggerData(fieldsData, i);
-
-                                        if (data.Spline != null)
-                                            AreaTriggerHandler.ProcessAreaTriggerSpline(at, data, packet, i);
-                                        else if (data.Orbit != null)
-                                            AreaTriggerHandler.ProcessAreaTriggerOrbit(at, data, packet, i);
-                                    }
-                                    if ((updateTypeFlag & 0x1000) != 0)
-                                        handler.ReadUpdateSceneObjectData(fieldsData, i);
-                                    if ((updateTypeFlag & 0x2000) != 0)
-                                    {
-                                        var conversation = obj as ConversationTemplate;
-                                        var data = handler.ReadUpdateConversationData(fieldsData, i);
-                                        if (conversation is { ConversationData: IMutableConversationData mut })
-                                            mut.UpdateData(data);
-                                        else if (conversation != null)
-                                            conversation.ConversationData = data;
-                                    }
-                                }
-                            }
-                            else
-                                obj?.EntityFragments.RemoveAll(f => f.UniversalValue == WowCSEntityFragments.CGObject);
-
-                            var vendorFragment = WowCSUtilities.GetUpdateBitIndex(fragments, WowCSEntityFragments.FVendor_C);
-                            if (vendorFragment >= 0 && changedFragments[vendorFragment])
-                                if (!WowCSUtilities.IsIndirect(WowCSEntityFragments.FVendor_C) || changedFragments[vendorFragment + 1])
-                                    handler.ReadUpdateVendorData(fieldsData, i);
+                            ReadUpdateEntityFragmentData(obj, fragments, updateValues, handler, fieldsData, i);
 
                             if (fieldsData.Position != fieldsData.Length)
                                 packet.WriteLine($"Updatefields not fully read! Current position: {fieldsData.Position} Length: {fieldsData.Length} Bytes remaining: {fieldsData.Length - fieldsData.Position}");
@@ -235,29 +139,19 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             return fragmentIds;
         }
 
-        private static void ReadCreateObjectBlock(Packet packet, CreateObject createObject, WowGuid guid, uint map, CreateObjectType createType, int index)
+        private static void ReadCreateEntityFragmentData(WoWObject obj, CreateObject createObject, CoreParsers.UpdateFieldsHandlerBase handler, Packet fieldsData, UpdateFieldFlag flags, int index)
         {
-            ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectType801>("Object Type", index));
-
-            WoWObject obj = CoreParsers.UpdateHandler.CreateObject(objType, guid, map);
-
-            obj.CreateType = createType;
-            obj.Movement = ReadMovementUpdateBlock(packet, createObject, guid, obj, index);
-
-            createObject.Values.Fields = new();
-            var updatefieldSize = packet.ReadUInt32();
-            using (var fieldsData = new Packet(packet.ReadBytes((int)updatefieldSize), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+            foreach (var fragment in obj.EntityFragments)
             {
-                var flags = fieldsData.ReadByteE<UpdateFieldFlag>("FieldFlags", index);
-                obj.EntityFragments = ReadEntityFragments(fieldsData, "EntityFragmentID", index);
-                var handler = CoreFields.UpdateFields.GetHandler();
-                if (obj.EntityFragments.Exists(f => f.UniversalValue == WowCSEntityFragments.CGObject))
+                if (WowCSUtilities.IsIndirect(fragment.UniversalValue) && !fieldsData.ReadBool("IndirectFragmentActive [" + fragment.UniversalValue + "]", index))
+                    continue;
+
+                switch (fragment.UniversalValue)
                 {
-                    if (fieldsData.ReadBool("IndirectFragmentActive [CGObject]", index))
-                    {
+                    case WowCSEntityFragments.CGObject:
                         obj.ObjectData = handler.ReadCreateObjectData(fieldsData, flags, index);
                         createObject.Values.Fields.UpdateData(obj.ObjectData);
-                        switch (objType)
+                        switch (obj.Type)
                         {
                             case ObjectType.Item:
                                 handler.ReadCreateItemData(fieldsData, flags, index);
@@ -311,13 +205,162 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                                 (obj as ConversationTemplate).ConversationData = handler.ReadCreateConversationData(fieldsData, flags, index);
                                 break;
                         }
-                    }
-                    else
-                        obj.EntityFragments.RemoveAll(f => f.UniversalValue == WowCSEntityFragments.CGObject);
+                        break;
+                    case WowCSEntityFragments.FVendor_C: handler.ReadCreateVendorData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.FMeshObjectData_C: handler.ReadCreateMeshObjectData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.FHousingDecor_C: handler.ReadCreateHousingDecorData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.FHousingRoom_C: handler.ReadCreateHousingRoomData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.FHousingRoomComponentMesh_C: handler.ReadCreateHousingRoomComponentMeshData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.FHousingPlayerHouse_C: handler.ReadCreateHousingPlayerHouseData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.FJamHousingCornerstone_C: handler.ReadCreateHousingCornerstoneData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.FHousingPlotAreaTrigger_C: handler.ReadCreateHousingPlotAreaTriggerData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.FNeighborhoodMirrorData_C: handler.ReadCreateNeighborhoodMirrorData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.FMirroredPositionData_C: handler.ReadCreateMirroredPositionData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.PlayerHouseInfoComponent_C: handler.ReadCreatePlayerHouseInfoComponentData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.FHousingStorage_C: handler.ReadCreateHousingStorageData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.FHousingFixture_C: handler.ReadCreateHousingFixtureData(fieldsData, flags, index); break;
                 }
-                if (obj.EntityFragments.Exists(f => f.UniversalValue == WowCSEntityFragments.FVendor_C))
-                    if (!WowCSUtilities.IsIndirect(WowCSEntityFragments.FVendor_C) || fieldsData.ReadBool("IndirectFragmentActive [FVendor_C]", index))
-                        handler.ReadCreateVendorData(fieldsData, flags, index);
+            }
+        }
+
+        private static void ReadUpdateEntityFragmentData(WoWObject obj, List<WowCSEntityFragment> fragments, UpdateValues updateValues, CoreParsers.UpdateFieldsHandlerBase handler, Packet fieldsData, int index)
+        {
+            var fragmentBitCount = 0;
+            foreach (var existingFragment in fragments)
+            {
+                if (!WowCSUtilities.IsUpdateable(existingFragment.UniversalValue))
+                    continue;
+
+                ++fragmentBitCount;
+                if (WowCSUtilities.IsIndirect(existingFragment.UniversalValue))
+                    ++fragmentBitCount;
+            }
+
+            var changedFragments = new BitArray(fieldsData.ReadBytes((fragmentBitCount + 7) / 8));
+
+            foreach (var existingFragment in fragments)
+            {
+                if (!WowCSUtilities.IsUpdateable(existingFragment.UniversalValue))
+                    continue;
+
+                var fragmentBitIndex = WowCSUtilities.GetUpdateBitIndex(fragments, existingFragment.UniversalValue);
+                if (fragmentBitIndex < 0 || !changedFragments[fragmentBitIndex])
+                    continue;
+
+                if (WowCSUtilities.IsIndirect(existingFragment.UniversalValue) && !changedFragments[fragmentBitIndex + 1])
+                    continue;
+
+                switch (existingFragment.UniversalValue)
+                {
+                    case WowCSEntityFragments.CGObject:
+                    {
+                        var updateTypeFlag = fieldsData.ReadUInt32();
+                        if ((updateTypeFlag & 0x0001) != 0)
+                        {
+                            var data = handler.ReadUpdateObjectData(fieldsData, index);
+                            if (obj is { ObjectData: IMutableObjectData mut })
+                                mut.UpdateData(data);
+                            else if (obj != null)
+                                obj.ObjectData = data;
+
+                            updateValues.Fields.UpdateData(data);
+                        }
+                        if ((updateTypeFlag & 0x0002) != 0)
+                            handler.ReadUpdateItemData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0004) != 0)
+                            handler.ReadUpdateContainerData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0008) != 0)
+                            handler.ReadUpdateAzeriteEmpoweredItemData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0010) != 0)
+                            handler.ReadUpdateAzeriteItemData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0020) != 0)
+                        {
+                            var unit = obj as Unit;
+                            var data = handler.ReadUpdateUnitData(fieldsData, index);
+                            if (unit is { UnitData: IMutableUnitData mut })
+                                mut.UpdateData(data);
+                            else if (unit != null)
+                                unit.UnitData = data;
+
+                            updateValues.Fields.UpdateData(data);
+                        }
+                        if ((updateTypeFlag & 0x0040) != 0)
+                            handler.ReadUpdatePlayerData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0080) != 0)
+                            handler.ReadUpdateActivePlayerData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0100) != 0)
+                        {
+                            var go = obj as GameObject;
+                            var data = handler.ReadUpdateGameObjectData(fieldsData, index);
+                            if (go is { GameObjectData: IMutableGameObjectData mut })
+                                mut.UpdateData(data);
+                            else if (go != null)
+                                go.GameObjectData = data;
+
+                            updateValues.Fields.UpdateData(data);
+                        }
+                        if ((updateTypeFlag & 0x0200) != 0)
+                            handler.ReadUpdateDynamicObjectData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0400) != 0)
+                            handler.ReadUpdateCorpseData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0800) != 0)
+                        {
+                            var at = obj as AreaTriggerCreateProperties;
+                            var data = handler.ReadUpdateAreaTriggerData(fieldsData, index);
+
+                            if (data.Spline != null)
+                                AreaTriggerHandler.ProcessAreaTriggerSpline(at, data, fieldsData, index);
+                            else if (data.Orbit != null)
+                                AreaTriggerHandler.ProcessAreaTriggerOrbit(at, data, fieldsData, index);
+                        }
+                        if ((updateTypeFlag & 0x1000) != 0)
+                            handler.ReadUpdateSceneObjectData(fieldsData, index);
+                        if ((updateTypeFlag & 0x2000) != 0)
+                        {
+                            var conversation = obj as ConversationTemplate;
+                            var data = handler.ReadUpdateConversationData(fieldsData, index);
+                            if (conversation is { ConversationData: IMutableConversationData mut })
+                                mut.UpdateData(data);
+                            else if (conversation != null)
+                                conversation.ConversationData = data;
+                        }
+                        break;
+                    }
+                    case WowCSEntityFragments.FVendor_C: handler.ReadUpdateVendorData(fieldsData, index); break;
+                    case WowCSEntityFragments.FMeshObjectData_C: handler.ReadUpdateMeshObjectData(fieldsData, index); break;
+                    case WowCSEntityFragments.FHousingDecor_C: handler.ReadUpdateHousingDecorData(fieldsData, index); break;
+                    case WowCSEntityFragments.FHousingRoom_C: handler.ReadUpdateHousingRoomData(fieldsData, index); break;
+                    case WowCSEntityFragments.FHousingRoomComponentMesh_C: handler.ReadUpdateHousingRoomComponentMeshData(fieldsData, index); break;
+                    case WowCSEntityFragments.FHousingPlayerHouse_C: handler.ReadUpdateHousingPlayerHouseData(fieldsData, index); break;
+                    case WowCSEntityFragments.FJamHousingCornerstone_C: handler.ReadUpdateHousingCornerstoneData(fieldsData, index); break;
+                    case WowCSEntityFragments.FHousingPlotAreaTrigger_C: handler.ReadUpdateHousingPlotAreaTriggerData(fieldsData, index); break;
+                    case WowCSEntityFragments.FNeighborhoodMirrorData_C: handler.ReadUpdateNeighborhoodMirrorData(fieldsData, index); break;
+                    case WowCSEntityFragments.FMirroredPositionData_C: handler.ReadUpdateMirroredPositionData(fieldsData, index); break;
+                    case WowCSEntityFragments.PlayerHouseInfoComponent_C: handler.ReadUpdatePlayerHouseInfoComponentData(fieldsData, index); break;
+                    case WowCSEntityFragments.FHousingStorage_C: handler.ReadUpdateHousingStorageData(fieldsData, index); break;
+                    case WowCSEntityFragments.FHousingFixture_C: handler.ReadUpdateHousingFixtureData(fieldsData, index); break;
+                }
+            }
+        }
+
+        private static void ReadCreateObjectBlock(Packet packet, CreateObject createObject, WowGuid guid, uint map, CreateObjectType createType, int index)
+        {
+            ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectType801>("Object Type", index));
+
+            WoWObject obj = CoreParsers.UpdateHandler.CreateObject(objType, guid, map);
+
+            obj.CreateType = createType;
+            obj.Movement = ReadMovementUpdateBlock(packet, createObject, guid, obj, index);
+
+            createObject.Values.Fields = new();
+            var updatefieldSize = packet.ReadUInt32();
+            using (var fieldsData = new Packet(packet.ReadBytes((int)updatefieldSize), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+            {
+                var flags = fieldsData.ReadByteE<UpdateFieldFlag>("FieldFlags", index);
+                obj.EntityFragments = ReadEntityFragments(fieldsData, "EntityFragmentID", index);
+                var handler = CoreFields.UpdateFields.GetHandler();
+
+                ReadCreateEntityFragmentData(obj, createObject, handler, fieldsData, flags, index);
 
                 if (fieldsData.Position != fieldsData.Length)
                     packet.WriteLine($"Updatefields not fully read! Current position: {fieldsData.Position} Length: {fieldsData.Length} Bytes remaining: {fieldsData.Length - fieldsData.Position}");
