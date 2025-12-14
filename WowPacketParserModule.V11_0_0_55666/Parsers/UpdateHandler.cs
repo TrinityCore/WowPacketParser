@@ -512,6 +512,15 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             var sceneObjCreate = packet.ReadBit("SceneObjCreate", index);
             var playerCreateData = packet.ReadBit("HasPlayerCreateData", index);
             var hasConversation = packet.ReadBit("HasConversation", index);
+            var hasRoom = false;
+            var hasDecor = false;
+            var hasMeshObject = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+            {
+                hasRoom = packet.ReadBit("HasRoom", index);
+                hasDecor = packet.ReadBit("HasDecor", index);
+                hasMeshObject = packet.ReadBit("HasMeshObject", index);
+            }
 
             if (hasMovementUpdate)
             {
@@ -782,6 +791,21 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
             if (hasRotation)
                 createObject.Rotation = moveInfo.Rotation = packet.ReadPackedQuaternion("GameObject Rotation", index);
+
+            if (hasRoom)
+                packet.ReadPackedGuid128("HouseGUID", index);
+
+            if (hasDecor)
+                packet.ReadPackedGuid128("RoomGUID", index);
+
+            if (hasMeshObject)
+            {
+                packet.ReadPackedGuid128("AttachParentGUID", index);
+                packet.ReadVector3("PositionLocalSpace", index);
+                packet.ReadQuaternion("RotationLocalSpace", index);
+                packet.ReadSingle("ScaleLocalSpace", index);
+                packet.ReadByte("AttachmentFlags", index);
+            }
 
             for (var i = 0; i < pauseTimesCount; ++i)
                 packet.ReadUInt32("PauseTimes", index, i);

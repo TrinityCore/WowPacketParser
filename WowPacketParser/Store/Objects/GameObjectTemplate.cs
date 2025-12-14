@@ -41,7 +41,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Data", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.SinceCataClassic, 35, true)]
         public int?[] Data;
 
-        [DBFieldName("RequiredLevel", TargetedDatabaseFlag.FromCataclysmTillBattleForAzeroth)]
+        [DBFieldName("RequiredLevel", TargetedDatabaseFlag.FromCataclysmTillBattleForAzeroth | TargetedDatabaseFlag.SinceTheWarWithin)]
         public int? RequiredLevel;
 
         [DBFieldName("ContentTuningId", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.WotlkClassic | TargetedDatabaseFlag.SinceCataClassic)]

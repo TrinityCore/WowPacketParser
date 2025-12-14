@@ -102,8 +102,15 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             packet.ResetBitReader();
             packet.ReadBit("BoostInProgress", idx);
-            packet.ReadBit("RpeResetAvailable", idx);
-            packet.ReadBit("RpeResetQuestClearAvailable", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+            {
+                packet.ReadBit("RpeAvailable", idx);
+            }
+            else
+            {
+                packet.ReadBit("RpeResetAvailable", idx);
+                packet.ReadBit("RpeResetQuestClearAvailable", idx);
+            }
 
             packet.ReadUInt32("RestrictionFlags", idx);
             var mailSenderLengths = new uint[packet.ReadUInt32()];
@@ -144,6 +151,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             packet.ReadInt32("WarbandScenePlacementID", idx);
             var type = packet.ReadInt32("Type", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                packet.ReadInt32("ContentSetID", idx);
+
             if (type == 0)
                 packet.ReadPackedGuid128("Guid", idx);
         }
@@ -158,6 +168,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 packet.ReadUInt32("WarbandSceneID", idx);
 
             packet.ReadInt32("Flags", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                packet.ReadInt32("ContentSetID", idx);
+
             var memberCount = packet.ReadUInt32();
             for (var i = 0u; i < memberCount; ++i)
                 ReadWarbandGroupMember(packet, idx, "Members", i);
@@ -176,7 +189,10 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             else
                 packet.ReadInt32E<Race>("RaceID", idx);
 
-            packet.ReadInt32("BlockReason", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                packet.ReadSByte("BlockReason", idx);
+            else
+                packet.ReadInt32("BlockReason", idx);
         }
 
         public static void ReadRaceUnlockData(Packet packet, params object[] idx)
@@ -204,6 +220,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadBit("IsNewPlayerRestricted");
             packet.ReadBit("IsNewPlayer");
             packet.ReadBit("IsTrialAccountRestricted");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                packet.ReadBit("Unused1127");
             var hasDisabledClassesMask = packet.ReadBit("HasDisabledClassesMask");
             packet.ReadBit("DontCreateCharacterDisplays");
 

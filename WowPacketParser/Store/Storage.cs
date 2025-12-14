@@ -38,6 +38,8 @@ namespace WowPacketParser.Store
         public static readonly DataBag<QuestVisualEffect> QuestVisualEffects = new DataBag<QuestVisualEffect>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestRewardDisplaySpell> QuestRewardDisplaySpells = new DataBag<QuestRewardDisplaySpell>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestTreasurePickers> QuestTreasurePickersStorage = new DataBag<QuestTreasurePickers>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly DataBag<QuestRewardHouseRoom> QuestRewardHouseRoomStorage = new DataBag<QuestRewardHouseRoom>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly DataBag<QuestRewardHouseDecor> QuestRewardHouseDecorStorage = new DataBag<QuestRewardHouseDecor>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly StoreDictionary<uint, CreatureTemplate> CreatureTemplates = new StoreDictionary<uint, CreatureTemplate>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateClassic> CreatureTemplatesClassic = new DataBag<CreatureTemplateClassic>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateNonWDB> CreatureTemplatesNonWDB = new DataBag<CreatureTemplateNonWDB>(new List<SQLOutput> { SQLOutput.creature_template });

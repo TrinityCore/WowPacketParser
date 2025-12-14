@@ -15,13 +15,24 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadByte("DosZeroBits");
         }
 
-        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION, ClientVersionBuild.V11_0_7_58123)]
-        public static void HandleRedirectAuthProof(Packet packet)
+        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION, ClientVersionBuild.V11_0_7_58123, ClientVersionBuild.V11_2_7_64632)]
+        public static void HandleAuthContinuedSession1107(Packet packet)
         {
             packet.ReadInt64("DosResponse");
             packet.ReadInt64("Key");
             packet.ReadBytes("LocalChallenge", 32);
             packet.ReadBytes("Digest", 24);
+        }
+
+        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION, ClientVersionBuild.V11_2_7_64632)]
+        public static void HandleAuthContinuedSession1127(Packet packet)
+        {
+            packet.ReadInt64("DosResponse");
+            packet.ReadBytes("LocalChallenge", 32);
+            packet.ReadBytes("Digest", 24);
+            packet.ReadInt64("Key");
+            packet.ReadUInt32("NativeRealmAddress");
+            packet.ReadUInt32("Key3");
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V11_0_7_58123)]

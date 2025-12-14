@@ -152,6 +152,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");
             var treasurePickerCount = 0u;
             var treasurePickerCount2 = 0u;
+            var rewardHouseRoomCount = 0u;
+            var rewardHouseDecorCount = 0u;
             if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
                 quest.QuestRewardID = packet.ReadInt32("TreasurePickerID");
             else
@@ -167,6 +169,12 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadInt32("QuestGiverCreatureID");
             var conditionalQuestDescriptionCount = packet.ReadUInt32();
             var conditionalQuestCompletionLogCount = packet.ReadUInt32();
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+            {
+                rewardHouseRoomCount = packet.ReadUInt32();
+                rewardHouseDecorCount = packet.ReadUInt32();
+            }
 
             for (uint i = 0; i < rewardDisplaySpellCount; ++i)
                 ReadQuestCompleteDisplaySpell(packet, (uint)id.Key, i, i, "RewardDisplaySpell");
@@ -194,6 +202,27 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 //};
                 //Storage.QuestTreasurePickersStorage.Add(pickers);
             }
+
+            for (var i = 0; i < rewardHouseRoomCount; ++i)
+            {
+                Storage.QuestRewardHouseRoomStorage.Add(new QuestRewardHouseRoom
+                {
+                    QuestID = quest.ID,
+                    HouseRoomID = packet.ReadInt32("RewardHouseRoomID", i),
+                    OrderIndex = i
+                });
+            }
+
+            for (var i = 0; i < rewardHouseDecorCount; ++i)
+            {
+                Storage.QuestRewardHouseDecorStorage.Add(new QuestRewardHouseDecor
+                {
+                    QuestID = quest.ID,
+                    HouseDecorID = packet.ReadInt32("RewardHouseDecorID", i),
+                    OrderIndex = i
+                });
+            }
+
             packet.ResetBitReader();
 
             uint logTitleLen = packet.ReadBits("logTitleLen", 9);
@@ -228,11 +257,17 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 questInfoObjective.Order = i;
                 questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
                 questInfoObjective.Amount = packet.ReadInt32("Amount", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                    questInfoObjective.SecondaryAmount = packet.ReadInt32("SecondaryAmount", i);
+
                 questInfoObjective.Flags = packet.ReadUInt32("Flags", i);
                 questInfoObjective.Flags2 = packet.ReadUInt32("Flags2", i);
                 questInfoObjective.ProgressBarWeight = packet.ReadSingle("ProgressBarWeight", i);
 
                 var visualEffectsCount = packet.ReadInt32("VisualEffects", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                    questInfoObjective.ParentObjectiveID = packet.ReadInt32("ParentObjectiveID", i);
+
                 for (var j = 0; j < visualEffectsCount; ++j)
                 {
                     QuestVisualEffect questVisualEffect = new QuestVisualEffect
@@ -248,6 +283,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 packet.ResetBitReader();
 
                 var descriptionLength = packet.ReadBits(8);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                    questInfoObjective.Visible = packet.ReadBit("Visible", i);
+
                 questInfoObjective.Description = packet.ReadWoWString("Description", descriptionLength, i);
 
                 if (ClientLocale.PacketLocale != LocaleConstant.enUS && questInfoObjective.Description != string.Empty)

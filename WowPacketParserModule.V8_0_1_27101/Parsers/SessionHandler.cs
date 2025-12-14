@@ -87,6 +87,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt32E<ConnectToSerial>("Serial");
             packet.ReadByte("Con");
             packet.ReadUInt64("Key");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+            {
+                packet.ReadUInt32("NativeRealmAddress");
+                packet.ReadUInt32("Key3");
+            }
         }
     }
 }

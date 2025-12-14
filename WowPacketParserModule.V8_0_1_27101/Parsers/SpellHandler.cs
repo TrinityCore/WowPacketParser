@@ -36,6 +36,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadPackedGuid128("Item", idx);
             }
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+            {
+                packet.ReadPackedGuid128("Unknown1127_1", idx);
+                packet.ReadBit("Unknown1127_2", idx);
+            }
+
             var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);
             var hasDstLoc = packet.ReadBit("HasDstLocation", idx);
             var hasOrient = packet.ReadBit("HasOrientation", idx);
@@ -130,6 +136,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             var talentIDsCount = packet.ReadUInt32("TalentIDsCount", idx);
             var pvpTalentIDsCount = packet.ReadUInt32("PvPTalentIDsCount", idx);
+            var glyphIDsCount = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213))
+                glyphIDsCount = packet.ReadUInt32("GlyphIDsCount", idx);
 
             for (var i = 0; i < talentIDsCount; ++i)
                 packet.ReadUInt16("TalentID", idx, i);
@@ -139,6 +148,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadUInt16("PvPTalentID", idx, i);
                 packet.ReadByte("Slot", idx, i);
             }
+
+            for (var i = 0; i < glyphIDsCount; ++i)
+                packet.ReadUInt32("GlyphID", idx, i);
         }
 
         public static void ReadTalentInfoUpdate(Packet packet, params object[] idx)

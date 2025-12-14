@@ -28,6 +28,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Amount")]
         public int? Amount;
 
+        [DBFieldName("SecondaryAmount")]
+        public int? SecondaryAmount;
+
         [DBFieldName("Flags")]
         public uint? Flags;
 
@@ -37,8 +40,14 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ProgressBarWeight")]
         public float? ProgressBarWeight;
 
+        [DBFieldName("ParentObjectiveID")]
+        public int? ParentObjectiveID;
+
         [DBFieldName("Description", LocaleConstant.enUS)]
         public string Description;
+
+        [DBFieldName("Visible", TargetedDatabaseFlag.SinceTheWarWithin)]
+        public bool? Visible;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
