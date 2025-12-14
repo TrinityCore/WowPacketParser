@@ -128,8 +128,8 @@ namespace WowPacketParser.Store.Objects
             else if (AreaTriggerData.Box != null)
             {
                 Shape = (byte)AreaTriggerType.Box;
-                ShapeData = [AreaTriggerData.Box.Extents.X, AreaTriggerData.Box.Extents.Y, AreaTriggerData.Box.Extents.Z,
-                    AreaTriggerData.Box.ExtentsTarget.X, AreaTriggerData.Box.ExtentsTarget.Y, AreaTriggerData.Box.ExtentsTarget.Z,
+                ShapeData = [AreaTriggerData.Box.Extents?.X, AreaTriggerData.Box.Extents?.Y, AreaTriggerData.Box.Extents?.Z,
+                    AreaTriggerData.Box.ExtentsTarget?.X, AreaTriggerData.Box.ExtentsTarget?.Y, AreaTriggerData.Box.ExtentsTarget?.Z,
                     0, 0];
             }
             else if (AreaTriggerData.Polygon != null)
@@ -156,8 +156,8 @@ namespace WowPacketParser.Store.Objects
             else if (AreaTriggerData.BoundedPlane != null)
             {
                 Shape = (byte)AreaTriggerType.BoundedPlane;
-                ShapeData = [AreaTriggerData.BoundedPlane.Extents.X, AreaTriggerData.BoundedPlane.Extents.Y,
-                    AreaTriggerData.BoundedPlane.ExtentsTarget.X, AreaTriggerData.BoundedPlane.ExtentsTarget.Y,
+                ShapeData = [AreaTriggerData.BoundedPlane.Extents?.X, AreaTriggerData.BoundedPlane.Extents?.Y,
+                    AreaTriggerData.BoundedPlane.ExtentsTarget?.X, AreaTriggerData.BoundedPlane.ExtentsTarget?.Y,
                     0, 0, 0, 0];
             }
         }
