@@ -63,6 +63,20 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadByte("Unk3");
         }
         
+        [Parser(Opcode.CMSG_HOUSING_ROOM_REMOVE_ROOM)]
+        public static void HandleHousingRemoveRoom(Packet packet)
+        {
+            packet.ReadPackedGuid128("RoomGUID");
+        }
+        
+        [Parser(Opcode.SMSG_HOUSING_ROOM_REMOVE_ROOM_RESPONSE)]
+        public static void HandleHousingRemoveRoomResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("RoomGUID");
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadByteE<HousingResult>("Result");
+        }
+        
         [Parser(Opcode.CMSG_HOUSING_REQUEST_CURRENT_HOUSE_INFO)]
         public static void HandleHousingNull(Packet packet)
         {
