@@ -51,6 +51,18 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadBit("IsLocked");
         }
         
+        [Parser(Opcode.SMSG_HOUSING_CURRENT_HOUSE_INFO_RESPONSE)]
+        public static void HandleHousingCurrentHouseInfoResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("HouseGUID");
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadPackedGuid128("NeighborhoodGUID");
+            packet.ReadUInt32("Unk0");
+            packet.ReadByte("Unk1");
+            packet.ReadByte("Unk2");
+            packet.ReadByte("Unk3");
+        }
+        
         [Parser(Opcode.CMSG_HOUSING_REQUEST_CURRENT_HOUSE_INFO)]
         public static void HandleHousingNull(Packet packet)
         {
