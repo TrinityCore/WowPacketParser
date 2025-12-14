@@ -1536,6 +1536,7 @@ namespace WowPacketParser.Enums.Version.V11_2_7_64632
             { Opcode.SMSG_HEALTH_UPDATE, 0x400174 },
             { Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x40017C },
             { Opcode.SMSG_HOUSING_CURRENT_HOUSE_INFO_RESPONSE, 0x530001 },
+            { Opcode.SMSG_HOUSING_DECOR_SET_EDITOR_MODE_ACTIVE_RESPONSE, 0x4F0000 },
             { Opcode.SMSG_HOTFIX_CONNECT, 0x440003 },
             { Opcode.SMSG_HOTFIX_MESSAGE, 0x440002 },
             { Opcode.SMSG_INITIALIZE_FACTIONS, 0x4001C5 },
