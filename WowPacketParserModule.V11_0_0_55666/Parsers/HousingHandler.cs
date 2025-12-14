@@ -39,7 +39,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             packet.ReadPackedGuid128("HouseGUID");
             packet.ReadByteE<HousingResult>("Result");
-            packet.ReadBit("Unk");
+            packet.ReadBool("Active");
         }
         
         [Parser(Opcode.SMSG_HOUSING_EXTERIOR_SET_EXTERIOR_LOCK_STATE)]
