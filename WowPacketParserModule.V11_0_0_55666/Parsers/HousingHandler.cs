@@ -35,6 +35,12 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 packet.ReadPackedGuid128("AllowedEditor", i);
         }
         
+        [Parser(Opcode.CMSG_HOUSING_DECOR_CATALOG_CREATE_SEARCHER)]
+        public static void HousingDecorCatalogCreateSearcher(Packet packet)
+        {
+            packet.ReadPackedGuid128("BnetAccountID");
+        }
+        
         [Parser(Opcode.CMSG_HOUSING_DECOR_SELECT_DECOR)]
         public static void HousingDecorSelect(Packet packet)
         {
