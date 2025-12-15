@@ -97,6 +97,16 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadPackedGuid128("DecorGUID");
         }
         
+        [Parser(Opcode.CMSG_HOUSING_DECOR_COMMIT_DYES_FOR_SELECTED_DECOR)]
+        public static void HousingDecorCommitDyesForSelection(Packet packet)
+        {
+            packet.ReadPackedGuid128("DecorGUID");
+            for (var i = 0; i < 3; ++i)
+            {
+               packet.ReadInt32("DyeColorID", i);
+            }
+        }
+        
         [Parser(Opcode.CMSG_HOUSING_REQUEST_CURRENT_HOUSE_INFO)]
         public static void HandleHousingNull(Packet packet)
         {
