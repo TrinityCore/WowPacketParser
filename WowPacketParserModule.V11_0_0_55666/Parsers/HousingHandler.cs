@@ -107,6 +107,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             }
         }
         
+        [Parser(Opcode.CMSG_HOUSE_INTERIOR_LEAVE_HOUSE)]
         [Parser(Opcode.CMSG_HOUSING_REQUEST_CURRENT_HOUSE_INFO)]
         public static void HandleHousingNull(Packet packet)
         {
