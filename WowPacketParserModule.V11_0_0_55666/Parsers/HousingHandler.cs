@@ -77,6 +77,13 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadByteE<HousingResult>("Result");
         }
         
+        [Parser(Opcode.CMSG_HOUSING_DECOR_SELECT_DECOR)]
+        public static void HousingDecorSelect(Packet packet)
+        {
+            packet.ReadPackedGuid128("DecorGUID");
+            packet.ReadBool("Selected");
+        }
+        
         [Parser(Opcode.CMSG_HOUSING_REQUEST_CURRENT_HOUSE_INFO)]
         public static void HandleHousingNull(Packet packet)
         {
