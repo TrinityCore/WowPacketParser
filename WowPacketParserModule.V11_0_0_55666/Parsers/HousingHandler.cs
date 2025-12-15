@@ -84,6 +84,13 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadBool("Selected");
         }
         
+        [Parser(Opcode.CMSG_HOUSING_DECOR_START_PLACING_NEW_DECOR)]
+        public static void HousingDecorStartPlacing(Packet packet)
+        {
+            packet.ReadUInt32("DecorID");
+            packet.ReadUInt32("Field_4");
+        }
+        
         [Parser(Opcode.CMSG_HOUSING_REQUEST_CURRENT_HOUSE_INFO)]
         public static void HandleHousingNull(Packet packet)
         {
