@@ -91,6 +91,12 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadUInt32("Field_4");
         }
         
+        [Parser(Opcode.CMSG_HOUSING_DECOR_REMOVE_PLACED_DECOR_ENTRY)]
+        public static void HousingDecorRemovePlacedEntry(Packet packet)
+        {
+            packet.ReadPackedGuid128("DecorGUID");
+        }
+        
         [Parser(Opcode.CMSG_HOUSING_REQUEST_CURRENT_HOUSE_INFO)]
         public static void HandleHousingNull(Packet packet)
         {
