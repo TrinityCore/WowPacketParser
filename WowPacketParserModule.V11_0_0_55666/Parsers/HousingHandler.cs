@@ -6,40 +6,12 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 {
     public static class HousingHandler
     {        
-        [Parser(Opcode.CMSG_HOUSING_DECOR_SET_EDITOR_MODE_ACTIVE)]
-        [Parser(Opcode.CMSG_HOUSING_FIXTURE_SET_EDITOR_MODE_ACTIVE)]
-        [Parser(Opcode.CMSG_HOUSING_ROOM_SET_EDITOR_MODE_ACTIVE)]
-        public static void HandleHousingSetEditorModeActive(Packet packet)
-        {
-            packet.ReadBool("Active");
-        }
-        
-        [Parser(Opcode.SMSG_HOUSING_DECOR_SET_EDITOR_MODE_ACTIVE_RESPONSE)]
-        public static void HandleHousingDecorSetEditorModeActiveResponse(Packet packet)
-        {
-            packet.ReadPackedGuid128("HouseGUID");
-            packet.ReadPackedGuid128("BNetAccountGUID");
-            var allowedEditorCount = packet.ReadUInt32("AllowedEditorCount");
-            packet.ReadByteE<HousingResult>("Result");
-
-            for (var i = 0; i < allowedEditorCount; ++i)
-                packet.ReadPackedGuid128("AllowedEditor", i);
-        }
-
         [Parser(Opcode.SMSG_HOUSING_FIXTURE_SET_EDITOR_MODE_ACTIVE_RESPONSE)]
         public static void HandleHousingFixtureSetEditorModeActiveResponse(Packet packet)
         {
             packet.ReadPackedGuid128("HouseGUID");
             packet.ReadPackedGuid128("BNetAccountGUID");
             packet.ReadByteE<HousingResult>("Result");
-        }
-
-        [Parser(Opcode.SMSG_HOUSING_ROOM_SET_EDITOR_MODE_ACTIVE_RESPONSE)]
-        public static void HandleHousingRoomSetEditorModeActiveResponse(Packet packet)
-        {
-            packet.ReadPackedGuid128("HouseGUID");
-            packet.ReadByteE<HousingResult>("Result");
-            packet.ReadBool("Active");
         }
         
         [Parser(Opcode.SMSG_HOUSING_EXTERIOR_SET_EXTERIOR_LOCK_STATE)]
@@ -50,31 +22,17 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadByteE<HousingResult>("Result");
             packet.ReadBit("IsLocked");
         }
-        
-        [Parser(Opcode.SMSG_HOUSING_CURRENT_HOUSE_INFO_RESPONSE)]
-        public static void HandleHousingCurrentHouseInfoResponse(Packet packet)
+
+        [Parser(Opcode.SMSG_HOUSING_DECOR_SET_EDITOR_MODE_ACTIVE_RESPONSE)]
+        public static void HandleHousingDecorSetEditorModeActiveResponse(Packet packet)
         {
             packet.ReadPackedGuid128("HouseGUID");
-            packet.ReadPackedGuid128("PlayerGUID");
-            packet.ReadPackedGuid128("NeighborhoodGUID");
-            packet.ReadUInt32("Unk0");
-            packet.ReadByte("Unk1");
-            packet.ReadByte("Unk2");
-            packet.ReadByte("Unk3");
-        }
-        
-        [Parser(Opcode.CMSG_HOUSING_ROOM_REMOVE_ROOM)]
-        public static void HandleHousingRemoveRoom(Packet packet)
-        {
-            packet.ReadPackedGuid128("RoomGUID");
-        }
-        
-        [Parser(Opcode.SMSG_HOUSING_ROOM_REMOVE_ROOM_RESPONSE)]
-        public static void HandleHousingRemoveRoomResponse(Packet packet)
-        {
-            packet.ReadPackedGuid128("RoomGUID");
-            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadPackedGuid128("BNetAccountGUID");
+            var allowedEditorCount = packet.ReadUInt32("AllowedEditorCount");
             packet.ReadByteE<HousingResult>("Result");
+
+            for (var i = 0; i < allowedEditorCount; ++i)
+                packet.ReadPackedGuid128("AllowedEditor", i);
         }
         
         [Parser(Opcode.CMSG_HOUSING_DECOR_SELECT_DECOR)]
@@ -105,6 +63,62 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             {
                packet.ReadInt32("DyeColorID", i);
             }
+        }
+
+        [Parser(Opcode.SMSG_HOUSING_ROOM_SET_EDITOR_MODE_ACTIVE_RESPONSE)]
+        public static void HandleHousingRoomSetEditorModeActiveResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("HouseGUID");
+            packet.ReadByteE<HousingResult>("Result");
+            packet.ReadBool("Active");
+        }
+        
+        [Parser(Opcode.CMSG_HOUSING_ROOM_REMOVE_ROOM)]
+        public static void HandleHousingRoomRemove(Packet packet)
+        {
+            packet.ReadPackedGuid128("RoomGUID");
+        }
+        
+        [Parser(Opcode.SMSG_HOUSING_ROOM_REMOVE_ROOM_RESPONSE)]
+        public static void HandleHousingRoomRemoveResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("RoomGUID");
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadByteE<HousingResult>("Result");
+        }
+        
+        [Parser(Opcode.CMSG_HOUSING_ROOM_ROTATE_ROOM)]
+        public static void HousingRoomRotate(Packet packet)
+        {
+            packet.ReadPackedGuid128("RoomGUID");
+            packet.ReadBool("IsLeft");
+        }
+        
+        [Parser(Opcode.SMSG_HOUSING_ROOM_UPDATE_RESULT)]
+        public static void HousingRoomUpdateResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("RoomGUID");
+            packet.ReadByteE<HousingResult>("Result");
+        }
+        
+        [Parser(Opcode.CMSG_HOUSING_DECOR_SET_EDITOR_MODE_ACTIVE)]
+        [Parser(Opcode.CMSG_HOUSING_FIXTURE_SET_EDITOR_MODE_ACTIVE)]
+        [Parser(Opcode.CMSG_HOUSING_ROOM_SET_EDITOR_MODE_ACTIVE)]
+        public static void HandleHousingSetEditorModeActive(Packet packet)
+        {
+            packet.ReadBool("Active");
+        }
+        
+        [Parser(Opcode.SMSG_HOUSING_CURRENT_HOUSE_INFO_RESPONSE)]
+        public static void HandleHousingCurrentHouseInfoResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("HouseGUID");
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadPackedGuid128("NeighborhoodGUID");
+            packet.ReadUInt32("Unk0");
+            packet.ReadByte("Unk1");
+            packet.ReadByte("Unk2");
+            packet.ReadByte("Unk3");
         }
         
         [Parser(Opcode.CMSG_HOUSE_INTERIOR_LEAVE_HOUSE)]
