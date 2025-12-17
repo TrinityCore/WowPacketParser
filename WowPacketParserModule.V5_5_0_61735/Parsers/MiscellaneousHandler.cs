@@ -993,6 +993,30 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("Apply");
         }
 
+        [Parser(Opcode.CMSG_LOW_LEVEL_RAID2)]
+        public static void HandleLowLevelRaidPackets(Packet packet)
+        {
+            packet.ReadBool("Allow");
+        }
+
+        [Parser(Opcode.CMSG_OVERRIDE_SCREEN_FLASH)]
+        public static void HandleOverrideScreenFlash(Packet packet)
+        {
+            packet.ReadBit("CVar overrideScreenFlash");
+        }
+
+        [Parser(Opcode.CMSG_REPOP_REQUEST)]
+        public static void HandleRepopRequest(Packet packet)
+        {
+            packet.ReadBool("Accept");
+        }
+
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        public static void HandleSetSelection(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
@@ -1010,6 +1034,10 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.CMSG_SEAMLESS_TRANSFER_COMPLETE)]
         [Parser(Opcode.CMSG_QUERY_TIME)]
         [Parser(Opcode.CMSG_COMPLETE_MOVIE)]
+        [Parser(Opcode.CMSG_CLIENT_PORT_GRAVEYARD)]
+        [Parser(Opcode.CMSG_OPENING_CINEMATIC)]
+        [Parser(Opcode.CMSG_NEXT_CINEMATIC_CAMERA)]
+        [Parser(Opcode.CMSG_COMPLETE_CINEMATIC)]
         public static void HandleMiscZero(Packet packet)
         {
         }

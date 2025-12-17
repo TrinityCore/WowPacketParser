@@ -240,6 +240,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByteE<LootRollType>("RollType");
         }
 
+        [Parser(Opcode.CMSG_OPT_OUT_OF_LOOT)]
+        public static void HandleOptOutOfLoot(Packet packet)
+        {
+            packet.ReadBool("PassOnLoot");
+        }
+
         [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
         [Parser(Opcode.SMSG_LOOT_RELEASE_ALL)]
         public static void HandleLootZero(Packet packet)

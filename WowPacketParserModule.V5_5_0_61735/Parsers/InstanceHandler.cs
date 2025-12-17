@@ -228,6 +228,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32<DifficultyId>("DifficultyID");
         }
 
+        [Parser(Opcode.CMSG_INSTANCE_LOCK_RESPONSE)]
+        public static void HandleInstanceLockResponse(Packet packet)
+        {
+            packet.ReadBool("Accept");
+        }
+
         [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_END)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_IN_COMBAT_RESURRECTION)]

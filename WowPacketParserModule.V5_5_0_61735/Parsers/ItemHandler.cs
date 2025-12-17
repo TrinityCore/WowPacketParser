@@ -36,6 +36,16 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 ReadItemPurchaseRefundCurrency(packet, indexes, i, "ItemPurchaseRefundCurrency");
         }
 
+        public static void ReadInvUpdate(Packet packet, params object[] indexes)
+        {
+            var bits2 = packet.ReadBits("InvItemCount", 2);
+            for (int i = 0; i < bits2; i++)
+            {
+                packet.ReadByte("ContainerSlot", i);
+                packet.ReadByte("Slot", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_REFORGE_RESULT)]
         public static void HandleItemReforgeResult(Packet packet)
         {
@@ -409,6 +419,104 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             packet.ResetBitReader();
             packet.ReadBit("UseGuildBank");
+        }
+
+        [Parser(Opcode.CMSG_GET_ITEM_PURCHASE_DATA)]
+        [Parser(Opcode.CMSG_ITEM_PURCHASE_REFUND)]
+        public static void HandleGetItemPurchaseData(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+        }
+
+        [Parser(Opcode.CMSG_SET_AMMO)]
+        public static void HandleSetAmmo(Packet packet)
+        {
+            packet.ReadInt32("ItemID");
+        }
+
+        [Parser(Opcode.CMSG_WRAP_ITEM)]
+        public static void HandleWrapItem(Packet packet)
+        {
+            ReadInvUpdate(packet, "InvUpdate");
+        }
+
+        [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]
+        public static void HandleAutoStoreItem(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_AUTOBANK_ITEM)]
+        public static void HandleAutoItem(Packet packet)
+        {
+            ReadInvUpdate(packet);
+            
+            packet.ReadByteE<BankType>("BankType");
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_AUTO_EQUIP_ITEM)]
+        public static void HandleAutoEquipItem(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadByte("PackSlot");
+            packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_AUTO_STORE_BAG_ITEM)]
+        public static void HandleAutoStoreBagItem(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadByte("ContainerSlotB");
+            packet.ReadByte("ContainerSlotA");
+            packet.ReadByte("SlotA");
+        }
+
+        [Parser(Opcode.CMSG_SWAP_ITEM)]
+        public static void HandleSwapItem(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadByte("ContainerSlotB");
+            packet.ReadByte("ContainerSlotA");
+            packet.ReadByte("SlotB");
+            packet.ReadByte("SlotA");
+        }
+
+        [Parser(Opcode.CMSG_SWAP_INV_ITEM)]
+        public static void HandleSwapInvItem(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadByte("Slot2");
+            packet.ReadByte("Slot1");
+        }
+
+        [Parser(Opcode.CMSG_SPLIT_ITEM)]
+        public static void HandleSplitItem(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadByte("FromPackSlot");
+            packet.ReadByte("FromSlot");
+            packet.ReadByte("ToPackSlot");
+            packet.ReadByte("ToSlot");
+            packet.ReadInt32("Quantity");
+        }
+
+        [Parser(Opcode.CMSG_AUTO_EQUIP_ITEM_SLOT)]
+        public static void HandleAutoEquipItemSlot(Packet packet)
+        {
+            ReadInvUpdate(packet);
+
+            packet.ReadPackedGuid128("Item");
+            packet.ReadByte("ItemDstSlot");
         }
 
         [Parser(Opcode.SMSG_INVENTORY_FULL_OVERFLOW)]

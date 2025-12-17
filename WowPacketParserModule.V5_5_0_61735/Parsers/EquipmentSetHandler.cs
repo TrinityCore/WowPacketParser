@@ -69,5 +69,61 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt64("Guid");
             packet.ReadInt32("SpecID");
         }
+
+        [Parser(Opcode.CMSG_SAVE_EQUIPMENT_SET)]
+        public static void HandleEquipmentSetSave(Packet packet)
+        {
+            packet.ReadInt32("Type");
+            packet.ReadUInt64("Guid");
+            packet.ReadInt32("SetID");
+            int ignoreMask = packet.ReadInt32("IgnoreMask");
+
+            for (var i = 0; i < NumSlots; i++)
+            {
+                bool ignore = (ignoreMask & (1 << i)) != 0;
+                packet.ReadPackedGuid128("Item Guid" + (ignore ? " (Ignored)" : ""), i);
+                packet.ReadInt32("Appearance");
+            }
+
+            for (var j = 0; j < 2; j++)
+                packet.ReadInt32("Enchants", j);
+
+            packet.ReadInt32("SecondaryShoulderApparanceID");
+            packet.ReadInt32("SecondaryShoulderSlot");
+            packet.ReadInt32("SecondaryWeaponAppearanceID");
+            packet.ReadInt32("SecondaryWeaponSlot");
+
+            packet.ResetBitReader();
+
+            var hasSpecIndex = packet.ReadBit("HasSpecIndex");
+            var setNameLen = packet.ReadBits(8);
+            var setIconLen = packet.ReadBits(9);
+
+            if (hasSpecIndex)
+                packet.ReadInt32("AssignedSpecIndex");
+
+            packet.ReadWoWString("SetName", setNameLen);
+            packet.ReadWoWString("SetIcon", setIconLen);
+        }
+
+        [Parser(Opcode.CMSG_DELETE_EQUIPMENT_SET)]
+        public static void HandleDeleteEquipmentSet(Packet packet)
+        {
+            packet.ReadUInt64("ID");
+        }
+
+        [Parser(Opcode.CMSG_USE_EQUIPMENT_SET)]
+        public static void HandleUseEquipmentSet(Packet packet)
+        {
+            ItemHandler.ReadInvUpdate(packet, "InvUpdate");
+            for (int i = 0; i < NumSlots; i++)
+            {
+                packet.ReadPackedGuid128("Item");
+                packet.ReadByte("ContainerSlot");
+                packet.ReadByte("Slot");
+            }
+
+            packet.ReadUInt64("GUID");
+        }
     }
 }

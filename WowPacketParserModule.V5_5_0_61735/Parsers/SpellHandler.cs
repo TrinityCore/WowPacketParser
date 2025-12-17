@@ -1393,6 +1393,59 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("SkillLine");
         }
 
+        [Parser(Opcode.CMSG_CANCEL_TEMP_ENCHANTMENT)]
+        public static void HandleCancelTempEnchantment(Packet packet)
+        {
+            packet.ReadUInt32("Slot");
+        }
+
+        [Parser(Opcode.CMSG_TOTEM_DESTROYED)]
+        public static void HandleTotemDestroyed(Packet packet)
+        {
+            packet.ReadByte("Slot");
+            packet.ReadPackedGuid128("TotemGUID");
+        }
+
+        [Parser(Opcode.CMSG_SELF_RES)]
+        public static void HandleSelfRes(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.CMSG_LEARN_TALENT)]
+        public static void HandleLearnTalent(Packet packet)
+        {
+            packet.ReadUInt32("TalentID");
+            packet.ReadUInt16("Rank");
+        }
+
+        [Parser(Opcode.CMSG_LEARN_PREVIEW_TALENTS)]
+        public static void HandleLearnPreviewTalents(Packet packet)
+        {
+            var talentCount = packet.ReadUInt32("TalentCount");
+            packet.ReadInt32("TabIndex");
+
+            for (int i = 0; i < talentCount; i++)
+            {
+                packet.ReadInt32("TalentID", i);
+                packet.ReadInt32("Rank", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_SET_PRIMARY_TALENT_TREE)]
+        public static void HandleSetPrimaryTalentTree(Packet packet)
+        {
+            packet.ReadInt32("TabIndex");
+        }
+
+        [Parser(Opcode.CMSG_LEARN_TALENTS)]
+        public static void HandleLearnTalents(Packet packet)
+        {
+            var talentCount = packet.ReadBits("TalentCount", 6);
+            for (int i = 0; i < talentCount; i++)
+                packet.ReadUInt16("Talents");
+        }
+
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
         [Parser(Opcode.SMSG_PET_CLEAR_SPELLS)]

@@ -518,12 +518,67 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("HealerGuid");
         }
 
+        [Parser(Opcode.CMSG_REPORT_PVP_PLAYER_AFK)]
+        public static void HandleReportPvPPlayerAfk(Packet packet)
+        {
+            packet.ReadGuid("Offender");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN)]
+        public static void HandleBattlemasterJoin(Packet packet)
+        {
+            ReadPackedBattlegroundQueueTypeID(packet);
+            packet.ReadByte("Roles");
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadInt32("BlacklistMap", i);
+
+            packet.ReadPackedGuid128("BattlemasterGuid");
+            packet.ReadInt32("UnkID");
+            packet.ReadInt32("BattlefieldIndexSpecific");
+            packet.ReadBit("JoinAsGroup");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA)]
+        public static void HandleBattlemasterJoinArena(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlemasterGuid");
+            packet.ReadByte("TeamSizeIndex");
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_SKIRMISH)]
+        public static void HandleBattlemasterJoinSkirmish(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlemasterGUID");
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+            packet.ReadByte("Bracket");
+            packet.ResetBitReader();
+            packet.ReadBit("JoinAsGroup");
+            packet.ReadBit("IsRequeue");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
+        public static void HandleBattlefieldPort(Packet packet)
+        {
+            LfgHandler.ReadCliRideTicket(packet);
+            packet.ResetBitReader();
+            packet.ReadBit("AcceptedInvite");
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_CROWD_CONTROL_SPELL)]
+        public static void HandleRequestCrowdControlSpell(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGuid");
+        }
+
         [Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]
         [Parser(Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED)]
         [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]
         [Parser(Opcode.CMSG_PVP_LOG_DATA)]
         [Parser(Opcode.CMSG_REQUEST_PVP_REWARDS)]
         [Parser(Opcode.CMSG_REQUEST_SCHEDULED_PVP_INFO)]
+        [Parser(Opcode.CMSG_HEARTH_AND_RESURRECT)]
         public static void HandleBattlegroundZero(Packet packet)
         {
         }

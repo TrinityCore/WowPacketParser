@@ -733,6 +733,38 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("EnablePVP");
         }
 
+        [Parser(Opcode.CMSG_ALTER_APPEARANCE)]
+        public static void HandleAlterAppearance(Packet packet)
+        {
+            var customizationsCount = packet.ReadUInt32("CustomizationsCount");
+            packet.ReadByte("NewSexID");
+            packet.ReadByteE<Race>("CustomizedRace");
+            packet.ReadInt32("CustomizedChrModelID");
+            packet.ReadByteE<Race>("UnalteredVisualRaceID");
+
+            for (var i = 0; i < customizationsCount; i++)
+                ReadChrCustomizationChoice(packet, "Customizations", i);
+        }
+
+        [Parser(Opcode.CMSG_INSPECT)]
+        public static void HandleInspect(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+        }
+
+        [Parser(Opcode.CMSG_SET_LOOT_SPECIALIZATION)]
+        public static void HandleSetLootSpecialization(Packet packet)
+        {
+            packet.ReadInt32("SpecID");
+        }
+
+        [Parser(Opcode.CMSG_SHOWING_CLOAK)]
+        [Parser(Opcode.CMSG_SHOWING_HELM)]
+        public static void HandleShowingCloakAndHelm434(Packet packet)
+        {
+            packet.ReadBool("Showing");
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE)]

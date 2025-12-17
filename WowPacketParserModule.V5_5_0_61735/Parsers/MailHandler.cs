@@ -122,5 +122,40 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt64("MailID");
             packet.ReadInt32("DeleteReason");
         }
+
+        [Parser(Opcode.CMSG_MAIL_GET_LIST)]
+        public static void HandleGetMailList(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_TAKE_MONEY)]
+        public static void HandleMailTakeMoney(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadUInt64("MailID");
+            packet.ReadUInt64("Money");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_TAKE_ITEM)]
+        public static void HandleMailTakeItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadUInt64("MailID");
+            packet.ReadUInt64("AttachID");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_MARK_AS_READ)]
+        [Parser(Opcode.CMSG_MAIL_CREATE_TEXT_ITEM)]
+        public static void HandleMailMarkAsRead(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadUInt64("MailID");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_NEXT_MAIL_TIME)]
+        public static void HandleNullMail(Packet packet)
+        {
+        }
     }
 }

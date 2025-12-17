@@ -1293,6 +1293,28 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByteE<QuestPushReason915>("Result");
         }
 
+        [Parser(Opcode.CMSG_QUEST_LOG_REMOVE_QUEST)]
+        public static void HandleQuestRemoveQuest(Packet packet)
+        {
+            packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_CLOSE_QUEST)]
+        public static void HandleQuestGiverCloseQuest(Packet packet)
+        {
+            packet.ReadUInt32<QuestId>("QuestID");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_TRACKED_QUERY)]
+        public static void HandleQuestGiverStatusTrackedQuery(Packet packet)
+        {
+            var guidCount = packet.ReadUInt32("GUIDCount");
+            for (var i = 0; i < guidCount; i++)
+            {
+                packet.ReadPackedGuid128("QuestGiverGUID", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
         [Parser(Opcode.SMSG_QUEST_LOG_FULL)]
         [Parser(Opcode.CMSG_CLOSE_QUEST_CHOICE)]

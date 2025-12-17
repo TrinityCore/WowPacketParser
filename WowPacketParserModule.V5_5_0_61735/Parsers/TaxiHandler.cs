@@ -60,6 +60,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("FlyingMountID");
         }
 
+        [Parser(Opcode.CMSG_SET_TAXI_BENCHMARK_MODE)]
+        public static void HandleSetTaxiBenchmarkMode(Packet packet)
+        {
+            packet.ReadBool("Activate");
+        }
+
         [Parser(Opcode.SMSG_NEW_TAXI_PATH)]
         [Parser(Opcode.CMSG_TAXI_REQUEST_EARLY_LANDING)]
         public static void HandleTaxiNull(Packet packet)
