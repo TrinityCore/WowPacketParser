@@ -579,6 +579,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.CMSG_REQUEST_PVP_REWARDS)]
         [Parser(Opcode.CMSG_REQUEST_SCHEDULED_PVP_INFO)]
         [Parser(Opcode.CMSG_HEARTH_AND_RESURRECT)]
+        [Parser(Opcode.CMSG_REQUEST_BATTLEFIELD_STATUS)]
         public static void HandleBattlegroundZero(Packet packet)
         {
         }

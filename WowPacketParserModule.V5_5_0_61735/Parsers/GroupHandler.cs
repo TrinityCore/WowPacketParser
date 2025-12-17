@@ -481,6 +481,25 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadByte("MarkerId");
         }
 
+        [Parser(Opcode.CMSG_SET_ROLE)]
+        public static void HandleSetRole(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadPackedGuid128("ChangedUnit");
+            packet.ReadByte("Role");
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_INITIATE_ROLE_POLL)]
+        public static void HandleInitiateRolePoll(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
         public static void HandleGroupNull(Packet packet)
         {

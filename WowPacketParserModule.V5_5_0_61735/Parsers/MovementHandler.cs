@@ -929,12 +929,6 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("DriveCapabilityID");
         }
 
-        //[Parser(Opcode.CMSG_MOVE_CHANGE_TRANSPORT)]
-        //[Parser(Opcode.CMSG_MOVE_DISMISS_VEHICLE)]
-        //[Parser(Opcode.CMSG_MOVE_SET_FACING_HEARTBEAT)]
-        //[Parser(Opcode.CMSG_MOVE_SET_FLY)]
-        //[Parser(Opcode.CMSG_MOVE_START_ASCEND)]
-        //[Parser(Opcode.CMSG_MOVE_START_DESCEND)]
         [Parser(Opcode.CMSG_MOVE_START_FORWARD)]
         [Parser(Opcode.CMSG_MOVE_START_BACKWARD)]
         [Parser(Opcode.CMSG_MOVE_STOP)]
@@ -960,7 +954,15 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.CMSG_MOVE_REMOVE_MOVEMENT_FORCES)]
         [Parser(Opcode.CMSG_MOVE_FALL_RESET)]
         [Parser(Opcode.CMSG_MOVE_UPDATE_FALL_SPEED)]
-        //[Parser(Opcode.CMSG_MOVE_STOP_ASCEND)]
+        [Parser(Opcode.CMSG_MOVE_SET_FLY)]
+        [Parser(Opcode.CMSG_MOVE_START_ASCEND)]
+        [Parser(Opcode.CMSG_MOVE_STOP_ASCEND)]
+        [Parser(Opcode.CMSG_MOVE_CHANGE_TRANSPORT)]
+        [Parser(Opcode.CMSG_MOVE_START_DESCEND)]
+        [Parser(Opcode.CMSG_MOVE_DISMISS_VEHICLE)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLY)]
+        [Parser(Opcode.CMSG_MOVE_START_DRIVE_FORWARD)]
+        [Parser(Opcode.CMSG_MOVE_SET_FACING_HEARTBEAT)]
         public static void HandleClientPlayerMove(Packet packet)
         {
             var stats = ReadMovementStats(packet);
@@ -975,16 +977,25 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("MoveTime");
         }
 
-        //[Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_BACK_SPEED_CHANGE_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_SPEED_CHANGE_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_FORCE_PITCH_RATE_CHANGE_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_RUN_SPEED_CHANGE_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_RUN_BACK_SPEED_CHANGE_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_SWIM_SPEED_CHANGE_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_FORCE_SWIM_BACK_SPEED_CHANGE_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_FORCE_TURN_RATE_CHANGE_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_FORCE_WALK_SPEED_CHANGE_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_SET_MOD_MOVEMENT_FORCE_MAGNITUDE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_WALK_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_SWIM_BACK_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_TURN_RATE_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_BACK_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_PITCH_RATE_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_MOD_MOVEMENT_FORCE_MAGNITUDE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_AIR_FRICTION_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_MAX_VEL_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_LIFT_COEFFICIENT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_DOUBLE_JUMP_VEL_MOD_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_GLIDE_START_MIN_HEIGHT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_ADD_IMPULSE_MAX_SPEED_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_SURFACE_FRICTION_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_OVER_MAX_DECELERATION_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_LAUNCH_SPEED_COEFFICIENT_ACK)]
         public static void HandleMoveSpeedAck(Packet packet)
         {
             var stats = ReadMovementAck(packet);
@@ -992,22 +1003,25 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadSingle("Speed");
         }
 
-        //[Parser(Opcode.CMSG_MOVE_COLLISION_DISABLE_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_COLLISION_ENABLE_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_ENABLE_SWIM_TO_FLY_TRANS_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_ROOT_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_UNROOT_ACK)]
         [Parser(Opcode.CMSG_MOVE_HOVER_ACK)]
         [Parser(Opcode.CMSG_MOVE_FEATHER_FALL_ACK)]
         [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
         [Parser(Opcode.CMSG_MOVE_ENABLE_DOUBLE_JUMP_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_GRAVITY_ENABLE_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_INERTIA_DISABLE_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_INERTIA_ENABLE_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_SET_CAN_FLY_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_SET_CAN_TURN_WHILE_FALLING_ACK)]
-        //[Parser(Opcode.CMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES_ACK)]
+        [Parser(Opcode.CMSG_MOVE_ENABLE_SWIM_TO_FLY_TRANS_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_TURN_WHILE_FALLING_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_FLY_ACK)]
+        [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_GRAVITY_ENABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_INERTIA_DISABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_INERTIA_ENABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_COLLISION_DISABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_COLLISION_ENABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_ADV_FLY_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_DRIVE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_ENABLE_FULL_SPEED_TURNING_ACK)]
         public static void HandleMoveAck(Packet packet)
         {
             var stats = ReadMovementAck(packet);
@@ -1066,6 +1080,88 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadPackedGuid128("GUID");
             packet.ReadInt32("Time");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_CHANGE_VEHICLE_SEATS)]
+        public static void HandleMoveChangeVehicleSeats(Packet packet)
+        {
+            ReadMovementStats(packet);
+            packet.ReadPackedGuid128("DstVehicle");
+            packet.ReadByte("DstSeatIndex");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
+        public static void HandleMoveSetCollisionHeightAck(Packet packet)
+        {
+            ReadMovementAck(packet, "MovementAck");
+            packet.ReadSingle("Height");
+            packet.ReadInt32("MountDisplayID");
+            packet.ReadByte("Reason");
+        }
+
+        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER)]
+        public static void HandleSetActiveMover(Packet packet)
+        {
+            packet.ReadPackedGuid128("ActiveMover");
+        }
+
+        [Parser(Opcode.CMSG_TIME_SYNC_RESPONSE)]
+        public static void HandleTimeSyncResp(Packet packet)
+        {
+            packet.ReadUInt32("Counter");
+            packet.ReadUInt32("Ticks");
+        }
+
+        [Parser(Opcode.CMSG_TIME_SYNC_RESPONSE_FAILED)]
+        public static void HandleTimeSyncRespFailed(Packet packet)
+        {
+            packet.ReadUInt32("SequenceIndex");
+        }
+
+        [Parser(Opcode.CMSG_TIME_SYNC_RESPONSE_DROPPED)]
+        public static void HandleTimeSyncResponseDropped(Packet packet)
+        {
+            packet.ReadUInt32("SequenceIndexFirst");
+            packet.ReadUInt32("SequenceIndexLast");
+        }
+
+        [Parser(Opcode.CMSG_DISCARDED_TIME_SYNC_ACKS)]
+        public static void HandleDiscardedTimeSyncAcks(Packet packet)
+        {
+            packet.ReadUInt32("MaxSequenceIndex");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_INIT_ACTIVE_MOVER_COMPLETE)]
+        public static void HandleMoveInitActiveMoverComplete(Packet packet)
+        {
+            packet.ReadUInt32("Ticks");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_APPLY_INERTIA_ACK)]
+        public static void HandleMoveApplyMovementInertiaAck(Packet packet)
+        {
+            ReadMovementAck(packet, "Data");
+            packet.ReadInt32("InertiaID");
+            packet.ReadUInt32("InertiaLifetimeMs");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_REMOVE_INERTIA_ACK)]
+        public static void HandleMoveRemoveMovementInertiaAck(Packet packet)
+        {
+            ReadMovementAck(packet, "Data");
+            packet.ReadUInt32("InertiaID");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_BANKING_RATE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_PITCHING_RATE_DOWN_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_PITCHING_RATE_UP_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_ADV_FLYING_TURN_VELOCITY_THRESHOLD_ACK)]
+        public static void HandleMovementSpeedRangeAck(Packet packet)
+        {
+            var stats = ReadMovementAck(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.PositionAsVector4 };
+            packet.ReadSingle("SpeedMin");
+            packet.ReadSingle("SpeedMax");
         }
 
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
