@@ -13,6 +13,21 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadPackedGuid128("BnetAccountID");
         }
         
+        [Parser(Opcode.CMSG_HOUSING_DECOR_CATALOG_DESTROY_ENTRY)]
+        public static void HandleHousingDecorCatalogDestroyEntry(Packet packet)
+        {
+            packet.ReadPackedGuid128("BnetAccountID");
+            packet.ReadUInt16("CatalogEntryID");
+            packet.ReadUInt32("Unknown");
+        }
+
+        [Parser(Opcode.CMSG_HOUSING_DECOR_CATALOG_DESTROY_ALL_ENTRY_COPIES)]
+        public static void HandleHousingDecorCatalogDestroyAllEntryCopies(Packet packet)
+        {
+            packet.ReadUInt16("CatalogEntryID");
+            packet.ReadUInt16("Unknown");
+        }
+        
         [Parser(Opcode.CMSG_HOUSING_DECOR_COMMIT_DYES_FOR_SELECTED_DECOR)]
         public static void HousingDecorCommitDyesForSelection(Packet packet)
         {
