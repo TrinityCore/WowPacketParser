@@ -22,6 +22,26 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 packet.ReadInt32("DyeColorID", i);
             }
         }
+
+        [Parser(Opcode.CMSG_HOUSING_DECOR_MOVE_DECOR)]
+        public static void HandleHousingDecorMove(Packet packet)
+        {
+            packet.ReadPackedGuid128("DecorGUID");
+            packet.ReadVector3("Position");
+            packet.ReadQuaternion("Rotation");
+            packet.ReadByte("UnkByte");
+            packet.ReadByte("UnkByte");
+            packet.ReadPackedGuid128("AttachParentGUID");
+            packet.ReadByte("UnkByte");
+            packet.ReadByte("UnkByte");
+            packet.ReadByte("UnkByte");
+            packet.ReadByte("UnkByte");
+            packet.ReadByte("UnkByte");
+            packet.ReadByte("UnkByte");
+            packet.ReadByte("UnkByte");
+            packet.ReadByte("UnkByte");
+            packet.ReadByte("UnkByte");
+        }
         
         [Parser(Opcode.CMSG_HOUSING_DECOR_REMOVE_PLACED_DECOR_ENTRY)]
         public static void HousingDecorRemovePlacedEntry(Packet packet)
@@ -39,7 +59,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         [Parser(Opcode.CMSG_HOUSING_DECOR_START_PLACING_NEW_DECOR)]
         public static void HousingDecorStartPlacing(Packet packet)
         {
-            packet.ReadUInt32("DecorID");
+            packet.ReadUInt32("CatalogEntryID");
             packet.ReadUInt32("Field_4");
         }
         
