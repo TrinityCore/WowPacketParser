@@ -125,13 +125,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         [Parser(Opcode.SMSG_HOUSING_CURRENT_HOUSE_INFO_RESPONSE)]
         public static void HandleHousingCurrentHouseInfoResponse(Packet packet)
         {
-            packet.ReadPackedGuid128("HouseGUID");
-            packet.ReadPackedGuid128("PlayerGUID");
-            packet.ReadPackedGuid128("NeighborhoodGUID");
-            packet.ReadUInt32("Unk0");
-            packet.ReadByte("Unk1");
-            packet.ReadByte("Unk2");
-            packet.ReadByte("Unk3");
+            ReadHouse(packet, "House");
+            packet.ReadByteE<HousingResult>("Result");
+        }
         }
         
         [Parser(Opcode.CMSG_HOUSE_INTERIOR_LEAVE_HOUSE)]
@@ -139,6 +135,21 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         [Parser(Opcode.CMSG_HOUSING_REQUEST_CURRENT_HOUSE_INFO)]
         public static void HandleHousingNull(Packet packet)
         {
+        }
+        
+        private static void ReadHouse(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            packet.ReadPackedGuid128("HouseGUID", indexes);
+            packet.ReadPackedGuid128("OwnerGUID", indexes);
+            packet.ReadPackedGuid128("NeighborhoodGUID", indexes);
+
+            packet.ReadByte("PlotID", indexes);
+            packet.ReadInt32("AccessFlags", indexes);
+
+            var hasMoveOutTime = packet.ReadBit("HasMoveOutTime", indexes);
+            if (hasMoveOutTime)
+                packet.ReadTime64("MoveOutTime", indexes);
         }
     }
 }
