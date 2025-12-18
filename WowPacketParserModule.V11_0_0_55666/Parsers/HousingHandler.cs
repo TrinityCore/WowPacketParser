@@ -146,12 +146,19 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 ReadHouse(packet, i);
             }
         }
-        
 
         [Parser(Opcode.CMSG_QUERY_NEIGHBORHOOD_INFO)]
         public static void HandleQueryNeighborhoodInfo(Packet packet)
         {
             packet.ReadPackedGuid128("NeighborhoodGUID");
+        }
+
+        [Parser(Opcode.SMSG_QUERY_NEIGHBORHOOD_NAME_RESPONSE)]
+        public static void HandleQueryNeighborhoodNameResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("NeighborhoodGUID");
+            var nameLen = packet.ReadBits(10);
+            packet.ReadWoWString("NeighborhoodName", nameLen);
         }
         
         [Parser(Opcode.CMSG_HOUSE_INTERIOR_LEAVE_HOUSE)]
