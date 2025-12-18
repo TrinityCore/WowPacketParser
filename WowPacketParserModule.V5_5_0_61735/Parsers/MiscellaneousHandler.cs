@@ -1017,6 +1017,36 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("Guid");
         }
 
+        [HasSniffData]
+        [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY)]
+        public static void HandleClientEnterWorld(Packet packet)
+        {
+            var mapId = packet.ReadInt32<MapId>("MapID");
+            packet.ReadBit("Showing");
+
+            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
+        }
+
+        [Parser(Opcode.CMSG_COLLECTION_ITEM_SET_FAVORITE)]
+        public static void HandleCollectionItemSetFavorite(Packet packet)
+        {
+            packet.ReadInt32E<CollectionType>("CollectionType");
+            packet.ReadUInt32("ID");
+            packet.ResetBitReader();
+            packet.ReadBit("IsFavorite");
+        }
+
+        [Parser(Opcode.CMSG_RANDOM_ROLL)]
+        public static void HandleRandomRoll(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadInt32("Min");
+            packet.ReadInt32("Max");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]

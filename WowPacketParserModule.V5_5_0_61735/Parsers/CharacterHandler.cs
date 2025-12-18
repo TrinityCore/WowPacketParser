@@ -765,9 +765,62 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBool("Showing");
         }
 
+        [Parser(Opcode.CMSG_GENERATE_RANDOM_CHARACTER_NAME)]
+        public static void HandleGenerateRandomCharacterNameQuery(Packet packet)
+        {
+            packet.ReadByteE<Race>("Race");
+            packet.ReadSByteE<Gender>("Sex");
+        }
+
+        [Parser(Opcode.CMSG_REORDER_CHARACTERS)]
+        public static void HandleReorderCharacters(Packet packet)
+        {
+            var count = packet.ReadBits("CharactersCount", 9);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadPackedGuid128("PlayerGUID");
+                packet.ReadByte("NewPosition", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_MOUNT_SET_FAVORITE)]
+        public static void HandleMountSetFavorite(Packet packet)
+        {
+            packet.ReadInt32("MountSpellID");
+            packet.ReadBit("IsFavorite");
+        }
+
+        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
+        public static void HandleClientCharCreate(Packet packet)
+        {
+            var nameLen = packet.ReadBits(6);
+            var hasTemplateSet = packet.ReadBit("HasTemplateSet");
+            packet.ReadBit("IsTrialBoost");
+            packet.ReadBit("UseNPE");
+            packet.ReadBit("HardcoreSelfFound");
+            packet.ResetBitReader();
+
+            packet.ReadByteE<Race>("RaceID");
+            packet.ReadByteE<Class>("ClassID");
+            packet.ReadByteE<Gender>("SexID");
+
+            var customizationCount = packet.ReadUInt32();
+            packet.ReadInt32("TimerunningSeasonID");
+
+            packet.ReadWoWString("Name", nameLen);
+
+            if (hasTemplateSet)
+                packet.ReadInt32("TemplateSetID");
+
+            for (var i = 0u; i < customizationCount; ++i)
+                ReadChrCustomizationChoice(packet, "Customizations", i);
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
         [Parser(Opcode.CMSG_CONFIRM_BARBERS_CHOICE)]
+        [Parser(Opcode.CMSG_ENUM_CHARACTERS)]
         public static void HandleCharacterEmpty(Packet packet)
         {
         }

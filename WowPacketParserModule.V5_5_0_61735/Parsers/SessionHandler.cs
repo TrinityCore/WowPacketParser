@@ -46,6 +46,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 CharacterHandler.ReadChrCustomizationChoice(packet, indexes, "Unknown_1107_4", i);
         }
 
+        public static void ReadClientSettings(Packet packet, params object[] idx)
+        {
+            packet.ReadSingle("FarClip", idx);
+        }
+
         [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
         public static void HandleRealmQueryResponse(Packet packet)
         {
@@ -201,6 +206,21 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadSByte("Con");
             packet.ReadUInt32("Serial");
+        }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN)]
+        public static void HandlePlayerLogin(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("Guid");
+            packet.ReadSingle("FarClip");
+            packet.Holder.PlayerLogin = new() { PlayerGuid = guid };
+            WowPacketParser.Parsing.Parsers.SessionHandler.LoginGuid = guid;
+        }
+
+        [Parser(Opcode.CMSG_UPDATE_CLIENT_SETTINGS)]
+        public static void HandleUpdateClientSettings(Packet packet)
+        {
+            ReadClientSettings(packet, "ClientSettings");
         }
 
         [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH)]

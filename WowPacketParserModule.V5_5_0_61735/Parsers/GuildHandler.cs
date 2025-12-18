@@ -991,6 +991,31 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("BorderColorRGB");
         }
 
+        [Parser(Opcode.CMSG_ACCEPT_GUILD_INVITE)]
+        public static void HandleAcceptGuildInvite441(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_DECLINE_INVITATION)]
+        public static void HandleGuildDeclineInvitation(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadBit("AutoDeclined"); // PlayerFlag 0x8000000
+        }
+
+        [Parser(Opcode.CMSG_GUILD_INVITE_BY_NAME)]
+        public static void HandleGuildInviteByName(Packet packet)
+        {
+            var nameLength = packet.ReadBits(9);
+            var hasArenaTeamId = packet.ReadBit("HasArenaTeamId");
+
+            packet.ReadWoWString("Name", nameLength);
+
+            if (hasArenaTeamId)
+                packet.ReadInt32("ArenaTeamId");
+        }
+
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_RANKS_UPDATED)]
