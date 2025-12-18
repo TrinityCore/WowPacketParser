@@ -146,7 +146,19 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 ReadHouse(packet, i);
             }
         }
+        
+        [Parser(Opcode.CMSG_HOUSING_SERVICES_SEARCH_BNET_FRIEND_NEIGHBORHOODS)]
+        public static void HandleHousingServiceSearchBnetFriendNeighborhoods(Packet packet)
+        {
+            packet.ReadPackedGuid128("BNetAccountGUID");
+        }
 
+        [Parser(Opcode.SMSG_INVALIDATE_NEIGHBORHOOD_NAME)]
+        public static void HandleInvalidateNeighborhoodName(Packet packet)
+        {
+            packet.ReadPackedGuid128("NeighborhoodGUID");
+        }
+        
         [Parser(Opcode.CMSG_QUERY_NEIGHBORHOOD_INFO)]
         public static void HandleQueryNeighborhoodInfo(Packet packet)
         {
@@ -160,10 +172,18 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             var nameLen = packet.ReadBits(10);
             packet.ReadWoWString("NeighborhoodName", nameLen);
         }
+
+        [Parser(Opcode.CMSG_NEIGHBORHOOD_INTERACT_WITH_CORNERSTONE)]
+        public static void HandleNeighborhoodInteractWithCornerstone(Packet packet)
+        {
+            packet.ReadUInt32("PlotID");
+            packet.ReadPackedGuid128("CornerstoneGUID");
+        }
         
         [Parser(Opcode.CMSG_HOUSE_INTERIOR_LEAVE_HOUSE)]
         [Parser(Opcode.CMSG_HOUSING_SERVICES_GET_PLAYER_OWNED_HOUSES)]
         [Parser(Opcode.CMSG_HOUSING_REQUEST_CURRENT_HOUSE_INFO)]
+        [Parser(Opcode.CMSG_HOUSING_SERVICES_HOUSE_FINDER_REQUEST_NEIGHBORHOODS)]
         public static void HandleHousingNull(Packet packet)
         {
         }
