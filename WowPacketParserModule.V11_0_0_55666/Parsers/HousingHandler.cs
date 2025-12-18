@@ -140,6 +140,13 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             }
         }
         
+
+        [Parser(Opcode.CMSG_QUERY_NEIGHBORHOOD_INFO)]
+        public static void HandleQueryNeighborhoodInfo(Packet packet)
+        {
+            packet.ReadPackedGuid128("NeighborhoodGUID");
+        }
+        
         [Parser(Opcode.CMSG_HOUSE_INTERIOR_LEAVE_HOUSE)]
         [Parser(Opcode.CMSG_HOUSING_SERVICES_GET_PLAYER_OWNED_HOUSES)]
         [Parser(Opcode.CMSG_HOUSING_REQUEST_CURRENT_HOUSE_INFO)]
