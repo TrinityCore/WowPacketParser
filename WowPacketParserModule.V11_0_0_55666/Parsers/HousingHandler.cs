@@ -128,6 +128,16 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             ReadHouse(packet, "House");
             packet.ReadByteE<HousingResult>("Result");
         }
+        
+        [Parser(Opcode.SMSG_HOUSING_SERVICES_GET_PLAYER_OWNED_HOUSES_RESPONSE)]
+        public static void HandleHousingServiceGetPlayerOwnedHousesResponse(Packet packet)
+        {
+            var count =  packet.ReadUInt32("Count");
+            for (uint i = 0; i < count; i++)
+            {
+                packet.ReadBit("UnknownBit", i);
+                ReadHouse(packet, i);
+            }
         }
         
         [Parser(Opcode.CMSG_HOUSE_INTERIOR_LEAVE_HOUSE)]
