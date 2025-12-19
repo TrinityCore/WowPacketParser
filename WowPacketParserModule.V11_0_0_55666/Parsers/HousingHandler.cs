@@ -18,14 +18,14 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             packet.ReadPackedGuid128("BnetAccountID");
             packet.ReadUInt16("CatalogEntryID");
-            packet.ReadUInt32("Unknown");
+            packet.ReadUInt32("Field_10");
         }
 
         [Parser(Opcode.CMSG_HOUSING_DECOR_CATALOG_DESTROY_ALL_ENTRY_COPIES)]
         public static void HandleHousingDecorCatalogDestroyAllEntryCopies(Packet packet)
         {
             packet.ReadUInt16("CatalogEntryID");
-            packet.ReadUInt16("Unknown");
+            packet.ReadUInt16("Field_4");
         }
         
         [Parser(Opcode.CMSG_HOUSING_DECOR_COMMIT_DYES_FOR_SELECTED_DECOR)]
@@ -184,7 +184,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             var count =  packet.ReadUInt32("Count");
             for (uint i = 0; i < count; i++)
             {
-                packet.ReadBit("UnknownBit", i);
+                packet.ReadBit("Field_4", i);
                 ReadHouse(packet, i);
             }
         }
