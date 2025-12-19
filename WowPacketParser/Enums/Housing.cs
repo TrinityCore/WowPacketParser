@@ -79,4 +79,12 @@ namespace WowPacketParser.Enums
         TransactionFailure = 74,
         UnlockOperationFailed = 75
     }
+    
+    public enum HousingGuidType : byte
+    {
+        Decor = 1,
+        RoomComponent = 2,
+        House = 3,
+        Neighborhood = 4,
+    }
 }
