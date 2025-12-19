@@ -50,7 +50,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadInt32("Field_80");
             packet.ReadByte("Field_85");
             packet.ReadByte("Field_86");
-            packet.ReadBit();
+            packet.ReadBool("Field_87");
         }
         
         [Parser(Opcode.CMSG_HOUSING_DECOR_REMOVE_PLACED_DECOR_ENTRY)]
