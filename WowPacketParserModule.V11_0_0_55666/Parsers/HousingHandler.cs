@@ -184,7 +184,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             var count =  packet.ReadUInt32("Count");
             for (uint i = 0; i < count; i++)
             {
-                packet.ReadBit("Field_4", i);
+                packet.ReadByteE<HousingResult>("Result", i);
                 ReadHouse(packet, i);
             }
         }
