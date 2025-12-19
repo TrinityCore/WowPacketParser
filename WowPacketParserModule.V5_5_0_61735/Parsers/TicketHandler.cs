@@ -314,5 +314,39 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                     break;
             }
         }
+
+        [Parser(Opcode.CMSG_BUG_REPORT)]
+        public static void HandleBugReport(Packet packet)
+        {
+            packet.ReadBit("Type");
+
+            var len1 = packet.ReadBits(12);
+            var len2 = packet.ReadBits(10);
+
+            packet.ReadWoWString("DiagInfo", len1);
+            packet.ReadWoWString("Text", len2);
+        }
+
+        [Parser(Opcode.CMSG_GM_TICKET_ACKNOWLEDGE_SURVEY)]
+        public static void HandleGMTicketAcknowledgeSurvey(Packet packet)
+        {
+            packet.ReadInt32("CaseID");
+        }
+
+        [Parser(Opcode.CMSG_SUBMIT_USER_FEEDBACK)]
+        public static void HandleSubmitUserFeedback(Packet packet)
+        {
+            ReadSupportTicketHeader(packet, "Header");
+
+            var noteLen = packet.ReadBits(24);
+            packet.ReadBit("IsSuggestion");
+            packet.ReadDynamicString("Note", noteLen);
+        }
+
+        [Parser(Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS)]
+        [Parser(Opcode.CMSG_GM_TICKET_GET_CASE_STATUS)]
+        public static void HandleTicketZero(Packet packet)
+        {
+        }
     }
 }

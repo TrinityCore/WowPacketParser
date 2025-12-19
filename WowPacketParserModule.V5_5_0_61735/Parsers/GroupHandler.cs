@@ -671,7 +671,18 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadByte("PartyIndex");
         }
 
+        [Parser(Opcode.CMSG_DO_COUNTDOWN)]
+        public static void HandleDoCountdown(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit();
+            packet.ReadBit("UnkBit");
+            packet.ReadInt32("TotalTime");
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
+        [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]
         public static void HandleGroupNull(Packet packet)
         {
         }

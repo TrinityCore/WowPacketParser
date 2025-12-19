@@ -118,6 +118,37 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("Unknown1110_2");
         }
 
+        [Parser(Opcode.CMSG_REQUEST_ACCOUNT_DATA)]
+        public static void HandleRequestAccountData(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32E<AccountDataType>("DataType");
+        }
+
+        [Parser(Opcode.CMSG_UPDATE_ACCOUNT_DATA)]
+        public static void HandleClientUpdateAccountData(Packet packet)
+        {
+            packet.ReadTime64("Time");
+
+            var decompCount = packet.ReadInt32();
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32E<AccountDataType>("DataType");
+            var compCount = packet.ReadInt32();
+
+            var pkt = packet.Inflate(compCount, decompCount, false);
+            var data = pkt.ReadWoWString(decompCount);
+
+            packet.AddValue("CompressedData", data);
+        }
+
+        [Parser(Opcode.CMSG_ACCOUNT_NOTIFICATION_ACKNOWLEDGED)]
+        public static void HandleAccountNotificationAckknowledged(Packet packet)
+        {
+            packet.ReadUInt64("InstanceID");
+            packet.ReadUInt32("OpenSeconds");
+            packet.ReadUInt32("ReadSeconds");
+        }
+
         [Parser(Opcode.SMSG_LOGOUT_CANCEL_ACK)]
         public static void HandleAccountNull(Packet packet)
         {

@@ -572,6 +572,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("PlayerGuid");
         }
 
+        [Parser(Opcode.CMSG_ARENA_TEAM_ROSTER)]
+        [Parser(Opcode.CMSG_ARENA_TEAM_LEAVE)]
+        public static void HandleArenaTeamQuery(Packet packet)
+        {
+            packet.ReadUInt32("TeamID");
+        }
+
         [Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]
         [Parser(Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED)]
         [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]

@@ -529,5 +529,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32<QuestId>("QuestID");
             packet.ReadInt32("TreasurePickerID");
         }
+
+        [Parser(Opcode.CMSG_QUERY_PLAYER_NAMES)]
+        public static void HandleNameQuery(Packet packet)
+        {
+            var count = packet.ReadUInt32();
+            for (var i = 0; i < count; ++i)
+                packet.ReadPackedGuid128("Players", i);
+        }
     }
 }
