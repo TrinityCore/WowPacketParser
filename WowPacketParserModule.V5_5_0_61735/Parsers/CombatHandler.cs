@@ -182,6 +182,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("Forfeited");
         }
 
+        [Parser(Opcode.CMSG_CAN_DUEL)]
+        public static void HandleCanDuel(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadBit("ToTheDeath");
+        }
+
         [Parser(Opcode.SMSG_DUEL_OUT_OF_BOUNDS)]
         [Parser(Opcode.SMSG_DUEL_IN_BOUNDS)]
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]

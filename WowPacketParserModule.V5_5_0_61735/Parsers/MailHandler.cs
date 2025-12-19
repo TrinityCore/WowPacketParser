@@ -71,6 +71,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadWoWString("Body", bodyLen, idx);
         }
 
+        public static void ReadMailAttachment(Packet packet, params object[] idx)
+        {
+            packet.ReadByte("AttachPosition", idx);
+            packet.ReadPackedGuid128("ItemGUID", idx);
+        }
+
         [Parser(Opcode.SMSG_MAIL_COMMAND_RESULT)]
         public static void HandleMailCommandResult(Packet packet)
         {
@@ -151,6 +157,35 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadPackedGuid128("Mailbox");
             packet.ReadUInt64("MailID");
+        }
+
+        [Parser(Opcode.CMSG_SEND_MAIL)]
+        public static void HandleSendMail(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadInt32("StationeryID");
+            packet.ReadInt64("SendMoney");
+            packet.ReadInt64("Cod");
+
+            var nameLength = packet.ReadBits(9);
+            var subjectLength = packet.ReadBits(9);
+            var bodyLength = packet.ReadBits(11);
+            var itemCount = packet.ReadBits(5);
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("Target", nameLength);
+            packet.ReadWoWString("Subject", subjectLength);
+            packet.ReadWoWString("Body", bodyLength);
+
+            for (var i = 0; i < itemCount; i++)
+                ReadMailAttachment(packet, i, "Attachment");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_RETURN_TO_SENDER)]
+        public static void HandleMailReturnToSender(Packet packet)
+        {
+            packet.ReadUInt64("MailID");
+            packet.ReadPackedGuid128("SenderGUID");
         }
 
         [Parser(Opcode.CMSG_QUERY_NEXT_MAIL_TIME)]

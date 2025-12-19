@@ -908,7 +908,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_COLLECTION_ITEM_SET_FAVORITE)]
         public static void HandleCollectionItemSetFavorite(Packet packet)
         {
-            packet.ReadInt32E<CollectionType>("CollectionType");
+            packet.ReadByteE<CollectionType>("CollectionType");
             packet.ReadUInt32("ID");
             packet.ResetBitReader();
             packet.ReadBit("IsFavorite");

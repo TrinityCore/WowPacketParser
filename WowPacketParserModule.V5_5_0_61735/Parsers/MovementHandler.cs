@@ -1164,7 +1164,15 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadSingle("SpeedMax");
         }
 
+        [Parser(Opcode.CMSG_SUMMON_RESPONSE)]
+        public static void HandleSummonResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("SummonerGUID");
+            packet.ReadBit("Accept");
+        }
+
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
+        [Parser(Opcode.CMSG_WORLD_PORT_RESPONSE)]
         public static void HandleMovementZero(Packet packet)
         {
         }

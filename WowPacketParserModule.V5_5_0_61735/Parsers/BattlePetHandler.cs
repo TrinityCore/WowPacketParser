@@ -319,6 +319,21 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadVector3("PlayerPositions", idx, i);
         }
 
+        public static void ReadPetBattleInput(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("MoveType");
+            packet.ReadSByte("NewFrontPet");
+            packet.ReadInt32("DebugFlags");
+            packet.ReadByte("BattleInterrupted");
+
+            packet.ReadInt32("AbilityID");
+            packet.ReadInt32("Round");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("IgnoreAbandonPenalty");
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_UPDATES)]
         public static void HandleBattlePetUpdates(Packet packet)
         {
@@ -366,6 +381,9 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.CMSG_BATTLE_PET_CLEAR_FANFARE)]
         [Parser(Opcode.CMSG_BATTLE_PET_UPDATE_NOTIFY)]
         [Parser(Opcode.CMSG_CAGE_BATTLE_PET)]
+        [Parser(Opcode.CMSG_BATTLE_PET_DELETE_PET)]
+        [Parser(Opcode.CMSG_BATTLE_PET_DELETE_PET_CHEAT)]
+        [Parser(Opcode.CMSG_BATTLE_PET_SUMMON)]
         public static void HandleBattlePetDeletePet(Packet packet)
         {
             packet.ReadPackedGuid128("BattlePetGUID");
@@ -486,6 +504,56 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("UnitGUID");
         }
 
+        [Parser(Opcode.CMSG_BATTLE_PET_MODIFY_NAME)]
+        public static void HandleBattlePetModifyName(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+
+            packet.ResetBitReader();
+
+            var nameLen = packet.ReadBits(7);
+            var hasDeclinedNames = packet.ReadBit("HasDeclinedNames");
+
+            if (hasDeclinedNames)
+            {
+                var declinedNamesLen = new uint[5];
+                for (int i = 0; i < 5; i++)
+                    declinedNamesLen[i] = packet.ReadBits(7);
+
+                for (int i = 0; i < 5; i++)
+                    packet.ReadWoWString("DeclinedNames", declinedNamesLen[i]);
+            }
+
+            packet.ReadWoWString("Name", nameLen);
+        }
+
+        [Parser(Opcode.CMSG_BATTLE_PET_SET_BATTLE_SLOT)]
+        public static void HandleBattlePetSetBattleSlot(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+            packet.ReadByte("SlotIndex");
+        }
+
+        [Parser(Opcode.CMSG_BATTLE_PET_SET_FLAGS)]
+        public static void HandleBattlePetSetFlags(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+            packet.ReadUInt16("Flags");
+            packet.ReadBits("ControlType", 2);
+        }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_INPUT)]
+        public static void HandlePetBattleInput(Packet packet)
+        {
+            ReadPetBattleInput(packet, "PetBattleInput");
+        }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_REPLACE_FRONT_PET)]
+        public static void HandlePetBattleReplaceFrontPet(Packet packet)
+        {
+            packet.ReadSByte("FrontPet");
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED)]
         [Parser(Opcode.SMSG_BATTLE_PETS_HEALED)]
@@ -497,6 +565,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.CMSG_PET_BATTLE_QUIT_NOTIFY)]
         [Parser(Opcode.CMSG_PET_BATTLE_FINAL_NOTIFY)]
         [Parser(Opcode.CMSG_PET_BATTLE_SCRIPT_ERROR_NOTIFY)]
+        [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL_LOCK)]
+        [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL)]
         public static void HandleBattlePetZero(Packet packet)
         {
         }

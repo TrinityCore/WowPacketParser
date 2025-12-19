@@ -238,6 +238,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_END)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_IN_COMBAT_RESURRECTION)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_PHASE_SHIFT_CHANGED)]
+        [Parser(Opcode.CMSG_RESET_INSTANCES)]
         public static void HandleInstanceZero(Packet packet)
         {
         }
