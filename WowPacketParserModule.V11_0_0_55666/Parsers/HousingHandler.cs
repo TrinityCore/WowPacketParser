@@ -182,9 +182,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         public static void HandleHousingServiceGetOwnedHousesResponse(Packet packet)
         {
             var count =  packet.ReadUInt32("Count");
+            packet.ReadByteE<HousingResult>("Result");
             for (uint i = 0; i < count; i++)
             {
-                packet.ReadByteE<HousingResult>("Result", i);
                 ReadHouse(packet, i);
             }
         }
