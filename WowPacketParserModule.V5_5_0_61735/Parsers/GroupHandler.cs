@@ -154,6 +154,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("PingRestriction");
 
             var playerCount = packet.ReadUInt32("PlayerListCount");
+            var hasChallengeMode = ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_1_63311) && packet.ReadBit("HasChallengeMode");
             var hasLFG = packet.ReadBit("HasLfgInfo");
             var hasLootSettings = packet.ReadBit("HasLootSettings");
             var hasDifficultySettings = packet.ReadBit("HasDifficultySettings");
@@ -166,6 +167,20 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadBit("Connected", i);
                 packet.ReadBit("VoiceChatSilenced", i);
                 packet.ReadBit("FromSocialQueue", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_1_63311))
+                {
+                    packet.ResetBitReader();
+                    packet.ReadPackedGuid128("BnetAccountGUID", "LeaverInfo");
+                    packet.ReadSingle("LeaveScore", "LeaverInfo");
+                    packet.ReadUInt32("SeasonID", "LeaverInfo");
+                    packet.ReadUInt32("TotalLeaves", "LeaverInfo");
+                    packet.ReadUInt32("TotalSuccesses", "LeaverInfo");
+                    packet.ReadInt32("ConsecutiveSuccesses", "LeaverInfo");
+                    packet.ReadTime64("LastPenaltyTime", "LeaverInfo");
+                    packet.ReadTime64("LeaverExpirationTime", "LeaverInfo");
+                    packet.ReadInt32("Unknown_1120", "LeaverInfo");
+                    packet.ReadBit("LeaverStatus", "LeaverInfo");
+                }
                 packet.ReadPackedGuid128("Guid", i);
                 packet.ReadByte("Subgroup", i);
                 packet.ReadByte("Flags", i);
@@ -190,6 +205,20 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadUInt32("DungeonDifficultyID");
                 packet.ReadUInt32("RaidDifficultyID");
                 packet.ReadUInt32("LegacyRaidDifficultyID");
+            }
+
+            if (hasChallengeMode)
+            {
+                packet.ResetBitReader();
+                packet.ReadInt32("Unknown_1120_1", "ChallengeMode");
+                packet.ReadInt32("Unknown_1120_2", "ChallengeMode");
+                packet.ReadUInt64("Unknown_1120_3", "ChallengeMode");
+                packet.ReadInt64("Unknown_1120_4", "ChallengeMode");
+                packet.ReadPackedGuid128("KeystoneOwnerGUID", "ChallengeMode");
+                packet.ReadPackedGuid128("LeaverGUID", "ChallengeMode");
+                packet.ReadBit("IsActive", "ChallengeMode");
+                packet.ReadBit("HasRestrictions", "ChallengeMode");
+                packet.ReadBit("CanVoteAbandon", "ChallengeMode");
             }
 
             if (hasLFG)
