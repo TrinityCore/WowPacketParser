@@ -36,11 +36,22 @@ namespace WowPacketParser.Misc
 
         public static byte[] HexStringToBinary(string data)
         {
-            var bytes = new List<byte>();
-            byte result;
-            for (var i = 0; i < data.Length; i += 2)
-                if (Byte.TryParse(data.Substring(i, 2), NumberStyles.HexNumber, null, out result))
+            // WHY: Added null/empty guard to avoid exceptions and to make the method safe for optional/empty inputs.
+            if (string.IsNullOrEmpty(data))
+                return Array.Empty<byte>();
+
+            // WHY: Switched from Substring allocations to Span slicing to reduce per-byte allocations and improve performance.
+            var span = data.AsSpan();
+
+            // WHY: Pre-sized the list since hex strings produce two chars per byte; reduces internal resizing.
+            var bytes = new List<byte>(span.Length / 2);
+
+            for (var i = 0; i + 1 < span.Length; i += 2)
+            {
+                // WHY: Parse via span slice; skip invalid trailing nibble if the input length is odd, matching the new loop condition.
+                if (byte.TryParse(span.Slice(i, 2), NumberStyles.HexNumber, null, out var result))
                     bytes.Add(result);
+            }
 
             return bytes.ToArray();
         }
@@ -284,24 +295,43 @@ namespace WowPacketParser.Misc
             if (_typeCache.TryGetValue(typeof(T), out var dict))
                 return dict;
 
-            var fi = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance);
-            if (fi.Length <= 0)
+            // WHY: Use `ConcurrentDictionary.GetOrAdd` to make caching thread-safe and avoid race conditions
+            // from manually writing into `_typeCache` when multiple threads query the same type concurrently.
+            dict = _typeCache.GetOrAdd(typeof(T), static _ =>
+            {
+                var fi = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance);
+                if (fi.Length <= 0)
+                    return null;
+
+                // WHY: Cache the complete FieldInfo->attributes mapping once, then filter per-call if requested,
+                // reducing repeated reflection and allocations across calls with different `remove` values.
+                var newDict = new Dictionary<FieldInfo, List<IAttribute>>(fi.Length);
+
+                foreach (FieldInfo field in fi)
+                {
+                    var attrs = field.GetCustomAttributes(typeof(TK), false);
+                    newDict.Add(field, ((IAttribute[])attrs).ToList());
+                }
+
+                return newDict;
+            });
+
+            if (dict == null)
                 return null;
 
-            dict = new Dictionary<FieldInfo, List<IAttribute>>(fi.Length);
+            // WHY: Preserve the old behavior: when `remove == false`, return all fields (including those without attributes).
+            if (!remove)
+                return dict;
 
-            foreach (FieldInfo field in fi)
+            // WHY: When `remove == true`, filter out fields with no matching attributes without mutating the cached dictionary.
+            var filtered = new Dictionary<FieldInfo, List<IAttribute>>(dict.Count);
+            foreach (var kvp in dict)
             {
-                var attrs = field.GetCustomAttributes(typeof(TK), false);
-                if (remove && attrs.Length <= 0)
-                    continue;
-
-                dict.Add(field, ((IAttribute[]) attrs).ToList());
+                if (kvp.Value.Count > 0)
+                    filtered.Add(kvp.Key, kvp.Value);
             }
 
-            _typeCache[typeof(T)] = dict;
-
-            return dict;
+            return filtered;
         }
 
         public static List<T> GetAttributes<T>(MemberInfo field) where T : Attribute

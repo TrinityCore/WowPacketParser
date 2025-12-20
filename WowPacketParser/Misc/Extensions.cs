@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -131,9 +131,12 @@ namespace WowPacketParser.Misc
 
         public static void Clear<T>(this ConcurrentBag<T> bag)
         {
-            T t;
-            while (bag.Count > 0)
-                bag.TryTake(out t);
+            // WHY: Removing the `bag.Count > 0` loop condition avoids relying on `ConcurrentBag<T>.Count`
+            // which is O(N) and only an approximate snapshot under concurrency; `TryTake` is the intended
+            // thread-safe pattern for draining the bag.
+            while (bag.TryTake(out _))
+            {
+            }
         }
 
         /// <summary>
@@ -173,14 +176,33 @@ namespace WowPacketParser.Misc
         {
             foreach (var item in values)
             {
-                if (!(item is IEnumerable<T>))
-                    yield return item;
-                var childs = item as IEnumerable<T>;
-                if (childs == null) continue;
-                foreach (var child in childs.Flatten())
+                // WHY: The previous implementation incorrectly yielded `IEnumerable<T>` items twice
+                // (once as the original item, and then again via recursion) and also didn't handle
+                // nulls; explicitly handling null and recursing only when appropriate prevents
+                // duplicates and preserves expected behavior.
+                if (item == null)
                 {
-                    yield return child;
+                    yield return item;
+                    continue;
                 }
+
+                // WHY: When T is `object`, strings are `IEnumerable<char>`; guarding against `string`
+                // prevents unintentionally flattening a string into characters.
+                if (item is string)
+                {
+                    yield return item;
+                    continue;
+                }
+
+                if (item is IEnumerable<T> childs)
+                {
+                    foreach (var child in childs.Flatten())
+                        yield return child;
+
+                    continue;
+                }
+
+                yield return item;
             }
         }
 

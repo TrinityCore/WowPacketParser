@@ -40,13 +40,14 @@ namespace WowPacketParser.Parsing
                 if (!type.IsAbstract || !type.IsPublic)
                     continue;
 
-                var methods = type.GetMethods();
+                // WHY: Restrict handler discovery to public static methods only; the previous approach (`GetMethods()` + `IsPublic`)
+                // pulled in instance methods and/or non-public members, which cannot be bound to `Action<Packet>` without a target.
+                var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Static);
 
                 foreach (MethodInfo method in methods)
                 {
-                    if (!method.IsPublic)
-                        continue;
-
+                    // WHY: Removed the explicit `IsPublic` check because `BindingFlags.Public` already guarantees it,
+                    // and keeping a single filter avoids divergence between reflection flags and per-method checks.
                     var attrs = (ParserAttribute[])method.GetCustomAttributes(typeof(ParserAttribute), false);
 
                     if (attrs.Length <= 0)
