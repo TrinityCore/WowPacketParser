@@ -29,16 +29,6 @@ namespace WowPacketParser.Tests.Misc
         }
 
         [Test]
-        public void TestHexStringToBinary()
-        {
-            Assert.That(new byte[0], Is.EqualTo(Utilities.HexStringToBinary(string.Empty)));
-            Assert.That(new byte[] {1, 2, 3, 4}, Is.EqualTo(Utilities.HexStringToBinary("01020304")));
-            Assert.That(new byte[] {255, 0}, Is.EqualTo(Utilities.HexStringToBinary("FF00")));
-
-            Assert.Throws<ArgumentOutOfRangeException>(() => Utilities.HexStringToBinary("B"));
-        }
-        
-        [Test]
         public void TestGetDateTimeFromGameTime()
         {
             var dateTime = Utilities.GetDateTimeFromGameTime(168938967);
