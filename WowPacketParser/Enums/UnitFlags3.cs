@@ -39,6 +39,6 @@ namespace WowPacketParser.Enums
         Unk30                                  = 0x40000000,
         Unk31                                  = 0x80000000,
 
-        Disallowed                             = (IgnoreCombat | FakeDead | AlreadySkinned | AllowInteractionWhileInCombat)
+        Disallowed                             = (AlternativeDefaultLanguage | IgnoreCombat | FakeDead | AlreadySkinned | AllowInteractionWhileInCombat)
     }
 }

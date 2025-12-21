@@ -160,24 +160,55 @@ namespace WowPacketParser.SQL.Builders
 
         public static void UpdateCreatureStaticFlags(ref Unit npc, ref CreatureTemplateDifficulty creatureDifficulty)
         {
-            if ((npc.UnitData.Flags & (uint)UnitFlags.CanSwim) != 0)
+            if (npc.UnitData.Flags.HasAnyFlag(UnitFlags.CanSwim))
                 creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.CanSwim;
-            if ((npc.UnitData.Flags & (uint)UnitFlags.CantSwim) != 0)
+            if (npc.UnitData.Flags.HasAnyFlag(UnitFlags.CantSwim))
                 creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.CannotSwim;
 
-            if ((npc.UnitData.Flags2 & (uint)UnitFlags2.CannotTurn) != 0)
+            if (npc.UnitData.Flags2.HasAnyFlag(UnitFlags2.HideBody))
+                creatureDifficulty.StaticFlags2 |= CreatureStaticFlags2.HideBody;
+            if (npc.UnitData.Flags2.HasAnyFlag(UnitFlags2.InstantlyDontFadeIn))
+                creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.DoNotFadeIn;
+            if (npc.UnitData.Flags2.HasAnyFlag(UnitFlags2.CannotTurn))
                 creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.CannotTurn;
+            if (npc.UnitData.Flags2.HasAnyFlag(UnitFlags2.TreatAsRaidUnitForHelpfulSpells))
+                creatureDifficulty.StaticFlags4 |= CreatureStaticFlags4.TreatAsRaidUnitForHelpfulSpells;
+            if (npc.UnitData.Flags2.HasAnyFlag(UnitFlags2.AttackerIgnoresMinimumRanges))
+                creatureDifficulty.StaticFlags4 |= CreatureStaticFlags4.IgnoreSpellMinRangeRestrictions;
+            if (npc.UnitData.Flags2.HasAnyFlag(UnitFlags2.AiWillOnlySwimIfTargetSwims))
+                creatureDifficulty.StaticFlags4 |= CreatureStaticFlags4.PreventSwim;
+            if (npc.UnitData.Flags2.HasAnyFlag(UnitFlags2.DontGenerateCombatLogWhenEngagedWithNpcs))
+                creatureDifficulty.StaticFlags4 |= CreatureStaticFlags4.HideInCombatLog;
+            if (npc.UnitData.Flags2.HasAnyFlag(UnitFlags2.UntargetableByClient))
+                creatureDifficulty.StaticFlags5 |= CreatureStaticFlags5.UntargetableByClient;
+            if (npc.UnitData.Flags2.HasAnyFlag(UnitFlags2.UninteractibleIfHostile))
+                creatureDifficulty.StaticFlags5 |= CreatureStaticFlags5.UninteractibleIfHostile;
+            if (npc.UnitData.Flags2.HasAnyFlag(UnitFlags2.InteractWhileHostile))
+                creatureDifficulty.StaticFlags5 |= CreatureStaticFlags5.InteractWhileHostile;
+            if (npc.UnitData.Flags2.HasAnyFlag(UnitFlags2.SuppressHighlightWhenTargetedOrMousedOver))
+                creatureDifficulty.StaticFlags5 |= CreatureStaticFlags5.SuppressHighlightWhenTargetedOrMousedOver;
+            if (npc.UnitData.Flags2.HasAnyFlag(UnitFlags2.RegeneratePower))
+                creatureDifficulty.StaticFlags1 &= ~CreatureStaticFlags.NoAutomaticRegen;
 
-            if ((npc.UnitData.Flags3 & (uint)UnitFlags3.AllowInteractionWhileInCombat) != 0)
+            if (npc.UnitData.Flags3.HasAnyFlag(UnitFlags3.AllowInteractionWhileInCombat))
                 creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.AllowInteractionWhileInCombat;
 
+            // Not 100% reliable
+            // CreatureStaticFlags.ImmuneToPc     - UnitFlags.ImmunePC
+            // CreatureStaticFlags.ImmuneToNpc    - UnitFlags.ImmuneNPC
+            // CreatureStaticFlags.Uninteractible - UnitFlags.Uninteractible
             if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && npc.Movement.Flags.HasAnyFlag(MovementFlag.DisableGravity)) ||
                 (ClientVersion.Expansion >= ClientType.Cataclysm && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.DisableGravity)))
-                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Floating; // Not 100% reliable
+                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Floating;
 
             if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && npc.Movement.Flags.HasAnyFlag(MovementFlag.Root)) ||
                 (ClientVersion.Expansion >= ClientType.Cataclysm && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.Root)))
-                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Sessile; // Not 100% reliable
+                creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Sessile;
+
+            // Handled by creature_template_addon.visibilityDistanceType
+            // CreatureStaticFlags.LargeAoi     - UnitFlags2.LargeAOI
+            // CreatureStaticFlags3.GiganticAoi - UnitFlags2.GiganticAOI
+            // CreatureStaticFlags3.InfiniteAoi - UnitFlags2.InfiniteAOI
         }
 
         [BuilderMethod(true, Units = true)]
