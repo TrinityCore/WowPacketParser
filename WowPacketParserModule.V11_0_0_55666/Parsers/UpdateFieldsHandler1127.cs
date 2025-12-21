@@ -5928,13 +5928,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
             data.Time = packet.ReadInt64("Time", indexes);
             data.DelveTier = packet.ReadInt32("DelveTier", indexes);
             data.PlayerName = packet.ReadWoWString("PlayerName", data.PlayerName.Length, indexes);
-            if (data.MonsterName.Length > 1)
-            {
-                data.MonsterName = packet.ReadWoWString("MonsterName", data.MonsterName.Length - 1, indexes);
-                packet.ReadByte();
-            }
-            else
-                data.MonsterName = string.Empty;
+            data.MonsterName = packet.ReadDynamicString("MonsterName", data.MonsterName.Length, indexes);
             return data;
         }
 
@@ -5949,13 +5943,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
             data.Time = packet.ReadInt64("Time", indexes);
             data.DelveTier = packet.ReadInt32("DelveTier", indexes);
             data.PlayerName = packet.ReadWoWString("PlayerName", data.PlayerName.Length, indexes);
-            if (data.MonsterName.Length > 1)
-            {
-                data.MonsterName = packet.ReadWoWString("MonsterName", data.MonsterName.Length - 1, indexes);
-                packet.ReadByte();
-            }
-            else
-                data.MonsterName = string.Empty;
+            data.MonsterName = packet.ReadDynamicString("MonsterName", data.MonsterName.Length, indexes);
             return data;
         }
 
@@ -6446,7 +6434,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
             var data = new ForceSetAreaTriggerPositionAndRotation();
             packet.ResetBitReader();
             data.TriggerGUID = packet.ReadPackedGuid128("TriggerGUID", indexes);
-            data.Position = packet.ReadVector3("Position", indexes);
+            data.Pos = packet.ReadVector3("Pos", indexes);
             data.Rotation = packet.ReadQuaternion("Rotation", indexes);
             return data;
         }
@@ -6456,7 +6444,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
             var data = new ForceSetAreaTriggerPositionAndRotation();
             packet.ResetBitReader();
             data.TriggerGUID = packet.ReadPackedGuid128("TriggerGUID", indexes);
-            data.Position = packet.ReadVector3("Position", indexes);
+            data.Pos = packet.ReadVector3("Pos", indexes);
             data.Rotation = packet.ReadQuaternion("Rotation", indexes);
             return data;
         }
@@ -7508,28 +7496,25 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
             var data = new DecorStoragePersistedData();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(4);
+            rawChangesMask[0] = (int)packet.ReadBits(3);
             var changesMask = new BitArray(rawChangesMask);
 
             var hasDyes = false;
             packet.ResetBitReader();
             if (changesMask[0])
             {
-                if (changesMask[1])
+                data.HouseGUID = packet.ReadPackedGuid128("HouseGUID", indexes);
+            }
+            if (changesMask[2])
+            {
+                data.Field_20 = packet.ReadByte("Field_20", indexes);
+            }
+            hasDyes = packet.ReadBit("HasDyes", indexes);
+            if (changesMask[1])
+            {
+                if (hasDyes)
                 {
-                    data.HouseGUID = packet.ReadPackedGuid128("HouseGUID", indexes);
-                }
-                if (changesMask[3])
-                {
-                    data.Field_20 = packet.ReadByte("Field_20", indexes);
-                }
-                hasDyes = packet.ReadBit("HasDyes", indexes);
-                if (changesMask[2])
-                {
-                    if (hasDyes)
-                    {
-                        data.Dyes = ReadUpdateDecorStoragePersistedDataDyes(packet, indexes, "Dyes");
-                    }
+                    data.Dyes = ReadUpdateDecorStoragePersistedDataDyes(packet, indexes, "Dyes");
                 }
             }
             return data;
@@ -7543,7 +7528,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
             data.DecorGUID = packet.ReadPackedGuid128("DecorGUID", indexes);
             data.AttachParentGUID = packet.ReadPackedGuid128("AttachParentGUID", indexes);
             data.Flags = packet.ReadByte("Flags", indexes);
-            data.Field_68 = packet.ReadPackedGuid128("Field_68", indexes);
+            data.TargetGameObjectGUID = packet.ReadPackedGuid128("TargetGameObjectGUID", indexes);
             hasPersistedData = packet.ReadBit("HasPersistedData", indexes);
             if (hasPersistedData)
             {
@@ -7578,7 +7563,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
                 }
                 if (changesMask[5])
                 {
-                    data.Field_68 = packet.ReadPackedGuid128("Field_68", indexes);
+                    data.TargetGameObjectGUID = packet.ReadPackedGuid128("TargetGameObjectGUID", indexes);
                 }
                 hasPersistedData = packet.ReadBit("HasPersistedData", indexes);
                 if (changesMask[4])
@@ -7969,13 +7954,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
             data.OwnerGUID = packet.ReadPackedGuid128("OwnerGUID", indexes);
             data.Houses.Resize(packet.ReadUInt32());
             data.Managers.Resize(packet.ReadUInt32());
-            if (data.Name.Length > 1)
-            {
-                data.Name = packet.ReadWoWString("Name", data.Name.Length - 1, indexes);
-                packet.ReadByte();
-            }
-            else
-                data.Name = string.Empty;
+            data.Name = packet.ReadDynamicString("Name", data.Name.Length, indexes);
             for (var i = 0; i < data.Houses.Count; ++i)
             {
                 data.Houses[i] = ReadCreatePlayerHouseInfo(packet, indexes, "Houses", i);
@@ -8043,13 +8022,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
                 }
                 if (changesMask[3])
                 {
-                    if (data.Name.Length > 1)
-                    {
-                        data.Name = packet.ReadWoWString("Name", data.Name.Length - 1, indexes);
-                        packet.ReadByte();
-                    }
-                    else
-                        data.Name = string.Empty;
+                    data.Name = packet.ReadDynamicString("Name", data.Name.Length, indexes);
                 }
             }
             return data;
@@ -8181,13 +8154,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
                 data.Signatures[i] = ReadCreateNeighborhoodCharterSignature(packet, indexes, "Signatures", i);
             }
             data.Name = new string('*', (int)packet.ReadBits(8));
-            if (data.Name.Length > 1)
-            {
-                data.Name = packet.ReadWoWString("Name", data.Name.Length - 1, indexes);
-                packet.ReadByte();
-            }
-            else
-                data.Name = string.Empty;
+            data.Name = packet.ReadDynamicString("Name", data.Name.Length, indexes);
             return data;
         }
 
@@ -8204,13 +8171,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
             }
             packet.ResetBitReader();
             data.Name = new string('*', (int)packet.ReadBits(8));
-            if (data.Name.Length > 1)
-            {
-                data.Name = packet.ReadWoWString("Name", data.Name.Length - 1, indexes);
-                packet.ReadByte();
-            }
-            else
-                data.Name = string.Empty;
+            data.Name = packet.ReadDynamicString("Name", data.Name.Length, indexes);
             return data;
         }
 

@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
     public class ForceSetAreaTriggerPositionAndRotation : IForceSetAreaTriggerPositionAndRotation
     {
         public WowGuid TriggerGUID { get; set; }
-        public Vector3 Position { get; set; }
+        public Vector3 Pos { get; set; }
         public Quaternion Rotation { get; set; }
     }
 }
