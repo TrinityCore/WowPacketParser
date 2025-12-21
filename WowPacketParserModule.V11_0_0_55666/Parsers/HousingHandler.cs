@@ -92,6 +92,12 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadPackedGuid128("PlayerGUID");
         }
         
+        [Parser(Opcode.CMSG_HOUSING_SERVICES_REQUEST_PLAYER_CHARACTER_LIST)]
+        public static void HandleHousingServicesRequestPlayerCharacterList(Packet packet)
+        {
+            packet.ReadPackedGuid128("HouseGUID");
+        }
+        
         [Parser(Opcode.CMSG_HOUSING_SERVICES_SEARCH_BNET_FRIEND_NEIGHBORHOODS)]
         public static void HandleHousingServiceSearchBnetFriendNeighborhoods(Packet packet)
         {
