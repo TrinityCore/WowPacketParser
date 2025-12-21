@@ -132,6 +132,16 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadByteE<HousingResult>("Result");
         }
         
+        [Parser(Opcode.SMSG_HOUSING_DECOR_SELECT_DECOR_RESPONSE)]
+        public static void HandleHousingDecorSelectDecorResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("DecorGUID");
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadUInt32("Field_16");
+            packet.ReadByteE<HousingResult>("Result");
+            packet.ReadBool("Selected");
+        }
+
         [Parser(Opcode.SMSG_HOUSING_DECOR_SET_EDITOR_MODE_ACTIVE_RESPONSE)]
         public static void HandleHousingDecorSetEditorModeActiveResponse(Packet packet)
         {
