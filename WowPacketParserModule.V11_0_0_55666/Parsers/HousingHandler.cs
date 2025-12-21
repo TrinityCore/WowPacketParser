@@ -139,7 +139,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadPackedGuid128("PlayerGUID");
             packet.ReadUInt32("Field_16");
             packet.ReadByteE<HousingResult>("Result");
-            packet.ReadBool("Selected");
+            packet.ReadBit("Selected");
+            packet.ReadBit("Field_17");
         }
 
         [Parser(Opcode.SMSG_HOUSING_DECOR_SET_EDITOR_MODE_ACTIVE_RESPONSE)]
