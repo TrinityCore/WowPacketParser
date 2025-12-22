@@ -347,7 +347,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 SpellHandler.ReadSpellCastLogData(packet);
         }
 
-        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
+        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, ClientBranch.MoP)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
             packet.ReadPackedGuid128("Me");
@@ -371,6 +371,44 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("Periodic");
 
             packet.ReadBitsE<AttackerStateFlags>("Flags", 7);
+            var hasDebugData = packet.ReadBit("HasDebugData");
+            var hasLogData = packet.ReadBit("HasLogData");
+            var hasContentTuning = packet.ReadBit("HasContentTuning");
+
+            if (hasLogData)
+                SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
+
+            if (hasDebugData)
+                ReadSpellNonMeleeDebugData(packet, "DebugData");
+
+            if (hasContentTuning)
+                ReadContentTuningParams(packet, "ContentTuning");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, ClientBranch.TBC)]
+        public static void HandleSpellNonMeleeDmgLog255(Packet packet)
+        {
+            packet.ReadPackedGuid128("Me");
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadPackedGuid128("CastID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisual");
+            packet.ReadInt32("Damage");
+            packet.ReadInt32("OriginalDamage");
+            packet.ReadInt32("OverKill");
+
+            packet.ReadByte("SchoolMask");
+
+            packet.ReadInt32("Absorbed");
+            packet.ReadInt32("Resisted");
+            packet.ReadInt32("ShieldBlock");
+
+            packet.ReadInt32E<AttackerStateFlags>("Flags");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Periodic");
 
             var hasDebugData = packet.ReadBit("HasDebugData");
             var hasLogData = packet.ReadBit("HasLogData");

@@ -851,7 +851,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_AURA_UPDATE)]
+        [Parser(Opcode.SMSG_AURA_UPDATE, ClientBranch.MoP)]
         public static void HandleAuraUpdate(Packet packet)
         {
             PacketAuraUpdate packetAuraUpdate = packet.Holder.AuraUpdate = new();
@@ -1195,7 +1195,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("ServerCastID");
         }
 
-        [Parser(Opcode.SMSG_SPELL_GO)]
+        [Parser(Opcode.SMSG_SPELL_GO, ClientBranch.MoP)]
         public static void HandleSpellGo(Packet packet)
         {
             PacketSpellGo packetSpellGo = new();
@@ -1208,7 +1208,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 ReadSpellCastLogData(packet, "LogData");
         }
 
-        [Parser(Opcode.SMSG_SPELL_START)]
+        [Parser(Opcode.SMSG_SPELL_START, ClientBranch.MoP)]
         public static void HandleSpellStart(Packet packet)
         {
             ReadSpellCastData(packet, "Cast");

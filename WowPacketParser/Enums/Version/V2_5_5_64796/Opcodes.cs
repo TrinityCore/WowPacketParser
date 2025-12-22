@@ -1,8 +1,8 @@
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.Enums.Version.V1_15_8_63829
+namespace WowPacketParser.Enums.Version.V2_5_5_64796
 {
-    public static class Opcodes_1_15_8
+    public static class Opcodes_2_5_5
     {
         public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
@@ -20,22 +20,22 @@ namespace WowPacketParser.Enums.Version.V1_15_8_63829
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new()
         {
             { Opcode.CMSG_CHAT_MESSAGE_SAY, 0x2F0023 },
-            { Opcode.CMSG_SEND_TEXT_EMOTE, 0x340013 },
+            { Opcode.CMSG_SEND_TEXT_EMOTE, 0x3E0013 },
             { Opcode.CMSG_USE_ITEM, 0x30016B },
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new()
         {
-            { Opcode.SMSG_TEXT_EMOTE, 0x3A011D },
-            { Opcode.SMSG_EMOTE, 0x3A026C },
-            { Opcode.SMSG_CHAT, 0x3F0001 },
-            { Opcode.SMSG_ON_MONSTER_MOVE, 0x4C0002 },
-            { Opcode.SMSG_MOVE_UPDATE_TELEPORT, 0x4C000F },
-            { Opcode.SMSG_UPDATE_OBJECT, 0x4A0000 },
-            { Opcode.SMSG_AURA_UPDATE, 0x510011 },
-            { Opcode.SMSG_SPELL_GO, 0x510028 },
-            { Opcode.SMSG_SPELL_START, 0x510029 },
-            { Opcode.SMSG_PET_SPELLS_MESSAGE, 0x510014 },
+            { Opcode.SMSG_TEXT_EMOTE, 0x440121 },
+            { Opcode.SMSG_EMOTE, 0x440270 },
+            { Opcode.SMSG_CHAT, 0x490001 },
+            { Opcode.SMSG_ON_MONSTER_MOVE, 0x5C0002 },
+            { Opcode.SMSG_UPDATE_OBJECT, 0x5A0000 },
+            { Opcode.SMSG_AURA_UPDATE, 0x630011 },
+            { Opcode.SMSG_SPELL_GO, 0x630028 },
+            { Opcode.SMSG_SPELL_START, 0x630029 },
+            { Opcode.SMSG_PET_SPELLS_MESSAGE, 0x630014 },
+            { Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, 0x630021 },
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new();
