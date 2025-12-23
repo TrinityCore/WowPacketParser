@@ -223,6 +223,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         public static void HandleQueryNeighborhoodNameResponse(Packet packet)
         {
             packet.ReadPackedGuid128("NeighborhoodGUID");
+            packet.ReadBool("Field_08");            
             var nameLen = packet.ReadBits(8);
             packet.ReadWoWString("NeighborhoodName", nameLen);
         }
