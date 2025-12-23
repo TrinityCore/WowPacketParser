@@ -27,6 +27,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadWoWString("Notes", notesLen);
         }
 
+        public static void ReadQualifiedGUID(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("VirtualRealmAddress", indexes);
+            packet.ReadPackedGuid128("Guid", indexes);
+        }
+
         [Parser(Opcode.SMSG_CONTACT_LIST)]
         public static void HandleContactList(Packet packet)
         {
@@ -57,6 +63,45 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             var notesLen = packet.ReadBits(10);
             packet.ReadWoWString("Notes", notesLen);
+        }
+
+        [Parser(Opcode.CMSG_SEND_CONTACT_LIST)]
+        public static void HandleSendContactList(Packet packet)
+        {
+            packet.ReadUInt32("Flags");
+        }
+
+        [Parser(Opcode.CMSG_ADD_FRIEND)]
+        public static void HandleAddFriend(Packet packet)
+        {
+            var nameLength = packet.ReadBits(9);
+            var notesLength = packet.ReadBits(10);
+
+            packet.ReadWoWString("Name", nameLength);
+            packet.ReadWoWString("Notes", notesLength);
+        }
+
+        [Parser(Opcode.CMSG_DEL_FRIEND)]
+        [Parser(Opcode.CMSG_DEL_IGNORE)]
+        public static void HandleDeleteFriendOrIgnoreOrMute(Packet packet)
+        {
+            ReadQualifiedGUID(packet, "QualifiedGUID");
+        }
+
+        [Parser(Opcode.CMSG_SET_CONTACT_NOTES)]
+        public static void HandleSetContactNotes(Packet packet)
+        {
+            ReadQualifiedGUID(packet, "QualifiedGUID");
+            var notesLength = packet.ReadBits(10);
+            packet.ReadWoWString("Notes", notesLength);
+        }
+
+        [Parser(Opcode.CMSG_ADD_IGNORE)]
+        public static void HandleAddIgnoreOrMute(Packet packet)
+        {
+            var nameLength = packet.ReadBits(9);
+            packet.ReadPackedGuid128("AccountGUID");
+            packet.ReadWoWString("Name", nameLength);
         }
     }
 }

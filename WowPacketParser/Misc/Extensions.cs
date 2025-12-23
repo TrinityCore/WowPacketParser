@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -129,13 +128,6 @@ namespace WowPacketParser.Misc
             return $"{span.Hours:00}:{span.Minutes:00}:{span.Seconds:00}.{span.Milliseconds:000}";
         }
 
-        public static void Clear<T>(this ConcurrentBag<T> bag)
-        {
-            T t;
-            while (bag.Count > 0)
-                bag.TryTake(out t);
-        }
-
         /// <summary>
         /// Compare two dictionaries
         /// </summary>
@@ -240,7 +232,7 @@ namespace WowPacketParser.Misc
             fields.Scale = data.Scale;
             fields.DynamicFlags = data.DynamicFlags;
         }
-        
+
         public static void UpdateData(this UpdateValuesObjectDataFields fields, IGameObjectData data)
         {
             var go = fields.Gameobject ??= new();
@@ -326,34 +318,34 @@ namespace WowPacketParser.Misc
             unit.NpcFlags.Reserve(data.NpcFlags.Length);
             for (int i = 0; i < data.NpcFlags.Length; ++i)
                 unit.NpcFlags[i] = data.NpcFlags[i].ToProto();
-            
+
             unit.Power.Reserve(data.Power.Length);
             for (int i = 0; i < data.Power.Length; ++i)
                 unit.Power[i] = data.Power[i].ToProto();
-            
+
             unit.MaxPower.Reserve(data.MaxPower.Length);
             for (int i = 0; i < data.MaxPower.Length; ++i)
                 unit.MaxPower[i] = data.MaxPower[i].ToProto();
-            
+
             unit.AttackRoundBaseTime.Reserve(data.AttackRoundBaseTime.Length);
             for (int i = 0; i < data.AttackRoundBaseTime.Length; ++i)
                 unit.AttackRoundBaseTime[i] = data.AttackRoundBaseTime[i].ToProto();
-            
+
             unit.Resistances.Reserve(data.Resistances.Length);
             for (int i = 0; i < data.Resistances.Length; ++i)
                 unit.Resistances[i] = data.Resistances[i].ToProto();
-            
+
             unit.VirtualItems.Reserve(data.VirtualItems.Length);
             for (int i = 0; i < data.VirtualItems.Length; ++i)
                 if (data.VirtualItems[i] != null)
                     unit.VirtualItems[i] = data.VirtualItems[i].ToProto();
         }
-        
+
         public static UInt32ValueWrapper ToProto(this uint? value)
         {
             return new UInt32ValueWrapper() { Value = value };
         }
-        
+
         public static Int32ValueWrapper ToProto(this int? value)
         {
             return new Int32ValueWrapper() { Value = value };

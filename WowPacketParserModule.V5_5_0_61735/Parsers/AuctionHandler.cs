@@ -661,6 +661,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 ReadAuctionItemForSale(packet, i);
         }
 
+        [Parser(Opcode.CMSG_AUCTION_SET_FAVORITE_ITEM)]
+        public static void HandleAuctionSetFavoriteItem(Packet packet)
+        {
+            packet.ReadBit("IsNotFavorite");
+            ReadAuctionFavoriteInfo(packet, "FavoriteInfo");
+        }
+
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
         public static void HandleAuctionZero(Packet packet)
         {

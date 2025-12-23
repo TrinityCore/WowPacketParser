@@ -209,6 +209,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_PET_RENAME)]
+        public static void HandlePetRename(Packet packet)
+        {
+            ReadPetRenameData(packet);
+        }
+
         [Parser(Opcode.CMSG_REQUEST_PET_INFO)]
         public static void HandlePetNull(Packet packet)
         {

@@ -15,7 +15,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
         public WowGuid AttachParentGUID { get; set; }
         public System.Nullable<byte> Flags { get; set; }
         public IDecorStoragePersistedData PersistedData { get; set; }
-        public WowGuid Field_68 { get; set; }
+        public WowGuid TargetGameObjectGUID { get; set; }
     }
 }
 

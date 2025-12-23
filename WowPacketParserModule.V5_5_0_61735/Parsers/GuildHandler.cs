@@ -1016,6 +1016,28 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadInt32("ArenaTeamId");
         }
 
+        [Parser(Opcode.CMSG_QUERY_GUILD_INFO)]
+        public static void HandleGuildQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadPackedGuid128("PlayerGUID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SET_GUILD_MASTER)]
+        public static void HandleGuildSetGuildMaster(Packet packet)
+        {
+            var nameLength = packet.ReadBits(9);
+            packet.ReadWoWString("NewMasterName", nameLength);
+        }
+
+        [Parser(Opcode.CMSG_PETITION_RENAME_GUILD)]
+        public static void HandlePetitionRenameGuild(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGuid");
+            var length = packet.ReadBits(7);
+            packet.ReadWoWString("Name", length);
+        }
+
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_RANKS_UPDATED)]

@@ -994,6 +994,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         }
 
         [Parser(Opcode.CMSG_LOW_LEVEL_RAID2)]
+        [Parser(Opcode.CMSG_LOW_LEVEL_RAID1)]
         public static void HandleLowLevelRaidPackets(Packet packet)
         {
             packet.ReadBool("Allow");
@@ -1047,6 +1048,95 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadByte("PartyIndex");
         }
 
+        [Parser(Opcode.CMSG_WHO_IS)]
+        public static void HandleWhoIsRequest(Packet packet)
+        {
+            var len = packet.ReadBits(6);
+            packet.ReadWoWString("CharName", len);
+        }
+
+        [Parser(Opcode.CMSG_WHO)]
+        public static void HandleWhoRequest(Packet packet)
+        {
+            var areaCount = packet.ReadBits(4);
+            packet.ReadBit("IsFromAddon");
+
+            packet.ReadInt32("MinLevel");
+            packet.ReadInt32("MaxLevel");
+            packet.ReadInt64("RaceFilter");
+            packet.ReadInt32("ClassFilter");
+
+            packet.ResetBitReader();
+
+            var nameLen = packet.ReadBits(6);
+            var virtualRealmNameLen = packet.ReadBits(9);
+            var guildLen = packet.ReadBits(7);
+            var guildVirtualRealmNameLen = packet.ReadBits(9);
+            var wordCount = packet.ReadBits(3);
+
+            packet.ReadBit("ShowEnemies");
+            packet.ReadBit("ShowArenaPlayers");
+            packet.ReadBit("ExactName");
+            var hasServerInfo = packet.ReadBit("HasServerInfo");
+            packet.ResetBitReader();
+
+            for (var i = 0; i < wordCount; ++i)
+            {
+                var bits0 = packet.ReadBits(7);
+                packet.ReadWoWString("Word", bits0, i);
+                packet.ResetBitReader();
+            }
+
+            packet.ReadWoWString("Name", nameLen);
+            packet.ReadWoWString("VirtualRealmName", virtualRealmNameLen);
+            packet.ReadWoWString("Guild", guildLen);
+            packet.ReadWoWString("GuildVirtualRealmName", guildVirtualRealmNameLen);
+
+            // WhoRequestServerInfo
+            if (hasServerInfo)
+            {
+                packet.ReadByte("FactionGroup");
+                packet.ReadInt32("Locale");
+                packet.ReadUInt32("RequesterVirtualRealmAddress");
+            }
+
+            packet.ReadUInt32("RequestID");
+            packet.ReadByteE<WhoRequestOrigin>("Origin");
+
+            for (var i = 0; i < areaCount; ++i)
+                packet.ReadUInt32<AreaId>("Area", i);
+        }
+
+        [Parser(Opcode.CMSG_RESURRECT_RESPONSE)]
+        public static void HandleResurrectResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("Resurrecter");
+            packet.ReadUInt32("Response");
+        }
+
+        [Parser(Opcode.CMSG_TUTORIAL)]
+        public static void HandleTutorial(Packet packet)
+        {
+            var action = packet.ReadBitsE<TutorialAction>("TutorialAction", 2);
+
+            if (action == TutorialAction.Update)
+                packet.ReadInt32E<Tutorial>("TutorialBit");
+        }
+
+        [Parser(Opcode.CMSG_PING)]
+        public static void HandleClientPing(Packet packet)
+        {
+            packet.ReadInt32("Serial");
+            packet.ReadInt32("Latency");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_PLAYER_NAME_BY_COMMUNITY_ID)]
+        public static void HandleQueryPlayerNameByCommunityID(Packet packet)
+        {
+            packet.ReadPackedGuid128("BNetAccountGUID");
+            packet.ReadUInt64("CommunityDbID");
+        }
+
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
@@ -1068,6 +1158,10 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.CMSG_OPENING_CINEMATIC)]
         [Parser(Opcode.CMSG_NEXT_CINEMATIC_CAMERA)]
         [Parser(Opcode.CMSG_COMPLETE_CINEMATIC)]
+        [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
+        [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
+        [Parser(Opcode.CMSG_ACCEPT_SOCIAL_CONTRACT)]
+        [Parser(Opcode.CMSG_ENABLE_NAGLE)]
         public static void HandleMiscZero(Packet packet)
         {
         }

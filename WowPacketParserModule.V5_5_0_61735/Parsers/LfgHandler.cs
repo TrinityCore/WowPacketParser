@@ -519,6 +519,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("TeleportOut");
         }
 
+        [Parser(Opcode.CMSG_QUICK_JOIN_AUTO_ACCEPT_REQUESTS)]
+        public static void HandleLfgQuickJoinAutoAcceptRequests(Packet packet)
+        {
+            packet.ReadBit("AutoAccept");
+        }
+
         [Parser(Opcode.SMSG_PARTY_NOTIFY_LFG_LEADER_CHANGE)]
         [Parser(Opcode.SMSG_LFG_DISABLED)]
         [Parser(Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST)]
