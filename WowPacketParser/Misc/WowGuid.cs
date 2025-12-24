@@ -155,6 +155,24 @@ namespace WowPacketParser.Misc
             if (Low == 0 && High == 0)
                 return "Full: 0x0";
 
+            string baseGuidPart = $"TypeName: {GetHighType()}; Full: 0x{High:X16}{Low:X16}";
+            string endString = $"Low: {GetLow()}";
+            switch (GetHighType())
+            {
+                case HighGuidType.Housing:
+                {
+                    var subType = (HousingGuidType)((High >> 53) & 0x1F);
+                    return subType switch
+                    {
+                        HousingGuidType.Decor          => $"{baseGuidPart}; SubType: {subType}; RealmID: {(High >> 32) & 0xFFFF}; DecorID: {High & 0xFFFFFFFF}; {endString}",
+                        HousingGuidType.Neighborhood   => $"{baseGuidPart}; SubType: {subType}; NeighborhoodMapID: {(High >> 32) & 0xFFFF}; Arg2: {High & 0xFFFFFFFF}; {endString}",
+                        HousingGuidType.RoomComponent  => $"{baseGuidPart}; SubType: {subType}; HouseRoomID: {High & 0xFFFFFFFF}; {endString}",
+                        HousingGuidType.House          => $"{baseGuidPart}; SubType: {subType}; NeighborhoodMapID: {Low & 0x7FFF}; Arg2: {(Low >> 15) & 0x3F}; {endString}",
+                        _                              => $"{baseGuidPart}; SubType: Unknown({(byte)subType}); {endString}",
+                    };
+                }
+            }
+            
             if (HasEntry())
             {
                 StoreNameType type = StoreNameType.None;
