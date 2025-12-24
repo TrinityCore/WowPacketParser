@@ -73,6 +73,13 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadUInt32("Field_4");
         }
         
+        [Parser(Opcode.CMSG_HOUSING_REQUEST_EDITOR_AVAILABILITY)]
+        public static void HousingRequestEditorAvailability(Packet packet)
+        {
+            packet.ReadByte("Field_0");
+            packet.ReadPackedGuid128("HouseGUID");
+        }
+        
         [Parser(Opcode.CMSG_HOUSING_ROOM_REMOVE_ROOM)]
         public static void HandleHousingRoomRemove(Packet packet)
         {
@@ -122,6 +129,14 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             ReadHouse(packet, "House");
             packet.ReadByteE<HousingResult>("Result");
+        }
+        
+        [Parser(Opcode.SMSG_HOUSING_EDITOR_AVAILABILITY_RESPONSE)]
+        public static void HousingEditorAvailabilityResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("HouseGUID");
+            packet.ReadByteE<HousingResult>("Result");
+            packet.ReadByte("Field_09");
         }
         
         [Parser(Opcode.SMSG_HOUSING_DECOR_CATALOG_CREATE_SEARCHER_RESPONSE)]
@@ -201,6 +216,15 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadByteE<HousingResult>("Result");
         }
         
+        [Parser(Opcode.SMSG_HOUSING_UPDATE_HOUSE_INFO)]
+        public static void HandleHousingUpdateHouseInfo(Packet packet)
+        {
+            packet.ReadPackedGuid128("HouseGUID");
+            packet.ReadPackedGuid128("BnetAccountID");
+            packet.ReadPackedGuid128("OwnerGUID");
+            packet.ReadUInt32("Field_024");
+        }
+        
         [Parser(Opcode.SMSG_HOUSING_SERVICES_GET_OTHERS_PLAYER_OWNED_HOUSES_RESPONSE)]
         [Parser(Opcode.SMSG_HOUSING_SERVICES_GET_PLAYER_OWNED_HOUSES_RESPONSE)]
         public static void HandleHousingServiceGetOwnedHousesResponse(Packet packet)
@@ -223,7 +247,10 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         public static void HandleQueryNeighborhoodNameResponse(Packet packet)
         {
             packet.ReadPackedGuid128("NeighborhoodGUID");
-            packet.ReadBool("Field_08");            
+            bool result = packet.ReadBool("Result");
+            if (!result)
+                return;
+            
             var nameLen = packet.ReadBits(8);
             packet.ReadWoWString("NeighborhoodName", nameLen);
         }
