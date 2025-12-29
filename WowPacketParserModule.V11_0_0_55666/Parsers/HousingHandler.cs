@@ -124,6 +124,17 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadPackedGuid128("NeighborhoodGUID");
         }
         
+        [Parser(Opcode.SMSG_NEIGHBORHOOD_HOUSE_PLOT_ENTERED)]
+        public static void HandleNeighborhoodHousePlotEntered(Packet packet)
+        {
+            packet.ReadPackedGuid128("AreaTriggerGuid");
+        }
+        
+        [Parser(Opcode.SMSG_NEIGHBORHOOD_HOUSE_PLOT_EXITED)]
+        public static void HandleNeighborhoodHousePlotExited(Packet packet)
+        {
+        }
+        
         [Parser(Opcode.SMSG_HOUSING_CURRENT_HOUSE_INFO_RESPONSE)]
         public static void HandleHousingCurrentHouseInfoResponse(Packet packet)
         {

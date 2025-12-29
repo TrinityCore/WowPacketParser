@@ -1801,6 +1801,8 @@ namespace WowPacketParser.Enums.Version.V11_2_7_64877
             { Opcode.SMSG_MYTHIC_PLUS_CURRENT_AFFIXES, 0x4000AE },
             { Opcode.SMSG_MYTHIC_PLUS_NEW_WEEK_RECORD, 0x4000B4 },
             { Opcode.SMSG_MYTHIC_PLUS_SEASON_DATA, 0x4000AD },
+            { Opcode.SMSG_NEIGHBORHOOD_HOUSE_PLOT_ENTERED, 0x5A0000 },
+            { Opcode.SMSG_NEIGHBORHOOD_HOUSE_PLOT_EXITED, 0x5A0001 },
             { Opcode.SMSG_NEUTRAL_PLAYER_FACTION_SELECT_RESULT, 0x400078 },
             { Opcode.SMSG_NEW_DATA_BUILD, 0x400340 },
             { Opcode.SMSG_NEW_TAXI_PATH, 0x400122 },
