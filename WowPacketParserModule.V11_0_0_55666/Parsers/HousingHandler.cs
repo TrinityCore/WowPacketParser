@@ -197,6 +197,14 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 packet.ReadPackedGuid128("AllowedEditor", i);
         }
 
+        [Parser(Opcode.SMSG_HOUSING_DECOR_START_PLACING_NEW_DECOR_RESPONSE)]
+        public static void HandleHousingDecorStartPlacingNewDecorResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("DecorGUID");
+            packet.ReadByteE<HousingResult>("Result");
+            packet.ReadUInt32("Field_13");
+        }
+
         [Parser(Opcode.SMSG_HOUSING_EXTERIOR_SET_EXTERIOR_LOCK_STATE)]
         public static void HandleHousingExteriorLockHouseExterior(Packet packet)
         {
