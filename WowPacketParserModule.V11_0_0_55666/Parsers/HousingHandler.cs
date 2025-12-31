@@ -164,6 +164,16 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadByteE<HousingResult>("Result");
         }
         
+        
+        [Parser(Opcode.SMSG_HOUSING_DECOR_REMOVE_PLACED_DECOR_ENTRY_RESPONSE)]
+        public static void HandleHousingDecorRemovePlacedDecorEntryResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("DecorGUID");
+            packet.ReadByteE<HousingResult>("Result");
+            packet.ReadUInt32("Field_13");
+            packet.ReadUInt16("Field_17");
+        }
+        
         [Parser(Opcode.SMSG_HOUSING_DECOR_SELECT_DECOR_RESPONSE)]
         public static void HandleHousingDecorSelectDecorResponse(Packet packet)
         {
