@@ -495,6 +495,8 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V1_15_8_63829
             packet.ResetBitReader();
             data.SpellID = packet.ReadInt32("SpellID", indexes);
             data.SpellXSpellVisualID = packet.ReadInt32("SpellXSpellVisualID", indexes);
+            data.StartTimeMs = packet.ReadUInt32("StartTimeMs", indexes);
+            data.Duration = packet.ReadUInt32("Duration", indexes);
             return data;
         }
 
