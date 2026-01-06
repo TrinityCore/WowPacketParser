@@ -1,4 +1,3 @@
-using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -352,7 +351,7 @@ namespace WowPacketParser.Parsing.Parsers
                 int start = i;
                 int size = 1;
                 UpdateFieldType updateFieldType = UpdateFieldType.Default;
-                System.Type? enumType = null;
+                System.Type enumType = null;
                 if (fieldInfo != null)
                 {
                     key = fieldInfo.Name;

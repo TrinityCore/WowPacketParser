@@ -40,7 +40,7 @@ namespace WowPacketParser.Parsing
             EnumType = enumType;
         }
 
-        public UpdateFieldAttribute(UpdateFieldType attrib, ClientVersionBuild fromVersion, Type? enumType)
+        public UpdateFieldAttribute(UpdateFieldType attrib, ClientVersionBuild fromVersion, Type enumType)
         {
             UFAttribute = attrib;
             Version = fromVersion;
@@ -49,6 +49,6 @@ namespace WowPacketParser.Parsing
 
         public UpdateFieldType UFAttribute { get; private set; }
         public ClientVersionBuild Version { get; private set; }
-        public Type? EnumType { get; private set; }
+        public Type EnumType { get; private set; }
     }
 }
