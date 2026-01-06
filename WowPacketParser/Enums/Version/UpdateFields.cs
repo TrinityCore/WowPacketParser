@@ -16,6 +16,7 @@ namespace WowPacketParser.Enums.Version
         public string Name;
         public int Size;
         public UpdateFieldType Format;
+        public Type? EnumType;
     }
 
     public static class UpdateFields
@@ -64,15 +65,15 @@ namespace WowPacketParser.Enums.Version
             };
 
             bool loaded = false;
-            foreach (Type enumType in enumTypes)
+            foreach (Type ufEnumType in enumTypes)
             {
                 string vTypeString =
-                    $"WowPacketParserModule.{GetUpdateFieldDictionaryBuildName(build)}.Enums.{enumType.Name}";
+                    $"WowPacketParserModule.{GetUpdateFieldDictionaryBuildName(build)}.Enums.{ufEnumType.Name}";
                 Type vEnumType = asm.GetType(vTypeString);
                 if (vEnumType == null)
                 {
                     vTypeString =
-                        $"WowPacketParser.Enums.Version.{GetUpdateFieldDictionaryBuildName(build)}.{enumType.Name}";
+                        $"WowPacketParser.Enums.Version.{GetUpdateFieldDictionaryBuildName(build)}.{ufEnumType.Name}";
                     vEnumType = Assembly.GetExecutingAssembly().GetType(vTypeString);
                     if (vEnumType == null)
                         continue;   // versions prior to 4.3.0 do not have AreaTriggerField
@@ -86,22 +87,22 @@ namespace WowPacketParser.Enums.Version
 
                 for (int i = 0; i < vValues.Length; ++i)
                 {
-                    var format = enumType.GetMember(vNames[i])
+                    UpdateFieldAttribute? attribute = (UpdateFieldAttribute)ufEnumType.GetMember(vNames[i])
                         .SelectMany(member => member.GetCustomAttributes(typeof(UpdateFieldAttribute), false))
                         .Where(attribute => ((UpdateFieldAttribute)attribute).Version <= ClientVersion.VersionDefiningBuild)
-                        .OrderByDescending(attribute => ((UpdateFieldAttribute)attribute).Version)
-                        .Select(attribute => ((UpdateFieldAttribute)attribute).UFAttribute)
-                        .DefaultIfEmpty(UpdateFieldType.Default).First();
+                        .OrderByDescending(attribute => ((UpdateFieldAttribute)attribute).Version).FirstOrDefault();;
+                    UpdateFieldType format = attribute?.UFAttribute ?? UpdateFieldType.Default;
+                    Type? enumType = attribute?.EnumType ?? null;
 
-                    result.Add((int)vValues.GetValue(i), new UpdateFieldInfo() { Value = (int)vValues.GetValue(i), Name = vNames[i], Size = 0, Format = format });
+                    result.Add((int)vValues.GetValue(i), new UpdateFieldInfo() { Value = (int)vValues.GetValue(i), Name = vNames[i], Size = 0, Format = format, EnumType = enumType });
                     namesResult.Add(vNames[i], (int)vValues.GetValue(i));
                 }
 
                 for (var i = 0; i < result.Count - 1; ++i)
                     result.Values[i].Size = result.Keys[i + 1] - result.Keys[i];
 
-                dicts.Add(enumType, result);
-                nameToValueDict.Add(enumType, namesResult);
+                dicts.Add(ufEnumType, result);
+                nameToValueDict.Add(ufEnumType, namesResult);
                 loaded = true;
             }
 
