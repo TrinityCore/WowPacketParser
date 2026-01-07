@@ -10,7 +10,7 @@ namespace WowPacketParser.Loading
 {
     public sealed class BinaryPacketReader : IPacketReader
     {
-        enum PktVersion
+        public enum PktVersion
         {
             NoHeader = 0,
 // ReSharper disable InconsistentNaming
