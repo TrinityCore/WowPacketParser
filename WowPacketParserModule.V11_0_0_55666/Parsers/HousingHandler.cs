@@ -66,6 +66,19 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadBool("Selected");
         }
         
+        [Parser(Opcode.CMSG_HOUSING_DECOR_PLACE_NEW_DECOR)]
+        public static void HousingDecorPlaceNewDecor(Packet packet)
+        {
+            packet.ReadPackedGuid128("DecorGUID");
+            packet.ReadVector3("Position");
+            packet.ReadQuaternion("Rotation");
+            packet.ReadPackedGuid128("AttachParentGUID");
+            packet.ReadPackedGuid128("RoomGUID");
+            packet.ReadByte("Field_61");
+            packet.ReadByte("Field_62");
+            packet.ReadInt32("Field_63");
+        }
+        
         [Parser(Opcode.CMSG_HOUSING_DECOR_START_PLACING_NEW_DECOR)]
         public static void HousingDecorStartPlacing(Packet packet)
         {
@@ -203,6 +216,15 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadPackedGuid128("DecorGUID");
             packet.ReadByteE<HousingResult>("Result");
             packet.ReadUInt32("Field_13");
+        }
+
+        [Parser(Opcode.SMSG_HOUSING_DECOR_PLACE_NEW_DECOR_RESPONSE)]
+        public static void HandleHousingDecorPlaceNewDecorResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadUInt32("Field_09");
+            packet.ReadPackedGuid128("DecorGUID");
+            packet.ReadByteE<HousingResult>("Result");
         }
 
         [Parser(Opcode.SMSG_HOUSING_EXTERIOR_SET_EXTERIOR_LOCK_STATE)]
