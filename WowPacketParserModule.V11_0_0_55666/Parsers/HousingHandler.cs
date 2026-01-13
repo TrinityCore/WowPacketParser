@@ -43,7 +43,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             packet.ReadPackedGuid128("DecorGUID");
             packet.ReadVector3("Position");
-            packet.ReadQuaternion("Rotation");
+            packet.ReadVector3("Rotation");
+            packet.ReadSingle("Scale");
             packet.ReadPackedGuid128("AttachParentGUID");
             packet.ReadPackedGuid128("RoomGUID");
             packet.ReadPackedGuid128("Field_70");
@@ -71,7 +72,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             packet.ReadPackedGuid128("DecorGUID");
             packet.ReadVector3("Position");
-            packet.ReadQuaternion("Rotation");
+            packet.ReadVector3("Rotation");
+            packet.ReadSingle("Scale");
             packet.ReadPackedGuid128("AttachParentGUID");
             packet.ReadPackedGuid128("RoomGUID");
             packet.ReadByte("Field_61");
