@@ -6,7 +6,6 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 {
     public static class HousingHandler
     {
-        
         [Parser(Opcode.CMSG_HOUSING_DECOR_CATALOG_CREATE_SEARCHER)]
         public static void HousingDecorCatalogCreateSearcher(Packet packet)
         {
@@ -179,6 +178,15 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadByteE<HousingResult>("Result");
         }
         
+        [Parser(Opcode.SMSG_HOUSING_DECOR_MOVE_DECOR_RESPONSE)]
+        public static void HandleHousingDecorMoveDecorResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadUInt32("Field_09");
+            packet.ReadPackedGuid128("DecorGUID");
+            packet.ReadByteE<HousingResult>("Result");
+            packet.ReadByte("Field_26");
+        }
         
         [Parser(Opcode.SMSG_HOUSING_DECOR_REMOVE_PLACED_DECOR_ENTRY_RESPONSE)]
         public static void HandleHousingDecorRemovePlacedDecorEntryResponse(Packet packet)
