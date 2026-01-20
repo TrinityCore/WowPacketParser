@@ -2,12 +2,11 @@
 
 namespace WowPacketParser.Enums
 {
-    // TODO: use when reading ITEM_FIELD_FLAGS
     [Flags]
     public enum ItemFieldFlags : uint
     {
-        Souldbound   = 0x00000001, // Item is soulbound and cannot be traded
-        Unk1         = 0x00000002, // ?
+        Soulbound    = 0x00000001, // Item is soulbound and cannot be traded
+        Translated   = 0x00000002, // Translates pagetext to lang id in query
         Unlocked     = 0x00000004, // Item had lock but can be opened now
         Wrapped      = 0x00000008, // Item is wrapped and contains another item
         Unk2         = 0x00000010, // ?

@@ -323,5 +323,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32<SpellId>("Spell Id");
             packet.ReadByte("State");
         }
+
+        [Parser(Opcode.SMSG_STABLE_RESULT)]
+        public static void HandleStableResult(Packet packet)
+        {
+            packet.ReadByte("Stable Result");
+        }
     }
 }

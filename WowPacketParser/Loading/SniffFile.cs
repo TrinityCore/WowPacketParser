@@ -6,7 +6,6 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -542,31 +541,31 @@ namespace WowPacketParser.Loading
         private void FusionDump(ICollection<Packet> packets)
         {
             Trace.WriteLine($"{_logPrefix}: Merge {packets.Count} packets to a file...");
-            FusionBinaryPacketWriter.Write(packets, Encoding.ASCII);
+            FusionBinaryPacketWriter.Write(packets);
         }
 
         private void SplitBinaryDump(ICollection<Packet> packets)
         {
             Trace.WriteLine($"{_logPrefix}: Splitting {packets.Count} packets to multiple files...");
-            SplitBinaryPacketWriter.Write(packets, Encoding.ASCII);
+            SplitBinaryPacketWriter.Write(packets);
         }
 
         private void DirectionSplitBinaryDump(ICollection<Packet> packets)
         {
             Trace.WriteLine($"{_logPrefix}: Splitting {packets.Count} packets to multiple files...");
-            SplitDirectionBinaryPacketWriter.Write(packets, Encoding.ASCII);
+            SplitDirectionBinaryPacketWriter.Write(packets);
         }
 
         private void SessionSplitBinaryDump(ICollection<Packet> packets)
         {
             Trace.WriteLine($"{_logPrefix}: Splitting {packets.Count} packets to multiple files...");
-            SplitSessionBinaryPacketWriter.Write(packets, Encoding.ASCII);
+            SplitSessionBinaryPacketWriter.Write(packets);
         }
 
         private void BinaryDump(string fileName, ICollection<Packet> packets)
         {
             Trace.WriteLine($"{_logPrefix}: Copying {packets.Count} packets to .pkt format...");
-            BinaryPacketWriter.Write(SniffType.Pkt, fileName, Encoding.ASCII, packets);
+            BinaryPacketWriter.Write(fileName, FileMode.Create, packets);
         }
 
         private void WriteSQLs(Packets packets)

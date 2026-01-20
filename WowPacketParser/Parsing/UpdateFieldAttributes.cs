@@ -14,6 +14,7 @@ namespace WowPacketParser.Parsing
         Float, // Supports variable length
         Bytes,  // Supports variable length
         Short,
+        Enum,
         Custom
     }
 
@@ -32,7 +33,22 @@ namespace WowPacketParser.Parsing
             Version = fromVersion;
         }
 
+        public UpdateFieldAttribute(UpdateFieldType attrib, Type enumType)
+        {
+            UFAttribute = attrib;
+            Version = ClientVersionBuild.Zero;
+            EnumType = enumType;
+        }
+
+        public UpdateFieldAttribute(UpdateFieldType attrib, ClientVersionBuild fromVersion, Type enumType)
+        {
+            UFAttribute = attrib;
+            Version = fromVersion;
+            EnumType = enumType;
+        }
+
         public UpdateFieldType UFAttribute { get; private set; }
         public ClientVersionBuild Version { get; private set; }
+        public Type EnumType { get; private set; }
     }
 }
