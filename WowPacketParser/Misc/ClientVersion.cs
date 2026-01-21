@@ -1303,6 +1303,10 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V11_2_7_64978:
                 case ClientVersionBuild.V11_2_7_65299:
                     return ClientVersionBuild.V11_0_0_55666;
+                case ClientVersionBuild.V12_0_0_65390:
+                case ClientVersionBuild.V12_0_0_65459:
+                case ClientVersionBuild.V12_0_0_65512:
+                    return ClientVersionBuild.V12_0_0_65390;
                 //Classic
                 case ClientVersionBuild.V1_13_2_31446:
                 case ClientVersionBuild.V1_13_2_31650:
@@ -1685,6 +1689,8 @@ namespace WowPacketParser.Misc
                     return ClientVersionBuild.V9_0_1_36216;
                 case ClientVersionBuild.V11_0_0_55666:
                     return ClientVersionBuild.V10_0_0_46181;
+                case ClientVersionBuild.V12_0_0_65390:
+                    return ClientVersionBuild.V11_0_0_55666;
                 default:
                     return ClientVersionBuild.Zero;
             }
@@ -1726,28 +1732,21 @@ namespace WowPacketParser.Misc
                 return ClientType.ClassicSoD;
             if (IsCataClientVersionBuild(build))
                 return ClientType.CataClassic;
-            if (build >= ClientVersionBuild.V11_0_0_55666)
-                return ClientType.TheWarWithin;
-            if (build >= ClientVersionBuild.V10_0_0_46181)
-                return ClientType.Dragonflight;
-            if (build >= ClientVersionBuild.V9_0_1_36216)
-                return ClientType.Shadowlands;
-            if (build >= ClientVersionBuild.V8_0_1_27101)
-                return ClientType.BattleForAzeroth;
-            if (build >= ClientVersionBuild.V7_0_3_22248)
-                return ClientType.Legion;
-            if (build >= ClientVersionBuild.V6_0_2_19033)
-                return ClientType.WarlordsOfDraenor;
-            if (build >= ClientVersionBuild.V5_0_4_16016)
-                return ClientType.MistsOfPandaria;
-            if (build >= ClientVersionBuild.V4_0_3_13329)
-                return ClientType.Cataclysm;
-            if (build >= ClientVersionBuild.V3_0_3_9183)
-                return ClientType.WrathOfTheLichKing;
-            if (build >= ClientVersionBuild.V2_0_3_6299)
-                return ClientType.TheBurningCrusade;
-
-            return ClientType.WorldOfWarcraft;
+            return build switch
+            {
+                >= ClientVersionBuild.V12_0_0_65390 => ClientType.Midnight,
+                >= ClientVersionBuild.V11_0_0_55666 => ClientType.TheWarWithin,
+                >= ClientVersionBuild.V10_0_0_46181 => ClientType.Dragonflight,
+                >= ClientVersionBuild.V9_0_1_36216 => ClientType.Shadowlands,
+                >= ClientVersionBuild.V8_0_1_27101 => ClientType.BattleForAzeroth,
+                >= ClientVersionBuild.V7_0_3_22248 => ClientType.Legion,
+                >= ClientVersionBuild.V6_0_2_19033 => ClientType.WarlordsOfDraenor,
+                >= ClientVersionBuild.V5_0_4_16016 => ClientType.MistsOfPandaria,
+                >= ClientVersionBuild.V4_0_3_13329 => ClientType.Cataclysm,
+                >= ClientVersionBuild.V3_0_3_9183 => ClientType.WrathOfTheLichKing,
+                >= ClientVersionBuild.V2_0_3_6299 => ClientType.TheBurningCrusade,
+                _ => ClientType.WorldOfWarcraft
+            };
         }
 
         public static ClientBranch Branch => _branch;
