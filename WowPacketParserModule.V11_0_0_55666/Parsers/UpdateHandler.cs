@@ -219,6 +219,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                     case WowCSEntityFragments.PlayerHouseInfoComponent_C: handler.ReadCreatePlayerHouseInfoComponentData(fieldsData, flags, index); break;
                     case WowCSEntityFragments.FHousingStorage_C: handler.ReadCreateHousingStorageData(fieldsData, flags, index); break;
                     case WowCSEntityFragments.FHousingFixture_C: handler.ReadCreateHousingFixtureData(fieldsData, flags, index); break;
+                    case WowCSEntityFragments.PlayerInitiativeComponent_C: handler.ReadCreatePlayerInitiativeComponentData(fieldsData, flags, index); break;
                 }
             }
         }
@@ -339,6 +340,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                     case WowCSEntityFragments.PlayerHouseInfoComponent_C: handler.ReadUpdatePlayerHouseInfoComponentData(fieldsData, index); break;
                     case WowCSEntityFragments.FHousingStorage_C: handler.ReadUpdateHousingStorageData(fieldsData, index); break;
                     case WowCSEntityFragments.FHousingFixture_C: handler.ReadUpdateHousingFixtureData(fieldsData, index); break;
+                    case WowCSEntityFragments.PlayerInitiativeComponent_C: handler.ReadUpdatePlayerInitiativeComponentData(fieldsData, index); break;
                 }
             }
         }

@@ -52,6 +52,7 @@ namespace WowPacketParser.Enums
         PlayerHouseInfoComponent_C,
         FHousingStorage_C,
         FHousingFixture_C,
+        PlayerInitiativeComponent_C,
         End
     }
 
@@ -109,6 +110,7 @@ namespace WowPacketParser.Enums
         PlayerHouseInfoComponent_C = 32,
         FHousingStorage_C = 33,
         FHousingFixture_C = 34,
+        PlayerInitiativeComponent_C = 37,
         Tag_Item = 200,
         Tag_Container = 201,
         Tag_AzeriteEmpoweredItem = 202,
@@ -156,6 +158,7 @@ namespace WowPacketParser.Enums
                 case WowCSEntityFragments.PlayerHouseInfoComponent_C:
                 case WowCSEntityFragments.FHousingStorage_C:
                 case WowCSEntityFragments.FHousingFixture_C:
+                case WowCSEntityFragments.PlayerInitiativeComponent_C:
                     return true;
                 default:
                     return false;
@@ -170,6 +173,7 @@ namespace WowPacketParser.Enums
                 case WowCSEntityFragments.CActor:
                 case WowCSEntityFragments.FPlayerOwnershipLink:
                 case WowCSEntityFragments.PlayerHouseInfoComponent_C:
+                case WowCSEntityFragments.PlayerInitiativeComponent_C:
                     return true;
                 case WowCSEntityFragments.FVendor_C:
                     return (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_0_7_58630) && ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V11_2_7_64632)) ||
@@ -262,6 +266,7 @@ namespace WowPacketParser.Enums
                 WowCSEntityFragments1127.PlayerHouseInfoComponent_C => WowCSEntityFragments.PlayerHouseInfoComponent_C,
                 WowCSEntityFragments1127.FHousingStorage_C => WowCSEntityFragments.FHousingStorage_C,
                 WowCSEntityFragments1127.FHousingFixture_C => WowCSEntityFragments.FHousingFixture_C,
+                WowCSEntityFragments1127.PlayerInitiativeComponent_C => WowCSEntityFragments.PlayerInitiativeComponent_C,
                 WowCSEntityFragments1127.Tag_Item => WowCSEntityFragments.Tag_Item,
                 WowCSEntityFragments1127.Tag_Container => WowCSEntityFragments.Tag_Container,
                 WowCSEntityFragments1127.Tag_AzeriteEmpoweredItem => WowCSEntityFragments.Tag_AzeriteEmpoweredItem,
