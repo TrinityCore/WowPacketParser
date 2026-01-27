@@ -63,7 +63,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             var hasTurnData = packet.ReadBit("HasTurnData", indexes);
             var hasAnimTier = packet.ReadBit("HasAnimTierTransition", indexes);
 
-            var hasUnk901 = packet.ReadBit("HasUnknown901", indexes);
+            var hasSpellVisualData = packet.ReadBit("HasSpellVisualData", indexes);
 
             if (hasSplineFilter)
                 V8_0_1_27101.Parsers.MovementHandler.ReadMonsterSplineFilter(packet, indexes, "MonsterSplineFilter");
@@ -123,14 +123,13 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 packet.ReadUInt32("EndTime", indexes);
             }
 
-            if (hasUnk901)
+            if (hasSpellVisualData)
             {
                 for (var i = 0; i < 16; ++i)
                 {
-                    packet.ReadInt32("Unknown1", indexes, "Unknown901", i);
-                    packet.ReadInt32("Unknown2", indexes, "Unknown901", i);
-                    packet.ReadInt32("Unknown3", indexes, "Unknown901", i);
-                    packet.ReadInt32("Unknown4", indexes, "Unknown901", i);
+                    packet.ReadInt32("SpellID", indexes, "SpellVisualData", i);
+                    V9_0_1_36216.Parsers.SpellHandler.ReadSpellCastVisual(packet, indexes, "SpellVisualData", i, "Visual");
+                    packet.ReadInt32("StartNodeIndex", indexes, "SpellVisualData", i);
                 }
             }
 

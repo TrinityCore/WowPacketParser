@@ -468,6 +468,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadInt32("TimeRemaining");
+
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                packet.ReadPackedGuid128("FailedBy");
         }
 
         public static void ReadSpellChannelStartInterruptImmunities(Packet packet, params object[] idx)

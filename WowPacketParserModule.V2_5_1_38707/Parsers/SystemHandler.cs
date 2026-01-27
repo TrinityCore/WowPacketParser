@@ -104,10 +104,7 @@ namespace WowPacketParserModule.V2_5_1_38835.Parsers
             V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 
             if (hasEuropaTicketSystemStatus)
-            {
-                packet.ResetBitReader();
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
-            }
         }
     }
 }

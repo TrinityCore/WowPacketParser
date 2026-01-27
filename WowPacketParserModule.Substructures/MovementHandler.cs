@@ -64,11 +64,23 @@ namespace WowPacketParserModule.Substructures
 
         public static void ReadDriveStatusData(Packet packet, params object[] idx)
         {
-            packet.ResetBitReader();
-            packet.ReadBit("Accelerating", idx);
-            packet.ReadBit("Drifting", idx);
-            packet.ReadSingle("Speed", idx);
-            packet.ReadSingle("MovementAngle", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491))
+            {
+                packet.ReadSingle("Speed", idx);
+                packet.ReadSingle("MovementAngle", idx);
+
+                packet.ResetBitReader();
+                packet.ReadBit("Accelerating", idx);
+                packet.ReadBit("Drifting", idx);
+            }
+            else
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("Accelerating", idx);
+                packet.ReadBit("Drifting", idx);
+                packet.ReadSingle("Speed", idx);
+                packet.ReadSingle("MovementAngle", idx);
+            }
         }
 
         public static MovementInfo ReadMovementStats602(Packet packet, params object[] idx)
@@ -141,6 +153,9 @@ namespace WowPacketParserModule.Substructures
 
             var int152 = packet.ReadInt32("RemoveForcesCount", idx);
             packet.ReadInt32("MoveIndex", idx);
+
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                packet.ReadSingle("GravityModifier", idx);
 
             for (var i = 0; i < int152; i++)
                 packet.ReadPackedGuid128("RemoveForcesIDs", idx, i);

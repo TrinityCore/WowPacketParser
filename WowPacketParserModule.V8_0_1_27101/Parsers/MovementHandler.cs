@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -98,9 +99,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
                 hasAnimTier = packet.ReadBit("HasAnimTierTransition", indexes);
 
-            var hasUnk901 = false;
+            var hasSpellVisualData = false;
             if (ClientVersion.AddedInVersion(ClientType.Shadowlands) && !ClientVersion.IsClassicClientVersionBuild(ClientVersion.Build))
-                hasUnk901 = packet.ReadBit("HasUnknown901", indexes);
+                hasSpellVisualData = packet.ReadBit("HasSpellVisualData", indexes);
 
             if (hasSplineFilter)
                 ReadMonsterSplineFilter(packet, indexes, "MonsterSplineFilter");
@@ -180,14 +181,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     monsterMove.AnimTier = packet.ReadByte("AnimTier", indexes);
             }
 
-            if (hasUnk901)
+            if (hasSpellVisualData)
             {
                 for (var i = 0; i < 16; ++i)
                 {
-                    packet.ReadInt32("Unknown1", indexes, "Unknown901", i);
-                    packet.ReadInt32("Unknown2", indexes, "Unknown901", i);
-                    packet.ReadInt32("Unknown3", indexes, "Unknown901", i);
-                    packet.ReadInt32("Unknown4", indexes, "Unknown901", i);
+                    packet.ReadInt32("SpellID", indexes, "SpellVisualData", i);
+                    packet.ReadInt32("SpellXSpellVisual", indexes, "SpellVisualData", i, "Visual");
+                    packet.ReadInt32("ScriptVisualID", indexes, "SpellVisualData", i, "Visual");
+                    packet.ReadInt32("StartNodeIndex", indexes, "SpellVisualData", i);
                 }
             }
 

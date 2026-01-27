@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
     public class DecorStoragePersistedData : IDecorStoragePersistedData
     {
         public WowGuid HouseGUID { get; set; }
-        public IDecorStoragePersistedDataDyes Dyes { get; set; }
+        public IDecorDyeSlots Dyes { get; set; }
         public System.Nullable<byte> Field_20 { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("Type");
 
             packet.ReadUInt32<MapId>("MapID");
-            packet.ReadUInt32("DifficultyID");
+            packet.ReadUInt32<DifficultyId>("DifficultyID");
 
             packet.ResetBitReader();
             packet.ReadBit("Locked");

@@ -3115,18 +3115,18 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_5_63506
             return data;
         }
 
-        public static IActivePlayerUnk901 ReadCreateActivePlayerUnk901(Packet packet, params object[] indexes)
+        public static ILevelLinkInfo ReadCreateLevelLinkInfo(Packet packet, params object[] indexes)
         {
-            var data = new ActivePlayerUnk901();
+            var data = new LevelLinkInfo();
             packet.ResetBitReader();
-            data.Field_0 = packet.ReadPackedGuid128("Field_0", indexes);
-            data.Field_10 = packet.ReadInt32("Field_10", indexes);
+            data.TargetGUID = packet.ReadPackedGuid128("TargetGUID", indexes);
+            data.Level = packet.ReadInt32("Level", indexes);
             return data;
         }
 
-        public static IActivePlayerUnk901 ReadUpdateActivePlayerUnk901(Packet packet, params object[] indexes)
+        public static ILevelLinkInfo ReadUpdateLevelLinkInfo(Packet packet, params object[] indexes)
         {
-            var data = new ActivePlayerUnk901();
+            var data = new LevelLinkInfo();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(3);
@@ -3137,11 +3137,11 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_5_63506
             {
                 if (changesMask[1])
                 {
-                    data.Field_0 = packet.ReadPackedGuid128("Field_0", indexes);
+                    data.TargetGUID = packet.ReadPackedGuid128("TargetGUID", indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.Field_10 = packet.ReadInt32("Field_10", indexes);
+                    data.Level = packet.ReadInt32("Level", indexes);
                 }
             }
             return data;
@@ -4193,10 +4193,10 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_5_63506
         {
             var data = new ChallengeModeData();
             packet.ResetBitReader();
-            data.Unknown_1120_1 = packet.ReadInt32("Unknown_1120_1", indexes);
-            data.Unknown_1120_2 = packet.ReadInt32("Unknown_1120_2", indexes);
-            data.Unknown_1120_3 = packet.ReadUInt64("Unknown_1120_3", indexes);
-            data.Unknown_1120_4 = packet.ReadInt64("Unknown_1120_4", indexes);
+            data.MapID = packet.ReadInt32("MapID", indexes);
+            data.InitialPlayerCount = packet.ReadInt32("InitialPlayerCount", indexes);
+            data.InstanceID = packet.ReadUInt64("InstanceID", indexes);
+            data.StartTime = packet.ReadInt64("StartTime", indexes);
             data.KeystoneOwnerGUID = packet.ReadPackedGuid128("KeystoneOwnerGUID", indexes);
             data.LeaverGUID = packet.ReadPackedGuid128("LeaverGUID", indexes);
             data.InstanceAbandonVoteCooldown = packet.ReadInt64("InstanceAbandonVoteCooldown", indexes);
@@ -4210,10 +4210,10 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_5_63506
         {
             var data = new ChallengeModeData();
             packet.ResetBitReader();
-            data.Unknown_1120_1 = packet.ReadInt32("Unknown_1120_1", indexes);
-            data.Unknown_1120_2 = packet.ReadInt32("Unknown_1120_2", indexes);
-            data.Unknown_1120_3 = packet.ReadUInt64("Unknown_1120_3", indexes);
-            data.Unknown_1120_4 = packet.ReadInt64("Unknown_1120_4", indexes);
+            data.MapID = packet.ReadInt32("MapID", indexes);
+            data.InitialPlayerCount = packet.ReadInt32("InitialPlayerCount", indexes);
+            data.InstanceID = packet.ReadUInt64("InstanceID", indexes);
+            data.StartTime = packet.ReadInt64("StartTime", indexes);
             data.KeystoneOwnerGUID = packet.ReadPackedGuid128("KeystoneOwnerGUID", indexes);
             data.LeaverGUID = packet.ReadPackedGuid128("LeaverGUID", indexes);
             data.InstanceAbandonVoteCooldown = packet.ReadInt64("InstanceAbandonVoteCooldown", indexes);
@@ -4569,7 +4569,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_5_63506
                 data.QuestSession = ReadCreateQuestSession(packet, indexes, "QuestSession");
             }
             Substructures.PerksProgramHandler.ReadPerksVendorItem(packet, indexes, "FrozenPerksVendorItem");
-            data.Field_1410 = ReadCreateActivePlayerUnk901(packet, indexes, "Field_1410");
+            data.LevelLinkInfo = ReadCreateLevelLinkInfo(packet, indexes, "LevelLinkInfo");
             Substructures.MythicPlusHandler.ReadDungeonScoreData(packet, indexes, "DungeonScore");
             var mapSizeTraitConfigs = packet.ReadUInt32();
             for (var m = 0u; m < mapSizeTraitConfigs; ++m)
@@ -5636,7 +5636,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_5_63506
                 }
                 if (changesMask[129])
                 {
-                    data.Field_1410 = ReadUpdateActivePlayerUnk901(packet, indexes, "Field_1410");
+                    data.LevelLinkInfo = ReadUpdateLevelLinkInfo(packet, indexes, "LevelLinkInfo");
                 }
             }
             if (changesMask[134])

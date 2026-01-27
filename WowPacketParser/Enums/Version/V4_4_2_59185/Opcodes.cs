@@ -1445,7 +1445,9 @@ namespace WowPacketParser.Enums.Version.V4_4_2_59185
             { Opcode.SMSG_QUERY_PLAYER_NAMES_RESPONSE, 0x4E0025 },
             { Opcode.SMSG_QUERY_PLAYER_NAME_BY_COMMUNITY_ID_RESPONSE, 0x4E000A }, // NYI
             { Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, 0x4F0016 },
+            { Opcode.SMSG_QUERY_SELECTED_WOW_LABS_AREA_RESPONSE, 0x3B031A }, // NYI
             { Opcode.SMSG_QUERY_TIME_RESPONSE, 0x3B0180 },
+            { Opcode.SMSG_QUERY_WOW_LABS_AREA_INFO_RESPONSE, 0x3B031B }, // NYI
             { Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x4F0001 },
             { Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x4F000F },
             { Opcode.SMSG_QUEST_FORCE_REMOVED, 0x4F001C },
@@ -1706,13 +1708,11 @@ namespace WowPacketParser.Enums.Version.V4_4_2_59185
             { Opcode.SMSG_WORLD_QUEST_UPDATE_RESPONSE, 0x4E0017 },
             { Opcode.SMSG_WORLD_SERVER_INFO, 0x3B0046 },
             { Opcode.SMSG_WOW_ENTITLEMENT_NOTIFICATION, 0x3B02EF }, // NYI
-            { Opcode.SMSG_WOW_LABS_AREA_INFO, 0x3B031B }, // NYI
             { Opcode.SMSG_WOW_LABS_NOTIFY_PLAYERS_MATCH_END, 0x3B0317 }, // NYI
             { Opcode.SMSG_WOW_LABS_NOTIFY_PLAYERS_MATCH_STATE_CHANGED, 0x3B0318 }, // NYI
             { Opcode.SMSG_WOW_LABS_PARTY_ERROR, 0x3B0324 }, // NYI
-            { Opcode.SMSG_WOW_LABS_SET_AREA_ID_RESULT, 0x3B0319 }, // NYI
+            { Opcode.SMSG_WOW_LABS_SET_WOW_LABS_AREA_ID_RESPONSE, 0x3B0319 }, // NYI
             { Opcode.SMSG_WOW_LABS_SET_PREDICTION_CIRCLE, 0x3B031D }, // NYI
-            { Opcode.SMSG_WOW_LABS_SET_SELECTED_AREA_ID, 0x3B031A }, // NYI
             { Opcode.SMSG_XP_GAIN_ABORTED, 0x3B0062 }, // NYI
             { Opcode.SMSG_XP_GAIN_ENABLED, 0x3B0249 }, // NYI
             { Opcode.SMSG_ZONE_UNDER_ATTACK, 0x400009 },

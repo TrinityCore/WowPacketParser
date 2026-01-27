@@ -100,7 +100,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_2_7_54577
         public System.Nullable<int> PerksProgramCurrency { get; set; }
         public System.Nullable<byte> NumBankSlots { get; set; }
         public IResearchHistory ResearchHistory { get; set; }
-        public IActivePlayerUnk901 Field_1410 { get; set; }
+        public ILevelLinkInfo LevelLinkInfo { get; set; }
         public IQuestSession QuestSession { get; set; }
         public System.Nullable<int> UiChromieTimeExpansionID { get; set; }
         public System.Nullable<int> TimerunningSeasonID { get; set; }

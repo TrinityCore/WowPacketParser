@@ -558,10 +558,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 
             if (hasEuropaTicketSystemStatus)
-            {
-                packet.ResetBitReader();
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
-            }
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V4_4_1_57294, ClientVersionBuild.V4_4_2_59185)]
@@ -703,10 +700,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 
             if (hasEuropaTicketSystemStatus)
-            {
-                packet.ResetBitReader();
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
-            }
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V4_4_2_59185)]
@@ -853,10 +847,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 
             if (hasEuropaTicketSystemStatus)
-            {
-                packet.ResetBitReader();
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
-            }
         }
 
         [Parser(Opcode.CMSG_QUERY_COUNTDOWN_TIMER)]
