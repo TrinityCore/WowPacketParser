@@ -7951,10 +7951,12 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
             data.HouseGUID = packet.ReadPackedGuid128("HouseGUID", indexes);
             data.SourceType = packet.ReadByte("SourceType", indexes);
             hasDyeSlots = packet.ReadBit("HasDyeSlots", indexes);
+            data.SourceValue = new string('*', (int)packet.ReadBits(24));
             if (hasDyeSlots)
             {
                 data.DyeSlots = ReadCreateDecorDyeSlots(packet, indexes, "DyeSlots");
             }
+            data.SourceValue = packet.ReadDynamicString("SourceValue", data.SourceValue.Length, indexes);
             return data;
         }
 
@@ -7963,7 +7965,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
             var data = new DecorStoragePersistedData();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(3);
+            rawChangesMask[0] = (int)packet.ReadBits(4);
             var changesMask = new BitArray(rawChangesMask);
 
             var hasDyeSlots = false;
@@ -7977,12 +7979,20 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
                 data.SourceType = packet.ReadByte("SourceType", indexes);
             }
             hasDyeSlots = packet.ReadBit("HasDyeSlots", indexes);
+            if (changesMask[3])
+            {
+                data.SourceValue = new string('*', (int)packet.ReadBits(24));
+            }
             if (changesMask[1])
             {
                 if (hasDyeSlots)
                 {
                     data.DyeSlots = ReadUpdateDecorDyeSlots(packet, indexes, "DyeSlots");
                 }
+            }
+            if (changesMask[3])
+            {
+                data.SourceValue = packet.ReadDynamicString("SourceValue", data.SourceValue.Length, indexes);
             }
             return data;
         }

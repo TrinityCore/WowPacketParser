@@ -14,6 +14,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
         public WowGuid HouseGUID { get; set; }
         public IDecorDyeSlots DyeSlots { get; set; }
         public System.Nullable<byte> SourceType { get; set; }
+        public string SourceValue { get; set; }
     }
 }
 
