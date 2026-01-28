@@ -6879,6 +6879,38 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
             return data;
         }
 
+        public static IAreaTriggerActionSetPeriodModifier ReadCreateAreaTriggerActionSetPeriodModifier(Packet packet, params object[] indexes)
+        {
+            var data = new AreaTriggerActionSetPeriodModifier();
+            packet.ResetBitReader();
+            data.Field_0 = packet.ReadInt32("Field_0", indexes);
+            data.Field_4 = packet.ReadSingle("Field_4", indexes);
+            return data;
+        }
+
+        public static IAreaTriggerActionSetPeriodModifier ReadUpdateAreaTriggerActionSetPeriodModifier(Packet packet, params object[] indexes)
+        {
+            var data = new AreaTriggerActionSetPeriodModifier();
+            packet.ResetBitReader();
+            var rawChangesMask = new int[1];
+            rawChangesMask[0] = (int)packet.ReadBits(3);
+            var changesMask = new BitArray(rawChangesMask);
+
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
+                if (changesMask[1])
+                {
+                    data.Field_0 = packet.ReadInt32("Field_0", indexes);
+                }
+                if (changesMask[2])
+                {
+                    data.Field_4 = packet.ReadSingle("Field_4", indexes);
+                }
+            }
+            return data;
+        }
+
         public static IAreaTriggerSplineCalculator ReadCreateAreaTriggerSplineCalculator(Packet packet, params object[] indexes)
         {
             var data = new AreaTriggerSplineCalculator();
@@ -7336,6 +7368,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
             data.Facing = packet.ReadSingle("Facing", indexes);
             data.PathType = packet.ReadInt32("PathType", indexes);
             data.ShapeType = packet.ReadByte("ShapeType", indexes);
+            data.PeriodModifier = ReadCreateAreaTriggerActionSetPeriodModifier(packet, indexes, "PeriodModifier");
             if (data.PathType == 3)
             {
                 data.MovementScript = ReadCreateAreaTriggerMovementScript(packet, indexes, "MovementScript");
@@ -7397,7 +7430,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
             packet.ResetBitReader();
             var rawChangesMask = new int[2];
             rawChangesMask[0] = packet.ReadInt32();
-            rawChangesMask[1] = (int)packet.ReadBits(4);
+            rawChangesMask[1] = (int)packet.ReadBits(5);
             var changesMask = new BitArray(rawChangesMask);
 
             var hasTargetRollPitchYaw = false;
@@ -7515,6 +7548,10 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
                 if (changesMask[35])
                 {
                     data.ShapeType = packet.ReadByte("ShapeType", indexes);
+                }
+                if (changesMask[36])
+                {
+                    data.PeriodModifier = ReadUpdateAreaTriggerActionSetPeriodModifier(packet, indexes, "PeriodModifier");
                 }
                 if (changesMask[34])
                 {

@@ -39,6 +39,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
         public IForceSetAreaTriggerPositionAndRotation ForcedPositionAndRotation { get; set; }
         public System.Nullable<int> PathType { get; set; }
         public System.Nullable<byte> ShapeType { get; set; }
+        public IAreaTriggerActionSetPeriodModifier PeriodModifier { get; set; }
         public IAreaTriggerMovementScript MovementScript { get; set; }
         public IAreaTriggerSphere Sphere { get; set; }
         public IAreaTriggerBox Box { get; set; }
