@@ -38,8 +38,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
             {
-                packet.ReadPackedGuid128("Unknown1127_1", idx);
-                packet.ReadBit("Unknown1127_2", idx);
+                packet.ReadPackedGuid128("HousingGUID", idx);
+                packet.ReadBit("HousingIsResident", idx);
             }
 
             var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);

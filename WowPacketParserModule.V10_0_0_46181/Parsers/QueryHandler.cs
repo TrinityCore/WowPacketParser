@@ -69,6 +69,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             quest.RewardKillHonor = packet.ReadSingle("RewardKillHonor");
 
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                quest.RewardFavor = packet.ReadInt32("RewardFavor");
+
             quest.RewardArtifactXPDifficulty = (uint)packet.ReadInt32("RewardArtifactXPDifficulty");
             quest.RewardArtifactXPMultiplier = packet.ReadSingle("RewardArtifactXPMultiplier");
             quest.RewardArtifactCategoryID = (uint)packet.ReadInt32("RewardArtifactCategoryID");
@@ -151,16 +154,14 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             var objectiveCount = packet.ReadUInt32("ObjectiveCount");
             quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");
             var treasurePickerCount = 0u;
-            var treasurePickerCount2 = 0u;
-            var rewardHouseRoomCount = 0u;
-            var rewardHouseDecorCount = 0u;
+            var nonDisplayableTreasurePickerCount = 0u;
             if (ClientVersion.RemovedInVersion(ClientType.TheWarWithin))
                 quest.QuestRewardID = packet.ReadInt32("TreasurePickerID");
             else
             {
                 treasurePickerCount = packet.ReadUInt32();
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_2_55959))
-                    treasurePickerCount2 = packet.ReadUInt32();
+                    nonDisplayableTreasurePickerCount = packet.ReadUInt32();
             }
             quest.Expansion = packet.ReadInt32("Expansion");
             quest.ManagedWorldStateID = packet.ReadInt32("ManagedWorldStateID");
@@ -170,6 +171,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             var conditionalQuestDescriptionCount = packet.ReadUInt32();
             var conditionalQuestCompletionLogCount = packet.ReadUInt32();
 
+            var rewardHouseRoomCount = 0u;
+            var rewardHouseDecorCount = 0u;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
             {
                 rewardHouseRoomCount = packet.ReadUInt32();
@@ -191,9 +194,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 Storage.QuestTreasurePickersStorage.Add(pickers);
             }
 
-            for (uint i = 0; i < treasurePickerCount2; ++i)
+            for (uint i = 0; i < nonDisplayableTreasurePickerCount; ++i)
             {
-                var treasurePickerID = packet.ReadInt32("TreasurePickerID2");
+                var treasurePickerID = packet.ReadInt32("NonDisplayableTreasurePickerID");
                 //QuestTreasurePickers pickers = new()
                 //{
                 //    QuestID = quest.ID,
@@ -258,7 +261,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
                 questInfoObjective.Amount = packet.ReadInt32("Amount", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
-                    questInfoObjective.SecondaryAmount = packet.ReadInt32("SecondaryAmount", i);
+                    questInfoObjective.ConditionalAmount = packet.ReadInt32("ConditionalAmount", i);
 
                 questInfoObjective.Flags = packet.ReadUInt32("Flags", i);
                 questInfoObjective.Flags2 = packet.ReadUInt32("Flags2", i);

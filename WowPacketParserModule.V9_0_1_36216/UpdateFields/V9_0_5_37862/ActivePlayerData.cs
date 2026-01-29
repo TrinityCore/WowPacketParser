@@ -103,7 +103,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_5_37862
         public int PvpLastWeeksTierMaxFromWins { get; set; }
         public long PvpLastWeeksRewardClaimed { get; set; }
         public byte NumBankSlots { get; set; }
-        public IActivePlayerUnk901 Field_1410 { get; set; }
+        public ILevelLinkInfo LevelLinkInfo { get; set; }
         public IQuestSession QuestSession { get; set; }
         public int UiChromieTimeExpansionID { get; set; }
         public int TransportServerTime { get; set; }

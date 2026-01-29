@@ -210,10 +210,10 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             if (hasChallengeMode)
             {
                 packet.ResetBitReader();
-                packet.ReadInt32("Unknown_1120_1", "ChallengeMode");
-                packet.ReadInt32("Unknown_1120_2", "ChallengeMode");
-                packet.ReadUInt64("Unknown_1120_3", "ChallengeMode");
-                packet.ReadInt64("Unknown_1120_4", "ChallengeMode");
+                packet.ReadInt32("MapID", "ChallengeMode");
+                packet.ReadInt32("InitialPlayerCount", "ChallengeMode");
+                packet.ReadUInt64("InstanceID", "ChallengeMode");
+                packet.ReadTime64("StartTime", "ChallengeMode");
                 packet.ReadPackedGuid128("KeystoneOwnerGUID", "ChallengeMode");
                 packet.ReadPackedGuid128("LeaverGUID", "ChallengeMode");
                 packet.ReadBit("IsActive", "ChallengeMode");

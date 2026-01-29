@@ -275,5 +275,15 @@ namespace WowPacketParser.Parsing.Parsers
         {
             return null;
         }
+
+        public virtual IPlayerInitiativeComponentData ReadCreatePlayerInitiativeComponentData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        {
+            return null;
+        }
+
+        public virtual IPlayerInitiativeComponentData ReadUpdatePlayerInitiativeComponentData(Packet packet, params object[] indexes)
+        {
+            return null;
+        }
     }
 }

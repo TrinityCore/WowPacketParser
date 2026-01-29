@@ -97,6 +97,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadCliEuropaTicketConfig(Packet packet, params object[] idx)
         {
+            packet.ResetBitReader();
             packet.ReadBit("TicketsEnabled", idx);
             packet.ReadBit("BugsEnabled", idx);
             packet.ReadBit("ComplaintsEnabled", idx);
@@ -104,7 +105,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             ReadCliSavedThrottleObjectState(packet, idx, "ThrottleState");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
-                ReadCliSavedThrottleObjectState(packet, idx, "ThrottleState2");
+                ReadCliSavedThrottleObjectState(packet, idx, "ExpensiveThrottleState");
         }
 
         public static void ReadClientSessionAlertConfig(Packet packet, params object[] idx)

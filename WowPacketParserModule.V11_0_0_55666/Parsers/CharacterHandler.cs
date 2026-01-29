@@ -21,6 +21,17 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 packet.ReadInt32("TransmogrifiedItemID", idx);
         }
 
+        public static void ReadVisualItemInfo1200(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("ItemID", idx);
+            packet.ReadInt32("TransmogrifiedItemID", idx);
+            packet.ReadByte("Subclass", idx);
+            packet.ReadByteE<InventoryType>("InvType", idx);
+            packet.ReadUInt32("DisplayID", idx);
+            packet.ReadUInt32("DisplayEnchantID", idx);
+            packet.ReadInt32("SecondaryItemModifiedAppearanceID", idx);
+        }
+
         public static void ReadBasicCharacterListEntry(Packet packet, params object[] idx)
         {
             var playerGuid = packet.ReadPackedGuid128("Guid", idx);
@@ -51,8 +62,12 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadUInt32("PetExperienceLevel", idx);
             packet.ReadUInt32("PetCreatureFamilyID", idx);
 
-            for (uint j = 0; j < 19; ++j)
-                ReadVisualItemInfo(packet, idx, "VisualItems", j);
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                for (uint j = 0; j < 19; ++j)
+                    ReadVisualItemInfo1200(packet, idx, "VisualItems", j);
+            else
+                for (uint j = 0; j < 19; ++j)
+                    ReadVisualItemInfo(packet, idx, "VisualItems", j);
 
             packet.ReadInt32("SaveVersion", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
@@ -68,7 +83,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadInt32("TimerunningSeasonID", idx);
             packet.ReadUInt32("OverrideSelectScreenFileDataID", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
-                packet.ReadUInt32("Unused1110_1", idx);
+                packet.ReadUInt32("RealmQueue", idx);
 
             for (var j = 0u; j < customizationCount; ++j)
                 V9_0_1_36216.Parsers.CharacterHandler.ReadChrCustomizationChoice(packet, idx, "Customizations", j);
@@ -79,8 +94,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             var firstLogin = packet.ReadBit("FirstLogin", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
             {
-                packet.ReadBit("Unused1110_2", idx);
-                packet.ReadBit("Unused1110_3", idx);
+                packet.ReadBit("RealmInfoFound", idx);
+                packet.ReadBit("IsRealmOffline", idx);
             }
 
             var name = packet.ReadWoWString("Character Name", nameLength, idx);
@@ -195,6 +210,15 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 packet.ReadInt32("BlockReason", idx);
         }
 
+        public static void ReadClassUnlockData(Packet packet, params object[] idx)
+        {
+            packet.ReadSByteE<Class>("RaceID", idx);
+            packet.ReadUInt32("AchievementID", idx);
+
+            packet.ResetBitReader();
+            packet.ReadBit("HasUnlockedAchievement", idx);
+        }
+
         public static void ReadRaceUnlockData(Packet packet, params object[] idx)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
@@ -202,12 +226,19 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             else
                 packet.ReadInt32E<Race>("RaceID", idx);
 
+            var classCount = 0u;
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                classCount = packet.ReadUInt32();
+
             packet.ResetBitReader();
-            packet.ReadBit("HasExpansion", idx);
-            packet.ReadBit("HasAchievement", idx);
-            packet.ReadBit("HasHeritageArmor", idx);
-            packet.ReadBit("IsLocked", idx);
-            packet.ReadBit("Unused1027", idx);
+            packet.ReadBit("HasUnlockedLicense", idx);
+            packet.ReadBit("HasUnlockedAchievement", idx);
+            packet.ReadBit("HasHeritageArmorUnlockAchievement", idx);
+            packet.ReadBit("HideRaceOnClient", idx);
+            packet.ReadBit("FactionBalanceDisabled", idx);
+
+            for (var i = 0u; i < classCount; ++i)
+                ReadClassUnlockData(packet, idx, "ClassUnlocks");
         }
 
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
@@ -221,9 +252,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadBit("IsNewPlayer");
             packet.ReadBit("IsTrialAccountRestricted");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
-                packet.ReadBit("Unused1127");
+                packet.ReadBit("IsAccountLapsedPlayer");
             var hasDisabledClassesMask = packet.ReadBit("HasDisabledClassesMask");
-            packet.ReadBit("DontCreateCharacterDisplays");
+            packet.ReadBit("ForceCharacterListSort");
 
             var charsCount = packet.ReadUInt32("CharactersCount");
             var regionwideCharsCount = packet.ReadUInt32("RegionwideCharactersCount");

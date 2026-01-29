@@ -303,10 +303,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 
             if (hasEuropaTicketSystemStatus)
-            {
-                packet.ResetBitReader();
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
-            }
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS2)]
@@ -333,7 +330,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadBit("BoostEnabled");
             packet.ReadBit("TrialBoostEnabled");
             packet.ReadBit("RedeemForBalanceAvailable");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666) && ClientVersion.RemovedInVersion(ClientVersionBuild.V12_0_0_65390))
                 packet.ReadBit("PaidCharacterTransfersBetweenBnetAccountsEnabled");
             packet.ReadBit("LiveRegionCharacterListEnabled");
             packet.ReadBit("LiveRegionCharacterCopyEnabled");
@@ -372,9 +369,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491))
             {
                 packet.ReadBit("WowTokenLimitedMode");
-                packet.ReadBit("Unused_11_1_7_1");
-                packet.ReadBit("Unused_11_1_7_2");
-                packet.ReadBit("PandarenLevelBoostAllowed");
+                packet.ReadBit("NavBarEnabled");
+                packet.ReadBit("GlobalUserGeneratedContentMuteEnabled");
+                packet.ReadBit("AccountUserGeneratedContentIsRisky");
             }
 
             packet.ResetBitReader();
@@ -497,13 +494,17 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
         public static void HandleWorldServerInfo(Packet packet)
         {
-            CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                CoreParsers.MovementHandler.CurrentDifficultyID = (uint)packet.ReadInt16<DifficultyId>("DifficultyID");
+            else
+                CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
             {
-                packet.ReadPackedGuid128("HouseGuid");
-                packet.ReadPackedGuid128("HouseOwnerBnetAccount");
-                packet.ReadPackedGuid128("HouseOwnerPlayer");
-                packet.ReadPackedGuid128("NeighborhoodGuid");
+                packet.ReadPackedGuid128("HouseGUID");
+                packet.ReadPackedGuid128("HouseOwnerAccountGUID");
+                packet.ReadPackedGuid128("HouseCosmeticOwnerGUID");
+                packet.ReadPackedGuid128("NeighborhoodGUID");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))

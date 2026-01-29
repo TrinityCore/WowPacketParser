@@ -76,18 +76,27 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             if (hasDifficultySettings)
             {
-                packet.ReadUInt32("DungeonDifficultyID");
-                packet.ReadUInt32("RaidDifficultyID");
-                packet.ReadUInt32("LegacyRaidDifficultyID");
+                if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                {
+                    packet.ReadInt16<DifficultyId>("DungeonDifficultyID");
+                    packet.ReadInt16<DifficultyId>("RaidDifficultyID");
+                    packet.ReadInt16<DifficultyId>("LegacyRaidDifficultyID");
+                }
+                else
+                {
+                    packet.ReadUInt32<DifficultyId>("DungeonDifficultyID");
+                    packet.ReadUInt32<DifficultyId>("RaidDifficultyID");
+                    packet.ReadUInt32<DifficultyId>("LegacyRaidDifficultyID");
+                }
             }
 
             if (hasChallengeMode)
             {
                 packet.ResetBitReader();
-                packet.ReadInt32("Unknown_1120_1", "ChallengeMode");
-                packet.ReadInt32("Unknown_1120_2", "ChallengeMode");
-                packet.ReadUInt64("Unknown_1120_3", "ChallengeMode");
-                packet.ReadInt64("Unknown_1120_4", "ChallengeMode");
+                packet.ReadInt32("MapID", "ChallengeMode");
+                packet.ReadInt32("InitialPlayerCount", "ChallengeMode");
+                packet.ReadUInt64("InstanceID", "ChallengeMode");
+                packet.ReadTime64("StartTime", "ChallengeMode");
                 packet.ReadPackedGuid128("KeystoneOwnerGUID", "ChallengeMode");
                 packet.ReadPackedGuid128("LeaverGUID", "ChallengeMode");
                 packet.ReadBit("IsActive", "ChallengeMode");

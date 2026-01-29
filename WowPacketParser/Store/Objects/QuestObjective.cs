@@ -28,8 +28,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Amount")]
         public int? Amount;
 
-        [DBFieldName("SecondaryAmount")]
-        public int? SecondaryAmount;
+        [DBFieldName("SecondaryAmount", TargetedDatabaseFlag.TheWarWithin)]
+        [DBFieldName("ConditionalAmount", TargetedDatabaseFlag.SinceMidnight)]
+        public int? ConditionalAmount;
 
         [DBFieldName("Flags")]
         public uint? Flags;

@@ -799,6 +799,7 @@ message PacketQueryPlayerNameResponseWrapper {
 
 message PacketQuestComplete {
   uint32 questId = 1;
+  bool hideCreditMessage = 2;
 }
 
 message PacketQuestFailed {

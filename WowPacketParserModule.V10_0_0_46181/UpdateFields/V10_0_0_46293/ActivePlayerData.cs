@@ -97,7 +97,7 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_0_46181
         public System.Nullable<int> Honor { get; set; }
         public System.Nullable<int> HonorNextLevel { get; set; }
         public System.Nullable<byte> NumBankSlots { get; set; }
-        public IActivePlayerUnk901 Field_1410 { get; set; }
+        public ILevelLinkInfo LevelLinkInfo { get; set; }
         public IQuestSession QuestSession { get; set; }
         public System.Nullable<int> UiChromieTimeExpansionID { get; set; }
         public System.Nullable<int> TransportServerTime { get; set; }
