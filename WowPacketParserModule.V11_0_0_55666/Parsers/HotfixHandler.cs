@@ -2263,6 +2263,20 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             Storage.ConditionalContentTuningHotfixes1100.Add(hotfix, packet.TimeSpan);
         }
 
+        public static void ConditionalContentTuningHandler1127(Packet packet, uint entry, params object[] indexes)
+        {
+            ConditionalContentTuningHotfix1127 hotfix = new ConditionalContentTuningHotfix1127();
+
+            hotfix.ID = entry;
+            hotfix.OrderIndex = packet.ReadInt32("OrderIndex", indexes);
+            hotfix.RedirectContentTuningID = packet.ReadInt32("RedirectContentTuningID", indexes);
+            hotfix.RedirectFlag = packet.ReadInt32("RedirectFlag", indexes);
+            hotfix.RedirectEnum = packet.ReadInt32("RedirectEnum", indexes);
+            hotfix.ParentContentTuningID = packet.ReadUInt32("ParentContentTuningID", indexes);
+
+            Storage.ConditionalContentTuningHotfixes1127.Add(hotfix, packet.TimeSpan);
+        }
+
         public static void ContentTuningHandler1100(Packet packet, uint entry, params object[] indexes)
         {
             ContentTuningHotfix1100 hotfix = new ContentTuningHotfix1100();
@@ -4033,6 +4047,32 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             Storage.GossipNPCOptionHotfixes1110.Add(hotfix, packet.TimeSpan);
         }
 
+        public static void GossipNpcOptionHandler1127(Packet packet, uint entry, params object[] indexes)
+        {
+            GossipNpcOptionHotfix1127 hotfix = new GossipNpcOptionHotfix1127();
+
+            hotfix.ID = entry;
+            hotfix.GossipNpcOption = packet.ReadInt32("GossipNpcOption", indexes);
+            hotfix.LFGDungeonsID = packet.ReadInt32("LFGDungeonsID", indexes);
+            hotfix.TrainerID = packet.ReadInt32("TrainerID", indexes);
+            hotfix.GarrFollowerTypeID = packet.ReadSByte("GarrFollowerTypeID", indexes);
+            hotfix.CharShipmentID = packet.ReadInt32("CharShipmentID", indexes);
+            hotfix.GarrTalentTreeID = packet.ReadInt32("GarrTalentTreeID", indexes);
+            hotfix.UiMapID = packet.ReadInt32("UiMapID", indexes);
+            hotfix.UiItemInteractionID = packet.ReadInt32("UiItemInteractionID", indexes);
+            hotfix.Unknown_1000_8 = packet.ReadInt32("Unknown_1000_8", indexes);
+            hotfix.Unknown_1000_9 = packet.ReadInt32("Unknown_1000_9", indexes);
+            hotfix.CovenantID = packet.ReadInt32("CovenantID", indexes);
+            hotfix.GossipOptionID = packet.ReadInt32("GossipOptionID", indexes);
+            hotfix.TraitTreeID = packet.ReadInt32("TraitTreeID", indexes);
+            hotfix.ProfessionID = packet.ReadInt32("ProfessionID", indexes);
+            hotfix.Unknown_1002_14 = packet.ReadInt32("Unknown_1002_14", indexes);
+            hotfix.NeighborhoodMapID = packet.ReadInt32("NeighborhoodMapID", indexes);
+            hotfix.SkillLineID = packet.ReadInt32("SkillLineID", indexes);
+
+            Storage.GossipNPCOptionHotfixes1127.Add(hotfix, packet.TimeSpan);
+        }
+
         public static void GuildColorBackgroundHandler1100(Packet packet, uint entry, params object[] indexes)
         {
             GuildColorBackgroundHotfix1100 hotfix = new GuildColorBackgroundHotfix1100();
@@ -4300,6 +4340,27 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             hotfix.CraftingQualityID = packet.ReadInt32("CraftingQualityID", indexes);
 
             Storage.ItemHotfixes1125.Add(hotfix, packet.TimeSpan);
+        }
+
+        public static void ItemHandler1127(Packet packet, uint entry, params object[] indexes)
+        {
+            ItemHotfix1127 hotfix = new ItemHotfix1127();
+
+            hotfix.ID = entry;
+            hotfix.ClassID = packet.ReadInt32("ClassID", indexes);
+            hotfix.SubclassID = packet.ReadByte("SubclassID", indexes);
+            hotfix.Material = packet.ReadByte("Material", indexes);
+            hotfix.InventoryType = packet.ReadSByte("InventoryType", indexes);
+            hotfix.SheatheType = packet.ReadByte("SheatheType", indexes);
+            hotfix.SoundOverrideSubclassID = packet.ReadSByte("SoundOverrideSubclassID", indexes);
+            hotfix.IconFileDataID = packet.ReadInt32("IconFileDataID", indexes);
+            hotfix.ItemGroupSoundsID = packet.ReadUInt32("ItemGroupSoundsID", indexes);
+            hotfix.ContentTuningID = packet.ReadInt32("ContentTuningID", indexes);
+            hotfix.ModifiedCraftingReagentItemID = packet.ReadInt32("ModifiedCraftingReagentItemID", indexes);
+            hotfix.CraftingQualityID = packet.ReadInt32("CraftingQualityID", indexes);
+            hotfix.Unknown1127 = packet.ReadInt32("Unknown1127", indexes);
+
+            Storage.ItemHotfixes1127.Add(hotfix, packet.TimeSpan);
         }
 
         public static void ItemAppearanceHandler1100(Packet packet, uint entry, params object[] indexes)
@@ -4677,6 +4738,24 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             Storage.ItemEffectHotfixes1100.Add(hotfix, packet.TimeSpan);
         }
 
+        public static void ItemEffectHandler1127(Packet packet, uint entry, params object[] indexes)
+        {
+            ItemEffectHotfix1127 hotfix = new ItemEffectHotfix1127();
+
+            hotfix.ID = entry;
+            hotfix.LegacySlotIndex = packet.ReadByte("LegacySlotIndex", indexes);
+            hotfix.TriggerType = packet.ReadSByte("TriggerType", indexes);
+            hotfix.Charges = packet.ReadInt16("Charges", indexes);
+            hotfix.CoolDownMSec = packet.ReadInt32("CoolDownMSec", indexes);
+            hotfix.CategoryCoolDownMSec = packet.ReadInt32("CategoryCoolDownMSec", indexes);
+            hotfix.SpellCategoryID = packet.ReadUInt16("SpellCategoryID", indexes);
+            hotfix.SpellID = packet.ReadInt32("SpellID", indexes);
+            hotfix.ChrSpecializationID = packet.ReadUInt16("ChrSpecializationID", indexes);
+            hotfix.PlayerConditionID = packet.ReadInt32("PlayerConditionID", indexes);
+
+            Storage.ItemEffectHotfixes1127.Add(hotfix, packet.TimeSpan);
+        }
+
         public static void ItemExtendedCostHandler1100(Packet packet, uint entry, params object[] indexes)
         {
             ItemExtendedCostHotfix1100 hotfix = new ItemExtendedCostHotfix1100();
@@ -4884,6 +4963,20 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             hotfix.Unknown1125 = packet.ReadInt32("Unknown1125", indexes);
 
             Storage.ItemScalingConfigHotfixes1125.Add(hotfix, packet.TimeSpan);
+        }
+
+        public static void ItemScalingConfigHandler1127(Packet packet, uint entry, params object[] indexes)
+        {
+            ItemScalingConfigHotfix1127 hotfix = new ItemScalingConfigHotfix1127();
+
+            hotfix.ID = entry;
+            hotfix.ItemOffsetCurveID = packet.ReadInt32("ItemOffsetCurveID", indexes);
+            hotfix.ItemLevel = packet.ReadInt32("ItemLevel", indexes);
+            hotfix.RequiredLevel = packet.ReadInt32("RequiredLevel", indexes);
+            hotfix.Unknown1125 = packet.ReadInt32("Unknown1125", indexes);
+            hotfix.Flags = packet.ReadInt32("Flags", indexes);
+
+            Storage.ItemScalingConfigHotfixes1127.Add(hotfix, packet.TimeSpan);
         }
 
         public static void ItemSearchNameHandler1100(Packet packet, uint entry, params object[] indexes)
@@ -5269,6 +5362,108 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                     DisplayLang = hotfix.Display,
                 };
                 Storage.ItemSparseHotfixesLocale1125.Add(hotfixLocale, packet.TimeSpan);
+            }
+        }
+
+        public static void ItemSparseHandler1127(Packet packet, uint entry, params object[] indexes)
+        {
+            ItemSparseHotfix1127 hotfix = new ItemSparseHotfix1127();
+
+            hotfix.ID = entry;
+            hotfix.AllowableRace = packet.ReadInt64("AllowableRace", indexes);
+            hotfix.Description = packet.ReadCString("Description", indexes);
+            hotfix.Display3 = packet.ReadCString("Display3", indexes);
+            hotfix.Display2 = packet.ReadCString("Display2", indexes);
+            hotfix.Display1 = packet.ReadCString("Display1", indexes);
+            hotfix.Display = packet.ReadCString("Display", indexes);
+            hotfix.ExpansionID = packet.ReadInt32("ExpansionID", indexes);
+            hotfix.DmgVariance = packet.ReadSingle("DmgVariance", indexes);
+            hotfix.LimitCategory = packet.ReadInt32("LimitCategory", indexes);
+            hotfix.DurationInInventory = packet.ReadUInt32("DurationInInventory", indexes);
+            hotfix.QualityModifier = packet.ReadSingle("QualityModifier", indexes);
+            hotfix.BagFamily = packet.ReadUInt32("BagFamily", indexes);
+            hotfix.StartQuestID = packet.ReadInt32("StartQuestID", indexes);
+            hotfix.LanguageID = packet.ReadInt32("LanguageID", indexes);
+            hotfix.ItemRange = packet.ReadSingle("ItemRange", indexes);
+            hotfix.StatPercentageOfSocket = new float?[10];
+            for (int i = 0; i < 10; i++)
+                hotfix.StatPercentageOfSocket[i] = packet.ReadSingle("StatPercentageOfSocket", indexes, i);
+            hotfix.StatPercentEditor = new int?[10];
+            for (int i = 0; i < 10; i++)
+                hotfix.StatPercentEditor[i] = packet.ReadInt32("StatPercentEditor", indexes, i);
+            hotfix.StatModifierBonusStat = new int?[10];
+            for (int i = 0; i < 10; i++)
+                hotfix.StatModifierBonusStat[i] = packet.ReadInt32("StatModifierBonusStat", indexes, i);
+            hotfix.Stackable = packet.ReadInt32("Stackable", indexes);
+            hotfix.MaxCount = packet.ReadInt32("MaxCount", indexes);
+            hotfix.MinReputation = packet.ReadInt32("MinReputation", indexes);
+            hotfix.RequiredAbility = packet.ReadUInt32("RequiredAbility", indexes);
+            hotfix.SellPrice = packet.ReadUInt32("SellPrice", indexes);
+            hotfix.BuyPrice = packet.ReadUInt32("BuyPrice", indexes);
+            hotfix.VendorStackCount = packet.ReadUInt32("VendorStackCount", indexes);
+            hotfix.PriceVariance = packet.ReadSingle("PriceVariance", indexes);
+            hotfix.PriceRandomValue = packet.ReadSingle("PriceRandomValue", indexes);
+            hotfix.Flags = new int?[5];
+            for (int i = 0; i < 5; i++)
+                hotfix.Flags[i] = packet.ReadInt32("Flags", indexes, i);
+            hotfix.FactionRelated = packet.ReadInt32("FactionRelated", indexes);
+            hotfix.ModifiedCraftingReagentItemID = packet.ReadInt32("ModifiedCraftingReagentItemID", indexes);
+            hotfix.ContentTuningID = packet.ReadInt32("ContentTuningID", indexes);
+            hotfix.PlayerLevelToItemLevelCurveID = packet.ReadInt32("PlayerLevelToItemLevelCurveID", indexes);
+            hotfix.ItemLevelOffsetCurveID = packet.ReadInt32("ItemLevelOffsetCurveID", indexes);
+            hotfix.ItemLevelOffsetItemLevel = packet.ReadInt32("ItemLevelOffsetItemLevel", indexes);
+            hotfix.Unknown1127 = packet.ReadInt32("Unknown1127", indexes);
+            hotfix.ItemNameDescriptionID = packet.ReadUInt16("ItemNameDescriptionID", indexes);
+            hotfix.RequiredTransmogHoliday = packet.ReadUInt16("RequiredTransmogHoliday", indexes);
+            hotfix.RequiredHoliday = packet.ReadUInt16("RequiredHoliday", indexes);
+            hotfix.GemProperties = packet.ReadUInt16("GemProperties", indexes);
+            hotfix.SocketMatchEnchantmentId = packet.ReadUInt16("SocketMatchEnchantmentId", indexes);
+            hotfix.TotemCategoryID = packet.ReadUInt16("TotemCategoryID", indexes);
+            hotfix.InstanceBound = packet.ReadUInt16("InstanceBound", indexes);
+            hotfix.ZoneBound = new ushort?[2];
+            for (int i = 0; i < 2; i++)
+                hotfix.ZoneBound[i] = packet.ReadUInt16("ZoneBound", indexes, i);
+            hotfix.ItemSet = packet.ReadUInt16("ItemSet", indexes);
+            hotfix.LockID = packet.ReadUInt16("LockID", indexes);
+            hotfix.PageID = packet.ReadUInt16("PageID", indexes);
+            hotfix.ItemDelay = packet.ReadUInt16("ItemDelay", indexes);
+            hotfix.MinFactionID = packet.ReadUInt16("MinFactionID", indexes);
+            hotfix.RequiredSkillRank = packet.ReadUInt16("RequiredSkillRank", indexes);
+            hotfix.RequiredSkill = packet.ReadUInt16("RequiredSkill", indexes);
+            hotfix.ItemLevel = packet.ReadUInt16("ItemLevel", indexes);
+            hotfix.AllowableClass = packet.ReadInt16("AllowableClass", indexes);
+            hotfix.ArtifactID = packet.ReadByte("ArtifactID", indexes);
+            hotfix.SpellWeight = packet.ReadByte("SpellWeight", indexes);
+            hotfix.SpellWeightCategory = packet.ReadByte("SpellWeightCategory", indexes);
+            hotfix.SocketType = new byte?[3];
+            for (int i = 0; i < 3; i++)
+                hotfix.SocketType[i] = packet.ReadByte("SocketType", indexes, i);
+            hotfix.SheatheType = packet.ReadByte("SheatheType", indexes);
+            hotfix.Material = packet.ReadByte("Material", indexes);
+            hotfix.PageMaterialID = packet.ReadByte("PageMaterialID", indexes);
+            hotfix.Bonding = packet.ReadByte("Bonding", indexes);
+            hotfix.DamageDamageType = packet.ReadByte("DamageDamageType", indexes);
+            hotfix.ContainerSlots = packet.ReadByte("ContainerSlots", indexes);
+            hotfix.RequiredPVPMedal = packet.ReadByte("RequiredPVPMedal", indexes);
+            hotfix.RequiredPVPRank = packet.ReadSByte("RequiredPVPRank", indexes);
+            hotfix.RequiredLevel = packet.ReadSByte("RequiredLevel", indexes);
+            hotfix.InventoryType = packet.ReadSByte("InventoryType", indexes);
+            hotfix.OverallQualityID = packet.ReadSByte("OverallQualityID", indexes);
+
+            Storage.ItemSparseHotfixes1127.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                ItemSparseLocaleHotfix1127 hotfixLocale = new ItemSparseLocaleHotfix1127
+                {
+                    ID = hotfix.ID,
+                    DescriptionLang = hotfix.Description,
+                    Display3Lang = hotfix.Display3,
+                    Display2Lang = hotfix.Display2,
+                    Display1Lang = hotfix.Display1,
+                    DisplayLang = hotfix.Display,
+                };
+                Storage.ItemSparseHotfixesLocale1127.Add(hotfixLocale, packet.TimeSpan);
             }
         }
 
@@ -5961,6 +6156,38 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                     NameLang = hotfix.Name,
                 };
                 Storage.MapChallengeModeHotfixesLocale1120.Add(hotfixLocale, packet.TimeSpan);
+            }
+        }
+
+        public static void MapChallengeModeHandler1127(Packet packet, uint entry, params object[] indexes)
+        {
+            MapChallengeModeHotfix1127 hotfix = new MapChallengeModeHotfix1127();
+
+            hotfix.Name = packet.ReadCString("Name", indexes);
+            hotfix.ID = packet.ReadUInt32("ID", indexes);
+            hotfix.MapID = packet.ReadUInt16("MapID", indexes);
+            hotfix.Flags = packet.ReadInt32("Flags", indexes);
+            hotfix.MaxMedals = packet.ReadInt32("MaxMedals", indexes);
+            hotfix.ExpansionLevel = packet.ReadUInt32("ExpansionLevel", indexes);
+            hotfix.RequiredWorldStateID = packet.ReadInt32("RequiredWorldStateID", indexes);
+            hotfix.CriteriaCount = new short?[3];
+            for (int i = 0; i < 5; i++)
+                hotfix.CriteriaCount[i] = packet.ReadInt16("CriteriaCount", indexes, i);
+            for (int i = 0; i < 6; i++)
+                hotfix.FirstRewardQuestID[i] = packet.ReadInt32("FirstRewardQuestID", indexes, i);
+            for (int i = 0; i < 6; i++)
+                hotfix.RewardQuestID[i] = packet.ReadInt32("RewardQuestID", indexes, i);
+
+            Storage.MapChallengeModeHotfixes1127.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                MapChallengeModeLocaleHotfix1127 hotfixLocale = new MapChallengeModeLocaleHotfix1127
+                {
+                    ID = hotfix.ID,
+                    NameLang = hotfix.Name,
+                };
+                Storage.MapChallengeModeHotfixesLocale1127.Add(hotfixLocale, packet.TimeSpan);
             }
         }
 
@@ -8987,6 +9214,36 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             Storage.SpellVisualHotfixes1100.Add(hotfix, packet.TimeSpan);
         }
 
+        public static void SpellVisualHandler1127(Packet packet, uint entry, params object[] indexes)
+        {
+            SpellVisualHotfix1127 hotfix = new SpellVisualHotfix1127();
+
+            hotfix.ID = entry;
+            hotfix.MissileCastOffset = new float?[3];
+            for (int i = 0; i < 3; i++)
+                hotfix.MissileCastOffset[i] = packet.ReadSingle("MissileCastOffset", indexes, i);
+            hotfix.MissileImpactOffset = new float?[3];
+            for (int i = 0; i < 3; i++)
+                hotfix.MissileImpactOffset[i] = packet.ReadSingle("MissileImpactOffset", indexes, i);
+            hotfix.StateKit = packet.ReadInt32("StateKit", indexes);
+            hotfix.AnimEventSoundID = packet.ReadUInt32("AnimEventSoundID", indexes);
+            hotfix.Flags = packet.ReadInt32("Flags", indexes);
+            hotfix.MissileAttachment = packet.ReadSByte("MissileAttachment", indexes);
+            hotfix.MissileDestinationAttachment = packet.ReadSByte("MissileDestinationAttachment", indexes);
+            hotfix.MissileCastPositionerID = packet.ReadUInt32("MissileCastPositionerID", indexes);
+            hotfix.MissileImpactPositionerID = packet.ReadUInt32("MissileImpactPositionerID", indexes);
+            hotfix.MissileTargetingKit = packet.ReadInt32("MissileTargetingKit", indexes);
+            hotfix.HostileSpellVisualID = packet.ReadUInt32("HostileSpellVisualID", indexes);
+            hotfix.CasterSpellVisualID = packet.ReadUInt32("CasterSpellVisualID", indexes);
+            hotfix.SpellVisualMissileSetID = packet.ReadUInt16("SpellVisualMissileSetID", indexes);
+            hotfix.DamageNumberDelay = packet.ReadUInt16("DamageNumberDelay", indexes);
+            hotfix.LowViolenceSpellVisualID = packet.ReadUInt32("LowViolenceSpellVisualID", indexes);
+            hotfix.RaidSpellVisualMissileSetID = packet.ReadUInt32("RaidSpellVisualMissileSetID", indexes);
+            hotfix.ReducedUnexpectedCameraMovementSpellVisualID = packet.ReadInt32("ReducedUnexpectedCameraMovementSpellVisualID", indexes);
+
+            Storage.SpellVisualHotfixes1127.Add(hotfix, packet.TimeSpan);
+        }
+
         public static void SpellVisualEffectNameHandler1100(Packet packet, uint entry, params object[] indexes)
         {
             SpellVisualEffectNameHotfix1100 hotfix = new SpellVisualEffectNameHotfix1100();
@@ -11207,7 +11464,10 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         }
                         case DB2Hash.ConditionalContentTuning:
                         {
-                            ConditionalContentTuningHandler1100(db2File, (uint)entry, indexes);
+                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                                ConditionalContentTuningHandler1127(db2File, (uint)entry, indexes);
+                            else
+                                ConditionalContentTuningHandler1100(db2File, (uint)entry, indexes);
                             break;
                         }
                         case DB2Hash.ContentTuning:
@@ -11540,7 +11800,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         }
                         case DB2Hash.GossipNpcOption:
                         {
-                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                                GossipNpcOptionHandler1127(db2File, (uint)entry, indexes);
+                            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
                                 GossipNpcOptionHandler1110(db2File, (uint)entry, indexes);
                             else
                                 GossipNpcOptionHandler1100(db2File, (uint)entry, indexes);
@@ -11604,7 +11866,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         }
                         case DB2Hash.Item:
                         {
-                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                                ItemHandler1127(db2File, (uint)entry, indexes);
+                            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
                                 ItemHandler1125(db2File, (uint)entry, indexes);
                             else if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213))
                                 ItemHandler1120(db2File, (uint)entry, indexes);
@@ -11727,7 +11991,10 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         }
                         case DB2Hash.ItemEffect:
                         {
-                            ItemEffectHandler1100(db2File, (uint)entry, indexes);
+                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                                ItemEffectHandler1127(db2File, (uint)entry, indexes);
+                            else
+                                ItemEffectHandler1100(db2File, (uint)entry, indexes);
                             break;
                         }
                         case DB2Hash.ItemExtendedCost:
@@ -11790,7 +12057,10 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         }
                         case DB2Hash.ItemScalingConfig:
                         {
-                            ItemScalingConfigHandler1125(db2File, (uint)entry, indexes);
+                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                                ItemScalingConfigHandler1127(db2File, (uint)entry, indexes);
+                            else
+                                ItemScalingConfigHandler1125(db2File, (uint)entry, indexes);
                             break;
                         }
                         case DB2Hash.ItemSearchName:
@@ -11813,7 +12083,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         }
                         case DB2Hash.ItemSparse:
                         {
-                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                                ItemSparseHandler1127(db2File, (uint)entry, indexes);
+                            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
                                 ItemSparseHandler1125(db2File, (uint)entry, indexes);
                             else if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
                                 ItemSparseHandler1110(db2File, (uint)entry, indexes);
@@ -11929,7 +12201,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         }
                         case DB2Hash.MapChallengeMode:
                         {
-                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213))
+                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                                MapChallengeModeHandler1127(db2File, (uint)entry, indexes);
+                            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213))
                                 MapChallengeModeHandler1120(db2File, (uint)entry, indexes);
                             else
                                 MapChallengeModeHandler1100(db2File, (uint)entry, indexes);
@@ -12536,7 +12810,10 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                         }
                         case DB2Hash.SpellVisual:
                         {
-                            SpellVisualHandler1100(db2File, (uint)entry, indexes);
+                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                                SpellVisualHandler1127(db2File, (uint)entry, indexes);
+                            else
+                                SpellVisualHandler1100(db2File, (uint)entry, indexes);
                             break;
                         }
                         case DB2Hash.SpellVisualEffectName:
