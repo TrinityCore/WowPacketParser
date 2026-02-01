@@ -28,4 +28,30 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("spell_interrupts")]
+    public sealed record SpellInterruptsHotfix1125 : IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("DifficultyID")]
+        public byte? DifficultyID;
+
+        [DBFieldName("InterruptFlags")]
+        public int? InterruptFlags;
+
+        [DBFieldName("AuraInterruptFlags", 2)]
+        public int?[] AuraInterruptFlags;
+
+        [DBFieldName("ChannelInterruptFlags", 2)]
+        public int?[] ChannelInterruptFlags;
+
+        [DBFieldName("SpellID")]
+        public uint? SpellID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

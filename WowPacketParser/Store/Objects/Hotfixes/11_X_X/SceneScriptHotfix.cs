@@ -22,4 +22,24 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("scene_script")]
+    public sealed record SceneScriptHotfix1125 : IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("FirstSceneScriptID")]
+        public uint? FirstSceneScriptID;
+
+        [DBFieldName("NextSceneScriptID")]
+        public uint? NextSceneScriptID;
+
+        [DBFieldName("Unknown915")]
+        public int? Unknown915;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

@@ -31,4 +31,33 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("curve_point")]
+    public sealed record CurvePointHotfix1125 : IDataModel
+    {
+        [DBFieldName("PosX")]
+        public float? PosX;
+
+        [DBFieldName("PosY")]
+        public float? PosY;
+
+        [DBFieldName("PreSLSquishPosX")]
+        public float? PreSLSquishPosX;
+
+        [DBFieldName("PreSLSquishPosY")]
+        public float? PreSLSquishPosY;
+
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("CurveID")]
+        public uint? CurveID;
+
+        [DBFieldName("OrderIndex")]
+        public uint? OrderIndex;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }
