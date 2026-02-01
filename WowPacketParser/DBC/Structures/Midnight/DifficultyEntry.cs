@@ -1,6 +1,6 @@
 using DBFileReaderLib.Attributes;
 
-namespace WowPacketParser.DBC.Structures.TheWarWithin
+namespace WowPacketParser.DBC.Structures.Midnight
 {
     [DBFile("Difficulty")]
     public sealed class DifficultyEntry
@@ -11,12 +11,12 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public byte InstanceType;
         public byte OrderIndex;
         public sbyte OldEnumValue;
-        public byte FallbackDifficultyID;
+        public short FallbackDifficultyID;
         public byte MinPlayers;
         public byte MaxPlayers;
-        public ushort Flags;
+        public int Flags;
         public byte ItemContext;
-        public byte ToggleDifficultyID;
+        public short ToggleDifficultyID;
         public uint GroupSizeHealthCurveID;
         public uint GroupSizeDmgCurveID;
         public uint GroupSizeSpellPointsCurveID;

@@ -1,6 +1,6 @@
 using DBFileReaderLib.Attributes;
 
-namespace WowPacketParser.DBC.Structures.TheWarWithin
+namespace WowPacketParser.DBC.Structures.Midnight
 {
     [DBFile("CreatureDifficulty")]
     public sealed class CreatureDifficultyEntry

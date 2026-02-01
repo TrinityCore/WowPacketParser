@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using WowPacketParser.DBC.Structures.TheWarWithin;
+using WowPacketParser.DBC.Structures.Midnight;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.DBC

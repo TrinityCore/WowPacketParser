@@ -1,6 +1,6 @@
 using DBFileReaderLib.Attributes;
 
-namespace WowPacketParser.DBC.Structures.TheWarWithin
+namespace WowPacketParser.DBC.Structures.Midnight
 {
     [DBFile("Item")]
     public sealed class ItemEntry
@@ -17,7 +17,10 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public uint ItemGroupSoundsID;
         public int ContentTuningID;
         public int ModifiedCraftingReagentItemID;
+        public byte Unknown1200;
         public int CraftingQualityID;
         public int ItemSquishEraID;
+        public float RecraftReagentCountPercentage;
+        public byte OrderSource;
     }
 }

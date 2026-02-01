@@ -1,6 +1,6 @@
 using DBFileReaderLib.Attributes;
 
-namespace WowPacketParser.DBC.Structures.TheWarWithin
+namespace WowPacketParser.DBC.Structures.Midnight
 {
     [DBFile("QuestLineXQuest")]
     public sealed class QuestLineXQuestEntry

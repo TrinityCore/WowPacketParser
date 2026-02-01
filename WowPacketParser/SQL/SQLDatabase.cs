@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using WowPacketParser.DBC.Structures.TheWarWithin;
+using WowPacketParser.DBC.Structures.Midnight;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
@@ -347,7 +347,7 @@ namespace WowPacketParser.SQL
                     return sniffData;
 
                 if (DBC.DBC.Difficulty.TryGetValue((int)difficulty, out var difficultyEntry))
-                    return CheckCreatureTemplateDifficultyWDBFallbacks(sniffData, difficultyEntry.FallbackDifficultyID);
+                    return CheckCreatureTemplateDifficultyWDBFallbacks(sniffData, (uint)difficultyEntry.FallbackDifficultyID);
             }
             return sniffData;
         }
@@ -373,7 +373,7 @@ namespace WowPacketParser.SQL
                     if (difficultyEntry.FallbackDifficultyID != 0)
                         return;
 
-                    CheckCreatureTemplateDifficultyNonWDBFallbacks(ref sniffData, difficultyEntry.FallbackDifficultyID);
+                    CheckCreatureTemplateDifficultyNonWDBFallbacks(ref sniffData, (uint)difficultyEntry.FallbackDifficultyID);
                 }
             }
         }
