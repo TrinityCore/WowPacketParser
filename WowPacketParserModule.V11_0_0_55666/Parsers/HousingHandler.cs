@@ -44,13 +44,13 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadVector3("Position");
             packet.ReadVector3("Rotation");
             packet.ReadSingle("Scale");
-            packet.ReadPackedGuid128("AttachParentGUID");
+            packet.ReadPackedGuid128("ParentDecorGUID");
             packet.ReadPackedGuid128("RoomGUID");
-            packet.ReadPackedGuid128("Field_70");
-            packet.ReadInt32("Field_80");
-            packet.ReadByte("Field_85");
-            packet.ReadByte("Field_86");
-            packet.ReadBool("IsBasicMove");
+            packet.ReadPackedGuid128("ParentHouseFixtureGUID");
+            packet.ReadInt32("PlacedComponentID");
+            packet.ReadByte("AddedFlags");
+            packet.ReadByte("RemovedFlags");
+            packet.ReadBit("IncludeChildren");
         }
         
         [Parser(Opcode.CMSG_HOUSING_DECOR_REMOVE)]
