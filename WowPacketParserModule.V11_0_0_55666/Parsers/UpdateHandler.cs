@@ -59,6 +59,22 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 var partWriter = new StringBuilderProtoPart(packet.Writer);
                 packet.AddValue("UpdateType", type.ToString(), i);
                 var guid = packet.ReadPackedGuid128("Object Guid", i);
+
+                if (type == UpdateTypeCataclysm.CreateObject1 && ClientVersion.AddedInVersion(ClientType.Midnight))
+                {
+                    var packetTimestamp = Utilities.GetUnixTimeFromDateTime(packet.Time);
+
+                    var spawnTimestamp = packetTimestamp & ~((1 << 23) - 1);
+                    spawnTimestamp += guid.GetSpawnTimestamp() + 3600; // spawn timestamps are off by 1h
+
+                    var timestampDiff = Math.Abs(spawnTimestamp - packetTimestamp);
+                    if (timestampDiff <= Settings.TreatAsCreateObject2Tolerance && !Storage.Objects.ContainsKey(guid))
+                        type = UpdateTypeCataclysm.CreateObject2;
+
+                    packet.AddValue("TreatAsCreateObject2", (type == UpdateTypeCataclysm.CreateObject2), i);
+                    packet.AddValue("TimestampDiff", timestampDiff, i);
+                }
+
                 switch (type)
                 {
                     case UpdateTypeCataclysm.Values:
