@@ -29,7 +29,7 @@ namespace WowPacketParser.Enums.Version.V2_5_5_64796
             { Opcode.SMSG_TEXT_EMOTE, 0x3B0116 },
             { Opcode.SMSG_EMOTE, 0x3A026B },
             { Opcode.SMSG_CHAT, 0x3F0001 },
-            { Opcode.SMSG_ON_MONSTER_MOVE, 0x4C0002 },
+            { Opcode.SMSG_ON_MONSTER_MOVE, 0x5C0002 },
             { Opcode.SMSG_UPDATE_OBJECT, 0x5A0000 },
             { Opcode.SMSG_AURA_UPDATE, 0x510011 },
             { Opcode.SMSG_SPELL_GO, 0x510028 },

@@ -896,6 +896,7 @@ namespace WowPacketParser.Enums
         V2_5_5_64912 = 64912, // ptr
         V2_5_5_65000 = 65000, // ptr
         V2_5_5_65417 = 65417, // ptr and live
+        V2_5_5_65676 = 65676, // live
 
         V3_4_0_44832 = 44832, // ptr / beta
         V3_4_0_45166 = 45166, // ptr / beta

@@ -167,13 +167,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                         createObject.Values.Fields.UpdateData(obj.ObjectData);
                         switch (obj.Type)
                         {
-                            //case ObjectType.Item:
-                            //    handler.ReadCreateItemData(fieldsData, flags, index);
-                            //    break;
-                            //case ObjectType.Container:
-                            //    handler.ReadCreateItemData(fieldsData, flags, index);
-                            //    handler.ReadCreateContainerData(fieldsData, flags, index);
-                            //    break;
+                            case ObjectType.Item:
+                                handler.ReadCreateItemData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.Container:
+                                handler.ReadCreateItemData(fieldsData, flags, index);
+                                handler.ReadCreateContainerData(fieldsData, flags, index);
+                                break;
                             //case ObjectType.AzeriteEmpoweredItem:
                             //    handler.ReadCreateItemData(fieldsData, flags, index);
                             //    handler.ReadCreateAzeriteEmpoweredItemData(fieldsData, flags, index);
@@ -182,21 +182,21 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                             //    handler.ReadCreateItemData(fieldsData, flags, index);
                             //    handler.ReadCreateAzeriteItemData(fieldsData, flags, index);
                             //    break;
-                            //case ObjectType.Unit:
-                            //{
-                            //    var data = (obj as Unit).UnitData = handler.ReadCreateUnitData(fieldsData, flags, index);
-                            //    createObject.Values.Fields.UpdateData(data);
-                            //    break;
-                            //}
-                            //case ObjectType.Player:
-                            //    handler.ReadCreateUnitData(fieldsData, flags, index);
-                            //    handler.ReadCreatePlayerData(fieldsData, flags, index);
-                            //    break;
-                            //case ObjectType.ActivePlayer:
-                            //    handler.ReadCreateUnitData(fieldsData, flags, index);
-                            //    handler.ReadCreatePlayerData(fieldsData, flags, index);
-                            //    handler.ReadCreateActivePlayerData(fieldsData, flags, index);
-                            //    break;
+                            case ObjectType.Unit:
+                            {
+                                var data = (obj as Unit).UnitData = handler.ReadCreateUnitData(fieldsData, flags, index);
+                                createObject.Values.Fields.UpdateData(data);
+                                break;
+                            }
+                            case ObjectType.Player:
+                                handler.ReadCreateUnitData(fieldsData, flags, index);
+                                // handler.ReadCreatePlayerData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.ActivePlayer:
+                                handler.ReadCreateUnitData(fieldsData, flags, index);
+                                // handler.ReadCreatePlayerData(fieldsData, flags, index);
+                                // handler.ReadCreateActivePlayerData(fieldsData, flags, index);
+                                break;
                             case ObjectType.GameObject:
                             {
                                 var data = (obj as GameObject).GameObjectData = handler.ReadCreateGameObjectData(fieldsData, flags, index);
@@ -215,9 +215,9 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                             //case ObjectType.SceneObject:
                             //    (obj as SceneObject).SceneObjectData = handler.ReadCreateSceneObjectData(fieldsData, flags, index);
                             //    break;
-                            //case ObjectType.Conversation:
-                            //    (obj as ConversationTemplate).ConversationData = handler.ReadCreateConversationData(fieldsData, flags, index);
-                            //    break;
+                            case ObjectType.Conversation:
+                                (obj as ConversationTemplate).ConversationData = handler.ReadCreateConversationData(fieldsData, flags, index);
+                                break;
                         }
                         break;
                     case WowCSEntityFragments.FVendor_C: handler.ReadCreateVendorData(fieldsData, flags, index); break;
@@ -387,40 +387,40 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
                             updateValues.Fields.UpdateData(data);
                         }
-                        //if ((updateTypeFlag & 0x0002) != 0)
-                        //    handler.ReadUpdateItemData(fieldsData, index);
-                        //if ((updateTypeFlag & 0x0004) != 0)
-                        //    handler.ReadUpdateContainerData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0002) != 0)
+                            handler.ReadUpdateItemData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0004) != 0)
+                            handler.ReadUpdateContainerData(fieldsData, index);
                         //if ((updateTypeFlag & 0x0008) != 0)
                         //    handler.ReadUpdateAzeriteEmpoweredItemData(fieldsData, index);
                         //if ((updateTypeFlag & 0x0010) != 0)
                         //    handler.ReadUpdateAzeriteItemData(fieldsData, index);
-                        //if ((updateTypeFlag & 0x0020) != 0)
-                        //{
-                        //    var unit = obj as Unit;
-                        //    var data = handler.ReadUpdateUnitData(fieldsData, index);
-                        //    if (unit is { UnitData: IMutableUnitData mut })
-                        //        mut.UpdateData(data);
-                        //    else if (unit != null)
-                        //        unit.UnitData = data;
+                        if ((updateTypeFlag & 0x0020) != 0)
+                        {
+                            var unit = obj as Unit;
+                            var data = handler.ReadUpdateUnitData(fieldsData, index);
+                            if (unit is { UnitData: IMutableUnitData mut })
+                                mut.UpdateData(data);
+                            else if (unit != null)
+                                unit.UnitData = data;
 
-                        //    updateValues.Fields.UpdateData(data);
-                        //}
+                            updateValues.Fields.UpdateData(data);
+                        }
                         //if ((updateTypeFlag & 0x0040) != 0)
                         //    handler.ReadUpdatePlayerData(fieldsData, index);
                         //if ((updateTypeFlag & 0x0080) != 0)
                         //    handler.ReadUpdateActivePlayerData(fieldsData, index);
-                        //if ((updateTypeFlag & 0x0100) != 0)
-                        //{
-                        //    var go = obj as GameObject;
-                        //    var data = handler.ReadUpdateGameObjectData(fieldsData, index);
-                        //    if (go is { GameObjectData: IMutableGameObjectData mut })
-                        //        mut.UpdateData(data);
-                        //    else if (go != null)
-                        //        go.GameObjectData = data;
+                        if ((updateTypeFlag & 0x0100) != 0)
+                        {
+                            var go = obj as GameObject;
+                            var data = handler.ReadUpdateGameObjectData(fieldsData, index);
+                            if (go is { GameObjectData: IMutableGameObjectData mut })
+                                mut.UpdateData(data);
+                            else if (go != null)
+                                go.GameObjectData = data;
 
-                        //    updateValues.Fields.UpdateData(data);
-                        //}
+                            updateValues.Fields.UpdateData(data);
+                        }
                         //if ((updateTypeFlag & 0x0200) != 0)
                         //    handler.ReadUpdateDynamicObjectData(fieldsData, index);
                         //if ((updateTypeFlag & 0x0400) != 0)

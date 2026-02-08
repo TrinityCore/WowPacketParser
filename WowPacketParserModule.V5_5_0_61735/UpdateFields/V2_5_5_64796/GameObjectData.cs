@@ -31,6 +31,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_5_64796
         public System.Nullable<uint> CustomParam { get; set; }
         public DynamicUpdateField<System.Nullable<int>> EnableDoodadSets { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<System.Nullable<int>> WorldEffects { get; } = new DynamicUpdateField<System.Nullable<int>>();
+        public IGameObjectAssistActionData AssistActionData { get; set; }
     }
 }
 
