@@ -2407,7 +2407,6 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             Storage.CorruptionEffectsHotfixes1100.Add(hotfix, packet.TimeSpan);
         }
 
-
         public static void CraftingQualityHandler1100(Packet packet, uint entry, params object[] indexes)
         {
             CraftingQualityHotfix1100 hotfix = new CraftingQualityHotfix1100();
@@ -6652,6 +6651,17 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             hotfix.Priority = packet.ReadInt32("Priority", indexes);
 
             Storage.PerksActivityHotfixes1100.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                PerksActivityLocaleHotfix1100 hotfixLocale = new PerksActivityLocaleHotfix1100
+                {
+                    ID = hotfix.ID,
+                    ActivityNameLang = hotfix.ActivityName,
+                    DescriptionLang = hotfix.Description,
+                };
+                Storage.PerksActivityHotfixesLocale1100.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void PhaseHandler1100(Packet packet, uint entry, params object[] indexes)
@@ -9665,16 +9675,6 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             }
         }
 
-        public static void TransmogHolidayHandler1100(Packet packet, uint entry, params object[] indexes)
-        {
-            TransmogHolidayHotfix1100 hotfix = new TransmogHolidayHotfix1100();
-
-            hotfix.ID = entry;
-            hotfix.RequiredTransmogHoliday = packet.ReadInt32("RequiredTransmogHoliday", indexes);
-
-            Storage.TransmogHolidayHotfixes1100.Add(hotfix, packet.TimeSpan);
-        }
-
         public static void TraitCondHandler1100(Packet packet, uint entry, params object[] indexes)
         {
             TraitCondHotfix1100 hotfix = new TraitCondHotfix1100();
@@ -10110,6 +10110,16 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             hotfix.TraitCurrencyID = packet.ReadInt32("TraitCurrencyID", indexes);
 
             Storage.TraitTreeXTraitCurrencyHotfixes1100.Add(hotfix, packet.TimeSpan);
+        }
+
+        public static void TransmogHolidayHandler1100(Packet packet, uint entry, params object[] indexes)
+        {
+            TransmogHolidayHotfix1100 hotfix = new TransmogHolidayHotfix1100();
+
+            hotfix.ID = entry;
+            hotfix.RequiredTransmogHoliday = packet.ReadInt32("RequiredTransmogHoliday", indexes);
+
+            Storage.TransmogHolidayHotfixes1100.Add(hotfix, packet.TimeSpan);
         }
 
         public static void TransmogIllusionHandler1100(Packet packet, uint entry, params object[] indexes)
