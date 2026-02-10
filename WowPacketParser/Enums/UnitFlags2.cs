@@ -43,7 +43,7 @@ namespace WowPacketParser.Enums
                                                      MirrorImage | ForceMovement | DisarmOffhand |
                                                      DisablePredStats | AllowChangingTalents | DisarmRanged |
                                                      /* RegeneratePower | */ RestrictPartyInteraction | CannotTurn |
-                                                     PreventSpellClick | /* InteractWhileHostile | */ /* Unk2 | */
+                                                     PreventSpellClick | InteractWhileHostile | /* Unk2 | */
                                                      /* PlayDeathAnim | */ AllowCheatSpells | SuppressHighlightWhenTargetedOrMousedOver |
                                                      TreatAsRaidUnitForHelpfulSpells | LargeAOI | GiganticAOI | NoActions |
                                                      AiWillOnlySwimIfTargetSwims | DontGenerateCombatLogWhenEngagedWithNpcs | AttackerIgnoresMinimumRanges |
