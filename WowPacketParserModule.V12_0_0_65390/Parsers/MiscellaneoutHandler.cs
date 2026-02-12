@@ -214,7 +214,6 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             packet.ReadInt64("RedeemForBalanceAmount");
             packet.ReadInt32("MaxCharactersOnThisRealm");
             var liveRegionCharacterCopySourceRegionsCount = packet.ReadUInt32("LiveRegionCharacterCopySourceRegionsCount");
-            packet.ReadUInt32("BpayStorePurchaseTimeout");
             packet.ReadInt32("ActiveBoostType");
             packet.ReadInt32("TrialBoostType");
             packet.ReadInt32("MinimumExpansionLevel");

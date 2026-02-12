@@ -33,5 +33,13 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             for (var i = 0u; i < bonusCount; ++i)
                 ReadFactionBonusData(packet, "Bonus", i);
         }
+
+        [Parser(Opcode.SMSG_FACTION_BONUS_INFO)]
+        public static void HandleFactionBonusInfo(Packet packet)
+        {
+            var factionCount = packet.ReadUInt32();
+            for (var i = 0u; i < factionCount; ++i)
+                ReadFactionBonusData(packet, "Bonus", i);
+        }
     }
 }

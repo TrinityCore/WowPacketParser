@@ -243,11 +243,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("Armor", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_5_57171))
             {
-                packet.ReadInt32("Unknown_1105_1", idx);
-                packet.ReadInt32("Unknown_1105_2", idx);
+                packet.ReadInt32("Versatility", idx);
+                packet.ReadInt32("Avoidance", idx);
             }
 
             packet.ResetBitReader();
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_1_65818))
+                packet.ReadBit("HideFromCombatLog", idx);
 
             var spellLogPowerDataCount = packet.ReadBits("SpellLogPowerData", 9, idx);
 

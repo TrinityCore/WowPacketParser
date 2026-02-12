@@ -314,5 +314,15 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadUInt32("CurrentCooldown");
             packet.ReadBit("OnCooldown");
         }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V11_2_7_64632)]
+        public static void HandlePlayerLogin(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("Guid");
+            packet.ReadSingle("FarClip");
+            packet.ReadBit("RPE");
+            packet.Holder.PlayerLogin = new() { PlayerGuid = guid };
+            WowPacketParser.Parsing.Parsers.SessionHandler.LoginGuid = guid;
+        }
     }
 }

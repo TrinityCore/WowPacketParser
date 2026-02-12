@@ -151,5 +151,28 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             Substructures.MovementHandler.ReadMovementStats(packet, "Status");
             ReadInertiaId(packet);
         }
+
+        [Parser(Opcode.CMSG_MOUNT_SPECIAL_ANIM, ClientVersionBuild.V9_0_5_37503)]
+        public static void HandleMountSpecialAnim(Packet packet)
+        {
+            var spellVisualKitCount = packet.ReadUInt32();
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                packet.ReadInt32("SequenceVariation");
+
+            for (var i = 0u; i < spellVisualKitCount; ++i)
+                packet.ReadInt32("SpellVisualKitID", i);
+        }
+
+        [Parser(Opcode.SMSG_SPECIAL_MOUNT_ANIM, ClientVersionBuild.V9_0_5_37503)]
+        public static void HandleSpecialMountAnim(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            var spellVisualKitCount = packet.ReadUInt32();
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                packet.ReadInt32("SequenceVariation");
+
+            for (var i = 0u; i < spellVisualKitCount; ++i)
+                packet.ReadInt32("SpellVisualKitID", i);
+        }
     }
 }
