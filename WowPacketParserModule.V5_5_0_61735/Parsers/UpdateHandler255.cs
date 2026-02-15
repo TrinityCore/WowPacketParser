@@ -190,12 +190,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                             }
                             case ObjectType.Player:
                                 handler.ReadCreateUnitData(fieldsData, flags, index);
-                                // handler.ReadCreatePlayerData(fieldsData, flags, index);
+                                handler.ReadCreatePlayerData(fieldsData, flags, index);
                                 break;
                             case ObjectType.ActivePlayer:
                                 handler.ReadCreateUnitData(fieldsData, flags, index);
-                                // handler.ReadCreatePlayerData(fieldsData, flags, index);
-                                // handler.ReadCreateActivePlayerData(fieldsData, flags, index);
+                                handler.ReadCreatePlayerData(fieldsData, flags, index);
+                                handler.ReadCreateActivePlayerData(fieldsData, flags, index);
                                 break;
                             case ObjectType.GameObject:
                             {
@@ -203,12 +203,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                                 createObject.Values.Fields.UpdateData(data);
                                 break;
                             }
-                            //case ObjectType.DynamicObject:
-                            //    handler.ReadCreateDynamicObjectData(fieldsData, flags, index);
-                            //    break;
-                            //case ObjectType.Corpse:
-                            //    handler.ReadCreateCorpseData(fieldsData, flags, index);
-                            //    break;
+                            case ObjectType.DynamicObject:
+                                handler.ReadCreateDynamicObjectData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.Corpse:
+                                handler.ReadCreateCorpseData(fieldsData, flags, index);
+                                break;
                             //case ObjectType.AreaTrigger:
                             //    (obj as AreaTriggerCreateProperties).AreaTriggerData = handler.ReadCreateAreaTriggerData(fieldsData, flags, index);
                             //    break;
@@ -406,8 +406,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
                             updateValues.Fields.UpdateData(data);
                         }
-                        //if ((updateTypeFlag & 0x0040) != 0)
-                        //    handler.ReadUpdatePlayerData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0040) != 0)
+                            handler.ReadUpdatePlayerData(fieldsData, index);
                         //if ((updateTypeFlag & 0x0080) != 0)
                         //    handler.ReadUpdateActivePlayerData(fieldsData, index);
                         if ((updateTypeFlag & 0x0100) != 0)
@@ -421,10 +421,10 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
                             updateValues.Fields.UpdateData(data);
                         }
-                        //if ((updateTypeFlag & 0x0200) != 0)
-                        //    handler.ReadUpdateDynamicObjectData(fieldsData, index);
-                        //if ((updateTypeFlag & 0x0400) != 0)
-                        //    handler.ReadUpdateCorpseData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0200) != 0)
+                            handler.ReadUpdateDynamicObjectData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0400) != 0)
+                            handler.ReadUpdateCorpseData(fieldsData, index);
                         //if ((updateTypeFlag & 0x0800) != 0)
                         //{
                         //    var at = obj as AreaTriggerCreateProperties;

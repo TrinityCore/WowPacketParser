@@ -20,7 +20,7 @@ namespace WowPacketParser.Enums.Version.V2_5_5_64796
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new()
         {
             { Opcode.CMSG_CHAT_MESSAGE_SAY, 0x2F0023 },
-            { Opcode.CMSG_SEND_TEXT_EMOTE, 0x2F0024 },
+            { Opcode.CMSG_SEND_TEXT_EMOTE, 0x3E0013 },
             { Opcode.CMSG_USE_ITEM, 0x30016B },
         };
 
