@@ -777,6 +777,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         public static void HandleAuraUpdate(Packet packet)
         {
             PacketAuraUpdate packetAuraUpdate = packet.Holder.AuraUpdate = new();
+
             packet.ReadBit("UpdateAll");
             var count = packet.ReadBits("AurasCount", 9);
 
@@ -792,33 +793,43 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ResetBitReader();
                 var hasAura = packet.ReadBit("HasAura", i);
                 auraEntry.Remove = !hasAura;
+
                 if (hasAura)
                 {
                     packet.ReadPackedGuid128("CastID", i);
                     aura.SpellId = auraEntry.Spell = (uint)packet.ReadInt32<SpellId>("SpellID", i);
                     packet.ReadInt32("SpellXSpellVisualID", i);
+
                     var flags = packet.ReadUInt16E<AuraFlagClassic>("Flags", i);
                     aura.AuraFlags = flags;
                     auraEntry.Flags = flags.ToUniversal();
+
                     packet.ReadUInt32("ActiveFlags", i);
                     aura.Level = packet.ReadUInt16("CastLevel", i);
                     aura.Charges = packet.ReadByte("Applications", i);
+
                     packet.ReadInt32("ContentTuningID", i);
                     packet.ReadVector3("DstLocation", i);
 
-                    if (ClientVersion.RemovedInVersion(ClientVersionBuild.V5_5_3_65746)) {
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_3_65746))
+                    {
                         packet.ResetBitReader();
 
-                        var hasCastUnit = packet.ReadBit("HasCastUnit", i);
-                        var hasDuration = packet.ReadBit("HasDuration", i);
-                        var hasRemaining = packet.ReadBit("HasRemaining", i);
+                        bool hasCastUnit = packet.ReadBit("HasCastUnit", i);
+                        bool hasCastUnit2 = packet.ReadBit("HasCastUnit2", i);
+                        bool hasDuration = packet.ReadBit("HasDuration", i);
+                        bool hasRemaining = packet.ReadBit("HasRemaining", i);
+                        bool hasTimeMod = packet.ReadBit("HasTimeMod", i);
 
-                        var hasTimeMod = packet.ReadBit("HasTimeMod", i);
+                        uint pointsCount = packet.ReadBits("PointsCount", 6, i);
 
-                        var pointsCount = packet.ReadBits("PointsCount", 6, i);
-                        var effectCount = packet.ReadBits("EstimatedPoints", 6, i);
+                        uint effectCount = packet.ReadBits("EstimatedPointsCount", 6, i);
 
-                        var hasContentTuning = packet.ReadBit("HasContentTuning", i);
+                        bool hasContentTuning = packet.ReadBit("HasContentTuning", i);
+
+                        packet.ReadBits("AuraHeaderUnused", 6, i);
+
+                        packet.ResetBitReader();
 
                         if (hasContentTuning)
                             CombatLogHandler.ReadContentTuningParams(packet, i, "ContentTuning");
@@ -826,49 +837,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                         if (hasCastUnit)
                             auraEntry.CasterUnit = packet.ReadPackedGuid128("CastUnit", i);
 
-                        aura.Duration = hasDuration ? packet.ReadInt32("Duration", i) : 0;
-                        aura.MaxDuration = hasRemaining ? packet.ReadInt32("Remaining", i) : 0;
-
-                        if (hasDuration)
-                            auraEntry.Duration = aura.Duration;
-
-                        if (hasRemaining)
-                            auraEntry.Remaining = aura.MaxDuration;
-
-                        if (hasTimeMod)
-                            packet.ReadSingle("TimeMod");
-
-                        for (var j = 0; j < pointsCount; ++j)
-                            packet.ReadSingle("Points", i, j);
-
-                        for (var j = 0; j < effectCount; ++j)
-                            packet.ReadSingle("EstimatedPoints", i, j);
-                    }
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_3_65746))
-                    {
-                        var hdrP = packet.ReadByte("unkOwnerFlag", i);
-                        var hdrQ = packet.ReadByte("unkSpellFlag", i);
-                        var hdrR = packet.ReadByte("unk", i);
-
-                        bool hasGuidA = (hdrP & 0x80) != 0;
-                        bool hasGuidB = (hdrP & 0x40) != 0;
-                        bool hasDuration = (hdrP & 0x20) != 0;
-                        bool hasRemaining = (hdrP & 0x10) != 0;
-                        bool hasTimeMod = (hdrP & 0x08) != 0;
-
-                        int pointsCount = ((hdrP & 0x07) << 3) | (hdrQ >> 5);
-                        int effectCount = ((hdrQ & 0x1F) << 1) | (hdrR >> 7);
-
-                        bool hasContentTuning = (hdrR & 0x40) != 0;
-
-                        if (hasContentTuning)
-                            CombatLogHandler.ReadContentTuningParams(packet, i, "ContentTuning");
-
-                        if (hasGuidA)
-                            auraEntry.CasterUnit = packet.ReadPackedGuid128("CastUnit", i);
-
-                        if (hasGuidB)
+                        if (hasCastUnit2)
                             packet.ReadPackedGuid128("CastUnit2", i);
 
                         if (hasDuration)
@@ -888,15 +857,56 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                         if (hasTimeMod)
                             packet.ReadSingle("TimeMod", i);
 
-                        // tablice (dokładnie pointsCount i effectCount)
                         for (var j = 0; j < pointsCount; ++j)
                             packet.ReadSingle("Points", i, j);
 
                         for (var j = 0; j < effectCount; ++j)
                             packet.ReadSingle("EstimatedPoints", i, j);
                     }
+                    else
+                    {
+                        if (ClientVersion.RemovedInVersion(ClientVersionBuild.V5_5_3_65746))
+                        {
+                            packet.ResetBitReader();
 
-                    auras.Add(aura);
+                            var hasCastUnit = packet.ReadBit("HasCastUnit", i);
+                            var hasDuration = packet.ReadBit("HasDuration", i);
+                            var hasRemaining = packet.ReadBit("HasRemaining", i);
+                            var hasTimeMod = packet.ReadBit("HasTimeMod", i);
+
+                            var pointsCount = packet.ReadBits("PointsCount", 6, i);
+                            var effectCount = packet.ReadBits("EstimatedPointsCount", 6, i);
+
+                            var hasContentTuning = packet.ReadBit("HasContentTuning", i);
+
+                            if (hasContentTuning)
+                                CombatLogHandler.ReadContentTuningParams(packet, i, "ContentTuning");
+
+                            if (hasCastUnit)
+                                auraEntry.CasterUnit = packet.ReadPackedGuid128("CastUnit", i);
+
+                            aura.Duration = hasDuration ? packet.ReadInt32("Duration", i) : 0;
+                            aura.MaxDuration = hasRemaining ? packet.ReadInt32("Remaining", i) : 0;
+
+                            if (hasDuration)
+                                auraEntry.Duration = aura.Duration;
+
+                            if (hasRemaining)
+                                auraEntry.Remaining = aura.MaxDuration;
+
+                            if (hasTimeMod)
+                                packet.ReadSingle("TimeMod", i);
+
+                            for (var j = 0; j < pointsCount; ++j)
+                                packet.ReadSingle("Points", i, j);
+
+                            for (var j = 0; j < effectCount; ++j)
+                                packet.ReadSingle("EstimatedPoints", i, j);
+
+                            // (opcjonalnie) packet.ResetBitReader(); // tylko jeśli zaraz potem miałbyś znowu ReadBit
+                        }
+                    }
+                        auras.Add(aura);
                     packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
                 }
             }
@@ -909,11 +919,6 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 var unit = Storage.Objects[guid].Item1 as Unit;
                 if (unit != null)
                 {
-                    // If this is the first packet that sends auras
-                    // (hopefully at spawn time) add it to the "Auras" field,
-                    // if not create another row of auras in AddedAuras
-                    // (similar to ChangedUpdateFields)
-
                     if (unit.Auras == null)
                         unit.Auras = auras;
                     else

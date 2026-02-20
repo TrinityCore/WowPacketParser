@@ -160,7 +160,6 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                     distance += Vector3.GetDistance(prevpos, spot);
                     prevpos = spot;
 
-                    // client always taking first point
                     if (i == 0)
                         endpos = spot;
                 }
@@ -168,10 +167,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             if (packedDeltasCount > 0)
             {
-                // Calculate mid pos
                 var mid = (pos + endpos) * 0.5f;
 
-                // ignore distance set by Points array if packed deltas are used
                 distance = 0;
 
                 var prevpos = pos;
@@ -257,24 +254,26 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             byte pcLo = packet.ReadByte("PointsCountLo", indexes);
             ushort pointsCount = (ushort)((pcHi << 8) | pcLo);
 
-            byte splineBytePack1 = packet.ReadByte("SplineBits", indexes);
-            bool VehicleExitVoluntary = (splineBytePack1 & 0x80) != 0;
-            bool Interpolate = (splineBytePack1 & 0x40) != 0;
+            packet.ResetBitReader();
 
-            byte splineBytePack2 = packet.ReadByte("SplineBits", indexes);
-            byte splineBytePack3 = packet.ReadByte("SplineBits", indexes);
+            bool vehicleExitVoluntary = packet.ReadBit("VehicleExitVoluntary", indexes);
+            bool interpolate = packet.ReadBit("Interpolate", indexes);
 
-            ushort packedDeltasCount = (ushort)(((splineBytePack1 & 0x3F) << 10) | (splineBytePack2 << 2) | (splineBytePack3 >> 6));
-            bool hasSplineFilter = (splineBytePack3 & 0x20) != 0;
-            bool hasSpellEffectExtraData = (splineBytePack3 & 0x10) != 0;
-            bool hasJumpExtraData = (splineBytePack3 & 0x08) != 0;
-            bool hasTurnData = (splineBytePack3 & 0x04) != 0;
-            bool hasAnimTier = (splineBytePack3 & 0x02) != 0;
+            ushort packedDeltasCount = (ushort)packet.ReadBits("PackedDeltasCount", 16, indexes);
+
+            bool hasSplineFilter = packet.ReadBit("HasSplineFilter", indexes);
+            bool hasSpellEffectExtraData = packet.ReadBit("HasSpellEffectExtraData", indexes);
+            bool hasJumpExtraData = packet.ReadBit("HasJumpExtraData", indexes);
+            bool hasTurnData = packet.ReadBit("HasTurnData", indexes);
+            bool hasAnimTier = packet.ReadBit("HasAnimTier", indexes);
+
+            packet.ReadBit("SplineBitsUnused", indexes);
+
+            packet.ResetBitReader();
 
             if (hasSplineFilter)
                 ReadMonsterSplineFilter(packet, indexes, "MonsterSplineFilter");
 
-            // punkty
             Vector3 endpos = default;
             double distance = 0.0;
 
@@ -291,7 +290,6 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 }
             }
 
-            // packed deltas (uint32 each)
             if (packedDeltasCount > 0)
             {
                 var mid = (pos + endpos) * 0.5f;
