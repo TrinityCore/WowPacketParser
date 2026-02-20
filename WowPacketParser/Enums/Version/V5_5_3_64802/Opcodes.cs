@@ -901,7 +901,6 @@ namespace WowPacketParser.Enums.Version.V5_5_3_64802
             { Opcode.SMSG_READY_CHECK_STARTED, 0x3A0090 },
             { Opcode.SMSG_READY_CHECK_RESPONSE, 0x3A0091 },
             { Opcode.SMSG_READY_CHECK_COMPLETED, 0x3A0092 },
-
             { Opcode.SMSG_PET_BATTLE_REQUEST_FAILED, 0x3A0097 },
             { Opcode.SMSG_PET_BATTLE_PVP_CHALLENGE, 0x3A0098 },
             { Opcode.SMSG_PET_BATTLE_FINALIZE_LOCATION, 0x3A0099 },
