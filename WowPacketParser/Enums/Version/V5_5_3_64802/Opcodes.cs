@@ -901,6 +901,10 @@ namespace WowPacketParser.Enums.Version.V5_5_3_64802
             { Opcode.SMSG_READY_CHECK_STARTED, 0x3A0090 },
             { Opcode.SMSG_READY_CHECK_RESPONSE, 0x3A0091 },
             { Opcode.SMSG_READY_CHECK_COMPLETED, 0x3A0092 },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5d325294a (Correct opcodes, spell & movement structures)
             { Opcode.SMSG_PET_BATTLE_REQUEST_FAILED, 0x3A0097 },
             { Opcode.SMSG_PET_BATTLE_PVP_CHALLENGE, 0x3A0098 },
             { Opcode.SMSG_PET_BATTLE_FINALIZE_LOCATION, 0x3A0099 },
@@ -1346,7 +1350,14 @@ namespace WowPacketParser.Enums.Version.V5_5_3_64802
             { Opcode.SMSG_LOBBY_MATCHMAKER_QUEUE_RESULT, 0x3A031E }, // NYI
             { Opcode.SMSG_SOCIAL_CONTRACT_REQUEST_RESPONSE, 0x3A0320 },
             { Opcode.SMSG_WOW_LABS_NOTIFY_PLAYERS_MATCH_END, 0x3A0325 }, // NYI
+<<<<<<< HEAD
             { Opcode.SMSG_WOW_LABS_NOTIFY_PLAYERS_MATCH_STATE_CHANGED, 0x3A0326 }, // NYI
+=======
+            { Opcode.SMSG_WOW_LABS_SET_AREA_ID_RESULT, 0x3A0325 }, // NYI
+            { Opcode.SMSG_WOW_LABS_NOTIFY_PLAYERS_MATCH_STATE_CHANGED, 0x3A0326 }, // NYI
+            { Opcode.SMSG_WOW_LABS_SET_SELECTED_AREA_ID, 0x3A0329 }, // NYI
+            { Opcode.SMSG_WOW_LABS_AREA_INFO, 0x3A032A }, // NYI
+>>>>>>> 5d325294a (Correct opcodes, spell & movement structures)
             { Opcode.SMSG_AUCTION_DISABLE_NEW_POSTINGS, 0x3A032C },
             { Opcode.SMSG_WOW_LABS_SET_PREDICTION_CIRCLE, 0x3A032C }, // NYI
             { Opcode.SMSG_ACCOUNT_EXPORT_RESPONSE, 0x3A0331 }, // NYI
