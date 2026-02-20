@@ -185,7 +185,10 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         public static void ReadSpellHealPrediction(Packet packet, params object[] idx)
         {
             packet.ReadInt32("Points", idx);
-            packet.ReadByte("Type", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_3_64802))
+                packet.ReadInt32("Type", idx);
+            else
+                packet.ReadByte("Type", idx);
             packet.ReadPackedGuid128("BeaconGUID", idx);
         }
 
@@ -193,6 +196,73 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadPackedGuid128("Transport", idx);
             return packet.ReadVector3("Location", idx);
+        }
+        public static void ReadSpellTargetData553(Packet packet, PacketSpellData packetSpellData, uint spellID, params object[] idx)
+        {
+            packet.ResetBitReader();
+
+            packet.ReadInt32("FlagsDupa", idx);
+
+            var targetUnit = packet.ReadPackedGuid128("Unit", idx);
+            if (packetSpellData != null)
+                packetSpellData.TargetUnit = targetUnit;
+            packet.ReadPackedGuid128("Item", idx);
+
+            var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);
+            var hasDstLoc = packet.ReadBit("HasDstLocation", idx);
+            var hasOrient = packet.ReadBit("HasOrientation", idx);
+            var hasMapID = packet.ReadBit("hasMapID ", idx);
+            var nameLength = packet.ReadBits(7);
+
+            if (hasSrcLoc)
+                ReadLocation(packet, idx, "SrcLocation");
+
+            Vector3? dstLocation = null;
+            if (hasDstLoc)
+            {
+                ReadLocation(packet, idx, "DstLocation");
+                if (packetSpellData != null)
+                    packetSpellData.DstLocation = dstLocation;
+            }
+
+            if (hasOrient)
+                packet.ReadSingle("Orientation", idx);
+
+            int mapID = -1;
+            if (hasMapID)
+                mapID = (ushort)packet.ReadInt32("MapID", idx);
+
+            if (Settings.UseDBC && dstLocation != null && mapID != -1)
+            {
+                for (uint i = 0; i < 32; i++)
+                {
+                    var tuple = Tuple.Create(spellID, i);
+                    if (DBC.SpellEffectStores.ContainsKey(tuple))
+                    {
+                        var effect = DBC.SpellEffectStores[tuple];
+                        if ((Targets)effect.ImplicitTarget[0] == Targets.TARGET_DEST_DB || (Targets)effect.ImplicitTarget[1] == Targets.TARGET_DEST_DB)
+                        {
+                            string effectHelper = $"Spell: {StoreGetters.GetName(StoreNameType.Spell, (int)spellID)} Efffect: {effect.Effect} ({(SpellEffects)effect.Effect})";
+
+                            var spellTargetPosition = new SpellTargetPosition
+                            {
+                                ID = spellID,
+                                EffectIndex = (byte)i,
+                                PositionX = dstLocation.Value.X,
+                                PositionY = dstLocation.Value.Y,
+                                PositionZ = dstLocation.Value.Z,
+                                MapID = (ushort)mapID,
+                                EffectHelper = effectHelper
+                            };
+
+                            if (!Storage.SpellTargetPositions.ContainsKey(spellTargetPosition))
+                                Storage.SpellTargetPositions.Add(spellTargetPosition);
+                        }
+                    }
+                }
+            }
+
+            packet.ReadWoWString("Name", nameLength, idx);
         }
 
         public static void ReadSpellTargetData(Packet packet, PacketSpellData packetSpellData, uint spellID, params object[] idx)
@@ -322,10 +392,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             var hasAmmoDisplayId = packet.ReadBit("HasAmmoDisplayId", idx);
             var hasAmmoInventoryType = packet.ReadBit("HasAmmoInventoryType", idx);
 
-            ReadSpellTargetData(packet, packetSpellData, spellID, idx, "Target");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_3_64802))
+                ReadSpellTargetData553(packet, packetSpellData, spellID, idx, "Target");
+            else
+                ReadSpellTargetData(packet, packetSpellData, spellID, idx, "Target");
 
             for (var i = 0; i < hitTargetsCount; ++i)
-                packetSpellData.HitTargets.Add(packet.ReadPackedGuid128("HitTarget", idx, i));
+                    packetSpellData.HitTargets.Add(packet.ReadPackedGuid128("HitTarget", idx, i));
 
             for (var i = 0; i < missTargetsCount; ++i)
                 packetSpellData.MissedTargets.Add(packet.ReadPackedGuid128("MissTarget", idx, i));
@@ -733,42 +806,95 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                     packet.ReadInt32("ContentTuningID", i);
                     packet.ReadVector3("DstLocation", i);
 
-                    packet.ResetBitReader();
+                    if (ClientVersion.RemovedInVersion(ClientVersionBuild.V5_5_3_65746)) {
+                        packet.ResetBitReader();
 
-                    var hasCastUnit = packet.ReadBit("HasCastUnit", i);
-                    var hasDuration = packet.ReadBit("HasDuration", i);
-                    var hasRemaining = packet.ReadBit("HasRemaining", i);
+                        var hasCastUnit = packet.ReadBit("HasCastUnit", i);
+                        var hasDuration = packet.ReadBit("HasDuration", i);
+                        var hasRemaining = packet.ReadBit("HasRemaining", i);
 
-                    var hasTimeMod = packet.ReadBit("HasTimeMod", i);
+                        var hasTimeMod = packet.ReadBit("HasTimeMod", i);
 
-                    var pointsCount = packet.ReadBits("PointsCount", 6, i);
-                    var effectCount = packet.ReadBits("EstimatedPoints", 6, i);
+                        var pointsCount = packet.ReadBits("PointsCount", 6, i);
+                        var effectCount = packet.ReadBits("EstimatedPoints", 6, i);
 
-                    var hasContentTuning = packet.ReadBit("HasContentTuning", i);
+                        var hasContentTuning = packet.ReadBit("HasContentTuning", i);
 
-                    if (hasContentTuning)
-                        CombatLogHandler.ReadContentTuningParams(packet, i, "ContentTuning");
+                        if (hasContentTuning)
+                            CombatLogHandler.ReadContentTuningParams(packet, i, "ContentTuning");
 
-                    if (hasCastUnit)
-                        auraEntry.CasterUnit = packet.ReadPackedGuid128("CastUnit", i);
+                        if (hasCastUnit)
+                            auraEntry.CasterUnit = packet.ReadPackedGuid128("CastUnit", i);
 
-                    aura.Duration = hasDuration ? packet.ReadInt32("Duration", i) : 0;
-                    aura.MaxDuration = hasRemaining ? packet.ReadInt32("Remaining", i) : 0;
+                        aura.Duration = hasDuration ? packet.ReadInt32("Duration", i) : 0;
+                        aura.MaxDuration = hasRemaining ? packet.ReadInt32("Remaining", i) : 0;
 
-                    if (hasDuration)
-                        auraEntry.Duration = aura.Duration;
+                        if (hasDuration)
+                            auraEntry.Duration = aura.Duration;
 
-                    if (hasRemaining)
-                        auraEntry.Remaining = aura.MaxDuration;
+                        if (hasRemaining)
+                            auraEntry.Remaining = aura.MaxDuration;
 
-                    if (hasTimeMod)
-                        packet.ReadSingle("TimeMod");
+                        if (hasTimeMod)
+                            packet.ReadSingle("TimeMod");
 
-                    for (var j = 0; j < pointsCount; ++j)
-                        packet.ReadSingle("Points", i, j);
+                        for (var j = 0; j < pointsCount; ++j)
+                            packet.ReadSingle("Points", i, j);
 
-                    for (var j = 0; j < effectCount; ++j)
-                        packet.ReadSingle("EstimatedPoints", i, j);
+                        for (var j = 0; j < effectCount; ++j)
+                            packet.ReadSingle("EstimatedPoints", i, j);
+                    }
+
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_3_65746))
+                    {
+                        var hdrP = packet.ReadByte("unkOwnerFlag", i);
+                        var hdrQ = packet.ReadByte("unkSpellFlag", i);
+                        var hdrR = packet.ReadByte("unk", i);
+
+                        bool hasGuidA = (hdrP & 0x80) != 0;
+                        bool hasGuidB = (hdrP & 0x40) != 0;
+                        bool hasDuration = (hdrP & 0x20) != 0;
+                        bool hasRemaining = (hdrP & 0x10) != 0;
+                        bool hasTimeMod = (hdrP & 0x08) != 0;
+
+                        int pointsCount = ((hdrP & 0x07) << 3) | (hdrQ >> 5);
+                        int effectCount = ((hdrQ & 0x1F) << 1) | (hdrR >> 7);
+
+                        bool hasContentTuning = (hdrR & 0x40) != 0;
+
+                        if (hasContentTuning)
+                            CombatLogHandler.ReadContentTuningParams(packet, i, "ContentTuning");
+
+                        if (hasGuidA)
+                            auraEntry.CasterUnit = packet.ReadPackedGuid128("CastUnit", i);
+
+                        if (hasGuidB)
+                            packet.ReadPackedGuid128("CastUnit2", i);
+
+                        if (hasDuration)
+                        {
+                            aura.Duration = packet.ReadInt32("Duration", i);
+                            auraEntry.Duration = aura.Duration;
+                        }
+                        else aura.Duration = 0;
+
+                        if (hasRemaining)
+                        {
+                            aura.MaxDuration = packet.ReadInt32("Remaining", i);
+                            auraEntry.Remaining = aura.MaxDuration;
+                        }
+                        else aura.MaxDuration = 0;
+
+                        if (hasTimeMod)
+                            packet.ReadSingle("TimeMod", i);
+
+                        // tablice (dokładnie pointsCount i effectCount)
+                        for (var j = 0; j < pointsCount; ++j)
+                            packet.ReadSingle("Points", i, j);
+
+                        for (var j = 0; j < effectCount; ++j)
+                            packet.ReadSingle("EstimatedPoints", i, j);
+                    }
 
                     auras.Add(aura);
                     packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
