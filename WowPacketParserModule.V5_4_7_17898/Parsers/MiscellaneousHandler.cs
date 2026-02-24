@@ -369,113 +369,118 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         }
 
         [Parser(Opcode.SMSG_VIGNETTE_UPDATE)]
-        public static void HandleSetVignette(Packet packet)
+        public static void HandleVignetteUpdate(Packet packet)
         {
+            packet.ReadBit("ForceUpdate");
+            var updatedCount = packet.ReadBits(24);
 
-            packet.ReadBit("bit20");
-            var bits10 = packet.ReadBits(24);
+            var updatedGuids = new byte[updatedCount][];
 
-            var guid1 = new byte[bits10][];
-
-            for (var i = 0; i < bits10; ++i)
+            for (var i = 0; i < updatedCount; ++i)
             {
-                guid1[i] = new byte[8];
-                packet.StartBitStream(guid1[i], 0, 4, 3, 6, 5, 2, 7, 1);
+                updatedGuids[i] = new byte[8];
+                packet.StartBitStream(updatedGuids[i], 0, 4, 3, 6, 5, 2, 7, 1);
             }
 
-            var bits34 = packet.ReadBits(20);
+            var addedDataCount = packet.ReadBits(20);
 
-            var guid2 = new byte[bits34][];
+            var addedDatas = new byte[addedDataCount][];
 
-            for (var i = 0; i < bits34; ++i)
+            for (var i = 0; i < addedDataCount; ++i)
             {
-                guid2[i] = new byte[8];
-                packet.StartBitStream(guid2[i], 6, 3, 7, 1, 5, 4, 0, 2);
+                addedDatas[i] = new byte[8];
+                packet.StartBitStream(addedDatas[i], 6, 3, 7, 1, 5, 4, 0, 2);
             }
 
-            var bits44 = packet.ReadBits(24);
+            var removedCount = packet.ReadBits(24);
 
-            var guid3 = new byte[bits44][];
+            var removedGuids = new byte[removedCount][];
 
-            for (var i = 0; i < bits44; ++i)
+            for (var i = 0; i < removedCount; ++i)
             {
-                guid3[i] = new byte[8];
-                packet.StartBitStream(guid3[i], 0, 6, 7, 1, 4, 3, 2, 5);
+                removedGuids[i] = new byte[8];
+                packet.StartBitStream(removedGuids[i], 0, 6, 7, 1, 4, 3, 2, 5);
             }
 
-            var bits24 = packet.ReadBits(24);
+            var addedIDsCount = packet.ReadBits(24);
 
-            var guid4 = new byte[bits24][];
+            var addedIDs = new byte[addedIDsCount][];
 
-            for (var i = 0; i < bits24; ++i)
+            for (var i = 0; i < addedIDsCount; ++i)
             {
-                guid4[i] = new byte[8];
-                packet.StartBitStream(guid4[i], 4, 5, 2, 3, 1, 6, 7, 0);
+                addedIDs[i] = new byte[8];
+                packet.StartBitStream(addedIDs[i], 4, 5, 2, 3, 1, 6, 7, 0);
             }
 
-            var bits54 = packet.ReadBits(20);
+            var updatedDataCount = packet.ReadBits(20);
 
-            var guid5 = new byte[bits54][];
+            var updatedDataIDs = new byte[updatedDataCount][];
 
-            for (var i = 0; i < bits54; ++i)
+            for (var i = 0; i < updatedDataCount; ++i)
             {
-                guid5[i] = new byte[8];
-                packet.StartBitStream(guid5[i], 6, 1, 7, 3, 5, 2, 0, 4);
+                updatedDataIDs[i] = new byte[8];
+                packet.StartBitStream(updatedDataIDs[i], 6, 1, 7, 3, 5, 2, 0, 4);
             }
 
-            for (var i = 0; i < bits54; ++i)
+            for (var i = 0; i < updatedDataCount; ++i)
             {
-                packet.ReadXORByte(guid5[i], 5);
-                packet.ReadXORByte(guid5[i], 0);
-                packet.ReadXORByte(guid5[i], 7);
-                packet.ReadSingle("1");
-                packet.ReadSingle("2");
-                packet.ReadXORByte(guid5[i], 1);
-                packet.ReadXORByte(guid5[i], 3);
-                packet.ReadXORByte(guid5[i], 4);
-                packet.ReadInt32("Vignette Id");
-                packet.ReadXORByte(guid5[i], 6);
-                packet.ReadXORByte(guid5[i], 7);
-                packet.ReadSingle("3");
+                packet.ReadXORByte(updatedDataIDs[i], 5);
+                packet.ReadXORByte(updatedDataIDs[i], 0);
+                packet.ReadXORByte(updatedDataIDs[i], 7);
+                packet.ReadSingle("PositionX");
+                packet.ReadSingle("PositionY");
+                packet.ReadXORByte(updatedDataIDs[i], 1);
+                packet.ReadXORByte(updatedDataIDs[i], 3);
+                packet.ReadXORByte(updatedDataIDs[i], 4);
+                packet.ReadInt32("Vignette ID");
+                packet.ReadXORByte(updatedDataIDs[i], 6);
+                packet.ReadXORByte(updatedDataIDs[i], 2);
+                packet.ReadSingle("PositionZ");
 
-                packet.WriteGuid("Guid5", guid5[i]);
+                packet.WriteGuid("UpdatedDataObjGuid", updatedDataIDs[i], i);
             }
 
-            for (var i = 0; i < bits34; ++i)
+            for (var i = 0; i < addedDataCount; ++i)
             {
-                packet.ReadXORByte(guid2[i], 0);
-                packet.ReadXORByte(guid2[i], 5);
-                packet.ReadXORByte(guid2[i], 6);
-                packet.ReadXORByte(guid2[i], 2);
-                packet.ReadInt32("Vignette Id");
-                packet.ReadXORByte(guid2[i], 4);
-                packet.ReadXORByte(guid2[i], 7);
-                packet.ReadSingle("1");
-                packet.ReadSingle("2");
-                packet.ReadXORByte(guid2[i], 3);
-                packet.ReadSingle("3");
-                packet.ReadXORByte(guid2[i], 1);
+                packet.ReadXORByte(addedDatas[i], 0);
+                packet.ReadXORByte(addedDatas[i], 5);
+                packet.ReadXORByte(addedDatas[i], 6);
+                packet.ReadXORByte(addedDatas[i], 2);
+                int v =packet.ReadInt32("Vignette Id");
+                packet.ReadXORByte(addedDatas[i], 4);
+                packet.ReadXORByte(addedDatas[i], 7);
+                packet.ReadSingle("PositionZ");
+                packet.ReadSingle("PositionY");
+                packet.ReadXORByte(addedDatas[i], 3);
+                packet.ReadSingle("PositionX");
+                packet.ReadXORByte(addedDatas[i], 1);
 
-                packet.WriteGuid("Guid2", guid2[i]);
+                packet.WriteGuid("AddedDataObjGuid", addedDatas[i], i);
             }
 
-            for (var i = 0; i < bits24; ++i)
+            for (var i = 0; i < removedCount; ++i)
             {
-                packet.ParseBitStream(guid4[i], 5, 2, 1, 0, 7, 4, 3, 6);
-                packet.WriteGuid("Guid4", guid4[i]);
+                packet.ParseBitStream(removedGuids[i], 5, 2, 1, 0, 7, 4, 3, 6);
+                packet.WriteGuid("RemovedGuid", removedGuids[i], i);
             }
 
-            for (var i = 0; i < bits10; ++i)
+            for (var i = 0; i < addedIDsCount; ++i)
             {
-                packet.ParseBitStream(guid1[i], 5, 1, 2, 0, 6, 7, 4, 3);
-                packet.WriteGuid("Guid1", guid1[i]);
+                packet.ParseBitStream(addedIDs[i], 5, 1, 2, 0, 6, 7, 4, 3);
+                packet.WriteGuid("AddedGuid", addedIDs[i], i);
             }
 
-            for (var i = 0; i < bits44; ++i)
+            for (var i = 0; i < updatedCount; ++i)
             {
-                packet.ParseBitStream(guid3[i], 3, 6, 4, 2, 1, 7, 5, 0);
-                packet.WriteGuid("Guid3", guid3[i]);
+                packet.ParseBitStream(updatedGuids[i], 3, 6, 4, 2, 1, 7, 5, 0);
+                packet.WriteGuid("UpdatedGuid", updatedGuids[i], i);
             }
+        }
+
+        [Parser(Opcode.CMSG_LOG_STREAMING_ERROR)]
+        public static void HandleLogStreamingError(Packet packet)
+        {
+            packet.ReadWoWString("Error", packet.ReadBits(9));
         }
     }
 }

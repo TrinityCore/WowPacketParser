@@ -187,7 +187,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             var splineCount = (int)packet.ReadBits(20);
             var bit98 = packet.ReadBit();
-            var splineType = (int)packet.ReadBits(3);
+            var splineType = (int)packet.ReadBits("Facing", 3);
 
             if (splineType == 3)
                 packet.StartBitStream(factingTargetGUID, 0, 7, 3, 4, 5, 6, 1, 2);
