@@ -83,8 +83,8 @@ namespace WowPacketParser.Store.Objects
 
         public override void LoadValuesFromUpdateFields()
         {
-            spellId             = (uint)AreaTriggerData.SpellID;
-            SpellForVisuals     = (uint)AreaTriggerData.SpellForVisuals;
+            spellId             = (uint)(AreaTriggerData.SpellID ?? 0);
+            SpellForVisuals     = (uint?)AreaTriggerData.SpellForVisuals;
             DecalPropertiesId   = AreaTriggerData.DecalPropertiesID;
             TimeToTarget        = AreaTriggerData.TimeToTarget;
             TimeToTargetScale   = AreaTriggerData.TimeToTargetScale;
@@ -98,10 +98,10 @@ namespace WowPacketParser.Store.Objects
                 if (AreaTriggerData.VisualAnim != null)
                 {
                     if (AreaTriggerData.VisualAnim.AnimationDataID != 0 && AreaTriggerData.VisualAnim.AnimationDataID != uint.MaxValue)
-                        AnimId = (int)AreaTriggerData.VisualAnim.AnimationDataID;
+                        AnimId = (int?)AreaTriggerData.VisualAnim.AnimationDataID;
 
                     if (AreaTriggerData.VisualAnim.AnimKitID != 0)
-                        AnimKitId = (int)AreaTriggerData.VisualAnim.AnimKitID;
+                        AnimKitId = (int?)AreaTriggerData.VisualAnim.AnimKitID;
 
                     if (AreaTriggerData.VisualAnim.IsDecay == true)
                         Flags |= (uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay;
