@@ -11,7 +11,7 @@ using WowPacketParser.Parsing.Parsers;
 using WowPacketParser.Store.Objects.UpdateFields;
 using WowPacketParserModule.V5_5_0_61735.Parsers;
 
-namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V1_15_8_63829
+namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_5_64796
 {
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
     public class UpdateFieldHandler : UpdateFieldsHandlerBase
@@ -4371,6 +4371,48 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V1_15_8_63829
             {
                 data.WorldEffects[i] = packet.ReadInt32("WorldEffects", indexes, i);
             }
+            bool hasAssistActionData = packet.ReadBit("HasAssistActionData", indexes);
+            packet.ResetBitReader();
+            if (hasAssistActionData)
+            {
+                data.AssistActionData = ReadCreateGameObjectAssistActionData(packet, indexes, "AssistActionData");
+            }
+            return data;
+        }
+
+        public static IGameObjectAssistActionData ReadCreateGameObjectAssistActionData(Packet packet, params object[] indexes)
+        {
+            var data = new GameObjectAssistActionData();
+            packet.ResetBitReader();
+            data.PlayerName = new string('*', (int)packet.ReadBits(6));
+            data.MonsterName = new string('*', (int)packet.ReadBits(11));
+            data.VirtualRealmAddress = packet.ReadUInt32("VirtualRealmAddress", indexes);
+            data.Sex = packet.ReadByte("Sex", indexes);
+            data.Time = packet.ReadInt64("Time", indexes);
+            data.DelveTier = packet.ReadInt32("DelveTier", indexes);
+            data.PlayerName = packet.ReadWoWString("PlayerName", data.PlayerName.Length, indexes);
+            data.MonsterName = packet.ReadDynamicString("MonsterName", data.MonsterName.Length, indexes);
+            return data;
+        }
+
+        public static IGameObjectAssistActionData ReadUpdateGameObjectAssistActionData(Packet packet, params object[] indexes)
+        {
+            var data = new GameObjectAssistActionData();
+            packet.ResetBitReader();
+            data.PlayerName = new string('*', (int)packet.ReadBits(6));
+            data.MonsterName = new string('*', (int)packet.ReadBits(11));
+            data.VirtualRealmAddress = packet.ReadUInt32("VirtualRealmAddress", indexes);
+            data.Sex = packet.ReadByte("Sex", indexes);
+            data.Time = packet.ReadInt64("Time", indexes);
+            data.DelveTier = packet.ReadInt32("DelveTier", indexes);
+            data.PlayerName = packet.ReadWoWString("PlayerName", data.PlayerName.Length, indexes);
+            if (data.MonsterName.Length > 1)
+            {
+                data.MonsterName = packet.ReadWoWString("MonsterName", data.MonsterName.Length - 1, indexes);
+                packet.ReadByte();
+            }
+            else
+                data.MonsterName = string.Empty;
             return data;
         }
 
@@ -4379,7 +4421,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V1_15_8_63829
             var data = new GameObjectData();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(20);
+            rawChangesMask[0] = (int)packet.ReadBits(21);
             var changesMask = new BitArray(rawChangesMask);
 
             if (changesMask[0])
@@ -4491,6 +4533,15 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V1_15_8_63829
                 if (changesMask[19])
                 {
                     data.CustomParam = packet.ReadUInt32("CustomParam", indexes);
+                }
+                bool hasAssistActionData = packet.ReadBit("HasAssistActionData", indexes);
+                packet.ResetBitReader();
+                if (changesMask[20])
+                {
+                    if (hasAssistActionData)
+                    {
+                        data.AssistActionData = ReadUpdateGameObjectAssistActionData(packet, indexes, "AssistActionData");
+                    }
                 }
             }
             return data;

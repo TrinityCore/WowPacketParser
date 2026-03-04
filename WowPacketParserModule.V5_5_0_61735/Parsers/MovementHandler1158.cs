@@ -369,6 +369,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         }
 
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE, ClientBranch.Classic)]
+        [Parser(Opcode.SMSG_ON_MONSTER_MOVE, ClientBranch.TBC)]
         public static void HandleOnMonsterMove(Packet packet)
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove = new();
