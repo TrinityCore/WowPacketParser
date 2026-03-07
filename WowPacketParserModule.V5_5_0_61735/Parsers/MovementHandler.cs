@@ -160,7 +160,6 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                     distance += Vector3.GetDistance(prevpos, spot);
                     prevpos = spot;
 
-                    // client always taking first point
                     if (i == 0)
                         endpos = spot;
                 }
@@ -168,10 +167,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             if (packedDeltasCount > 0)
             {
-                // Calculate mid pos
                 var mid = (pos + endpos) * 0.5f;
 
-                // ignore distance set by Points array if packed deltas are used
                 distance = 0;
 
                 var prevpos = pos;
@@ -217,6 +214,120 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 WowPacketParser.Parsing.Parsers.MovementHandler.PrintComputedSplineMovementParams(packet, distance, monsterMove, indexes);
         }
 
+        public static void ReadMovementSpline553(Packet packet, Vector3 pos, params object[] indexes)
+        {
+            var monsterMove = packet.Holder.MonsterMove;
+
+            var splineFlag = packet.ReadUInt32E<SplineFlag>("Flags", indexes);
+            monsterMove.Flags = splineFlag.ToUniversal();
+
+            var type = packet.ReadByte("Face", indexes);
+            var facingType = (SplineFacingType)type;
+
+            monsterMove.ElapsedTime = packet.ReadInt32("Elapsed", indexes);
+            monsterMove.MoveTime = packet.ReadUInt32("MoveTime", indexes);
+            packet.ReadUInt32("FadeObjectTime", indexes);
+
+            packet.ReadByte("Mode", indexes);
+
+            monsterMove.TransportGuid = packet.ReadPackedGuid128("TransportGUID", indexes);
+            monsterMove.VehicleSeat = packet.ReadSByte("VehicleSeat", indexes);
+
+            switch (facingType)
+            {
+                case SplineFacingType.Spot:
+                    monsterMove.LookPosition = packet.ReadVector3("FaceSpot", indexes);
+                    break;
+                case SplineFacingType.Target:
+                    monsterMove.LookTarget = new SplineLookTarget
+                    {
+                        Orientation = packet.ReadSingle("FaceDirection", indexes),
+                        Target = packet.ReadPackedGuid128("FacingGUID", indexes)
+                    };
+                    break;
+                case SplineFacingType.Angle:
+                    monsterMove.LookOrientation = packet.ReadSingle("FaceDirection", indexes);
+                    break;
+            }
+
+            byte pcHi = packet.ReadByte("PointsCountHi", indexes);
+            byte pcLo = packet.ReadByte("PointsCountLo", indexes);
+            ushort pointsCount = (ushort)((pcHi << 8) | pcLo);
+
+            packet.ResetBitReader();
+
+            bool vehicleExitVoluntary = packet.ReadBit("VehicleExitVoluntary", indexes);
+            bool interpolate = packet.ReadBit("Interpolate", indexes);
+
+            ushort packedDeltasCount = (ushort)packet.ReadBits("PackedDeltasCount", 16, indexes);
+
+            bool hasSplineFilter = packet.ReadBit("HasSplineFilter", indexes);
+            bool hasSpellEffectExtraData = packet.ReadBit("HasSpellEffectExtraData", indexes);
+            bool hasJumpExtraData = packet.ReadBit("HasJumpExtraData", indexes);
+            bool hasTurnData = packet.ReadBit("HasTurnData", indexes);
+            bool hasAnimTier = packet.ReadBit("HasAnimTier", indexes);
+
+            packet.ReadBit("SplineBitsUnused", indexes);
+
+            packet.ResetBitReader();
+
+            if (hasSplineFilter)
+                ReadMonsterSplineFilter(packet, indexes, "MonsterSplineFilter");
+
+            Vector3 endpos = default;
+            double distance = 0.0;
+
+            if (pointsCount > 0)
+            {
+                var prev = pos;
+                for (int i = 0; i < pointsCount; i++)
+                {
+                    var spot = packet.ReadVector3("Points", indexes, i);
+                    monsterMove.Points.Add(spot);
+                    distance += Vector3.GetDistance(prev, spot);
+                    prev = spot;
+                    if (i == 0) endpos = spot;
+                }
+            }
+
+            if (packedDeltasCount > 0)
+            {
+                var mid = (pos + endpos) * 0.5f;
+                distance = 0;
+
+                var prev = pos;
+                for (int i = 0; i < packedDeltasCount; i++)
+                {
+                    var vec = mid - packet.ReadPackedVector3();
+                    packet.AddValue("WayPoints", vec, indexes, i);
+                    monsterMove.PackedPoints.Add(vec);
+                    distance += Vector3.GetDistance(prev, vec);
+                    prev = vec;
+                }
+                distance += Vector3.GetDistance(prev, endpos);
+            }
+
+            if (hasSpellEffectExtraData)
+                monsterMove.SpellEffect = ReadMonsterSplineSpellEffectExtraData(packet, indexes, "MonsterSplineSpellEffectExtra");
+
+            if (hasJumpExtraData)
+                monsterMove.Jump = ReadMonsterSplineJumpExtraData(packet, indexes, "MonsterSplineJumpExtraData");
+
+            if (hasTurnData)
+                ReadMonsterSplineTurnData(packet, indexes, "MonsterSplineTurnData");
+
+            if (hasAnimTier)
+            {
+                packet.ReadInt32("TierTransitionID", indexes);
+                monsterMove.AnimTier = packet.ReadByte("AnimTier", indexes);
+                packet.ReadUInt32("StartTime", indexes);
+                packet.ReadUInt32("EndTime", indexes);
+            }
+
+            if (endpos.X != 0 && endpos.Y != 0 && endpos.Z != 0)
+                WowPacketParser.Parsing.Parsers.MovementHandler.PrintComputedSplineMovementParams(packet, distance, monsterMove, indexes);
+        }
+
         public static void ReadMovementMonsterSpline(Packet packet, Vector3 pos, WowGuid guid, params object[] indexes)
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
@@ -228,7 +339,10 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBit("StopUseFaceDirection", indexes);
             packet.ReadBits("StopDistanceTolerance", 3, indexes);
 
-            ReadMovementSpline(packet, pos, indexes, "MovementSpline");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_3_64802))
+                ReadMovementSpline553(packet, pos, indexes, "MovementSpline");
+            else
+                ReadMovementSpline(packet, pos, indexes, "MovementSpline");
         }
 
         public static MovementInfo.TransportInfo ReadTransportData(Packet packet, params object[] idx)
