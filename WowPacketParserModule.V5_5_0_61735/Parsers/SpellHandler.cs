@@ -201,7 +201,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ResetBitReader();
 
-            packet.ReadInt32("FlagsDupa", idx);
+            packet.ReadInt32("Flags", idx);
 
             var targetUnit = packet.ReadPackedGuid128("Unit", idx);
             if (packetSpellData != null)
@@ -902,8 +902,6 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
                             for (var j = 0; j < effectCount; ++j)
                                 packet.ReadSingle("EstimatedPoints", i, j);
-
-                            // (opcjonalnie) packet.ResetBitReader(); // tylko jeśli zaraz potem miałbyś znowu ReadBit
                         }
                     }
                         auras.Add(aura);
