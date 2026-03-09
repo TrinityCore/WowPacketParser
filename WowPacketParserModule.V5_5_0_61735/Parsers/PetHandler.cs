@@ -118,5 +118,106 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("PetGUID");
             packet.ReadInt32("SpecIndex");
         }
+
+        [Parser(Opcode.CMSG_QUERY_PET_NAME)]
+        public static void HandlePetNameQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetID");
+        }
+
+        [Parser(Opcode.CMSG_PET_SET_ACTION)]
+        public static void HandlePetSetAction(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadUInt32("Index");
+
+            SpellHandler.ReadPetAction(packet, "Action");
+
+            var unkBit = packet.ReadBit("UnkBit");
+
+            if (unkBit)
+            {
+                packet.ReadUInt32("Unk440_1");
+                packet.ReadUInt32("Unk440_2");
+            }
+        }
+
+        [Parser(Opcode.CMSG_PET_ACTION)]
+        public static void HandlePetAction(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+
+            SpellHandler.ReadPetAction(packet, "Action");
+
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadVector3("ActionPosition");
+        }
+
+        [Parser(Opcode.CMSG_PET_STOP_ATTACK)]
+        [Parser(Opcode.CMSG_PET_ABANDON)]
+        public static void HandlePetStopAttack(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+        }
+
+        [Parser(Opcode.CMSG_PET_CANCEL_AURA)]
+        public static void HandlePetCancelAura(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.CMSG_PET_SPELL_AUTOCAST)]
+        public static void HandlePetSpellAutocast(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ResetBitReader();
+            packet.ReadBit("AutocastEnabled");
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_STABLED_PETS)]
+        public static void HandleRequestStabledPets(Packet packet)
+        {
+            packet.ReadPackedGuid128("StableMaster");
+        }
+
+        [Parser(Opcode.CMSG_DISMISS_CRITTER)]
+        public static void HandleDismissCritter(Packet packet)
+        {
+            packet.ReadPackedGuid128("CritterGUID");
+        }
+
+        [Parser(Opcode.CMSG_PET_LEARN_TALENT)]
+        public static void HandlePetLearnTalent(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadUInt32("TalentID");
+            packet.ReadUInt16("Rank");
+        }
+
+        [Parser(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET)]
+        public static void HandleLearnPreviewTalentsPet(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            var talentCount = packet.ReadUInt32("TalentCount");
+
+            for (int i = 0; i < talentCount; i++)
+            {
+                packet.ReadInt32("TalentID", i);
+                packet.ReadInt32("Rank", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_PET_RENAME)]
+        public static void HandlePetRename(Packet packet)
+        {
+            ReadPetRenameData(packet);
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_PET_INFO)]
+        public static void HandlePetNull(Packet packet)
+        {
+        }
     }
 }

@@ -506,5 +506,36 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             ReadCliItemTextCache(packet, "Item");
             packet.ReadPackedGuid128("Id");
         }
+
+        [Parser(Opcode.CMSG_QUERY_CREATURE)]
+        public static void HandleCreatureQuery(Packet packet)
+        {
+            packet.ReadInt32("Entry");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_GAME_OBJECT)]
+        [Parser(Opcode.CMSG_QUERY_NPC_TEXT)]
+        [Parser(Opcode.CMSG_QUERY_QUEST_INFO)]
+        [Parser(Opcode.CMSG_QUERY_PAGE_TEXT)]
+        public static void HandleGameObjectQuery(Packet packet)
+        {
+            packet.ReadInt32("Entry");
+            packet.ReadPackedGuid128("GUID");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_TREASURE_PICKER)]
+        public static void HandleQueryQuestRewards(Packet packet)
+        {
+            packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadInt32("TreasurePickerID");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_PLAYER_NAMES)]
+        public static void HandleNameQuery(Packet packet)
+        {
+            var count = packet.ReadUInt32();
+            for (var i = 0; i < count; ++i)
+                packet.ReadPackedGuid128("Players", i);
+        }
     }
 }

@@ -129,6 +129,7 @@ public enum GameRule
     GdapiCharacterProfileDisabled           = 153,
     HousingEnabled                          = 154,
     RestrictedAchievementCategoryID         = 155,
+    EjJourneysDisabled                      = 156,
     LootMethodStyle                         = 157,
     ExperienceBarDisabled                   = 159,
     HideUnavailableTransmogSlots            = 160,
@@ -140,4 +141,5 @@ public enum GameRule
     RecommendLeastPopulatedRealm            = 169,
     BagSpaceOverride                        = 172,
     UnflaggedPlayersCanAttackPvPFlaggedPlayers = 173,
+    PvPInitialRatingOverride                = 190
 }

@@ -67,6 +67,7 @@ namespace WowPacketParser.Enums
         ITEM_FIELD_ENCHANTMENT_8_3,
         ITEM_FIELD_ENCHANTMENT_9_1,
         ITEM_FIELD_ENCHANTMENT_9_3,
+        [UpdateField(UpdateFieldType.Enum, typeof(ItemFieldFlags))]
         ITEM_FIELD_FLAGS,
         [UpdateField(UpdateFieldType.Guid)]
         ITEM_FIELD_GIFTCREATOR,

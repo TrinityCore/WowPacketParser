@@ -20,6 +20,6 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public uint GroupSizeHealthCurveID;
         public uint GroupSizeDmgCurveID;
         public uint GroupSizeSpellPointsCurveID;
-        public int Unknown1105;
+        public int Unknown1154;
     }
 }

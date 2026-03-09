@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Xml.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -349,12 +351,14 @@ namespace WowPacketParser.Parsing.Parsers
                 int start = i;
                 int size = 1;
                 UpdateFieldType updateFieldType = UpdateFieldType.Default;
+                System.Type enumType = null;
                 if (fieldInfo != null)
                 {
                     key = fieldInfo.Name;
                     size = fieldInfo.Size;
                     start = fieldInfo.Value;
                     updateFieldType = fieldInfo.Format;
+                    enumType = fieldInfo.EnumType;
                 }
 
                 List<UpdateField> fieldData = new List<UpdateField>();
@@ -527,6 +531,13 @@ namespace WowPacketParser.Parsing.Parsers
                             packet.AddValue(key, value + $" ({ StoreGetters.GetName(StoreNameType.Faction, fieldData[0].Int32Value, false) })", index);
                             updateValues.Ints[key] = fieldData[0].Int32Value;
                         }
+                        break;
+                    }
+                    case UpdateFieldType.Enum:
+                    {
+                        IConvertible enumValue = (IConvertible)System.Enum.ToObject(enumType, fieldData[0].Int32Value);
+                        packet.AddValue(key, Convert.ToInt64(enumValue) + " (" + enumValue.ToString(CultureInfo.InvariantCulture) + ")", index);
+                        updateValues.Ints[key] = fieldData[0].Int32Value;
                         break;
                     }
                     default:

@@ -27,6 +27,11 @@ namespace WowPacketParser.Misc
             }
         }
 
+        public uint GetSpawnTimestamp()
+        {
+            return (uint)(Low & 0x7FFFFF);
+        }
+
         public abstract ulong GetLow();
         public abstract uint GetEntry();
 

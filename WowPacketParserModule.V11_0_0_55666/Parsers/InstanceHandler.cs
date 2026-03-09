@@ -31,5 +31,21 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             packet.ReadInt32("Legacy");
             packet.ReadInt32<DifficultyId>("DifficultyID");
         }
+
+        [Parser(Opcode.SMSG_RAID_INSTANCE_MESSAGE)]
+        public static void HandleRaidInstanceMessage(Packet packet)
+        {
+            packet.ReadInt32("Type");
+            packet.ReadUInt32<MapId>("MapID");
+            packet.ReadUInt32E<Difficulty>("DifficultyID");
+            packet.ReadInt32("TimeLeft");
+
+            packet.ResetBitReader();
+            var warningMessageLength = packet.ReadBits(8);
+            packet.ReadBit("Locked");
+            packet.ReadBit("Extended");
+
+            packet.ReadWoWString("WarningMessage", warningMessageLength);
+        }
     }
 }

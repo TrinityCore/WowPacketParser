@@ -11,5 +11,6 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public uint QuestID;
         public uint OrderIndex;
         public int Flags;
+        public int Unknown1110;
     }
 }

@@ -97,12 +97,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadCliEuropaTicketConfig(Packet packet, params object[] idx)
         {
+            packet.ResetBitReader();
             packet.ReadBit("TicketsEnabled", idx);
             packet.ReadBit("BugsEnabled", idx);
             packet.ReadBit("ComplaintsEnabled", idx);
             packet.ReadBit("SuggestionsEnabled", idx);
 
             ReadCliSavedThrottleObjectState(packet, idx, "ThrottleState");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+                ReadCliSavedThrottleObjectState(packet, idx, "ExpensiveThrottleState");
         }
 
         public static void ReadClientSessionAlertConfig(Packet packet, params object[] idx)
@@ -455,7 +458,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadBit("IsFullUpdate");
 
-            packet.ReadInt32("Unk");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                packet.ReadByte("ItemCollectionType");
+            else
+                packet.ReadInt32("ItemCollectionType");
 
             uint itemCount = packet.ReadUInt32("ItemCount");
             uint flagCount = packet.ReadUInt32("FlagsCount");
@@ -903,7 +909,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_COLLECTION_ITEM_SET_FAVORITE)]
         public static void HandleCollectionItemSetFavorite(Packet packet)
         {
-            packet.ReadInt32E<CollectionType>("CollectionType");
+            packet.ReadByteE<CollectionType>("CollectionType");
             packet.ReadUInt32("ID");
             packet.ResetBitReader();
             packet.ReadBit("IsFavorite");

@@ -93,18 +93,18 @@ namespace WowPacketParser.Tests.Misc
         [Test]
         public void TestFlattenIEnumerable()
         {
-            object[] arr = { 1, 2, new object[] { 3, new object[] {4} }, 5 };
+            object[] arr = [1, 2, new object[] { 3, new object[] {4} }, 5];
 
             Assert.That(new object[] { 1, 2, 3, 4, 5 }, Is.EqualTo(arr.Flatten()));
 
-            var list = new List<object> { "a", new[] {"b", "c"}, 2 };
+            var list = new List<object> { "aa", new[] { "bb", "cc" }, 2, new object[] { null } };
 
-            Assert.That(new object[] { "a", "b", "c", 2}, Is.EqualTo(list.Flatten()));
+            Assert.That(new object[] { "aa", "bb", "cc", 2, null }, Is.EqualTo(list.Flatten()));
 
-            int[] simple = {1, 2, 3};
+            int[] simple = [1, 2, 3];
             Assert.That(new[] { 1, 2, 3 }, Is.EqualTo(simple.Flatten()));
 
-            int[] empty = {};
+            int[] empty = [];
             Assert.That(new int[] {}, Is.EqualTo(empty.Flatten()));
         }
     }

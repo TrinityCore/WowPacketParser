@@ -21,5 +21,6 @@ namespace WowPacketParser.Enums
         Dragonflight       = 9,
         CataClassic        = 9,
         TheWarWithin       = 10,
+        Midnight           = 11,
     }
 }

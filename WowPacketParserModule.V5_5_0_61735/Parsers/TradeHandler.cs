@@ -136,6 +136,14 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("StableMaster");
         }
 
+        [Parser(Opcode.CMSG_SHOW_TRADE_SKILL)]
+        public static void HandleShowTradeSkill(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("SkillLineID");
+        }
+
         [Parser(Opcode.CMSG_BEGIN_TRADE)]
         [Parser(Opcode.CMSG_BUSY_TRADE)]
         [Parser(Opcode.CMSG_CANCEL_TRADE)]

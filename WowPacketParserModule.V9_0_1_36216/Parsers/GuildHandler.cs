@@ -60,6 +60,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     packet.ReadByteE<Race>("RaceID", i);
                 }
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                    packet.ReadInt32("TimerunningSeasonID", i);
+
                 packet.ResetBitReader();
 
                 var nameLen = packet.ReadBits(6);
@@ -67,7 +70,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 var officersNoteLen = packet.ReadBits(8);
 
                 packet.ReadBit("Authenticated", i);
-                packet.ReadBit("SorEligible", i);
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_1_0_59347))
+                    packet.ReadBit("SorEligible", i);
 
                 Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, i, "DungeonScoreSummary");
 

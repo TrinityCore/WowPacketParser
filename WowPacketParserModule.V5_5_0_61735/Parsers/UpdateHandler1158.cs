@@ -355,20 +355,27 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
                     for (var i = 0; i < createProperties.AreaTriggerData.Polygon.Vertices.Count; ++i)
                     {
+                        var vertex = createProperties.AreaTriggerData.Polygon.Vertices[i];
+                        if (!vertex.HasValue)
+                            continue;
+
                         verticesList.Add(new AreaTriggerCreatePropertiesPolygonVertex
                         {
                             areatriggerGuid = guid,
                             Idx = (uint)i,
-                            VerticeX = createProperties.AreaTriggerData.Polygon.Vertices[i].X,
-                            VerticeY = createProperties.AreaTriggerData.Polygon.Vertices[i].Y
+                            VerticeX = vertex.Value.X,
+                            VerticeY = vertex.Value.Y
                         });
                     }
 
                     for (var i = 0; i < createProperties.AreaTriggerData.Polygon.VerticesTarget.Count; ++i)
                     {
                         var vertexTarget = createProperties.AreaTriggerData.Polygon.VerticesTarget[i];
-                        verticesList[i].VerticeTargetX = vertexTarget.X;
-                        verticesList[i].VerticeTargetY = vertexTarget.Y;
+                        if (!vertexTarget.HasValue)
+                            continue;
+
+                        verticesList[i].VerticeTargetX = vertexTarget.Value.X;
+                        verticesList[i].VerticeTargetY = vertexTarget.Value.Y;
                     }
 
                     foreach (var vertice in verticesList)

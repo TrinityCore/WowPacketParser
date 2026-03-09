@@ -36,6 +36,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadPackedGuid128("Item", idx);
             }
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_7_64632))
+            {
+                packet.ReadPackedGuid128("HousingGUID", idx);
+                packet.ReadBit("HousingIsResident", idx);
+            }
+
             var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);
             var hasDstLoc = packet.ReadBit("HasDstLocation", idx);
             var hasOrient = packet.ReadBit("HasOrientation", idx);
@@ -130,6 +136,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             var talentIDsCount = packet.ReadUInt32("TalentIDsCount", idx);
             var pvpTalentIDsCount = packet.ReadUInt32("PvPTalentIDsCount", idx);
+            var glyphIDsCount = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213))
+                glyphIDsCount = packet.ReadUInt32("GlyphIDsCount", idx);
 
             for (var i = 0; i < talentIDsCount; ++i)
                 packet.ReadUInt16("TalentID", idx, i);
@@ -139,6 +148,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadUInt16("PvPTalentID", idx, i);
                 packet.ReadByte("Slot", idx, i);
             }
+
+            for (var i = 0; i < glyphIDsCount; ++i)
+                packet.ReadUInt32("GlyphID", idx, i);
         }
 
         public static void ReadTalentInfoUpdate(Packet packet, params object[] idx)
@@ -231,11 +243,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("Armor", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_5_57171))
             {
-                packet.ReadInt32("Unknown_1105_1", idx);
-                packet.ReadInt32("Unknown_1105_2", idx);
+                packet.ReadInt32("Versatility", idx);
+                packet.ReadInt32("Avoidance", idx);
             }
 
             packet.ResetBitReader();
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_1_65818))
+                packet.ReadBit("HideFromCombatLog", idx);
 
             var spellLogPowerDataCount = packet.ReadBits("SpellLogPowerData", 9, idx);
 

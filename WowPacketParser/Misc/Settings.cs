@@ -31,6 +31,7 @@ namespace WowPacketParser.Misc
         public static readonly bool RecalcDiscount = Conf.GetBoolean("RecalcDiscount", false);
         public static readonly bool ForcePhaseZero = Conf.GetBoolean("ForcePhaseZero", false);
         public static readonly bool GenerateCreateObject2SpawnsOnly = Conf.GetBoolean("GenerateCreateObject2SpawnsOnly", false);
+        public static readonly int TreatAsCreateObject2Tolerance = Conf.GetInt("TreatAsCreateObject2Tolerance", 3);
         public static readonly bool SkipDuplicateSpawns = Conf.GetBoolean("SkipDuplicateSpawns", false);
         public static readonly bool SkipIntermediatePoints = Conf.GetBoolean("SkipIntermediatePoints", false);
         public static readonly string SQLFileName = Conf.GetString("SQLFileName", string.Empty);

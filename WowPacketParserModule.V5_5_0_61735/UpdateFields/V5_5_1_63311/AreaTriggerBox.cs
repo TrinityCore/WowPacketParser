@@ -11,8 +11,8 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V5_5_1_63311
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
     public class AreaTriggerBox : IAreaTriggerBox
     {
-        public Vector3 Extents { get; set; }
-        public Vector3 ExtentsTarget { get; set; }
+        public System.Nullable<Vector3> Extents { get; set; }
+        public System.Nullable<Vector3> ExtentsTarget { get; set; }
     }
 }
 

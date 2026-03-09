@@ -11,10 +11,10 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_0_62213
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
     public class ChallengeModeData : IChallengeModeData
     {
-        public int Unknown_1120_1 { get; set; }
-        public int Unknown_1120_2 { get; set; }
-        public ulong Unknown_1120_3 { get; set; }
-        public long Unknown_1120_4 { get; set; }
+        public int MapID { get; set; }
+        public int InitialPlayerCount { get; set; }
+        public ulong InstanceID { get; set; }
+        public long StartTime { get; set; }
         public WowGuid KeystoneOwnerGUID { get; set; }
         public WowGuid LeaverGUID { get; set; }
         public uint IsActive { get; set; }

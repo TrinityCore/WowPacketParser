@@ -5,7 +5,7 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
     [DBFile("Criteria")]
     public sealed class CriteriaEntry
     {
-        [Index(true)]
+        [Index(false)]
         public uint ID;
         public short Type;
         public int Asset;

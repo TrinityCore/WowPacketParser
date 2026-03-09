@@ -21,7 +21,10 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
             for (var i = 0; i < pointCount; ++i)
             {
-                var point = data.Spline.Points[i];
+                if (!data.Spline.Points[i].HasValue)
+                    continue;
+
+                var point = data.Spline.Points[i].Value;
                 if (createProperties != null)
                 {
                     points.Add(new AreaTriggerCreatePropertiesSplinePoint

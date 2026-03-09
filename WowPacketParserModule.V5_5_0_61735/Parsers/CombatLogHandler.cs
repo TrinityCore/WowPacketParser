@@ -514,5 +514,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.CMSG_SET_ADVANCED_COMBAT_LOGGING)]
+        public static void HandleSetAdvancedCombatLogging(Packet packet)
+        {
+            packet.ReadBit("Enable");
+        }
     }
 }

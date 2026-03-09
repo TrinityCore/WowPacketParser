@@ -424,7 +424,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleRaidLockoutAdded(Packet packet)
         {
             packet.ReadUInt64("InstanceID");
-            packet.ReadUInt32("ServerTime");
+            packet.ReadPackedTime("ServerTime");
             packet.ReadInt32("MapID");
             packet.ReadUInt32("DifficultyID");
             packet.ReadInt32("TimeRemaining");
@@ -441,7 +441,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_UPDATED)]
         public static void HandleCalendarRaidLockoutUpdated(Packet packet)
         {
-            packet.ReadUInt32("ServerTime");
+            packet.ReadPackedTime("ServerTime");
             packet.ReadInt32("MapID");
             packet.ReadUInt32("DifficultyID");
             packet.ReadInt32("NewTimeRemaining");

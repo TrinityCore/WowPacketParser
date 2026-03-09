@@ -71,6 +71,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadWoWString("Body", bodyLen, idx);
         }
 
+        public static void ReadMailAttachment(Packet packet, params object[] idx)
+        {
+            packet.ReadByte("AttachPosition", idx);
+            packet.ReadPackedGuid128("ItemGUID", idx);
+        }
+
         [Parser(Opcode.SMSG_MAIL_COMMAND_RESULT)]
         public static void HandleMailCommandResult(Packet packet)
         {
@@ -114,6 +120,77 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadByte("AltSenderType", i);
                 packet.ReadInt32("StationeryID", i);
             }
+        }
+
+        [Parser(Opcode.CMSG_MAIL_DELETE)]
+        public static void HandleMailDelete(Packet packet)
+        {
+            packet.ReadUInt64("MailID");
+            packet.ReadInt32("DeleteReason");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_GET_LIST)]
+        public static void HandleGetMailList(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_TAKE_MONEY)]
+        public static void HandleMailTakeMoney(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadUInt64("MailID");
+            packet.ReadUInt64("Money");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_TAKE_ITEM)]
+        public static void HandleMailTakeItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadUInt64("MailID");
+            packet.ReadUInt64("AttachID");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_MARK_AS_READ)]
+        [Parser(Opcode.CMSG_MAIL_CREATE_TEXT_ITEM)]
+        public static void HandleMailMarkAsRead(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadUInt64("MailID");
+        }
+
+        [Parser(Opcode.CMSG_SEND_MAIL)]
+        public static void HandleSendMail(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadInt32("StationeryID");
+            packet.ReadInt64("SendMoney");
+            packet.ReadInt64("Cod");
+
+            var nameLength = packet.ReadBits(9);
+            var subjectLength = packet.ReadBits(9);
+            var bodyLength = packet.ReadBits(11);
+            var itemCount = packet.ReadBits(5);
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("Target", nameLength);
+            packet.ReadWoWString("Subject", subjectLength);
+            packet.ReadWoWString("Body", bodyLength);
+
+            for (var i = 0; i < itemCount; i++)
+                ReadMailAttachment(packet, i, "Attachment");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_RETURN_TO_SENDER)]
+        public static void HandleMailReturnToSender(Packet packet)
+        {
+            packet.ReadUInt64("MailID");
+            packet.ReadPackedGuid128("SenderGUID");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_NEXT_MAIL_TIME)]
+        public static void HandleNullMail(Packet packet)
+        {
         }
     }
 }

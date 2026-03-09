@@ -47,5 +47,27 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("RandomPropertiesID");
             Substructures.ItemHandler.ReadItemInstance(packet, "Item");
         }
+
+        [Parser(Opcode.CMSG_BLACK_MARKET_OPEN)]
+        public static void HandleBlackMarketOpen(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+        }
+
+        [Parser(Opcode.CMSG_BLACK_MARKET_REQUEST_ITEMS)]
+        public static void HandleBlackMarketRequestItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadTime64("LastUpdate");
+        }
+
+        [Parser(Opcode.CMSG_BLACK_MARKET_BID_ON_ITEM)]
+        public static void HandleBlackMarketBidOnItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadInt32("MarketID");
+            packet.ReadUInt64("BidAmount");
+            Substructures.ItemHandler.ReadItemInstance(packet, "Item");
+        }
     }
 }

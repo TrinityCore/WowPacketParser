@@ -200,25 +200,27 @@ namespace WowPacketParser.SQL
             switch (expansion)
             {
                 case ClientType.TheBurningCrusade:
-                    return new List<TargetedDatabase> { TargetedDatabase.TheBurningCrusade };
+                    return [TargetedDatabase.TheBurningCrusade];
                 case ClientType.WrathOfTheLichKing:
-                    return new List<TargetedDatabase> { TargetedDatabase.WrathOfTheLichKing };
+                    return [TargetedDatabase.WrathOfTheLichKing];
                 case ClientType.Cataclysm:
-                    return new List<TargetedDatabase> { TargetedDatabase.Cataclysm };
+                    return [TargetedDatabase.Cataclysm];
                 case ClientType.WarlordsOfDraenor:
-                    return new List<TargetedDatabase> { TargetedDatabase.WarlordsOfDraenor };
+                    return [TargetedDatabase.WarlordsOfDraenor];
                 case ClientType.Legion:
-                    return new List<TargetedDatabase> { TargetedDatabase.Legion };
+                    return [TargetedDatabase.Legion];
                 case ClientType.BattleForAzeroth: // == ClientType.Classic
-                    return new List<TargetedDatabase> { TargetedDatabase.BattleForAzeroth, TargetedDatabase.Classic, TargetedDatabase.TheBurningCrusade };
+                    return [TargetedDatabase.BattleForAzeroth, TargetedDatabase.Classic, TargetedDatabase.TheBurningCrusade];
                 case ClientType.Shadowlands: // == ClientType.BurningCrusadeClassic
-                    return new List<TargetedDatabase> { TargetedDatabase.Shadowlands, TargetedDatabase.Classic, TargetedDatabase.WotlkClassic, TargetedDatabase.TheBurningCrusade };
+                    return [TargetedDatabase.Shadowlands, TargetedDatabase.Classic, TargetedDatabase.WotlkClassic, TargetedDatabase.TheBurningCrusade];
                 case ClientType.Dragonflight:
-                    return new List<TargetedDatabase> { TargetedDatabase.Dragonflight, TargetedDatabase.WotlkClassic, TargetedDatabase.CataClassic };
+                    return [TargetedDatabase.Dragonflight, TargetedDatabase.WotlkClassic, TargetedDatabase.CataClassic];
                 case ClientType.TheWarWithin:
-                    return new List<TargetedDatabase> { TargetedDatabase.TheWarWithin, TargetedDatabase.CataClassic /*maybe?*/ };
+                    return [TargetedDatabase.TheWarWithin, TargetedDatabase.CataClassic];
+                case ClientType.Midnight:
+                    return [TargetedDatabase.Midnight];
                 default:
-                    return new List<TargetedDatabase>();
+                    return [];
             }
         }
     }

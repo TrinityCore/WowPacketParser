@@ -83,8 +83,8 @@ namespace WowPacketParser.Store.Objects
 
         public override void LoadValuesFromUpdateFields()
         {
-            spellId             = (uint)AreaTriggerData.SpellID;
-            SpellForVisuals     = (uint)AreaTriggerData.SpellForVisuals;
+            spellId             = (uint)(AreaTriggerData.SpellID ?? 0);
+            SpellForVisuals     = (uint?)AreaTriggerData.SpellForVisuals;
             DecalPropertiesId   = AreaTriggerData.DecalPropertiesID;
             TimeToTarget        = AreaTriggerData.TimeToTarget;
             TimeToTargetScale   = AreaTriggerData.TimeToTargetScale;
@@ -98,10 +98,10 @@ namespace WowPacketParser.Store.Objects
                 if (AreaTriggerData.VisualAnim != null)
                 {
                     if (AreaTriggerData.VisualAnim.AnimationDataID != 0 && AreaTriggerData.VisualAnim.AnimationDataID != uint.MaxValue)
-                        AnimId = (int)AreaTriggerData.VisualAnim.AnimationDataID;
+                        AnimId = (int?)AreaTriggerData.VisualAnim.AnimationDataID;
 
                     if (AreaTriggerData.VisualAnim.AnimKitID != 0)
-                        AnimKitId = (int)AreaTriggerData.VisualAnim.AnimKitID;
+                        AnimKitId = (int?)AreaTriggerData.VisualAnim.AnimKitID;
 
                     if (AreaTriggerData.VisualAnim.IsDecay == true)
                         Flags |= (uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay;
@@ -128,8 +128,8 @@ namespace WowPacketParser.Store.Objects
             else if (AreaTriggerData.Box != null)
             {
                 Shape = (byte)AreaTriggerType.Box;
-                ShapeData = [AreaTriggerData.Box.Extents.X, AreaTriggerData.Box.Extents.Y, AreaTriggerData.Box.Extents.Z,
-                    AreaTriggerData.Box.ExtentsTarget.X, AreaTriggerData.Box.ExtentsTarget.Y, AreaTriggerData.Box.ExtentsTarget.Z,
+                ShapeData = [AreaTriggerData.Box.Extents?.X, AreaTriggerData.Box.Extents?.Y, AreaTriggerData.Box.Extents?.Z,
+                    AreaTriggerData.Box.ExtentsTarget?.X, AreaTriggerData.Box.ExtentsTarget?.Y, AreaTriggerData.Box.ExtentsTarget?.Z,
                     0, 0];
             }
             else if (AreaTriggerData.Polygon != null)
@@ -156,8 +156,8 @@ namespace WowPacketParser.Store.Objects
             else if (AreaTriggerData.BoundedPlane != null)
             {
                 Shape = (byte)AreaTriggerType.BoundedPlane;
-                ShapeData = [AreaTriggerData.BoundedPlane.Extents.X, AreaTriggerData.BoundedPlane.Extents.Y,
-                    AreaTriggerData.BoundedPlane.ExtentsTarget.X, AreaTriggerData.BoundedPlane.ExtentsTarget.Y,
+                ShapeData = [AreaTriggerData.BoundedPlane.Extents?.X, AreaTriggerData.BoundedPlane.Extents?.Y,
+                    AreaTriggerData.BoundedPlane.ExtentsTarget?.X, AreaTriggerData.BoundedPlane.ExtentsTarget?.Y,
                     0, 0, 0, 0];
             }
         }

@@ -71,5 +71,25 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             packet.ReadBit("ShowVisual");
         }
+
+        [Parser(Opcode.CMSG_SET_FACTION_AT_WAR)]
+        [Parser(Opcode.CMSG_SET_FACTION_NOT_AT_WAR)]
+        public static void HandleSetFactionAtWar(Packet packet)
+        {
+            packet.ReadUInt16("FactionIndex");
+        }
+
+        [Parser(Opcode.CMSG_SET_FACTION_INACTIVE)]
+        public static void HandleSetFactionInactive(Packet packet)
+        {
+            packet.ReadInt32("Index");
+            packet.ReadBool("State");
+        }
+
+        [Parser(Opcode.CMSG_SET_WATCHED_FACTION)]
+        public static void HandleSetWatchedFaction(Packet packet)
+        {
+            packet.ReadInt32("FactionIndex");
+        }
     }
 }

@@ -103,7 +103,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_0_0_55666
         public System.Nullable<byte> NumBankSlots { get; set; }
         public System.Nullable<byte> NumAccountBankTabs { get; set; }
         public IResearchHistory ResearchHistory { get; set; }
-        public IActivePlayerUnk901 Field_1410 { get; set; }
+        public ILevelLinkInfo LevelLinkInfo { get; set; }
         public IQuestSession QuestSession { get; set; }
         public System.Nullable<int> UiChromieTimeExpansionID { get; set; }
         public System.Nullable<int> TimerunningSeasonID { get; set; }

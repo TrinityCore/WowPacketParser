@@ -123,6 +123,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardKillHonor")]
         public float? RewardKillHonor;
 
+        [DBFieldName("RewardFavor", TargetedDatabaseFlag.SinceMidnight)]
+        public int? RewardFavor;
+
         [DBFieldName("StartItem")]
         public uint? StartItem;
 

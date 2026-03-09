@@ -43,6 +43,9 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public int ModifiedCraftingReagentItemID;
         public int ContentTuningID;
         public int PlayerLevelToItemLevelCurveID;
+        public int ItemLevelOffsetCurveID;
+        public int ItemLevelOffsetItemLevel;
+        public int ItemSquishEraID;
         public ushort ItemNameDescriptionID;
         public ushort RequiredTransmogHoliday;
         public ushort RequiredHoliday;
@@ -73,7 +76,7 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public byte DamageType;
         public byte ContainerSlots;
         public byte RequiredPVPMedal;
-        public byte RequiredPVPRank;
+        public sbyte RequiredPVPRank;
         public sbyte RequiredLevel;
         public sbyte InventoryType;
         public sbyte OverallQualityID;

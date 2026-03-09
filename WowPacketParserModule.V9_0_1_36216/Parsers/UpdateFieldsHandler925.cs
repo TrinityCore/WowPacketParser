@@ -2406,18 +2406,18 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_2_5_43903
             return data;
         }
 
-        public static IActivePlayerUnk901 ReadCreateActivePlayerUnk901(Packet packet, params object[] indexes)
+        public static ILevelLinkInfo ReadCreateLevelLinkInfo(Packet packet, params object[] indexes)
         {
-            var data = new ActivePlayerUnk901();
+            var data = new LevelLinkInfo();
             packet.ResetBitReader();
-            data.Field_0 = packet.ReadPackedGuid128("Field_0", indexes);
-            data.Field_10 = packet.ReadInt32("Field_10", indexes);
+            data.TargetGUID = packet.ReadPackedGuid128("TargetGUID", indexes);
+            data.Level = packet.ReadInt32("Level", indexes);
             return data;
         }
 
-        public static IActivePlayerUnk901 ReadUpdateActivePlayerUnk901(Packet packet, params object[] indexes)
+        public static ILevelLinkInfo ReadUpdateLevelLinkInfo(Packet packet, params object[] indexes)
         {
-            var data = new ActivePlayerUnk901();
+            var data = new LevelLinkInfo();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(3);
@@ -2428,11 +2428,11 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_2_5_43903
             {
                 if (changesMask[1])
                 {
-                    data.Field_0 = packet.ReadPackedGuid128("Field_0", indexes);
+                    data.TargetGUID = packet.ReadPackedGuid128("TargetGUID", indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.Field_10 = packet.ReadInt32("Field_10", indexes);
+                    data.Level = packet.ReadInt32("Level", indexes);
                 }
             }
             return data;
@@ -2775,7 +2775,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_2_5_43903
             data.InsertItemsLeftToRight = packet.ReadBit("InsertItemsLeftToRight", indexes);
             var hasQuestSession = packet.ReadBit("HasQuestSession", indexes);
             packet.ResetBitReader();
-            data.Field_1410 = ReadCreateActivePlayerUnk901(packet, indexes, "Field_1410");
+            data.LevelLinkInfo = ReadCreateLevelLinkInfo(packet, indexes, "LevelLinkInfo");
             if (hasQuestSession)
             {
                 data.QuestSession = ReadCreateQuestSession(packet, indexes, "QuestSession");
@@ -3478,7 +3478,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_2_5_43903
                 packet.ResetBitReader();
                 if (changesMask[106])
                 {
-                    data.Field_1410 = ReadUpdateActivePlayerUnk901(packet, indexes, "Field_1410");
+                    data.LevelLinkInfo = ReadUpdateLevelLinkInfo(packet, indexes, "LevelLinkInfo");
                 }
                 if (changesMask[105])
                 {

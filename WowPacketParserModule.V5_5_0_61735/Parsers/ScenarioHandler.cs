@@ -128,5 +128,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ReadBit("ShowCriteria");
         }
+
+        [Parser(Opcode.CMSG_QUERY_SCENARIO_POI)]
+        public static void HandleQueryScenarioPOI(Packet packet)
+        {
+            var missingScenarioPOITreeCount = packet.ReadUInt32("MissingScenarioPOITreeCount");
+            for (var i = 0; i < missingScenarioPOITreeCount; i++)
+                packet.ReadInt32("MissingScenarioPOITreeIDs", i);
+        }
     }
 }

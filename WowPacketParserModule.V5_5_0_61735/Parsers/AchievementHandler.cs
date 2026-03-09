@@ -119,5 +119,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             ReadCriteriaProgress(packet, "Progress");
         }
+
+        [Parser(Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS)]
+        public static void HandleQueryInspectAchievements(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+        }
     }
 }

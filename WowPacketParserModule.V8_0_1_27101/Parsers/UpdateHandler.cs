@@ -476,11 +476,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         var hasJumpExtraData = packet.ReadBit("HasJumpExtraData", index);
 
                         var hasAnimationTierTransition = false;
-                        var hasUnknown901 = false;
+                        var hasSpellVisualData = false;
                         if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
                         {
                             hasAnimationTierTransition = packet.ReadBit("HasAnimationTierTransition", index);
-                            hasUnknown901 = packet.ReadBit("Unknown901", index);
+                            hasSpellVisualData = packet.ReadBit("HasSpellVisualData", index);
                         }
 
                         if (hasSplineFilterKey)
@@ -531,14 +531,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                             packet.ReadByte("AnimTier", index);
                         }
 
-                        if (hasUnknown901)
+                        if (hasSpellVisualData)
                         {
                             for (var i = 0; i < 16; ++i)
                             {
-                                packet.ReadInt32("Unknown1", index, "Unknown901", i);
-                                packet.ReadInt32("Unknown2", index, "Unknown901", i);
-                                packet.ReadInt32("Unknown3", index, "Unknown901", i);
-                                packet.ReadInt32("Unknown4", index, "Unknown901", i);
+                                packet.ReadInt32("SpellID", index, "SpellVisualData", i);
+                                packet.ReadInt32("SpellXSpellVisual", index, "SpellVisualData", i, "Visual");
+                                packet.ReadInt32("ScriptVisualID", index, "SpellVisualData", i, "Visual");
+                                packet.ReadInt32("StartNodeIndex", index, "SpellVisualData", i);
                             }
                         }
                     }

@@ -1204,8 +1204,131 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadPackedGuid128("ItemGUID", i);
         }
 
+        [Parser(Opcode.CMSG_SPAWN_TRACKING_UPDATE)]
+        public static void HandleSpawnTrackingVignette(Packet packet)
+        {
+            var count = packet.ReadUInt32("SpawnTrackingCount");
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadInt32("ObjectTypeMask", i);
+                packet.ReadInt32("ObjectID", i);
+                packet.ReadUInt32("SpawnTrackingID", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_CHOICE_RESPONSE)]
+        public static void HandleChoiceResponse(Packet packet)
+        {
+            packet.ReadInt32("ChoiceID");
+            packet.ReadInt32("ResponseID");
+            packet.ReadBit("IsReroll");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_HELLO)]
+        public static void HandleQuestGiverHello(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiver GUID");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_QUERY_QUEST)]
+        public static void HandleQuestGiverQueryQuest(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadBit("RespondToGiver");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_ACCEPT_QUEST)]
+        public static void HandleQuestGiverAcceptQuest(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadBit("StartCheat");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_COMPLETE_QUEST)]
+        public static void HandleQuestGiverCompleteQuest(Packet packet)
+        {
+            var questGiverCompleteQuest = packet.Holder.QuestGiverCompleteQuestRequest = new();
+            questGiverCompleteQuest.QuestGiver = packet.ReadPackedGuid128("QuestGiverGUID");
+            questGiverCompleteQuest.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadBit("FromScript");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_CHOOSE_REWARD)]
+        public static void HandleQuestChooseReward(Packet packet)
+        {
+            var chooseReward = packet.Holder.ClientQuestGiverChooseReward = new();
+            chooseReward.QuestGiver = packet.ReadPackedGuid128("QuestGiverGUID");
+            chooseReward.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
+            chooseReward.Item = (uint)ReadRewardItem(packet, "ItemChoice").ItemID;
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_REQUEST_REWARD)]
+        public static void HandleQuestRequestReward(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadInt32<QuestId>("QuestID");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_QUERY)]
+        public static void HandleQuestgiverStatusQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_CONFIRM_ACCEPT)]
+        [Parser(Opcode.CMSG_PUSH_QUEST_TO_PARTY)]
+        public static void HandleClientQuestConfirmAccept(Packet packet)
+        {
+            packet.ReadInt32<QuestId>("QuestID");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_PUSH_RESULT)]
+        public static void HandleCliQuestPushResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("SenderGUID");
+            packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadByteE<QuestPushReason915>("Result");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_LOG_REMOVE_QUEST)]
+        public static void HandleQuestRemoveQuest(Packet packet)
+        {
+            packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_CLOSE_QUEST)]
+        public static void HandleQuestGiverCloseQuest(Packet packet)
+        {
+            packet.ReadUInt32<QuestId>("QuestID");
+        }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_TRACKED_QUERY)]
+        public static void HandleQuestGiverStatusTrackedQuery(Packet packet)
+        {
+            var guidCount = packet.ReadUInt32("GUIDCount");
+            for (var i = 0; i < guidCount; i++)
+            {
+                packet.ReadPackedGuid128("QuestGiverGUID", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
+        public static void HandleQuestPOIQuery(Packet packet)
+        {
+            packet.ReadUInt32("MissingQuestCount");
+
+            for (var i = 0; i < 25; i++)
+                packet.ReadInt32<QuestId>("MissingQuestPOIs", i);
+        }
+
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
         [Parser(Opcode.SMSG_QUEST_LOG_FULL)]
+        [Parser(Opcode.CMSG_CLOSE_QUEST_CHOICE)]
+        [Parser(Opcode.CMSG_REQUEST_WORLD_QUEST_UPDATE)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_MULTIPLE_QUERY)]
         public static void HandleQuestZeroLengthPackets(Packet packet)
         {
         }

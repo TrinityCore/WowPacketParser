@@ -13,8 +13,8 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V5_5_1_63311
     {
         public System.Nullable<float> Height { get; set; }
         public System.Nullable<float> HeightTarget { get; set; }
-        public DynamicUpdateField<Vector2> Vertices { get; } = new DynamicUpdateField<Vector2>();
-        public DynamicUpdateField<Vector2> VerticesTarget { get; } = new DynamicUpdateField<Vector2>();
+        public DynamicUpdateField<System.Nullable<Vector2>> Vertices { get; } = new DynamicUpdateField<System.Nullable<Vector2>>();
+        public DynamicUpdateField<System.Nullable<Vector2>> VerticesTarget { get; } = new DynamicUpdateField<System.Nullable<Vector2>>();
     }
 }
 

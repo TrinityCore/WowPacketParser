@@ -19,9 +19,34 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
         public static void ReadOptionalReagent(Packet packet, params object[] indexes)
         {
-            packet.ReadInt32<ItemId>("ItemID", indexes);
-            packet.ReadInt32("Slot", indexes);
-            if(ClientVersion.RemovedInVersion(ClientVersionBuild.V9_1_0_39185))
+            if (ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                packet.ReadInt32<ItemId>("ItemID", indexes);
+
+            packet.ReadInt32("DataSlotIndex", indexes);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_2_46479))
+            {
+                packet.ReadInt32("Quantity", indexes);
+                if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                {
+                    packet.ResetBitReader();
+                    var hasItem = packet.ReadBit();
+                    var hasCurrency = packet.ReadBit();
+
+                    if (hasItem)
+                        packet.ReadInt32<ItemId>("ItemID", indexes);
+
+                    if (hasCurrency)
+                        packet.ReadInt32<CurrencyId>("CurrencyID", indexes);
+                }
+
+                packet.ResetBitReader();
+                var hasSource = packet.ReadBit("HasSource", indexes);
+                if (hasSource)
+                    packet.ReadByte("Source", indexes);
+            }
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_1_0_39185))
                 packet.ReadInt32("Count", indexes);
         }
 
@@ -41,6 +66,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             for (var i = 0; i < 2; i++)
                 packet.ReadInt32("Misc", idx, i);
 
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                packet.ReadInt32("Misc", idx, 2);
+
             var spellId = packet.ReadUInt32<SpellId>("SpellID", idx);
 
             ReadSpellCastVisual(packet, idx);
@@ -59,7 +87,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadByte("CraftingFlags", idx);
 
             for (var j = 0; j < optionalCurrenciesCount; ++j)
-                ReadOptionalCurrency(packet, idx, "OptionalCurrency", j);
+                ReadOptionalCurrency(packet, idx, "ExtraCurrencyCosts", j);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
                 V8_0_1_27101.Parsers.SpellHandler.ReadSpellTargetData(packet, null, spellId, idx, "Target");
@@ -81,13 +109,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadUInt64("CraftingOrderID", idx);
 
             for (var i = 0; i < optionalReagentsCount; ++i)
-                ReadOptionalReagent(packet, idx, "OptionalReagent", i);
+                ReadOptionalReagent(packet, idx, "CraftingReagents", i);
 
             if (hasCraftingOrderID && ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
                 packet.ReadUInt64("CraftingOrderID", idx);
 
             for (var i = 0; i < removedModificationsCount; ++i)
-                ReadOptionalReagent(packet, idx, "RemovedModifications", i);
+                ReadOptionalReagent(packet, idx, "RemovedReagents", i);
 
             if (hasMoveUpdate)
                 Substructures.MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");
@@ -313,6 +341,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             spellFail.Success = packet.ReadInt32("Reason") == 0;
             packet.ReadInt32("FailedArg1");
             packet.ReadInt32("FailedArg2");
+
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                packet.ReadPackedGuid128("FailedBy");
         }
 
         [Parser(Opcode.SMSG_SPELL_FAILURE)]
@@ -324,6 +355,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             spellFail.Spell = (uint)packet.ReadInt32<SpellId>("SpellID");
             ReadSpellCastVisual(packet, "Visual");
             spellFail.Success = packet.ReadInt16("Reason") == 0;
+
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                packet.ReadPackedGuid128("FailedBy");
         }
 
         [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
@@ -335,6 +369,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             spellFail.Spell = packet.ReadUInt32<SpellId>("SpellID");
             ReadSpellCastVisual(packet, "Visual");
             spellFail.Success = packet.ReadByte("Reason") == 0;
+
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                packet.ReadPackedGuid128("FailedBy");
         }
 
         [Parser(Opcode.SMSG_LEARNED_SPELLS)]

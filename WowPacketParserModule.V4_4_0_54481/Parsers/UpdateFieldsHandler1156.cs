@@ -2905,18 +2905,18 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
             return data;
         }
 
-        public static IActivePlayerUnk901 ReadCreateActivePlayerUnk901(Packet packet, params object[] indexes)
+        public static ILevelLinkInfo ReadCreateLevelLinkInfo(Packet packet, params object[] indexes)
         {
-            var data = new ActivePlayerUnk901();
+            var data = new LevelLinkInfo();
             packet.ResetBitReader();
-            data.Field_0 = packet.ReadPackedGuid128("Field_0", indexes);
-            data.Field_10 = packet.ReadInt32("Field_10", indexes);
+            data.TargetGUID = packet.ReadPackedGuid128("TargetGUID", indexes);
+            data.Level = packet.ReadInt32("Level", indexes);
             return data;
         }
 
-        public static IActivePlayerUnk901 ReadUpdateActivePlayerUnk901(Packet packet, params object[] indexes)
+        public static ILevelLinkInfo ReadUpdateLevelLinkInfo(Packet packet, params object[] indexes)
         {
-            var data = new ActivePlayerUnk901();
+            var data = new LevelLinkInfo();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(3);
@@ -2927,11 +2927,11 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
             {
                 if (changesMask[1])
                 {
-                    data.Field_0 = packet.ReadPackedGuid128("Field_0", indexes);
+                    data.TargetGUID = packet.ReadPackedGuid128("TargetGUID", indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.Field_10 = packet.ReadInt32("Field_10", indexes);
+                    data.Level = packet.ReadInt32("Level", indexes);
                 }
             }
             return data;
@@ -5267,7 +5267,7 @@ namespace WowPacketParserModule.V4_4_0_54481.UpdateFields.V1_15_6_58797
                 }
                 if (changesMask[126])
                 {
-                    data.Field_1410 = ReadUpdateActivePlayerUnk901(packet, indexes, "Field_1410");
+                    data.LevelLinkInfo = ReadUpdateLevelLinkInfo(packet, indexes, "LevelLinkInfo");
                 }
                 if (changesMask[132])
                 {

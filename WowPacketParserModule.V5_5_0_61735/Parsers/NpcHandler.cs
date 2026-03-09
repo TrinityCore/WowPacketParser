@@ -2,6 +2,7 @@
 using System.Globalization;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
@@ -399,6 +400,103 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt32("InteractionType");
             packet.ReadBit("Success");
+        }
+
+        [Parser(Opcode.CMSG_TABARD_VENDOR_ACTIVATE)]
+        public static void HandleTabardVendorActivate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vendor");
+            packet.ReadInt32("Type");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_HELLO)]
+        public static void HandleBattlemasterHello(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+        }
+
+        [Parser(Opcode.CMSG_BINDER_ACTIVATE)]
+        [Parser(Opcode.CMSG_TALK_TO_GOSSIP)]
+        [Parser(Opcode.CMSG_LIST_INVENTORY)]
+        [Parser(Opcode.CMSG_TRAINER_LIST)]
+        public static void HandleNpcHello(Packet packet)
+        {
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
+            var guid = CoreParsers.NpcHandler.LastGossipOption.Guid = packet.ReadPackedGuid128("Guid");
+
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_TALK_TO_GOSSIP, Direction.ClientToServer))
+                packet.Holder.GossipHello = new PacketGossipHello { GossipSource = guid };
+        }
+
+        [Parser(Opcode.CMSG_CLOSE_INTERACTION)] // trigger in CGGameUI::CloseInteraction
+        public static void HandleCloseInteraction(Packet packet)
+        {
+            var packetGossip = packet.Holder.GossipClose = new PacketGossipClose();
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            packetGossip.GossipSource = packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION)]
+        public static void HandleNpcGossipSelectOption(Packet packet)
+        {
+            PacketGossipSelect packetGossip = packet.Holder.GossipSelect = new();
+            packetGossip.GossipUnit = packet.ReadPackedGuid128("GossipUnit");
+
+            var menuID = packetGossip.MenuId = packet.ReadUInt32("MenuID");
+            uint optionID = 0;
+            var gossipOptionId = packet.ReadInt32("GossipOptionID");
+            Storage.GossipOptionIdToOrderIndexMap.TryGetValue((menuID, gossipOptionId), out optionID);
+            packetGossip.OptionId = optionID;
+
+            var bits8 = packet.ReadBits(8);
+            packet.ResetBitReader();
+            packet.ReadWoWString("PromotionCode", bits8);
+
+            CoreParsers.NpcHandler.LastGossipOption.GossipSelectOption(menuID, optionID, packet.TimeSpan);
+            CoreParsers.NpcHandler.TempGossipOptionPOI.GossipSelectOption(menuID, optionID, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.CMSG_SPELL_CLICK)]
+        public static void HandleSpellClick(Packet packet)
+        {
+            WowGuid guid = packet.ReadPackedGuid128("SpellClickUnitGUID");
+            packet.Holder.SpellClick = new() { Target = guid };
+            packet.ReadBit("TryAutoDismount");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
+        public static void HandleTrainerBuySpell(Packet packet)
+        {
+            packet.ReadPackedGuid128("TrainerGUID");
+            packet.ReadInt32("TrainerID");
+            packet.ReadInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.CMSG_SPIRIT_HEALER_ACTIVATE)]
+        public static void HandleSpiritHealerActivate(Packet packet)
+        {
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
+            CoreParsers.NpcHandler.LastGossipOption.Guid = packet.ReadPackedGuid128("Healer");
+        }
+
+        [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
+        public static void HandleBankerActivate(Packet packet)
+        {
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
+            var guid = CoreParsers.NpcHandler.LastGossipOption.Guid = packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32E<PlayerInteractionType>("InteractionType");
+        }
+
+        [Parser(Opcode.CMSG_BUY_BANK_SLOT)]
+        public static void HandleBuyBankSlot(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
         }
     }
 }

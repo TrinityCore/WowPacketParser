@@ -11,8 +11,8 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public int Unknown901_1;
         public ushort FactionTemplateID;
         public int ContentTuningID;
-        [Cardinality(8)]
-        public int[] Flags = new int[8];
+        [Cardinality(9)]
+        public int[] Flags = new int[9];
         [NonInlineRelation(typeof(uint))]
         public int CreatureID;
     }

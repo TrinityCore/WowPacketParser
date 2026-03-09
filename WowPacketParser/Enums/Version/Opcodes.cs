@@ -101,6 +101,9 @@ using WowPacketParser.Enums.Version.V11_1_7_61491;
 using WowPacketParser.Enums.Version.V11_2_0_62213;
 using WowPacketParser.Enums.Version.V11_2_5_63506;
 using WowPacketParser.Enums.Version.V11_2_7_64632;
+using WowPacketParser.Enums.Version.V11_2_7_64877;
+using WowPacketParser.Enums.Version.V12_0_0_65390;
+using WowPacketParser.Enums.Version.V12_0_1_65818;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version
@@ -829,7 +832,37 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V11_2_7_64704:
                 case ClientVersionBuild.V11_2_7_64725:
                 case ClientVersionBuild.V11_2_7_64743:
+                case ClientVersionBuild.V11_2_7_64772:
+                case ClientVersionBuild.V11_2_7_64797:
                     return ClientVersionBuild.V11_2_7_64632;
+                case ClientVersionBuild.V11_2_7_64877:
+                case ClientVersionBuild.V11_2_7_64978:
+                case ClientVersionBuild.V11_2_7_65299:
+                    return ClientVersionBuild.V11_2_7_64877;
+                case ClientVersionBuild.V12_0_0_65390:
+                case ClientVersionBuild.V12_0_0_65459:
+                case ClientVersionBuild.V12_0_0_65512:
+                case ClientVersionBuild.V12_0_0_65535:
+                case ClientVersionBuild.V12_0_0_65560:
+                case ClientVersionBuild.V12_0_0_65614:
+                case ClientVersionBuild.V12_0_0_65655:
+                case ClientVersionBuild.V12_0_0_65699:
+                case ClientVersionBuild.V12_0_0_65727:
+                    return ClientVersionBuild.V12_0_0_65390;
+                case ClientVersionBuild.V12_0_1_65818:
+                case ClientVersionBuild.V12_0_1_65848:
+                case ClientVersionBuild.V12_0_1_65867:
+                case ClientVersionBuild.V12_0_1_65893:
+                case ClientVersionBuild.V12_0_1_65940:
+                case ClientVersionBuild.V12_0_1_66017:
+                case ClientVersionBuild.V12_0_1_66044:
+                case ClientVersionBuild.V12_0_1_66066:
+                case ClientVersionBuild.V12_0_1_66102:
+                case ClientVersionBuild.V12_0_1_66192:
+                case ClientVersionBuild.V12_0_1_66198:
+                case ClientVersionBuild.V12_0_1_66220:
+                case ClientVersionBuild.V12_0_1_66263:
+                    return ClientVersionBuild.V12_0_1_65818;
                 case ClientVersionBuild.V1_13_2_31446:
                 case ClientVersionBuild.V1_13_2_31650:
                 case ClientVersionBuild.V1_13_2_31687:
@@ -1130,6 +1163,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V1_15_8_64130:
                 case ClientVersionBuild.V1_15_8_64272:
                 case ClientVersionBuild.V1_15_8_64858:
+                case ClientVersionBuild.V1_15_8_64907:
                     return ClientVersionBuild.V1_15_8_63829;
                 case ClientVersionBuild.V3_4_4_59817:
                 case ClientVersionBuild.V3_4_4_59853:
@@ -1363,6 +1397,12 @@ namespace WowPacketParser.Enums.Version
                     return Opcodes_11_2_5.Opcodes(direction);
                 case ClientVersionBuild.V11_2_7_64632:
                     return Opcodes_11_2_7.Opcodes(direction);
+                case ClientVersionBuild.V11_2_7_64877:
+                    return Opcodes_11_2_7_64877.Opcodes(direction);
+                case ClientVersionBuild.V12_0_0_65390:
+                    return Opcodes_12_0_0.Opcodes(direction);
+                case ClientVersionBuild.V12_0_1_65818:
+                    return Opcodes_12_0_1.Opcodes(direction);
 
                 case ClientVersionBuild.V1_13_2_31446:
                     return Opcodes_1_13_2.Opcodes(direction);

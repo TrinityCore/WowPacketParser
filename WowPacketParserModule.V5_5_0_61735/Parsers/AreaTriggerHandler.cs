@@ -11,8 +11,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 {
     public static class AreaTriggerHandler
     {
-        public static void ProcessAreaTriggerSpline(AreaTriggerCreateProperties createProperties, IAreaTriggerData data,
-    Packet packet, params object[] indexes)
+        public static void ProcessAreaTriggerSpline(AreaTriggerCreateProperties createProperties, IAreaTriggerData data, Packet packet, params object[] indexes)
         {
             var moveTime = data.TimeToTarget ?? createProperties.AreaTriggerData.TimeToTarget ?? 1000;
 
@@ -23,7 +22,10 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             for (var i = 0; i < pointCount; ++i)
             {
-                var point = data.Spline.Points[i];
+                if (!data.Spline.Points[i].HasValue)
+                    continue;
+
+                var point = data.Spline.Points[i].Value;
                 if (createProperties != null)
                 {
                     points.Add(new AreaTriggerCreatePropertiesSplinePoint

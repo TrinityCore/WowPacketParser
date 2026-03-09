@@ -14,6 +14,7 @@ namespace WowPacketParser.Enums
         Shadowlands         = 7,
         Dragonflight        = 8,
         TheWarWithin        = 9,
+        Midnight            = 10,
 
         // chose higher value to have some room for future
         Classic             = 20,
@@ -36,7 +37,8 @@ namespace WowPacketParser.Enums
         Shadowlands                       = 1 << TargetedDatabase.Shadowlands,
         Dragonflight                      = 1 << TargetedDatabase.Dragonflight,
         TheWarWithin                      = 1 << TargetedDatabase.TheWarWithin,
-        AnyRetail                         = TheBurningCrusade | WrathOfTheLichKing | Cataclysm | WarlordsOfDraenor | Legion | BattleForAzeroth | Shadowlands | Dragonflight | TheWarWithin,
+        Midnight                          = 1 << TargetedDatabase.Midnight,
+        AnyRetail                         = TheBurningCrusade | WrathOfTheLichKing | Cataclysm | WarlordsOfDraenor | Legion | BattleForAzeroth | Shadowlands | Dragonflight | TheWarWithin | Midnight,
 
         // Classic
         Classic                           = 1 << TargetedDatabase.Classic,
@@ -56,11 +58,13 @@ namespace WowPacketParser.Enums
         TillShadowlands                   = Shadowlands | TillBattleForAzeroth,
         TillDragonflight                  = Dragonflight | TillShadowlands,
         TillTheWarWithin                  = TheWarWithin | TillDragonflight,
+        TillMidnight                      = Midnight | TheWarWithin,
 
         FromCataclysmTillBattleForAzeroth = Cataclysm | WarlordsOfDraenor | Legion | BattleForAzeroth,
 
         // update us when new expansion arrives
-        SinceTheWarWithin                 = TheWarWithin,
+        SinceMidnight                     = Midnight,
+        SinceTheWarWithin                 = TheWarWithin | SinceMidnight,
         SinceDragonflight                 = Dragonflight | SinceTheWarWithin,
         SinceShadowlands                  = Shadowlands | SinceDragonflight,
         SinceBattleForAzeroth             = BattleForAzeroth | SinceShadowlands,

@@ -2816,6 +2816,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.AreaTableHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.AreaTableHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AreaTableHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AreaTableHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.AreaTriggerHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.AreaTriggerHotfixes1100, Settings.HotfixesDatabase);
@@ -3131,6 +3138,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.BroadcastTextHotfixes1107, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.BroadcastTextHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BroadcastTextHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BroadcastTextHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.BroadcastTextDurationHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.BroadcastTextDurationHotfixes1100, Settings.HotfixesDatabase);
@@ -3383,6 +3397,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ChrSpecializationHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ChrSpecializationHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrSpecializationHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrSpecializationHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.CinematicCameraHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.CinematicCameraHotfixes1100, Settings.HotfixesDatabase);
@@ -3411,6 +3432,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ConditionalContentTuningHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ConditionalContentTuningHotfixes1127.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ConditionalContentTuningHotfixes1127, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ConditionalContentTuningHotfixes1127, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ContentTuningHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ContentTuningHotfixes1100, Settings.HotfixesDatabase);
@@ -3423,6 +3451,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ContentTuningHotfixes1117, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ContentTuningHotfixes1117, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ContentTuningHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ContentTuningHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ContentTuningHotfixes1125, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ContentTuningXExpectedHotfixes1100.IsEmpty())
@@ -3579,11 +3614,25 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.CurveHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.CurveHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CurveHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CurveHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.CurvePointHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.CurvePointHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.CurvePointHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CurvePointHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CurvePointHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CurvePointHotfixes1125, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.DestructibleModelDataHotfixes1100.IsEmpty())
@@ -3915,6 +3964,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.GossipNPCOptionHotfixes1110, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.GossipNPCOptionHotfixes1127.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GossipNPCOptionHotfixes1127, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GossipNPCOptionHotfixes1127, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.GuildColorBackgroundHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.GuildColorBackgroundHotfixes1100, Settings.HotfixesDatabase);
@@ -3964,6 +4020,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.HolidaysHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.HolidaysHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.HolidaysHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.HolidaysHotfixes1120, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ImportPriceArmorHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ImportPriceArmorHotfixes1100, Settings.HotfixesDatabase);
@@ -4004,6 +4067,20 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ItemHotfixes1120, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ItemHotfixes1120, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemHotfixes1127.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemHotfixes1127, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemHotfixes1127, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ItemAppearanceHotfixes1100.IsEmpty())
@@ -4083,6 +4160,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ItemBonusTreeNodeHotfixes1102, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ItemBonusTreeNodeHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemBonusTreeNodeHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemBonusTreeNodeHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ItemChildEquipmentHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ItemChildEquipmentHotfixes1100, Settings.HotfixesDatabase);
@@ -4109,6 +4193,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ItemContextPickerEntryHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ItemContextPickerEntryHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemCreationContextHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemCreationContextHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemCreationContextHotfixes1125, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ItemCurrencyCostHotfixes1100.IsEmpty())
@@ -4165,6 +4256,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ItemEffectHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ItemEffectHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemEffectHotfixes1127.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemEffectHotfixes1127, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemEffectHotfixes1127, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ItemExtendedCostHotfixes1100.IsEmpty())
@@ -4230,6 +4328,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ItemModifiedAppearanceExtraHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ItemOffsetCurveHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemOffsetCurveHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemOffsetCurveHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ItemNameDescriptionHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ItemNameDescriptionHotfixes1100, Settings.HotfixesDatabase);
@@ -4242,6 +4347,20 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ItemPriceBaseHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ItemPriceBaseHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemScalingConfigHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemScalingConfigHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemScalingConfigHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemScalingConfigHotfixes1127.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemScalingConfigHotfixes1127, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemScalingConfigHotfixes1127, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ItemSearchNameHotfixes1100.IsEmpty())
@@ -4284,6 +4403,20 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ItemSparseHotfixes1110, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ItemSparseHotfixes1110, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSparseHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSparseHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSparseHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSparseHotfixes1127.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSparseHotfixes1127, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSparseHotfixes1127, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.ItemSpecHotfixes1100.IsEmpty())
@@ -4459,6 +4592,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.MapChallengeModeHotfixes1120, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.MapChallengeModeHotfixes1120, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MapChallengeModeHotfixes1127.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapChallengeModeHotfixes1127, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapChallengeModeHotfixes1127, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.MapDifficultyHotfixes1100.IsEmpty())
@@ -4706,6 +4846,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.PlayerConditionHotfixes1117, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.PlayerConditionHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerConditionHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerConditionHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.PlayerDataElementAccountHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.PlayerDataElementAccountHotfixes1100, Settings.HotfixesDatabase);
@@ -4713,11 +4860,25 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.PlayerDataElementAccountHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.PlayerDataElementAccountHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerDataElementAccountHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerDataElementAccountHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.PlayerDataElementCharacterHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.PlayerDataElementCharacterHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.PlayerDataElementCharacterHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PlayerDataElementCharacterHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerDataElementCharacterHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerDataElementCharacterHotfixes1125, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.PlayerDataFlagAccountHotfixes1100.IsEmpty())
@@ -4734,6 +4895,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.PlayerDataFlagAccountHotfixes1107, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.PlayerDataFlagAccountHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerDataFlagAccountHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerDataFlagAccountHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.PlayerDataFlagCharacterHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.PlayerDataFlagCharacterHotfixes1100, Settings.HotfixesDatabase);
@@ -4746,6 +4914,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.PlayerDataFlagCharacterHotfixes1107, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.PlayerDataFlagCharacterHotfixes1107, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PlayerDataFlagCharacterHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerDataFlagCharacterHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerDataFlagCharacterHotfixes1125, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.PowerDisplayHotfixes1100.IsEmpty())
@@ -4958,6 +5133,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.SceneScriptHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.SceneScriptHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SceneScriptHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SceneScriptHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.SceneScriptGlobalTextHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.SceneScriptGlobalTextHotfixes1100, Settings.HotfixesDatabase);
@@ -5084,6 +5266,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.SpellCategoriesHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.SpellCategoriesHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellCategoriesHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellCategoriesHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.SpellCategoryHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.SpellCategoryHotfixes1100, Settings.HotfixesDatabase);
@@ -5166,6 +5355,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.SpellInterruptsHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.SpellInterruptsHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellInterruptsHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellInterruptsHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellInterruptsHotfixes1125, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.SpellItemEnchantmentHotfixes1100.IsEmpty())
@@ -5343,6 +5539,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.SpellVisualHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.SpellVisualHotfixes1127.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellVisualHotfixes1127, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellVisualHotfixes1127, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.SpellVisualEffectNameHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.SpellVisualEffectNameHotfixes1100, Settings.HotfixesDatabase);
@@ -5490,11 +5693,25 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.TraitCostHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.TraitCostHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitCostHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitCostHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.TraitCurrencyHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.TraitCurrencyHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.TraitCurrencyHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitCurrencyHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitCurrencyHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitCurrencyHotfixes1125, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.TraitCurrencySourceHotfixes1100.IsEmpty())
@@ -5609,6 +5826,27 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.TraitSubTreeHotfixes1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.TraitSystemHotfixes1100.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitSystemHotfixes1100, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitSystemHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitSystemHotfixes1120.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitSystemHotfixes1120, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitSystemHotfixes1120, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitSystemHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitSystemHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitSystemHotfixes1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.TraitTreeHotfixes1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.TraitTreeHotfixes1100, Settings.HotfixesDatabase);
@@ -5705,6 +5943,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.UiMapAssignmentHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.UiMapAssignmentHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.UiMapAssignmentHotfixes1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UiMapAssignmentHotfixes1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UiMapAssignmentHotfixes1125, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.UiMapLinkHotfixes1100.IsEmpty())
@@ -5852,6 +6097,2541 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.WorldStateExpressionHotfixes1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.WorldStateExpressionHotfixes1100, hotfixes, StoreNameType.None);
+                    }
+
+                    // Midnight Hotfix Builder
+                    if (!Storage.AchievementHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AchievementHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AchievementHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AchievementCategoryHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AchievementCategoryHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AchievementCategoryHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AdventureJournalHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AdventureJournalHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AdventureJournalHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AdventureMapPoiHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AdventureMapPoiHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AdventureMapPoiHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AnimationDataHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AnimationDataHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AnimationDataHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AnimKitHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AnimKitHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AnimKitHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AreaGroupMemberHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AreaGroupMemberHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AreaGroupMemberHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AreaTableHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AreaTableHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AreaTableHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AreaTriggerHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AreaTriggerHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AreaTriggerHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AreaTriggerActionSetHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AreaTriggerActionSetHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AreaTriggerActionSetHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArmorLocationHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArmorLocationHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArmorLocationHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactAppearanceHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactAppearanceHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactAppearanceHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactAppearanceSetHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactAppearanceSetHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactAppearanceSetHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactCategoryHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactCategoryHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactCategoryHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactPowerHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactPowerHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactPowerHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactPowerLinkHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactPowerLinkHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactPowerLinkHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactPowerPickerHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactPowerPickerHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactPowerPickerHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactPowerRankHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactPowerRankHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactPowerRankHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactQuestXpHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactQuestXpHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactQuestXpHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactTierHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactTierHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactTierHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactUnlockHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactUnlockHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactUnlockHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AuctionHouseHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AuctionHouseHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AuctionHouseHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeriteEmpoweredItemHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeriteEmpoweredItemHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeriteEmpoweredItemHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeriteEssenceHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeriteEssenceHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeriteEssenceHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeriteEssencePowerHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeriteEssencePowerHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeriteEssencePowerHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeriteItemHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeriteItemHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeriteItemHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeriteItemMilestonePowerHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeriteItemMilestonePowerHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeriteItemMilestonePowerHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeriteKnowledgeMultiplierHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeriteKnowledgeMultiplierHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeriteKnowledgeMultiplierHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeriteLevelInfoHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeriteLevelInfoHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeriteLevelInfoHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeritePowerHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeritePowerHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeritePowerHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeritePowerSetMemberHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeritePowerSetMemberHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeritePowerSetMemberHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeriteTierUnlockHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeriteTierUnlockHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeriteTierUnlockHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeriteTierUnlockSetHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeriteTierUnlockSetHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeriteTierUnlockSetHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeriteUnlockMappingHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeriteUnlockMappingHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeriteUnlockMappingHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BankTabHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BankTabHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BankTabHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BannedAddonsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BannedAddonsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BannedAddonsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BarberShopStyleHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BarberShopStyleHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BarberShopStyleHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BattlemasterListHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlemasterListHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlemasterListHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BattlemasterListXMapHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlemasterListXMapHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlemasterListXMapHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BattlePetAbilityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlePetAbilityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlePetAbilityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BattlePetBreedQualityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlePetBreedQualityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlePetBreedQualityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BattlePetBreedStateHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlePetBreedStateHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlePetBreedStateHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BattlePetSpeciesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlePetSpeciesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlePetSpeciesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BattlePetSpeciesStateHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlePetSpeciesStateHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlePetSpeciesStateHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BroadcastTextHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BroadcastTextHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BroadcastTextHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BroadcastTextDurationHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BroadcastTextDurationHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BroadcastTextDurationHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CfgCategoriesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CfgCategoriesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CfgCategoriesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CfgRegionsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CfgRegionsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CfgRegionsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChallengeModeItemBonusOverrideHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChallengeModeItemBonusOverrideHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChallengeModeItemBonusOverrideHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CharBaseInfoHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CharBaseInfoHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CharBaseInfoHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CharTitlesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CharTitlesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CharTitlesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CharacterLoadoutHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CharacterLoadoutHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CharacterLoadoutHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CharacterLoadoutItemHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CharacterLoadoutItemHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CharacterLoadoutItemHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChatChannelsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChatChannelsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChatChannelsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrClassUiDisplayHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrClassUiDisplayHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrClassUiDisplayHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrClassesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrClassesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrClassesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrClassesXPowerTypesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrClassesXPowerTypesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrClassesXPowerTypesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrCustomizationChoiceHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationChoiceHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrCustomizationChoiceHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrCustomizationDisplayInfoHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationDisplayInfoHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrCustomizationDisplayInfoHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrCustomizationElementHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationElementHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrCustomizationElementHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrCustomizationOptionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationOptionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrCustomizationOptionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrCustomizationReqHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationReqHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrCustomizationReqHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrCustomizationReqChoiceHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationReqChoiceHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrCustomizationReqChoiceHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrModelHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrModelHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrModelHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrRaceXChrModelHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrRaceXChrModelHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrRaceXChrModelHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrRacesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrRacesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrRacesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrSpecializationHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrSpecializationHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrSpecializationHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CinematicCameraHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CinematicCameraHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CinematicCameraHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CinematicSequencesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CinematicSequencesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CinematicSequencesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ConditionalChrModelHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ConditionalChrModelHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ConditionalChrModelHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ConditionalContentTuningHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ConditionalContentTuningHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ConditionalContentTuningHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ContentTuningHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ContentTuningHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ContentTuningHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ContentTuningXExpectedHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ContentTuningXExpectedHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ContentTuningXExpectedHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ContentTuningXLabelHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ContentTuningXLabelHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ContentTuningXLabelHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ConversationLineHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ConversationLineHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ConversationLineHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CorruptionEffectsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CorruptionEffectsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CorruptionEffectsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CraftingQualityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CraftingQualityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CraftingQualityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CreatureDisplayInfoHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureDisplayInfoHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureDisplayInfoHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CreatureDisplayInfoExtraHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureDisplayInfoExtraHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureDisplayInfoExtraHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CreatureFamilyHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureFamilyHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureFamilyHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CreatureLabelHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureLabelHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureLabelHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CreatureModelDataHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureModelDataHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureModelDataHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CreatureTypeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureTypeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureTypeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CriteriaHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CriteriaHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CriteriaHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CriteriaTreeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CriteriaTreeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CriteriaTreeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CurrencyContainerHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CurrencyContainerHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CurrencyContainerHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CurrencyTypesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CurrencyTypesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CurrencyTypesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CurveHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CurveHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CurveHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CurvePointHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CurvePointHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CurvePointHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.DestructibleModelDataHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.DestructibleModelDataHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.DestructibleModelDataHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.DifficultyHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.DifficultyHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.DifficultyHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.DungeonEncounterHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.DungeonEncounterHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.DungeonEncounterHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.DurabilityCostsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.DurabilityCostsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.DurabilityCostsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.DurabilityQualityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.DurabilityQualityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.DurabilityQualityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.EmotesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.EmotesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.EmotesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.EmotesTextHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.EmotesTextHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.EmotesTextHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.EmotesTextSoundHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.EmotesTextSoundHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.EmotesTextSoundHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ExpectedStatHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ExpectedStatHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ExpectedStatHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ExpectedStatModHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ExpectedStatModHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ExpectedStatModHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.FactionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.FactionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.FactionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.FactionTemplateHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.FactionTemplateHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.FactionTemplateHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.FlightCapabilityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.FlightCapabilityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.FlightCapabilityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.FriendshipRepReactionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.FriendshipRepReactionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.FriendshipRepReactionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.FriendshipReputationHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.FriendshipReputationHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.FriendshipReputationHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GameobjectArtKitHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GameobjectArtKitHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GameobjectArtKitHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GameobjectDisplayInfoHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GameobjectDisplayInfoHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GameobjectDisplayInfoHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GameobjectLabelHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GameobjectLabelHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GameobjectLabelHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GameobjectsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GameobjectsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GameobjectsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrAbilityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrAbilityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrAbilityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrBuildingHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrBuildingHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrBuildingHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrBuildingPlotInstHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrBuildingPlotInstHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrBuildingPlotInstHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrClassSpecHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrClassSpecHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrClassSpecHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrFollowerHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrFollowerHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrFollowerHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrFollowerXAbilityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrFollowerXAbilityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrFollowerXAbilityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrMissionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrMissionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrMissionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrPlotHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrPlotHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrPlotHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrPlotBuildingHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrPlotBuildingHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrPlotBuildingHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrPlotInstanceHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrPlotInstanceHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrPlotInstanceHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrSiteLevelHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrSiteLevelHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrSiteLevelHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrSiteLevelPlotInstHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrSiteLevelPlotInstHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrSiteLevelPlotInstHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrTalentTreeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrTalentTreeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrTalentTreeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GemPropertiesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GemPropertiesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GemPropertiesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GlobalCurveHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GlobalCurveHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GlobalCurveHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GlyphBindableSpellHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GlyphBindableSpellHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GlyphBindableSpellHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GlyphPropertiesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GlyphPropertiesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GlyphPropertiesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GlyphRequiredSpecHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GlyphRequiredSpecHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GlyphRequiredSpecHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GossipNPCOptionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GossipNPCOptionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GossipNPCOptionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GuildColorBackgroundHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GuildColorBackgroundHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GuildColorBackgroundHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GuildColorBorderHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GuildColorBorderHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GuildColorBorderHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GuildColorEmblemHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GuildColorEmblemHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GuildColorEmblemHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GuildPerkSpellsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GuildPerkSpellsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GuildPerkSpellsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.HeirloomHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.HeirloomHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.HeirloomHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.HolidaysHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.HolidaysHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.HolidaysHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ImportPriceArmorHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ImportPriceArmorHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ImportPriceArmorHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ImportPriceQualityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ImportPriceQualityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ImportPriceQualityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ImportPriceShieldHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ImportPriceShieldHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ImportPriceShieldHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ImportPriceWeaponHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ImportPriceWeaponHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ImportPriceWeaponHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemAppearanceHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemAppearanceHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemAppearanceHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemArmorQualityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemArmorQualityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemArmorQualityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemArmorShieldHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemArmorShieldHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemArmorShieldHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemArmorTotalHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemArmorTotalHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemArmorTotalHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemBagFamilyHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemBagFamilyHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemBagFamilyHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemBonusHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemBonusHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemBonusHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemBonusListGroupEntryHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemBonusListGroupEntryHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemBonusListGroupEntryHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemBonusListLevelDeltaHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemBonusListLevelDeltaHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemBonusListLevelDeltaHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemBonusTreeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemBonusTreeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemBonusTreeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemBonusTreeNodeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemBonusTreeNodeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemBonusTreeNodeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemChildEquipmentHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemChildEquipmentHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemChildEquipmentHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemClassHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemClassHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemClassHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemContextPickerEntryHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemContextPickerEntryHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemContextPickerEntryHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemCreationContextHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemCreationContextHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemCreationContextHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemCurrencyCostHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemCurrencyCostHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemCurrencyCostHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemDamageAmmoHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemDamageAmmoHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemDamageAmmoHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemDamageOneHandHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemDamageOneHandHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemDamageOneHandHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemDamageOneHandCasterHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemDamageOneHandCasterHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemDamageOneHandCasterHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemDamageTwoHandHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemDamageTwoHandHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemDamageTwoHandHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemDamageTwoHandCasterHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemDamageTwoHandCasterHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemDamageTwoHandCasterHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemDisenchantLootHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemDisenchantLootHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemDisenchantLootHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemEffectHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemEffectHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemEffectHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemExtendedCostHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemExtendedCostHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemExtendedCostHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemLevelSelectorHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemLevelSelectorHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemLevelSelectorHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemLevelSelectorQualityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemLevelSelectorQualityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemLevelSelectorQualityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemLevelSelectorQualitySetHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemLevelSelectorQualitySetHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemLevelSelectorQualitySetHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemLimitCategoryHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemLimitCategoryHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemLimitCategoryHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemLimitCategoryConditionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemLimitCategoryConditionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemLimitCategoryConditionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemModifiedAppearanceHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemModifiedAppearanceHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemModifiedAppearanceHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemModifiedAppearanceExtraHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemModifiedAppearanceExtraHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemModifiedAppearanceExtraHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemOffsetCurveHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemOffsetCurveHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemOffsetCurveHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemNameDescriptionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemNameDescriptionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemNameDescriptionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemPriceBaseHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemPriceBaseHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemPriceBaseHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemScalingConfigHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemScalingConfigHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemScalingConfigHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSearchNameHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSearchNameHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSearchNameHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSetHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSetHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSetHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSetSpellHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSetSpellHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSetSpellHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSparseHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSparseHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSparseHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSpecHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSpecHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSpecHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSpecOverrideHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSpecOverrideHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSpecOverrideHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSquishEraHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSquishEraHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSquishEraHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemXBonusTreeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemXBonusTreeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemXBonusTreeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemXItemEffectHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemXItemEffectHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemXItemEffectHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.JournalEncounterHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.JournalEncounterHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.JournalEncounterHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.JournalEncounterSectionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.JournalEncounterSectionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.JournalEncounterSectionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.JournalInstanceHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.JournalInstanceHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.JournalInstanceHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.JournalTierHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.JournalTierHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.JournalTierHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.KeychainHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.KeychainHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.KeychainHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.KeystoneAffixHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.KeystoneAffixHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.KeystoneAffixHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.LanguageWordsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.LanguageWordsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.LanguageWordsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.LanguagesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.LanguagesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.LanguagesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.LfgDungeonsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.LfgDungeonsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.LfgDungeonsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.LightHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.LightHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.LightHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.LiquidTypeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.LiquidTypeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.LiquidTypeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.LocationHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.LocationHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.LocationHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.LockHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.LockHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.LockHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MailTemplateHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MailTemplateHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MailTemplateHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MapHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MapChallengeModeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapChallengeModeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapChallengeModeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MapDifficultyHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapDifficultyHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapDifficultyHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MapDifficultyXConditionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapDifficultyXConditionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapDifficultyXConditionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MawPowerHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MawPowerHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MawPowerHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ModifiedCraftingItemHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ModifiedCraftingItemHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ModifiedCraftingItemHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ModifierTreeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ModifierTreeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ModifierTreeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MountHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MountHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MountHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MountCapabilityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MountCapabilityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MountCapabilityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MountEquipmentHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MountEquipmentHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MountEquipmentHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MountTypeXCapabilityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MountTypeXCapabilityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MountTypeXCapabilityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MountXDisplayHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MountXDisplayHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MountXDisplayHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MovieHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MovieHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MovieHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MythicPlusSeasonHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MythicPlusSeasonHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MythicPlusSeasonHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.NameGenHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.NameGenHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.NameGenHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.NamesProfanityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.NamesProfanityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.NamesProfanityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.NamesReservedHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.NamesReservedHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.NamesReservedHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.NamesReservedLocaleHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.NamesReservedLocaleHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.NamesReservedLocaleHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.NumTalentsAtLevelHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.NumTalentsAtLevelHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.NumTalentsAtLevelHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.OverrideSpellDataHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.OverrideSpellDataHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.OverrideSpellDataHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ParagonReputationHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ParagonReputationHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ParagonReputationHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PathHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PathHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PathHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PathNodeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PathNodeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PathNodeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PathPropertyHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PathPropertyHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PathPropertyHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PerksActivityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PerksActivityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PerksActivityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PhaseHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PhaseHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PhaseHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PhaseXPhaseGroupHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PhaseXPhaseGroupHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PhaseXPhaseGroupHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PlayerConditionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerConditionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerConditionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PlayerDataElementAccountHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerDataElementAccountHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerDataElementAccountHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PlayerDataElementCharacterHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerDataElementCharacterHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerDataElementCharacterHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PlayerDataFlagAccountHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerDataFlagAccountHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerDataFlagAccountHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PlayerDataFlagCharacterHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerDataFlagCharacterHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerDataFlagCharacterHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PowerDisplayHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PowerDisplayHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PowerDisplayHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PowerTypeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PowerTypeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PowerTypeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PrestigeLevelInfoHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PrestigeLevelInfoHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PrestigeLevelInfoHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PvpDifficultyHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PvpDifficultyHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PvpDifficultyHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PvpSeasonHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PvpSeasonHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PvpSeasonHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PvpStatHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PvpStatHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PvpStatHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PvpTalentHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PvpTalentHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PvpTalentHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PvpTalentCategoryHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PvpTalentCategoryHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PvpTalentCategoryHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PvpTalentSlotUnlockHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PvpTalentSlotUnlockHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PvpTalentSlotUnlockHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PvpTierHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PvpTierHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PvpTierHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.QuestFactionRewardHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.QuestFactionRewardHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.QuestFactionRewardHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.QuestInfoHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.QuestInfoHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.QuestInfoHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.QuestLineXQuestHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.QuestLineXQuestHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.QuestLineXQuestHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.QuestMoneyRewardHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.QuestMoneyRewardHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.QuestMoneyRewardHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.QuestPackageItemHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.QuestPackageItemHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.QuestPackageItemHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.QuestSortHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.QuestSortHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.QuestSortHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.QuestV2Hotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.QuestV2Hotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.QuestV2Hotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.QuestXpHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.QuestXpHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.QuestXpHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.RandPropPointsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.RandPropPointsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.RandPropPointsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.RewardPackHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.RewardPackHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.RewardPackHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.RewardPackXCurrencyTypeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.RewardPackXCurrencyTypeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.RewardPackXCurrencyTypeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.RewardPackXItemHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.RewardPackXItemHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.RewardPackXItemHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ScenarioHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ScenarioHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ScenarioHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ScenarioStepHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ScenarioStepHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ScenarioStepHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SceneScriptHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SceneScriptHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SceneScriptHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SceneScriptGlobalTextHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SceneScriptGlobalTextHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SceneScriptGlobalTextHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SceneScriptPackageHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SceneScriptPackageHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SceneScriptPackageHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SceneScriptTextHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SceneScriptTextHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SceneScriptTextHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ServerMessagesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ServerMessagesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ServerMessagesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SkillLineHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SkillLineHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SkillLineHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SkillLineAbilityHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SkillLineAbilityHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SkillLineAbilityHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SkillLineXTraitTreeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SkillLineXTraitTreeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SkillLineXTraitTreeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SkillRaceClassInfoHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SkillRaceClassInfoHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SkillRaceClassInfoHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SoulbindConduitRankHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SoulbindConduitRankHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SoulbindConduitRankHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SoundKitHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SoundKitHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SoundKitHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpecializationSpellsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpecializationSpellsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpecializationSpellsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpecSetMemberHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpecSetMemberHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpecSetMemberHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellAuraOptionsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellAuraOptionsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellAuraOptionsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellAuraRestrictionsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellAuraRestrictionsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellAuraRestrictionsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellCastTimesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellCastTimesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellCastTimesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellCastingRequirementsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellCastingRequirementsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellCastingRequirementsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellCategoriesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellCategoriesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellCategoriesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellCategoryHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellCategoryHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellCategoryHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellClassOptionsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellClassOptionsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellClassOptionsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellCooldownsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellCooldownsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellCooldownsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellDurationHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellDurationHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellDurationHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellEffectHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellEffectHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellEffectHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellEmpowerHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellEmpowerHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellEmpowerHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellEmpowerStageHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellEmpowerStageHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellEmpowerStageHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellEquippedItemsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellEquippedItemsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellEquippedItemsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellFocusObjectHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellFocusObjectHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellFocusObjectHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellInterruptsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellInterruptsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellInterruptsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellItemEnchantmentHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellItemEnchantmentHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellItemEnchantmentHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellKeyboundOverrideHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellKeyboundOverrideHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellKeyboundOverrideHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellItemEnchantmentConditionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellItemEnchantmentConditionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellItemEnchantmentConditionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellLabelHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellLabelHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellLabelHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellLearnSpellHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellLearnSpellHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellLearnSpellHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellLevelsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellLevelsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellLevelsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellMiscHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellMiscHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellMiscHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellNameHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellNameHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellNameHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellPowerHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellPowerHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellPowerHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellPowerDifficultyHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellPowerDifficultyHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellPowerDifficultyHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellProcsPerMinuteHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellProcsPerMinuteHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellProcsPerMinuteHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellProcsPerMinuteModHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellProcsPerMinuteModHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellProcsPerMinuteModHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellRadiusHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellRadiusHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellRadiusHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellRangeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellRangeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellRangeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellReagentsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellReagentsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellReagentsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellReagentsCurrencyHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellReagentsCurrencyHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellReagentsCurrencyHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellScalingHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellScalingHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellScalingHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellShapeshiftHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellShapeshiftHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellShapeshiftHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellShapeshiftFormHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellShapeshiftFormHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellShapeshiftFormHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellTargetRestrictionsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellTargetRestrictionsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellTargetRestrictionsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellTotemsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellTotemsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellTotemsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellVisualHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellVisualHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellVisualHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellVisualEffectNameHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellVisualEffectNameHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellVisualEffectNameHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellVisualMissileHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellVisualMissileHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellVisualMissileHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellVisualKitHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellVisualKitHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellVisualKitHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellXSpellVisualHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellXSpellVisualHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellXSpellVisualHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SummonPropertiesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SummonPropertiesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SummonPropertiesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TactKeyHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TactKeyHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TactKeyHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TalentHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TalentHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TalentHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TaxiNodesHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TaxiNodesHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TaxiNodesHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TaxiPathHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TaxiPathHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TaxiPathHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TaxiPathNodeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TaxiPathNodeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TaxiPathNodeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TotemCategoryHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TotemCategoryHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TotemCategoryHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ToyHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ToyHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ToyHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TransmogHolidayHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TransmogHolidayHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TransmogHolidayHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitCondHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitCondHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitCondHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitCondAccountElementHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitCondAccountElementHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitCondAccountElementHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitCostHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitCostHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitCostHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitCurrencyHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitCurrencyHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitCurrencyHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitCurrencySourceHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitCurrencySourceHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitCurrencySourceHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitDefinitionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitDefinitionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitDefinitionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitDefinitionEffectPointsHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitDefinitionEffectPointsHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitDefinitionEffectPointsHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitEdgeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitEdgeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitEdgeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitNodeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitNodeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitNodeEntryHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeEntryHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitNodeEntryHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitNodeEntryXTraitCondHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeEntryXTraitCondHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitNodeEntryXTraitCondHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitNodeEntryXTraitCostHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeEntryXTraitCostHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitNodeEntryXTraitCostHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitNodeGroupHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeGroupHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitNodeGroupHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitNodeGroupXTraitCondHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeGroupXTraitCondHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitNodeGroupXTraitCondHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitNodeGroupXTraitCostHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeGroupXTraitCostHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitNodeGroupXTraitCostHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitNodeGroupXTraitNodeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeGroupXTraitNodeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitNodeGroupXTraitNodeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitNodeXTraitCondHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeXTraitCondHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitNodeXTraitCondHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitNodeXTraitCostHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeXTraitCostHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitNodeXTraitCostHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitNodeXTraitNodeEntryHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitNodeXTraitNodeEntryHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitNodeXTraitNodeEntryHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitSubTreeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitSubTreeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitSubTreeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitSystemHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitSystemHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitSystemHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitTreeHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitTreeHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitTreeHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitTreeLoadoutHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitTreeLoadoutHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitTreeLoadoutHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitTreeLoadoutEntryHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitTreeLoadoutEntryHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitTreeLoadoutEntryHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitTreeXTraitCostHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitTreeXTraitCostHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitTreeXTraitCostHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitTreeXTraitCurrencyHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitTreeXTraitCurrencyHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitTreeXTraitCurrencyHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TransmogIllusionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TransmogIllusionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TransmogIllusionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TransmogSetHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TransmogSetHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TransmogSetHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TransmogSetGroupHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TransmogSetGroupHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TransmogSetGroupHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TransmogSetItemHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TransmogSetItemHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TransmogSetItemHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TransportAnimationHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TransportAnimationHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TransportAnimationHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TransportRotationHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TransportRotationHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TransportRotationHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.UiMapHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UiMapHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UiMapHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.UiMapAssignmentHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UiMapAssignmentHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UiMapAssignmentHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.UiMapLinkHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UiMapLinkHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UiMapLinkHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.UiMapXMapArtHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UiMapXMapArtHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UiMapXMapArtHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.UiSplashScreenHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UiSplashScreenHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UiSplashScreenHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.UnitConditionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UnitConditionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UnitConditionHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.UnitPowerBarHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UnitPowerBarHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UnitPowerBarHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.VehicleHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.VehicleHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.VehicleHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.VehicleSeatHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.VehicleSeatHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.VehicleSeatHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.VignetteHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.VignetteHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.VignetteHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.WarbandSceneHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.WarbandSceneHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.WarbandSceneHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.WmoAreaTableHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.WmoAreaTableHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.WmoAreaTableHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.WorldEffectHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.WorldEffectHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.WorldEffectHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.WorldMapOverlayHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.WorldMapOverlayHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.WorldMapOverlayHotfixes1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.WorldStateExpressionHotfixes1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.WorldStateExpressionHotfixes1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.WorldStateExpressionHotfixes1200, hotfixes, StoreNameType.None);
                     }
 
                     // WotLK Classic Hotfix Builder
@@ -8382,7 +11162,7 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.WorldStateExpressionHotfixes340, hotfixes, StoreNameType.None);
                     }
 
-                    // Cata Classic HotfixBuilder
+                    // Cata Classic Hotfix Builder
                     if (!Storage.AchievementHotfixes440.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.AchievementHotfixes440, Settings.HotfixesDatabase);
@@ -11377,6 +14157,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.AreaTableHotfixesLocale1100, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.AreaTableHotfixesLocale1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AreaTableHotfixesLocale1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AreaTableHotfixesLocale1125, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.ArtifactHotfixesLocale1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.ArtifactHotfixesLocale1100, Settings.HotfixesDatabase);
@@ -11473,6 +14260,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.BroadcastTextHotfixesLocale1107, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.BroadcastTextHotfixesLocale1107, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BroadcastTextHotfixesLocale1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BroadcastTextHotfixesLocale1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BroadcastTextHotfixesLocale1125, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.CharTitlesHotfixesLocale1100.IsEmpty())
@@ -11585,6 +14379,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.ChrSpecializationHotfixesLocale1100, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.ChrSpecializationHotfixesLocale1100, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrSpecializationHotfixesLocale1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrSpecializationHotfixesLocale1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrSpecializationHotfixesLocale1125, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.CreatureFamilyHotfixesLocale1100.IsEmpty())
@@ -11839,6 +14640,20 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.ItemSparseHotfixesLocale1110, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.ItemSparseHotfixesLocale1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSparseHotfixesLocale1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSparseHotfixesLocale1125, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSparseHotfixesLocale1127.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSparseHotfixesLocale1127, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSparseHotfixesLocale1127, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.JournalEncounterHotfixesLocale1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.JournalEncounterHotfixesLocale1100, Settings.HotfixesDatabase);
@@ -11937,6 +14752,13 @@ namespace WowPacketParser.SQL.Builders
                         sql += SQLUtil.Compare(Storage.MapChallengeModeHotfixesLocale1120, hotfixes, StoreNameType.None);
                     }
 
+                    if (!Storage.MapChallengeModeHotfixesLocale1127.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapChallengeModeHotfixesLocale1127, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapChallengeModeHotfixesLocale1127, hotfixes, StoreNameType.None);
+                    }
+
                     if (!Storage.MapDifficultyHotfixesLocale1100.IsEmpty())
                     {
                         var hotfixes = SQLDatabase.Get(Storage.MapDifficultyHotfixesLocale1100, Settings.HotfixesDatabase);
@@ -12005,6 +14827,13 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.PlayerConditionHotfixesLocale1117, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.PlayerConditionHotfixesLocale1117, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PlayerConditionHotfixesLocale1125.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerConditionHotfixesLocale1125, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerConditionHotfixesLocale1125, hotfixes, StoreNameType.None);
                     }
 
                     if (!Storage.PrestigeLevelInfoHotfixesLocale1100.IsEmpty())
@@ -12327,6 +15156,686 @@ namespace WowPacketParser.SQL.Builders
                         var hotfixes = SQLDatabase.Get(Storage.WmoAreaTableHotfixesLocale1117, Settings.HotfixesDatabase);
 
                         sql += SQLUtil.Compare(Storage.WmoAreaTableHotfixesLocale1117, hotfixes, StoreNameType.None);
+                    }
+
+                    // Midnight Hotfix Builder
+                    if (!Storage.AchievementHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AchievementHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AchievementHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AchievementCategoryHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AchievementCategoryHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AchievementCategoryHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AdventureJournalHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AdventureJournalHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AdventureJournalHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AdventureMapPoiHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AdventureMapPoiHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AdventureMapPoiHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AreaTableHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AreaTableHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AreaTableHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactAppearanceHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactAppearanceHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactAppearanceHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ArtifactAppearanceSetHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ArtifactAppearanceSetHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ArtifactAppearanceSetHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AuctionHouseHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AuctionHouseHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AuctionHouseHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeriteEssenceHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeriteEssenceHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeriteEssenceHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.AzeriteEssencePowerHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.AzeriteEssencePowerHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.AzeriteEssencePowerHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BarberShopStyleHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BarberShopStyleHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BarberShopStyleHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BattlemasterListHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlemasterListHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlemasterListHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BattlePetAbilityHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlePetAbilityHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlePetAbilityHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BattlePetSpeciesHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BattlePetSpeciesHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BattlePetSpeciesHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.BroadcastTextHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.BroadcastTextHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.BroadcastTextHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CharTitlesHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CharTitlesHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CharTitlesHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChatChannelsHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChatChannelsHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChatChannelsHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrClassesHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrClassesHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrClassesHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrCustomizationChoiceHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationChoiceHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrCustomizationChoiceHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrCustomizationOptionHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationOptionHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrCustomizationOptionHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrCustomizationReqHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrCustomizationReqHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrCustomizationReqHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrRacesHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrRacesHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrRacesHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ChrSpecializationHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ChrSpecializationHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ChrSpecializationHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CreatureFamilyHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureFamilyHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureFamilyHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CreatureTypeHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CreatureTypeHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CreatureTypeHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CriteriaTreeHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CriteriaTreeHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CriteriaTreeHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CurrencyContainerHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CurrencyContainerHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CurrencyContainerHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.CurrencyTypesHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.CurrencyTypesHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.CurrencyTypesHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.DifficultyHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.DifficultyHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.DifficultyHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.DungeonEncounterHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.DungeonEncounterHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.DungeonEncounterHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.FactionHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.FactionHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.FactionHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.FriendshipRepReactionHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.FriendshipRepReactionHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.FriendshipRepReactionHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.FriendshipReputationHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.FriendshipReputationHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.FriendshipReputationHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GameobjectsHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GameobjectsHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GameobjectsHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrAbilityHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrAbilityHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrAbilityHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrBuildingHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrBuildingHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrBuildingHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrClassSpecHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrClassSpecHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrClassSpecHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrFollowerHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrFollowerHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrFollowerHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrMissionHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrMissionHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrMissionHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.GarrTalentTreeHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.GarrTalentTreeHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.GarrTalentTreeHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.HeirloomHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.HeirloomHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.HeirloomHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemBagFamilyHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemBagFamilyHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemBagFamilyHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemClassHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemClassHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemClassHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemLimitCategoryHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemLimitCategoryHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemLimitCategoryHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemNameDescriptionHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemNameDescriptionHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemNameDescriptionHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSearchNameHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSearchNameHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSearchNameHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSetHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSetHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSetHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ItemSparseHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ItemSparseHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ItemSparseHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.JournalEncounterHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.JournalEncounterHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.JournalEncounterHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.JournalEncounterSectionHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.JournalEncounterSectionHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.JournalEncounterSectionHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.JournalInstanceHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.JournalInstanceHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.JournalInstanceHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.JournalTierHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.JournalTierHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.JournalTierHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.KeystoneAffixHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.KeystoneAffixHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.KeystoneAffixHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.LanguagesHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.LanguagesHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.LanguagesHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.LfgDungeonsHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.LfgDungeonsHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.LfgDungeonsHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MailTemplateHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MailTemplateHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MailTemplateHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MapHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MapChallengeModeHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapChallengeModeHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapChallengeModeHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MapDifficultyHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapDifficultyHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapDifficultyHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MapDifficultyXConditionHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MapDifficultyXConditionHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MapDifficultyXConditionHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.MountHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.MountHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.MountHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PerksActivityHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PerksActivityHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PerksActivityHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PlayerConditionHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PlayerConditionHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PlayerConditionHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PrestigeLevelInfoHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PrestigeLevelInfoHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PrestigeLevelInfoHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PvpStatHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PvpStatHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PvpStatHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PvpTalentHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PvpTalentHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PvpTalentHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.PvpTierHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.PvpTierHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.PvpTierHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.QuestInfoHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.QuestInfoHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.QuestInfoHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.QuestSortHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.QuestSortHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.QuestSortHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ScenarioHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ScenarioHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ScenarioHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ScenarioStepHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ScenarioStepHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ScenarioStepHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ServerMessagesHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ServerMessagesHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ServerMessagesHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SkillLineHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SkillLineHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SkillLineHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SkillLineAbilityHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SkillLineAbilityHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SkillLineAbilityHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpecializationSpellsHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpecializationSpellsHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpecializationSpellsHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellCategoryHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellCategoryHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellCategoryHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellFocusObjectHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellFocusObjectHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellFocusObjectHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellItemEnchantmentHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellItemEnchantmentHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellItemEnchantmentHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellNameHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellNameHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellNameHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellRangeHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellRangeHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellRangeHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.SpellShapeshiftFormHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.SpellShapeshiftFormHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.SpellShapeshiftFormHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TalentHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TalentHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TalentHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TaxiNodesHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TaxiNodesHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TaxiNodesHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TotemCategoryHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TotemCategoryHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TotemCategoryHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.ToyHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.ToyHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.ToyHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitCurrencySourceHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitCurrencySourceHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitCurrencySourceHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitDefinitionHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitDefinitionHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitDefinitionHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TraitSubTreeHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TraitSubTreeHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TraitSubTreeHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TransmogSetHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TransmogSetHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TransmogSetHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.TransmogSetGroupHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.TransmogSetGroupHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.TransmogSetGroupHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.UiMapHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UiMapHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UiMapHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.UiSplashScreenHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UiSplashScreenHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UiSplashScreenHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.UnitPowerBarHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.UnitPowerBarHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.UnitPowerBarHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.VignetteHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.VignetteHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.VignetteHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.WarbandSceneHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.WarbandSceneHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.WarbandSceneHotfixesLocale1200, hotfixes, StoreNameType.None);
+                    }
+
+                    if (!Storage.WmoAreaTableHotfixesLocale1200.IsEmpty())
+                    {
+                        var hotfixes = SQLDatabase.Get(Storage.WmoAreaTableHotfixesLocale1200, Settings.HotfixesDatabase);
+
+                        sql += SQLUtil.Compare(Storage.WmoAreaTableHotfixesLocale1200, hotfixes, StoreNameType.None);
                     }
 
                     // Wotlk Classic Hotfix Builder

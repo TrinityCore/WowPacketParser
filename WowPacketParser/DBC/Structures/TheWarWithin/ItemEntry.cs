@@ -7,16 +7,17 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
     {
         [Index(true)]
         public uint ID;
-        public byte ClassID;
+        public int ClassID;
         public byte SubclassID;
         public byte Material;
         public sbyte InventoryType;
         public byte SheatheType;
         public sbyte SoundOverrideSubclassID;
         public int IconFileDataID;
-        public byte ItemGroupSoundsID;
+        public uint ItemGroupSoundsID;
         public int ContentTuningID;
         public int ModifiedCraftingReagentItemID;
         public int CraftingQualityID;
+        public int ItemSquishEraID;
     }
 }

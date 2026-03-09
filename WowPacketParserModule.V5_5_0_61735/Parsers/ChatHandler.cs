@@ -296,5 +296,29 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             if (channelNameLen > 1)
                 packet.ReadDynamicString("ChannelName", channelNameLen);
         }
+
+        [Parser(Opcode.CMSG_SEND_TEXT_EMOTE)]
+        public static void HandleSendTextEmote(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+            packet.ReadInt32E<EmoteTextType>("EmoteID");
+            packet.ReadInt32("SoundIndex");
+            var count = packet.ReadUInt32("SpellVisualKitCount");
+            packet.ReadInt32("SequenceVariation");
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("SpellVisualKitID", i);
+        }
+
+        [Parser(Opcode.CMSG_UPDATE_AADC_STATUS)]
+        public static void HandleUpdateAADCStatus(Packet packet)
+        {
+            packet.ReadBit("ChatDisabled");
+        }
+
+        [Parser(Opcode.CMSG_EMOTE)]
+        public static void HandleChatNull(Packet packet)
+        {
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public int LanguageID;
         public int ConditionID;
         public ushort EmotesID;
-        public ushort Flags;
+        public int Flags;
         public uint ChatBubbleDurationMs;
         public int VoiceOverPriorityID;
         [Cardinality(2)]

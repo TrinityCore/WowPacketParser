@@ -958,6 +958,185 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadInt32("TimerType");
         }
 
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_SWITCH_SEAT)]
+        public static void HandleRequestVehicleSwitchSeat(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vehicle");
+            packet.ReadByte("SeatIndex");
+        }
+
+        [Parser(Opcode.CMSG_RIDE_VEHICLE_INTERACT)]
+        public static void HandleRideVehicleInteract(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vehicle");
+        }
+
+        [Parser(Opcode.CMSG_EJECT_PASSENGER)]
+        public static void HandleEjectPassenger(Packet packet)
+        {
+            packet.ReadPackedGuid128("Passenger");
+        }
+
+        [Parser(Opcode.CMSG_MOUNT_SPECIAL_ANIM)]
+        public static void HandleMountSpecialAnim(Packet packet)
+        {
+            var count = packet.ReadUInt32();
+            packet.ReadInt32("SequenceVariation");
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("SpellVisualKitID", i);
+        }
+
+        [Parser(Opcode.CMSG_FAR_SIGHT)]
+        public static void HandleFarSight(Packet packet)
+        {
+            packet.ReadBit("Apply");
+        }
+
+        [Parser(Opcode.CMSG_LOW_LEVEL_RAID2)]
+        [Parser(Opcode.CMSG_LOW_LEVEL_RAID1)]
+        public static void HandleLowLevelRaidPackets(Packet packet)
+        {
+            packet.ReadBool("Allow");
+        }
+
+        [Parser(Opcode.CMSG_OVERRIDE_SCREEN_FLASH)]
+        public static void HandleOverrideScreenFlash(Packet packet)
+        {
+            packet.ReadBit("CVar overrideScreenFlash");
+        }
+
+        [Parser(Opcode.CMSG_REPOP_REQUEST)]
+        public static void HandleRepopRequest(Packet packet)
+        {
+            packet.ReadBool("Accept");
+        }
+
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        public static void HandleSetSelection(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY)]
+        public static void HandleClientEnterWorld(Packet packet)
+        {
+            var mapId = packet.ReadInt32<MapId>("MapID");
+            packet.ReadBit("Showing");
+
+            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
+        }
+
+        [Parser(Opcode.CMSG_COLLECTION_ITEM_SET_FAVORITE)]
+        public static void HandleCollectionItemSetFavorite(Packet packet)
+        {
+            packet.ReadInt32E<CollectionType>("CollectionType");
+            packet.ReadUInt32("ID");
+            packet.ResetBitReader();
+            packet.ReadBit("IsFavorite");
+        }
+
+        [Parser(Opcode.CMSG_RANDOM_ROLL)]
+        public static void HandleRandomRoll(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            packet.ReadInt32("Min");
+            packet.ReadInt32("Max");
+
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_WHO_IS)]
+        public static void HandleWhoIsRequest(Packet packet)
+        {
+            var len = packet.ReadBits(6);
+            packet.ReadWoWString("CharName", len);
+        }
+
+        [Parser(Opcode.CMSG_WHO)]
+        public static void HandleWhoRequest(Packet packet)
+        {
+            var areaCount = packet.ReadBits(4);
+            packet.ReadBit("IsFromAddon");
+
+            packet.ReadInt32("MinLevel");
+            packet.ReadInt32("MaxLevel");
+            packet.ReadInt64("RaceFilter");
+            packet.ReadInt32("ClassFilter");
+
+            packet.ResetBitReader();
+
+            var nameLen = packet.ReadBits(6);
+            var virtualRealmNameLen = packet.ReadBits(9);
+            var guildLen = packet.ReadBits(7);
+            var guildVirtualRealmNameLen = packet.ReadBits(9);
+            var wordCount = packet.ReadBits(3);
+
+            packet.ReadBit("ShowEnemies");
+            packet.ReadBit("ShowArenaPlayers");
+            packet.ReadBit("ExactName");
+            var hasServerInfo = packet.ReadBit("HasServerInfo");
+            packet.ResetBitReader();
+
+            for (var i = 0; i < wordCount; ++i)
+            {
+                var bits0 = packet.ReadBits(7);
+                packet.ReadWoWString("Word", bits0, i);
+                packet.ResetBitReader();
+            }
+
+            packet.ReadWoWString("Name", nameLen);
+            packet.ReadWoWString("VirtualRealmName", virtualRealmNameLen);
+            packet.ReadWoWString("Guild", guildLen);
+            packet.ReadWoWString("GuildVirtualRealmName", guildVirtualRealmNameLen);
+
+            // WhoRequestServerInfo
+            if (hasServerInfo)
+            {
+                packet.ReadByte("FactionGroup");
+                packet.ReadInt32("Locale");
+                packet.ReadUInt32("RequesterVirtualRealmAddress");
+            }
+
+            packet.ReadUInt32("RequestID");
+            packet.ReadByteE<WhoRequestOrigin>("Origin");
+
+            for (var i = 0; i < areaCount; ++i)
+                packet.ReadUInt32<AreaId>("Area", i);
+        }
+
+        [Parser(Opcode.CMSG_RESURRECT_RESPONSE)]
+        public static void HandleResurrectResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("Resurrecter");
+            packet.ReadUInt32("Response");
+        }
+
+        [Parser(Opcode.CMSG_TUTORIAL)]
+        public static void HandleTutorial(Packet packet)
+        {
+            var action = packet.ReadBitsE<TutorialAction>("TutorialAction", 2);
+
+            if (action == TutorialAction.Update)
+                packet.ReadInt32E<Tutorial>("TutorialBit");
+        }
+
+        [Parser(Opcode.CMSG_PING)]
+        public static void HandleClientPing(Packet packet)
+        {
+            packet.ReadInt32("Serial");
+            packet.ReadInt32("Latency");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_PLAYER_NAME_BY_COMMUNITY_ID)]
+        public static void HandleQueryPlayerNameByCommunityID(Packet packet)
+        {
+            packet.ReadPackedGuid128("BNetAccountGUID");
+            packet.ReadUInt64("CommunityDbID");
+        }
+
         [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
@@ -967,6 +1146,22 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         [Parser(Opcode.CMSG_USED_FOLLOW)]
         [Parser(Opcode.CMSG_GAME_EVENT_DEBUG_ENABLE)]
         [Parser(Opcode.CMSG_GAME_EVENT_DEBUG_DISABLE)]
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_EXIT)]
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_PREV_SEAT)]
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_NEXT_SEAT)]
+        [Parser(Opcode.CMSG_REQUEST_AREA_POI_UPDATE)]
+        [Parser(Opcode.CMSG_REPORT_SERVER_LAG)]
+        [Parser(Opcode.CMSG_SEAMLESS_TRANSFER_COMPLETE)]
+        [Parser(Opcode.CMSG_QUERY_TIME)]
+        [Parser(Opcode.CMSG_COMPLETE_MOVIE)]
+        [Parser(Opcode.CMSG_CLIENT_PORT_GRAVEYARD)]
+        [Parser(Opcode.CMSG_OPENING_CINEMATIC)]
+        [Parser(Opcode.CMSG_NEXT_CINEMATIC_CAMERA)]
+        [Parser(Opcode.CMSG_COMPLETE_CINEMATIC)]
+        [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
+        [Parser(Opcode.CMSG_SOCIAL_CONTRACT_REQUEST)]
+        [Parser(Opcode.CMSG_ACCEPT_SOCIAL_CONTRACT)]
+        [Parser(Opcode.CMSG_ENABLE_NAGLE)]
         public static void HandleMiscZero(Packet packet)
         {
         }

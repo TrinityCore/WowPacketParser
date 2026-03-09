@@ -46,6 +46,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 CharacterHandler.ReadChrCustomizationChoice(packet, indexes, "Unknown_1107_4", i);
         }
 
+        public static void ReadClientSettings(Packet packet, params object[] idx)
+        {
+            packet.ReadSingle("FarClip", idx);
+        }
+
         [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
         public static void HandleRealmQueryResponse(Packet packet)
         {
@@ -190,7 +195,99 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadBytes("SessionKey", sessionKeyLength);
         }
 
+        [Parser(Opcode.CMSG_LOGOUT_REQUEST)]
+        public static void HandleLogoutRequest(Packet packet)
+        {
+            packet.ReadBit("IdleLogout");
+        }
+
+        [Parser(Opcode.CMSG_CONNECT_TO_FAILED)]
+        public static void HandleRedirectFailed(Packet packet)
+        {
+            packet.ReadSByte("Con");
+            packet.ReadUInt32("Serial");
+        }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN)]
+        public static void HandlePlayerLogin(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("Guid");
+            packet.ReadSingle("FarClip");
+            packet.Holder.PlayerLogin = new() { PlayerGuid = guid };
+            WowPacketParser.Parsing.Parsers.SessionHandler.LoginGuid = guid;
+        }
+
+        [Parser(Opcode.CMSG_UPDATE_CLIENT_SETTINGS)]
+        public static void HandleUpdateClientSettings(Packet packet)
+        {
+            ReadClientSettings(packet, "ClientSettings");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_REALM_NAME)]
+        public static void HandleRealmQuery(Packet packet)
+        {
+            packet.ReadInt32("VirtualRealmAddress");
+        }
+
+        [Parser(Opcode.CMSG_BATTLENET_CHALLENGE_RESPONSE)]
+        public static void HandleBattlenetChallengeResponse(Packet packet)
+        {
+            packet.ReadUInt32("Token");
+            var result = packet.ReadBits(3);
+            if (result == 5)
+            {
+                var bits24 = packet.ReadBits(6);
+                packet.ReadWoWString("BattlenetError", bits24);
+            }
+        }
+
+        [Parser(Opcode.CMSG_CHANGE_REALM_TICKET)]
+        public static void HandleChangeRealmTicket(Packet packet)
+        {
+            packet.ReadUInt32("Token");
+            packet.ReadBytes("Secret", 32);
+        }
+
+        [Parser(Opcode.CMSG_SUSPEND_COMMS_ACK)]
+        public static void HandleSuspendCommsAck(Packet packet)
+        {
+            packet.ReadInt32("Serial");
+            packet.ReadInt32("Timestamp");
+        }
+
+        [Parser(Opcode.CMSG_LOG_DISCONNECT)]
+        public static void HandleLogDisconnect(Packet packet)
+        {
+            packet.ReadUInt32("Reason");
+            // 4 is inability for client to decrypt RSA
+            // 3 is not receiving "WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"
+            // 11 is sent on receiving opcode 0x140 with some specific data
+        }
+
+        [Parser(Opcode.CMSG_SUSPEND_TOKEN_RESPONSE)]
+        public static void HandleSuspendToken(Packet packet)
+        {
+            packet.ReadUInt32("Sequence");
+        }
+
+        [Parser(Opcode.CMSG_QUEUED_MESSAGES_END)]
+        public static void HandleQueuedMessagesEnd(Packet packet)
+        {
+            packet.ReadInt32("Timestamp");
+        }
+
+        [Parser(Opcode.CMSG_LOG_STREAMING_ERROR)]
+        public static void HandleRouterClientLogStreamingError(Packet packet)
+        {
+            var bits16 = packet.ReadBits(9);
+            packet.ReadWoWString("Error", bits16);
+        }
+
         [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH)]
+        [Parser(Opcode.CMSG_LOGOUT_CANCEL)]
+        [Parser(Opcode.CMSG_LOGOUT_INSTANT)]
+        [Parser(Opcode.CMSG_KEEP_ALIVE)]
+        [Parser(Opcode.CMSG_ENTER_ENCRYPTED_MODE_ACK)]
         public static void HandleSessionZero(Packet packet)
         {
         }

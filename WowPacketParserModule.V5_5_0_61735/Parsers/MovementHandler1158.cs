@@ -44,8 +44,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadUInt32("TransportID", idx);
             packet.ReadSingle("Magnitude", idx);
             packet.ReadInt32("MovementForceID", idx);
-            packet.ReadInt32("Unknown1110_1", idx);
-            packet.ReadInt32("Unknown1110_2", idx);
+            packet.ReadInt32("DurationMs", idx);
+            packet.ReadUInt32("EndTimestamp", idx);
             packet.ReadUInt32("Flags", idx);
 
             packet.ResetBitReader();

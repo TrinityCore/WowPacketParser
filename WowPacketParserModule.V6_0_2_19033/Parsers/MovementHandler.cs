@@ -41,8 +41,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
             {
-                packet.ReadInt32("Unknown1110_1", idx);
-                packet.ReadInt32("Unknown1110_2", idx);
+                packet.ReadInt32("DurationMs", idx);
+                packet.ReadUInt32("EndTimestamp", idx);
                 packet.ReadUInt32("Flags", idx);
             }
 

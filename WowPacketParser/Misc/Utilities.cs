@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -32,17 +31,6 @@ namespace WowPacketParser.Misc
         public static long GetUnixTimeFromDateTime(DateTime time)
         {
             return ((DateTimeOffset)DateTime.SpecifyKind(time, DateTimeKind.Utc)).ToUnixTimeSeconds();
-        }
-
-        public static byte[] HexStringToBinary(string data)
-        {
-            var bytes = new List<byte>();
-            byte result;
-            for (var i = 0; i < data.Length; i += 2)
-                if (Byte.TryParse(data.Substring(i, 2), NumberStyles.HexNumber, null, out result))
-                    bytes.Add(result);
-
-            return bytes.ToArray();
         }
 
         public static string ByteArrayToHexTable(byte[] data, bool sh0rt = false, int offset = 0, bool noOffsetFirstLine = true)

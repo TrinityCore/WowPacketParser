@@ -10,7 +10,7 @@ namespace WowPacketParser.Loading
 {
     public sealed class BinaryPacketReader : IPacketReader
     {
-        enum PktVersion
+        public enum PktVersion
         {
             NoHeader = 0,
 // ReSharper disable InconsistentNaming
@@ -114,6 +114,10 @@ namespace WowPacketParser.Loading
                     {
                         if (additionalLength >= 2)
                             _snifferVersion = BitConverter.ToInt16(optionalData, 0);
+
+                        // due to uint16 overflow in FileVersionInfo
+                        if (ClientVersion.Build == ClientVersionBuild.Zero && _snifferVersion == 0x0102)
+                            SetBuild(65560);
                     }
                     break;
                 }

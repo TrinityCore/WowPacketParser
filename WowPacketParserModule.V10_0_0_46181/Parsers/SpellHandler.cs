@@ -64,6 +64,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ResetBitReader();
             packet.ReadByte("Status");
 
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_0_0_65390))
+                packet.ReadPackedGuid128("FailedBy");
+
             for (int i = 0; i < stageCount; i++)
                 packet.ReadUInt32("StageDuration", i);
         }

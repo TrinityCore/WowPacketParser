@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Proto;
 
 namespace WowPacketParserModule.V5_5_0_61735.Parsers
 {
@@ -84,5 +85,20 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("ActivatorGUID");
             packet.ReadInt32("SpellVisualID");
         }
+
+        [Parser(Opcode.CMSG_GAME_OBJ_USE)]
+        public static void HandleGoUse(Packet packet)
+        {
+            var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
+            use.GameObject = packet.ReadPackedGuid128("GameObjectGUID");
+        }
+        [Parser(Opcode.CMSG_GAME_OBJ_REPORT_USE)]
+        public static void HandleGoReportUse(Packet packet)
+        {
+            var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
+            use.GameObject = packet.ReadPackedGuid128("GameObjectGUID");
+            use.Report = true;
+        }
+
     }
 }

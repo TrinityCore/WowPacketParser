@@ -4,6 +4,6 @@ namespace WowPacketParser.Store.Objects.UpdateFields
 {
     public interface IAreaTriggerSplineCalculator
     {
-        DynamicUpdateField<Vector3> Points { get; }
+        DynamicUpdateField<Vector3?> Points { get; }
     }
 }

@@ -801,6 +801,243 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadPackedGuid128("GuildGUID");
         }
 
+        [Parser(Opcode.CMSG_QUERY_PETITION)]
+        public static void HandleQueryPetition(Packet packet)
+        {
+            packet.ReadUInt32("PetitionID");
+            packet.ReadPackedGuid128("ItemGUID");
+        }
+
+        [Parser(Opcode.CMSG_SAVE_GUILD_EMBLEM)]
+        public static void HandleSaveGuildEmblem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vendor");
+            packet.ReadInt32("EColor");
+            packet.ReadInt32("EStyle");
+            packet.ReadInt32("BColor");
+            packet.ReadInt32("BStyle");
+            packet.ReadInt32("Bg");
+        }
+
+        [Parser(Opcode.CMSG_OFFER_PETITION)]
+        public static void HandleOfferPetition(Packet packet)
+        {
+            packet.ReadUInt32("Unk440");
+            packet.ReadPackedGuid128("ItemGUID");
+            packet.ReadPackedGuid128("TargetPlayer");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_ACTIVATE)]
+        public static void HandleGuildBankActivate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+
+            packet.ResetBitReader();
+            packet.ReadBit("FullUpdate");
+        }
+
+        [Parser(Opcode.CMSG_AUTO_GUILD_BANK_ITEM)]
+        [Parser(Opcode.CMSG_STORE_GUILD_BANK_ITEM)]
+        [Parser(Opcode.CMSG_SWAP_ITEM_WITH_GUILD_BANK_ITEM)]
+        public static void HandleAutoGuildBankItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+            packet.ReadByte("BankSlot");
+            packet.ReadByte("ContainerItemSlot");
+
+            var hasContainerSlot = packet.ReadBit();
+
+            if (hasContainerSlot)
+                packet.ReadByte("ContainerSlot");
+        }
+
+        [Parser(Opcode.CMSG_SWAP_GUILD_BANK_ITEM_WITH_GUILD_BANK_ITEM)]
+        [Parser(Opcode.CMSG_MOVE_GUILD_BANK_ITEM)]
+        public static void HandleSwapGuildBankItemWithGuildBankItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+            packet.ReadByte("BankSlot");
+            packet.ReadByte("BankTab1");
+            packet.ReadByte("BankSlot1");
+        }
+
+        [Parser(Opcode.CMSG_MERGE_ITEM_WITH_GUILD_BANK_ITEM)]
+        [Parser(Opcode.CMSG_MERGE_GUILD_BANK_ITEM_WITH_ITEM)]
+        [Parser(Opcode.CMSG_SPLIT_ITEM_TO_GUILD_BANK)]
+        [Parser(Opcode.CMSG_SPLIT_GUILD_BANK_ITEM_TO_INVENTORY)]
+        public static void HandleMergeGuildBankItemWithItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+            packet.ReadByte("BankSlot");
+            packet.ReadByte("ContainerItemSlot");
+            packet.ReadUInt32("StackCount");
+
+            var hasContainerSlot = packet.ReadBit("HasContainerSlot");
+
+            if (hasContainerSlot)
+                packet.ReadByte("ContainerSlot");
+        }
+
+        [Parser(Opcode.CMSG_AUTO_STORE_GUILD_BANK_ITEM)]
+        public static void HandleAutoStoreGuildBankItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+            packet.ReadByte("BankSlot");
+        }
+
+        [Parser(Opcode.CMSG_MERGE_GUILD_BANK_ITEM_WITH_GUILD_BANK_ITEM)]
+        [Parser(Opcode.CMSG_SPLIT_GUILD_BANK_ITEM)]
+        public static void HandleMergeGuildBankItemWithGuildBankItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+            packet.ReadByte("BankSlot");
+            packet.ReadByte("BankTab1");
+            packet.ReadByte("BankSlot1");
+            packet.ReadUInt32("StackCount");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_QUERY_TAB)]
+        public static void HandleGuildBankQueryTab(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("Tab");
+
+            packet.ResetBitReader();
+            packet.ReadBit("FullUpdate");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_BUY_TAB)]
+        public static void HandleGuildBankBuyTab(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_UPDATE_TAB)]
+        public static void HandleGuildBankUpdateTab(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+
+            packet.ResetBitReader();
+            var nameLen = packet.ReadBits(7);
+            var iconLen = packet.ReadBits(9);
+
+            packet.ReadWoWString("Name", nameLen);
+            packet.ReadWoWString("Icon", iconLen);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY)]
+        [Parser(Opcode.CMSG_GUILD_BANK_WITHDRAW_MONEY)]
+        public static void HandleGuildBankDepositMoney(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadUInt64("Money");
+        }
+
+        [Parser(Opcode.CMSG_PETITION_SHOW_LIST)]
+        public static void HandlePetitionShowListClient(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionUnit");
+        }
+
+        [Parser(Opcode.CMSG_PETITION_BUY)]
+        public static void HandlePetitionBuy(Packet packet)
+        {
+            var length = packet.ReadBits(8);
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadUInt32("Index");
+            packet.ReadWoWString("Title", length);
+        }
+
+        [Parser(Opcode.CMSG_PETITION_SHOW_SIGNATURES)]
+        public static void HandleClientPetitionShowSignatures(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGuid");
+        }
+
+        [Parser(Opcode.CMSG_DECLINE_GUILD_INVITES)]
+        public static void HandleDeclineGuildInvites(Packet packet)
+        {
+            packet.ReadBit("Allow");
+        }
+
+        [Parser(Opcode.CMSG_SIGN_PETITION)]
+        public static void HandleSignPetition(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGUID");
+            packet.ReadByte("Choice");
+        }
+
+        [Parser(Opcode.CMSG_DECLINE_PETITION)]
+        public static void HandleDeclinePetition(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGUID");
+        }
+
+        [Parser(Opcode.CMSG_TURN_IN_PETITION)]
+        public static void HandleTurnInPetition(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGUID");
+            packet.ReadInt32("BgColorRGB");
+            packet.ReadInt32("IconStyle");
+            packet.ReadInt32("IconColorRGB");
+            packet.ReadInt32("BorderStyle");
+            packet.ReadInt32("BorderColorRGB");
+        }
+
+        [Parser(Opcode.CMSG_ACCEPT_GUILD_INVITE)]
+        public static void HandleAcceptGuildInvite441(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_DECLINE_INVITATION)]
+        public static void HandleGuildDeclineInvitation(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadBit("AutoDeclined"); // PlayerFlag 0x8000000
+        }
+
+        [Parser(Opcode.CMSG_GUILD_INVITE_BY_NAME)]
+        public static void HandleGuildInviteByName(Packet packet)
+        {
+            var nameLength = packet.ReadBits(9);
+            var hasArenaTeamId = packet.ReadBit("HasArenaTeamId");
+
+            packet.ReadWoWString("Name", nameLength);
+
+            if (hasArenaTeamId)
+                packet.ReadInt32("ArenaTeamId");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_GUILD_INFO)]
+        public static void HandleGuildQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadPackedGuid128("PlayerGUID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SET_GUILD_MASTER)]
+        public static void HandleGuildSetGuildMaster(Packet packet)
+        {
+            var nameLength = packet.ReadBits(9);
+            packet.ReadWoWString("NewMasterName", nameLength);
+        }
+
+        [Parser(Opcode.CMSG_PETITION_RENAME_GUILD)]
+        public static void HandlePetitionRenameGuild(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGuid");
+            var length = packet.ReadBits(7);
+            packet.ReadWoWString("Name", length);
+        }
+
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_DISBANDED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_RANKS_UPDATED)]

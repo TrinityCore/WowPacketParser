@@ -14,7 +14,7 @@ namespace WowPacketParser.DBC.Structures.TheWarWithin
         public sbyte Classification;
         public byte CreatureType;
         public ushort CreatureFamily;
-        public byte StartAnimState;
+        public sbyte StartAnimState;
         [Cardinality(4)]
         public int[] DisplayID = new int[4];
         [Cardinality(4)]
