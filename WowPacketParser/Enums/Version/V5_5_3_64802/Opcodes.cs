@@ -902,9 +902,12 @@ namespace WowPacketParser.Enums.Version.V5_5_3_64802
             { Opcode.SMSG_READY_CHECK_RESPONSE, 0x3A0091 },
             { Opcode.SMSG_READY_CHECK_COMPLETED, 0x3A0092 },
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 5d325294a (Correct opcodes, spell & movement structures)
+=======
+>>>>>>> 97e228943 (Update Mop Classic to 5.5.3.66290 with SMSG_UPDATE_OBJECT included)
             { Opcode.SMSG_PET_BATTLE_REQUEST_FAILED, 0x3A0097 },
             { Opcode.SMSG_PET_BATTLE_PVP_CHALLENGE, 0x3A0098 },
             { Opcode.SMSG_PET_BATTLE_FINALIZE_LOCATION, 0x3A0099 },
