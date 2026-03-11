@@ -201,7 +201,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ResetBitReader();
 
-            packet.ReadInt32("FlagsDupa", idx);
+            packet.ReadInt32("Flags", idx);
 
             var targetUnit = packet.ReadPackedGuid128("Unit", idx);
             if (packetSpellData != null)
@@ -984,7 +984,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                             // (opcjonalnie) packet.ResetBitReader(); // tylko jeśli zaraz potem miałbyś znowu ReadBit
                         }
                     }
-                        auras.Add(aura);
+                    auras.Add(aura);
                     packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
                 }
             }
