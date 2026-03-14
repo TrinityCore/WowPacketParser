@@ -1813,7 +1813,48 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_5_64796
             return data;
         }
 
+        public static IPetCreatureName ReadUpdatePetCreatureName(Packet packet, params object[] indexes)
+        {
+            var data = new PetCreatureName();
+            packet.ResetBitReader();
+            var rawChangesMask = new int[1];
+            rawChangesMask[0] = (int)packet.ReadBits(3);
+            var changesMask = new BitArray(rawChangesMask);
+
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
+                if (changesMask[1])
+                {
+                    data.CreatureID = packet.ReadUInt32("CreatureID", indexes);
+                }
+                if (changesMask[2])
+                {
+                    data.Name = new string('*', (int)packet.ReadBits(8));
+                    data.Name = packet.ReadWoWString("Name", data.Name.Length, indexes);
+                }
+            }
+            return data;
+        }
+
         public static ILeaverInfo ReadCreateLeaverInfo(Packet packet, params object[] indexes)
+        {
+            var data = new LeaverInfo();
+            packet.ResetBitReader();
+            data.BnetAccountGUID = packet.ReadPackedGuid128("BnetAccountGUID", indexes);
+            data.LeaveScore = packet.ReadSingle("LeaveScore", indexes);
+            data.SeasonID = packet.ReadUInt32("SeasonID", indexes);
+            data.TotalLeaves = packet.ReadUInt32("TotalLeaves", indexes);
+            data.TotalSuccesses = packet.ReadUInt32("TotalSuccesses", indexes);
+            data.ConsecutiveSuccesses = packet.ReadInt32("ConsecutiveSuccesses", indexes);
+            data.LastPenaltyTime = packet.ReadInt64("LastPenaltyTime", indexes);
+            data.LeaverExpirationTime = packet.ReadInt64("LeaverExpirationTime", indexes);
+            data.Unknown_1120 = packet.ReadInt32("Unknown_1120", indexes);
+            data.LeaverStatus = packet.ReadBits("LeaverStatus", 1, indexes);
+            return data;
+        }
+
+        public static ILeaverInfo ReadUpdateLeaverInfo(Packet packet, params object[] indexes)
         {
             var data = new LeaverInfo();
             packet.ResetBitReader();
@@ -1833,286 +1874,304 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_5_64796
         public override IPlayerData ReadUpdatePlayerData(Packet packet, params object[] indexes)
         {
             var data = new PlayerData();
-            //packet.ResetBitReader();
-            //var rawChangesMask = new int[5];
-            //var rawMaskMask = new int[1];
-            //rawMaskMask[0] = (int)packet.ReadBits(5);
-            //var maskMask = new BitArray(rawMaskMask);
-            //for (var i = 0; i < 5; ++i)
-            //    if (maskMask[i])
-            //        rawChangesMask[i] = (int)packet.ReadBits(32);
-            //var changesMask = new BitArray(rawChangesMask);
+            packet.ResetBitReader();
+            var rawChangesMask = new int[5];
+            var rawMaskMask = new int[1];
+            rawMaskMask[0] = (int)packet.ReadBits(5);
+            var maskMask = new BitArray(rawMaskMask);
+            for (var i = 0; i < 5; ++i)
+                if (maskMask[i])
+                    rawChangesMask[i] = (int)packet.ReadBits(32);
+            var changesMask = new BitArray(rawChangesMask);
 
-            //var noQuestLogChangesMask = packet.ReadBit();
-            //var hasDeclinedNames = false;
-            //if (changesMask[0])
-            //{
-            //    if (changesMask[1])
-            //    {
-            //        data.HasLevelLink = packet.ReadBit("HasLevelLink", indexes);
-            //    }
-            //    if (changesMask[2])
-            //    {
-            //        data.Customizations.ReadUpdateMask(packet);
-            //    }
-            //    if (changesMask[3])
-            //    {
-            //        data.ArenaCooldowns.ReadUpdateMask(packet);
-            //    }
-            //    // todo pet names
-            //    if (changesMask[4])
-            //    {
-            //        data.VisualItemReplacements.ReadUpdateMask(packet);
-            //    }
-            //}
-            //packet.ResetBitReader();
-            //if (changesMask[0])
-            //{
-            //    if (changesMask[2])
-            //    {
-            //        for (var i = 0; i < data.Customizations.Count; ++i)
-            //        {
-            //            if (data.Customizations.UpdateMask[i])
-            //            {
-            //                data.Customizations[i] = ReadUpdateChrCustomizationChoice(packet, indexes, "Customizations", i);
-            //            }
-            //        }
-            //    }
-            //    if (changesMask[3])
-            //    {
-            //        for (var i = 0; i < data.ArenaCooldowns.Count; ++i)
-            //        {
-            //            if (data.ArenaCooldowns.UpdateMask[i])
-            //            {
-            //                data.ArenaCooldowns[i] = ReadUpdateArenaCooldown(packet, indexes, "ArenaCooldowns", i);
-            //            }
-            //        }
-            //    }
-            //    if (changesMask[4])
-            //    {
-            //        for (var i = 0; i < data.VisualItemReplacements.Count; ++i)
-            //        {
-            //            if (data.VisualItemReplacements.UpdateMask[i])
-            //            {
-            //                data.VisualItemReplacements[i] = packet.ReadInt32("VisualItemReplacements", indexes, i);
-            //            }
-            //        }
-            //    }
-            //    // todo pet names?
-            //    if (changesMask[5])
-            //    {
-            //        data.DuelArbiter = packet.ReadPackedGuid128("DuelArbiter", indexes);
-            //    }
-            //    if (changesMask[6])
-            //    {
-            //        data.WowAccount = packet.ReadPackedGuid128("WowAccount", indexes);
-            //    }
-            //    if (changesMask[7])
-            //    {
-            //        data.BnetAccount = packet.ReadPackedGuid128("BnetAccount", indexes);
-            //    }
-            //    if (changesMask[8])
-            //    {
-            //        data.GuildClubMemberID = packet.ReadUInt64("GuildClubMemberID", indexes);
-            //    }
-            //    if (changesMask[9])
-            //    {
-            //        data.LootTargetGUID = packet.ReadPackedGuid128("LootTargetGUID", indexes);
-            //    }
-            //    if (changesMask[10])
-            //    {
-            //        data.PlayerFlags = packet.ReadUInt32("PlayerFlags", indexes);
-            //    }
-            //    if (changesMask[11])
-            //    {
-            //        data.PlayerFlagsEx = packet.ReadUInt32("PlayerFlagsEx", indexes);
-            //    }
-            //    if (changesMask[12])
-            //    {
-            //        data.GuildRankID = packet.ReadUInt32("GuildRankID", indexes);
-            //    }
-            //    if (changesMask[13])
-            //    {
-            //        data.GuildDeleteDate = packet.ReadUInt32("GuildDeleteDate", indexes);
-            //    }
-            //    if (changesMask[14])
-            //    {
-            //        data.GuildLevel = packet.ReadInt32("GuildLevel", indexes);
-            //    }
-            //    if (changesMask[15])
-            //    {
-            //        data.NumBankSlots = packet.ReadByte("NumBankSlots", indexes);
-            //    }
-            //    if (changesMask[16])
-            //    {
-            //        data.NativeSex = packet.ReadByte("NativeSex", indexes);
-            //    }
-            //    if (changesMask[17])
-            //    {
-            //        data.Inebriation = packet.ReadByte("Inebriation", indexes);
-            //    }
-            //    if (changesMask[18])
-            //    {
-            //        data.PvpTitle = packet.ReadByte("PvpTitle", indexes);
-            //    }
-            //    if (changesMask[19])
-            //    {
-            //        data.ArenaFaction = packet.ReadByte("ArenaFaction", indexes);
-            //    }
-            //    if (changesMask[20])
-            //    {
-            //        data.PvpRank = packet.ReadByte("PvpRank", indexes);
-            //    }
-            //    if (changesMask[21])
-            //    {
-            //        data.Field_88 = packet.ReadInt32("Field_88", indexes);
-            //    }
-            //    if (changesMask[22])
-            //    {
-            //        data.DuelTeam = packet.ReadUInt32("DuelTeam", indexes);
-            //    }
-            //    if (changesMask[23])
-            //    {
-            //        data.GuildTimeStamp = packet.ReadInt32("GuildTimeStamp", indexes);
-            //    }
-            //    if (changesMask[24])
-            //    {
-            //        data.PlayerTitle = packet.ReadInt32("PlayerTitle", indexes);
-            //    }
-            //    if (changesMask[25])
-            //    {
-            //        data.FakeInebriation = packet.ReadInt32("FakeInebriation", indexes);
-            //    }
-            //    if (changesMask[26])
-            //    {
-            //        data.VirtualPlayerRealm = packet.ReadUInt32("VirtualPlayerRealm", indexes);
-            //    }
-            //    if (changesMask[27])
-            //    {
-            //        data.CurrentSpecID = packet.ReadUInt32("CurrentSpecID", indexes);
-            //    }
-            //    if (changesMask[28])
-            //    {
-            //        data.TaxiMountAnimKitID = packet.ReadInt32("TaxiMountAnimKitID", indexes);
-            //    }
-            //    // todo unk
-            //    if (changesMask[29])
-            //    {
-            //        data.CurrentBattlePetBreedQuality = packet.ReadByte("CurrentBattlePetBreedQuality", indexes);
-            //    }
-            //    if (changesMask[30])
-            //    {
-            //        data.HonorLevel = packet.ReadInt32("HonorLevel", indexes);
-            //    }
-            //    if (changesMask[31])
-            //    {
-            //        data.LogoutTime = packet.ReadInt64("LogoutTime", indexes);
-            //    }
-            //}
-            //if (changesMask[32])
-            //{
-            //    if (changesMask[34])
-            //    {
-            //        data.Field_13C = packet.ReadInt32("Field_13C", indexes);
-            //    }
-            //    if (changesMask[35])
-            //    {
-            //        data.Field_140 = packet.ReadInt32("Field_140", indexes);
-            //    }
-            //    if (changesMask[36])
-            //    {
-            //        data.CurrentBattlePetSpeciesID = packet.ReadInt32("CurrentBattlePetSpeciesID", indexes);
-            //    }
-            //    if (changesMask[39])
-            //    {
-            //        data.PersonalTabard = ReadUpdateCustomTabardInfo(packet, indexes, "PersonalTabard");
-            //    }
-            //    if (changesMask[33])
-            //    {
-            //        data.Name = new string('*', (int)packet.ReadBits(6));
-            //    }
-            //    hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
-            //    packet.ResetBitReader();
-            //    if (changesMask[37])
-            //    {
-            //        Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");
-            //    }
-            //    if (changesMask[33])
-            //    {
-            //        data.Name = packet.ReadWoWString("Name", data.Name.Length, indexes);
-            //    }
-            //    // leaverinfo
-            //    if (changesMask[38])
-            //    {
-            //        if (hasDeclinedNames)
-            //        {
-            //            data.DeclinedNames = ReadUpdateDeclinedNames(packet, indexes, "DeclinedNames");
-            //        }
-            //    }
-            //}
-            //if (changesMask[40])
-            //{
-            //    for (var i = 0; i < 2; ++i)
-            //    {
-            //        if (changesMask[41 + i])
-            //        {
-            //            data.PartyType[i] = packet.ReadByte("PartyType", indexes, i);
-            //        }
-            //    }
-            //}
-            //if (changesMask[43])
-            //{
-            //    for (var i = 0; i < 25; ++i)
-            //    {
-            //        if (changesMask[44 + i])
-            //        {
-            //            if (noQuestLogChangesMask)
-            //                data.QuestLog[i] = ReadCreateQuestLog(packet, indexes, "QuestLog", i);
-            //            else
-            //                data.QuestLog[i] = ReadUpdateQuestLog(packet, indexes, "QuestLog", i);
-            //        }
-            //    }
-            //}
-            //if (changesMask[69])
-            //{
-            //    for (var i = 0; i < 19; ++i)
-            //    {
-            //        if (changesMask[70 + i])
-            //        {
-            //            data.VisibleItems[i] = ReadUpdateVisibleItem(packet, indexes, "VisibleItems", i);
-            //        }
-            //    }
-            //}
-            //if (changesMask[89])
-            //{
-            //    for (var i = 0; i < 6; ++i)
-            //    {
-            //        if (changesMask[90 + i])
-            //        {
-            //            data.AvgItemLevel[i] = packet.ReadSingle("AvgItemLevel", indexes, i);
-            //        }
-            //    }
-            //}
-            //if (changesMask[96])
-            //{
-            //    for (var i = 0; i < 32; ++i)
-            //    {
-            //        if (changesMask[97 + i])
-            //        {
-            //            data.ForcedReactions[i] = ReadUpdateZonePlayerForcedReaction(packet, indexes, "ForcedReactions", i);
-            //        }
-            //    }
-            //}
-            //if (changesMask[129])
-            //{
-            //    for (var i = 0; i < 19; ++i)
-            //    {
-            //        if (changesMask[130 + i])
-            //        {
-            //            data.Field_3120[i] = packet.ReadUInt32("Field_3120", indexes, i);
-            //        }
-            //    }
-            //}
+            var noQuestLogChangesMask = packet.ReadBit();
+            var hasDeclinedNames = false;
+            if (changesMask[0])
+            {
+                if (changesMask[1])
+                {
+                    data.HasLevelLink = packet.ReadBit("HasLevelLink", indexes);
+                }
+                if (changesMask[2])
+                {
+                    data.Customizations.ReadUpdateMask(packet);
+                }
+                if (changesMask[3])
+                {
+                    data.ArenaCooldowns.ReadUpdateMask(packet);
+                }
+                if (changesMask[4])
+                {
+                    data.VisualItemReplacements.ReadUpdateMask(packet);
+                }
+                if (changesMask[5])
+                {
+                    data.PetNames.ReadUpdateMask(packet);
+                }
+            }
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
+                if (changesMask[2])
+                {
+                    for (var i = 0; i < data.Customizations.Count; ++i)
+                    {
+                        if (data.Customizations.UpdateMask[i])
+                        {
+                            data.Customizations[i] = ReadUpdateChrCustomizationChoice(packet, indexes, "Customizations", i);
+                        }
+                    }
+                }
+                if (changesMask[3])
+                {
+                    for (var i = 0; i < data.ArenaCooldowns.Count; ++i)
+                    {
+                        if (data.ArenaCooldowns.UpdateMask[i])
+                        {
+                            data.ArenaCooldowns[i] = ReadUpdateArenaCooldown(packet, indexes, "ArenaCooldowns", i);
+                        }
+                    }
+                }
+                if (changesMask[4])
+                {
+                    for (var i = 0; i < data.VisualItemReplacements.Count; ++i)
+                    {
+                        if (data.VisualItemReplacements.UpdateMask[i])
+                        {
+                            data.VisualItemReplacements[i] = packet.ReadInt32("VisualItemReplacements", indexes, i);
+                        }
+                    }
+                }
+                if (changesMask[5])
+                {
+                    for (var i = 0; i < data.PetNames.Count; ++i)
+                    {
+                        if (data.PetNames.UpdateMask[i])
+                        {
+                            data.PetNames[i] = ReadUpdatePetCreatureName(packet, indexes, "PetNames", i);
+                        }
+                    }
+                }
+                if (changesMask[6])
+                {
+                    data.DuelArbiter = packet.ReadPackedGuid128("DuelArbiter", indexes);
+                }
+                if (changesMask[7])
+                {
+                    data.WowAccount = packet.ReadPackedGuid128("WowAccount", indexes);
+                }
+                if (changesMask[8])
+                {
+                    data.BnetAccount = packet.ReadPackedGuid128("BnetAccount", indexes);
+                }
+                if (changesMask[9])
+                {
+                    data.GuildClubMemberID = packet.ReadUInt64("GuildClubMemberID", indexes);
+                }
+                if (changesMask[10])
+                {
+                    data.LootTargetGUID = packet.ReadPackedGuid128("LootTargetGUID", indexes);
+                }
+                if (changesMask[11])
+                {
+                    data.PlayerFlags = packet.ReadUInt32("PlayerFlags", indexes);
+                }
+                if (changesMask[12])
+                {
+                    data.PlayerFlagsEx = packet.ReadUInt32("PlayerFlagsEx", indexes);
+                }
+                if (changesMask[13])
+                {
+                    data.GuildRankID = packet.ReadUInt32("GuildRankID", indexes);
+                }
+                if (changesMask[14])
+                {
+                    data.GuildDeleteDate = packet.ReadUInt32("GuildDeleteDate", indexes);
+                }
+                if (changesMask[15])
+                {
+                    data.GuildLevel = packet.ReadInt32("GuildLevel", indexes);
+                }
+                if (changesMask[16])
+                {
+                    data.NumBankSlots = packet.ReadByte("NumBankSlots", indexes);
+                }
+                if (changesMask[17])
+                {
+                    data.NativeSex = packet.ReadByte("NativeSex", indexes);
+                }
+                if (changesMask[18])
+                {
+                    data.Inebriation = packet.ReadByte("Inebriation", indexes);
+                }
+                if (changesMask[19])
+                {
+                    data.PvpTitle = packet.ReadByte("PvpTitle", indexes);
+                }
+                if (changesMask[20])
+                {
+                    data.ArenaFaction = packet.ReadByte("ArenaFaction", indexes);
+                }
+                if (changesMask[21])
+                {
+                    data.PvpRank = packet.ReadByte("PvpRank", indexes);
+                }
+                if (changesMask[22])
+                {
+                    data.Field_88 = packet.ReadInt32("Field_88", indexes);
+                }
+                if (changesMask[23])
+                {
+                    data.DuelTeam = packet.ReadUInt32("DuelTeam", indexes);
+                }
+                if (changesMask[24])
+                {
+                    data.GuildTimeStamp = packet.ReadInt32("GuildTimeStamp", indexes);
+                }
+                if (changesMask[25])
+                {
+                    data.PlayerTitle = packet.ReadInt32("PlayerTitle", indexes);
+                }
+                if (changesMask[26])
+                {
+                    data.FakeInebriation = packet.ReadInt32("FakeInebriation", indexes);
+                }
+                if (changesMask[27])
+                {
+                    data.VirtualPlayerRealm = packet.ReadUInt32("VirtualPlayerRealm", indexes);
+                }
+                if (changesMask[28])
+                {
+                    data.CurrentSpecID = packet.ReadUInt32("CurrentSpecID", indexes);
+                }
+                if (changesMask[29])
+                {
+                    data.TaxiMountAnimKitID = packet.ReadInt32("TaxiMountAnimKitID", indexes);
+                }
+                if (changesMask[30])
+                {
+                    packet.ReadInt32("Unk", indexes);
+                }
+                if (changesMask[31])
+                {
+                    data.CurrentBattlePetBreedQuality = packet.ReadByte("CurrentBattlePetBreedQuality", indexes);
+                }
+            }
+            if (changesMask[32])
+            {
+                if (changesMask[33])
+                {
+                    data.HonorLevel = packet.ReadInt32("HonorLevel", indexes);
+                }
+                if (changesMask[34])
+                {
+                    data.LogoutTime = packet.ReadInt64("LogoutTime", indexes);
+                }
+                if (changesMask[36])
+                {
+                    data.Field_13C = packet.ReadInt32("Field_13C", indexes);
+                }
+                if (changesMask[37])
+                {
+                    data.Field_140 = packet.ReadInt32("Field_140", indexes);
+                }
+                if (changesMask[38])
+                {
+                    data.CurrentBattlePetSpeciesID = packet.ReadInt32("CurrentBattlePetSpeciesID", indexes);
+                }
+                if (changesMask[39])
+                {
+                    data.PersonalTabard = ReadUpdateCustomTabardInfo(packet, indexes, "PersonalTabard");
+                }
+                if (changesMask[35])
+                {
+                    data.Name = new string('*', (int)packet.ReadBits(6));
+                }
+                packet.ResetBitReader();
+                hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
+                if (changesMask[40])
+                {
+                    Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");
+                }
+                if (changesMask[35])
+                {
+                    data.Name = packet.ReadWoWString("Name", data.Name.Length, indexes);
+                }
+                if (changesMask[41])
+                {
+                    data.LeaverInfo = ReadUpdateLeaverInfo(packet, indexes, "LeaverInfo");
+                }
+                if (changesMask[42])
+                {
+                    if (hasDeclinedNames)
+                    {
+                        data.DeclinedNames = ReadUpdateDeclinedNames(packet, indexes, "DeclinedNames");
+                    }
+                }
+            }
+            if (changesMask[43])
+            {
+                for (var i = 0; i < 2; ++i)
+                {
+                    if (changesMask[44 + i])
+                    {
+                        data.PartyType[i] = packet.ReadByte("PartyType", indexes, i);
+                    }
+                }
+            }
+            if (changesMask[46])
+            {
+                for (var i = 0; i < 25; ++i)
+                {
+                    if (changesMask[47 + i])
+                    {
+                        if (noQuestLogChangesMask)
+                            data.QuestLog[i] = ReadCreateQuestLog(packet, indexes, "QuestLog", i);
+                        else
+                            data.QuestLog[i] = ReadUpdateQuestLog(packet, indexes, "QuestLog", i);
+                    }
+                }
+            }
+            if (changesMask[72])
+            {
+                for (var i = 0; i < 19; ++i)
+                {
+                    if (changesMask[73 + i])
+                    {
+                        data.VisibleItems[i] = ReadUpdateVisibleItem(packet, indexes, "VisibleItems", i);
+                    }
+                }
+            }
+            if (changesMask[91])
+            {
+                for (var i = 0; i < 6; ++i)
+                {
+                    if (changesMask[92 + i])
+                    {
+                        data.AvgItemLevel[i] = packet.ReadSingle("AvgItemLevel", indexes, i);
+                    }
+                }
+            }
+            if (changesMask[98])
+            {
+                for (var i = 0; i < 32; ++i)
+                {
+                    if (changesMask[99 + i])
+                    {
+                        data.ForcedReactions[i] = ReadUpdateZonePlayerForcedReaction(packet, indexes, "ForcedReactions", i);
+                    }
+                }
+            }
+            if (changesMask[131])
+            {
+                for (var i = 0; i < 19; ++i)
+                {
+                    if (changesMask[132 + i])
+                    {
+                        data.Field_3120[i] = packet.ReadUInt32("Field_3120", indexes, i);
+                    }
+                }
+            }
             return data;
         }
 
