@@ -150,7 +150,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
         public DynamicUpdateField<System.Nullable<uint>> HouseThemes { get; } = new();
         public DynamicUpdateField<System.Nullable<uint>> HouseRoomComponentTextures { get; } = new();
         public DynamicUpdateField<System.Nullable<uint>> HouseTypes { get; } = new();
-        public DynamicUpdateField<System.Nullable<int>> Field_1980 { get; } = new();
+        public DynamicUpdateField<System.Nullable<int>> UnlockedTransmogOutfits { get; } = new();
         public DynamicUpdateField<ISpellPctModByLabel> SpellPctModByLabel { get; } = new();
         public DynamicUpdateField<ISpellFlatModByLabel> SpellFlatModByLabel { get; } = new();
         public DynamicUpdateField<ISpellPctPVPModByLabel> SpellPctModPVPByLabel { get; } = new();

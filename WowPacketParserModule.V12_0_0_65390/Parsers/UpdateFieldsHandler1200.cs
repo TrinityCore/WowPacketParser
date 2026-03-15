@@ -4742,7 +4742,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
             data.HouseThemes.Resize(packet.ReadUInt32());
             data.HouseRoomComponentTextures.Resize(packet.ReadUInt32());
             data.HouseTypes.Resize(packet.ReadUInt32());
-            data.Field_1980.Resize(packet.ReadUInt32());
+            data.UnlockedTransmogOutfits.Resize(packet.ReadUInt32());
             data.CharacterRestrictions.Resize(packet.ReadUInt32());
             data.SpellPctModByLabel.Resize(packet.ReadUInt32());
             data.SpellFlatModByLabel.Resize(packet.ReadUInt32());
@@ -4861,9 +4861,9 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
             {
                 data.HouseTypes[i] = packet.ReadUInt32("HouseTypes", indexes, i);
             }
-            for (var i = 0; i < data.Field_1980.Count; ++i)
+            for (var i = 0; i < data.UnlockedTransmogOutfits.Count; ++i)
             {
-                data.Field_1980[i] = packet.ReadInt32("Field_1980", indexes, i);
+                data.UnlockedTransmogOutfits[i] = packet.ReadInt32("UnlockedTransmogOutfits", indexes, i);
             }
             for (var i = 0; i < data.SpellPctModByLabel.Count; ++i)
             {
@@ -5217,7 +5217,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
                 }
                 if (changesMask[29])
                 {
-                    data.Field_1980.ReadUpdateMask(packet);
+                    data.UnlockedTransmogOutfits.ReadUpdateMask(packet);
                 }
                 if (changesMask[30])
                 {
@@ -5506,11 +5506,11 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
                 }
                 if (changesMask[29])
                 {
-                    for (var i = 0; i < data.Field_1980.Count; ++i)
+                    for (var i = 0; i < data.UnlockedTransmogOutfits.Count; ++i)
                     {
-                        if (data.Field_1980.UpdateMask[i])
+                        if (data.UnlockedTransmogOutfits.UpdateMask[i])
                         {
-                            data.Field_1980[i] = packet.ReadInt32("Field_1980", indexes, i);
+                            data.UnlockedTransmogOutfits[i] = packet.ReadInt32("UnlockedTransmogOutfits", indexes, i);
                         }
                     }
                 }
