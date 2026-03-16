@@ -1362,57 +1362,57 @@ namespace WowPacketParser.Enums.Version.V5_5_3_64802
             { Opcode.SMSG_ACCOUNT_CONVERSION_STATE_UPDATE, 0x3A0345 }, // NYI
             { Opcode.SMSG_ACCOUNT_ITEM_COLLECTION_DATA, 0x3A0346 },
 
-            { Opcode.SMSG_CHAT_IGNORED_ACCOUNT_MUTED, 0x3E0000 },
-            { Opcode.SMSG_CHAT, 0x3E0001 },
-            { Opcode.SMSG_WHO, 0x3E0002 },
-            { Opcode.SMSG_MOTD, 0x3E0003 },
-            { Opcode.SMSG_CHAT_PLAYER_AMBIGUOUS, 0x3E0004 },
-            { Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x3E0005 }, // NYI
-            { Opcode.SMSG_CHAT_NOT_IN_PARTY, 0x3E0006 },
-            { Opcode.SMSG_CHAT_RESTRICTED, 0x3E0007 },
-            { Opcode.SMSG_CAUTIONARY_CHAT_MESSAGE, 0x3E0008 }, // NYI
-            { Opcode.SMSG_CAUTIONARY_CHANNEL_MESSAGE, 0x3E0009 }, // NYI
-            { Opcode.SMSG_RAID_INSTANCE_MESSAGE, 0x3E000A },
-            { Opcode.SMSG_ZONE_UNDER_ATTACK, 0x3E000B },
-            { Opcode.SMSG_DEFENSE_MESSAGE, 0x3E000C },
-            { Opcode.SMSG_CHAT_PLAYER_NOTFOUND, 0x3E000D },
-            { Opcode.SMSG_CHAT_AUTO_RESPONDED, 0x3E000E }, // NYI
-            { Opcode.SMSG_USERLIST_ADD, 0x3E000F },
-            { Opcode.SMSG_USERLIST_REMOVE, 0x3E0010 },
-            { Opcode.SMSG_USERLIST_UPDATE, 0x3E0011 },
-            { Opcode.SMSG_BROADCAST_ACHIEVEMENT, 0x3E0012 },
-            { Opcode.SMSG_BROADCAST_LEVELUP, 0x3E0013 }, // NYI
-            { Opcode.SMSG_CHAT_DOWN, 0x3E0014 }, // NYI
-            { Opcode.SMSG_CHAT_IS_DOWN, 0x3E0015 }, // NYI
-            { Opcode.SMSG_CHAT_RECONNECT, 0x3E0016 }, // NYI
-            { Opcode.SMSG_CHANNEL_NOTIFY, 0x3E0017 },
-            { Opcode.SMSG_CHANNEL_NOTIFY_NPE_JOINED_BATCH, 0x3E0018 }, // NYI
-            { Opcode.SMSG_CHANNEL_NOTIFY_JOINED, 0x3E0019 },
-            { Opcode.SMSG_CHANNEL_NOTIFY_LEFT, 0x3E001A },
-            { Opcode.SMSG_CHANNEL_LIST, 0x3E001B },
-            { Opcode.SMSG_CHAT_SERVER_MESSAGE, 0x3E001C },
-            { Opcode.SMSG_CHAT_REGIONAL_SERVICE_STATUS, 0x3E001D }, // NYI
-            { Opcode.SMSG_CHAT_CAN_LOCAL_WHISPER_TARGET_RESPONSE, 0x3E0022 },
-            { Opcode.SMSG_CHAT_NOT_IN_GUILD, 0x3E0023 }, // NYI
+            { Opcode.SMSG_CHAT_IGNORED_ACCOUNT_MUTED, 0x3F0000 },
+            { Opcode.SMSG_CHAT, 0x3F0001 },
+            { Opcode.SMSG_WHO, 0x3F0002 },
+            { Opcode.SMSG_MOTD, 0x3F0003 },
+            { Opcode.SMSG_CHAT_PLAYER_AMBIGUOUS, 0x3F0004 },
+            { Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x3F0005 }, // NYI
+            { Opcode.SMSG_CHAT_NOT_IN_PARTY, 0x3F0006 },
+            { Opcode.SMSG_CHAT_RESTRICTED, 0x3F0007 },
+            { Opcode.SMSG_CAUTIONARY_CHAT_MESSAGE, 0x3F0008 }, // NYI
+            { Opcode.SMSG_CAUTIONARY_CHANNEL_MESSAGE, 0x3F0009 }, // NYI
+            { Opcode.SMSG_RAID_INSTANCE_MESSAGE, 0x3F000A },
+            { Opcode.SMSG_ZONE_UNDER_ATTACK, 0x3F000B },
+            { Opcode.SMSG_DEFENSE_MESSAGE, 0x3F000C },
+            { Opcode.SMSG_CHAT_PLAYER_NOTFOUND, 0x3F000D },
+            { Opcode.SMSG_CHAT_AUTO_RESPONDED, 0x3F000E }, // NYI
+            { Opcode.SMSG_USERLIST_ADD, 0x3F000F },
+            { Opcode.SMSG_USERLIST_REMOVE, 0x3F0010 },
+            { Opcode.SMSG_USERLIST_UPDATE, 0x3F0011 },
+            { Opcode.SMSG_BROADCAST_ACHIEVEMENT, 0x3F0012 },
+            { Opcode.SMSG_BROADCAST_LEVELUP, 0x3F0013 }, // NYI
+            { Opcode.SMSG_CHAT_DOWN, 0x3F0014 }, // NYI
+            { Opcode.SMSG_CHAT_IS_DOWN, 0x3F0015 }, // NYI
+            { Opcode.SMSG_CHAT_RECONNECT, 0x3F0016 }, // NYI
+            { Opcode.SMSG_CHANNEL_NOTIFY, 0x3F0017 },
+            { Opcode.SMSG_CHANNEL_NOTIFY_NPE_JOINED_BATCH, 0x3F0018 }, // NYI
+            { Opcode.SMSG_CHANNEL_NOTIFY_JOINED, 0x3F0019 },
+            { Opcode.SMSG_CHANNEL_NOTIFY_LEFT, 0x3F001A },
+            { Opcode.SMSG_CHANNEL_LIST, 0x3F001B },
+            { Opcode.SMSG_CHAT_SERVER_MESSAGE, 0x3F001C },
+            { Opcode.SMSG_CHAT_REGIONAL_SERVICE_STATUS, 0x3F001D }, // NYI
+            { Opcode.SMSG_CHAT_CAN_LOCAL_WHISPER_TARGET_RESPONSE, 0x3F0022 },
+            { Opcode.SMSG_CHAT_NOT_IN_GUILD, 0x3F0023 }, // NYI
 
-            { Opcode.SMSG_DB_REPLY, 0x3F0000 },
-            { Opcode.SMSG_AVAILABLE_HOTFIXES, 0x3F0001 },
-            { Opcode.SMSG_HOTFIX_MESSAGE, 0x3F0002 },
-            { Opcode.SMSG_HOTFIX_CONNECT, 0x3F0003 },
-            { Opcode.SMSG_REALM_QUERY_RESPONSE, 0x3F0005 },
-            { Opcode.SMSG_QUERY_CREATURE_RESPONSE, 0x3F0006 },
-            { Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, 0x3F0007 },
-            { Opcode.SMSG_QUERY_NPC_TEXT_RESPONSE, 0x3F0008 },
-            { Opcode.SMSG_QUERY_PAGE_TEXT_RESPONSE, 0x3F0009 },
-            { Opcode.SMSG_INVALIDATE_PAGE_TEXT, 0x3F000A }, // NYI
-            { Opcode.SMSG_QUERY_PET_NAME_RESPONSE, 0x3F000B },
-            { Opcode.SMSG_QUERY_BATTLE_PET_NAME_RESPONSE, 0x3F000C },
-            { Opcode.SMSG_QUERY_PETITION_RESPONSE, 0x3F000D },
-            { Opcode.SMSG_CACHE_VERSION, 0x3F000E },
-            { Opcode.SMSG_CACHE_INFO, 0x3F000F },
-            { Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE, 0x3F0010 },
-            { Opcode.SMSG_TREASURE_PICKER_RESPONSE, 0x3F0011 },
-            { Opcode.SMSG_QUERY_ARENA_TEAM_RESPONSE, 0x3F0012 }, // NYI
+            { Opcode.SMSG_DB_REPLY, 0x3E0000 },
+            { Opcode.SMSG_AVAILABLE_HOTFIXES, 0x3E0001 },
+            { Opcode.SMSG_HOTFIX_MESSAGE, 0x3E0002 },
+            { Opcode.SMSG_HOTFIX_CONNECT, 0x3E0003 },
+            { Opcode.SMSG_REALM_QUERY_RESPONSE, 0x3E0005 },
+            { Opcode.SMSG_QUERY_CREATURE_RESPONSE, 0x3E0006 },
+            { Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, 0x3E0007 },
+            { Opcode.SMSG_QUERY_NPC_TEXT_RESPONSE, 0x3E0008 },
+            { Opcode.SMSG_QUERY_PAGE_TEXT_RESPONSE, 0x3E0009 },
+            { Opcode.SMSG_INVALIDATE_PAGE_TEXT, 0x3E000A }, // NYI
+            { Opcode.SMSG_QUERY_PET_NAME_RESPONSE, 0x3E000B },
+            { Opcode.SMSG_QUERY_BATTLE_PET_NAME_RESPONSE, 0x3E000C },
+            { Opcode.SMSG_QUERY_PETITION_RESPONSE, 0x3E000D },
+            { Opcode.SMSG_CACHE_VERSION, 0x3E000E },
+            { Opcode.SMSG_CACHE_INFO, 0x3E000F },
+            { Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE, 0x3E0010 },
+            { Opcode.SMSG_TREASURE_PICKER_RESPONSE, 0x3E0011 },
+            { Opcode.SMSG_QUERY_ARENA_TEAM_RESPONSE, 0x3E0012 }, // NYI
 
             { Opcode.SMSG_BATTLEFIELD_STATUS_NEED_CONFIRMATION, 0x400000 },
             { Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE, 0x400001 },
