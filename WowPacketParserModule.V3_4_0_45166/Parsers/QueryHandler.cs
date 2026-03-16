@@ -466,6 +466,18 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
 
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                GameObjectTemplateLocale localesGameObject = new GameObjectTemplateLocale
+                {
+                    Entry = (uint)entry.Key,
+                    Name = gameObject.Name,
+                    OpeningText = gameObject.OpeningText,
+                    ClosingText = gameObject.ClosingText
+                };
+
+                Storage.LocalesGameObject.Add(localesGameObject, packet.TimeSpan);
+            }
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
             ObjectName objectName = new ObjectName

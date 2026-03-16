@@ -66,6 +66,18 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.ReadByte("Unk Byte");
 
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                GameObjectTemplateLocale localesGameObject = new GameObjectTemplateLocale
+                {
+                    Entry = (uint)entry.Key,
+                    Name = gameObject.Name,
+                    OpeningText = gameObject.OpeningText,
+                    ClosingText = gameObject.ClosingText
+                };
+
+                Storage.LocalesGameObject.Add(localesGameObject, packet.TimeSpan);
+            }
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
             ObjectName objectName = new ObjectName
@@ -93,7 +105,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         public static void HandleGOCustomAnim(Packet packet)
         {
             var customAnim = packet.Holder.GameObjectCustomAnim = new();
-            
+
             var guid = new byte[8];
             packet.ReadBit("Unk bit");
             packet.StartBitStream(guid, 6, 3, 4);

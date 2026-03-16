@@ -3,6 +3,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using static Google.Protobuf.Compiler.CodeGeneratorResponse.Types;
 
 namespace WowPacketParserModule.V9_0_1_36216.Parsers
 {
@@ -68,6 +69,18 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
                 gameObject.RequiredLevel = query.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                GameObjectTemplateLocale localesGameObject = new GameObjectTemplateLocale
+                {
+                    Entry = (uint)entry.Key,
+                    Name = gameObject.Name,
+                    OpeningText = gameObject.OpeningText,
+                    ClosingText = gameObject.ClosingText
+                };
+
+                Storage.LocalesGameObject.Add(localesGameObject, packet.TimeSpan);
+            }
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
             ObjectName objectName = new ObjectName

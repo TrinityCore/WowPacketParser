@@ -143,5 +143,20 @@ namespace WowPacketParser.SQL.Builders
 
             return "SET NAMES 'utf8';" + Environment.NewLine + SQLUtil.Compare(Storage.PlayerChoiceResponseLocales, playerChoiceResponseDb, StoreNameType.None) + Environment.NewLine + "SET NAMES 'latin1';";
         }
+
+        [BuilderMethod]
+        public static string LocalesGameObject()
+        {
+            if (Storage.LocalesGameObject.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_template))
+                return string.Empty;
+
+            // pass empty list, because we want to select the whole db table (faster than select only needed columns)
+            var templatesDb = SQLDatabase.Get(new RowList<Store.Objects.GameObjectTemplateLocale>());
+
+            return "SET NAMES 'utf8';" + Environment.NewLine + SQLUtil.Compare(Storage.LocalesGameObject, templatesDb, StoreNameType.None) + Environment.NewLine + "SET NAMES 'latin1';";
+        }
     }
 }

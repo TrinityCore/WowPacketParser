@@ -72,6 +72,18 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ReadByte("Unk1 Byte");
 
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                GameObjectTemplateLocale localesGameObject = new GameObjectTemplateLocale
+                {
+                    Entry = (uint)entry.Key,
+                    Name = gameObject.Name,
+                    OpeningText = gameObject.OpeningText,
+                    ClosingText = gameObject.ClosingText
+                };
+
+                Storage.LocalesGameObject.Add(localesGameObject, packet.TimeSpan);
+            }
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
             ObjectName objectName = new ObjectName

@@ -55,6 +55,18 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
             packet.ReadByte("Unk1 Byte");
 
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                GameObjectTemplateLocale localesGameObject = new GameObjectTemplateLocale
+                {
+                    Entry = (uint)entry.Key,
+                    Name = gameObject.Name,
+                    OpeningText = gameObject.OpeningText,
+                    ClosingText = gameObject.ClosingText
+                };
+
+                Storage.LocalesGameObject.Add(localesGameObject, packet.TimeSpan);
+            }
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
             ObjectName objectName = new ObjectName
@@ -64,7 +76,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 Name = gameObject.Name
             };
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
-            
+
             query.Type = (uint)gameObject.Type.Value;
             query.Model = gameObject.DisplayID.Value;
             query.Name = gameObject.Name;

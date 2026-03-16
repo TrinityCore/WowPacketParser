@@ -64,6 +64,18 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
 
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                GameObjectTemplateLocale localesGameObject = new GameObjectTemplateLocale
+                {
+                    Entry = (uint)entry.Key,
+                    Name = gameObject.Name,
+                    OpeningText = gameObject.OpeningText,
+                    ClosingText = gameObject.ClosingText
+                };
+
+                Storage.LocalesGameObject.Add(localesGameObject, packet.TimeSpan);
+            }
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
             ObjectName objectName = new ObjectName
@@ -101,14 +113,14 @@ namespace WowPacketParser.Parsing.Parsers
             var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
             packet.ReadGuid("GUID");
         }
-        
+
         [Parser(Opcode.CMSG_GAME_OBJ_USE)]
         public static void HandleGOUse(Packet packet)
         {
             var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
             use.GameObject = packet.ReadGuid("GUID");
         }
-        
+
         [Parser(Opcode.CMSG_GAME_OBJ_REPORT_USE)]
         public static void HandleGOReportUse(Packet packet)
         {
