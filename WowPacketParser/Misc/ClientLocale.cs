@@ -25,6 +25,9 @@ namespace WowPacketParser.Misc
                 PacketLocaleString = "enUS";
             else
                 PacketLocaleString = locale;
+
+            if (!Enum.TryParse<LocaleConstant>(PacketLocaleString, out var _))
+                throw new InvalidDataException($"Invalid locale '{PacketLocaleString}'.");
         }
     }
 }
