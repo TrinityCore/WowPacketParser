@@ -341,7 +341,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void PrintComputedSplineMovementParams(Packet packet, double distance, PacketMonsterMove monsterMove, params object[] indexes)
         {
             packet.AddValue("Computed Distance", distance, indexes);
-            packet.AddValue("Computed Speed", (distance / monsterMove.MoveTime) * 1000, indexes);
+            var speed = packet.AddValue("Computed Speed", distance / monsterMove.MoveTime * 1000, indexes);
+            if (speed > 51)
+                packet.AddValue("Unlimited Speed", 1, indexes);
+
             if (monsterMove.Jump != null && monsterMove.Flags.HasAnyFlag(UniversalSplineFlag.Parabolic))
                 PrintComputedSplineMovementJumpHeight(packet, monsterMove.MoveTime - monsterMove.Jump.StartTime, monsterMove.Jump.Gravity, indexes);
             else if (monsterMove.SpellEffect != null && monsterMove.SpellEffect.JumpGravity > 0)
@@ -377,6 +380,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddValue("Computed Jump Height", height, indexes);
             packet.AddValue("Computed Jump Height (with default gravity)", heightWithDefaultGravity, indexes);
+
+            const double logHeightDelta = 0.01;
+            if (Math.Abs(height - heightWithDefaultGravity) > logHeightDelta)
+                packet.AddValue(height > heightWithDefaultGravity ? "Min Height" : "Max Height", height, indexes);
         }
 
         private static void ReadSplineMovement510(Packet packet, Vector3 pos)
