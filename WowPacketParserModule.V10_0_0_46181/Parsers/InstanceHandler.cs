@@ -152,7 +152,10 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         public static void HandleEncounterstart(Packet packet)
         {
             packet.ReadInt32("DungeonEncounterID");
-            packet.ReadInt32<DifficultyId>("DifficultyID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_1_65818))
+                packet.ReadInt16<DifficultyId>("DifficultyID");
+            else
+                packet.ReadInt32<DifficultyId>("DifficultyID");
             packet.ReadInt32("GroupSize");
             var count = packet.ReadUInt32();
 

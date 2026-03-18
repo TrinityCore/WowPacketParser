@@ -208,7 +208,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleEncounterStop(Packet packet)
         {
             packet.ReadInt32("EncounterID");
-            packet.ReadInt32<DifficultyId>("DifficultyID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_1_65818))
+                packet.ReadInt16<DifficultyId>("DifficultyID");
+            else
+                packet.ReadInt32<DifficultyId>("DifficultyID");
             packet.ReadInt32("GroupSize");
             packet.ReadBit("Success");
         }
