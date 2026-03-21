@@ -16,8 +16,8 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
         public System.Nullable<int> ConditionalItemAppearanceID { get; set; }
         public System.Nullable<ushort> ItemAppearanceModID { get; set; }
         public System.Nullable<ushort> ItemVisual { get; set; }
-        public System.Nullable<bool> Field_10 { get; set; }
-        public System.Nullable<bool> Field_11 { get; set; }
+        public System.Nullable<bool> HasTransmog { get; set; }
+        public System.Nullable<bool> HasIllusion { get; set; }
     }
 }
 
