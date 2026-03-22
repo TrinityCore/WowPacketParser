@@ -1077,7 +1077,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 ReadSpellCastLogData(packet, "LogData");
         }
 
-        [Parser(Opcode.SMSG_SPELL_START)]
+        [Parser(Opcode.SMSG_SPELL_START, ClientBranch.MoP)]
         public static void HandleSpellStart(Packet packet)
         {
             ReadSpellCastData(packet, "Cast");

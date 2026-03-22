@@ -98,6 +98,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         }
 
         [HasSniffData]
+        [Parser(Opcode.SMSG_AURA_UPDATE, ClientBranch.Classic)]
         [Parser(Opcode.SMSG_AURA_UPDATE, ClientBranch.TBC)]
         public static void HandleAuraUpdate(Packet packet)
         {
@@ -134,7 +135,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                     packet.ResetBitReader();
 
                     var hasCastUnit = packet.ReadBit("HasCastUnit", i);
-                    var hasCastItem = ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796) && packet.ReadBit("HasCastItem", i);
+                    var hasCastItem = (ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796) || ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_8_63829)) && packet.ReadBit("HasCastItem", i);
                     var hasDuration = packet.ReadBit("HasDuration", i);
                     var hasRemaining = packet.ReadBit("HasRemaining", i);
 
@@ -235,10 +236,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         public static void ReadSpellHealPrediction(Packet packet, params object[] idx)
         {
             packet.ReadInt32("Points", idx);
-            if (ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796))
-                packet.ReadInt32("Type", idx);
-            else
-                packet.ReadByte("Type", idx);
+            packet.ReadInt32("Type", idx);
             packet.ReadPackedGuid128("BeaconGUID", idx);
         }
 
@@ -252,18 +250,12 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         {
             packet.ResetBitReader();
 
-            if (ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796))
-                packet.ReadUInt32E<TargetFlag>("Flags", idx);
-            else
-                packet.ReadBitsE<TargetFlag>("Flags", 28, idx);
+            packet.ReadUInt32E<TargetFlag>("Flags", idx);
 
-            if (ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796))
-            {
-                var targetUnit = packet.ReadPackedGuid128("Unit", idx);
-                if (packetSpellData != null)
-                    packetSpellData.TargetUnit = targetUnit;
-                packet.ReadPackedGuid128("Item", idx);
-            }
+            var targetUnit = packet.ReadPackedGuid128("Unit", idx);
+            if (packetSpellData != null)
+                packetSpellData.TargetUnit = targetUnit;
+            packet.ReadPackedGuid128("Item", idx);
 
             if (ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796))
             {
@@ -276,14 +268,6 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             var hasOrient = packet.ReadBit("HasOrientation", idx);
             var hasMapID = packet.ReadBit("hasMapID ", idx);
             var nameLength = packet.ReadBits(7);
-
-            if (ClientVersion.RemovedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796))
-            {
-                var targetUnit = packet.ReadPackedGuid128("Unit", idx);
-                if (packetSpellData != null)
-                    packetSpellData.TargetUnit = targetUnit;
-                packet.ReadPackedGuid128("Item", idx);
-            }
 
             if (hasSrcLoc)
                 ReadLocation(packet, idx, "SrcLocation");
@@ -437,6 +421,13 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             var hasLog = packet.ReadBit();
             if (hasLog)
                 ReadSpellCastLogData(packet, "LogData");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_START, ClientBranch.Classic)]
+        [Parser(Opcode.SMSG_SPELL_START, ClientBranch.TBC)]
+        public static void HandleSpellStart(Packet packet)
+        {
+            ReadSpellCastData(packet, "Cast");
         }
     }
 }
