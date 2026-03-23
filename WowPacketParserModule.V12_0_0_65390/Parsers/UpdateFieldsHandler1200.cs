@@ -742,8 +742,8 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
             data.ConditionalItemAppearanceID = packet.ReadInt32("ConditionalItemAppearanceID", indexes);
             data.ItemAppearanceModID = packet.ReadUInt16("ItemAppearanceModID", indexes);
             data.ItemVisual = packet.ReadUInt16("ItemVisual", indexes);
-            data.Field_10 = packet.ReadBit("Field_10", indexes);
-            data.Field_11 = packet.ReadBit("Field_11", indexes);
+            data.HasTransmog = packet.ReadBit("HasTransmog", indexes);
+            data.HasIllusion = packet.ReadBit("HasIllusion", indexes);
             return data;
         }
 
@@ -759,11 +759,11 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
             {
                 if (changesMask[1])
                 {
-                    data.Field_10 = packet.ReadBit("Field_10", indexes);
+                    data.HasTransmog = packet.ReadBit("HasTransmog", indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.Field_11 = packet.ReadBit("Field_11", indexes);
+                    data.HasIllusion = packet.ReadBit("HasIllusion", indexes);
                 }
             }
             packet.ResetBitReader();

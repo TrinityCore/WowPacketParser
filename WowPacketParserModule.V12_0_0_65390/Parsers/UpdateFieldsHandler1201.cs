@@ -743,7 +743,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_1_65818
             data.ItemAppearanceModID = packet.ReadUInt16("ItemAppearanceModID", indexes);
             data.ItemVisual = packet.ReadUInt16("ItemVisual", indexes);
             data.ItemModifiedAppearanceID = packet.ReadUInt32("ItemModifiedAppearanceID", indexes);
-            data.Field_18 = packet.ReadByte("Field_18", indexes);
+            data.TransmogSlotOption = packet.ReadByte("TransmogSlotOption", indexes);
             data.HasTransmog = packet.ReadBit("HasTransmog", indexes);
             data.HasIllusion = packet.ReadBit("HasIllusion", indexes);
             return data;
@@ -797,7 +797,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_1_65818
                 }
                 if (changesMask[9])
                 {
-                    data.Field_18 = packet.ReadByte("Field_18", indexes);
+                    data.TransmogSlotOption = packet.ReadByte("TransmogSlotOption", indexes);
                 }
             }
             return data;
