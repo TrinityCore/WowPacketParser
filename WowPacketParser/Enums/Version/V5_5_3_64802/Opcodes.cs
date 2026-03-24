@@ -915,7 +915,7 @@ namespace WowPacketParser.Enums.Version.V5_5_3_64802
             { Opcode.SMSG_PET_BATTLE_MAX_GAME_LENGTH_WARNING, 0x3A00A1 },
             { Opcode.SMSG_START_ELAPSED_TIMER, 0x3A00A2 },
             { Opcode.SMSG_STOP_ELAPSED_TIMER, 0x3A00A3 },
-            { Opcode.SMSG_START_ELAPSED_TIMERS, 0x3A00A4 }, // ok
+            { Opcode.SMSG_START_ELAPSED_TIMERS, 0x3A00A4 }, //
             { Opcode.SMSG_CHALLENGE_MODE_START, 0x3A00A5 }, // NYI
             { Opcode.SMSG_CHALLENGE_MODE_UPDATE_DEATH_COUNT, 0x3A00A6 },
             { Opcode.SMSG_CHALLENGE_MODE_RESET, 0x3A00A7 },
@@ -927,7 +927,7 @@ namespace WowPacketParser.Enums.Version.V5_5_3_64802
             { Opcode.SMSG_CHALLENGE_MODE_REQUEST_LEADERS_RESULT, 0x3A00AF },
             { Opcode.SMSG_MYTHIC_PLUS_NEW_WEEK_RECORD, 0x3A00B1 },
             { Opcode.SMSG_RESPEC_WIPE_CONFIRM, 0x3A00B2 },
-            { Opcode.SMSG_LOOT_RESPONSE, 0x3A00B5 }, // tutaj +1 blad
+            { Opcode.SMSG_LOOT_RESPONSE, 0x3A00B5 }, //
             { Opcode.SMSG_LOOT_REMOVED, 0x3A00B6 },
             { Opcode.SMSG_COIN_REMOVED, 0x3A00B7 },
             { Opcode.SMSG_AE_LOOT_TARGETS, 0x3A00B8 },
@@ -1361,7 +1361,6 @@ namespace WowPacketParser.Enums.Version.V5_5_3_64802
             { Opcode.SMSG_CURRENCY_TRANSFER_LOG, 0x3A0342 }, // NYI
             { Opcode.SMSG_ACCOUNT_CONVERSION_STATE_UPDATE, 0x3A0345 }, // NYI
             { Opcode.SMSG_ACCOUNT_ITEM_COLLECTION_DATA, 0x3A0346 },
-            { Opcode.SMSG_SHOP_UNK, 0x3A034D },
 
             { Opcode.SMSG_CHAT_IGNORED_ACCOUNT_MUTED, 0x3F0000 },
             { Opcode.SMSG_CHAT, 0x3F0001 },
