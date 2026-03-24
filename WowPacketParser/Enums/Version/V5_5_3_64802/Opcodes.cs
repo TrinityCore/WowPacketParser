@@ -915,7 +915,7 @@ namespace WowPacketParser.Enums.Version.V5_5_3_64802
             { Opcode.SMSG_PET_BATTLE_MAX_GAME_LENGTH_WARNING, 0x3A00A1 },
             { Opcode.SMSG_START_ELAPSED_TIMER, 0x3A00A2 },
             { Opcode.SMSG_STOP_ELAPSED_TIMER, 0x3A00A3 },
-            { Opcode.SMSG_START_ELAPSED_TIMERS, 0x3A00A4 },
+            { Opcode.SMSG_START_ELAPSED_TIMERS, 0x3A00A4 }, // ok
             { Opcode.SMSG_CHALLENGE_MODE_START, 0x3A00A5 }, // NYI
             { Opcode.SMSG_CHALLENGE_MODE_UPDATE_DEATH_COUNT, 0x3A00A6 },
             { Opcode.SMSG_CHALLENGE_MODE_RESET, 0x3A00A7 },
@@ -927,8 +927,8 @@ namespace WowPacketParser.Enums.Version.V5_5_3_64802
             { Opcode.SMSG_CHALLENGE_MODE_REQUEST_LEADERS_RESULT, 0x3A00AF },
             { Opcode.SMSG_MYTHIC_PLUS_NEW_WEEK_RECORD, 0x3A00B1 },
             { Opcode.SMSG_RESPEC_WIPE_CONFIRM, 0x3A00B2 },
-            { Opcode.SMSG_LOOT_RESPONSE, 0x3A00B4 },
-            { Opcode.SMSG_LOOT_REMOVED, 0x3A00B5 },
+            { Opcode.SMSG_LOOT_RESPONSE, 0x3A00B5 }, // tutaj +1 blad
+            { Opcode.SMSG_LOOT_REMOVED, 0x3A00B6 },
             { Opcode.SMSG_COIN_REMOVED, 0x3A00B7 },
             { Opcode.SMSG_AE_LOOT_TARGETS, 0x3A00B8 },
             { Opcode.SMSG_AE_LOOT_TARGET_ACK, 0x3A00B9 },
@@ -948,40 +948,40 @@ namespace WowPacketParser.Enums.Version.V5_5_3_64802
             { Opcode.SMSG_BLACK_MARKET_BID_ON_ITEM_RESULT, 0x3A00C8 },
             { Opcode.SMSG_BLACK_MARKET_OUTBID, 0x3A00C9 },
             { Opcode.SMSG_BLACK_MARKET_WON, 0x3A00CA },
-            { Opcode.SMSG_SCENARIO_STATE, 0x3A00CB },
-            { Opcode.SMSG_SCENARIO_PROGRESS_UPDATE, 0x3A00CC },
-            { Opcode.SMSG_GROUP_NEW_LEADER, 0x3A00CD },
-            { Opcode.SMSG_SEND_RAID_TARGET_UPDATE_ALL, 0x3A00CE },
-            { Opcode.SMSG_SEND_RAID_TARGET_UPDATE_SINGLE, 0x3A00CF },
-            { Opcode.SMSG_RANDOM_ROLL, 0x3A00D0 },
-            { Opcode.SMSG_INSPECT_RESULT, 0x3A00D1 },
-            { Opcode.SMSG_ARENA_CROWD_CONTROL_SPELL_RESULT, 0x3A00D2 }, // NYI
-            { Opcode.SMSG_SCENARIO_POIS, 0x3A00D3 },
-            { Opcode.SMSG_INSTANCE_INFO, 0x3A00D4 },
-            { Opcode.SMSG_CONSOLE_WRITE, 0x3A00D5 }, // NYI
-            { Opcode.SMSG_PLAY_SCENE, 0x3A00D6 },
-            { Opcode.SMSG_CANCEL_SCENE, 0x3A00D7 },
-            { Opcode.SMSG_BATTLE_PET_ERROR, 0x3A00D8 },
-            { Opcode.SMSG_PET_BATTLE_QUEUE_PROPOSE_MATCH, 0x3A00D9 },
-            { Opcode.SMSG_PET_BATTLE_QUEUE_STATUS, 0x3A00DA },
-            { Opcode.SMSG_MAIL_COMMAND_RESULT, 0x3A00DB },
-            { Opcode.SMSG_NOTIFY_RECEIVED_MAIL, 0x3A00DC },
-            { Opcode.SMSG_ADD_BATTLENET_FRIEND_RESPONSE, 0x3A00DD }, // NYI
-            { Opcode.SMSG_ADDON_LIST_REQUEST, 0x3A00E2 }, // NYI
-            { Opcode.SMSG_ACHIEVEMENT_EARNED, 0x3A00E3 },
-            { Opcode.SMSG_BONUS_ROLL_EMPTY, 0x3A00E5 }, // NYI
-            { Opcode.SMSG_UPDATE_EXPANSION_LEVEL, 0x3A00E6 },
-            { Opcode.SMSG_CONTROL_UPDATE, 0x3A00E7 },
-            { Opcode.SMSG_DISPLAY_PROMOTION, 0x3A00EC },
-            { Opcode.SMSG_SERVER_FIRST_ACHIEVEMENTS, 0x3A00EE }, // NYI
-            { Opcode.SMSG_CORPSE_LOCATION, 0x3A00EF },
-            { Opcode.SMSG_REFRESH_COMPONENT, 0x3A00F1 }, // NYI
-            { Opcode.SMSG_DEBUG_MENU_MANAGER_FULL_UPDATE, 0x3A00F7 }, // NYI
-            { Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE, 0x3A0112 },
-            { Opcode.SMSG_ADD_LOSS_OF_CONTROL, 0x3A0113 },
-            { Opcode.SMSG_PET_BATTLE_DEBUG_QUEUE_DUMP_RESPONSE, 0x3A0117 }, // NYI
-            { Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x3A011A },
-            { Opcode.SMSG_BATTLE_PET_CAGE_DATE_ERROR, 0x3A011B }, // NYI
+            { Opcode.SMSG_SCENARIO_STATE, 0x3A00CC },
+            { Opcode.SMSG_SCENARIO_PROGRESS_UPDATE, 0x3A00CD },
+            { Opcode.SMSG_GROUP_NEW_LEADER, 0x3A00CE },
+            { Opcode.SMSG_SEND_RAID_TARGET_UPDATE_ALL, 0x3A00CF },
+            { Opcode.SMSG_SEND_RAID_TARGET_UPDATE_SINGLE, 0x3A00D0 },
+            { Opcode.SMSG_RANDOM_ROLL, 0x3A00D1 },
+            { Opcode.SMSG_INSPECT_RESULT, 0x3A00D2 },
+            { Opcode.SMSG_ARENA_CROWD_CONTROL_SPELL_RESULT, 0x3A00D3 }, // NYI
+            { Opcode.SMSG_SCENARIO_POIS, 0x3A00D4 },
+            { Opcode.SMSG_INSTANCE_INFO, 0x3A00D5 },
+            { Opcode.SMSG_CONSOLE_WRITE, 0x3A00D6 }, // NYI
+            { Opcode.SMSG_PLAY_SCENE, 0x3A00D7 },
+            { Opcode.SMSG_CANCEL_SCENE, 0x3A00D8 },
+            { Opcode.SMSG_BATTLE_PET_ERROR, 0x3A00D9 },
+            { Opcode.SMSG_PET_BATTLE_QUEUE_PROPOSE_MATCH, 0x3A00DA },
+            { Opcode.SMSG_PET_BATTLE_QUEUE_STATUS, 0x3A00DB },
+            { Opcode.SMSG_MAIL_COMMAND_RESULT, 0x3A00DC },
+            { Opcode.SMSG_NOTIFY_RECEIVED_MAIL, 0x3A00DD },
+            { Opcode.SMSG_ADD_BATTLENET_FRIEND_RESPONSE, 0x3A00DE }, // NYI
+            { Opcode.SMSG_ADDON_LIST_REQUEST, 0x3A00E3 }, // NYI
+            { Opcode.SMSG_ACHIEVEMENT_EARNED, 0x3A00E4 },
+            { Opcode.SMSG_BONUS_ROLL_EMPTY, 0x3A00E6 }, // NYI
+            { Opcode.SMSG_UPDATE_EXPANSION_LEVEL, 0x3A00E7 },
+            { Opcode.SMSG_CONTROL_UPDATE, 0x3A00E8 },
+            { Opcode.SMSG_DISPLAY_PROMOTION, 0x3A00ED },
+            { Opcode.SMSG_SERVER_FIRST_ACHIEVEMENTS, 0x3A00EF }, // NYI
+            { Opcode.SMSG_CORPSE_LOCATION, 0x3A00F0 },
+            { Opcode.SMSG_REFRESH_COMPONENT, 0x3A00F2 }, // NYI
+            { Opcode.SMSG_DEBUG_MENU_MANAGER_FULL_UPDATE, 0x3A00F8 }, // NYI
+            { Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE, 0x3A0113 },
+            { Opcode.SMSG_ADD_LOSS_OF_CONTROL, 0x3A0114 },
+            { Opcode.SMSG_PET_BATTLE_DEBUG_QUEUE_DUMP_RESPONSE, 0x3A0118 }, // NYI
+            { Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x3A011B },
+            { Opcode.SMSG_BATTLE_PET_CAGE_DATE_ERROR, 0x3A011C }, // NYI
             { Opcode.SMSG_TEXT_EMOTE, 0x3A011D },
             { Opcode.SMSG_PET_GOD_MODE, 0x3A011E }, // NYI
             { Opcode.SMSG_TAXI_NODE_STATUS, 0x3A011F },
@@ -1361,6 +1361,7 @@ namespace WowPacketParser.Enums.Version.V5_5_3_64802
             { Opcode.SMSG_CURRENCY_TRANSFER_LOG, 0x3A0342 }, // NYI
             { Opcode.SMSG_ACCOUNT_CONVERSION_STATE_UPDATE, 0x3A0345 }, // NYI
             { Opcode.SMSG_ACCOUNT_ITEM_COLLECTION_DATA, 0x3A0346 },
+            { Opcode.SMSG_SHOP_UNK, 0x3A034D },
 
             { Opcode.SMSG_CHAT_IGNORED_ACCOUNT_MUTED, 0x3F0000 },
             { Opcode.SMSG_CHAT, 0x3F0001 },
