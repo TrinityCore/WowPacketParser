@@ -103,13 +103,13 @@ namespace WowPacketParser.SQL.Builders
             if (!Storage.CreatureTemplates.IsEmpty() && Settings.TargetedDatabase != TargetedDatabase.Classic)
             {
                 var templatesDb = SQLDatabase.Get(Storage.CreatureTemplates.Values);
-                return SQLUtil.Compare(Storage.CreatureTemplates.Values, templatesDb, StoreNameType.Unit);
+                return SQLUtil.Compare(Storage.CreatureTemplates.Values, templatesDb, StoreNameType.Unit, Settings.UseOnDuplicateKeyUpdateForSplitTables);
             }
 
             if (!Storage.CreatureTemplatesClassic.IsEmpty() && Settings.TargetedDatabase == TargetedDatabase.Classic)
             {
                 var templatesDb = SQLDatabase.Get(Storage.CreatureTemplatesClassic);
-                return SQLUtil.Compare(Storage.CreatureTemplatesClassic, templatesDb, StoreNameType.Unit);
+                return SQLUtil.Compare(Storage.CreatureTemplatesClassic, templatesDb, StoreNameType.Unit, Settings.UseOnDuplicateKeyUpdateForSplitTables);
             }
 
             return string.Empty;
