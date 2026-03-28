@@ -63,7 +63,7 @@ namespace WowPacketParser
             {
                 var startTime = DateTime.Now;
 
-                DBC.DBC.Load();
+                DBC.DBC.Load().Wait();
 
                 var span = DateTime.Now.Subtract(startTime);
                 Trace.WriteLine($"DBC loaded in { span.ToFormattedString() }.");

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Proto;
@@ -86,24 +87,18 @@ namespace WowPacketParser.Store.Objects
         {
             // 3 is the most common spawnmask outside of continents although it is not correct in all cases
             // TODO: read map/instance db to guess correct spawnmask
-            if (Settings.UseDBC && DBC.DBC.MapSpawnMaskStores != null)
-            {
-                if (DBC.DBC.MapSpawnMaskStores.ContainsKey((int)Map))
-                    return DBC.DBC.MapSpawnMaskStores[(int)Map];
-            }
+            if (Settings.UseDBC && DBC.DBC.MapDifficultyStores.TryGetValue((int)Map, out var difficultyIds))
+                return difficultyIds.Aggregate(0, (a, b) => a | (1 << b));
 
             return MapIsContinent(Map) ? 1 : 3;
         }
 
         public List<int> GetDefaultSpawnDifficulties()
         {
-            if (Settings.UseDBC && DBC.DBC.MapDifficultyStores != null)
-            {
-                if (DBC.DBC.MapDifficultyStores.ContainsKey((int)Map))
-                    return DBC.DBC.MapDifficultyStores[(int)Map];
-            }
+            if (Settings.UseDBC && DBC.DBC.MapDifficultyStores.TryGetValue((int)Map, out var difficultyIds))
+                return difficultyIds;
 
-            return new List<int>();
+            return [];
         }
 
         private static bool MapIsContinent(uint mapId)
