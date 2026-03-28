@@ -196,10 +196,15 @@ namespace WowPacketParser.DBC
                 if (PhaseXPhaseGroup != null)
                     foreach (var phase in PhaseXPhaseGroup)
                     {
-                        if (!Phases.ContainsKey(phase.Value.PhaseGroupID))
-                            Phases.Add(phase.Value.PhaseGroupID, new List<ushort>() { phase.Value.PhaseID });
+                        if (!PhasesByGroup.TryGetValue(phase.Value.PhaseGroupID, out var phases))
+                            PhasesByGroup.Add(phase.Value.PhaseGroupID, [phase.Value.PhaseID]);
                         else
-                            Phases[phase.Value.PhaseGroupID].Add(phase.Value.PhaseID);
+                            phases.Add(phase.Value.PhaseID);
+
+                        if (!PhaseGroupsByPhase.TryGetValue(phase.Value.PhaseID, out var phaseGroups))
+                            PhaseGroupsByPhase.Add(phase.Value.PhaseID, [phase.Value.PhaseGroupID]);
+                        else
+                            phaseGroups.Add(phase.Value.PhaseGroupID);
                     }
             }), Task.Run(() =>
             {
@@ -216,22 +221,14 @@ namespace WowPacketParser.DBC
 
         public static HashSet<int> GetPhaseGroups(ICollection<ushort> phases)
         {
-            if (!phases.Any())
+            if (phases.Count == 0)
                 return new HashSet<int>();
 
-            HashSet<int> phaseGroups = new HashSet<int>();
+            var phaseGroups = new HashSet<int>();
 
-            foreach (var phaseGroup in Phases)
-            {
-                foreach (var phase in phaseGroup.Value)
-                {
-                    if (phases.Contains(phase))
-                    {
-                        phaseGroups.Add(phaseGroup.Key);
-                        break;
-                    }
-                }
-            }
+            foreach (var phase in phases)
+                if (PhaseGroupsByPhase.TryGetValue(phase, out var phaseGroupsIds))
+                    phaseGroups.UnionWith(phaseGroupsIds);
 
             return phaseGroups;
         }
@@ -249,7 +246,8 @@ namespace WowPacketParser.DBC
         public static readonly Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
         public static readonly Dictionary<uint, FactionEntry> FactionStores = new Dictionary<uint, FactionEntry>();
         public static readonly Dictionary<Tuple<uint, uint>, SpellEffectEntry> SpellEffectStores = new Dictionary<Tuple<uint, uint>, SpellEffectEntry>();
-        public static readonly Dictionary<int, List<ushort>> Phases = new Dictionary<int, List<ushort>>();
+        public static readonly Dictionary<int, List<ushort>> PhasesByGroup = new Dictionary<int, List<ushort>>();
+        private static readonly Dictionary<ushort, List<int>> PhaseGroupsByPhase = new Dictionary<ushort, List<int>>();
         public static readonly Dictionary<int, HashSet<int>> BroadcastTextDurations = new Dictionary<int, HashSet<int>>();
     }
 }

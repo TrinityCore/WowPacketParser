@@ -20,53 +20,57 @@ namespace WowPacketParser.Misc
                 switch (type)
                 {
                     case StoreNameType.Achievement:
-                        if (DBC.DBC.Achievement.ContainsKey(entry))
-                            name = DBC.DBC.Achievement[entry].Title;
+                        if (DBC.DBC.Achievement.TryGetValue(entry, out var achievement))
+                            name = achievement.Title;
                         break;
                     case StoreNameType.Area:
-                        if (DBC.DBC.AreaTable.ContainsKey(entry))
-                            name = DBC.DBC.AreaTable[entry].AreaName;
+                        if (DBC.DBC.AreaTable.TryGetValue(entry, out var area))
+                            name = area.AreaName;
                         break;
                     case StoreNameType.Unit:
-                        if (DBC.DBC.Creature.ContainsKey(entry))
-                            name = DBC.DBC.Creature[entry].Name;
+                        if (DBC.DBC.Creature.TryGetValue(entry, out var creature))
+                            name = creature.Name;
                         break;
                     case StoreNameType.CreatureFamily:
-                        if (DBC.DBC.CreatureFamily.ContainsKey(entry))
-                            name = DBC.DBC.CreatureFamily[entry].Name;
+                        if (DBC.DBC.CreatureFamily.TryGetValue(entry, out var creatureFamily))
+                            name = creatureFamily.Name;
                         break;
                     case StoreNameType.Criteria:
-                        if (DBC.DBC.CriteriaStores.ContainsKey((ushort)entry))
-                            name = DBC.DBC.CriteriaStores[(ushort)entry];
+                        if (DBC.DBC.CriteriaStores.TryGetValue((ushort)entry, out var criteriaName))
+                            name = criteriaName;
                         break;
                     case StoreNameType.Difficulty:
-                        if (DBC.DBC.Difficulty.ContainsKey(entry))
-                            name = DBC.DBC.Difficulty[entry].Name;
+                        if (DBC.DBC.Difficulty.TryGetValue(entry, out var difficulty))
+                            name = difficulty.Name;
                         break;
                     case StoreNameType.Faction:
-                        if (DBC.DBC.FactionStores.ContainsKey((uint)entry))
-                            name = DBC.DBC.FactionStores[(uint)entry].Name;
+                        if (DBC.DBC.FactionStores.TryGetValue((uint)entry, out var faction))
+                            name = faction.Name;
                         break;
                     case StoreNameType.Item:
-                        if (DBC.DBC.ItemSparse.ContainsKey(entry))
-                            name = DBC.DBC.ItemSparse[entry].Display;
+                        if (DBC.DBC.ItemSparse.TryGetValue(entry, out var item))
+                            name = item.Display;
                         break;
                     case StoreNameType.Map:
-                        if (DBC.DBC.Map.ContainsKey(entry))
-                            name = DBC.DBC.Map[entry].MapName;
+                        if (DBC.DBC.Map.TryGetValue(entry, out var map))
+                            name = map.MapName;
                         break;
                     case StoreNameType.Spell:
-                        if (DBC.DBC.SpellName.ContainsKey(entry))
-                            name = DBC.DBC.SpellName[entry].Name;
+                        if (DBC.DBC.SpellName.TryGetValue(entry, out var spell))
+                            name = spell.Name;
                         break;
                     case StoreNameType.Zone:
-                        if (DBC.DBC.Zones.ContainsKey((uint)entry))
-                            name = DBC.DBC.Zones[(uint)entry];
+                        if (DBC.DBC.Zones.TryGetValue((uint)entry, out var zone))
+                            name = zone;
+                        break;
+                    case StoreNameType.Phase:
+                        if (DBC.DBC.Phase.TryGetValue(entry, out var phase))
+                            name = ((DBCPhaseFlags)phase.Flags).ToString();
                         break;
                 }
                 if (name != string.Empty)
                 {
-                     if (withEntry)
+                    if (withEntry)
                         return entry + " (" + name + ")";
                     return name;
                 }
@@ -78,10 +82,10 @@ namespace WowPacketParser.Misc
             if (type != StoreNameType.Map && entry == 0)
                 return "0"; // map can be 0
 
-            if (!SQLDatabase.NameStores.ContainsKey(type))
+            if (!SQLDatabase.NameStores.TryGetValue(type, out var store))
                 return entryStr;
 
-            if (!SQLDatabase.NameStores[type].TryGetValue(entry, out name))
+            if (!store.TryGetValue(entry, out name))
                 if (!withEntry)
                     return "-Unknown-";
 

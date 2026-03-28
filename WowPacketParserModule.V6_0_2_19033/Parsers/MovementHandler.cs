@@ -368,17 +368,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             phaseShift.PersonalGuid = packet.ReadPackedGuid128("PersonalGUID");
             for (var i = 0; i < count; ++i)
             {
-                var flags = packet.ReadUInt16("PhaseFlags", i);
-                var id = packet.ReadUInt16("Id", i);
+                packet.ReadUInt16E<PhaseFlags>("PhaseFlags", i);
+                var id = packet.ReadUInt16<PhaseId>("ID", i);
                 phaseShift.Phases.Add(id);
                 CoreParsers.MovementHandler.ActivePhases.Add(id, true);
             }
 
-            if (Settings.UseDBC && DBC.Phases.Any())
-            {
+            if (DBC.PhasesByGroup.Count != 0)
                 foreach (var phaseGroup in DBC.GetPhaseGroups(CoreParsers.MovementHandler.ActivePhases.Keys))
-                    packet.WriteLine($"PhaseGroup: { phaseGroup } Phases: { string.Join(" - ", DBC.Phases[phaseGroup]) }");
-            }
+                    packet.WriteLine($"PhaseGroup: {phaseGroup} Phases: {string.Join(" - ", DBC.PhasesByGroup[phaseGroup])}");
 
             var preloadMapIDCount = packet.ReadInt32("PreloadMapIDsCount") / 2;
             for (var i = 0; i < preloadMapIDCount; ++i)

@@ -917,7 +917,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.AddValue("Phases count", count);
             for (var i = 0; i < count; ++i)
             {
-                var phaseId = packet.ReadUInt16("Phase id", i);
+                var phaseId = packet.ReadUInt16<PhaseId>("ID", i);
                 phaseShift.Phases.Add(phaseId);
                 CoreParsers.MovementHandler.ActivePhases.Add(phaseId, true); // Phase.dbc
             }

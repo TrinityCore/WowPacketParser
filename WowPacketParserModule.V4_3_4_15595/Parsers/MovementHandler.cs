@@ -2732,16 +2732,14 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var count = packet.ReadUInt32("PhaseShiftCount") / 2;
             for (var i = 0; i < count; ++i)
             {
-                var id = packet.ReadUInt16("Id", i);
+                var id = packet.ReadUInt16<PhaseId>("Id", i);
                 phaseShift.Phases.Add(id);
                 CoreParsers.MovementHandler.ActivePhases.Add(id, true);
             }
 
-            if (DBC.Phases.Any())
-            {
+            if (DBC.PhasesByGroup.Count != 0)
                 foreach (var phaseGroup in DBC.GetPhaseGroups(CoreParsers.MovementHandler.ActivePhases.Keys))
-                    packet.WriteLine($"PhaseGroup: { phaseGroup } Phases: { string.Join(" - ", DBC.Phases[phaseGroup]) }");
-            }
+                    packet.WriteLine($"PhaseGroup: {phaseGroup} Phases: {string.Join(" - ", DBC.PhasesByGroup[phaseGroup])}");
 
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 0);

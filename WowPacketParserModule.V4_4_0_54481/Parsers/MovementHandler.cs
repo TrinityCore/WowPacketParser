@@ -445,24 +445,16 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             {
                 packet.ReadUInt32E<PhaseFlags>("PhaseFlags", i);
 
-                var id = packet.ReadUInt16();
+                var id = packet.ReadUInt16<PhaseId>("ID", i);
                 phaseShift.Phases.Add(id);
-
-                if (Settings.UseDBC && DBC.Phase.ContainsKey(id))
-                {
-                    packet.WriteLine($"[{i}] ID: {id} ({StoreGetters.GetName(StoreNameType.PhaseId, id, false)}) Flags: {(DBCPhaseFlags)DBC.Phase[id].Flags}");
-                }
-                else
-                    packet.AddValue($"ID", id, i);
 
                 CoreParsers.MovementHandler.ActivePhases.Add(id, true);
             }
 
-            if (DBC.Phases.Any())
-            {
+            if (DBC.PhasesByGroup.Count != 0)
                 foreach (var phaseGroup in DBC.GetPhaseGroups(CoreParsers.MovementHandler.ActivePhases.Keys))
-                    packet.WriteLine($"PhaseGroup: {phaseGroup} Phases: {string.Join(" - ", DBC.Phases[phaseGroup])}");
-            }
+                    packet.WriteLine($"PhaseGroup: {phaseGroup} Phases: {string.Join(" - ", DBC.PhasesByGroup[phaseGroup])}");
+
             var visibleMapIDsCount = packet.ReadInt32("VisibleMapIDsCount") / 2;
             for (var i = 0; i < visibleMapIDsCount; ++i)
                 phaseShift.VisibleMaps.Add((uint)packet.ReadInt16<MapId>("VisibleMapID", i));
