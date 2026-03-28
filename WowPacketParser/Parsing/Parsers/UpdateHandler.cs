@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Xml.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -125,7 +126,7 @@ namespace WowPacketParser.Parsing.Parsers
             obj.Area = WorldStateHandler.CurrentAreaId;
             obj.Zone = WorldStateHandler.CurrentZoneId;
             obj.PhaseMask = (uint)MovementHandler.CurrentPhaseMask;
-            obj.Phases = new HashSet<ushort>(MovementHandler.ActivePhases.Keys);
+            obj.Phases = new HashSet<ushort>(MovementHandler.ActivePhases.Select(kvp => kvp.Key) /*copy using enumerator that doesn't lock ConcurrentDictionary*/);
             obj.DifficultyID = MovementHandler.CurrentDifficultyID;
 
             return obj;
