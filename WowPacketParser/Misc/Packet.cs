@@ -3,11 +3,9 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
-using WowPacketParser.Parsing.Parsers;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -248,7 +246,7 @@ namespace WowPacketParser.Misc
                 return obj;
 
             Writer ??= new StringBuilder();
-            Writer.AppendLine($"{GetIndexString(indexes)}{name}: {obj}");
+            Writer.AppendObjectPropertyPath(indexes).Append(name).Append(": ").Append(obj).AppendLine();
 
             return obj;
         }
@@ -259,7 +257,7 @@ namespace WowPacketParser.Misc
                 return;
 
             Writer ??= new StringBuilder();
-            Writer.AppendLine($"{GetIndexString(indexes)}{value}");
+            Writer.AppendObjectPropertyPath(indexes).Append(value).AppendLine();
         }
     }
 }

@@ -455,9 +455,8 @@ namespace WowPacketParser.Misc
         public byte[] ReadBytesTable(string name, int length, params object[] indexes)
         {
             var val = ReadBytes(length);
-            AddValue(name, Utilities.ByteArrayToHexTable(val, true,
-                GetIndexString(indexes).Length + name.Length + ": ".Length),
-                indexes);
+            AddLine(name, indexes);
+            Write(Utilities.ByteArrayToHexTable(val, true));
             return val;
         }
 
@@ -759,18 +758,6 @@ namespace WowPacketParser.Misc
             if (Settings.DebugReads)
                 return $"{value} (0x{value:X4}) ({name})";
             return value + " (" + name + ")";
-        }
-
-        private static string GetIndexString(params object[] values)
-        {
-            var list = values.Flatten();
-
-            return list.Where(value => value != null)
-                .Aggregate(string.Empty, (current, value) =>
-                {
-                    var s = value is string ? "()" : "[]";
-                    return current + (s[0] + value.ToString() + s[1] + ' ');
-                });
         }
     }
 }

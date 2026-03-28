@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using WowPacketParser.Enums;
 using WowPacketParser.Proto;
@@ -174,6 +175,29 @@ namespace WowPacketParser.Misc
                     yield return child;
                 }
             }
+        }
+
+        public static StringBuilder AppendObjectPropertyPath(this StringBuilder builder, object[] keys)
+        {
+            foreach (var value in keys)
+            {
+                if (value == null)
+                    continue;
+
+                switch (value)
+                {
+                    case string str:
+                        builder.Append('(').Append(str).Append(") ");
+                        break;
+                    case object[] nested:
+                        builder.AppendObjectPropertyPath(nested);
+                        break;
+                    default:
+                        builder.Append('[').Append(value).Append("] ");
+                        break;
+                }
+            }
+            return builder;
         }
 
         public static string GetExtension(this FileCompression value)
