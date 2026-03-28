@@ -6,39 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Sigil" Version="5.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\WowPacketParserModule.Substructures\WowPacketParserModule.Substructures.csproj">
-            <EmbedInteropTypes>false</EmbedInteropTypes>
-            <Private>true</Private>
-        </ProjectReference>
-        <ProjectReference Include="..\WowPacketParserModule.V6_0_2_19033\WowPacketParserModule.V6_0_2_19033.csproj">
-            <EmbedInteropTypes>false</EmbedInteropTypes>
-            <Private>false</Private>
-        </ProjectReference>
-        <ProjectReference Include="..\WowPacketParserModule.V7_0_3_22248\WowPacketParserModule.V7_0_3_22248.csproj">
-            <EmbedInteropTypes>false</EmbedInteropTypes>
-            <Private>false</Private>
-        </ProjectReference>
-        <ProjectReference Include="..\WowPacketParserModule.V8_0_1_27101\WowPacketParserModule.V8_0_1_27101.csproj">
-            <EmbedInteropTypes>false</EmbedInteropTypes>
-            <Private>false</Private>
-        </ProjectReference>
-        <ProjectReference Include="..\WowPacketParserModule.V9_0_1_36216\WowPacketParserModule.V9_0_1_36216.csproj">
-            <EmbedInteropTypes>false</EmbedInteropTypes>
-            <Private>false</Private>
-        </ProjectReference>
-        <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
-            <Private>false</Private>
-            <EmbedInteropTypes>false</EmbedInteropTypes>
-        </ProjectReference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="DBFileReaderLib">
-            <HintPath>..\packages\DBFileReaderLib.1.0.0.0\lib\DBFileReaderLib.dll</HintPath>
-        </Reference>
+        <ProjectReference Include="..\WowPacketParserModule.V9_0_1_36216\WowPacketParserModule.V9_0_1_36216.csproj" />
     </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Company>TrinityCore</Company>
-        <Copyright>Copyright © 2010-2024</Copyright>
+        <Copyright>Copyright © 2010-2026</Copyright>
         <PackageProjectUrl>https://www.trinitycore.org/</PackageProjectUrl>
         <NeutralLanguage>en</NeutralLanguage>
         <RepositoryUrl>https://github.com/TrinityCore/WowPacketParser</RepositoryUrl>
@@ -15,4 +15,10 @@
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
+    <ItemDefinitionGroup>
+        <ProjectReference Condition="'$(OutputType)' == 'library'">
+            <EmbedInteropTypes>false</EmbedInteropTypes>
+            <Private>false</Private>
+        </ProjectReference>
+    </ItemDefinitionGroup>
 </Project>

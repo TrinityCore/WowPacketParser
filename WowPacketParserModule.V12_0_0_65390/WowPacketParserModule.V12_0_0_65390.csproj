@@ -6,15 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WowPacketParserModule.V11_0_0_55666\WowPacketParserModule.V11_0_0_55666.csproj">
-            <EmbedInteropTypes>false</EmbedInteropTypes>
-            <Private>false</Private>
-        </ProjectReference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="DBFileReaderLib">
-            <HintPath>..\packages\DBFileReaderLib.1.0.0.0\lib\DBFileReaderLib.dll</HintPath>
-        </Reference>
+        <ProjectReference Include="..\WowPacketParserModule.V11_0_0_55666\WowPacketParserModule.V11_0_0_55666.csproj" />
     </ItemGroup>
 </Project>

@@ -13,30 +13,30 @@ namespace WowPacketParser.DBC
 {
     public static class DBC
     {
-        public static Storage<AreaTableEntry> AreaTable { get; set; }
-        public static Storage<AchievementEntry> Achievement { get; set; }
-        public static Storage<AnimationDataEntry> AnimationData { get; set; }
-        public static Storage<BroadcastTextEntry> BroadcastText { get; set; }
-        public static Storage<BroadcastTextDurationEntry> BroadcastTextDuration { get; set; }
-        public static Storage<ConversationLineEntry> ConversationLine { get; set; }
-        public static Storage<CreatureEntry> Creature { get; set; }
-        public static Storage<CreatureDifficultyEntry> CreatureDifficulty { get; set; }
-        public static Storage<CreatureFamilyEntry> CreatureFamily { get; set; }
-        public static Storage<CreatureDisplayInfoEntry> CreatureDisplayInfo { get; set; }
-        public static Storage<CriteriaTreeEntry> CriteriaTree { get; set; }
-        public static Storage<CriteriaEntry> Criteria { get; set; }
-        public static Storage<DifficultyEntry> Difficulty { get; set; }
-        public static Storage<FactionEntry> Faction { get; set; }
-        public static Storage<FactionTemplateEntry> FactionTemplate { get; set; }
-        public static Storage<ItemEntry> Item { get; set; }
-        public static Storage<ItemSparseEntry> ItemSparse { get; set; }
-        public static Storage<MapEntry> Map { get; set; }
-        public static Storage<MapDifficultyEntry> MapDifficulty { get; set; }
-        public static Storage<QuestLineXQuestEntry> QuestLineXQuest { get; set; }
-        public static Storage<PhaseEntry> Phase { get; set; }
-        public static Storage<PhaseXPhaseGroupEntry> PhaseXPhaseGroup { get; set; }
-        public static Storage<SpellEffectEntry> SpellEffect { get; set; }
-        public static Storage<SpellNameEntry> SpellName { get; set; }
+        internal static Storage<AreaTableEntry> AreaTable { get; set; }
+        internal static Storage<AchievementEntry> Achievement { get; set; }
+        internal static Storage<AnimationDataEntry> AnimationData { get; set; }
+        internal static Storage<BroadcastTextEntry> BroadcastText { get; set; }
+        internal static Storage<BroadcastTextDurationEntry> BroadcastTextDuration { get; set; }
+        internal static Storage<ConversationLineEntry> ConversationLine { get; set; }
+        internal static Storage<CreatureEntry> Creature { get; set; }
+        internal static Storage<CreatureDifficultyEntry> CreatureDifficulty { get; set; }
+        internal static Storage<CreatureFamilyEntry> CreatureFamily { get; set; }
+        internal static Storage<CreatureDisplayInfoEntry> CreatureDisplayInfo { get; set; }
+        internal static Storage<CriteriaTreeEntry> CriteriaTree { get; set; }
+        internal static Storage<CriteriaEntry> Criteria { get; set; }
+        internal static Storage<DifficultyEntry> Difficulty { get; set; }
+        internal static Storage<FactionEntry> Faction { get; set; }
+        internal static Storage<FactionTemplateEntry> FactionTemplate { get; set; }
+        internal static Storage<ItemEntry> Item { get; set; }
+        internal static Storage<ItemSparseEntry> ItemSparse { get; set; }
+        internal static Storage<MapEntry> Map { get; set; }
+        internal static Storage<MapDifficultyEntry> MapDifficulty { get; set; }
+        internal static Storage<QuestLineXQuestEntry> QuestLineXQuest { get; set; }
+        internal static Storage<PhaseEntry> Phase { get; set; }
+        internal static Storage<PhaseXPhaseGroupEntry> PhaseXPhaseGroup { get; set; }
+        internal static Storage<SpellEffectEntry> SpellEffect { get; set; }
+        internal static Storage<SpellNameEntry> SpellName { get; set; }
 
         private static string GetDBCPath()
         {

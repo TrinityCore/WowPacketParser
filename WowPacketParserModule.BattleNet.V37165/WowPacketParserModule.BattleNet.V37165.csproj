@@ -1,14 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="../default.props" />
 
-    <ItemGroup>
-        <PackageReference Include="Sigil" Version="5.0.0" />
-    </ItemGroup>
+    <PropertyGroup>
+        <OutputPath>../WowPacketParser/bin/$(Configuration)/Parsers/</OutputPath>
+    </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
-            <Private>false</Private>
-            <EmbedInteropTypes>false</EmbedInteropTypes>
-        </ProjectReference>
+        <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj" />
     </ItemGroup>
 </Project>

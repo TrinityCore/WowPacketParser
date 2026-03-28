@@ -6,22 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Sigil" Version="5.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\WowPacketParserModule.Substructures\WowPacketParserModule.Substructures.csproj" />
         <ProjectReference Include="..\WowPacketParserModule.V10_0_0_46181\WowPacketParserModule.V10_0_0_46181.csproj" />
-        <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
-            <Private>false</Private>
-            <EmbedInteropTypes>false</EmbedInteropTypes>
-        </ProjectReference>
     </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="DBFileReaderLib">
-            <HintPath>..\packages\DBFileReaderLib.1.0.0.0\lib\DBFileReaderLib.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-
 </Project>
