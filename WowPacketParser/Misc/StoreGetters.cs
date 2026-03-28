@@ -67,6 +67,10 @@ namespace WowPacketParser.Misc
                         if (DBC.DBC.Phase.TryGetValue(entry, out var phase))
                             name = ((DBCPhaseFlags)phase.Flags).ToString();
                         break;
+                    case StoreNameType.QuestXQuestLine:
+                        if (DBC.DBC.QuestLineXQuest.TryGetValue(entry, out var questXQuestLine))
+                            name = $"QuestID: {questXQuestLine.QuestID} QuestLineID: {questXQuestLine.QuestLineID}";
+                        break;
                 }
                 if (name != string.Empty)
                 {

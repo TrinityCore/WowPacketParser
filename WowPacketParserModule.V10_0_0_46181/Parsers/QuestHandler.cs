@@ -348,27 +348,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 
             for (int i = 0; i < questLineXQuestCount; i++)
             {
-                var questLineXQuestId = packet.ReadUInt32();
-
-                if (Settings.UseDBC && DBC.QuestLineXQuest.ContainsKey((int)questLineXQuestId))
-                {
-                    if (DBC.QuestLineXQuest.TryGetValue((int)questLineXQuestId, out var questLineXQuest))
-                    {
-                        var questLineId = questLineXQuest.QuestLineID;
-                        var questId = questLineXQuest.QuestID;
-
-                        UIMapQuestLine uiMapQuestLine = new()
-                        {
-                            UIMapId = (uint)uiMap,
-                            QuestLineId = questLineId
-                        };
-                        Storage.UIMapQuestLines.Add(uiMapQuestLine, packet.TimeSpan);
-
-                        packet.WriteLine($"[{i}] QuestLineXQuestID: {questLineXQuestId} (QuestID: {questId} QuestLineID: {questLineId})");
-                    }
-                }
-                else
-                    packet.AddValue($"QuestLineXQuestID", questLineXQuestId, i);
+                var questLineXQuestId = packet.ReadUInt32<QuestXQuestLineId>("QuestLineXQuestID", i);
+                Storage.UIMapQuestLines.Add(new() { UIMapId = (uint)uiMap, QuestXQuestLineID = questLineXQuestId }, packet.TimeSpan);
             }
 
             for (int i = 0; i < questCount; i++)

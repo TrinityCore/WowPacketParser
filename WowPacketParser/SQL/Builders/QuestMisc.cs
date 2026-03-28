@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Linq;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -188,12 +189,20 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
                 return string.Empty;
 
-            if (Storage.UIMapQuestLines.IsEmpty())
+            var filteredUiMapQuestLines = Storage.UIMapQuestLines.Where(ui =>
+            {
+                if (DBC.DBC.QuestLineXQuest.TryGetValue((int)ui.Item1.QuestXQuestLineID, out var questLineXQuest))
+                    ui.Item1.QuestLineId = questLineXQuest.QuestLineID;
+
+                return ui.Item1.QuestLineId != null;
+            }).ToList();
+
+            if (filteredUiMapQuestLines.Count == 0)
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.UIMapQuestLines);
+            var templatesDb = SQLDatabase.Get(filteredUiMapQuestLines);
 
-            return SQLUtil.Compare(Storage.UIMapQuestLines, templatesDb, StoreNameType.None);
+            return SQLUtil.Compare(filteredUiMapQuestLines, templatesDb, StoreNameType.None);
         }
 
         [BuilderMethod]
