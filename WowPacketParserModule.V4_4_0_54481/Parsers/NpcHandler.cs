@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -240,46 +239,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             Trainer trainer = new Trainer();
 
             WowGuid guid = packet.ReadPackedGuid128("TrainerGUID");
-            bool hasFaction = false;
-            float discount = 1.0f;
-
-            if (Settings.UseDBC && Settings.RecalcDiscount)
-                if (Storage.Objects != null && Storage.Objects.ContainsKey(guid))
-                {
-                    WoWObject obj = Storage.Objects[guid].Item1;
-                    if (obj.Type == ObjectType.Unit)
-                    {
-                        int factionTemplateId = (obj as Unit).UnitData.FactionTemplate ?? 0;
-                        int faction = 0;
-
-                        if (factionTemplateId != 0 && DBC.FactionTemplate.ContainsKey(factionTemplateId))
-                            faction = DBC.FactionTemplate[factionTemplateId].Faction;
-
-                        ulong reputation = 0;
-
-                        if (CoreParsers.AchievementHandler.FactionReputationStore.ContainsKey(faction))
-                        {
-                            reputation = CoreParsers.AchievementHandler.FactionReputationStore[faction];
-                            hasFaction = true;
-                        }
-
-                        uint multiplier = 0;
-
-                        if (reputation >= 3000) // Friendly
-                            multiplier = 1;
-                        if (reputation >= 9000) // Honored
-                            multiplier = 2;
-                        if (reputation >= 21000) // Revered
-                            multiplier = 3;
-                        if (reputation >= 42000) // Exalted
-                            multiplier = 4;
-
-                        if (multiplier != 0)
-                            discount = 1.0f - 0.05f * multiplier;
-
-                        packet.WriteLine("ReputationDiscount: {0}%", (int)((discount * 100) - 100));
-                    }
-                }
+            float? discount = CoreParsers.NpcHandler.GetFactionVendorDiscount(guid);
 
             trainer.Type = packet.ReadInt32E<TrainerType>("TrainerType");
             trainer.Id = packet.ReadUInt32("TrainerID");
@@ -296,9 +256,10 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 uint moneyCost = packet.ReadUInt32("MoneyCost", i);
                 uint moneyCostOriginal = moneyCost;
 
-                if (Settings.UseDBC && Settings.RecalcDiscount && hasFaction)
+                if (Settings.UseDBC && Settings.RecalcDiscount && discount != null)
                 {
-                    moneyCostOriginal = (uint)(Math.Round((moneyCost / discount) / 5)) * 5;
+                    moneyCostOriginal = (uint)(Math.Round((moneyCost / discount.Value) / 5)) * 5;
+                    packet.WriteLine("[{0}] ReputationDiscount: {1}%", i, (int)(100 - (discount * 100)));
                     packet.WriteLine("[{0}] MoneyCostOriginal: {1}", i, moneyCostOriginal);
                     trainerSpell.FactionHelper = "MoneyCost recalculated";
                 }

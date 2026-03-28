@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -158,6 +157,31 @@ namespace WowPacketParser.Parsing.Parsers
 
             LastGossipOption.Reset();
             TempGossipOptionPOI.Reset();
+        }
+
+        public static float? GetFactionVendorDiscount(WowGuid vendorGuid)
+        {
+            if (Settings.UseDBC && Settings.RecalcDiscount && Storage.Objects.TryGetValue(vendorGuid, out WoWObject obj) && obj is Unit unit)
+            {
+                int factionTemplateId = unit.UnitData.FactionTemplate ?? 0;
+                int faction = 0;
+                if (DBC.DBC.FactionTemplate.TryGetValue(factionTemplateId, out var factionEntry))
+                    faction = factionEntry.Faction;
+
+                if (!AchievementHandler.FactionReputationStore.TryGetValue(faction, out var reputation))
+                    return 1.0f;
+
+                return reputation switch
+                {
+                    >= 42000 => 0.80f, // Exalted
+                    >= 21000 => 0.85f, // Revered
+                    >= 9000 => 0.90f, // Honored
+                    >= 3000 => 0.95f, // Friendly
+                    _ => 1.0f
+                };
+            }
+
+            return null;
         }
 
         [Parser(Opcode.SMSG_GOSSIP_POI)]
