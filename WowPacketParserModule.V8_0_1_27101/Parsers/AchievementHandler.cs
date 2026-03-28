@@ -1,4 +1,3 @@
-using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -11,8 +10,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
         public static void HandleCriteriaPlayer(Packet packet)
         {
-            int criteriaId = packet.ReadInt32<CriteriaId>("CriteriaID");
-            ulong quantity = (ulong)packet.ReadInt64("Quantity");
+            var criteriaId = packet.ReadInt32<CriteriaId>("CriteriaID");
+            var quantity = packet.ReadUInt64("Quantity");
             packet.ReadPackedGuid128("PlayerGUID");
             packet.ReadInt32("Flags");
             packet.ReadPackedTime("CurrentTime");
@@ -26,10 +25,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (hasDynamicID)
                 packet.ReadUInt64("DynamicID");
 
-            if (Settings.UseDBC)
-                if (DBC.Criteria.ContainsKey(criteriaId))
-                    if (DBC.Criteria[criteriaId].Type == 46)
-                        CoreParsers.AchievementHandler.FactionReputationStore[DBC.Criteria[criteriaId].Asset] = quantity;
+            CoreParsers.AchievementHandler.TryUpdateFactionStandingFromCriteria(criteriaId, quantity);
         }
     }
 }

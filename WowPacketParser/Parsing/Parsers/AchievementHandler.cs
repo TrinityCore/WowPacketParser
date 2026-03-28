@@ -9,6 +9,12 @@ namespace WowPacketParser.Parsing.Parsers
     {
         public static Dictionary<int, ulong> FactionReputationStore { get; } = new Dictionary<int, ulong>();
 
+        public static void TryUpdateFactionStandingFromCriteria(int criteriaId, ulong quantity)
+        {
+            if (Settings.UseDBC && DBC.DBC.Criteria.TryGetValue(criteriaId, out var criteria) && criteria.Type == 46)
+                FactionReputationStore[criteria.Asset] = quantity;
+        }
+
         [Parser(Opcode.SMSG_ACHIEVEMENT_DELETED)]
         [Parser(Opcode.SMSG_CRITERIA_DELETED)]
         public static void HandleDeleted(Packet packet)

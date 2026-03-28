@@ -1,5 +1,4 @@
-﻿using WowPacketParser.DBC;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -33,10 +32,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             if (hasDynamicID)
                 packet.ReadUInt64("DynamicID", indexes);
 
-            if (Settings.UseDBC)
-                if (DBC.Criteria.ContainsKey(criteriaId))
-                    if (DBC.Criteria[criteriaId].Type == 46)
-                        CoreParsers.AchievementHandler.FactionReputationStore[DBC.Criteria[criteriaId].Asset] = quantity;
+            CoreParsers.AchievementHandler.TryUpdateFactionStandingFromCriteria(criteriaId, quantity);
         }
 
         public static void ReadAllAchievements(Packet packet, params object[] idx)
@@ -61,7 +57,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         public static void HandleCriteriaPlayer(Packet packet)
         {
             int criteriaId = packet.ReadInt32<CriteriaId>("CriteriaID");
-            ulong quantity = (ulong)packet.ReadInt64("Quantity");
+            ulong quantity = packet.ReadUInt64("Quantity");
             packet.ReadPackedGuid128("PlayerGUID");
             packet.ReadInt32("Unused1015");
             packet.ReadInt32("Flags");
@@ -74,10 +70,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             if (hasDynamicID)
                 packet.ReadUInt64("DynamicID");
 
-            if (Settings.UseDBC)
-                if (DBC.Criteria.ContainsKey(criteriaId))
-                    if (DBC.Criteria[criteriaId].Type == 46)
-                        CoreParsers.AchievementHandler.FactionReputationStore[DBC.Criteria[criteriaId].Asset] = quantity;
+            CoreParsers.AchievementHandler.TryUpdateFactionStandingFromCriteria(criteriaId, quantity);
         }
 
         [Parser(Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE)]

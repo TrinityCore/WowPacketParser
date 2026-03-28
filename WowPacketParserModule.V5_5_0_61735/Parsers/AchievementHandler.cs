@@ -1,5 +1,4 @@
-﻿using WowPacketParser.DBC;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -34,10 +33,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             if (hasDynamicID)
                 packet.ReadUInt64("DynamicID", indexes);
 
-            if (Settings.UseDBC)
-                if (DBC.Criteria.ContainsKey(criteriaId))
-                    if (DBC.Criteria[criteriaId].Type == 46)
-                        CoreParsers.AchievementHandler.FactionReputationStore[DBC.Criteria[criteriaId].Asset] = quantity;
+            CoreParsers.AchievementHandler.TryUpdateFactionStandingFromCriteria(criteriaId, quantity);
         }
 
         public static void ReadAllAchievements(Packet packet, params object[] idx)
