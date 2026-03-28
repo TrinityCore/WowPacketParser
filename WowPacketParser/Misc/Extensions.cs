@@ -1,10 +1,10 @@
+using Google.Protobuf.Collections;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using Google.Protobuf.Collections;
 using WowPacketParser.Enums;
 using WowPacketParser.Proto;
 using WowPacketParser.Store.Objects.UpdateFields;
@@ -220,12 +220,6 @@ namespace WowPacketParser.Misc
             return ~lo;
         }
 
-        public static void Reserve<T>(this RepeatedField<T> field, int count) where T : new()
-        {
-            while (field.Count < count)
-                field.Add(new T());
-        }
-
         public static void UpdateData(this UpdateValuesObjectDataFields fields, IObjectData data)
         {
             fields.EntryID = data.EntryID;
@@ -315,30 +309,29 @@ namespace WowPacketParser.Misc
                 unit.SummonedBy = data.SummonedBy;
             if (data.CreatedBy != null)
                 unit.CreatedBy = data.CreatedBy;
-            unit.NpcFlags.Reserve(data.NpcFlags.Length);
-            for (int i = 0; i < data.NpcFlags.Length; ++i)
-                unit.NpcFlags[i] = data.NpcFlags[i].ToProto();
 
-            unit.Power.Reserve(data.Power.Length);
-            for (int i = 0; i < data.Power.Length; ++i)
-                unit.Power[i] = data.Power[i].ToProto();
+            unit.NpcFlags.FillFrom(data.NpcFlags, ToProto);
+            unit.Power.FillFrom(data.Power, ToProto);
+            unit.MaxPower.FillFrom(data.MaxPower, ToProto);
+            unit.AttackRoundBaseTime.FillFrom(data.AttackRoundBaseTime, ToProto);
+            unit.Resistances.FillFrom(data.Resistances, ToProto);
+            unit.VirtualItems.FillFrom(data.VirtualItems, item => item != null ? item.ToProto() : new VisibleItemFields());
+        }
 
-            unit.MaxPower.Reserve(data.MaxPower.Length);
-            for (int i = 0; i < data.MaxPower.Length; ++i)
-                unit.MaxPower[i] = data.MaxPower[i].ToProto();
+        private static void FillFrom<TDest, TSource>(this RepeatedField<TDest> field, TSource[] source, Func<TSource, TDest> mappingFunc)
+        {
+            for (var i = 0; i < Math.Min(source.Length, field.Count); ++i)
+                field[i] = mappingFunc(source[i]);
 
-            unit.AttackRoundBaseTime.Reserve(data.AttackRoundBaseTime.Length);
-            for (int i = 0; i < data.AttackRoundBaseTime.Length; ++i)
-                unit.AttackRoundBaseTime[i] = data.AttackRoundBaseTime[i].ToProto();
-
-            unit.Resistances.Reserve(data.Resistances.Length);
-            for (int i = 0; i < data.Resistances.Length; ++i)
-                unit.Resistances[i] = data.Resistances[i].ToProto();
-
-            unit.VirtualItems.Reserve(data.VirtualItems.Length);
-            for (int i = 0; i < data.VirtualItems.Length; ++i)
-                if (data.VirtualItems[i] != null)
-                    unit.VirtualItems[i] = data.VirtualItems[i].ToProto();
+            if (source.Length > field.Count)
+            {
+                field.Capacity = source.Length;
+                for (var i = field.Count; i < source.Length; ++i)
+                    field.Add(mappingFunc(source[i]));
+            }
+            else
+                while (source.Length < field.Count)
+                    field.RemoveAt(source.Length);
         }
 
         public static UInt32ValueWrapper ToProto(this uint? value)
