@@ -118,6 +118,9 @@ namespace WowPacketParser.Loading
                         // due to uint16 overflow in FileVersionInfo
                         if (ClientVersion.Build == ClientVersionBuild.Zero && _snifferVersion == 0x0102)
                             SetBuild(65560);
+
+                        if (_snifferVersion >= 0x0103)
+                            Packet.UtcTimeOffset = BitConverter.ToInt32(optionalData, 2);
                     }
                     break;
                 }

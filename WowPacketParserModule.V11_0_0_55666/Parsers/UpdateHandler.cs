@@ -65,7 +65,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                     var packetTimestamp = Utilities.GetUnixTimeFromDateTime(packet.Time);
 
                     var spawnTimestamp = packetTimestamp & ~((1 << 23) - 1);
-                    spawnTimestamp += guid.GetSpawnTimestamp() + 3600; // spawn timestamps are off by 1h
+                    spawnTimestamp += guid.GetSpawnTimestamp() + Packet.UtcTimeOffset;
 
                     var timestampDiff = Math.Abs(spawnTimestamp - packetTimestamp);
                     if (timestampDiff <= Settings.TreatAsCreateObject2Tolerance && !Storage.Objects.ContainsKey(guid))

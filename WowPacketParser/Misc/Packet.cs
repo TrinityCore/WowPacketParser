@@ -19,6 +19,8 @@ namespace WowPacketParser.Misc
 
         private static DateTime _firstPacketTime;
 
+        public static int UtcTimeOffset = 0; // in seconds
+
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringBuilder writer, string fileName)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
