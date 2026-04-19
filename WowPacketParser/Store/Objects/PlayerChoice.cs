@@ -43,6 +43,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ForceDontShowChoicesAsList", TargetedDatabaseFlag.SinceTheWarWithin | TargetedDatabaseFlag.MoPClassic)]
         public int ForceDontShowChoicesAsList;
 
+        [DBFieldName("RequiresSelection", TargetedDatabaseFlag.SinceTheWarWithin)]
+        public int RequiresSelection;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
