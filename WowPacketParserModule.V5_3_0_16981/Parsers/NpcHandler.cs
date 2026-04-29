@@ -121,7 +121,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     BoxCoded = gossipOption.BoxCoded.Value,
                     BoxCost = (uint)gossipOption.BoxMoney.Value,
                     Text = gossipOption.OptionText,
-                    BoxText = gossipOption.BoxText
+                    BoxText = boxText
                 });
             }
             packet.ReadXORByte(guidBytes, 0);

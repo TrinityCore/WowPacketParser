@@ -90,7 +90,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                     BoxCoded = gossipOption.BoxCoded.Value,
                     BoxCost = (uint)gossipOption.BoxMoney.Value,
                     Text = gossipOption.OptionText,
-                    BoxText = gossipOption.BoxText
+                    BoxText = boxText
                 });
             }
 

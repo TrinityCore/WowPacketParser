@@ -252,7 +252,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadLfgEntry("LFG Entry");
         }
 
-        public static void ReadDungeonJoinResults(Packet packet, params int[] values)
+        public static void ReadDungeonJoinResults(Packet packet, params object[] values)
         {
             packet.ReadLfgEntry("LFG Entry", values);
             packet.ReadUInt32E<LfgEntryCheckResult>("Entry Check Result", values);

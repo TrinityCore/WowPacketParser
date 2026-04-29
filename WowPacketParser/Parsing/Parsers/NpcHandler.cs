@@ -606,7 +606,7 @@ namespace WowPacketParser.Parsing.Parsers
                     BoxCoded = gossipOption.BoxCoded.Value,
                     BoxCost = (uint)gossipOption.BoxMoney.Value,
                     Text = gossipOption.OptionText,
-                    BoxText = gossipOption.BoxText
+                    BoxText = boxText
                 });
 
                 Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);
