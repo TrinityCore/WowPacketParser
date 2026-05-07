@@ -363,6 +363,7 @@ message PacketMonsterMove {
   bool creationSpline = 16;
   optional uint32 animTier = 17;
   optional SplineSpellEffect spellEffect = 18;
+  optional uint32 fadeObjectTime = 19;
 }
 
 message SplineJump {

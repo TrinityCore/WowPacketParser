@@ -80,7 +80,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             monsterMove.ElapsedTime = packet.ReadInt32("Elapsed", indexes);
             monsterMove.MoveTime = packet.ReadUInt32("MoveTime", indexes);
-            packet.ReadUInt32("FadeObjectTime", indexes);
+            monsterMove.FadeObjectTime = packet.ReadUInt32("FadeObjectTime", indexes);
 
             packet.ReadByte("Mode", indexes);
 
@@ -369,6 +369,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         }
 
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE, ClientBranch.Classic)]
+        [Parser(Opcode.SMSG_ON_MONSTER_MOVE, ClientBranch.TBC)]
         public static void HandleOnMonsterMove(Packet packet)
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove = new();

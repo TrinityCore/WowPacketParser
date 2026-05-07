@@ -79,7 +79,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             monsterMove.ElapsedTime = packet.ReadInt32("Elapsed", indexes);
             monsterMove.MoveTime = packet.ReadUInt32("MoveTime", indexes);
             jump.Gravity = packet.ReadSingle("JumpGravity", indexes);
-            jump.Duration = packet.ReadUInt32("SpecialTime", indexes);
+            var specialTime = packet.ReadUInt32("SpecialTime", indexes);
+            jump.Duration = specialTime;
 
             packet.ReadByte("Mode", indexes);
             packet.ReadByte("VehicleExitVoluntary", indexes);
@@ -89,6 +90,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             if (monsterMove.Flags.HasFlag(UniversalSplineFlag.Animation))
                 monsterMove.AnimTier = animTier;
+
+            if (monsterMove.Flags.HasFlag(UniversalSplineFlag.FadeObject))
+                monsterMove.FadeObjectTime = specialTime;
 
             packet.ResetBitReader();
 

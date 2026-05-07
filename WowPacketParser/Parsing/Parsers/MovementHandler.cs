@@ -345,10 +345,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (speed > 51)
                 packet.AddValue("Unlimited Speed", 1, indexes);
 
-            if (monsterMove.Jump != null && monsterMove.Flags.HasAnyFlag(UniversalSplineFlag.Parabolic))
+            if (monsterMove.Jump != null && monsterMove.Flags.HasFlag(UniversalSplineFlag.Parabolic))
                 PrintComputedSplineMovementJumpHeight(packet, monsterMove.MoveTime - monsterMove.Jump.StartTime, monsterMove.Jump.Gravity, indexes);
             else if (monsterMove.SpellEffect != null && monsterMove.SpellEffect.JumpGravity > 0)
                 PrintComputedSplineMovementJumpHeight(packet, monsterMove.MoveTime, monsterMove.SpellEffect.JumpGravity, indexes);
+
+            if (monsterMove.Flags.HasFlag(UniversalSplineFlag.FadeObject) && monsterMove.HasFadeObjectTime)
+                packet.AddValue("Fade Duration (ms)", monsterMove.MoveTime - monsterMove.FadeObjectTime, indexes);
         }
 
         private static void PrintComputedSplineMovementJumpHeight(Packet packet, uint moveTime, float jumpGravity, params object[] indexes)

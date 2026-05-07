@@ -495,6 +495,8 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V1_15_8_63829
             packet.ResetBitReader();
             data.SpellID = packet.ReadInt32("SpellID", indexes);
             data.SpellXSpellVisualID = packet.ReadInt32("SpellXSpellVisualID", indexes);
+            data.StartTimeMs = packet.ReadUInt32("StartTimeMs", indexes);
+            data.Duration = packet.ReadUInt32("Duration", indexes);
             return data;
         }
 
@@ -3190,8 +3192,8 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V1_15_8_63829
             data.TaskQuests.Resize(packet.ReadUInt32());
             data.TimerunningSeasonID = packet.ReadInt32("TimerunningSeasonID", indexes);
             data.TransportServerTime = packet.ReadInt32("TransportServerTime", indexes);
-            data.TraitConfigs.Resize(packet.ReadUInt32());
             data.ActiveCombatTraitConfigID = packet.ReadUInt32("ActiveCombatTraitConfigID", indexes);
+            data.TraitConfigs.Resize(packet.ReadUInt32());
             for (var i = 0; i < 9; ++i)
             {
                 data.GlyphSlots[i] = packet.ReadUInt32("GlyphSlots", indexes, i);
@@ -4377,7 +4379,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V1_15_8_63829
             var data = new GameObjectData();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(20);
+            rawChangesMask[0] = (int)packet.ReadBits(21);
             var changesMask = new BitArray(rawChangesMask);
 
             if (changesMask[0])

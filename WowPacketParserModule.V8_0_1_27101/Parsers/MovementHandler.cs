@@ -72,7 +72,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
             monsterMove.ElapsedTime = packet.ReadInt32("Elapsed", indexes);
             monsterMove.MoveTime = packet.ReadUInt32("MoveTime", indexes);
-            packet.ReadUInt32("FadeObjectTime", indexes);
+            monsterMove.FadeObjectTime = packet.ReadUInt32("FadeObjectTime", indexes);
 
             packet.ReadByte("Mode", indexes);
             if (ClientVersion.RemovedInVersion(ClientType.Shadowlands))

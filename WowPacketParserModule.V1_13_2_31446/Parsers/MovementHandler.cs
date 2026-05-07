@@ -57,7 +57,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
 
             monsterMove.ElapsedTime = packet.ReadInt32("Elapsed", indexes);
             monsterMove.MoveTime = packet.ReadUInt32("MoveTime", indexes);
-            packet.ReadUInt32("FadeObjectTime", indexes);
+            monsterMove.FadeObjectTime = packet.ReadUInt32("FadeObjectTime", indexes);
 
             packet.ReadByte("Mode", indexes);
             monsterMove.TransportGuid = packet.ReadPackedGuid128("TransportGUID", indexes);

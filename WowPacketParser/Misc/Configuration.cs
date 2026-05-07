@@ -53,10 +53,8 @@ namespace WowPacketParser.Misc
                 try
                 {
                     // Get the mapped configuration file
-                    var config = ConfigurationManager.OpenExeConfiguration(configPath);
-
-
-                    settings = ((AppSettingsSection)config.GetSection("appSettings")).Settings;
+                    var configurationFileMap = new ExeConfigurationFileMap { ExeConfigFilename = configPath };
+                    settings = ConfigurationManager.OpenMappedExeConfiguration(configurationFileMap, ConfigurationUserLevel.None).AppSettings.Settings;
                 }
                 catch (Exception ex)
                 {
