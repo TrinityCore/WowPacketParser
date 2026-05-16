@@ -375,7 +375,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     int currentPosition = ++i;
                     UpdateField updateField;
-                    if (mask[currentPosition])
+                    if (currentPosition < mask.Count && mask[currentPosition])
                         updateField = packet.ReadUpdateField();
                     else if (oldValues == null || !oldValues.TryGetValue(currentPosition, out updateField))
                         updateField = new UpdateField(0);
@@ -393,7 +393,7 @@ namespace WowPacketParser.Parsing.Parsers
                         {
                             bool hasGuidValue = false;
                             for (var guidPart = 0; guidPart < guidSize; ++guidPart)
-                                if (mask[start + guidI * guidSize + guidPart])
+                                if (start + guidI * guidSize + guidPart < mask.Count && mask[start + guidI * guidSize + guidPart])
                                     hasGuidValue = true;
 
                             if (!hasGuidValue)
@@ -412,7 +412,7 @@ namespace WowPacketParser.Parsing.Parsers
                             }
                             else
                             {
-                                ulong low = (fieldData[guidI * guidSize + 1].UInt32Value << 32);
+                                ulong low = fieldData[guidI * guidSize + 1].UInt32Value;
                                 low <<= 32;
                                 low |= fieldData[guidI * guidSize + 0].UInt32Value;
                                 ulong high = fieldData[guidI * guidSize + 3].UInt32Value;
@@ -432,8 +432,8 @@ namespace WowPacketParser.Parsing.Parsers
                         for (var quatI = 0; quatI < quaternionCount; ++quatI)
                         {
                             bool hasQuatValue = false;
-                            for (var guidPart = 0; guidPart < 4; ++guidPart)
-                                if (mask[start + quatI * 4 + guidPart])
+                            for (var quatPart = 0; quatPart < 4; ++quatPart)
+                                if (start + start + quatI * 4 + quatPart < mask.Count && mask[start + quatI * 4 + quatPart])
                                     hasQuatValue = true;
 
                             if (!hasQuatValue)
@@ -451,8 +451,8 @@ namespace WowPacketParser.Parsing.Parsers
                         for (var quatI = 0; quatI < quaternionCount; ++quatI)
                         {
                             bool hasQuatValue = false;
-                            for (var guidPart = 0; guidPart < 2; ++guidPart)
-                                if (mask[start + quatI * 2 + guidPart])
+                            for (var quatPart = 0; quatPart < 2; ++quatPart)
+                                if (start + quatI * 2 + quatPart < mask.Count && mask[start + quatI * 2 + quatPart])
                                     hasQuatValue = true;
 
                             if (!hasQuatValue)
@@ -469,38 +469,44 @@ namespace WowPacketParser.Parsing.Parsers
                     case UpdateFieldType.Uint:
                     {
                         for (int k = 0; k < fieldData.Count; ++k)
-                            if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
+                        {
+                            if (start + k < mask.Count && mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
                             {
                                 var name = k > 0 ? key + " + " + k : key;
                                 updateValues.Ints[name] = packet.AddValue(name, fieldData[k].UInt32Value, index);
                             }
+                        }
                         break;
                     }
                     case UpdateFieldType.Int:
                     {
                         for (int k = 0; k < fieldData.Count; ++k)
-                            if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
+                        {
+                            if (start + k < mask.Count && mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
                             {
                                 var name = k > 0 ? key + " + " + k : key;
                                 updateValues.Ints[name] = packet.AddValue(name, fieldData[k].Int32Value, index);
                             }
+                        }
                         break;
                     }
                     case UpdateFieldType.Float:
                     {
                         for (int k = 0; k < fieldData.Count; ++k)
-                            if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
+                        {
+                            if (start + k < mask.Count && mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
                             {
                                 var name = k > 0 ? key + " + " + k : key;
                                 updateValues.Floats[name] = packet.AddValue(name, fieldData[k].FloatValue, index);
                             }
+                        }
                         break;
                     }
                     case UpdateFieldType.Bytes:
                     {
                         for (int k = 0; k < fieldData.Count; ++k)
                         {
-                            if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
+                            if (start + k < mask.Count && mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
                             {
                                 byte[] intBytes = BitConverter.GetBytes(fieldData[k].UInt32Value);
                                 var name = k > 0 ? key + " + " + k : key;
@@ -514,7 +520,7 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         for (int k = 0; k < fieldData.Count; ++k)
                         {
-                            if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
+                            if (start + k < mask.Count && mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
                             {
                                 var name = k > 0 ? key + " + " + k : key;
                                 updateValues.Ints[name] = fieldData[k].UInt32Value;
@@ -542,7 +548,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                     default:
                         for (int k = 0; k < fieldData.Count; ++k)
-                            if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
+                            if (start + k < mask.Count && mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
                                 packet.AddValue(k > 0 ? key + " + " + k : key, fieldData[k].UInt32Value + "/" + fieldData[k].FloatValue, index);
                         break;
                 }
