@@ -90,7 +90,7 @@ namespace WowPacketParser.Parsing.Parsers
             // alignment padding (to 8 bytes)
             packet.ReadUInt16();
             // client tries to read 64 bytes, server sends 60
-            if (packet.Position + 4 < packet.Length)
+            if (packet.Position + 4 <= packet.Length)
                 packet.ReadUInt32();
         }
 
