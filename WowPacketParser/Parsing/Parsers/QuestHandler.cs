@@ -207,7 +207,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadSingle("Honor Multiplier");
 
                 if (readFlags)
-                    packet.ReadUInt32E<QuestFlags>("Quest Flags");
+                    packet.ReadUInt32("Reward Reputation Mask");
 
                 packet.ReadInt32<SpellId>("Spell Id");
                 packet.ReadInt32<SpellId>("Spell Cast Id");
@@ -220,7 +220,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 {
                     packet.ReadUInt32("Arena Points");
-                    packet.ReadUInt32("Unk UInt32");
+                    packet.ReadUInt32("Reward Faction Flags");
                 }
             }
 
