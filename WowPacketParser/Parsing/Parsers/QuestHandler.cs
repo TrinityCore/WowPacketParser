@@ -207,7 +207,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadSingle("Honor Multiplier");
 
                 if (readFlags)
-                    packet.ReadUInt32("Reward Reputation Mask");
+                    packet.ReadUInt32("Quest Reward Unk"); // unused in client
 
                 packet.ReadInt32<SpellId>("Spell Id");
                 packet.ReadInt32<SpellId>("Spell Cast Id");
