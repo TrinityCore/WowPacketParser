@@ -104,7 +104,7 @@ namespace WowPacketParserModule.Substructures
 
             packet.ResetBitReader();
 
-            info.Flags = (uint)packet.ReadBitsE<MovementFlag>("MovementFlags", 30, idx);
+            info.Flags = (uint)packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("MovementFlags", 30, idx);
             var movementFlag2Size = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_0_3_22248))
                 movementFlag2Size = 18;
@@ -113,7 +113,7 @@ namespace WowPacketParserModule.Substructures
             else // < 6.2.0
                 movementFlag2Size = 15;
 
-            info.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("MovementFlag2", movementFlag2Size, idx);
+            info.Flags2 = (uint)packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag2>("MovementFlag2", movementFlag2Size, idx);
 
             var hasTransport = packet.ReadBit("HasTransportData", idx);
             var hasFall = packet.ReadBit("HasFallData", idx);
@@ -139,8 +139,8 @@ namespace WowPacketParserModule.Substructures
                 ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812) ||
                 ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_0_45166))
             {
-                info.Flags = (uint)packet.ReadUInt32E<MovementFlag>("MovementFlags", idx);
-                info.Flags2 = (uint)packet.ReadUInt32E<MovementFlag2>("MovementFlags2", idx);
+                info.Flags = (uint)packet.ReadUInt32E<WowPacketParser.Enums.v4.MovementFlag>("MovementFlags", idx);
+                info.Flags2 = (uint)packet.ReadUInt32E<WowPacketParser.Enums.v9.MovementFlag2>("MovementFlags2", idx);
                 info.Flags3 = (uint)packet.ReadUInt32E<MovementFlag3>("MovementFlags3", idx);
             }
             packet.ReadUInt32("MoveTime", idx);

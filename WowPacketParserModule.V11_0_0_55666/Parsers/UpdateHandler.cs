@@ -13,7 +13,7 @@ using WowPacketParserModule.V6_0_2_19033.Enums;
 using CoreFields = WowPacketParser.Enums.Version;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
-using MovementFlag2 = WowPacketParser.Enums.v7.MovementFlag2;
+using MovementFlag2 = WowPacketParser.Enums.v9.MovementFlag2;
 using SplineFlag = WowPacketParserModule.V6_0_2_19033.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V11_0_0_55666.Parsers

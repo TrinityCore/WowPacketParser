@@ -12,8 +12,6 @@ using WowPacketParserModule.V6_0_2_19033.Enums;
 using WowPacketParserModule.V7_0_3_22248.Parsers;
 using CoreFields = WowPacketParser.Enums.Version;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
-using MovementFlag2 = WowPacketParser.Enums.v7.MovementFlag2;
 using SplineFlag = WowPacketParserModule.V6_0_2_19033.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V8_0_1_27101.Parsers
@@ -331,8 +329,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
                 {
-                    moveInfo.Flags = (uint)packet.ReadUInt32E<MovementFlag>("MovementFlags", index);
-                    moveInfo.Flags2 = (uint)packet.ReadUInt32E<MovementFlag2>("MovementFlags2", index);
+                    moveInfo.Flags = (uint)packet.ReadUInt32E<WowPacketParser.Enums.v4.MovementFlag>("MovementFlags", index);
+                    moveInfo.Flags2 = (uint)packet.ReadUInt32E<WowPacketParser.Enums.v9.MovementFlag2>("MovementFlags2", index);
                     moveInfo.Flags3 = (uint)packet.ReadUInt32E<MovementFlag3>("MovementFlags3", index);
                 }
 
@@ -351,8 +349,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_2_0_42423))
                 {
-                    moveInfo.Flags = (uint)packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
-                    moveInfo.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("Extra Movement Flags", 18, index);
+                    moveInfo.Flags = (uint)packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags2 = (uint)packet.ReadBitsE<WowPacketParser.Enums.v7.MovementFlag2>("Extra Movement Flags", 18, index);
                 }
 
                 var hasStandingOnGameObjectGUID = false;

@@ -177,9 +177,6 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardNumSkillUps", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.AnyClassic)]
         public uint? RewardNumSkillUps;
 
-        [DBFieldName("RewardReputationMask", TargetedDatabaseFlag.Cataclysm)]
-        public uint? RewardReputationMask;
-
         [DBFieldName("QuestGiverPortrait", TargetedDatabaseFlag.Cataclysm)]
         [DBFieldName("PortraitGiver", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.AnyClassic)]
         public uint? QuestGiverPortrait;
@@ -251,7 +248,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardFactionOverride", 5)]
         public int?[] RewardFactionOverride;
 
-        [DBFieldName("RewardFactionFlags", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.AnyClassic)]
+        [DBFieldName("RewardReputationMask", TargetedDatabaseFlag.Cataclysm)]
+        [DBFieldName("RewardFactionFlags", TargetedDatabaseFlag.TillWrathOfTheLichKing | TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.AnyClassic)]
         public uint? RewardFactionFlags;
 
         [DBFieldName("AreaGroupID", TargetedDatabaseFlag.SinceWarlordsOfDraenor | TargetedDatabaseFlag.AnyClassic)]
@@ -305,9 +303,6 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("RequiredItemCount", TargetedDatabaseFlag.TillCataclysm, 6)]
         public uint?[] RequiredItemCount;
-
-        [DBFieldName("Unknown0", TargetedDatabaseFlag.TillWrathOfTheLichKing)]
-        public uint? Unk0;
 
         [DBFieldName("RequiredSpell", TargetedDatabaseFlag.Cataclysm)]
         public uint? RequiredSpell;

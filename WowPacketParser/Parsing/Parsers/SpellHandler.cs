@@ -84,10 +84,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("MissileTrajectoryPitch");
             packet.ReadSingle("MissileTrajectorySpeed");
             packet.ReadUInt32("TravelTime");
-            packet.AddValue("DestLocSpellCastIndex", packet.ReadInt32() & 0xFF);
+            packet.ReadByte("DestLocSpellCastIndex");
+            packet.ReadByte("CastID");
 
-            if (packet.Length == 64) // packet always has length 64 length except for some rare exceptions with length 60 (hardcoded in the client)
-                packet.ReadSingle("CastID");
+            // alignment padding (to 8 bytes)
+            packet.ReadUInt16();
+            // client tries to read 64 bytes, server sends 60
+            if (packet.Position + 4 <= packet.Length)
+                packet.ReadUInt32();
         }
 
         [Parser(Opcode.SMSG_WEEKLY_SPELL_USAGE)]

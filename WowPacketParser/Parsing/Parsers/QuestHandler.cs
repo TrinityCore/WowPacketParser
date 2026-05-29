@@ -207,7 +207,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadSingle("Honor Multiplier");
 
                 if (readFlags)
-                    packet.ReadUInt32E<QuestFlags>("Quest Flags");
+                    packet.ReadUInt32("Quest Reward Unk"); // unused in client
 
                 packet.ReadInt32<SpellId>("Spell Id");
                 packet.ReadInt32<SpellId>("Spell Cast Id");
@@ -220,7 +220,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 {
                     packet.ReadUInt32("Arena Points");
-                    packet.ReadUInt32("Unk UInt32");
+                    packet.ReadUInt32("Reward Faction Flags");
                 }
             }
 
@@ -323,15 +323,17 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 quest.RewardArenaPoints = packet.ReadUInt32("RewardArenaPoints");
 
-            // TODO: Find when was this added/removed and what is it
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958) && (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_1_13164)))
-                packet.ReadInt32("Unknown Int32");
-
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 quest.RewardSkillLineID = packet.ReadUInt32("RewardSkillLineID");
                 quest.RewardNumSkillUps = packet.ReadUInt32("RewardNumSkillUps");
-                quest.RewardReputationMask = packet.ReadUInt32("RewardReputationMask");
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                quest.RewardFactionFlags = packet.ReadUInt32("RewardFactionFlags");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
+            {
                 quest.QuestGiverPortrait = packet.ReadUInt32("QuestGiverPortrait");
                 quest.QuestTurnInPortrait = packet.ReadUInt32("QuestTurnInPortrait");
             }
@@ -502,7 +504,7 @@ namespace WowPacketParser.Parsing.Parsers
             quest.RequiredPlayerKills = packet.ReadUInt32("RequiredPlayerKills");
             quest.RewardSkillLineID = packet.ReadUInt32("RewardSkillLineID");
             quest.RewardNumSkillUps = packet.ReadUInt32("RewardNumSkillUps");
-            quest.RewardReputationMask = packet.ReadUInt32("RewRepMask");
+            quest.RewardFactionFlags = packet.ReadUInt32("RewardFactionFlags");
             quest.QuestGiverPortrait = packet.ReadUInt32("QuestGiverPortrait");
             quest.QuestTurnInPortrait = packet.ReadUInt32("QuestTurnInPortrait");
 

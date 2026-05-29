@@ -772,6 +772,7 @@ namespace WowPacketParser.Enums
         PLAYER_SELF_RES_SPELL,
         PLAYER_SHIELD_BLOCK,
         PLAYER_SHIELD_BLOCK_CRIT_PERCENTAGE,
+        [UpdateField(UpdateFieldType.Short)]
         PLAYER_SKILL_INFO_1_1,
         PLAYER_SKILL_LINEID,
         PLAYER_SPEED,
