@@ -42,7 +42,7 @@ namespace WowPacketParser.Enums
         IsInCombat                       = PetIsAttackingTarget | AffectingCombat,
 
         Disallowed                       = (ServerControlled | NotAttackable | RemoveClientControl |
-                                            PlayerControlled | UNK_EVADING_FLAG | Preparation | /* Unk6 | */
+                                            PlayerControlled | EvadingHome | Preparation | /* Unk6 | */
                                             NotAttackable | Looting | PetIsAttackingTarget | PVP |
                                             Silenced | CantSwim | CanSwim | NotAttackable2 | Pacified | Stunned |
                                             AffectingCombat | OnTaxi | Disarmed | Confused | Fleeing |
