@@ -697,6 +697,11 @@ namespace WowPacketParser.Enums
         V12_0_5_67602 = 67602,
         V12_0_5_67823 = 67823,
 
+        V12_0_7_67808 = 67808, // background download only, don't use in AddedInVersion checks because its value is lower than V12_0_5_67823
+        V12_0_7_68182 = 68182,
+        V12_0_7_68232 = 68232,
+        V12_0_7_68235 = 68235,
+
         // Classic
         V1_13_2_31446 = 31446,
         V1_13_2_31650 = 31650,
