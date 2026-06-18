@@ -3517,19 +3517,61 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
             return data;
         }
 
+        public static ICraftingReagentBase ReadCreateCraftingReagentBase(Packet packet, params object[] indexes)
+        {
+            var data = new CraftingReagentBase();
+            packet.ResetBitReader();
+            var hasItemID = false;
+            var hasCurrencyID = false;
+            hasItemID = packet.ReadBit("HasItemID", indexes);
+            hasCurrencyID = packet.ReadBit("HasCurrencyID", indexes);
+            packet.ResetBitReader();
+            if (hasItemID)
+            {
+                data.ItemID = packet.ReadInt32("ItemID", indexes);
+            }
+            if (hasCurrencyID)
+            {
+                data.CurrencyID = packet.ReadInt32("CurrencyID", indexes);
+            }
+            return data;
+        }
+
+        public static ICraftingReagentBase ReadUpdateCraftingReagentBase(Packet packet, params object[] indexes)
+        {
+            var data = new CraftingReagentBase();
+            packet.ResetBitReader();
+            var hasItemID = false;
+            var hasCurrencyID = false;
+            hasItemID = packet.ReadBit("HasItemID", indexes);
+            hasCurrencyID = packet.ReadBit("HasCurrencyID", indexes);
+            packet.ResetBitReader();
+            if (hasItemID)
+            {
+                data.ItemID = packet.ReadInt32("ItemID", indexes);
+            }
+            if (hasCurrencyID)
+            {
+                data.CurrencyID = packet.ReadInt32("CurrencyID", indexes);
+            }
+            return data;
+        }
+
         public static ICraftingOrderItem ReadCreateCraftingOrderItem(Packet packet, params object[] indexes)
         {
             var data = new CraftingOrderItem();
             packet.ResetBitReader();
             var hasDataSlotIndex = false;
             data.OrderItemID = packet.ReadUInt64("OrderItemID", indexes);
+            data.OrderItemType = packet.ReadInt32("OrderItemType", indexes);
             data.ItemGUID = packet.ReadPackedGuid128("ItemGUID", indexes);
             data.OwnerGUID = packet.ReadPackedGuid128("OwnerGUID", indexes);
-            data.ItemID = packet.ReadInt32("ItemID", indexes);
             data.Quantity = packet.ReadUInt32("Quantity", indexes);
             data.ReagentQuality = packet.ReadInt32("ReagentQuality", indexes);
-            hasDataSlotIndex = packet.ReadBit("HasDataSlotIndex", indexes);
+            data.Flags = packet.ReadUInt32("Flags", indexes);
+            data.Reagent = ReadCreateCraftingReagentBase(packet, indexes, "Reagent");
             packet.ResetBitReader();
+            hasDataSlotIndex = packet.ReadBit("HasDataSlotIndex", indexes);
             if (hasDataSlotIndex)
             {
                 data.DataSlotIndex = packet.ReadByte("DataSlotIndex", indexes);
@@ -3542,42 +3584,65 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
             var data = new CraftingOrderItem();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(7);
+            rawChangesMask[0] = (int)packet.ReadBits(12);
             var changesMask = new BitArray(rawChangesMask);
 
             var hasDataSlotIndex = false;
             packet.ResetBitReader();
             if (changesMask[0])
             {
-                data.OrderItemID = packet.ReadUInt64("OrderItemID", indexes);
-            }
-            if (changesMask[1])
-            {
-                data.ItemGUID = packet.ReadPackedGuid128("ItemGUID", indexes);
-            }
-            if (changesMask[2])
-            {
-                data.OwnerGUID = packet.ReadPackedGuid128("OwnerGUID", indexes);
-            }
-            if (changesMask[3])
-            {
-                data.ItemID = packet.ReadInt32("ItemID", indexes);
+                if (changesMask[1])
+                {
+                    data.OrderItemID = packet.ReadUInt64("OrderItemID", indexes);
+                }
+                if (changesMask[2])
+                {
+                    data.OrderItemType = packet.ReadInt32("OrderItemType", indexes);
+                }
+                if (changesMask[3])
+                {
+                    data.ItemGUID = packet.ReadPackedGuid128("ItemGUID", indexes);
+                }
             }
             if (changesMask[4])
             {
-                data.Quantity = packet.ReadUInt32("Quantity", indexes);
-            }
-            if (changesMask[5])
-            {
-                data.ReagentQuality = packet.ReadInt32("ReagentQuality", indexes);
-            }
-            hasDataSlotIndex = packet.ReadBit("HasDataSlotIndex", indexes);
-            packet.ResetBitReader();
-            if (changesMask[6])
-            {
-                if (hasDataSlotIndex)
+                if (changesMask[5])
                 {
-                    data.DataSlotIndex = packet.ReadByte("DataSlotIndex", indexes);
+                    data.OwnerGUID = packet.ReadPackedGuid128("OwnerGUID", indexes);
+                }
+                if (changesMask[7])
+                {
+                    data.Quantity = packet.ReadUInt32("Quantity", indexes);
+                }
+            }
+            if (changesMask[8])
+            {
+                if (changesMask[9])
+                {
+                    data.ReagentQuality = packet.ReadInt32("ReagentQuality", indexes);
+                }
+                if (changesMask[11])
+                {
+                    data.Flags = packet.ReadUInt32("Flags", indexes);
+                }
+            }
+            if (changesMask[4])
+            {
+                if (changesMask[6])
+                {
+                    data.Reagent = ReadUpdateCraftingReagentBase(packet, indexes, "Reagent");
+                }
+            }
+            packet.ResetBitReader();
+            if (changesMask[8])
+            {
+                hasDataSlotIndex = packet.ReadBit("HasDataSlotIndex", indexes);
+                if (changesMask[10])
+                {
+                    if (hasDataSlotIndex)
+                    {
+                        data.DataSlotIndex = packet.ReadByte("DataSlotIndex", indexes);
+                    }
                 }
             }
             return data;

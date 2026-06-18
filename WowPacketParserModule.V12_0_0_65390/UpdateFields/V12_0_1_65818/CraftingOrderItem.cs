@@ -12,12 +12,14 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_1_65818
     public class CraftingOrderItem : ICraftingOrderItem
     {
         public System.Nullable<ulong> OrderItemID { get; set; }
+        public System.Nullable<int> OrderItemType { get; set; }
         public WowGuid ItemGUID { get; set; }
         public WowGuid OwnerGUID { get; set; }
-        public System.Nullable<int> ItemID { get; set; }
+        public ICraftingReagentBase Reagent { get; set; }
         public System.Nullable<uint> Quantity { get; set; }
         public System.Nullable<int> ReagentQuality { get; set; }
         public System.Nullable<byte> DataSlotIndex { get; set; }
+        public System.Nullable<uint> Flags { get; set; }
     }
 }
 
