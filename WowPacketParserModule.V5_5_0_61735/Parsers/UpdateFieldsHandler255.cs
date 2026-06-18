@@ -630,8 +630,8 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_5_64796
             {
                 data.VirtualItems[i] = ReadCreateVisibleItem(packet, indexes, "VirtualItems", i);
             }
-            data.Flags = packet.ReadUInt32("Flags", indexes);
-            data.Flags2 = packet.ReadUInt32("Flags2", indexes);
+            data.Flags = (uint)packet.ReadUInt32E<UnitFlags>("Flags", indexes);
+            data.Flags2 = (uint)packet.ReadUInt32E<UnitFlags2>("Flags2", indexes);
             data.Flags3 = packet.ReadUInt32("Flags3", indexes);
             data.Flags4 = packet.ReadUInt32("Flags4", indexes);
             data.AuraState = packet.ReadUInt32("AuraState", indexes);
@@ -1009,11 +1009,11 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_5_64796
                 }
                 if (changesMask[41])
                 {
-                    data.Flags = packet.ReadUInt32("Flags", indexes);
+                    data.Flags = (uint)packet.ReadUInt32E<UnitFlags>("Flags", indexes);
                 }
                 if (changesMask[42])
                 {
-                    data.Flags2 = packet.ReadUInt32("Flags2", indexes);
+                    data.Flags2 = (uint)packet.ReadUInt32E<UnitFlags2>("Flags2", indexes);
                 }
                 if (changesMask[43])
                 {

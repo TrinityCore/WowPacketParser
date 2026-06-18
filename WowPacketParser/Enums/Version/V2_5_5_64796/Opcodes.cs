@@ -20,12 +20,21 @@ namespace WowPacketParser.Enums.Version.V2_5_5_64796
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new()
         {
             { Opcode.CMSG_CHAT_MESSAGE_SAY, 0x2F0023 },
+            { Opcode.CMSG_AREA_TRIGGER, 0x3D0085 },
             { Opcode.CMSG_SEND_TEXT_EMOTE, 0x3E0013 },
             { Opcode.CMSG_USE_ITEM, 0x30016B },
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new()
         {
+            { Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x440180 },
+            { Opcode.SMSG_THREAT_CLEAR, 0x440183 },
+            { Opcode.SMSG_THREAT_REMOVE, 0x440182 },
+            { Opcode.SMSG_THREAT_UPDATE, 0x440181 },
+            { Opcode.SMSG_ATTACKER_STATE_UPDATE, 0x4A002B },
+            { Opcode.SMSG_ATTACK_START, 0x4A001B },
+            { Opcode.SMSG_ATTACK_STOP, 0x4A001C },
+            { Opcode.SMSG_AI_REACTION, 0x44015C },
             { Opcode.SMSG_TEXT_EMOTE, 0x440121 },
             { Opcode.SMSG_EMOTE, 0x440270 },
             { Opcode.SMSG_CHAT, 0x490001 },

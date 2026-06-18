@@ -10,7 +10,7 @@ namespace WowPacketParser.Enums
         Spawning                         = 0x00000002,
         RemoveClientControl              = 0x00000004,
         PlayerControlled                 = 0x00000008,
-        Rename                           = 0x00000010,
+        EvadingHome                      = 0x00000010, // rename in vanilla
         Preparation                      = 0x00000020,
         Unk6                             = 0x00000040,
         NotAttackable                    = 0x00000080,
@@ -20,7 +20,7 @@ namespace WowPacketParser.Enums
         PetIsAttackingTarget             = 0x00000800,
         PVP                              = 0x00001000,
         Silenced                         = 0x00002000, // ForceNameplate (9.0)
-        CantSwim                         = 0x00004000,
+        CantSwim                         = 0x00004000, // persuade in vanilla and tbc
         CanSwim                          = 0x00008000,
         NotAttackable2                   = 0x00010000,
         Pacified                         = 0x00020000,
@@ -42,7 +42,7 @@ namespace WowPacketParser.Enums
         IsInCombat                       = PetIsAttackingTarget | AffectingCombat,
 
         Disallowed                       = (ServerControlled | NotAttackable | RemoveClientControl |
-                                            PlayerControlled | Rename | Preparation | /* Unk6 | */
+                                            PlayerControlled | EvadingHome | Preparation | /* Unk6 | */
                                             NotAttackable | Looting | PetIsAttackingTarget | PVP |
                                             Silenced | CantSwim | CanSwim | NotAttackable2 | Pacified | Stunned |
                                             AffectingCombat | OnTaxi | Disarmed | Confused | Fleeing |

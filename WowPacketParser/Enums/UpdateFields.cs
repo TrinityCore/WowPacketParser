@@ -195,11 +195,11 @@ namespace WowPacketParser.Enums
         UNIT_FIELD_END,
         [UpdateField(UpdateFieldType.Custom)]
         UNIT_FIELD_FACTIONTEMPLATE,
-        [UpdateField(UpdateFieldType.Uint)]
+        [UpdateField(UpdateFieldType.Enum, typeof(UnitFlags))]
         UNIT_FIELD_FLAGS,
-        [UpdateField(UpdateFieldType.Uint)]
+        [UpdateField(UpdateFieldType.Enum, typeof(UnitFlags2))]
         UNIT_FIELD_FLAGS_2,
-        [UpdateField(UpdateFieldType.Uint)]
+        [UpdateField(UpdateFieldType.Enum, typeof(UnitFlags3))]
         UNIT_FIELD_FLAGS_3,
         UNIT_FIELD_GUILD_GUID,
         [UpdateField(UpdateFieldType.Uint)]
