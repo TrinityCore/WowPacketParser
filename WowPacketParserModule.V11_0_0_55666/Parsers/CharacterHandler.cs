@@ -133,6 +133,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             var mailSenderLengths = new uint[packet.ReadUInt32()];
             var mailSenderTypes = packet.ReadUInt32();
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_7_68182))
+                packet.ReadUInt32("NoRpeReason", idx);
+
             for (var j = 0; j < mailSenderTypes; ++j)
                 packet.ReadUInt32("MailSenderType", idx, j);
 
