@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static void ReadGameModeData(Packet packet, params object[] indexes)
         {
             packet.ReadByte("GameMode", indexes);
-            packet.ReadInt32("Unused1127", indexes);
+            packet.ReadInt32("ContentSetID", indexes);
             packet.ReadInt32("GameModeRecordID", indexes);
         }
 

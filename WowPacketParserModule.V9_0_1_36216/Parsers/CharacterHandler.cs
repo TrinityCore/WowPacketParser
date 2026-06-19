@@ -174,9 +174,16 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("Disqualified", idx);
         }
 
-        [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
+        [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR, ClientVersionBuild.Zero, ClientVersionBuild.V9_2_5_43903)]
         public static void HandleEmpty(Packet packet)
         {
+        }
+
+        [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR, ClientVersionBuild.V9_2_5_43903)]
+        public static void HandlePlayerChoiceClear925(Packet packet)
+        {
+            packet.ReadInt32("ChoiceID");
+            packet.ReadBit("ForceClose");
         }
 
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
