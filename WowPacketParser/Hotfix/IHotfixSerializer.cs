@@ -295,6 +295,7 @@ namespace WowPacketParser.Hotfix
                     case "battle_pet_species":
                     case "battlemaster_list":
                     case "broadcast_text":
+                    case "campaign":
                     case "cfg_categories":
                     case "char_titles":
                     case "chat_channels":
@@ -369,8 +370,13 @@ namespace WowPacketParser.Hotfix
                     case "trait_currency_source":
                     case "trait_definition":
                     case "trait_sub_tree":
+                    case "trait_tree":
+                    case "transmog_outfit_entry":
+                    case "transmog_outfit_slot_option":
                     case "transmog_set_group":
                     case "transmog_set":
+                    case "transmog_situation":
+                    case "transmog_situation_trigger":
                     case "ui_map":
                     case "ui_splash_screen":
                     case "unit_power_bar":

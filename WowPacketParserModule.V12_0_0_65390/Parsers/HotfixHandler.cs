@@ -926,6 +926,51 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             Storage.BroadcastTextDurationHotfixes1200.Add(hotfix, packet.TimeSpan);
         }
 
+        public static void CampaignHandler1200(Packet packet, uint entry, params object[] indexes)
+        {
+            CampaignHotfix1200 hotfix = new CampaignHotfix1200();
+
+            hotfix.ID = entry;
+            hotfix.Title = packet.ReadCString("Title", indexes);
+            hotfix.Description = packet.ReadCString("Description", indexes);
+            hotfix.UiTextureKitID = packet.ReadInt32("UiTextureKitID", indexes);
+            hotfix.RewardQuestID = packet.ReadInt32("RewardQuestID", indexes);
+            hotfix.Prerequisite = packet.ReadInt32("Prerequisite", indexes);
+            hotfix.ValidityConditionId = packet.ReadInt32("ValidityConditionId", indexes);
+            hotfix.Completed = packet.ReadInt32("Completed", indexes);
+            hotfix.IsJourneyConditionId = packet.ReadInt32("IsJourneyConditionId", indexes);
+            hotfix.UiQuestDetailsThemeID = packet.ReadInt32("UiQuestDetailsThemeID", indexes);
+            hotfix.Flags = packet.ReadInt32("Flags", indexes);
+            hotfix.DisplayPriority = packet.ReadInt32("DisplayPriority", indexes);
+            hotfix.SortAsNormalQuest = packet.ReadInt32("SortAsNormalQuest", indexes);
+            hotfix.UseMinimalHeader = packet.ReadInt32("UseMinimalHeader", indexes);
+
+            Storage.CampaignHotfixes1200.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                CampaignLocaleHotfix1200 hotfixLocale = new CampaignLocaleHotfix1200
+                {
+                    ID = hotfix.ID,
+                    TitleLang = hotfix.Title,
+                    DescriptionLang = hotfix.Description,
+                };
+                Storage.CampaignHotfixesLocale1200.Add(hotfixLocale, packet.TimeSpan);
+            }
+        }
+
+        public static void CampaignXQuestLineHandler1200(Packet packet, uint entry, params object[] indexes)
+        {
+            CampaignXQuestLineHotfix1200 hotfix = new CampaignXQuestLineHotfix1200();
+
+            hotfix.ID = entry;
+            hotfix.CampaignID = packet.ReadUInt32("CampaignID", indexes);
+            hotfix.QuestLineID = packet.ReadUInt32("QuestLineID", indexes);
+            hotfix.OrderIndex = packet.ReadUInt32("OrderIndex", indexes);
+
+            Storage.CampaignXQuestLineHotfixes1200.Add(hotfix, packet.TimeSpan);
+        }
+
         public static void CfgCategoriesHandler1200(Packet packet, uint entry, params object[] indexes)
         {
             CfgCategoriesHotfix1200 hotfix = new CfgCategoriesHotfix1200();
@@ -939,6 +984,16 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             hotfix.Order = packet.ReadSByte("Order", indexes);
 
             Storage.CfgCategoriesHotfixes1200.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                CfgCategoriesLocaleHotfix1200 hotfixLocale = new CfgCategoriesLocaleHotfix1200
+                {
+                    ID = hotfix.ID,
+                    NameLang = hotfix.Name,
+                };
+                Storage.CfgCategoriesHotfixesLocale1200.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void CfgRegionsHandler1200(Packet packet, uint entry, params object[] indexes)
@@ -4101,11 +4156,13 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             hotfix.MaxMedals = packet.ReadInt32("MaxMedals", indexes);
             hotfix.ExpansionLevel = packet.ReadUInt32("ExpansionLevel", indexes);
             hotfix.RequiredWorldStateID = packet.ReadInt32("RequiredWorldStateID", indexes);
-            hotfix.CriteriaCount = new short?[3];
+            hotfix.CriteriaCount = new short?[5];
             for (int i = 0; i < 5; i++)
                 hotfix.CriteriaCount[i] = packet.ReadInt16("CriteriaCount", indexes, i);
+            hotfix.FirstRewardQuestID = new int?[6];
             for (int i = 0; i < 6; i++)
                 hotfix.FirstRewardQuestID[i] = packet.ReadInt32("FirstRewardQuestID", indexes, i);
+            hotfix.RewardQuestID = new int?[6];
             for (int i = 0; i < 6; i++)
                 hotfix.RewardQuestID[i] = packet.ReadInt32("RewardQuestID", indexes, i);
 
@@ -6697,6 +6754,34 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             Storage.TraitTreeHotfixes1200.Add(hotfix, packet.TimeSpan);
         }
 
+        public static void TraitTreeHandler1201(Packet packet, uint entry, params object[] indexes)
+        {
+            TraitTreeHotfix1201 hotfix = new TraitTreeHotfix1201();
+
+            hotfix.TitleText = packet.ReadCString("TitleText", indexes);
+            hotfix.ID = packet.ReadUInt32("ID", indexes);
+            hotfix.TraitSystemID = packet.ReadUInt32("TraitSystemID", indexes);
+            hotfix.BaseNodeGroup = packet.ReadInt32("BaseNodeGroup", indexes);
+            hotfix.FirstTraitNodeID = packet.ReadInt32("FirstTraitNodeID", indexes);
+            hotfix.PlayerConditionID = packet.ReadInt32("PlayerConditionID", indexes);
+            hotfix.Flags = packet.ReadInt32("Flags", indexes);
+            hotfix.MinZoom = packet.ReadSingle("MinZoom", indexes);
+            hotfix.MaxZoom = packet.ReadSingle("MaxZoom", indexes);
+            hotfix.UiTextureKitID = packet.ReadInt32("UiTextureKitID", indexes);
+
+            Storage.TraitTreeHotfixes1201.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                TraitTreeLocaleHotfix1201 hotfixLocale = new TraitTreeLocaleHotfix1201
+                {
+                    ID = hotfix.ID,
+                    TitleTextLang = hotfix.TitleText,
+                };
+                Storage.TraitTreeHotfixesLocale1201.Add(hotfixLocale, packet.TimeSpan);
+            }
+        }
+
         public static void TraitTreeLoadoutHandler1200(Packet packet, uint entry, params object[] indexes)
         {
             TraitTreeLoadoutHotfix1200 hotfix = new TraitTreeLoadoutHotfix1200();
@@ -6768,6 +6853,79 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             Storage.TransmogIllusionHotfixes1200.Add(hotfix, packet.TimeSpan);
         }
 
+        public static void TransmogOutfitEntryHandler1200(Packet packet, uint entry, params object[] indexes)
+        {
+            TransmogOutfitEntryHotfix1200 hotfix = new TransmogOutfitEntryHotfix1200();
+
+            hotfix.Cost = packet.ReadUInt64("Cost", indexes);
+            hotfix.Name = packet.ReadCString("Name", indexes);
+            hotfix.ID = packet.ReadUInt32("ID", indexes);
+            hotfix.OrderIndex = packet.ReadInt32("OrderIndex", indexes);
+            hotfix.Source = packet.ReadByte("Source", indexes);
+            hotfix.Flags = packet.ReadInt32("Flags", indexes);
+            hotfix.SetType = packet.ReadByte("SetType", indexes);
+            hotfix.OverrideCostModifier = packet.ReadSingle("OverrideCostModifier", indexes);
+
+            Storage.TransmogOutfitEntryHotfixes1200.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                TransmogOutfitEntryLocaleHotfix1200 hotfixLocale = new TransmogOutfitEntryLocaleHotfix1200
+                {
+                    ID = hotfix.ID,
+                    NameLang = hotfix.Name,
+                };
+                Storage.TransmogOutfitEntryHotfixesLocale1200.Add(hotfixLocale, packet.TimeSpan);
+            }
+        }
+
+        public static void TransmogOutfitSlotInfoHandler1200(Packet packet, uint entry, params object[] indexes)
+        {
+            TransmogOutfitSlotInfoHotfix1200 hotfix = new TransmogOutfitSlotInfoHotfix1200();
+
+            hotfix.InventorySlotName = packet.ReadCString("InventorySlotName", indexes);
+            hotfix.ID = packet.ReadUInt32("ID", indexes);
+            hotfix.TransmogOutfitSlotEnum = packet.ReadSByte("TransmogOutfitSlotEnum", indexes);
+            hotfix.InventorySlotEnum = packet.ReadInt32("InventorySlotEnum", indexes);
+            hotfix.Flags = packet.ReadInt32("Flags", indexes);
+            hotfix.Unused1200 = packet.ReadByte("Unused1200", indexes);
+            hotfix.TransmogCollectionType = packet.ReadByte("TransmogCollectionType", indexes);
+            hotfix.SecondarySlotID = packet.ReadInt32("SecondarySlotID", indexes);
+            hotfix.InventorySlotID = packet.ReadInt32("InventorySlotID", indexes);
+            hotfix.UnassignedAtlasID = packet.ReadInt32("UnassignedAtlasID", indexes);
+            hotfix.UnassignedDisplayAtlasID = packet.ReadInt32("UnassignedDisplayAtlasID", indexes);
+            hotfix.ItemCostMultiplier = packet.ReadSingle("ItemCostMultiplier", indexes);
+            hotfix.IllusionCostMultiplier = packet.ReadSingle("IllusionCostMultiplier", indexes);
+
+            Storage.TransmogOutfitSlotInfoHotfixes1200.Add(hotfix, packet.TimeSpan);
+        }
+
+        public static void TransmogOutfitSlotOptionHandler1200(Packet packet, uint entry, params object[] indexes)
+        {
+            TransmogOutfitSlotOptionHotfix1200 hotfix = new TransmogOutfitSlotOptionHotfix1200();
+
+            hotfix.ID = entry;
+            hotfix.Name = packet.ReadCString("Name", indexes);
+            hotfix.OptionEnum = packet.ReadByte("OptionEnum", indexes);
+            hotfix.TransmogOutfitSlotInfoID = packet.ReadUInt32("TransmogOutfitSlotInfoID", indexes);
+            hotfix.Flags = packet.ReadInt32("Flags", indexes);
+            hotfix.SecondaryOptionID = packet.ReadInt32("SecondaryOptionID", indexes);
+            hotfix.ItemCostMultiplier = packet.ReadSingle("ItemCostMultiplier", indexes);
+            hotfix.IllusionCostMultiplier = packet.ReadSingle("IllusionCostMultiplier", indexes);
+
+            Storage.TransmogOutfitSlotOptionHotfixes1200.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                TransmogOutfitSlotOptionLocaleHotfix1200 hotfixLocale = new TransmogOutfitSlotOptionLocaleHotfix1200
+                {
+                    ID = hotfix.ID,
+                    NameLang = hotfix.Name,
+                };
+                Storage.TransmogOutfitSlotOptionHotfixesLocale1200.Add(hotfixLocale, packet.TimeSpan);
+            }
+        }
+
         public static void TransmogSetHandler1200(Packet packet, uint entry, params object[] indexes)
         {
             TransmogSetHotfix1200 hotfix = new TransmogSetHotfix1200();
@@ -6829,6 +6987,66 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             hotfix.Flags = packet.ReadInt32("Flags", indexes);
 
             Storage.TransmogSetItemHotfixes1200.Add(hotfix, packet.TimeSpan);
+        }
+
+        public static void TransmogSituationHandler1200(Packet packet, uint entry, params object[] indexes)
+        {
+            TransmogSituationHotfix1200 hotfix = new TransmogSituationHotfix1200();
+
+            hotfix.Name = packet.ReadCString("Name", indexes);
+            hotfix.ID = packet.ReadUInt32("ID", indexes);
+            hotfix.SituationEnum = packet.ReadSByte("SituationEnum", indexes);
+            hotfix.Flags = packet.ReadInt32("Flags", indexes);
+            hotfix.TransmogSituationGroupID = packet.ReadUInt32("TransmogSituationGroupID", indexes);
+            hotfix.OrderIndex = packet.ReadInt32("OrderIndex", indexes);
+
+            Storage.TransmogSituationHotfixes1200.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                TransmogSituationLocaleHotfix1200 hotfixLocale = new TransmogSituationLocaleHotfix1200
+                {
+                    ID = hotfix.ID,
+                    NameLang = hotfix.Name,
+                };
+                Storage.TransmogSituationHotfixesLocale1200.Add(hotfixLocale, packet.TimeSpan);
+            }
+        }
+
+        public static void TransmogSituationGroupHandler1200(Packet packet, uint entry, params object[] indexes)
+        {
+            TransmogSituationGroupHotfix1200 hotfix = new TransmogSituationGroupHotfix1200();
+
+            hotfix.ID = packet.ReadUInt32("ID", indexes);
+            hotfix.TransmogSituationTriggerID = packet.ReadUInt32("TransmogSituationTriggerID", indexes);
+            hotfix.OrderIndex = packet.ReadInt32("OrderIndex", indexes);
+            hotfix.Flags = packet.ReadInt32("Flags", indexes);
+
+            Storage.TransmogSituationGroupHotfixes1200.Add(hotfix, packet.TimeSpan);
+        }
+
+        public static void TransmogSituationTriggerHandler1200(Packet packet, uint entry, params object[] indexes)
+        {
+            TransmogSituationTriggerHotfix1200 hotfix = new TransmogSituationTriggerHotfix1200();
+
+            hotfix.Name = packet.ReadCString("Name", indexes);
+            hotfix.Description = packet.ReadCString("Description", indexes);
+            hotfix.ID = packet.ReadUInt32("ID", indexes);
+            hotfix.TriggerEnum = packet.ReadByte("TriggerEnum", indexes);
+            hotfix.Flags = packet.ReadInt32("Flags", indexes);
+
+            Storage.TransmogSituationTriggerHotfixes1200.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                TransmogSituationTriggerLocaleHotfix1200 hotfixLocale = new TransmogSituationTriggerLocaleHotfix1200
+                {
+                    ID = hotfix.ID,
+                    NameLang = hotfix.Name,
+                    DescriptionLang = hotfix.Description,
+                };
+                Storage.TransmogSituationTriggerHotfixesLocale1200.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void TransportAnimationHandler1200(Packet packet, uint entry, params object[] indexes)
@@ -7574,6 +7792,16 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
                         case DB2Hash.BroadcastTextDuration:
                         {
                             BroadcastTextDurationHandler1200(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.Campaign:
+                        {
+                            CampaignHandler1200(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.CampaignXQuestLine:
+                        {
+                            CampaignXQuestLineHandler1200(db2File, (uint)entry, indexes);
                             break;
                         }
                         case DB2Hash.CfgCategories:
@@ -9023,7 +9251,10 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
                         }
                         case DB2Hash.TraitTree:
                         {
-                            TraitTreeHandler1200(db2File, (uint)entry, indexes);
+                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_1_65818))
+                                TraitTreeHandler1201(db2File, (uint)entry, indexes);
+                            else
+                                TraitTreeHandler1200(db2File, (uint)entry, indexes);
                             break;
                         }
                         case DB2Hash.TraitTreeLoadout:
@@ -9051,6 +9282,21 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
                             TransmogIllusionHandler1200(db2File, (uint)entry, indexes);
                             break;
                         }
+                        case DB2Hash.TransmogOutfitEntry:
+                        {
+                            TransmogOutfitEntryHandler1200(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TransmogOutfitSlotInfo:
+                        {
+                            TransmogOutfitSlotInfoHandler1200(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TransmogOutfitSlotOption:
+                        {
+                            TransmogOutfitSlotOptionHandler1200(db2File, (uint)entry, indexes);
+                            break;
+                        }
                         case DB2Hash.TransmogSet:
                         {
                             TransmogSetHandler1200(db2File, (uint)entry, indexes);
@@ -9064,6 +9310,21 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
                         case DB2Hash.TransmogSetItem:
                         {
                             TransmogSetItemHandler1200(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TransmogSituation:
+                        {
+                            TransmogSituationHandler1200(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TransmogSituationGroup:
+                        {
+                            TransmogSituationGroupHandler1200(db2File, (uint)entry, indexes);
+                            break;
+                        }
+                        case DB2Hash.TransmogSituationTrigger:
+                        {
+                            TransmogSituationTriggerHandler1200(db2File, (uint)entry, indexes);
                             break;
                         }
                         case DB2Hash.TransportAnimation:
