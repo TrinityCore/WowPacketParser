@@ -47,6 +47,24 @@ namespace WowPacketParser.Parsing.Parsers
         public static GossipOptionSelection LastGossipOption = new GossipOptionSelection();
         public static GossipOptionSelection TempGossipOptionPOI = new GossipOptionSelection();
 
+        public static void AddCreatureTemplateGossip(WowGuid guid, uint menuId, TimeSpan packetTime)
+        {
+            if (guid.GetObjectType() == ObjectType.Unit && !HasLastGossipOption(packetTime, menuId))
+            {
+                var creatureId = guid.GetEntry();
+                if (Storage.Objects.TryGetValue(guid, out WoWObject obj) && obj.ObjectData.EntryID.HasValue)
+                    creatureId = (uint)obj.ObjectData.EntryID.Value;
+
+                CreatureTemplateGossip creatureTemplateGossip = new()
+                {
+                    CreatureID = creatureId,
+                    MenuID = menuId
+                };
+                Storage.CreatureTemplateGossips.Add(creatureTemplateGossip);
+                Storage.CreatureDefaultGossips.Add(creatureId, menuId);
+            }
+        }
+
         public static void AddGossipNpcOption(int gossipNpcOptionId, TimeSpan timeSpan, bool checkDelay = false)
         {
             if (LastGossipOption.HasSelection)
@@ -616,18 +634,8 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < questsCount; i++)
                 ReadGossipQuestTextData(packet, i, "GossipQuests");
 
-            if (guid.GetObjectType() == ObjectType.Unit && !HasLastGossipOption(packet.TimeSpan, (uint)menuId))
-            {
-                CreatureTemplateGossip creatureTemplateGossip = new()
-                {
-                    CreatureID = guid.GetEntry(),
-                    MenuID = menuId
-                };
-                Storage.CreatureTemplateGossips.Add(creatureTemplateGossip);
-                Storage.CreatureDefaultGossips.Add(guid.GetEntry(), menuId);
-            }
-
             Storage.Gossips.Add(gossip, packet.TimeSpan);
+            AddCreatureTemplateGossip(guid, menuId, packet.TimeSpan);
             UpdateLastGossipOptionActionMessage(packet.TimeSpan, menuId);
 
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
