@@ -30,6 +30,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         {
             var spellCount = packet.ReadUInt32();
             packet.ReadUInt32("SpecializationID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_7_68182))
+                packet.ReadInt32("MinActionBarSlot");
+
             packet.ReadBit("SuppressMessaging");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213))
                 packet.ReadBit("TraitGrantedByAura");

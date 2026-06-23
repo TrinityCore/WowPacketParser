@@ -1,9 +1,6 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Proto;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V10_0_0_46181.Parsers
 {
@@ -28,20 +25,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadInt32E<Language>("Language");
             packet.ReadPackedGuid128("TargetGUID");
             packet.ReadUInt32("TargetVirtualRealmAddress");
-            var targetLen = packet.ReadBits(6);
+            var targetLen = packet.ReadBits(9);
             var textLen = packet.ReadBits(11);
 
-            if (targetLen > 1)
-            {
-                packet.ReadWoWString("Target", targetLen - 1);
-                packet.ReadByte(); // null terminator
-            }
-
-            if (textLen > 1)
-            {
-                packet.ReadWoWString("Text", textLen - 1);
-                packet.ReadByte(); // null terminator
-            }
+            packet.ReadDynamicString("Target", targetLen);
+            packet.ReadDynamicString("Text", textLen);
         }
 
         [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_TARGETED, ClientVersionBuild.V10_2_7_54577)]
@@ -53,20 +41,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadPackedGuid128("PlayerGUID");
             packet.ReadUInt32("PlayerVirtualRealmAddress");
 
-            var playerNameLen = packet.ReadBits(6);
-            var channelNameLen = packet.ReadBits(6);
+            var playerNameLen = packet.ReadBits(9);
+            var channelNameLen = packet.ReadBits(8);
 
-            if (playerNameLen > 1)
-            {
-                packet.ReadWoWString("PlayerName", playerNameLen - 1);
-                packet.ReadByte(); // null terminator
-            }
-
-            if (channelNameLen > 1)
-            {
-                packet.ReadWoWString("ChannelName", channelNameLen - 1);
-                packet.ReadByte(); // null terminator
-            }
+            packet.ReadDynamicString("PlayerName", playerNameLen);
+            packet.ReadDynamicString("ChannelName", channelNameLen);
         }
     }
 }

@@ -8,10 +8,15 @@ configuration:
 - Release
 platform: Any CPU
 clone_depth: 1
+environment:
+  DOTNET_NOLOGO: true
+  DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
 before_build:
 - ps: dotnet restore
 build:
   verbosity: minimal
+  project: WowPacketParser.slnx
 artifacts:
 - path: WowPacketParser\bin
   name: WPP

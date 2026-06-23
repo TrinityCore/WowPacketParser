@@ -121,7 +121,11 @@ namespace WowPacketParserModule.Substructures
             packet.ResetBitReader();
 
             {
-                var modificationCount = packet.ReadBits(6);
+                var modificationBits = 6;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_7_68182))
+                    modificationBits = 7;
+
+                var modificationCount = packet.ReadBits(modificationBits);
                 packet.ResetBitReader();
                 for (var j = 0u; j < modificationCount; ++j)
                 {

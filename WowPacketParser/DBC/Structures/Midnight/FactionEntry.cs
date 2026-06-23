@@ -7,8 +7,6 @@ namespace WowPacketParser.DBC.Structures.Midnight
     {
         [Index(true)]
         public uint ID;
-        [Cardinality(4)]
-        public long[] ReputationRaceMask = new long[4];
         public string Name;
         public string Description;
         public short ReputationIndex;
@@ -31,5 +29,13 @@ namespace WowPacketParser.DBC.Structures.Midnight
         public float[] ParentFactionMod = new float[2];
         [Cardinality(2)]
         public byte[] ParentFactionCap = new byte[2];
+        [Cardinality(2)]
+        public int[] ReputationRaceMask1 = new int[2];
+        [Cardinality(2)]
+        public int[] ReputationRaceMask2 = new int[2];
+        [Cardinality(2)]
+        public int[] ReputationRaceMask3 = new int[2];
+        [Cardinality(2)]
+        public int[] ReputationRaceMask4 = new int[2];
     }
 }

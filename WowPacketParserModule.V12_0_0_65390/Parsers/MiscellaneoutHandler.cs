@@ -106,8 +106,11 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
 
             packet.ReadBit("GuildTradeSkillsEnabled");
             var unknown1027StrLen = packet.ReadBits(10);
-            packet.ReadBit("BNSendWhisperUseV2Services");
-            packet.ReadBit("BNSendGameDataUseV2Services");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_0_7_68182))
+            {
+                packet.ReadBit("BNSendWhisperUseV2Services");
+                packet.ReadBit("BNSendGameDataUseV2Services");
+            }
             packet.ReadBit("IsAccountCurrencyTransferEnabled");
             packet.ReadBit("NetEaseChatTelemetryEnabled");
             packet.ReadBit("LobbyMatchmakerQueueFromMainlineEnabled");
@@ -183,6 +186,9 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
 
             packet.ReadBit("BrowserCrashReporterEnabled");
             packet.ReadBit("IsEmployeeAccount");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_7_68182))
+                packet.ReadBit("UseBleep");
+
             var europaTicket = packet.ReadBit("IsEuropaTicketSystemStatusEnabled");
             packet.ReadBit("NameReservationOnly");
             var launchEta = packet.ReadBit();
@@ -195,8 +201,11 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
 
             var realmHiddenAlertLen = packet.ReadBits(11);
 
-            packet.ReadBit("BNSendWhisperUseV2Services");
-            packet.ReadBit("BNSendGameDataUseV2Services");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_0_7_68182))
+            {
+                packet.ReadBit("BNSendWhisperUseV2Services");
+                packet.ReadBit("BNSendGameDataUseV2Services");
+            }
             packet.ReadBit("CharacterSelectListModeRealmless");
 
             packet.ReadBit("WowTokenLimitedMode");

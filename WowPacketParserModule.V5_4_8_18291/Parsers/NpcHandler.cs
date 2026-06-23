@@ -170,17 +170,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             gossip.ObjectType = guid.GetObjectType();
             gossip.ObjectEntry = guid.GetEntry();
 
-            if (guid.GetObjectType() == ObjectType.Unit && !CoreParsers.NpcHandler.HasLastGossipOption(packet.TimeSpan, (uint)menuId))
-            {
-                CreatureTemplateGossip creatureTemplateGossip = new()
-                {
-                    CreatureID = guid.GetEntry(),
-                    MenuID = menuId
-                };
-                Storage.CreatureTemplateGossips.Add(creatureTemplateGossip);
-                Storage.CreatureDefaultGossips.Add(guid.GetEntry(), menuId);
-            }
-
             gossipOptions.ForEach(g =>
             {
                 g.MenuID = menuId;
@@ -195,7 +184,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             Storage.Gossips.Add(gossip, packet.TimeSpan);
 
             CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, (int)friendshipFactionID, 0, guid, packet.TimeSpan);
-
+            CoreParsers.NpcHandler.AddCreatureTemplateGossip(guid, (uint)menuId, packet.TimeSpan);
             CoreParsers.NpcHandler.UpdateLastGossipOptionActionMessage(packet.TimeSpan, gossip.MenuID);
 
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));

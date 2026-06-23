@@ -183,17 +183,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             for (int i = 0; i < questsCount; ++i)
                 packetGossip.Quests.Add(ReadGossipQuestTextData(packet, i, "GossipQuests"));
 
-            if (guid.GetObjectType() == ObjectType.Unit && !CoreParsers.NpcHandler.HasLastGossipOption(packet.TimeSpan, (uint)menuId))
-            {
-                CreatureTemplateGossip creatureTemplateGossip = new()
-                {
-                    CreatureID = guid.GetEntry(),
-                    MenuID = (uint)menuId
-                };
-                Storage.CreatureTemplateGossips.Add(creatureTemplateGossip);
-                Storage.CreatureDefaultGossips.Add(guid.GetEntry(), (uint)menuId);
-            }
-
+            CoreParsers.NpcHandler.AddCreatureTemplateGossip(guid, (uint)menuId, packet.TimeSpan);
             CoreParsers.NpcHandler.UpdateLastGossipOptionActionMessage(packet.TimeSpan, (uint)menuId);
 
             packet.AddSniffData(StoreNameType.Gossip, menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));

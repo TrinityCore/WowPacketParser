@@ -7,7 +7,6 @@ namespace WowPacketParser.DBC.Structures.Midnight
     {
         [Index(true)]
         public uint ID;
-        public long AllowableRace;
         public string Description;
         public string Display3;
         public string Display2;
@@ -32,6 +31,8 @@ namespace WowPacketParser.DBC.Structures.Midnight
         public int MaxCount;
         public int MinReputation;
         public uint RequiredAbility;
+        [Cardinality(2)]
+        public int[] AllowableRace = new int[2];
         public uint SellPrice;
         public uint BuyPrice;
         public uint VendorStackCount;
