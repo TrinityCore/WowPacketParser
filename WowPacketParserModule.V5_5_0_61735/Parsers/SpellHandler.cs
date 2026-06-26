@@ -1491,7 +1491,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             ReadSpellCastRequest(packet, "Cast");
         }
 
-        [Parser(Opcode.CMSG_CAST_SPELL)]
+        [Parser(Opcode.CMSG_CAST_SPELL, ClientBranch.MoP)]
         public static void HandleCastSpell(Packet packet)
         {
             ReadSpellCastRequest(packet, "Cast");
