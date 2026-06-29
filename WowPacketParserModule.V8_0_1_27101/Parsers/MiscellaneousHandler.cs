@@ -260,7 +260,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 byte[] bytes = null;
 
                 len = packet.ReadUInt16();
-                opcode = packet.ReadUInt16();
+                opcode = packet.ReadInt32();
                 bytes = packet.ReadBytes(len);
 
                 if (bytes == null || len == 0)
