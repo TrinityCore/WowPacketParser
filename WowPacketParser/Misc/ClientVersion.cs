@@ -1740,11 +1740,18 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V5_5_2_64481:
                 case ClientVersionBuild.V5_5_3_64802:
                 case ClientVersionBuild.V5_5_3_64857:
+                case ClientVersionBuild.V5_5_3_65302:
                 case ClientVersionBuild.V5_5_3_65746:
                 case ClientVersionBuild.V5_5_3_65890:
                 case ClientVersionBuild.V5_5_3_65988:
                 case ClientVersionBuild.V5_5_3_66128:
                 case ClientVersionBuild.V5_5_4_67849:
+                case ClientVersionBuild.V5_5_3_66382:
+                case ClientVersionBuild.V5_5_3_66509:
+                case ClientVersionBuild.V5_5_3_66565:
+                case ClientVersionBuild.V5_5_3_66839:
+                case ClientVersionBuild.V5_5_3_67158:
+                case ClientVersionBuild.V5_5_3_67509:
                 case ClientVersionBuild.V5_5_4_68042:
                 case ClientVersionBuild.V5_5_4_68077:
                 case ClientVersionBuild.V5_5_4_68159:
@@ -2492,11 +2499,18 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V5_5_2_64481:
                 case ClientVersionBuild.V5_5_3_64802:
                 case ClientVersionBuild.V5_5_3_64857:
+                case ClientVersionBuild.V5_5_3_65302:
                 case ClientVersionBuild.V5_5_3_65746:
                 case ClientVersionBuild.V5_5_3_65890:
                 case ClientVersionBuild.V5_5_3_65988:
                 case ClientVersionBuild.V5_5_3_66128:
                 case ClientVersionBuild.V5_5_3_66290:
+                case ClientVersionBuild.V5_5_3_66382:
+                case ClientVersionBuild.V5_5_3_66509:
+                case ClientVersionBuild.V5_5_3_66565:
+                case ClientVersionBuild.V5_5_3_66839:
+                case ClientVersionBuild.V5_5_3_67158:
+                case ClientVersionBuild.V5_5_3_67509:
                 case ClientVersionBuild.V5_5_4_67849:
                 case ClientVersionBuild.V5_5_4_68042:
                 case ClientVersionBuild.V5_5_4_68077:
