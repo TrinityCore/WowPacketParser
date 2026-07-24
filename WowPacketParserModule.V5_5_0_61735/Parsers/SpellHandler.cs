@@ -36,6 +36,17 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 packet.ReadInt32("Cost", idx, i);
             }
         }
+        public static void ReadSpellCastLogData554(Packet packet, params object[] idx)
+        {
+            packet.ReadBytes("UnknownLogHeader554", 13, idx);
+
+            var count = packet.ReadUInt32("UnknownGuidCount554", idx);
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadPackedGuid128("UnknownGuid554", idx, i);
+
+            packet.ReadByte("UnknownLogTail554", idx);
+        }
 
         public static void ReadTalentGroupInfo(Packet packet, params object[] idx)
         {
@@ -265,6 +276,95 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.ReadWoWString("Name", nameLength, idx);
         }
 
+        public static void ReadSpellTargetData554(Packet packet, PacketSpellData packetSpellData, uint spellID, params object[] idx)
+        {
+            packet.ResetBitReader();
+
+            var flags = packet.ReadInt32E<TargetFlag>("Flags", idx);
+
+            var targetUnit = packet.ReadPackedGuid128("Unit", idx);
+            if (packetSpellData != null)
+                packetSpellData.TargetUnit = targetUnit;
+
+            packet.ReadPackedGuid128("Item", idx);
+
+            bool hasSourceLocation =
+                (flags & TargetFlag.SourceLocation) != 0;
+
+            bool hasDestinationLocation =
+                (flags & TargetFlag.DestinationLocation) != 0;
+
+            if (hasSourceLocation)
+            {
+                packet.ReadPackedGuid128("Transport", idx, "SrcLocation");
+
+                // New field in 5.5.4 between transport GUID and position.
+                packet.ReadUInt32("UnknownSource554", idx);
+
+                packet.ReadVector3("Location", idx, "SrcLocation");
+            }
+
+            Vector3? dstLocation = null;
+            var mapID = -1;
+
+            if (hasDestinationLocation)
+            {
+                packet.ReadPackedGuid128("Transport", idx, "DstLocation");
+
+                // New field in 5.5.4 between transport GUID and position.
+                packet.ReadUInt32("UnknownDestination554", idx);
+
+                dstLocation = packet.ReadVector3("Location", idx, "DstLocation");
+
+                if (packetSpellData != null)
+                    packetSpellData.DstLocation = dstLocation;
+
+                packet.ReadSingle("Orientation", idx);
+
+                mapID = packet.ReadInt32("MapID", idx);
+            }
+
+            if (!hasSourceLocation && !hasDestinationLocation)
+                packet.ReadUInt32("UnknownTarget554", idx);
+
+            if (Settings.UseDBC && dstLocation != null && mapID != -1)
+            {
+                for (uint i = 0; i < 32; ++i)
+                {
+                    var tuple = Tuple.Create(spellID, i);
+
+                    if (!DBC.SpellEffectStores.ContainsKey(tuple))
+                        continue;
+
+                    var effect = DBC.SpellEffectStores[tuple];
+
+                    if ((Targets)effect.ImplicitTarget[0] != Targets.TARGET_DEST_DB &&
+                        (Targets)effect.ImplicitTarget[1] != Targets.TARGET_DEST_DB)
+                    {
+                        continue;
+                    }
+
+                    string effectHelper =
+                        $"Spell: {StoreGetters.GetName(StoreNameType.Spell, (int)spellID)} " +
+                        $"Effect: {effect.Effect} ({(SpellEffects)effect.Effect})";
+
+                    var spellTargetPosition = new SpellTargetPosition
+                    {
+                        ID = spellID,
+                        EffectIndex = (byte)i,
+                        PositionX = dstLocation.Value.X,
+                        PositionY = dstLocation.Value.Y,
+                        PositionZ = dstLocation.Value.Z,
+                        MapID = (ushort)mapID,
+                        EffectHelper = effectHelper
+                    };
+
+                    if (!Storage.SpellTargetPositions.ContainsKey(spellTargetPosition))
+                        Storage.SpellTargetPositions.Add(spellTargetPosition);
+                }
+            }
+        }
+        
         public static void ReadSpellTargetData(Packet packet, PacketSpellData packetSpellData, uint spellID, params object[] idx)
         {
             packet.ResetBitReader();
@@ -392,7 +492,9 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             var hasAmmoDisplayId = packet.ReadBit("HasAmmoDisplayId", idx);
             var hasAmmoInventoryType = packet.ReadBit("HasAmmoInventoryType", idx);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_3_64802))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_4_68042))
+                ReadSpellTargetData554(packet, packetSpellData, spellID, idx, "Target");
+            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_5_3_64802))
                 ReadSpellTargetData553(packet, packetSpellData, spellID, idx, "Target");
             else
                 ReadSpellTargetData(packet, packetSpellData, spellID, idx, "Target");
@@ -1203,7 +1305,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             packet.Holder.SpellGo = packetSpellGo;
 
             packet.ResetBitReader();
-            var hasLog = packet.ReadBit();
+            var hasLog = packet.ReadBit("HasLog");
             if (hasLog)
                 ReadSpellCastLogData(packet, "LogData");
         }
