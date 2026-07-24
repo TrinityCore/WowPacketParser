@@ -5,6 +5,30 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <UsingTask TaskName="SetProcessEnvironmentVariable"
+               TaskFactory="RoslynCodeTaskFactory"
+               AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+        <ParameterGroup>
+            <Name ParameterType="System.String" Required="true" />
+            <Value ParameterType="System.String" Required="true" />
+        </ParameterGroup>
+        <Task>
+            <Using Namespace="System" />
+            <Code Type="Fragment" Language="cs"><![CDATA[
+                Environment.SetEnvironmentVariable(Name, Value, EnvironmentVariableTarget.Process);
+            ]]></Code>
+        </Task>
+    </UsingTask>
+
+    <Target Name="SetAsciiTempForProtobuf" BeforeTargets="Protobuf_ResolvePlatform">
+        <PropertyGroup>
+            <_ProtobufSafeTemp>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\.build-temp'))</_ProtobufSafeTemp>
+        </PropertyGroup>
+        <MakeDir Directories="$(_ProtobufSafeTemp)" />
+        <SetProcessEnvironmentVariable Name="TEMP" Value="$(_ProtobufSafeTemp)" />
+        <SetProcessEnvironmentVariable Name="TMP" Value="$(_ProtobufSafeTemp)" />
+    </Target>
+
     <ItemGroup>
         <PackageReference Include="Google.Protobuf" Version="3.34.1" />
         <PackageReference Include="Grpc.Tools" Version="2.80.0">
