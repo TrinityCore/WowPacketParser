@@ -276,7 +276,7 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
             }
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
             {
                 // Not the best way
                 ReadSplineMovement422(packet, pos);
