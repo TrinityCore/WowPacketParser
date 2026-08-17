@@ -575,12 +575,12 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var hideWarboardHeader = packet.ReadBit("HideWarboardHeader");
             var keepOpenAfterChoice = packet.ReadBit("KeepOpenAfterChoice");
             byte showChoicesAsList = 0;
-            byte forceDontShowChoicesAsList = 0;
+            byte hasPowerChoice = 0;
             byte requiresSelection = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_5_60392))
             {
                 showChoicesAsList = packet.ReadBit("ShowChoicesAsList");
-                forceDontShowChoicesAsList = packet.ReadBit("ForceDontShowChoicesAsList");
+                hasPowerChoice = packet.ReadBit("HasPowerChoice");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_0_65390))
@@ -607,7 +607,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 HideWarboardHeader = hideWarboardHeader,
                 KeepOpenAfterChoice = keepOpenAfterChoice,
                 ShowChoicesAsList = showChoicesAsList,
-                ForceDontShowChoicesAsList = forceDontShowChoicesAsList,
+                HasPowerChoice = hasPowerChoice,
                 RequiresSelection = requiresSelection
             }, packet.TimeSpan);
 

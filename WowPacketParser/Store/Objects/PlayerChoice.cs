@@ -40,8 +40,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ShowChoicesAsList", TargetedDatabaseFlag.SinceTheWarWithin | TargetedDatabaseFlag.MoPClassic)]
         public int ShowChoicesAsList;
 
-        [DBFieldName("ForceDontShowChoicesAsList", TargetedDatabaseFlag.SinceTheWarWithin | TargetedDatabaseFlag.MoPClassic)]
-        public int ForceDontShowChoicesAsList;
+        [DBFieldName("ForceDontShowChoicesAsList", TargetedDatabaseFlag.TheWarWithin | TargetedDatabaseFlag.MoPClassic)]
+        public int HasPowerChoice;
 
         [DBFieldName("RequiresSelection", TargetedDatabaseFlag.SinceTheWarWithin)]
         public int RequiresSelection;
