@@ -744,7 +744,6 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
         {
             var data = new UnitData();
             packet.ResetBitReader();
-            /*
             var rawChangesMask = new int[8];
             var rawMaskMask = new int[1];
             rawMaskMask[0] = (int)packet.ReadBits(8);
@@ -1342,7 +1341,6 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
                     }
                 }
             }
-            */
             return data;
         }
 

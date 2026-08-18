@@ -741,7 +741,6 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_1_47014
         public override IUnitData ReadUpdateUnitData(Packet packet, params object[] indexes)
         {
             var data = new UnitData();
-            /*
             var rawChangesMask = new int[7];
             var rawMaskMask = new int[1];
             rawMaskMask[0] = (int)packet.ReadBits(7);
@@ -1331,7 +1330,6 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_1_47014
                     }
                 }
             }
-            */
             return data;
         }
 
