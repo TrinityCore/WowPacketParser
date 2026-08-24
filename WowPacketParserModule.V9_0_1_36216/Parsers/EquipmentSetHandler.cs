@@ -32,20 +32,20 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_1_0_39185))
                 {
-                    packet.ReadInt32("Unknown901_1");
-                    packet.ReadInt32("Unknown901_2");
+                    packet.ReadInt32("Unknown901_1", i);
+                    packet.ReadInt32("Unknown901_2", i);
                 }
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
                 {
-                    packet.ReadInt32("SecondaryShoulderApparanceID");
-                    packet.ReadInt32("SecondaryShoulderSlot");
-                    packet.ReadInt32("SecondaryWeaponAppearanceID");
-                    packet.ReadInt32("SecondaryWeaponSlot");
+                    packet.ReadInt32("SecondaryShoulderApparanceID", i);
+                    packet.ReadInt32("SecondaryShoulderSlot", i);
+                    packet.ReadInt32("SecondaryWeaponAppearanceID", i);
+                    packet.ReadInt32("SecondaryWeaponSlot", i);
                 }
 
                 packet.ResetBitReader();
-                var hasAssignedSpecIndex = packet.ReadBit("HasAssignedSpecIndex");
+                var hasAssignedSpecIndex = packet.ReadBit("HasAssignedSpecIndex", i);
                 var setNameLen = packet.ReadBits(8);
                 var setIconLen = packet.ReadBits(9);
 

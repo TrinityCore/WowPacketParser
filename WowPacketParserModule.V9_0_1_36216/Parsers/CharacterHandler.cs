@@ -147,7 +147,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 ReadChrCustomizationChoice(packet, idx, "Customizations", j);
 
             for (int i = 0; i < itemCount; i++)
-                V8_0_1_27101.Parsers.CharacterHandler.ReadInspectItemData(packet, idx, i);
+                V8_0_1_27101.Parsers.CharacterHandler.ReadInspectItemData(packet, idx, "Items", i);
         }
 
         public static void ReadPVPBracketData(Packet packet, params object[] idx)

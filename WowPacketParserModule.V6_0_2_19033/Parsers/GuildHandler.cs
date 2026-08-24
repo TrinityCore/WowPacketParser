@@ -216,12 +216,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GUILD_KNOWN_RECIPES)]
         public static void HandleGuildRecipes(Packet packet)
         {
+            var byteCount = ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213) ? 600 : 300;
+
             var count = packet.ReadInt32("Criteria count");
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadInt32("Skill Id", i);
-                packet.ReadBytes("Skill Bits", 300, i);
+                packet.ReadInt32("SkillLineID", i);
+                packet.ReadBytes("SkillLineBitArray", byteCount, i);
             }
         }
 
@@ -829,11 +831,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GUILD_MEMBER_RECIPES)]
         public static void HandleGuildMemberRecipes(Packet packet)
         {
+            var byteCount = ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213) ? 600 : 300;
+
             packet.ReadPackedGuid128("Member");
             packet.ReadInt32("SkillLineID");
             packet.ReadInt32("SkillRank");
             packet.ReadInt32("SkillStep");
-            for (int i = 0; i < 0x12C; i++)
+            for (var i = 0; i < byteCount; i++)
                 packet.ReadByte("SkillLineBitArray", i);
         }
 

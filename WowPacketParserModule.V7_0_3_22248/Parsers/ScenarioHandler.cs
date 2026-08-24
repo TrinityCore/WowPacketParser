@@ -25,7 +25,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadInt32("ScenarioID");
             packet.ReadInt32("CurrentStep");
-            packet.ReadInt32<DifficultyId>("DifficultyID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_0_65390))
+                packet.ReadInt16<DifficultyId>("DifficultyID");
+            else
+                packet.ReadInt32<DifficultyId>("DifficultyID");
             packet.ReadInt32("WaveCurrent");
             packet.ReadInt32("WaveMax");
             packet.ReadInt32("TimerDuration");

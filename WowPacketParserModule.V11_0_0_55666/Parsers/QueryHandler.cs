@@ -17,8 +17,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             Substructures.ItemHandler.ReadItemInstance(packet, indexes);
             packet.ReadUInt32("Quantity", indexes);
-            var hasContextFlags = packet.ReadBit("HasContextFlags", indexes);
+
             packet.ResetBitReader();
+            var hasContextFlags = packet.ReadBit("HasContextFlags", indexes);
 
             if (hasContextFlags)
                 packet.ReadInt32("ContextFlags", indexes);
@@ -28,8 +29,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             packet.ReadUInt32("CurrencyID", indexes);
             packet.ReadUInt32("Quantity", indexes);
-            var hasContextFlags = packet.ReadBit("HasContextFlags", indexes);
+
             packet.ResetBitReader();
+            var hasContextFlags = packet.ReadBit("HasContextFlags", indexes);
 
             if (hasContextFlags)
                 packet.ReadInt32("ContextFlags", indexes);

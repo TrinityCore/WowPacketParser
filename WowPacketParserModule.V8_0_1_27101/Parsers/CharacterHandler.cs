@@ -14,8 +14,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt32("Index", idx);
             packet.ReadUInt32("AzeriteEssenceID", idx);
             packet.ReadUInt32("Rank", idx);
-            packet.ReadBit("SlotUnlocked", idx);
             packet.ResetBitReader();
+            packet.ReadBit("SlotUnlocked", idx);
         }
 
         public static void ReadInspectItemData(Packet packet, params object[] idx)
@@ -33,10 +33,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             Substructures.ItemHandler.ReadItemInstance(packet, idx);
 
+            packet.ResetBitReader();
             packet.ReadBit("Usable", idx);
             var enchantsCount = packet.ReadBits("EnchantsCount", 4, idx);
             var gemsCount = packet.ReadBits("GemsCount", 2, idx);
-            packet.ResetBitReader();
 
             for (int i = 0; i < azeriteEssenceCount; i++)
                 ReadAzeriteEssenceData(packet, "AzeriteEssence", i);
@@ -76,8 +76,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadPackedGuid128("InspecteeGUID", idx);
             packet.ReadInt32("SpecializationID", idx);
             var itemCount = packet.ReadUInt32();
-            var nameLen = packet.ReadBits(6);
             packet.ResetBitReader();
+            var nameLen = packet.ReadBits(6);
             packet.ReadByteE<Gender>("GenderID", idx);
             packet.ReadByte("Skin", idx);
             packet.ReadByte("HairColor", idx);

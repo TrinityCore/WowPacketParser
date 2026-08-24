@@ -24,22 +24,33 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadInt32("SkillFromReagents", indexes);
             packet.ReadInt32("Skill", indexes);
             packet.ReadInt32("CritBonusSkill", indexes);
-            packet.ReadSingle("field_1C", indexes);
-            packet.ReadUInt64("field_20", indexes);
+            packet.ReadSingle("ModSkillGain", indexes);
+            packet.ReadUInt64("OrderID", indexes);
             var resourcesReturnedCount = packet.ReadUInt32();
             packet.ReadUInt32("OperationID", indexes);
             packet.ReadPackedGuid128("ItemGUID", indexes);
             packet.ReadInt32("Quantity", indexes);
             packet.ReadInt32("EnchantID", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+            {
+                packet.ReadInt32("ConcentrationCurrencyID", indexes);
+                packet.ReadInt32("ConcentrationSpent", indexes);
+                packet.ReadInt32("IngenuityRefund", indexes);
+            }
 
             for (var i = 0u; i < resourcesReturnedCount; i++)
                 ReadSpellReducedReagent(packet, indexes, "ResourcesReturned", i);
 
-            packet.ReadBit("IsCrit", indexes);
-            packet.ReadBit("field_29", indexes);
-            packet.ReadBit("field_2A", indexes);
-            packet.ReadBit("BonusCraft", indexes);
             packet.ResetBitReader();
+            packet.ReadBit("IsCrit", indexes);
+            packet.ReadBit("IsRecraft", indexes);
+            packet.ReadBit("IsInitialRecraft", indexes);
+            packet.ReadBit("IsFirstCraft", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
+            {
+                packet.ReadBit("HasIngenuityProc", indexes);
+                packet.ReadBit("ApplyConcentration", indexes);
+            }
 
             Substructures.ItemHandler.ReadItemInstance(packet, "OldItem");
             Substructures.ItemHandler.ReadItemInstance(packet, "NewItem");
@@ -49,18 +60,18 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         {
             packet.ReadByte("OrderType", indexes);
             packet.ReadUInt32("Offset", indexes);
+
+            packet.ResetBitReader();
             packet.ReadBit("ForCrafter", indexes);
             packet.ReadBit("IsMyOrders", indexes);
             packet.ReadBit("field_3", indexes);
             packet.ReadBit("field_4", indexes);
-
-            packet.ResetBitReader();
         }
 
         public static void ReadCraftingOrderBucketInfo(Packet packet, params object[] indexes)
         {
-            packet.ReadBits("SkillLineAbilityID", 20, indexes);
             packet.ResetBitReader();
+            packet.ReadBits("SkillLineAbilityID", 20, indexes);
 
             packet.ReadInt32("NumAvailable", indexes);
             packet.ReadUInt64("TipAmountMax", indexes);
@@ -76,8 +87,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadUInt32("Quantity", indexes);
             packet.ReadInt32("ReagentQuality", indexes);
 
-            var hasDataSlotIndex = packet.ReadBit();
             packet.ResetBitReader();
+            var hasDataSlotIndex = packet.ReadBit();
 
             if (hasDataSlotIndex)
                 packet.ReadByte("DataSlotIndex", indexes);
@@ -102,11 +113,12 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadPackedGuid128("PersonalCrafterGUID", indexes);
 
             var reagentsCount = packet.ReadUInt32();
+
+            packet.ResetBitReader();
             var customerNotesLength = packet.ReadBits(10);
             var hasOutputItem = packet.ReadBit();
             var hasOutputItemData = packet.ReadBit();
 
-            packet.ResetBitReader();
 
             for (var i = 0u; i < reagentsCount; ++i)
                 ReadCraftingOrderItem(packet, indexes, "Reagents", i);
@@ -124,11 +136,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         {
             ReadCraftingOrderData(packet, indexes, "Data");
 
+            packet.ResetBitReader();
             var hasRecraftItemInfo = packet.ReadBit();
             var enchantmentsCount = packet.ReadBits(4);
             var gemCount = packet.ReadBits(2);
 
-            packet.ResetBitReader();
 
             if (hasRecraftItemInfo)
                 Substructures.ItemHandler.ReadItemInstance(packet, indexes, "OutputItemInfo");
@@ -153,9 +165,10 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             var orderCount = packet.ReadUInt32();
             packet.ReadUInt32("DesiredDelay");
             packet.ReadUInt32("NumOrders");
+
+            packet.ResetBitReader();
             packet.ReadBit("HasMoreResults");
             packet.ReadBit("IsSorted");
-            packet.ResetBitReader();
 
             ReadCraftingOrderClientContext(packet, "ClientContext");
 
