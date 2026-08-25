@@ -666,11 +666,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
                 packet.ReadPackedGuid128("AffectedGUID");
             var count = packet.ReadInt32();
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_5_50232))
                     packet.ReadUInt32("Duration", i);
-                packet.ReadByte("AuraSlot", i);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_0_59347))
+                    packet.ReadUInt16("AuraSlot", i);
+                else
+                    packet.ReadByte("AuraSlot", i);
+
                 packet.ReadByte("EffectIndex", i);
                 packet.ReadByteE<LossOfControlType>("LocType", i);
                 packet.ReadByteE<SpellMechanic>("Mechanic", i);

@@ -434,5 +434,28 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             packet.ReadInt32<QuestId>("Quest");
         }
+
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT, ClientVersionBuild.V11_2_5_63506)]
+        public static void HandleQuestUpdateAddCredit(Packet packet)
+        {
+            var addCredit = packet.Holder.QuestAddKillCredit = new();
+            addCredit.Victim = packet.ReadPackedGuid128("VictimGUID");
+
+            addCredit.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
+            addCredit.KillCredit = (uint)packet.ReadInt32("ObjectID");
+
+            addCredit.Count = packet.ReadUInt16("Count");
+            addCredit.RequiredCount = packet.ReadUInt16("Required");
+
+            packet.ReadUInt32("ObjectiveType");
+        }
+
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT_SIMPLE, ClientVersionBuild.V11_2_5_63506)]
+        public static void HandleQuestUpdateAddCreditSimple(Packet packet)
+        {
+            packet.ReadInt32<QuestId>("QuestID");
+            packet.ReadInt32("ObjectID");
+            packet.ReadUInt32("ObjectiveType");
+        }
     }
 }

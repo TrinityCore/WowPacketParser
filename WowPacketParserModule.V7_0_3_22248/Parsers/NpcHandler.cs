@@ -27,9 +27,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_2_55959))
-                packet.ReadInt32("Unused1102", idx);
+                packet.ReadInt32("QuestInfoID", idx);
 
-            for (int j = 0; j < 2; ++j)
+            for (var j = 0; j < 2; ++j)
                 packet.ReadInt32("QuestFlags", idx, j);
 
             if (ClientVersion.AddedInVersion(ClientType.TheWarWithin))

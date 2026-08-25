@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadPackedGuid128("CasterGUID", idx);
             packet.ReadUInt32<SpellId>("SpellID", idx);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_7_67808))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_7_68182))
                 packet.ReadInt32("Applications", idx);
         }
 

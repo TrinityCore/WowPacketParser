@@ -837,51 +837,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_LIST_MESSAGE, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
-        public static void HandleQuestgiverQuestList(Packet packet)
-        {
-            WowGuid guid = packet.ReadPackedGuid128("QuestGiverGUID");
-
-            QuestGreeting questGreeting = new QuestGreeting
-            {
-                ID = guid.GetEntry(),
-                GreetEmoteDelay = packet.ReadUInt32("GreetEmoteDelay"),
-                GreetEmoteType = packet.ReadUInt32("GreetEmoteType")
-            };
-
-            uint questsCount = packet.ReadUInt32("GossipQuestsCount");
-            packet.ResetBitReader();
-            uint greetingLen = packet.ReadBits(12);
-
-            for (int i = 0; i < questsCount; i++)
-                V7_0_3_22248.Parsers.NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests");
-
-            questGreeting.Greeting = packet.ReadWoWString("Greeting", greetingLen);
-
-            switch (guid.GetObjectType())
-            {
-                case ObjectType.Unit:
-                    questGreeting.Type = 0;
-                    break;
-                case ObjectType.GameObject:
-                    questGreeting.Type = 1;
-                    break;
-            }
-
-            Storage.QuestGreetings.Add(questGreeting, packet.TimeSpan);
-
-            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questGreeting.Greeting != string.Empty)
-            {
-                QuestGreetingLocale localesQuestGreeting = new QuestGreetingLocale
-                {
-                    ID = questGreeting.ID,
-                    Type = questGreeting.Type,
-                    Greeting = questGreeting.Greeting
-                };
-                Storage.LocalesQuestGreeting.Add(localesQuestGreeting, packet.TimeSpan);
-            }
-        }
-
         [Parser(Opcode.CMSG_UI_MAP_QUEST_LINES_REQUEST)]
         public static void HandleUiMapQuestLinesRequest(Packet packet)
         {

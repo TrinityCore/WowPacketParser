@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             var scenarioPOIDataCount = packet.ReadUInt32("ScenarioPOIDataCount");
             for (var i = 0; i < scenarioPOIDataCount; i++)
-            {                
+            {
                 int citeriaTreeId = packet.ReadInt32("CriteriaTreeID");
 
                 var scenarioBlobDataCount = packet.ReadUInt32("ScenarioBlobDataCount");
