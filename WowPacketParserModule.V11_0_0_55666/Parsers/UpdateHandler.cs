@@ -412,7 +412,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                     createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.FollowsTerrain;
 
                 if ((createProperties.AreaTriggerData.Flags & 0x0200) != 0)
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.Unk1;
+                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.AlwaysExterior;
 
                 if (createProperties.AreaTriggerData.Polygon != null)
                 {
@@ -982,7 +982,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                     createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.FollowsTerrain;
 
                 if (packet.ReadBit("Unk bit WoD62x", index))
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.Unk1;
+                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.AlwaysExterior;
 
                 packet.ReadBit("Unk1025", index);
 

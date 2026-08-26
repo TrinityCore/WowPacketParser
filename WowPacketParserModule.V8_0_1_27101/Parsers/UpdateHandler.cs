@@ -617,23 +617,23 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 areaTriggerTemplate.Flags = 0;
                 createProperties.Flags   = 0;
 
-                if (packet.ReadBit("HasAbsoluteOrientation", index))
+                if (packet.ReadBit("AbsoluteOrientation", index))
                     createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAbsoluteOrientation;
 
-                if (packet.ReadBit("HasDynamicShape", index))
+                if (packet.ReadBit("DynamicShape", index))
                     createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasDynamicShape;
 
-                if (packet.ReadBit("HasAttached", index))
+                if (packet.ReadBit("Attached", index))
                     createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAttached;
 
-                if (packet.ReadBit("HasFaceMovementDir", index))
+                if (packet.ReadBit("FaceMovementDir", index))
                     createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.FaceMovementDirection;
 
-                if (packet.ReadBit("HasFollowsTerrain", index))
+                if (packet.ReadBit("FollowsTerrain", index))
                     createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.FollowsTerrain;
 
-                if (packet.ReadBit("Unk bit WoD62x", index))
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.Unk1;
+                if (packet.ReadBit("AlwaysExterior", index))
+                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.AlwaysExterior;
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_1_0_49407))
                     packet.ReadBit("Unk1000", index);
