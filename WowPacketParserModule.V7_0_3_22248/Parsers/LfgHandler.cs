@@ -92,7 +92,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadUInt32("EncounterMask");
 
             var playerCount = packet.ReadUInt32("PlayersCount");
-            packet.ReadByte();
+            packet.ReadByte("PromisedShortageRolePriority");
+
+            packet.ResetBitReader();
             packet.ReadBit("ValidCompletedMask");
             packet.ReadBit("ProposalSilent");
             packet.ReadBit("IsRequeue");
@@ -105,7 +107,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadUInt32E<LfgRoleFlag>("Roles", i);
 
                 packet.ResetBitReader();
-
                 packet.ReadBit("Me", i);
                 packet.ReadBit("SameParty", i);
                 packet.ReadBit("MyParty", i);

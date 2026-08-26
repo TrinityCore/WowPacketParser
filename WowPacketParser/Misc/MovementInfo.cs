@@ -11,6 +11,16 @@ namespace WowPacketParser.Misc
 
         public uint Flags3;
 
+        public ulong Flags64
+        {
+            get => ((ulong)Flags2 << 32) | Flags;
+            set
+            {
+                Flags = (uint)(value & 0xFFFFFFFFu);
+                Flags2 = (uint)(value >> 32);
+            }
+        }
+
         public bool HasSplineData;
 
         public Vector3 Position;

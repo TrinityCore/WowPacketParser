@@ -11,10 +11,15 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ResetBitReader();
             var hasRewardItem = packet.ReadBit();
             var hasRewardCurrency = packet.ReadBit();
-            if (hasRewardItem)
+            if (hasRewardItem && ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
                 Substructures.ItemHandler.ReadItemInstance(packet, indexes);
+
             packet.ReadUInt32("Quantity", indexes);
             packet.ReadInt32("BonusQuantity", indexes);
+
+            if (hasRewardItem && ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                Substructures.ItemHandler.ReadItemInstance(packet, indexes);
+
             if (hasRewardCurrency)
                 packet.ReadInt32("RewardCurrency", indexes);
         }
@@ -24,7 +29,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet);
 
-            packet.ReadByte("Result");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_5_60392))
+                packet.ReadInt32("Result");
+            else
+                packet.ReadByte("Result");
+
             packet.ReadByte("ResultDetail");
 
             var blackListCount = packet.ReadInt32("BlackListCount");
@@ -82,12 +91,17 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             for (var i = 0; i < bgQueueIdsCount; i++)
                 V6_0_2_19033.Parsers.BattlegroundHandler.ReadPackedBattlegroundQueueTypeID(packet);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                for (var i = 0; i < membersCount; ++i)
+                    V6_0_2_19033.Parsers.LfgHandler.ReadLFGRoleCheckUpdateMember(packet, i, "Members");
+
             packet.ResetBitReader();
             packet.ReadBit("IsBeginning");
             packet.ReadBit("ShowRoleCheck");
 
-            for (var i = 0; i < membersCount; ++i)
-                V6_0_2_19033.Parsers.LfgHandler.ReadLFGRoleCheckUpdateMember(packet, i, "Members");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                for (var i = 0; i < membersCount; ++i)
+                    V6_0_2_19033.Parsers.LfgHandler.ReadLFGRoleCheckUpdateMember(packet, i, "Members");
         }
 
         [Parser(Opcode.SMSG_LFG_PLAYER_REWARD)]

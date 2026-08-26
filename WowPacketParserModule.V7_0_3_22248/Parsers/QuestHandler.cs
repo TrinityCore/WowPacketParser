@@ -572,12 +572,18 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 GreetEmoteType = packet.ReadUInt32("GreetEmoteType")
             };
 
-            uint questsCount = packet.ReadUInt32("GossipQuestsCount");
-            packet.ResetBitReader();
-            uint greetingLen = packet.ReadBits(11);
+            var questsCount = packet.ReadUInt32("GossipQuestsCount");
 
-            for (int i = 0; i < questsCount; i++)
-                NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                for (var i = 0; i < questsCount; i++)
+                    NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests");
+
+            packet.ResetBitReader();
+            var greetingLen = packet.ReadBits(ClientVersion.InVersion(ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683) ? 12 : 11);
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                for (var i = 0; i < questsCount; i++)
+                    NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests");
 
             questGreeting.Greeting = packet.ReadWoWString("Greeting", greetingLen);
 
@@ -628,7 +634,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt64("MoneyReward");
             packet.ReadInt32("SkillLineIDReward");
             packet.ReadInt32("NumSkillUpsReward");
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23706))
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23706) || ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
                 Substructures.ItemHandler.ReadItemInstance(packet, "ItemReward");
 
             packet.ResetBitReader();
@@ -638,7 +644,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("LaunchQuest");
             packet.ReadBit("HideChatMessage");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23706))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23706) && ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
                 Substructures.ItemHandler.ReadItemInstance(packet, "ItemReward");
         }
 

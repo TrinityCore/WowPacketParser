@@ -100,7 +100,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 packet.ReadBit("Refundable", i);
                 packet.ResetBitReader();
 
-                vendor.Item = Substructures.ItemHandler.ReadItemInstance1100(packet, i).ItemID;
+                vendor.Item = Substructures.ItemHandler.ReadItemInstance(packet, i).ItemID;
 
                 vendor.MaxCount = maxCount == -1 ? 0 : (uint)maxCount; // TDB
                 if (vendor.Type == 2)

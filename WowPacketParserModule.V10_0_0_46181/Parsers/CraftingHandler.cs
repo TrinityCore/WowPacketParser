@@ -6,10 +6,30 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
 {
     public static class CraftingHandler
     {
+        public static void ReadCraftingReagentBase(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            var hasItem = packet.ReadBit();
+            var hasCurrency = packet.ReadBit();
+
+            if (hasItem)
+                packet.ReadInt32<ItemId>("ItemID", indexes);
+
+            if (hasCurrency)
+                packet.ReadInt32<CurrencyId>("CurrencyID", indexes);
+        }
+
         public static void ReadSpellReducedReagent(Packet packet, params object[] indexes)
         {
-            packet.ReadInt32("ItemID", indexes);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_0_0_65390))
+                packet.ReadInt32("ItemID", indexes);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                ReadCraftingReagentBase(packet, indexes, "Reagent");
+
             packet.ReadInt32("Quantity", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_0_65390) && ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                ReadCraftingReagentBase(packet, indexes, "Reagent");
         }
 
         public static void ReadCraftingData(Packet packet, params object[] indexes)
@@ -30,6 +50,12 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadUInt32("OperationID", indexes);
             packet.ReadPackedGuid128("ItemGUID", indexes);
             packet.ReadInt32("Quantity", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+            {
+                Substructures.ItemHandler.ReadItemInstance(packet, "OldItem");
+                Substructures.ItemHandler.ReadItemInstance(packet, "NewItem");
+            }
+
             packet.ReadInt32("EnchantID", indexes);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
             {
@@ -52,8 +78,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 packet.ReadBit("ApplyConcentration", indexes);
             }
 
-            Substructures.ItemHandler.ReadItemInstance(packet, "OldItem");
-            Substructures.ItemHandler.ReadItemInstance(packet, "NewItem");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+            {
+                Substructures.ItemHandler.ReadItemInstance(packet, "OldItem");
+                Substructures.ItemHandler.ReadItemInstance(packet, "NewItem");
+            }
         }
 
         public static void ReadCraftingOrderClientContext(Packet packet, params object[] indexes)

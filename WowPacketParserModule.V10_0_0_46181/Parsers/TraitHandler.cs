@@ -59,11 +59,16 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             for (var i = 0u; i < entries; ++i)
                 ReadTraitEntry(packet, indexes, "TraitEntry", i);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                for (var i = 0u; i < subtrees; ++i)
+                    ReadTraitSubTreeCache(packet, indexes, "TraitSubTreeCache", i);
+
             packet.ResetBitReader();
             var nameLength = packet.ReadBits(9);
 
-            for (var i = 0u; i < subtrees; ++i)
-                ReadTraitSubTreeCache(packet, indexes, "TraitSubTreeCache", i);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                for (var i = 0u; i < subtrees; ++i)
+                    ReadTraitSubTreeCache(packet, indexes, "TraitSubTreeCache", i);
 
             packet.ReadWoWString("Name", nameLength, indexes);
         }

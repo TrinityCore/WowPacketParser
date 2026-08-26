@@ -7501,7 +7501,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_5_66741
             data.TimeToTargetScale = packet.ReadUInt32("TimeToTargetScale", indexes);
             data.TimeToTargetExtraScale = packet.ReadUInt32("TimeToTargetExtraScale", indexes);
             data.TimeToTargetPos = packet.ReadUInt32("TimeToTargetPos", indexes);
-            data.TimeToTargetUnk1205Curve = packet.ReadUInt32("TimeToTargetUnk1205Curve", indexes);
+            data.TimeToTargetFacing = packet.ReadUInt32("TimeToTargetFacing", indexes);
             data.SpellID = packet.ReadInt32("SpellID", indexes);
             data.SpellForVisuals = packet.ReadInt32("SpellForVisuals", indexes);
             data.SpellVisual = ReadCreateSpellCastVisual(packet, indexes, "SpellVisual");
@@ -7566,7 +7566,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_5_66741
             }
             data.OverrideMoveCurveY = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveY");
             data.OverrideMoveCurveZ = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveZ");
-            data.Unk1205Curve = ReadCreateScaleCurve(packet, indexes, "Unk1205Curve");
+            data.OverrideFacingCurve = ReadCreateScaleCurve(packet, indexes, "OverrideFacingCurve");
             data.VisualAnim = ReadCreateVisualAnim(packet, indexes, "VisualAnim");
             if (data.PathType == 0)
             {
@@ -7623,7 +7623,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_5_66741
                 }
                 if (changesMask[13])
                 {
-                    data.TimeToTargetUnk1205Curve = packet.ReadUInt32("TimeToTargetUnk1205Curve", indexes);
+                    data.TimeToTargetFacing = packet.ReadUInt32("TimeToTargetFacing", indexes);
                 }
                 if (changesMask[14])
                 {
@@ -7800,7 +7800,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_5_66741
                 }
                 if (changesMask[6])
                 {
-                    data.Unk1205Curve = ReadUpdateScaleCurve(packet, indexes, "Unk1205Curve");
+                    data.OverrideFacingCurve = ReadUpdateScaleCurve(packet, indexes, "OverrideFacingCurve");
                 }
                 if (changesMask[28])
                 {

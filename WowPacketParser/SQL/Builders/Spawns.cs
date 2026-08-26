@@ -255,7 +255,10 @@ namespace WowPacketParser.SQL.Builders
                 // Recalculate PositionZ if creature is hovering
                 if (creature.UnitData.HoverHeight > 0)
                     if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && creature.Movement.Flags.HasAnyFlag(MovementFlag.Hover)) ||
-                        (ClientVersion.Expansion >= ClientType.Cataclysm && creature.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.Hover)))
+                        (ClientVersion.Expansion >= ClientType.Cataclysm
+                         && (ClientVersion.Branch != ClientBranch.Retail
+                         || ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214)) && creature.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.Hover)) ||
+                        (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214) && creature.Movement.Flags64.HasAnyFlag(Enums.v12.MovementFlag.Hover)))
                         row.Data.PositionZ -= creature.UnitData.HoverHeight;
 
                 row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime(creature.DifficultyID ?? 0);

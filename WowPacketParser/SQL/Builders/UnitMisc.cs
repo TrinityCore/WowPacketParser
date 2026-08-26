@@ -198,11 +198,17 @@ namespace WowPacketParser.SQL.Builders
             // CreatureStaticFlags.ImmuneToNpc    - UnitFlags.ImmuneNPC
             // CreatureStaticFlags.Uninteractible - UnitFlags.Uninteractible
             if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && npc.Movement.Flags.HasAnyFlag(MovementFlag.DisableGravity)) ||
-                (ClientVersion.Expansion >= ClientType.Cataclysm && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.DisableGravity)))
+                (ClientVersion.Expansion >= ClientType.Cataclysm
+                 && (ClientVersion.Branch != ClientBranch.Retail
+                     || ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214)) && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.DisableGravity)) ||
+                (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214) && npc.Movement.Flags64.HasAnyFlag(Enums.v12.MovementFlag.DisableGravity)))
                 creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Floating;
 
             if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && npc.Movement.Flags.HasAnyFlag(MovementFlag.Root)) ||
-                (ClientVersion.Expansion >= ClientType.Cataclysm && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.Root)))
+                (ClientVersion.Expansion >= ClientType.Cataclysm
+                 && (ClientVersion.Branch != ClientBranch.Retail
+                     || ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214)) && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.Root)) ||
+                (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214) && npc.Movement.Flags64.HasAnyFlag(Enums.v12.MovementFlag.Root)))
                 creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Sessile;
 
             // Handled by creature_template_addon.visibilityDistanceType

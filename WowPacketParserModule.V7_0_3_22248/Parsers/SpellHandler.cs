@@ -6,7 +6,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
-using WowPacketParser.SQL.Builders;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -790,6 +789,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadInt32("SpellVisualKitID");
             packet.ReadInt32("Delay");
+        }
+
+        [Parser(Opcode.CMSG_SELF_RES)]
+        public static void HandleSelfRes(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
         }
     }
 }

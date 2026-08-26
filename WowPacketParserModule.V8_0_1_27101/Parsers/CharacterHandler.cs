@@ -21,6 +21,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void ReadInspectItemData(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("CreatorGUID", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                Substructures.ItemHandler.ReadItemInstance(packet, idx, "Item");
+
             packet.ReadByte("Index", idx);
 
             var azeritePowerCount = packet.ReadUInt32("AzeritePowersCount", idx);
@@ -31,7 +35,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             for (int j = 0; j < azeritePowerCount; j++)
                 packet.ReadInt32("AzeritePowerId", idx, j);
 
-            Substructures.ItemHandler.ReadItemInstance(packet, idx);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                Substructures.ItemHandler.ReadItemInstance(packet, idx, "Item");
 
             packet.ResetBitReader();
             packet.ReadBit("Usable", idx);

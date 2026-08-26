@@ -26,9 +26,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadUInt32("GuildFlags");
             var int20 = packet.ReadUInt32("MemberDataCount");
 
-            packet.ResetBitReader();
-            var welcomeTextLen = packet.ReadBits(11);
-            var infoTextLen = packet.ReadBits(11);
+            var welcomeTextLen = 0u;
+            var infoTextLen = 0u;
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+            {
+                packet.ResetBitReader();
+                welcomeTextLen = packet.ReadBits(11);
+                infoTextLen = packet.ReadBits(11);
+            }
 
             for (var i = 0; i < int20; ++i)
             {
@@ -54,6 +59,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadByte("Level", i);
                 packet.ReadByteE<Class>("ClassID", i);
                 packet.ReadByteE<Gender>("Gender", i);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                    Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, i, "DungeonScoreSummary");
+
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_5_43903))
                 {
                     packet.ReadUInt64("GuildClubMemberID", i);
@@ -73,11 +82,19 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_1_0_59347))
                     packet.ReadBit("SorEligible", i);
 
-                Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, i, "DungeonScoreSummary");
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                    Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, i, "DungeonScoreSummary");
 
                 packet.ReadWoWString("Name", nameLen, i);
                 packet.ReadWoWString("Note", noteLen, i);
                 packet.ReadWoWString("OfficerNote", officersNoteLen, i);
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+            {
+                packet.ResetBitReader();
+                welcomeTextLen = packet.ReadBits(11);
+                infoTextLen = packet.ReadBits(11);
             }
 
             packet.ReadWoWString("WelcomeText", welcomeTextLen);
