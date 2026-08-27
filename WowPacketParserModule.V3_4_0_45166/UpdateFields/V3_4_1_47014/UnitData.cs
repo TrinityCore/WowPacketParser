@@ -127,6 +127,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_1_47014
         public System.Nullable<int> TaxiNodesID { get; set; }
         public WowGuid GuildGUID { get; set; }
         public WowGuid SkinningOwnerGUID { get; set; }
+        public System.Nullable<int> FlightCapabilityID { get; set; }
         public WowGuid Unk340_3 { get; set; }
         public DynamicUpdateField<IPassiveSpellHistory> PassiveSpells { get; } = new DynamicUpdateField<IPassiveSpellHistory>();
         public DynamicUpdateField<System.Nullable<int>> WorldEffects { get; } = new DynamicUpdateField<System.Nullable<int>>();
