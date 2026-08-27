@@ -47,6 +47,7 @@ namespace WowPacketParser.Enums.Version.V2_5_5_64796
             { Opcode.SMSG_SPELL_START, 0x630029 },
             { Opcode.SMSG_PET_SPELLS_MESSAGE, 0x630014 },
             { Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, 0x630021 },
+            { Opcode.SMSG_SPELL_INSTAKILL_LOG, 0x630022 },
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new();
