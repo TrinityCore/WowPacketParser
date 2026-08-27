@@ -111,18 +111,18 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
             {
-                packet.ReadInt32("Unk Attacker State 3 1");
-                packet.ReadSingle("Unk Attacker State 3 2");
-                packet.ReadSingle("Unk Attacker State 3 3");
-                packet.ReadSingle("Unk Attacker State 3 4");
-                packet.ReadSingle("Unk Attacker State 3 5");
-                packet.ReadSingle("Unk Attacker State 3 6");
-                packet.ReadSingle("Unk Attacker State 3 7");
-                packet.ReadSingle("Unk Attacker State 3 8");
-                packet.ReadSingle("Unk Attacker State 3 9");
-                packet.ReadSingle("Unk Attacker State 3 10");
-                packet.ReadSingle("Unk Attacker State 3 11");
-                packet.ReadInt32("Unk Attacker State 3 12");
+                packet.ReadInt32("ArmorReduction");
+                packet.ReadSingle("CritRollNeeded");
+                packet.ReadSingle("CombatRoll");
+                packet.ReadSingle("MissChance");
+                packet.ReadSingle("DodgeChance");
+                packet.ReadSingle("ParryChance");
+                packet.ReadSingle("BlockChance");
+                packet.ReadSingle("GlanceChance");
+                packet.ReadSingle("CrushChance");
+                packet.ReadSingle("MinDamage");
+                packet.ReadSingle("MaxDamage");
+                packet.ReadInt32("SinceLastSwing");
             }
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
