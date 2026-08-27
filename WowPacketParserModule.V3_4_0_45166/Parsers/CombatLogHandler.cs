@@ -501,7 +501,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ReadInt32("Size");
 
-            ReadAttackRoundInfo344(packet, "AttackRoundInfo");
+            ReadAttackRoundInfo(packet, "AttackRoundInfo");
         }
     }
 }
