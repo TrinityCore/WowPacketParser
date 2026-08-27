@@ -19,7 +19,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
                 packet.ReadUInt32E<TargetFlag>("Flags", idx);
-            else if (ClientVersion.AddedInVersion(ClientType.Dragonflight) || ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_1_47014))
+            else if (ClientVersion.AddedInVersion(ClientType.Dragonflight) || ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_1_47014))
                 packet.ReadBitsE<TargetFlag>("Flags", 28, idx);
             else if (ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build))
                 packet.ReadBitsE<TargetFlag>("Flags", 27, idx);
