@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -394,6 +395,9 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32("SpellXSpellVisual");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_6_68502))
+                packet.ReadInt32("ScriptVisualID");
+
             packet.ReadInt32("Damage");
             packet.ReadInt32("OriginalDamage");
             packet.ReadInt32("OverKill");

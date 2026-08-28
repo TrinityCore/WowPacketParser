@@ -1799,6 +1799,12 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V2_5_5_67511:
                 case ClientVersionBuild.V2_5_5_67852:
                 case ClientVersionBuild.V2_5_5_68101:
+                case ClientVersionBuild.V2_5_6_68502:
+                case ClientVersionBuild.V2_5_6_68575:
+                case ClientVersionBuild.V2_5_6_68749:
+                case ClientVersionBuild.V2_5_6_68775:
+                case ClientVersionBuild.V2_5_6_68941:
+                case ClientVersionBuild.V2_5_6_69110:
                     return ClientVersionBuild.V5_5_0_61735;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
@@ -2312,6 +2318,12 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V2_5_5_67511:
                 case ClientVersionBuild.V2_5_5_67852:
                 case ClientVersionBuild.V2_5_5_68101:
+                case ClientVersionBuild.V2_5_6_68502:
+                case ClientVersionBuild.V2_5_6_68575:
+                case ClientVersionBuild.V2_5_6_68749:
+                case ClientVersionBuild.V2_5_6_68775:
+                case ClientVersionBuild.V2_5_6_68941:
+                case ClientVersionBuild.V2_5_6_69110:
                     return true;
                 default:
                     return false;
