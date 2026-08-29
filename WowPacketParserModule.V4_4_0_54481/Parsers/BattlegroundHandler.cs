@@ -339,6 +339,18 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 ReadClientOpponentSpecData(packet, "OpponentData", i);
         }
 
+        [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT)]
+        public static void HandleArenaTeamCommandResult(Packet packet)
+        {
+            packet.ReadByte("Action");
+            packet.ReadByte("ErrorId");
+
+            var teamLength = packet.ReadBits(7);
+            var playerLength = packet.ReadBits(8);
+            packet.ReadWoWString("TeamName", teamLength);
+            packet.ReadWoWString("PlayerName", playerLength);
+        }
+
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY)]
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE)]
         public static void HandleAreaSpiritHealer(Packet packet)
