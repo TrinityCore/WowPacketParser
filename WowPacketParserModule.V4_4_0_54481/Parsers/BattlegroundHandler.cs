@@ -316,6 +316,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_ARENA_CROWD_CONTROL_SPELL_RESULT)]
+        public static void HandleArenaCrowdControlSpellResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGuid");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32<ItemId>("ItemID");
+        }
+
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY)]
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE)]
         public static void HandleAreaSpiritHealer(Packet packet)
