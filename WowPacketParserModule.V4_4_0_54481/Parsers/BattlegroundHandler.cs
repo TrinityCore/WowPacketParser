@@ -1,4 +1,4 @@
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
@@ -396,6 +396,12 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         {
             packet.ReadPackedGuid128("Inviter");
             packet.ReadPackedGuid128("ArenaTeam");
+        }
+
+        [Parser(Opcode.CMSG_ARENA_TEAM_DISBAND)]
+        public static void HandleArenaTeamDisband(Packet packet)
+        {
+            packet.ReadInt32("TeamID");
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]
