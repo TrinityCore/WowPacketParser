@@ -68,6 +68,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("Disqualified", idx);
         }
 
+        public static void ReadClientOpponentSpecData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("SpecializationID", idx);
+            packet.ReadByte("Sex", idx);
+            packet.ReadPackedGuid128("Guid", idx);
+        }
+
         [Parser(Opcode.SMSG_AREA_SPIRIT_HEALER_TIME)]
         public static void HandleAreaSpiritHealerTime(Packet packet)
         {
@@ -322,6 +329,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("PlayerGuid");
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32<ItemId>("ItemID");
+        }
+
+        [Parser(Opcode.SMSG_ARENA_PREP_OPPONENT_SPECIALIZATIONS)]
+        public static void HandleArenaPrepOpponentSpecializations(Packet packet)
+        {
+            var count = packet.ReadInt32("OpponentDataCount");
+            for (var i = 0; i < count; ++i)
+                ReadClientOpponentSpecData(packet, "OpponentData", i);
         }
 
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY)]
