@@ -243,6 +243,55 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByte("NumPlayersIHaveReported");
         }
 
+        [Parser(Opcode.SMSG_ARENA_TEAM_ROSTER)]
+        public static void HandleArenaTeamRoster(Packet packet)
+        {
+            packet.ReadUInt32("TeamID");
+            packet.ReadUInt32("TeamSize");
+            packet.ReadUInt32("MatchesPlayed");
+            packet.ReadUInt32("MatchesWon");
+            packet.ReadUInt32("SeasonMatchesPlayed");
+            packet.ReadUInt32("SeasonMatchesWon");
+            packet.ReadUInt32("Rating");
+            packet.ReadUInt32("Ranking");
+            int size = packet.ReadInt32("MembersCount");
+
+            packet.ResetBitReader();
+            packet.ReadBit("Disqualified");
+
+            for (int i = 0; i < size; ++i)
+            {
+                packet.ReadPackedGuid128("MemberGUID", i);
+                packet.ReadBool("Online", i);
+                packet.ReadUInt32("Rank", i);
+                packet.ReadByte("Level", i);
+                packet.ReadByteE<Class>("Class", i);
+                packet.ReadUInt32("WeekMatches", i);
+                packet.ReadUInt32("WeekWins", i);
+                packet.ReadUInt32("SeasonMatches", i);
+                packet.ReadUInt32("SeasonWins", i);
+                packet.ReadUInt32("ContributionRating", i);
+
+                packet.ResetBitReader();
+                uint nameLength = packet.ReadBits("NameLength", 6, i);
+                bool hasGDFRating = packet.ReadBit("HasGDFRating", i);
+                bool hasGDVariance = packet.ReadBit("HasGDVariance", i);
+
+                packet.ReadWoWString("Name", nameLength, i);
+
+                if (hasGDFRating)
+                {
+                    // Hidden rating, see LUA GetArenaTeamGdfInfo - gdf = Gaussian Density Filter
+                    packet.ReadUInt32("GDFRating", i);
+                }
+                if (hasGDVariance)
+                {
+                    // Hidden rating, see LUA GetArenaTeamGdfInfo - gdf = Gaussian Density Filter
+                    packet.ReadUInt32("GDFVariance", i);
+                }
+            }
+        }
+
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY)]
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE)]
         public static void HandleAreaSpiritHealer(Packet packet)
