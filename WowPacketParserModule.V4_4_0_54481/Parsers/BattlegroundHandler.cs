@@ -399,6 +399,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         }
 
         [Parser(Opcode.CMSG_ARENA_TEAM_DISBAND)]
+        [Parser(Opcode.CMSG_ARENA_TEAM_LEAVE)]
         public static void HandleArenaTeamDisband(Packet packet)
         {
             packet.ReadInt32("TeamID");
