@@ -1,4 +1,4 @@
-﻿using WowPacketParser.Enums;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
@@ -289,6 +289,30 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     // Hidden rating, see LUA GetArenaTeamGdfInfo - gdf = Gaussian Density Filter
                     packet.ReadUInt32("GDFVariance", i);
                 }
+            }
+        }
+
+        [Parser(Opcode.SMSG_QUERY_ARENA_TEAM_RESPONSE)]
+        public static void HandleQueryArenaTeamResponse(Packet packet)
+        {
+            packet.ReadUInt32("TeamID");
+
+            packet.ResetBitReader();
+            bool allow = packet.ReadBit();
+
+            if (allow)
+            {
+                packet.ReadUInt32("TeamID");
+                packet.ReadUInt32("TeamSize");
+                packet.ReadUInt32("EmblemBackground");
+                packet.ReadUInt32("EmblemIconStyle");
+                packet.ReadUInt32("EmblemIconColor");
+                packet.ReadUInt32("EmblemBorderStyle");
+                packet.ReadUInt32("EmblemBorderColor");
+
+                packet.ResetBitReader();
+                uint nameLength = packet.ReadBits(7);
+                packet.ReadWoWString("Name", nameLength);
             }
         }
 
