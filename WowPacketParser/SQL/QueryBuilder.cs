@@ -408,7 +408,9 @@ namespace WowPacketParser.SQL
     {
         private readonly RowList<T> _rows;
         private readonly bool _withDelete;
+        private readonly bool _onDuplicateKeyUpdate;
         private readonly string _insertHeader;
+        private readonly string _onDuplicateKeyUpdateClause;
 
         // Add a new insert header every 250 rows
         private const int MaxRowsPerInsert = 250;
@@ -420,11 +422,13 @@ namespace WowPacketParser.SQL
         /// <param name="rows">A list of <see cref="SQLInsertRow{T}"/> rows</param>
         /// <param name="withDelete">If set to false the full query will not include a delete query</param>
         /// <param name="ignore">If set to true the INSERT INTO query will be INSERT IGNORE INTO</param>
-        public SQLInsert(RowList<T> rows, bool withDelete = true, bool ignore = false)
+        public SQLInsert(RowList<T> rows, bool withDelete = true, bool ignore = false, bool onDuplicateKeyUpdate = false)
         {
             _rows = rows;
             _insertHeader = new SQLInsertHeader<T>(ignore).Build();
             _withDelete = withDelete;
+            _onDuplicateKeyUpdate = onDuplicateKeyUpdate;
+            _onDuplicateKeyUpdateClause = BuildOnDuplicateKeyUpdateClause();
         }
 
         /// <summary>
@@ -447,7 +451,7 @@ namespace WowPacketParser.SQL
             {
                 if (count >= MaxRowsPerInsert)
                 {
-                    query.ReplaceLastCommaWithSemicolon();
+                    FinalizeCurrentInsert(query);
                     query.Append(Environment.NewLine);
                     query.Append(_insertHeader);
                     count = 0;
@@ -456,9 +460,48 @@ namespace WowPacketParser.SQL
                 query.Append(Environment.NewLine);
                 count++;
             }
-            query.ReplaceLastCommaWithSemicolon();
+            FinalizeCurrentInsert(query);
 
             return query.ToString();
+        }
+
+        private void FinalizeCurrentInsert(StringBuilder query)
+        {
+            if (_onDuplicateKeyUpdate && !string.IsNullOrEmpty(_onDuplicateKeyUpdateClause))
+            {
+                query.ReplaceLastComma($" {_onDuplicateKeyUpdateClause};");
+                return;
+            }
+
+            query.ReplaceLastCommaWithSemicolon();
+        }
+
+        private static string BuildOnDuplicateKeyUpdateClause()
+        {
+            var fields = SQLUtil.GetFields<T>();
+            var assignments = new List<string>();
+
+            foreach (var field in fields)
+            {
+                var firstAttribute = field.Item3.First();
+                if (firstAttribute.IsPrimaryKey)
+                    continue;
+
+                if (field.Item2.FieldType.IsArray)
+                {
+                    for (var i = 0; i < firstAttribute.Count; ++i)
+                    {
+                        var fieldName = SQLUtil.AddBackQuotes(firstAttribute.Name + (firstAttribute.StartAtZero ? i : i + 1));
+                        assignments.Add($"{fieldName}=VALUES({fieldName})");
+                    }
+
+                    continue;
+                }
+
+                assignments.Add($"{field.Item1}=VALUES({field.Item1})");
+            }
+
+            return assignments.Count == 0 ? string.Empty : "ON DUPLICATE KEY UPDATE " + string.Join(SQLUtil.CommaSeparator, assignments);
         }
     }
 
