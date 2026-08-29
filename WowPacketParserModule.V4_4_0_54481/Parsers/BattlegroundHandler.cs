@@ -390,6 +390,14 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByteE<LfgRoleFlag>("Roles");
         }
 
+        [Parser(Opcode.CMSG_ARENA_TEAM_ACCEPT)]
+        [Parser(Opcode.CMSG_ARENA_TEAM_DECLINE)]
+        public static void HandleArenaTeamAccept(Packet packet)
+        {
+            packet.ReadPackedGuid128("Inviter");
+            packet.ReadPackedGuid128("ArenaTeam");
+        }
+
         [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]
         [Parser(Opcode.CMSG_GET_PVP_OPTIONS_ENABLED)]
         [Parser(Opcode.CMSG_HEARTH_AND_RESURRECT)]
