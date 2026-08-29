@@ -412,6 +412,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadPackedGuid128("NewLeader");
         }
 
+        [Parser(Opcode.CMSG_ARENA_TEAM_REMOVE)]
+        public static void HandleArenaTeamRemove(Packet packet)
+        {
+            packet.ReadInt32("TeamID");
+            packet.ReadPackedGuid128("Player");
+        }
+
         [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]
         [Parser(Opcode.CMSG_GET_PVP_OPTIONS_ENABLED)]
         [Parser(Opcode.CMSG_HEARTH_AND_RESURRECT)]
