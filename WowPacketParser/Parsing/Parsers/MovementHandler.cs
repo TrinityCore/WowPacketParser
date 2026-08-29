@@ -435,7 +435,7 @@ namespace WowPacketParser.Parsing.Parsers
                     vec.Y += mid.Y;
                     vec.Z += mid.Z;
                     monsterMove.PackedPoints.Add(vec);
-                    packet.AddValue("Waypoint: ", vec, 0);
+                    packet.AddValue("WayPoints", vec, 0);
 
                     if (waypoints > 2)
                     {
@@ -447,7 +447,7 @@ namespace WowPacketParser.Parsing.Parsers
                             vec.Z += mid.Z;
 
                             monsterMove.PackedPoints.Add(vec);
-                            packet.AddValue("Waypoint", vec, i);
+                            packet.AddValue("WayPoints", vec, i);
                         }
                     }
                 }

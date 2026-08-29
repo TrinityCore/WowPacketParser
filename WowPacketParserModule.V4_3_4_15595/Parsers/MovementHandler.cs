@@ -95,11 +95,11 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             if (flags.HasAnyFlag(SplineFlag434.UncompressedPath))
             {
                 for (var i = 0; i < pointsCount; i++)
-                    monsterMove.Points.Add(packet.ReadVector3("Waypoints", indexes, i));
+                    monsterMove.Points.Add(packet.ReadVector3("Points", indexes, i));
             }
             else
             {
-                var endpos = packet.ReadVector3("Points", indexes);
+                var endpos = packet.ReadVector3("Points", indexes, 0);
 
                 if (pointsCount > 1)
                 {
@@ -109,7 +109,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     {
                         var vec = mid - packet.ReadPackedVector3();
 
-                        monsterMove.PackedPoints.Add(packet.AddValue("Waypoints", vec, indexes, i));
+                        monsterMove.PackedPoints.Add(packet.AddValue("WayPoints", vec, indexes, i));
                     }
                 }
             }

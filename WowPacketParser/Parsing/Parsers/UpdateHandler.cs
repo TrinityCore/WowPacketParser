@@ -994,7 +994,7 @@ namespace WowPacketParser.Parsing.Parsers
                                 X = packet.ReadSingle()
                             };
 
-                            packet.AddValue("Spline Waypoint", wp, index, i);
+                            packet.AddValue("Points", wp, index, i);
                         }
 
                         if (splineType == SplineType.FacingAngle)
@@ -1502,7 +1502,7 @@ namespace WowPacketParser.Parsing.Parsers
                                 Z = packet.ReadSingle()
                             };
 
-                            packet.AddValue("Spline Waypoint", wp, index, i);
+                            packet.AddValue("Points", wp, index, i);
                         }
 
                         packet.ReadSingle("Spline Duration Multiplier", index);
@@ -1900,7 +1900,7 @@ namespace WowPacketParser.Parsing.Parsers
                                 Y = packet.ReadSingle()
                             };
 
-                            packet.AddValue("Spline Waypoint", wp, index, i);
+                            packet.AddValue("Points", wp, index, i);
                         }
 
                         if (splineType == SplineType.FacingTarget)
@@ -2339,7 +2339,7 @@ namespace WowPacketParser.Parsing.Parsers
                                 X = packet.ReadSingle()
                             };
 
-                            packet.AddValue("Spline Waypoint", wp, index, i);
+                            packet.AddValue("Points", wp, index, i);
                         }
 
                         if (splineType == SplineType.FacingTarget)
@@ -2740,7 +2740,7 @@ namespace WowPacketParser.Parsing.Parsers
                                 Z = packet.ReadSingle()
                             };
 
-                            packet.AddValue("Spline Waypoint", wp, index, i);
+                            packet.AddValue("Points", wp, index, i);
                         }
 
                         if (hasSplineDurationMult)
@@ -3013,7 +3013,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var splineCount = packet.ReadInt32();
                     for (var i = 0; i < splineCount; i++)
                     {
-                        var vec = packet.ReadVector3("Spline Waypoint", index, i);
+                        var vec = packet.ReadVector3("Points", index, i);
                         if (start != null)
                             distance += Vector3.GetDistance(start.Value, vec);
                         start = vec;
