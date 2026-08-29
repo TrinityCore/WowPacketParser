@@ -441,7 +441,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                         packet.ReadInt32("Spline Time", index);
                         for (var i = 0u; i < splineCount; ++i)
-                            packet.ReadVector3("Points", index, i);
                         {
                             var wp = new Vector3
                             {
