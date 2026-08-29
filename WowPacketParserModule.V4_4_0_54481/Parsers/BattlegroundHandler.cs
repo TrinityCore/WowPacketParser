@@ -381,7 +381,7 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_REPORT_PVP_PLAYER_AFK)]
         public static void HandleReportPvPPlayerAfk(Packet packet)
         {
-            packet.ReadGuid("Offender");
+            packet.ReadPackedGuid128("Offender");
         }
 
         [Parser(Opcode.CMSG_JOIN_RATED_BATTLEGROUND)]
