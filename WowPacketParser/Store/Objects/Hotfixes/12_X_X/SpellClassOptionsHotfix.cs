@@ -25,4 +25,27 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("spell_class_options")]
+    public sealed record SpellClassOptionsHotfix1210: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("SpellID")]
+        public int? SpellID;
+
+        [DBFieldName("ModalNextSpell")]
+        public uint? ModalNextSpell;
+
+        [DBFieldName("SpellClassSet")]
+        public int? SpellClassSet;
+
+        [DBFieldName("SpellClassMask", 4)]
+        public int?[] SpellClassMask;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

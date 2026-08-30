@@ -1134,6 +1134,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<CreatureModelDataHotfix1200> CreatureModelDataHotfixes1200 = new DataBag<CreatureModelDataHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<CreatureTypeHotfix1200> CreatureTypeHotfixes1200 = new DataBag<CreatureTypeHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<CriteriaHotfix1200> CriteriaHotfixes1200 = new DataBag<CriteriaHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<CriteriaHotfix1210> CriteriaHotfixes1210 = new DataBag<CriteriaHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<CriteriaTreeHotfix1200> CriteriaTreeHotfixes1200 = new DataBag<CriteriaTreeHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<CurrencyContainerHotfix1200> CurrencyContainerHotfixes1200 = new DataBag<CurrencyContainerHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<CurrencyTypesHotfix1200> CurrencyTypesHotfixes1200 = new DataBag<CurrencyTypesHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -1162,13 +1163,17 @@ namespace WowPacketParser.Store
         public static readonly DataBag<GameobjectDisplayInfoHotfix1200> GameobjectDisplayInfoHotfixes1200 = new DataBag<GameobjectDisplayInfoHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GameobjectLabelHotfix1200> GameobjectLabelHotfixes1200 = new DataBag<GameobjectLabelHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GameobjectsHotfix1200> GameobjectsHotfixes1200 = new DataBag<GameobjectsHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<GameobjectsHotfix1210> GameobjectsHotfixes1210 = new DataBag<GameobjectsHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrAbilityHotfix1200> GarrAbilityHotfixes1200 = new DataBag<GarrAbilityHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<GarrAbilityHotfix1210> GarrAbilityHotfixes1210 = new DataBag<GarrAbilityHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrBuildingHotfix1200> GarrBuildingHotfixes1200 = new DataBag<GarrBuildingHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrBuildingPlotInstHotfix1200> GarrBuildingPlotInstHotfixes1200 = new DataBag<GarrBuildingPlotInstHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrClassSpecHotfix1200> GarrClassSpecHotfixes1200 = new DataBag<GarrClassSpecHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrFollowerHotfix1200> GarrFollowerHotfixes1200 = new DataBag<GarrFollowerHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<GarrFollowerHotfix1210> GarrFollowerHotfixes1210 = new DataBag<GarrFollowerHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrFollowerXAbilityHotfix1200> GarrFollowerXAbilityHotfixes1200 = new DataBag<GarrFollowerXAbilityHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrMissionHotfix1200> GarrMissionHotfixes1200 = new DataBag<GarrMissionHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<GarrMissionHotfix1210> GarrMissionHotfixes1210 = new DataBag<GarrMissionHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrPlotHotfix1200> GarrPlotHotfixes1200 = new DataBag<GarrPlotHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrPlotBuildingHotfix1200> GarrPlotBuildingHotfixes1200 = new DataBag<GarrPlotBuildingHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrPlotInstanceHotfix1200> GarrPlotInstanceHotfixes1200 = new DataBag<GarrPlotInstanceHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -1181,6 +1186,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<GlyphPropertiesHotfix1200> GlyphPropertiesHotfixes1200 = new DataBag<GlyphPropertiesHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GlyphRequiredSpecHotfix1200> GlyphRequiredSpecHotfixes1200 = new DataBag<GlyphRequiredSpecHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GossipNpcOptionHotfix1200> GossipNPCOptionHotfixes1200 = new DataBag<GossipNpcOptionHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<GossipNpcOptionHotfix1210> GossipNPCOptionHotfixes1210 = new DataBag<GossipNpcOptionHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GuildColorBackgroundHotfix1200> GuildColorBackgroundHotfixes1200 = new DataBag<GuildColorBackgroundHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GuildColorBorderHotfix1200> GuildColorBorderHotfixes1200 = new DataBag<GuildColorBorderHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GuildColorEmblemHotfix1200> GuildColorEmblemHotfixes1200 = new DataBag<GuildColorEmblemHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -1287,6 +1293,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<PlayerConditionHotfix1200> PlayerConditionHotfixes1200 = new DataBag<PlayerConditionHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PlayerConditionHotfix1205> PlayerConditionHotfixes1205 = new DataBag<PlayerConditionHotfix1205>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PlayerConditionHotfix1207> PlayerConditionHotfixes1207 = new DataBag<PlayerConditionHotfix1207>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<PlayerConditionHotfix1210> PlayerConditionHotfixes1210 = new DataBag<PlayerConditionHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PlayerDataElementAccountHotfix1200> PlayerDataElementAccountHotfixes1200 = new DataBag<PlayerDataElementAccountHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PlayerDataElementCharacterHotfix1200> PlayerDataElementCharacterHotfixes1200 = new DataBag<PlayerDataElementCharacterHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PlayerDataFlagAccountHotfix1200> PlayerDataFlagAccountHotfixes1200 = new DataBag<PlayerDataFlagAccountHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -1340,6 +1347,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<SpellCategoriesHotfix1200> SpellCategoriesHotfixes1200 = new DataBag<SpellCategoriesHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SpellCategoryHotfix1200> SpellCategoryHotfixes1200 = new DataBag<SpellCategoryHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SpellClassOptionsHotfix1200> SpellClassOptionsHotfixes1200 = new DataBag<SpellClassOptionsHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<SpellClassOptionsHotfix1210> SpellClassOptionsHotfixes1210 = new DataBag<SpellClassOptionsHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SpellCooldownsHotfix1200> SpellCooldownsHotfixes1200 = new DataBag<SpellCooldownsHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SpellDurationHotfix1200> SpellDurationHotfixes1200 = new DataBag<SpellDurationHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<SpellEffectHotfix1200> SpellEffectHotfixes1200 = new DataBag<SpellEffectHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -2423,11 +2431,15 @@ namespace WowPacketParser.Store
         public static readonly DataBag<FriendshipRepReactionLocaleHotfix1200> FriendshipRepReactionHotfixesLocale1200 = new DataBag<FriendshipRepReactionLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<FriendshipReputationLocaleHotfix1200> FriendshipReputationHotfixesLocale1200 = new DataBag<FriendshipReputationLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GameobjectsLocaleHotfix1200> GameobjectsHotfixesLocale1200 = new DataBag<GameobjectsLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<GameobjectsLocaleHotfix1210> GameobjectsHotfixesLocale1210 = new DataBag<GameobjectsLocaleHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrAbilityLocaleHotfix1200> GarrAbilityHotfixesLocale1200 = new DataBag<GarrAbilityLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<GarrAbilityLocaleHotfix1210> GarrAbilityHotfixesLocale1210 = new DataBag<GarrAbilityLocaleHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrBuildingLocaleHotfix1200> GarrBuildingHotfixesLocale1200 = new DataBag<GarrBuildingLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrClassSpecLocaleHotfix1200> GarrClassSpecHotfixesLocale1200 = new DataBag<GarrClassSpecLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrFollowerLocaleHotfix1200> GarrFollowerHotfixesLocale1200 = new DataBag<GarrFollowerLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<GarrFollowerLocaleHotfix1210> GarrFollowerHotfixesLocale1210 = new DataBag<GarrFollowerLocaleHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrMissionLocaleHotfix1200> GarrMissionHotfixesLocale1200 = new DataBag<GarrMissionLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<GarrMissionLocaleHotfix1210> GarrMissionHotfixesLocale1210 = new DataBag<GarrMissionLocaleHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<GarrTalentTreeLocaleHotfix1200> GarrTalentTreeHotfixesLocale1200 = new DataBag<GarrTalentTreeLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<HeirloomLocaleHotfix1200> HeirloomHotfixesLocale1200 = new DataBag<HeirloomLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<ItemBagFamilyLocaleHotfix1200> ItemBagFamilyHotfixesLocale1200 = new DataBag<ItemBagFamilyLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -2459,6 +2471,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<PlayerConditionLocaleHotfix1200> PlayerConditionHotfixesLocale1200 = new DataBag<PlayerConditionLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PlayerConditionLocaleHotfix1205> PlayerConditionHotfixesLocale1205 = new DataBag<PlayerConditionLocaleHotfix1205>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PlayerConditionLocaleHotfix1207> PlayerConditionHotfixesLocale1207 = new DataBag<PlayerConditionLocaleHotfix1207>(new List<SQLOutput> { SQLOutput.hotfixes });
+        public static readonly DataBag<PlayerConditionLocaleHotfix1210> PlayerConditionHotfixesLocale1210 = new DataBag<PlayerConditionLocaleHotfix1210>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PrestigeLevelInfoLocaleHotfix1200> PrestigeLevelInfoHotfixesLocale1200 = new DataBag<PrestigeLevelInfoLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PvpStatLocaleHotfix1200> PvpStatHotfixesLocale1200 = new DataBag<PvpStatLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
         public static readonly DataBag<PvpTalentLocaleHotfix1200> PvpTalentHotfixesLocale1200 = new DataBag<PvpTalentLocaleHotfix1200>(new List<SQLOutput> { SQLOutput.hotfixes });
@@ -3800,6 +3813,7 @@ namespace WowPacketParser.Store
             CreatureModelDataHotfixes1200.Clear();
             CreatureTypeHotfixes1200.Clear();
             CriteriaHotfixes1200.Clear();
+            CriteriaHotfixes1210.Clear();
             CriteriaTreeHotfixes1200.Clear();
             CurrencyContainerHotfixes1200.Clear();
             CurrencyTypesHotfixes1200.Clear();
@@ -3828,13 +3842,17 @@ namespace WowPacketParser.Store
             GameobjectDisplayInfoHotfixes1200.Clear();
             GameobjectLabelHotfixes1200.Clear();
             GameobjectsHotfixes1200.Clear();
+            GameobjectsHotfixes1210.Clear();
             GarrAbilityHotfixes1200.Clear();
+            GarrAbilityHotfixes1210.Clear();
             GarrBuildingHotfixes1200.Clear();
             GarrBuildingPlotInstHotfixes1200.Clear();
             GarrClassSpecHotfixes1200.Clear();
             GarrFollowerHotfixes1200.Clear();
+            GarrFollowerHotfixes1210.Clear();
             GarrFollowerXAbilityHotfixes1200.Clear();
             GarrMissionHotfixes1200.Clear();
+            GarrMissionHotfixes1210.Clear();
             GarrPlotHotfixes1200.Clear();
             GarrPlotBuildingHotfixes1200.Clear();
             GarrPlotInstanceHotfixes1200.Clear();
@@ -3847,6 +3865,7 @@ namespace WowPacketParser.Store
             GlyphPropertiesHotfixes1200.Clear();
             GlyphRequiredSpecHotfixes1200.Clear();
             GossipNPCOptionHotfixes1200.Clear();
+            GossipNPCOptionHotfixes1210.Clear();
             GuildColorBackgroundHotfixes1200.Clear();
             GuildColorBorderHotfixes1200.Clear();
             GuildColorEmblemHotfixes1200.Clear();
@@ -3953,6 +3972,7 @@ namespace WowPacketParser.Store
             PlayerConditionHotfixes1200.Clear();
             PlayerConditionHotfixes1205.Clear();
             PlayerConditionHotfixes1207.Clear();
+            PlayerConditionHotfixes1210.Clear();
             PlayerDataElementAccountHotfixes1200.Clear();
             PlayerDataElementCharacterHotfixes1200.Clear();
             PlayerDataFlagAccountHotfixes1200.Clear();
@@ -4006,6 +4026,7 @@ namespace WowPacketParser.Store
             SpellCategoriesHotfixes1200.Clear();
             SpellCategoryHotfixes1200.Clear();
             SpellClassOptionsHotfixes1200.Clear();
+            SpellClassOptionsHotfixes1210.Clear();
             SpellCooldownsHotfixes1200.Clear();
             SpellDurationHotfixes1200.Clear();
             SpellEffectHotfixes1200.Clear();
@@ -5083,11 +5104,15 @@ namespace WowPacketParser.Store
             FriendshipRepReactionHotfixesLocale1200.Clear();
             FriendshipReputationHotfixesLocale1200.Clear();
             GameobjectsHotfixesLocale1200.Clear();
+            GameobjectsHotfixesLocale1210.Clear();
             GarrAbilityHotfixesLocale1200.Clear();
+            GarrAbilityHotfixesLocale1210.Clear();
             GarrBuildingHotfixesLocale1200.Clear();
             GarrClassSpecHotfixesLocale1200.Clear();
             GarrFollowerHotfixesLocale1200.Clear();
+            GarrFollowerHotfixesLocale1210.Clear();
             GarrMissionHotfixesLocale1200.Clear();
+            GarrMissionHotfixesLocale1210.Clear();
             GarrTalentTreeHotfixesLocale1200.Clear();
             HeirloomHotfixesLocale1200.Clear();
             ItemBagFamilyHotfixesLocale1200.Clear();
@@ -5119,6 +5144,7 @@ namespace WowPacketParser.Store
             PlayerConditionHotfixesLocale1200.Clear();
             PlayerConditionHotfixesLocale1205.Clear();
             PlayerConditionHotfixesLocale1207.Clear();
+            PlayerConditionHotfixesLocale1210.Clear();
             PrestigeLevelInfoHotfixesLocale1200.Clear();
             PvpStatHotfixesLocale1200.Clear();
             PvpTalentHotfixesLocale1200.Clear();
