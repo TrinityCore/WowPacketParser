@@ -93,6 +93,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         public System.Nullable<int> MaxLevel { get; set; }
         public System.Nullable<int> ScalingPlayerLevelDelta { get; set; }
         public System.Nullable<int> MaxCreatureScalingLevel { get; set; }
+        public System.Nullable<byte> TransmogCostMinScalingLevel { get; set; }
         public System.Nullable<uint>[] NoReagentCostMask { get; } = new System.Nullable<uint>[4];
         public System.Nullable<int> PetSpellPower { get; set; }
         public System.Nullable<int>[] ProfessionSkillLine { get; } = new System.Nullable<int>[2];
@@ -118,8 +119,10 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         public System.Nullable<byte> PvpRankProgress { get; set; }
         public System.Nullable<int> PerksProgramCurrency { get; set; }
         public IResearchHistory ResearchHistory { get; set; }
+        public System.Nullable<int> UiChromieTimeExpansionID { get; set; }
         public System.Nullable<int> TimerunningSeasonID { get; set; }
         public System.Nullable<int> TransportServerTime { get; set; }
+        public System.Nullable<uint> WeeklyRewardsPeriodSinceOrigin { get; set; }
         public System.Nullable<uint> ActiveCombatTraitConfigID { get; set; }
         public System.Nullable<uint>[] GlyphSlots { get; } = new System.Nullable<uint>[9];
         public System.Nullable<uint>[] Glyphs { get; } = new System.Nullable<uint>[9];
@@ -157,6 +160,9 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         public DynamicUpdateField<ICharacterRestriction> CharacterRestrictions { get; } = new DynamicUpdateField<ICharacterRestriction>();
         public DynamicUpdateField<ITraitConfig> TraitConfigs { get; } = new DynamicUpdateField<ITraitConfig>();
         public DynamicUpdateField<IBankTabSettings> AccountBankTabSettings { get; } = new DynamicUpdateField<IBankTabSettings>();
+        public MapUpdateField<System.Nullable<uint>, ITransmogOutfitData> TransmogOutfits { get; set; } = new();
+        public ITransmogOutfitData ViewedOutfit { get; set; }
+        public ITransmogOutfitMetadata TransmogMetadata { get; set; }
     }
 }
 

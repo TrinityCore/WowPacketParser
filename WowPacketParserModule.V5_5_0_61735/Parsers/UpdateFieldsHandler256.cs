@@ -2249,7 +2249,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         {
             var data = new SkillInfo();
             packet.ResetBitReader();
-            for (var i = 0; i < 256; ++i)
+            for (var i = 0; i < 300; ++i)
             {
                 data.SkillLineID[i] = packet.ReadUInt16("SkillLineID", indexes, i);
                 data.SkillStep[i] = packet.ReadUInt16("SkillStep", indexes, i);
@@ -2363,7 +2363,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         {
             var data = new BitVectors();
             packet.ResetBitReader();
-            for (var i = 0; i < 13; ++i)
+            for (var i = 0; i < 14; ++i)
             {
                 data.Values[i] = ReadCreateBitVector(packet, indexes, "Values", i);
             }
@@ -2481,6 +2481,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
             data.WeeklyRoundsWon = packet.ReadUInt32("WeeklyRoundsWon", indexes);
             data.SeasonRoundsPlayed = packet.ReadUInt32("SeasonRoundsPlayed", indexes);
             data.SeasonRoundsWon = packet.ReadUInt32("SeasonRoundsWon", indexes);
+            packet.ResetBitReader();
             data.Disqualified = packet.ReadBit("Disqualified", indexes);
             return data;
         }
@@ -2812,6 +2813,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
             if (data.Type == 3)
             {
                 data.TraitSystemID = packet.ReadInt32("TraitSystemID", indexes);
+                data.VariationID = packet.ReadInt32("VariationID", indexes);
             }
             for (var i = 0; i < data.Entries.Count; ++i)
             {
@@ -3143,7 +3145,6 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         public override IActivePlayerData ReadCreateActivePlayerData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new ActivePlayerData();
-            /*
             packet.ResetBitReader();
             var hasPetStable = false;
             for (var i = 0; i < 146; ++i)
@@ -3252,6 +3253,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
             data.MaxLevel = packet.ReadInt32("MaxLevel", indexes);
             data.ScalingPlayerLevelDelta = packet.ReadInt32("ScalingPlayerLevelDelta", indexes);
             data.MaxCreatureScalingLevel = packet.ReadInt32("MaxCreatureScalingLevel", indexes);
+            data.TransmogCostMinScalingLevel = packet.ReadByte("TransmogCostMinScalingLevel", indexes);
             for (var i = 0; i < 4; ++i)
             {
                 data.NoReagentCostMask[i] = packet.ReadUInt32("NoReagentCostMask", indexes, i);
@@ -3276,7 +3278,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
             {
                 data.BagSlotFlags[i] = packet.ReadUInt32("BagSlotFlags", indexes, i);
             }
-            for (var i = 0; i < 6; ++i)
+            for (var i = 0; i < 7; ++i)
             {
                 data.BankBagSlotFlags[i] = packet.ReadUInt32("BankBagSlotFlags", indexes, i);
             }
@@ -3312,6 +3314,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
             data.Heirlooms.Resize(packet.ReadUInt32());
             data.HeirloomFlags.Resize(packet.ReadUInt32());
             data.Toys.Resize(packet.ReadUInt32());
+            data.ToyFlags.Resize(packet.ReadUInt32());
             data.Transmog.Resize(packet.ReadUInt32());
             data.ConditionalTransmog.Resize(packet.ReadUInt32());
             data.SelfResSpells.Resize(packet.ReadUInt32());
@@ -3320,9 +3323,17 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
             data.SpellPctModByLabel.Resize(packet.ReadUInt32());
             data.SpellFlatModByLabel.Resize(packet.ReadUInt32());
             data.TaskQuests.Resize(packet.ReadUInt32());
+            var value = packet.ReadUInt32("Unk");
+            value = packet.ReadUInt32("Unk");
+            value = packet.ReadUInt32("Unk");
+            value = packet.ReadUInt32("Unk");
+            value = packet.ReadUInt32("Unk");
+            value = packet.ReadUInt32("Unk");
+            data.UiChromieTimeExpansionID = packet.ReadInt32("UiChromieTimeExpansionID", indexes);
+            data.WeeklyRewardsPeriodSinceOrigin = packet.ReadUInt32("WeeklyRewardsPeriodSinceOrigin", indexes);
             data.TimerunningSeasonID = packet.ReadInt32("TimerunningSeasonID", indexes);
             data.TransportServerTime = packet.ReadInt32("TransportServerTime", indexes);
-            data.TraitConfigs.Resize(packet.ReadUInt32());
+            value = packet.ReadUInt32("Unk");
             data.ActiveCombatTraitConfigID = packet.ReadUInt32("ActiveCombatTraitConfigID", indexes);
             for (var i = 0; i < 9; ++i)
             {
@@ -3375,10 +3386,10 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
             {
                 data.Toys[i] = packet.ReadInt32("Toys", indexes, i);
             }
-            //for (var i = 0; i < data.ToyFlags.Count; ++i)
-            //{
-            //    data.ToyFlags[i] = packet.ReadUInt32("ToyFlags", indexes, i);
-            //}
+            for (var i = 0; i < data.ToyFlags.Count; ++i)
+            {
+                data.ToyFlags[i] = packet.ReadUInt32("ToyFlags", indexes, i);
+            }
             for (var i = 0; i < data.Transmog.Count; ++i)
             {
                 data.Transmog[i] = packet.ReadUInt32("Transmog", indexes, i);
@@ -3433,6 +3444,14 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
                 var key = packet.ReadInt32("Key", indexes, m);
                 data.TraitConfigs[key] = ReadCreateTraitConfig(packet, indexes, "Value", m);
             }
+            var mapSizeTransmogOutfits = packet.ReadUInt32();
+            for (var m = 0u; m < mapSizeTransmogOutfits; ++m)
+            {
+                var key = packet.ReadUInt32("Key", indexes, "TransmogOutfits", m);
+                data.TransmogOutfits[key] = ReadCreateTransmogOutfitData(packet, indexes, "TransmogOutfits", m, "Value");
+            }
+            data.ViewedOutfit = ReadCreateTransmogOutfitData(packet, indexes, "ViewedOutfit");
+            data.TransmogMetadata = ReadCreateTransmogOutfitMetadata(packet, indexes, "TransmogMetadata");
             for (var i = 0; i < data.CharacterRestrictions.Count; ++i)
             {
                 data.CharacterRestrictions[i] = ReadCreateCharacterRestriction(packet, indexes, "CharacterRestrictions", i);
@@ -3445,8 +3464,85 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
             {
                 data.AccountBankTabSettings[i] = ReadCreateBankTabSettings(packet, indexes, "AccountBankTabSettings", i);
             }
-            */
             return data;
+        }
+
+        public static ITransmogOutfitData ReadCreateTransmogOutfitData(Packet packet, params object[] indexes)
+        {
+            var data = new TransmogOutfitData();
+            packet.ResetBitReader();
+            data.Id = packet.ReadUInt32("Id", indexes);
+            data.Situations.Resize(packet.ReadUInt32());
+            data.Slots.Resize(packet.ReadUInt32());
+            data.Flags = packet.ReadUInt32("Flags", indexes);
+            for (var i = 0; i < data.Situations.Count; ++i)
+            {
+                data.Situations[i] = ReadCreateTransmogOutfitSituationInfo(packet, indexes, "Situations", i);
+            }
+            for (var i = 0; i < data.Slots.Count; ++i)
+            {
+                data.Slots[i] = ReadCreateTransmogOutfitSlotData(packet, indexes, "Slots", i);
+            }
+            data.OutfitInfo = ReadCreateTransmogOutfitDataInfo(packet, indexes, "OutfitInfo");
+            return data;
+        }
+
+        public static ITransmogOutfitDataInfo ReadCreateTransmogOutfitDataInfo(Packet packet, params object[] indexes)
+        {
+            var data = new TransmogOutfitDataInfo();
+            packet.ResetBitReader();
+            data.SetType = packet.ReadByte("SetType", indexes);
+            data.Icon = packet.ReadUInt32("Icon", indexes);
+            data.Name = new string('*', (int)packet.ReadBits(8));
+            packet.ResetBitReader();
+            data.SituationsEnabled = packet.ReadBit("SituationsEnabled", indexes);
+            data.Name = packet.ReadWoWString("Name", data.Name.Length, indexes);
+            return data;
+        }
+
+        public static ITransmogOutfitSituationInfo ReadCreateTransmogOutfitSituationInfo(Packet packet, params object[] indexes)
+        {
+            var data = new TransmogOutfitSituationInfo();
+            packet.ResetBitReader();
+            data.SituationID = packet.ReadUInt32("SituationID", indexes);
+            data.SpecID = packet.ReadUInt32("SpecID", indexes);
+            data.LoadoutID = packet.ReadUInt32("LoadoutID", indexes);
+            data.EquipmentSetID = packet.ReadUInt32("EquipmentSetID", indexes);
+            return data;
+        }
+
+        public static ITransmogOutfitSlotData ReadCreateTransmogOutfitSlotData(Packet packet, params object[] indexes)
+        {
+            var data = new TransmogOutfitSlotData();
+            packet.ResetBitReader();
+            data.Slot = packet.ReadSByte("Slot", indexes);
+            data.SlotOption = packet.ReadByte("SlotOption", indexes);
+            data.SheatheCategory = packet.ReadByte("SheatheCategory", indexes);
+            data.ItemModifiedAppearanceID = packet.ReadUInt32("ItemModifiedAppearanceID", indexes);
+            data.AppearanceDisplayType = packet.ReadByte("AppearanceDisplayType", indexes);
+            data.SpellItemEnchantmentID = packet.ReadUInt32("SpellItemEnchantmentID", indexes);
+            data.IllusionDisplayType = packet.ReadByte("IllusionDisplayType", indexes);
+            data.Flags = packet.ReadUInt32("Flags", indexes);
+            return data;
+        }
+
+        public static ITransmogOutfitMetadata ReadCreateTransmogOutfitMetadata(Packet packet, params object[] indexes)
+        {
+            var data = new TransmogOutfitMetadata();
+            packet.ResetBitReader();
+            data.SituationTrigger = packet.ReadByte("SituationTrigger", indexes);
+            data.TransmogOutfitID = packet.ReadUInt32("TransmogOutfitID", indexes);
+            data.StampedOptionMainHand = packet.ReadByte("StampedOptionMainHand", indexes);
+            data.StampedOptionOffHand = packet.ReadByte("StampedOptionOffHand", indexes);
+            data.CostMod = packet.ReadSingle("CostMod", indexes);
+            packet.ResetBitReader();
+            data.Locked = packet.ReadBit("Locked", indexes);
+            return data;
+        }
+
+        public static ITransmogOutfitMetadata ReadUpdateTransmogOutfitMetadata(Packet packet, params object[] indexes)
+        {
+            return ReadCreateTransmogOutfitMetadata(packet, indexes);
         }
 
         public override IActivePlayerData ReadUpdateActivePlayerData(Packet packet, params object[] indexes)

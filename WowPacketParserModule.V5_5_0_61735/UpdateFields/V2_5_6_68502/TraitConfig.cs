@@ -18,6 +18,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         public System.Nullable<int> CombatConfigFlags { get; set; }
         public System.Nullable<int> LocalIdentifier { get; set; }
         public System.Nullable<int> TraitSystemID { get; set; }
+        public System.Nullable<int> VariationID { get; set; }
         public DynamicUpdateField<ITraitEntry> Entries { get; } = new DynamicUpdateField<ITraitEntry>();
         public string Name { get; set; }
         public DynamicUpdateField<ITraitSubTreeCache> SubTrees { get; } = new DynamicUpdateField<ITraitSubTreeCache>();

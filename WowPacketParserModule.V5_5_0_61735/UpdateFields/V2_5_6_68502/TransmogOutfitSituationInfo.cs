@@ -9,9 +9,12 @@ using WowPacketParser.Store.Objects.UpdateFields;
 namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
 {
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
-    public class BitVectors : IBitVectors
+    public class TransmogOutfitSituationInfo : ITransmogOutfitSituationInfo
     {
-        public IBitVector[] Values { get; } = new IBitVector[14];
+        public System.Nullable<uint> SituationID { get; set; }
+        public System.Nullable<uint> SpecID { get; set; }
+        public System.Nullable<uint> LoadoutID { get; set; }
+        public System.Nullable<uint> EquipmentSetID { get; set; }
     }
 }
 
