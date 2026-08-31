@@ -973,6 +973,7 @@ namespace WowPacketParser.Enums
         V2_5_6_68775 = 68775, // live
         V2_5_6_68941 = 68941, // live
         V2_5_6_69110 = 69110, // live and ptr
+        V2_5_6_69546 = 69546, // live
 
         V3_4_0_44832 = 44832, // ptr / beta
         V3_4_0_45166 = 45166, // ptr / beta
