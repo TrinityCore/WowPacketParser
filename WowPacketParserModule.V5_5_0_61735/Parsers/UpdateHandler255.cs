@@ -549,6 +549,9 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 var removeForcesIDsCount = packet.ReadInt32();
                 movementUpdate.MoveIndex = packet.ReadInt32("MoveIndex", index);
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_6_68502))
+                    packet.ReadSingle("GravityModifier", index);
+
                 for (var i = 0; i < removeForcesIDsCount; i++)
                     packet.ReadPackedGuid128("RemoveForcesIDs", index, i);
 
