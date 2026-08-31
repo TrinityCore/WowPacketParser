@@ -20,11 +20,11 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_3_51666
         public System.Nullable<uint> DecalPropertiesID { get; set; }
         public WowGuid CreatingEffectGUID { get; set; }
         public WowGuid OrbitPathTarget { get; set; }
-        public IScaleCurve OverrideScaleCurve { get; set; }
-        public IScaleCurve ExtraScaleCurve { get; set; }
-        public IScaleCurve OverrideMoveCurveX { get; set; }
-        public IScaleCurve OverrideMoveCurveY { get; set; }
-        public IScaleCurve OverrideMoveCurveZ { get; set; }
+        public IOverrideCurve OverrideScaleCurve { get; set; }
+        public IOverrideCurve ExtraScaleCurve { get; set; }
+        public IOverrideCurve OverrideMoveCurveX { get; set; }
+        public IOverrideCurve OverrideMoveCurveY { get; set; }
+        public IOverrideCurve OverrideMoveCurveZ { get; set; }
         public IVisualAnim VisualAnim { get; set; }
     }
 }

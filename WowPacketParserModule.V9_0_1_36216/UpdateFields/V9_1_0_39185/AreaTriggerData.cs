@@ -18,8 +18,8 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_0_39185
         public float BoundsRadius2D { get; set; }
         public uint? DecalPropertiesID { get; set; }
         public WowGuid CreatingEffectGUID { get; set; }
-        public IScaleCurve OverrideScaleCurve { get; set; }
-        public IScaleCurve ExtraScaleCurve { get; set; }
+        public IOverrideCurve OverrideScaleCurve { get; set; }
+        public IOverrideCurve ExtraScaleCurve { get; set; }
     }
 }
 

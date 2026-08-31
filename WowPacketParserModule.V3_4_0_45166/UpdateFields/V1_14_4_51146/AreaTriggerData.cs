@@ -19,8 +19,8 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V1_14_4_51146
         public System.Nullable<uint> DecalPropertiesID { get; set; }
         public WowGuid CreatingEffectGUID { get; set; }
         public WowGuid Field_80 { get; set; }
-        public IScaleCurve OverrideScaleCurve { get; set; }
-        public IScaleCurve ExtraScaleCurve { get; set; }
+        public IOverrideCurve OverrideScaleCurve { get; set; }
+        public IOverrideCurve ExtraScaleCurve { get; set; }
         public IVisualAnim VisualAnim { get; set; }
     }
 }

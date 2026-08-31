@@ -23,11 +23,11 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_0_7_48676
         public System.Nullable<uint> NumPlayersInside { get; set; }
         public WowGuid OrbitPathTarget { get; set; }
         public Vector3 RollPitchYaw { get; set; }
-        public IScaleCurve OverrideScaleCurve { get; set; }
-        public IScaleCurve ExtraScaleCurve { get; set; }
-        public IScaleCurve OverrideMoveCurveX { get; set; }
-        public IScaleCurve OverrideMoveCurveY { get; set; }
-        public IScaleCurve OverrideMoveCurveZ { get; set; }
+        public IOverrideCurve OverrideScaleCurve { get; set; }
+        public IOverrideCurve ExtraScaleCurve { get; set; }
+        public IOverrideCurve OverrideMoveCurveX { get; set; }
+        public IOverrideCurve OverrideMoveCurveY { get; set; }
+        public IOverrideCurve OverrideMoveCurveZ { get; set; }
         public IVisualAnim VisualAnim { get; set; }
     }
 }

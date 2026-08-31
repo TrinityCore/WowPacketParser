@@ -3275,9 +3275,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             return data;
         }
 
-        public static IScaleCurve ReadCreateScaleCurve(Packet packet, params object[] indexes)
+        public static IOverrideCurve ReadCreateScaleCurve(Packet packet, params object[] indexes)
         {
-            var data = new ScaleCurve();
+            var data = new OverrideCurve();
             packet.ResetBitReader();
             data.StartTimeOffset = packet.ReadUInt32("StartTimeOffset", indexes);
             for (var i = 0; i < 2; ++i)
@@ -3289,11 +3289,11 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             return data;
         }
 
-        public static IScaleCurve ReadUpdateScaleCurve(Packet packet, IScaleCurve existingData, params object[] indexes)
+        public static IOverrideCurve ReadUpdateScaleCurve(Packet packet, IOverrideCurve existingData, params object[] indexes)
         {
-            var data = existingData as ScaleCurve;
+            var data = existingData as OverrideCurve;
             if (data == null)
-                data = new ScaleCurve();
+                data = new OverrideCurve();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(7);
@@ -3362,7 +3362,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             {
                 if (changesMask[1])
                 {
-                    data.OverrideScaleCurve = ReadUpdateScaleCurve(packet, data.OverrideScaleCurve as ScaleCurve, indexes, "OverrideScaleCurve");
+                    data.OverrideScaleCurve = ReadUpdateScaleCurve(packet, data.OverrideScaleCurve as OverrideCurve, indexes, "OverrideScaleCurve");
                 }
                 if (changesMask[3])
                 {
@@ -3410,7 +3410,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
                 }
                 if (changesMask[2])
                 {
-                    data.ExtraScaleCurve = ReadUpdateScaleCurve(packet, data.ExtraScaleCurve as ScaleCurve, indexes, "ExtraScaleCurve");
+                    data.ExtraScaleCurve = ReadUpdateScaleCurve(packet, data.ExtraScaleCurve as OverrideCurve, indexes, "ExtraScaleCurve");
                 }
             }
             return data;

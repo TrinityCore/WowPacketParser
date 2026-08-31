@@ -11,12 +11,12 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_1_0_69214
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
     public class AreaTriggerData : IAreaTriggerData
     {
-        public IScaleCurve OverrideScaleCurve { get; set; }
-        public IScaleCurve ExtraScaleCurve { get; set; }
-        public IScaleCurve OverrideMoveCurveX { get; set; }
-        public IScaleCurve OverrideMoveCurveY { get; set; }
-        public IScaleCurve OverrideMoveCurveZ { get; set; }
-        public IScaleCurve OverrideFacingCurve { get; set; }
+        public IOverrideCurve OverrideScaleCurve { get; set; }
+        public IOverrideCurve ExtraScaleCurve { get; set; }
+        public IOverrideCurve OverrideMoveCurveX { get; set; }
+        public IOverrideCurve OverrideMoveCurveY { get; set; }
+        public IOverrideCurve OverrideMoveCurveZ { get; set; }
+        public IOverrideCurve OverrideFacingCurve { get; set; }
         public WowGuid Caster { get; set; }
         public System.Nullable<uint> Duration { get; set; }
         public System.Nullable<uint> TimeToTarget { get; set; }
