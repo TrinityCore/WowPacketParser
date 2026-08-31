@@ -1720,7 +1720,6 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(5);
             var changesMask = new BitArray(rawChangesMask);
-
             packet.ResetBitReader();
             if (changesMask[0])
             {
@@ -2138,7 +2137,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
                 {
                     data.LogoutTime = packet.ReadInt64("LogoutTime", indexes);
                 }
-                if (changesMask[36])
+                if (changesMask[37])
                 {
                     data.Field_13C = packet.ReadInt32("Field_13C", indexes);
                 }
@@ -2154,9 +2153,9 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
                 {
                     data.PersonalTabard = ReadUpdateCustomTabardInfo(packet, indexes, "PersonalTabard");
                 }
-                if (changesMask[35])
+                packet.ResetBitReader();
+                if (changesMask[36])
                 {
-                    packet.ResetBitReader();
                     data.Name = new string('*', (int)packet.ReadBits(6));
                 }
                 hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
@@ -2164,7 +2163,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
                 {
                     Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");
                 }
-                if (changesMask[35])
+                if (changesMask[36])
                 {
                     data.Name = packet.ReadWoWString("Name", data.Name.Length, indexes);
                 }
