@@ -1507,6 +1507,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
                 data.ObjectiveProgress[i] = packet.ReadUInt16("ObjectiveProgress", indexes, i);
             }
             data.EndTime = packet.ReadInt64("EndTime", indexes);
+            data.ObjectiveFlags = packet.ReadUInt32("ObjectiveFlags", indexes);
             return data;
         }
 
@@ -1537,12 +1538,16 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
                 {
                     data.StateFlags = packet.ReadUInt16("StateFlags", indexes);
                 }
+                if (changesMask[4])
+                {
+                    data.ObjectiveFlags = packet.ReadUInt32("ObjectiveFlags", indexes);
+                }
             }
-            if (changesMask[4])
+            if (changesMask[5])
             {
                 for (var i = 0; i < 24; ++i)
                 {
-                    if (changesMask[5 + i])
+                    if (changesMask[6 + i])
                     {
                         data.ObjectiveProgress[i] = packet.ReadUInt16("ObjectiveProgress", indexes, i);
                     }
@@ -1743,7 +1748,6 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         public override IPlayerData ReadCreatePlayerData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new PlayerData();
-            /*
             packet.ResetBitReader();
             var hasDeclinedNames = false;
             data.DuelArbiter = packet.ReadPackedGuid128("DuelArbiter", indexes);
@@ -1776,10 +1780,12 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
                 {
                     data.QuestLog[i] = ReadCreateQuestLog(packet, indexes, "QuestLog", i);
                 }
-            }
-            for (var i = 0; i < 19; ++i)
-            {
-                data.VisibleItems[i] = ReadCreateVisibleItem(packet, indexes, "VisibleItems", i);
+                var mapSizeQuestLogQuestIdToIndex = packet.ReadUInt32();
+                for (var m = 0u; m < mapSizeQuestLogQuestIdToIndex; ++m)
+                {
+                    var key = packet.ReadInt32("Key", indexes, "QuestLogQuestIdToIndex", m);
+                    data.QuestLogQuestIdToIndex[key] = packet.ReadInt32("QuestLogQuestIdToIndex", indexes, m, "Value");
+                }
             }
             data.PlayerTitle = packet.ReadInt32("PlayerTitle", indexes);
             data.FakeInebriation = packet.ReadInt32("FakeInebriation", indexes);
@@ -1821,6 +1827,11 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
             {
                 data.VisualItemReplacements[i] = packet.ReadInt32("VisualItemReplacements", indexes, i);
             }
+            for (var i = 0; i < 19; ++i)
+            {
+                data.VisibleItems[i] = ReadCreateVisibleItem(packet, indexes, "VisibleItems", i);
+            }
+            packet.ResetBitReader();
             data.Name = new string('*', (int)packet.ReadBits(6));
             data.HasLevelLink = packet.ReadBit("HasLevelLink", indexes);
             hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
@@ -1835,7 +1846,6 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
             {
                 data.DeclinedNames = ReadCreateDeclinedNames(packet, indexes, "DeclinedNames");
             }
-            */
             return data;
         }
 
@@ -1910,7 +1920,6 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         public override IPlayerData ReadUpdatePlayerData(Packet packet, params object[] indexes)
         {
             var data = new PlayerData();
-            /*
             packet.ResetBitReader();
             var rawChangesMask = new int[5];
             var rawMaskMask = new int[1];
@@ -2067,40 +2076,65 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
                 }
                 if (changesMask[25])
                 {
-                    data.PlayerTitle = packet.ReadInt32("PlayerTitle", indexes);
+                    var updateTypeQuestLogQuestIdToIndex = packet.ReadByte();
+                    if (updateTypeQuestLogQuestIdToIndex != 0)
+                    {
+                        var mapSizeQuestLogQuestIdToIndex = packet.ReadUInt32();
+                        for (var m = 0u; m < mapSizeQuestLogQuestIdToIndex; ++m)
+                        {
+                            var key = packet.ReadInt32("Key", indexes, "QuestLogQuestIdToIndex", m);
+                            data.QuestLogQuestIdToIndex[key] = packet.ReadInt32("QuestLogQuestIdToIndex", indexes, m, "Value");
+                        }
+                    }
+                    else
+                    {
+                        var changesCountQuestLogQuestIdToIndex = packet.ReadUInt16();
+                        for (var m = 0u; m < changesCountQuestLogQuestIdToIndex; ++m)
+                        {
+                            var key = packet.ReadInt32("Key", indexes, "QuestLogQuestIdToIndex", m);
+                            var changeType = packet.ReadByte("ChangeType", indexes, "QuestLogQuestIdToIndex", m);
+                            if (changeType == 2)
+                                continue;
+                            data.QuestLogQuestIdToIndex[key] = packet.ReadInt32("QuestLogQuestIdToIndex", indexes, m, "Value");
+                        }
+                    }
                 }
                 if (changesMask[26])
                 {
-                    data.FakeInebriation = packet.ReadInt32("FakeInebriation", indexes);
+                    data.PlayerTitle = packet.ReadInt32("PlayerTitle", indexes);
                 }
                 if (changesMask[27])
                 {
-                    data.VirtualPlayerRealm = packet.ReadUInt32("VirtualPlayerRealm", indexes);
+                    data.FakeInebriation = packet.ReadInt32("FakeInebriation", indexes);
                 }
                 if (changesMask[28])
                 {
-                    data.CurrentSpecID = packet.ReadUInt32("CurrentSpecID", indexes);
+                    data.VirtualPlayerRealm = packet.ReadUInt32("VirtualPlayerRealm", indexes);
                 }
                 if (changesMask[29])
                 {
-                    data.TaxiMountAnimKitID = packet.ReadInt32("TaxiMountAnimKitID", indexes);
+                    data.CurrentSpecID = packet.ReadUInt32("CurrentSpecID", indexes);
                 }
                 if (changesMask[30])
                 {
-                    packet.ReadInt32("Unk", indexes);
+                    data.TaxiMountAnimKitID = packet.ReadInt32("TaxiMountAnimKitID", indexes);
                 }
                 if (changesMask[31])
                 {
-                    data.CurrentBattlePetBreedQuality = packet.ReadByte("CurrentBattlePetBreedQuality", indexes);
+                    packet.ReadInt32("Unk", indexes);
                 }
             }
             if (changesMask[32])
             {
                 if (changesMask[33])
                 {
-                    data.HonorLevel = packet.ReadInt32("HonorLevel", indexes);
+                    data.CurrentBattlePetBreedQuality = packet.ReadByte("CurrentBattlePetBreedQuality", indexes);
                 }
                 if (changesMask[34])
+                {
+                    data.HonorLevel = packet.ReadInt32("HonorLevel", indexes);
+                }
+                if (changesMask[35])
                 {
                     data.LogoutTime = packet.ReadInt64("LogoutTime", indexes);
                 }
@@ -2108,23 +2142,23 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
                 {
                     data.Field_13C = packet.ReadInt32("Field_13C", indexes);
                 }
-                if (changesMask[37])
+                if (changesMask[38])
                 {
                     data.Field_140 = packet.ReadInt32("Field_140", indexes);
                 }
-                if (changesMask[38])
+                if (changesMask[39])
                 {
                     data.CurrentBattlePetSpeciesID = packet.ReadInt32("CurrentBattlePetSpeciesID", indexes);
                 }
-                if (changesMask[39])
+                if (changesMask[43])
                 {
                     data.PersonalTabard = ReadUpdateCustomTabardInfo(packet, indexes, "PersonalTabard");
                 }
                 if (changesMask[35])
                 {
+                    packet.ResetBitReader();
                     data.Name = new string('*', (int)packet.ReadBits(6));
                 }
-                packet.ResetBitReader();
                 hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
                 if (changesMask[40])
                 {
@@ -2146,21 +2180,21 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
                     }
                 }
             }
-            if (changesMask[43])
+            if (changesMask[44])
             {
                 for (var i = 0; i < 2; ++i)
                 {
-                    if (changesMask[44 + i])
+                    if (changesMask[45 + i])
                     {
                         data.PartyType[i] = packet.ReadByte("PartyType", indexes, i);
                     }
                 }
             }
-            if (changesMask[46])
+            if (changesMask[47])
             {
                 for (var i = 0; i < 25; ++i)
                 {
-                    if (changesMask[47 + i])
+                    if (changesMask[48 + i])
                     {
                         if (noQuestLogChangesMask)
                             data.QuestLog[i] = ReadCreateQuestLog(packet, indexes, "QuestLog", i);
@@ -2169,43 +2203,43 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
                     }
                 }
             }
-            if (changesMask[72])
-            {
-                for (var i = 0; i < 19; ++i)
-                {
-                    if (changesMask[73 + i])
-                    {
-                        data.VisibleItems[i] = ReadUpdateVisibleItem(packet, indexes, "VisibleItems", i);
-                    }
-                }
-            }
-            if (changesMask[91])
+            if (changesMask[93])
             {
                 for (var i = 0; i < 6; ++i)
                 {
-                    if (changesMask[92 + i])
+                    if (changesMask[94 + i])
                     {
                         data.AvgItemLevel[i] = packet.ReadSingle("AvgItemLevel", indexes, i);
                     }
                 }
             }
-            if (changesMask[98])
+            if (changesMask[100])
             {
                 for (var i = 0; i < 32; ++i)
                 {
-                    if (changesMask[99 + i])
+                    if (changesMask[101 + i])
                     {
                         data.ForcedReactions[i] = ReadUpdateZonePlayerForcedReaction(packet, indexes, "ForcedReactions", i);
                     }
                 }
             }
-            if (changesMask[131])
+            if (changesMask[133])
             {
                 for (var i = 0; i < 19; ++i)
                 {
-                    if (changesMask[132 + i])
+                    if (changesMask[134 + i])
                     {
                         data.Field_3120[i] = packet.ReadUInt32("Field_3120", indexes, i);
+                    }
+                }
+            }
+            if (changesMask[73])
+            {
+                for (var i = 0; i < 19; ++i)
+                {
+                    if (changesMask[74 + i])
+                    {
+                        data.VisibleItems[i] = ReadUpdateVisibleItem(packet, indexes, "VisibleItems", i);
                     }
                 }
             }

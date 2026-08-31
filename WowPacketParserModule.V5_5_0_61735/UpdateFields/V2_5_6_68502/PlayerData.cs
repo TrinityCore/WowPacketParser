@@ -32,6 +32,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         public System.Nullable<uint> DuelTeam { get; set; }
         public System.Nullable<int> GuildTimeStamp { get; set; }
         public IQuestLog[] QuestLog { get; } = new IQuestLog[25];
+        public MapUpdateField<System.Nullable<int>, System.Nullable<int>> QuestLogQuestIdToIndex { get; set; } = new();
         public IVisibleItem[] VisibleItems { get; } = new IVisibleItem[19];
         public System.Nullable<int> PlayerTitle { get; set; }
         public System.Nullable<int> FakeInebriation { get; set; }

@@ -14,6 +14,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         public System.Nullable<long> EndTime { get; set; }
         public System.Nullable<int> QuestID { get; set; }
         public System.Nullable<ushort> StateFlags { get; set; }
+        public System.Nullable<uint> ObjectiveFlags { get; set; }
         public System.Nullable<ushort>[] ObjectiveProgress { get; } = new System.Nullable<ushort>[24];
     }
 }
