@@ -6371,7 +6371,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_5_63506
             var data = new AreaTriggerSplineCalculator();
             packet.ResetBitReader();
             data.Points.Resize(packet.ReadBits(16));
-            data.Catmullrom = packet.ReadBit("Catmullrom", indexes);
+            data.Linear = packet.ReadBit("Linear", indexes);
             for (var i = 0; i < data.Points.Count; ++i)
             {
                 data.Points[i] = packet.ReadVector3("Points", indexes, i);
@@ -6391,7 +6391,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_5_63506
             {
                 if (changesMask[1])
                 {
-                    data.Catmullrom = packet.ReadBit("Catmullrom", indexes);
+                    data.Linear = packet.ReadBit("Linear", indexes);
                 }
                 if (changesMask[2])
                 {
