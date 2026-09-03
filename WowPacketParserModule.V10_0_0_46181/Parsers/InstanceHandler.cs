@@ -130,7 +130,7 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 ReadItemInfo(packet, idx, "ItemInfo", i);
             }
 
-            if (!ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
                 TraitHandler.ReadTraitConfig(packet, idx, "TraitConfig");
 
             packet.ResetBitReader();
