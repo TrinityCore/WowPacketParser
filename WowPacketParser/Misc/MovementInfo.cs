@@ -4,6 +4,10 @@ namespace WowPacketParser.Misc
     {
         public WowGuid MoverGuid;
 
+        public bool NoBirthAnim;
+
+        public bool PlayHoverAnim;
+
         // NOTE: Do not use flag fields in a generic way to handle anything for producing spawns - different versions have different flags
         public uint Flags;
 

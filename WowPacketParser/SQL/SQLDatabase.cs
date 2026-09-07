@@ -30,6 +30,7 @@ namespace WowPacketParser.SQL
         public static Dictionary<int /*menuID*/, List<uint> /*npc_text ids*/> GossipMenuToNPCTexts { get; } = new();
         public static Dictionary<int /*worldStateID*/, string> WorldStateNames { get; } = new();
         public static Dictionary<(uint /*CreatureId*/, uint /*DifficultyID*/), CreatureTemplateDifficultyWDB> CreatureTemplateDifficultyWDBData = new();
+        public static Dictionary<(uint /*CreatureId*/, uint /*DifficultyID*/), CreatureTemplateDifficulty> CreatureTemplateDifficultyStaticFlagsData = new();
         public static List<POIData> POIs { get; } = new List<POIData>();
 
         private static readonly StoreNameType[] ObjectTypes =
@@ -293,7 +294,8 @@ namespace WowPacketParser.SQL
             if (Settings.TargetedDatabase < TargetedDatabase.Dragonflight || !Settings.DBEnabled)
                 return;
 
-            string columns = "Entry, DifficultyID, HealthScalingExpansion, HealthModifier, ManaModifier, CreatureDifficultyID, TypeFlags, TypeFlags2";
+            string columns = "Entry, DifficultyID, HealthScalingExpansion, HealthModifier, ManaModifier, CreatureDifficultyID, TypeFlags, TypeFlags2, " +
+                             "StaticFlags1, StaticFlags2, StaticFlags3, StaticFlags4, StaticFlags5, StaticFlags6, StaticFlags7, StaticFlags8";
             string query = $"SELECT {columns} FROM {Settings.TDBDatabase}.creature_template_difficulty";
 
             using (var command = SQLConnector.CreateCommand(query))
@@ -315,7 +317,23 @@ namespace WowPacketParser.SQL
                             TypeFlags = (CreatureTypeFlag)reader.GetUInt32("TypeFlags"),
                             TypeFlags2 = reader.GetUInt32("TypeFlags2")
                         };
+
+                        var staticFlagsData = new CreatureTemplateDifficulty
+                        {
+                            Entry = data.Entry,
+                            DifficultyID = data.DifficultyID,
+                            StaticFlags1 = (CreatureStaticFlags)reader.GetUInt32("StaticFlags1"),
+                            StaticFlags2 = (CreatureStaticFlags2)reader.GetUInt32("StaticFlags2"),
+                            StaticFlags3 = (CreatureStaticFlags3)reader.GetUInt32("StaticFlags3"),
+                            StaticFlags4 = (CreatureStaticFlags4)reader.GetUInt32("StaticFlags4"),
+                            StaticFlags5 = (CreatureStaticFlags5)reader.GetUInt32("StaticFlags5"),
+                            StaticFlags6 = (CreatureStaticFlags6)reader.GetUInt32("StaticFlags6"),
+                            StaticFlags7 = (CreatureStaticFlags7)reader.GetUInt32("StaticFlags7"),
+                            StaticFlags8 = (CreatureStaticFlags8)reader.GetUInt32("StaticFlags8")
+                        };
+
                         CreatureTemplateDifficultyWDBData.Add((data.Entry.Value, data.DifficultyID.Value), data);
+                        CreatureTemplateDifficultyStaticFlagsData.Add((data.Entry.Value, data.DifficultyID.Value), staticFlagsData);
                     }
                 }
             }
@@ -360,7 +378,22 @@ namespace WowPacketParser.SQL
 
             // entry with same difficulty already exists (wdb)
             if (CreatureTemplateDifficultyWDBData.TryGetValue((sniffData.Entry.Value, difficulty), out var dbData))
+            {
                 sniffData.DifficultyID = dbData.DifficultyID;
+
+                // keep manually added serverside static flags
+                if (CreatureTemplateDifficultyStaticFlagsData.TryGetValue((sniffData.Entry.Value, difficulty), out var dbStaticFlagsData))
+                {
+                    sniffData.StaticFlags1 |= dbStaticFlagsData.StaticFlags1 &~ CreatureStaticFlags.NonServerSide;
+                    sniffData.StaticFlags2 |= dbStaticFlagsData.StaticFlags2 &~ CreatureStaticFlags2.NonServerSide;
+                    sniffData.StaticFlags3 |= dbStaticFlagsData.StaticFlags3 &~ CreatureStaticFlags3.NonServerSide;
+                    sniffData.StaticFlags4 |= dbStaticFlagsData.StaticFlags4 &~ CreatureStaticFlags4.NonServerSide;
+                    sniffData.StaticFlags5 |= dbStaticFlagsData.StaticFlags5 &~ CreatureStaticFlags5.NonServerSide;
+                    sniffData.StaticFlags6 |= dbStaticFlagsData.StaticFlags6 &~ CreatureStaticFlags6.NonServerSide;
+                    sniffData.StaticFlags7 |= dbStaticFlagsData.StaticFlags7 &~ CreatureStaticFlags7.NonServerSide;
+                    sniffData.StaticFlags8 |= dbStaticFlagsData.StaticFlags8 &~ CreatureStaticFlags8.NonServerSide;
+                }
+            }
             // entry with same difficulty does not exist, check fallback difficulties recursively
             else
             {
