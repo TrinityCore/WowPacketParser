@@ -636,47 +636,44 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 // CliAreaTrigger
                 packet.ReadUInt32("ElapsedMs", index);
 
-                packet.ReadVector3("RollPitchYaw", index);
+                spellAreaTrigger.RollPitchYaw = packet.ReadVector3("RollPitchYaw", index);
 
                 areaTriggerTemplate.Flags   = 0;
 
                 if (packet.ReadBit("AbsoluteOrientation", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAbsoluteOrientation;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasAbsoluteOrientation;
 
                 if (packet.ReadBit("DynamicShape", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasDynamicShape;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasDynamicShape;
 
                 if (packet.ReadBit("Attached", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAttached;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasAttached;
 
                 if (packet.ReadBit("FaceMovementDir", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.FaceMovementDirection;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.FaceMovementDirection;
 
                 if (packet.ReadBit("FollowsTerrain", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.FollowsTerrain;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.FollowsTerrain;
 
                 if (packet.ReadBit("AlwaysExterior", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.AlwaysExterior;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.AlwaysExterior;
 
                 if (packet.ReadBit("HasTargetRollPitchYaw", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasTargetRollPitchYaw;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasTargetRollPitchYaw;
 
                 bool hasScaleCurveID = packet.ReadBit("HasScaleCurveID", index);
                 bool hasMorphCurveID = packet.ReadBit("HasMorphCurveID", index);
                 bool hasFacingCurveID = packet.ReadBit("HasFacingCurveID", index);
                 bool hasMoveCurveID = packet.ReadBit("HasMoveCurveID", index);
-                bool hasAnimProgress = false;
 
                 if (packet.ReadBit("HasAnimID", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAnimId;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasAnimId;
 
                 if (packet.ReadBit("HasAnimKitID", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAnimKitId;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasAnimKitId;
 
-                if (packet.ReadBit("HasVisualAnimIsDecay", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay;
-
-                hasAnimProgress = packet.ReadBit("HasAnimProgress", index);
+                bool hasVisualAnimIsDecay = packet.ReadBit("HasVisualAnimIsDecay", index);
+                bool hasAnimProgress = packet.ReadBit("HasAnimProgress", index);
 
                 if (packet.ReadBit("HasAreaTriggerSphere", index))
                     areaTriggerTemplate.Type = (byte)AreaTriggerType.Sphere;
@@ -701,21 +698,21 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 bool hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
 
                 if (packet.ReadBit("HasAreaTriggerOrbit", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasOrbit;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasOrbit;
 
                 // no idea when added
                 if (packet.ReadBit("HasAreaTriggerMovementScript", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasMovementScript;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasMovementScript;
 
-                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay) != 0)
-                    if (!packet.ReadBit("VisualAnimIsDecay", index))
-                        areaTriggerTemplate.Flags &= ~(uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay;
+                if (hasVisualAnimIsDecay)
+                    if (packet.ReadBit("VisualAnimIsDecay", index))
+                        areaTriggerTemplate.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.VisualAnimIsDecay;
 
                 if (hasAreaTriggerSpline)
                     V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerSpline(spellAreaTrigger, packet, index);
 
-                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesFlags.HasTargetRollPitchYaw) != 0)
-                    packet.ReadVector3("TargetRollPitchYaw", index);
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesLegacyFlags.HasTargetRollPitchYaw) != 0)
+                    spellAreaTrigger.TargetRollPitchYaw = packet.ReadVector3("TargetRollPitchYaw", index);
 
                 if (hasScaleCurveID)
                     spellAreaTrigger.ScaleCurveId = (int)packet.ReadUInt32("ScaleCurveID", index);
@@ -729,10 +726,10 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 if (hasMoveCurveID)
                     spellAreaTrigger.MoveCurveId = (int)packet.ReadUInt32("MoveCurveID", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerCreatePropertiesFlags.HasAnimId) != 0)
+                if ((areaTriggerTemplate.Flags & (int)AreaTriggerCreatePropertiesLegacyFlags.HasAnimId) != 0)
                     spellAreaTrigger.AnimId = packet.ReadInt32("AnimId", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerCreatePropertiesFlags.HasAnimKitId) != 0)
+                if ((areaTriggerTemplate.Flags & (int)AreaTriggerCreatePropertiesLegacyFlags.HasAnimKitId) != 0)
                     spellAreaTrigger.AnimKitId = packet.ReadInt32("AnimKitId", index);
 
                 if (hasAnimProgress)
@@ -810,13 +807,13 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                     areaTriggerTemplate.Data[3] = extentsTarget.Y;
                 }
 
-                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesFlags.HasMovementScript) != 0)
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesLegacyFlags.HasMovementScript) != 0)
                 {
                     packet.ReadInt32("SpellScriptID");
                     packet.ReadVector3("Center");
                 }
 
-                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesFlags.HasOrbit) != 0)
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesLegacyFlags.HasOrbit) != 0)
                     V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerOrbit(spellAreaTrigger, packet, "Orbit");
 
                 Storage.AreaTriggerTemplates.Add(areaTriggerTemplate);

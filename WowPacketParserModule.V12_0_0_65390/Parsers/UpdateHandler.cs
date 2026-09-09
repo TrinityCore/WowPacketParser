@@ -389,24 +389,6 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
                 createProperties.IsAreatriggerCustom = areaTriggerTemplate.IsCustom;
                 createProperties.Flags = 0;
 
-                if ((createProperties.AreaTriggerData.Flags & 0x0008) != 0)
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAbsoluteOrientation;
-
-                if ((createProperties.AreaTriggerData.Flags & 0x0010) != 0)
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasDynamicShape;
-
-                if ((createProperties.AreaTriggerData.Flags & 0x0020) != 0)
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAttached;
-
-                if ((createProperties.AreaTriggerData.Flags & 0x0040) != 0)
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.FaceMovementDirection;
-
-                if ((createProperties.AreaTriggerData.Flags & 0x0080) != 0)
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.FollowsTerrain;
-
-                if ((createProperties.AreaTriggerData.Flags & 0x0200) != 0)
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.AlwaysExterior;
-
                 if (createProperties.AreaTriggerData.Polygon != null)
                 {
                     var verticesList = new List<AreaTriggerCreatePropertiesPolygonVertex>(createProperties.AreaTriggerData.Polygon.Vertices.Count);

@@ -315,7 +315,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("HasFollowsTerrain", index);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
-                    packet.ReadBit("Unk bit WoD62x", index);
+                    packet.ReadBit("AlwaysExterior", index);
 
                 var hasTargetRollPitchYaw = packet.ReadBit("HasTargetRollPitchYaw", index);
                 var hasScaleCurveID = packet.ReadBit("HasScaleCurveID", index);
@@ -332,7 +332,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadVector3("TargetRollPitchYaw", index);
 
                 if (hasScaleCurveID)
-                    packet.ReadInt32("ScaleCurveID, index");
+                    packet.ReadInt32("ScaleCurveID", index);
 
                 if (hasMorphCurveID)
                     packet.ReadInt32("MorphCurveID", index);

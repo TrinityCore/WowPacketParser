@@ -6845,8 +6845,10 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
         {
             var data = new AreaTriggerBoundedPlane();
             packet.ResetBitReader();
-            data.Extents = packet.ReadVector2("Extents", indexes);
-            data.ExtentsTarget = packet.ReadVector2("ExtentsTarget", indexes);
+            data.ExtentsY = packet.ReadSingle("ExtentsY", indexes);
+            data.ExtentsZ = packet.ReadSingle("ExtentsZ", indexes);
+            data.ExtentsTargetY = packet.ReadSingle("ExtentsTargetY", indexes);
+            data.ExtentsTargetZ = packet.ReadSingle("ExtentsTargetZ", indexes);
             return data;
         }
 
@@ -6855,7 +6857,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
             var data = new AreaTriggerBoundedPlane();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(3);
+            rawChangesMask[0] = (int)packet.ReadBits(5);
             var changesMask = new BitArray(rawChangesMask);
 
             packet.ResetBitReader();
@@ -6863,11 +6865,19 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
             {
                 if (changesMask[1])
                 {
-                    data.Extents = packet.ReadVector2("Extents", indexes);
+                    data.ExtentsY = packet.ReadSingle("ExtentsY", indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.ExtentsTarget = packet.ReadVector2("ExtentsTarget", indexes);
+                    data.ExtentsZ = packet.ReadSingle("ExtentsZ", indexes);
+                }
+                if (changesMask[3])
+                {
+                    data.ExtentsTargetY = packet.ReadSingle("ExtentsTargetY", indexes);
+                }
+                if (changesMask[4])
+                {
+                    data.ExtentsTargetZ = packet.ReadSingle("ExtentsTargetZ", indexes);
                 }
             }
             return data;

@@ -66,6 +66,7 @@ namespace WowPacketParser.SQL.Builders
                     row.Data.AreaTriggerCreatePropertiesId = createProperties.Value.CustomId;
                     row.Data.AreaTriggerId = createProperties.Value.AreaTriggerId;
                     row.Data.IsAreatriggerCustom = createProperties.Value.IsAreatriggerCustom;
+                    row.Data.FlagsLegacy = createProperties.Value.FlagsLegacy;
                     row.Data.Flags = createProperties.Value.Flags;
                     row.Data.AnimId = createProperties.Value.AnimId;
                     row.Data.AnimKitId = createProperties.Value.AnimKitId;

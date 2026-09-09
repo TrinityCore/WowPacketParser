@@ -16,14 +16,14 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_1_0_69214
         public IOverrideCurve OverrideMoveCurveX { get; set; }
         public IOverrideCurve OverrideMoveCurveY { get; set; }
         public IOverrideCurve OverrideMoveCurveZ { get; set; }
-        public IOverrideCurve OverrideFacingCurve { get; set; }
+        public IOverrideCurve OverrideShapeCurve { get; set; }
         public WowGuid Caster { get; set; }
         public System.Nullable<uint> Duration { get; set; }
         public System.Nullable<uint> TimeToTarget { get; set; }
         public System.Nullable<uint> TimeToTargetScale { get; set; }
         public System.Nullable<uint> TimeToTargetExtraScale { get; set; }
         public System.Nullable<uint> TimeToTargetPos { get; set; }
-        public System.Nullable<uint> TimeToTargetFacing { get; set; }
+        public System.Nullable<uint> TimeToTargetShape { get; set; }
         public System.Nullable<int> SpellID { get; set; }
         public System.Nullable<int> SpellForVisuals { get; set; }
         public ISpellCastVisual SpellVisual { get; set; }

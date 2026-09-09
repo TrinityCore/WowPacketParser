@@ -11,13 +11,10 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_1_0_69214
     [GeneratedCode("UpdateFieldCodeGenerator.Formats.WowPacketParserHandler", "1.0.0.0")]
     public class AreaTriggerBoundedPlane : IAreaTriggerBoundedPlane
     {
-        public System.Nullable<float> ExtentsX { get; set; }
         public System.Nullable<float> ExtentsY { get; set; }
-        public System.Nullable<float> ExtentsTargetX { get; set; }
+        public System.Nullable<float> ExtentsZ { get; set; }
         public System.Nullable<float> ExtentsTargetY { get; set; }
-
-        public Vector2? Extents => ExtentsX.HasValue && ExtentsY.HasValue ? new Vector2(ExtentsX.Value, ExtentsY.Value) : null;
-        public Vector2? ExtentsTarget => ExtentsTargetX.HasValue && ExtentsTargetY.HasValue ? new Vector2(ExtentsTargetX.Value, ExtentsTargetY.Value) : null;
+        public System.Nullable<float> ExtentsTargetZ { get; set; }
     }
 }
 

@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_5_66741
         public System.Nullable<uint> TimeToTargetScale { get; set; }
         public System.Nullable<uint> TimeToTargetExtraScale { get; set; }
         public System.Nullable<uint> TimeToTargetPos { get; set; }
-        public System.Nullable<uint> TimeToTargetFacing { get; set; }
+        public System.Nullable<uint> TimeToTargetShape { get; set; }
         public System.Nullable<int> SpellID { get; set; }
         public System.Nullable<int> SpellForVisuals { get; set; }
         public ISpellCastVisual SpellVisual { get; set; }
@@ -53,7 +53,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_5_66741
         public IOverrideCurve OverrideMoveCurveX { get; set; }
         public IOverrideCurve OverrideMoveCurveY { get; set; }
         public IOverrideCurve OverrideMoveCurveZ { get; set; }
-        public IOverrideCurve OverrideFacingCurve { get; set; }
+        public IOverrideCurve OverrideShapeCurve { get; set; }
         public IVisualAnim VisualAnim { get; set; }
         public IAreaTriggerSplineCalculator Spline { get; set; }
         public IAreaTriggerOrbit Orbit { get; set; }

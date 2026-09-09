@@ -1,4 +1,6 @@
 ﻿
+using WowPacketParser.Misc;
+
 namespace WowPacketParser.Store.Objects.UpdateFields
 {
     public interface IAreaTriggerData
@@ -27,5 +29,10 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         IAreaTriggerBoundedPlane BoundedPlane => null;
 
         IVisualAnim VisualAnim => null;
+
+        Vector3? RollPitchYaw => null;
+        Vector3? TargetRollPitchYaw => null;
+
+        bool? HeightIgnoresScale => null;
     }
 }

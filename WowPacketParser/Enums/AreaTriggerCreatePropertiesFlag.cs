@@ -3,7 +3,7 @@
 namespace WowPacketParser.Enums
 {
     [Flags]
-    public enum AreaTriggerCreatePropertiesFlags : uint
+    public enum AreaTriggerCreatePropertiesLegacyFlags : uint
     {
         HasAbsoluteOrientation  = 0x00001,
         HasDynamicShape         = 0x00002,
@@ -17,5 +17,17 @@ namespace WowPacketParser.Enums
         HasAnimKitId            = 0x00200,
         HasOrbit                = 0x00400,
         HasMovementScript       = 0x00800
+    }
+
+    [Flags]
+    public enum AreaTriggerCreatePropertiesFlags : uint
+    {
+        HeightIgnoresScale  = 0x0001,
+        VisualAnimIsDecay   = 0x0002,
+        AbsoluteOrientation = 0x0004,
+        FaceMovementDir     = 0x0008,
+        FollowsTerrain      = 0x0010,
+        AlwaysExterior      = 0x0020,
+        UsesUnitRawFacing   = 0x0040
     }
 }

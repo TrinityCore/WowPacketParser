@@ -7303,10 +7303,10 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_1_0_69214
         {
             var data = new AreaTriggerBoundedPlane();
             packet.ResetBitReader();
-            data.ExtentsX = packet.ReadSingle("ExtentsX", indexes);
             data.ExtentsY = packet.ReadSingle("ExtentsY", indexes);
-            data.ExtentsTargetX = packet.ReadSingle("ExtentsTargetX", indexes);
+            data.ExtentsZ = packet.ReadSingle("ExtentsZ", indexes);
             data.ExtentsTargetY = packet.ReadSingle("ExtentsTargetY", indexes);
+            data.ExtentsTargetZ = packet.ReadSingle("ExtentsTargetZ", indexes);
             return data;
         }
 
@@ -7323,19 +7323,19 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_1_0_69214
             {
                 if (changesMask[1])
                 {
-                    data.ExtentsX = packet.ReadSingle("ExtentsX", indexes);
+                    data.ExtentsY = packet.ReadSingle("ExtentsY", indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.ExtentsY = packet.ReadSingle("ExtentsY", indexes);
+                    data.ExtentsZ = packet.ReadSingle("ExtentsZ", indexes);
                 }
                 if (changesMask[3])
                 {
-                    data.ExtentsTargetX = packet.ReadSingle("ExtentsTargetX", indexes);
+                    data.ExtentsTargetY = packet.ReadSingle("ExtentsTargetY", indexes);
                 }
                 if (changesMask[4])
                 {
-                    data.ExtentsTargetY = packet.ReadSingle("ExtentsTargetY", indexes);
+                    data.ExtentsTargetZ = packet.ReadSingle("ExtentsTargetZ", indexes);
                 }
             }
             return data;
@@ -7352,14 +7352,14 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_1_0_69214
             data.OverrideMoveCurveX = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveX");
             data.OverrideMoveCurveY = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveY");
             data.OverrideMoveCurveZ = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveZ");
-            data.OverrideFacingCurve = ReadCreateScaleCurve(packet, indexes, "OverrideFacingCurve");
+            data.OverrideShapeCurve = ReadCreateScaleCurve(packet, indexes, "OverrideShapeCurve");
             data.Caster = packet.ReadPackedGuid128("Caster", indexes);
             data.Duration = packet.ReadUInt32("Duration", indexes);
             data.TimeToTarget = packet.ReadUInt32("TimeToTarget", indexes);
             data.TimeToTargetScale = packet.ReadUInt32("TimeToTargetScale", indexes);
             data.TimeToTargetExtraScale = packet.ReadUInt32("TimeToTargetExtraScale", indexes);
             data.TimeToTargetPos = packet.ReadUInt32("TimeToTargetPos", indexes);
-            data.TimeToTargetFacing = packet.ReadUInt32("TimeToTargetFacing", indexes);
+            data.TimeToTargetShape = packet.ReadUInt32("TimeToTargetShape", indexes);
             data.SpellID = packet.ReadInt32("SpellID", indexes);
             data.SpellForVisuals = packet.ReadInt32("SpellForVisuals", indexes);
             data.SpellVisual = ReadCreateSpellCastVisual(packet, indexes, "SpellVisual");
@@ -7468,7 +7468,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_1_0_69214
                 }
                 if (changesMask[6])
                 {
-                    data.OverrideFacingCurve = ReadUpdateScaleCurve(packet, indexes, "OverrideFacingCurve");
+                    data.OverrideShapeCurve = ReadUpdateScaleCurve(packet, indexes, "OverrideShapeCurve");
                 }
                 if (changesMask[7])
                 {
@@ -7496,7 +7496,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_1_0_69214
                 }
                 if (changesMask[13])
                 {
-                    data.TimeToTargetFacing = packet.ReadUInt32("TimeToTargetFacing", indexes);
+                    data.TimeToTargetShape = packet.ReadUInt32("TimeToTargetShape", indexes);
                 }
                 if (changesMask[14])
                 {

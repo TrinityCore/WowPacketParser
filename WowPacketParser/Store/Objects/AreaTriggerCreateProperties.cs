@@ -24,7 +24,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("IsAreatriggerCustom", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic)]
         public byte? IsAreatriggerCustom = 0;
 
-        [DBFieldName("Flags", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic)]
+        [DBFieldName("Flags", TargetedDatabaseFlag.Dragonflight | TargetedDatabaseFlag.TheWarWithin | TargetedDatabaseFlag.CataClassic)]
+        public uint? FlagsLegacy;
+
+        [DBFieldName("Flags", TargetedDatabaseFlag.SinceMidnight)]
         public uint? Flags;
 
         [DBFieldName("MoveCurveId")]
@@ -64,7 +67,25 @@ namespace WowPacketParser.Store.Objects
         public byte? Shape;
 
         [DBFieldName("ShapeData", TargetedDatabaseFlag.SinceShadowlands | TargetedDatabaseFlag.CataClassic, 8, true)]
-        public float?[] ShapeData = { 0, 0, 0, 0, 0, 0, 0, 0 };
+        public float?[] ShapeData = [0, 0, 0, 0, 0, 0, 0, 0];
+
+        [DBFieldName("Roll", TargetedDatabaseFlag.SinceMidnight)]
+        public float? Roll = 0;
+
+        [DBFieldName("Pitch", TargetedDatabaseFlag.SinceMidnight)]
+        public float? Pitch = 0;
+
+        [DBFieldName("Yaw", TargetedDatabaseFlag.SinceMidnight)]
+        public float? Yaw = 0;
+
+        [DBFieldName("TargetRoll", TargetedDatabaseFlag.SinceMidnight, nullable: true)]
+        public float? TargetRoll;
+
+        [DBFieldName("TargetPitch", TargetedDatabaseFlag.SinceMidnight, nullable: true)]
+        public float? TargetPitch;
+
+        [DBFieldName("TargetYaw", TargetedDatabaseFlag.SinceMidnight, nullable: true)]
+        public float? TargetYaw;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
@@ -73,6 +94,77 @@ namespace WowPacketParser.Store.Objects
         public uint spellId = 0;
 
         public string CustomId;
+
+        public Vector3? RollPitchYaw
+        {
+            get => Roll != null && Pitch != null && Yaw != null ? new Vector3(Roll.Value, Pitch.Value, Yaw.Value) : (Vector3?)null;
+            set => (Roll, Pitch, Yaw) = (value?.X, value?.Y, value?.Z);
+        }
+
+        public Vector3? TargetRollPitchYaw
+        {
+            get => TargetRoll != null && TargetPitch != null && TargetYaw != null ? new Vector3(TargetRoll.Value, TargetPitch.Value, TargetYaw.Value) : (Vector3?)null;
+            set => (TargetRoll, TargetPitch, TargetYaw) = (value?.X, value?.Y, value?.Z);
+        }
+
+        public bool AbsoluteOrientation
+        {
+            get => Flags?.HasAnyFlag(AreaTriggerCreatePropertiesFlags.AbsoluteOrientation) ?? false;
+            set => ModifyFlags(value, AreaTriggerCreatePropertiesLegacyFlags.HasAbsoluteOrientation,
+                AreaTriggerCreatePropertiesFlags.AbsoluteOrientation);
+        }
+
+        public bool DynamicShape
+        {
+            get => FlagsLegacy?.HasAnyFlag(AreaTriggerCreatePropertiesLegacyFlags.HasDynamicShape) ?? false;
+            set => ModifyFlags(value, AreaTriggerCreatePropertiesLegacyFlags.HasDynamicShape, null);
+        }
+
+        public bool Attached
+        {
+            get => FlagsLegacy?.HasAnyFlag(AreaTriggerCreatePropertiesLegacyFlags.HasAttached) ?? false;
+            set => ModifyFlags(value, AreaTriggerCreatePropertiesLegacyFlags.HasAttached, null);
+        }
+
+        public bool FaceMovementDir
+        {
+            get => Flags?.HasAnyFlag(AreaTriggerCreatePropertiesFlags.FaceMovementDir) ?? false;
+            set => ModifyFlags(value, AreaTriggerCreatePropertiesLegacyFlags.FaceMovementDirection,
+                AreaTriggerCreatePropertiesFlags.FaceMovementDir);
+        }
+
+        public bool FollowsTerrain
+        {
+            get => Flags?.HasAnyFlag(AreaTriggerCreatePropertiesFlags.FollowsTerrain) ?? false;
+            set => ModifyFlags(value, AreaTriggerCreatePropertiesLegacyFlags.FollowsTerrain,
+                AreaTriggerCreatePropertiesFlags.FollowsTerrain);
+        }
+
+        public bool AlwaysExterior
+        {
+            get => Flags?.HasAnyFlag(AreaTriggerCreatePropertiesFlags.AlwaysExterior) ?? false;
+            set => ModifyFlags(value, AreaTriggerCreatePropertiesLegacyFlags.AlwaysExterior,
+                AreaTriggerCreatePropertiesFlags.AlwaysExterior);
+        }
+
+        public bool UsesUnitRawFacing
+        {
+            get => Flags?.HasAnyFlag(AreaTriggerCreatePropertiesFlags.UsesUnitRawFacing) ?? false;
+            set => ModifyFlags(value, null, AreaTriggerCreatePropertiesFlags.UsesUnitRawFacing);
+        }
+
+        public bool VisualAnimIsDecay
+        {
+            get => Flags?.HasAnyFlag(AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay) ?? false;
+            set => ModifyFlags(value, AreaTriggerCreatePropertiesLegacyFlags.VisualAnimIsDecay,
+                AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay);
+        }
+
+        public bool HeightIgnoresScale
+        {
+            get => Flags?.HasAnyFlag(AreaTriggerCreatePropertiesFlags.HeightIgnoresScale) ?? false;
+            set => ModifyFlags(value, null, AreaTriggerCreatePropertiesFlags.HeightIgnoresScale);
+        }
 
         public IAreaTriggerData AreaTriggerData;
 
@@ -103,8 +195,7 @@ namespace WowPacketParser.Store.Objects
                     if (AreaTriggerData.VisualAnim.AnimKitID != 0)
                         AnimKitId = (int?)AreaTriggerData.VisualAnim.AnimKitID;
 
-                    if (AreaTriggerData.VisualAnim.IsDecay == true)
-                        Flags |= (uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay;
+                    VisualAnimIsDecay = AreaTriggerData.VisualAnim.IsDecay == true;
                 }
             }
 
@@ -156,9 +247,37 @@ namespace WowPacketParser.Store.Objects
             else if (AreaTriggerData.BoundedPlane != null)
             {
                 Shape = (byte)AreaTriggerType.BoundedPlane;
-                ShapeData = [AreaTriggerData.BoundedPlane.Extents?.X, AreaTriggerData.BoundedPlane.Extents?.Y,
-                    AreaTriggerData.BoundedPlane.ExtentsTarget?.X, AreaTriggerData.BoundedPlane.ExtentsTarget?.Y,
+                ShapeData = [AreaTriggerData.BoundedPlane.ExtentsY, AreaTriggerData.BoundedPlane.ExtentsZ,
+                    AreaTriggerData.BoundedPlane.ExtentsTargetY, AreaTriggerData.BoundedPlane.ExtentsTargetZ,
                     0, 0, 0, 0];
+            }
+
+            if (AreaTriggerData.RollPitchYaw != null)
+            {
+                Roll = AreaTriggerData.RollPitchYaw.Value.X;
+                Pitch = AreaTriggerData.RollPitchYaw.Value.Y;
+                Yaw = AreaTriggerData.RollPitchYaw.Value.Z;
+                if (AreaTriggerData.TargetRollPitchYaw != null)
+                {
+                    TargetRoll = AreaTriggerData.TargetRollPitchYaw.Value.X;
+                    TargetPitch = AreaTriggerData.TargetRollPitchYaw.Value.Y;
+                    TargetYaw = AreaTriggerData.TargetRollPitchYaw.Value.Z;
+                }
+            }
+
+            if (AreaTriggerData.HeightIgnoresScale != null)
+                HeightIgnoresScale = AreaTriggerData.HeightIgnoresScale.Value;
+
+            if (AreaTriggerData.Flags != null)
+            {
+                HeightIgnoresScale = (AreaTriggerData.Flags & 0x0001) != 0;
+                AbsoluteOrientation = (AreaTriggerData.Flags & 0x0008) != 0;
+                DynamicShape = (AreaTriggerData.Flags & 0x0010) != 0;
+                Attached = (AreaTriggerData.Flags & 0x0020) != 0;
+                FaceMovementDir = (AreaTriggerData.Flags & 0x0040) != 0;
+                FollowsTerrain = (AreaTriggerData.Flags & 0x0080) != 0;
+                UsesUnitRawFacing = (AreaTriggerData.Flags & 0x0100) != 0;
+                AlwaysExterior = (AreaTriggerData.Flags & 0x0200) != 0;
             }
         }
 
@@ -190,6 +309,24 @@ namespace WowPacketParser.Store.Objects
 
             return areaTriggerCreatePropertiesId;
         }
+
+        private void ModifyFlags(bool on, AreaTriggerCreatePropertiesLegacyFlags? flagsLegacy, AreaTriggerCreatePropertiesFlags? flags)
+        {
+            if (on)
+            {
+                if (flagsLegacy != null)
+                    FlagsLegacy = (FlagsLegacy ?? 0) | (uint)flagsLegacy;
+                if (flags != null)
+                    Flags = (Flags ?? 0) | (uint)flags;
+            }
+            else
+            {
+                if (flagsLegacy != null)
+                    FlagsLegacy &= ~(uint)flagsLegacy;
+                if (flags != null)
+                    Flags &= ~(uint)flags;
+            }
+        }
     }
 
     [DBTableName("spell_areatrigger", TargetedDatabaseFlag.TillBattleForAzeroth)]
@@ -209,7 +346,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("IsAreatriggerCustom", TargetedDatabaseFlag.SinceDragonflight)]
         public byte? IsAreatriggerCustom;
 
-        [DBFieldName("Flags", TargetedDatabaseFlag.SinceDragonflight)]
+        [DBFieldName("Flags", TargetedDatabaseFlag.Dragonflight | TargetedDatabaseFlag.TheWarWithin | TargetedDatabaseFlag.CataClassic)]
+        public uint? FlagsLegacy;
+
+        [DBFieldName("Flags", TargetedDatabaseFlag.SinceMidnight)]
         public uint? Flags;
 
         [DBFieldName("MoveCurveId")]
