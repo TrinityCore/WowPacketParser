@@ -72,6 +72,7 @@ namespace WowPacketParser.SQL.Builders
                     row.Data.AnimKitId = createProperties.Value.AnimKitId;
                     row.Data.DecalPropertiesId = createProperties.Value.DecalPropertiesId;
                     row.Data.SpellForVisuals = createProperties.Value.SpellForVisuals;
+                    row.Data.PositionalSoundKitId = createProperties.Value.PositionalSoundKitId;
                     row.Data.TimeToTarget = createProperties.Value.TimeToTarget;
                     row.Data.TimeToTargetScale = createProperties.Value.TimeToTargetScale;
                     row.Data.Speed = createProperties.Value.Speed;

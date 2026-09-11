@@ -881,7 +881,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                     createProperties.MoveCurveId = (int)packet.ReadUInt32("MoveCurveID", index);
 
                 if (hasPositionalSoundKitID)
-                    packet.ReadUInt32("PositionalSoundKitID", index);
+                    createProperties.PositionalSoundKitId = packet.ReadInt32("PositionalSoundKitID", index);
 
                 if ((areaTriggerTemplate.Flags & (int)AreaTriggerCreatePropertiesLegacyFlags.HasAnimId) != 0)
                     createProperties.AnimId = packet.ReadInt32("AnimId", index);

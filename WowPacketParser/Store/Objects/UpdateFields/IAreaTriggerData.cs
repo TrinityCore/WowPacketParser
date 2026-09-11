@@ -10,6 +10,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         uint? TimeToTarget { get; }
         uint? TimeToTargetScale { get; }
         uint? DecalPropertiesID { get; }
+        int? PositionalSoundKitID => null;
 
         uint? Flags => null;
         uint? ScaleCurveId => null;

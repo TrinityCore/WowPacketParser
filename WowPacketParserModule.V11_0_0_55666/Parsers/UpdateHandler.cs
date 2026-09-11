@@ -993,7 +993,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                     createProperties.MoveCurveId = (int)packet.ReadUInt32("MoveCurveID", index);
 
                 if (hasPositionalSoundKitID)
-                    packet.ReadUInt32("PositionalSoundKitID", index);
+                    createProperties.PositionalSoundKitId = packet.ReadInt32("PositionalSoundKitID", index);
 
                 if ((createProperties.Flags & (uint)AreaTriggerCreatePropertiesLegacyFlags.HasMovementScript) != 0)
                 {

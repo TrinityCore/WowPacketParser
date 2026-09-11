@@ -823,7 +823,7 @@ namespace WowPacketParserModule.V3_4_4_59817.Parsers
                     createProperties.MoveCurveId = (int)packet.ReadUInt32("MoveCurveID", index);
 
                 if (hasPositionalSoundKitID)
-                    packet.ReadUInt32("PositionalSoundKitID", index);
+                    createProperties.PositionalSoundKitId = packet.ReadInt32("PositionalSoundKitID", index);
 
                 if ((areaTriggerTemplate.Flags & (int)AreaTriggerCreatePropertiesLegacyFlags.HasAnimId) != 0)
                     createProperties.AnimId = packet.ReadInt32("AnimId", index);

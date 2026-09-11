@@ -54,6 +54,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SpellForVisuals", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, false, false, true)]
         public uint? SpellForVisuals;
 
+        [DBFieldName("PositionalSoundKitId", TargetedDatabaseFlag.SinceMidnight)]
+        public int? PositionalSoundKitId;
+
         [DBFieldName("TimeToTarget", TargetedDatabaseFlag.TillDragonflight)]
         public uint? TimeToTarget = 0;
 
@@ -198,6 +201,9 @@ namespace WowPacketParser.Store.Objects
                     VisualAnimIsDecay = AreaTriggerData.VisualAnim.IsDecay == true;
                 }
             }
+
+            if (AreaTriggerData.PositionalSoundKitID != null)
+                PositionalSoundKitId = (int)AreaTriggerData.PositionalSoundKitID;
 
             if (AreaTriggerData.MoveCurveId != null)
                 MoveCurveId = (int)AreaTriggerData.MoveCurveId;
@@ -375,6 +381,9 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("SpellForVisuals", TargetedDatabaseFlag.SinceDragonflight | TargetedDatabaseFlag.CataClassic, false, false, true)]
         public uint? SpellForVisuals;
+
+        [DBFieldName("PositionalSoundKitId", TargetedDatabaseFlag.SinceMidnight)]
+        public int? PositionalSoundKitId;
 
         [DBFieldName("TimeToTarget", TargetedDatabaseFlag.TillDragonflight)]
         public uint? TimeToTarget = 0;
