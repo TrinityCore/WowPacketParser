@@ -1471,7 +1471,6 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
                 if (changesMask[2])
                 {
                     data.PlayerName = new string('*', (int)packet.ReadBits(6));
-                    packet.ResetBitReader();
                     data.PlayerName = packet.ReadWoWString("PlayerName", data.PlayerName.Length, indexes);
                 }
             }
@@ -3493,8 +3492,8 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
             packet.ResetBitReader();
             data.SetType = packet.ReadByte("SetType", indexes);
             data.Icon = packet.ReadUInt32("Icon", indexes);
-            data.Name = new string('*', (int)packet.ReadBits(8));
             packet.ResetBitReader();
+            data.Name = new string('*', (int)packet.ReadBits(8));
             data.SituationsEnabled = packet.ReadBit("SituationsEnabled", indexes);
             data.Name = packet.ReadWoWString("Name", data.Name.Length, indexes);
             return data;

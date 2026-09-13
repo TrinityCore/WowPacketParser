@@ -2312,12 +2312,12 @@ namespace WowPacketParserModule.V10_0_0_46181.UpdateFields.V10_2_7_54577
                 {
                     data.PersonalTabard = ReadUpdateCustomTabardInfo(packet, indexes, "PersonalTabard");
                 }
+                packet.ResetBitReader();
                 if (changesMask[34])
                 {
                     data.Name = new string('*', (int)packet.ReadBits(6));
                 }
                 hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
-            packet.ResetBitReader();
                 if (changesMask[41])
                 {
                     Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");

@@ -1437,7 +1437,6 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V1_15_8_63829
                 if (changesMask[2])
                 {
                     data.PlayerName = new string('*', (int)packet.ReadBits(6));
-                    packet.ResetBitReader();
                     data.PlayerName = packet.ReadWoWString("PlayerName", data.PlayerName.Length, indexes);
                 }
             }
@@ -2027,12 +2026,12 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V1_15_8_63829
             //    {
             //        data.PersonalTabard = ReadUpdateCustomTabardInfo(packet, indexes, "PersonalTabard");
             //    }
+            //    packet.ResetBitReader();
             //    if (changesMask[33])
             //    {
             //        data.Name = new string('*', (int)packet.ReadBits(6));
             //    }
             //    hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
-            //    packet.ResetBitReader();
             //    if (changesMask[37])
             //    {
             //        Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");

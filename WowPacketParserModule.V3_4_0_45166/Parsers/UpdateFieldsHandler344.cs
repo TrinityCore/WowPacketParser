@@ -1924,6 +1924,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_4_59817
                     data.PersonalTabard = ReadUpdateCustomTabardInfo(packet, indexes, "PersonalTabard");
                 }
             }
+            packet.ResetBitReader();
             if (changesMask[0])
             {
                 if (changesMask[31])
@@ -1934,7 +1935,6 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_4_59817
             if (changesMask[32])
             {
                 hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
-                packet.ResetBitReader();
                 if (changesMask[36])
                 {
                     Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");

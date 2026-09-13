@@ -1929,12 +1929,12 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V5_5_0_61735
                 {
                     data.PersonalTabard = ReadUpdateCustomTabardInfo(packet, indexes, "PersonalTabard");
                 }
+                packet.ResetBitReader();
                 if (changesMask[33])
                 {
                     data.Name = new string('*', (int)packet.ReadBits(6));
                 }
                 hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
-                packet.ResetBitReader();
                 if (changesMask[37])
                 {
                     Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");
