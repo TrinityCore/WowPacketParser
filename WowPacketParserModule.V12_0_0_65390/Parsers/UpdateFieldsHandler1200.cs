@@ -4398,9 +4398,9 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_0_65390
             packet.ResetBitReader();
             data.SetType = packet.ReadByte("SetType", indexes);
             data.Icon = packet.ReadUInt32("Icon", indexes);
+            packet.ResetBitReader();
             data.Name = new string('*', (int)packet.ReadBits(8));
             data.SituationsEnabled = packet.ReadBit("SituationsEnabled", indexes);
-            packet.ResetBitReader();
             data.Name = packet.ReadWoWString("Name", data.Name.Length, indexes);
             return data;
         }

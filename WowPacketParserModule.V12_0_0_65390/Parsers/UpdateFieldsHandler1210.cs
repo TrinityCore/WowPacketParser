@@ -4301,8 +4301,8 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_1_0_69214
             packet.ResetBitReader();
             data.SetType = packet.ReadByte("SetType", indexes);
             data.Icon = packet.ReadUInt32("Icon", indexes);
-            data.Name = new string('*', (int)packet.ReadBits(8));
             packet.ResetBitReader();
+            data.Name = new string('*', (int)packet.ReadBits(8));
             data.SituationsEnabled = packet.ReadBit("SituationsEnabled", indexes);
             data.Name = packet.ReadWoWString("Name", data.Name.Length, indexes);
             return data;
