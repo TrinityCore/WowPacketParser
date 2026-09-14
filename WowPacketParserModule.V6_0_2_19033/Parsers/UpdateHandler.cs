@@ -106,9 +106,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadBit("NoBirthAnim", index);
+            moveInfo.NoBirthAnim = packet.ReadBit("NoBirthAnim", index);
             packet.ReadBit("EnablePortals", index);
-            packet.ReadBit("PlayHoverAnim", index);
+            moveInfo.PlayHoverAnim = packet.ReadBit("PlayHoverAnim", index);
             packet.ReadBit("IsSuppressingGreetings", index);
 
             var hasMovementUpdate = packet.ReadBit("HasMovementUpdate", index);

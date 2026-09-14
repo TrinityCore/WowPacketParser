@@ -564,9 +564,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             if (ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_5_57638))
                 packet.ReadBit("HasPositionFragment", index);
-            packet.ReadBit("NoBirthAnim", index);
+            moveInfo.NoBirthAnim = packet.ReadBit("NoBirthAnim", index);
             packet.ReadBit("EnablePortals", index);
-            packet.ReadBit("PlayHoverAnim", index);
+            moveInfo.PlayHoverAnim = packet.ReadBit("PlayHoverAnim", index);
 
             var hasMovementUpdate = packet.ReadBit("HasMovementUpdate", index);
             var hasMovementTransport = packet.ReadBit("HasMovementTransport", index);

@@ -158,6 +158,40 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateDifficultiesWDB.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateDifficultiesWDB.ToArray(), templatesDb, StoreNameType.Unit);
         }
 
+        public static bool IsCreatureSessile(ref Unit npc)
+        {
+            if (ClientVersion.Expansion == ClientType.WrathOfTheLichKing)
+                if (npc.Movement.Flags.HasAnyFlag(MovementFlag.Root))
+                    return true;
+
+            if (ClientVersion.Expansion >= ClientType.Cataclysm && (ClientVersion.Branch != ClientBranch.Retail || ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214)))
+                if (npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.Root) && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.DisableGravity))
+                    return true;
+
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214))
+                if (npc.Movement.Flags64.HasAnyFlag(Enums.v12.MovementFlag.Root) && npc.Movement.Flags64.HasAnyFlag(Enums.v12.MovementFlag.DisableGravity))
+                    return true;
+
+            return false;
+        }
+
+        public static bool IsCreatureFloating(ref Unit npc)
+        {
+            if (ClientVersion.Expansion == ClientType.WrathOfTheLichKing)
+                if (npc.Movement.Flags.HasAnyFlag(MovementFlag.DisableGravity))
+                    return true;
+
+            if (ClientVersion.Expansion >= ClientType.Cataclysm && (ClientVersion.Branch != ClientBranch.Retail || ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214)))
+                if (npc.Movement.PlayHoverAnim && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.DisableGravity))
+                    return true;
+
+            if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214))
+                if (npc.Movement.PlayHoverAnim && npc.Movement.Flags64.HasAnyFlag(Enums.v12.MovementFlag.DisableGravity))
+                    return true;
+
+            return false;
+        }
+
         public static void UpdateCreatureStaticFlags(ref Unit npc, ref CreatureTemplateDifficulty creatureDifficulty)
         {
             if (npc.UnitData.Flags.HasAnyFlag(UnitFlags.CanSwim))
@@ -193,22 +227,17 @@ namespace WowPacketParser.SQL.Builders
             if (npc.UnitData.Flags3.HasAnyFlag(UnitFlags3.AllowInteractionWhileInCombat))
                 creatureDifficulty.StaticFlags3 |= CreatureStaticFlags3.AllowInteractionWhileInCombat;
 
+            if (npc.Movement.NoBirthAnim)
+                creatureDifficulty.StaticFlags4 |= CreatureStaticFlags4.NoBirthAnim;
+
             // Not 100% reliable
             // CreatureStaticFlags.ImmuneToPc     - UnitFlags.ImmunePC
             // CreatureStaticFlags.ImmuneToNpc    - UnitFlags.ImmuneNPC
             // CreatureStaticFlags.Uninteractible - UnitFlags.Uninteractible
-            if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && npc.Movement.Flags.HasAnyFlag(MovementFlag.DisableGravity)) ||
-                (ClientVersion.Expansion >= ClientType.Cataclysm
-                 && (ClientVersion.Branch != ClientBranch.Retail
-                     || ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214)) && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.DisableGravity)) ||
-                (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214) && npc.Movement.Flags64.HasAnyFlag(Enums.v12.MovementFlag.DisableGravity)))
+            if (IsCreatureFloating(ref npc))
                 creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Floating;
 
-            if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && npc.Movement.Flags.HasAnyFlag(MovementFlag.Root)) ||
-                (ClientVersion.Expansion >= ClientType.Cataclysm
-                 && (ClientVersion.Branch != ClientBranch.Retail
-                     || ClientVersion.RemovedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214)) && npc.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.Root)) ||
-                (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V12_1_0_69214) && npc.Movement.Flags64.HasAnyFlag(Enums.v12.MovementFlag.Root)))
+            if (IsCreatureSessile(ref npc))
                 creatureDifficulty.StaticFlags1 |= CreatureStaticFlags.Sessile;
 
             // Handled by creature_template_addon.visibilityDistanceType
