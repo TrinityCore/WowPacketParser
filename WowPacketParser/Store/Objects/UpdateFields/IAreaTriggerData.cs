@@ -22,6 +22,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         IAreaTriggerOrbit Orbit => null;
         float? ZOffset => null;
 
+        byte? ShapeType => null;
         IAreaTriggerSphere Sphere => null;
         IAreaTriggerBox Box => null;
         IAreaTriggerPolygon Polygon => null;

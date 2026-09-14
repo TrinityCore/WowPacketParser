@@ -782,18 +782,15 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
                 createProperties.RollPitchYaw = packet.ReadVector3("RollPitchYaw", index);
 
-                AreaTriggerType type = AreaTriggerType.Sphere;
-                switch (packet.ReadSByte())
+                areaTriggerTemplate.Type = (byte)packet.ReadSByteE<AreaTriggerType>("Type", index);
+                switch ((AreaTriggerType)areaTriggerTemplate.Type)
                 {
-                    case 0:
-                        type = AreaTriggerType.Sphere;
+                    case AreaTriggerType.Sphere:
                         areaTriggerTemplate.Data[0] = packet.ReadSingle("Radius", index);
                         areaTriggerTemplate.Data[1] = packet.ReadSingle("RadiusTarget", index);
                         break;
-                    case 1:
+                    case AreaTriggerType.Box:
                     {
-                        type = AreaTriggerType.Box;
-
                         Vector3 extents = packet.ReadVector3("Extents", index);
                         areaTriggerTemplate.Data[0] = extents.X;
                         areaTriggerTemplate.Data[1] = extents.Y;
@@ -805,13 +802,11 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                         areaTriggerTemplate.Data[5] = extentsTarget.Z;
                         break;
                     }
-                    case 2:
-                    case 3:
-                    case 5:
-                    case 6:
+                    case AreaTriggerType.Quad2D:
+                    case AreaTriggerType.Polygon:
+                    case AreaTriggerType.Script:
+                    case AreaTriggerType.FromUnit:
                     {
-                        type = AreaTriggerType.Polygon;
-
                         var verticesCount = packet.ReadUInt32("VerticesCount", index);
                         var verticesTargetCount = packet.ReadUInt32("VerticesTargetCount", index);
 
@@ -849,8 +844,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
                         break;
                     }
-                    case 4:
-                        type = AreaTriggerType.Cylinder;
+                    case AreaTriggerType.Cylinder:
                         areaTriggerTemplate.Data[0] = packet.ReadSingle("Radius", index);
                         areaTriggerTemplate.Data[1] = packet.ReadSingle("RadiusTarget", index);
                         areaTriggerTemplate.Data[2] = packet.ReadSingle("Height", index);
@@ -858,8 +852,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                         areaTriggerTemplate.Data[4] = packet.ReadSingle("LocationZOffset", index);
                         areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
                         break;
-                    case 7:
-                        type = AreaTriggerType.Disk;
+                    case AreaTriggerType.Disk:
                         areaTriggerTemplate.Data[0] = packet.ReadSingle("InnerRadius", index);
                         areaTriggerTemplate.Data[1] = packet.ReadSingle("InnerRadiusTarget", index);
                         areaTriggerTemplate.Data[2] = packet.ReadSingle("OuterRadius", index);
@@ -869,10 +862,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                         areaTriggerTemplate.Data[6] = packet.ReadSingle("LocationZOffset", index);
                         areaTriggerTemplate.Data[7] = packet.ReadSingle("LocationZOffsetTarget", index);
                         break;
-                    case 8:
+                    case AreaTriggerType.BoundedPlane:
                     {
-                        type = AreaTriggerType.BoundedPlane;
-
                         Vector2 extents = packet.ReadVector2("Extents", index);
                         areaTriggerTemplate.Data[0] = extents.X;
                         areaTriggerTemplate.Data[1] = extents.Y;
@@ -883,8 +874,6 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                         break;
                     }
                 }
-
-                areaTriggerTemplate.Type = (byte)packet.AddValue("Type", type, index);
 
                 areaTriggerTemplate.Flags = 0;
                 createProperties.Flags = 0;

@@ -217,26 +217,25 @@ namespace WowPacketParser.Store.Objects
             if (AreaTriggerData.FacingCurveId != null)
                 FacingCurveId = (int)AreaTriggerData.FacingCurveId;
 
+            if (AreaTriggerData.ShapeType != null)
+                Shape = (byte)AreaTriggerData.ShapeType;
+
             if (AreaTriggerData.Sphere != null)
             {
-                Shape = (byte)AreaTriggerType.Sphere;
                 ShapeData = [AreaTriggerData.Sphere.Radius, AreaTriggerData.Sphere.RadiusTarget, 0, 0, 0, 0, 0, 0];
             }
             else if (AreaTriggerData.Box != null)
             {
-                Shape = (byte)AreaTriggerType.Box;
                 ShapeData = [AreaTriggerData.Box.Extents?.X, AreaTriggerData.Box.Extents?.Y, AreaTriggerData.Box.Extents?.Z,
                     AreaTriggerData.Box.ExtentsTarget?.X, AreaTriggerData.Box.ExtentsTarget?.Y, AreaTriggerData.Box.ExtentsTarget?.Z,
                     0, 0];
             }
             else if (AreaTriggerData.Polygon != null)
             {
-                Shape = (byte)AreaTriggerType.Polygon;
                 ShapeData = [AreaTriggerData.Polygon.Height, AreaTriggerData.Polygon.HeightTarget, 0, 0, 0, 0, 0, 0];
             }
             else if (AreaTriggerData.Cylinder != null)
             {
-                Shape = (byte)AreaTriggerType.Cylinder;
                 ShapeData = [AreaTriggerData.Cylinder.Radius, AreaTriggerData.Cylinder.RadiusTarget,
                     AreaTriggerData.Cylinder.Height, AreaTriggerData.Cylinder.HeightTarget,
                     AreaTriggerData.Cylinder.LocationZOffset, AreaTriggerData.Cylinder.LocationZOffsetTarget,
@@ -244,7 +243,6 @@ namespace WowPacketParser.Store.Objects
             }
             else if (AreaTriggerData.Disk != null)
             {
-                Shape = (byte)AreaTriggerType.Disk;
                 ShapeData = [AreaTriggerData.Disk.InnerRadius, AreaTriggerData.Disk.InnerRadiusTarget,
                     AreaTriggerData.Disk.OuterRadius, AreaTriggerData.Disk.OuterRadiusTarget,
                     AreaTriggerData.Disk.Height, AreaTriggerData.Disk.HeightTarget,
@@ -252,7 +250,6 @@ namespace WowPacketParser.Store.Objects
             }
             else if (AreaTriggerData.BoundedPlane != null)
             {
-                Shape = (byte)AreaTriggerType.BoundedPlane;
                 ShapeData = [AreaTriggerData.BoundedPlane.ExtentsY, AreaTriggerData.BoundedPlane.ExtentsZ,
                     AreaTriggerData.BoundedPlane.ExtentsTargetY, AreaTriggerData.BoundedPlane.ExtentsTargetZ,
                     0, 0, 0, 0];

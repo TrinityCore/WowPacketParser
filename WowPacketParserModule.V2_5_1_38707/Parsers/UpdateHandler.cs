@@ -735,76 +735,75 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 if (hasAnimProgress)
                     packet.ReadUInt32("AnimProgress", index);
 
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Sphere)
+                switch ((AreaTriggerType)areaTriggerTemplate.Type)
                 {
-                    areaTriggerTemplate.Data[0] = packet.ReadSingle("Radius", index);
-                    areaTriggerTemplate.Data[1] = packet.ReadSingle("RadiusTarget", index);
-                }
-
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Box)
-                {
-                    Vector3 Extents = packet.ReadVector3("Extents", index);
-                    Vector3 ExtentsTarget = packet.ReadVector3("ExtentsTarget", index);
-
-                    areaTriggerTemplate.Data[0] = Extents.X;
-                    areaTriggerTemplate.Data[1] = Extents.Y;
-                    areaTriggerTemplate.Data[2] = Extents.Z;
-
-                    areaTriggerTemplate.Data[3] = ExtentsTarget.X;
-                    areaTriggerTemplate.Data[4] = ExtentsTarget.Y;
-                    areaTriggerTemplate.Data[5] = ExtentsTarget.Z;
-                }
-
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Polygon)
-                {
-                    var verticesCount = packet.ReadUInt32("VerticesCount", index);
-                    var verticesTargetCount = packet.ReadUInt32("VerticesTargetCount", index);
-
-                    areaTriggerTemplate.Data[0] = packet.ReadSingle("Height", index);
-                    areaTriggerTemplate.Data[1] = packet.ReadSingle("HeightTarget", index);
-
-                    for (uint i = 0; i < verticesCount; ++i)
+                    case AreaTriggerType.Sphere:
+                        areaTriggerTemplate.Data[0] = packet.ReadSingle("Radius", index);
+                        areaTriggerTemplate.Data[1] = packet.ReadSingle("RadiusTarget", index);
+                        break;
+                    case AreaTriggerType.Box:
                     {
-                        Vector2 vertices = packet.ReadVector2("Vertices", index, i);
-                    }
+                        Vector3 Extents = packet.ReadVector3("Extents", index);
+                        Vector3 ExtentsTarget = packet.ReadVector3("ExtentsTarget", index);
 
-                    for (var i = 0; i < verticesTargetCount; ++i)
+                        areaTriggerTemplate.Data[0] = Extents.X;
+                        areaTriggerTemplate.Data[1] = Extents.Y;
+                        areaTriggerTemplate.Data[2] = Extents.Z;
+
+                        areaTriggerTemplate.Data[3] = ExtentsTarget.X;
+                        areaTriggerTemplate.Data[4] = ExtentsTarget.Y;
+                        areaTriggerTemplate.Data[5] = ExtentsTarget.Z;
+                        break;
+                    }
+                    case AreaTriggerType.Polygon:
                     {
-                        Vector2 verticesTarget = packet.ReadVector2("VerticesTarget", index, i);
+                        var verticesCount = packet.ReadUInt32("VerticesCount", index);
+                        var verticesTargetCount = packet.ReadUInt32("VerticesTargetCount", index);
+
+                        areaTriggerTemplate.Data[0] = packet.ReadSingle("Height", index);
+                        areaTriggerTemplate.Data[1] = packet.ReadSingle("HeightTarget", index);
+
+                        for (uint i = 0; i < verticesCount; ++i)
+                        {
+                            Vector2 vertices = packet.ReadVector2("Vertices", index, i);
+                        }
+
+                        for (var i = 0; i < verticesTargetCount; ++i)
+                        {
+                            Vector2 verticesTarget = packet.ReadVector2("VerticesTarget", index, i);
+                        }
+
+                        break;
                     }
-                }
+                    case AreaTriggerType.Cylinder:
+                        areaTriggerTemplate.Data[0] = packet.ReadSingle("Radius", index);
+                        areaTriggerTemplate.Data[1] = packet.ReadSingle("RadiusTarget", index);
+                        areaTriggerTemplate.Data[2] = packet.ReadSingle("Height", index);
+                        areaTriggerTemplate.Data[3] = packet.ReadSingle("HeightTarget", index);
+                        areaTriggerTemplate.Data[4] = packet.ReadSingle("LocationZOffset", index);
+                        areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
+                        break;
+                    case AreaTriggerType.Disk:
+                        areaTriggerTemplate.Data[0] = packet.ReadSingle("InnerRadius", index);
+                        areaTriggerTemplate.Data[1] = packet.ReadSingle("InnerRadiusTarget", index);
+                        areaTriggerTemplate.Data[2] = packet.ReadSingle("OuterRadius", index);
+                        areaTriggerTemplate.Data[3] = packet.ReadSingle("OuterRadiusTarget", index);
+                        areaTriggerTemplate.Data[4] = packet.ReadSingle("Height", index);
+                        areaTriggerTemplate.Data[5] = packet.ReadSingle("HeightTarget", index);
+                        areaTriggerTemplate.Data[6] = packet.ReadSingle("LocationZOffset", index);
+                        areaTriggerTemplate.Data[7] = packet.ReadSingle("LocationZOffsetTarget", index);
+                        break;
+                    case AreaTriggerType.BoundedPlane:
+                    {
+                        Vector2 extents = packet.ReadVector2("Extents", index);
+                        Vector2 extentsTarget = packet.ReadVector2("ExtentsTarget", index);
 
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Cylinder)
-                {
-                    areaTriggerTemplate.Data[0] = packet.ReadSingle("Radius", index);
-                    areaTriggerTemplate.Data[1] = packet.ReadSingle("RadiusTarget", index);
-                    areaTriggerTemplate.Data[2] = packet.ReadSingle("Height", index);
-                    areaTriggerTemplate.Data[3] = packet.ReadSingle("HeightTarget", index);
-                    areaTriggerTemplate.Data[4] = packet.ReadSingle("LocationZOffset", index);
-                    areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
-                }
-
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Disk)
-                {
-                    areaTriggerTemplate.Data[0] = packet.ReadSingle("InnerRadius", index);
-                    areaTriggerTemplate.Data[1] = packet.ReadSingle("InnerRadiusTarget", index);
-                    areaTriggerTemplate.Data[2] = packet.ReadSingle("OuterRadius", index);
-                    areaTriggerTemplate.Data[3] = packet.ReadSingle("OuterRadiusTarget", index);
-                    areaTriggerTemplate.Data[4] = packet.ReadSingle("Height", index);
-                    areaTriggerTemplate.Data[5] = packet.ReadSingle("HeightTarget", index);
-                    areaTriggerTemplate.Data[6] = packet.ReadSingle("LocationZOffset", index);
-                    areaTriggerTemplate.Data[7] = packet.ReadSingle("LocationZOffsetTarget", index);
-                }
-
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.BoundedPlane)
-                {
-                    Vector2 extents = packet.ReadVector2("Extents", index);
-                    Vector2 extentsTarget = packet.ReadVector2("ExtentsTarget", index);
-
-                    areaTriggerTemplate.Data[0] = extents.X;
-                    areaTriggerTemplate.Data[1] = extents.Y;
-                    areaTriggerTemplate.Data[2] = extentsTarget.X;
-                    areaTriggerTemplate.Data[3] = extentsTarget.Y;
+                        areaTriggerTemplate.Data[0] = extents.X;
+                        areaTriggerTemplate.Data[1] = extents.Y;
+                        areaTriggerTemplate.Data[2] = extentsTarget.X;
+                        areaTriggerTemplate.Data[3] = extentsTarget.Y;
+                        break;
+                    }
                 }
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerCreatePropertiesLegacyFlags.HasMovementScript) != 0)
