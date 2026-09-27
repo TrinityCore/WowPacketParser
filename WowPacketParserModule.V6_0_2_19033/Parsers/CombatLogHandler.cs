@@ -261,6 +261,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32<SpellId>("InterruptedSpellID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_1_65818))
+                packet.ReadBit("HideFromCombatLog");
         }
 
         [Parser(Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE)]

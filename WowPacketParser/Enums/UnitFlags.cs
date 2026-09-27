@@ -22,7 +22,7 @@ namespace WowPacketParser.Enums
         Silenced                         = 0x00002000, // ForceNameplate (9.0)
         CantSwim                         = 0x00004000, // persuade in vanilla and tbc
         CanSwim                          = 0x00008000,
-        NotAttackable2                   = 0x00010000,
+        Untargetable                     = 0x00010000, // not targetable in client
         Pacified                         = 0x00020000,
         Stunned                          = 0x00040000,
         AffectingCombat                  = 0x00080000,
@@ -44,7 +44,7 @@ namespace WowPacketParser.Enums
         Disallowed                       = (ServerControlled | NotAttackable | RemoveClientControl |
                                             PlayerControlled | EvadingHome | Preparation | /* Unk6 | */
                                             NotAttackable | Looting | PetIsAttackingTarget | PVP |
-                                            Silenced | CantSwim | CanSwim | NotAttackable2 | Pacified | Stunned |
+                                            Silenced | CantSwim | CanSwim | Untargetable | Pacified | Stunned |
                                             AffectingCombat | OnTaxi | Disarmed | Confused | Fleeing |
                                             Possessed | Skinnable | Mount | PreventKneelingWhenLooting |
                                             PreventEmotes | Sheath | Immune),

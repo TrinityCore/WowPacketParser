@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
         public System.Nullable<uint> TimeToTargetScale { get; set; }
         public System.Nullable<uint> TimeToTargetExtraScale { get; set; }
         public System.Nullable<uint> TimeToTargetPos { get; set; }
-        public System.Nullable<uint> TimeToTargetUnk1205Curve { get; set; }
+        public System.Nullable<uint> TimeToTargetShape { get; set; }
         public System.Nullable<int> SpellID { get; set; }
         public System.Nullable<int> SpellForVisuals { get; set; }
         public ISpellCastVisual SpellVisual { get; set; }
@@ -48,12 +48,12 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
         public IAreaTriggerCylinder Cylinder { get; set; }
         public IAreaTriggerDisk Disk { get; set; }
         public IAreaTriggerBoundedPlane BoundedPlane { get; set; }
-        public IScaleCurve OverrideScaleCurve { get; set; }
-        public IScaleCurve ExtraScaleCurve { get; set; }
-        public IScaleCurve OverrideMoveCurveX { get; set; }
-        public IScaleCurve OverrideMoveCurveY { get; set; }
-        public IScaleCurve OverrideMoveCurveZ { get; set; }
-        public IScaleCurve Unk1205Curve { get; set; }
+        public IOverrideCurve OverrideScaleCurve { get; set; }
+        public IOverrideCurve ExtraScaleCurve { get; set; }
+        public IOverrideCurve OverrideMoveCurveX { get; set; }
+        public IOverrideCurve OverrideMoveCurveY { get; set; }
+        public IOverrideCurve OverrideMoveCurveZ { get; set; }
+        public IOverrideCurve OverrideShapeCurve { get; set; }
         public IVisualAnim VisualAnim { get; set; }
         public IAreaTriggerSplineCalculator Spline { get; set; }
         public IAreaTriggerOrbit Orbit { get; set; }

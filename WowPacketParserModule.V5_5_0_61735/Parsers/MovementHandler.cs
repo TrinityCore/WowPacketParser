@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.WellKnownTypes;
+using System;
 using System.Linq;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
@@ -421,6 +422,8 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
 
             var int152 = packet.ReadInt32("RemoveForcesCount", idx);
             packet.ReadInt32("MoveIndex", idx);
+            if (ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_6_68502))
+                packet.ReadSingle("GravityModifier", idx);
 
             for (var i = 0; i < int152; i++)
                 packet.ReadPackedGuid128("RemoveForcesIDs", idx, i);

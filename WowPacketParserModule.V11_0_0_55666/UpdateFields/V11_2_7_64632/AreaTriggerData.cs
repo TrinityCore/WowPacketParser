@@ -46,11 +46,11 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
         public IAreaTriggerCylinder Cylinder { get; set; }
         public IAreaTriggerDisk Disk { get; set; }
         public IAreaTriggerBoundedPlane BoundedPlane { get; set; }
-        public IScaleCurve OverrideScaleCurve { get; set; }
-        public IScaleCurve ExtraScaleCurve { get; set; }
-        public IScaleCurve OverrideMoveCurveX { get; set; }
-        public IScaleCurve OverrideMoveCurveY { get; set; }
-        public IScaleCurve OverrideMoveCurveZ { get; set; }
+        public IOverrideCurve OverrideScaleCurve { get; set; }
+        public IOverrideCurve ExtraScaleCurve { get; set; }
+        public IOverrideCurve OverrideMoveCurveX { get; set; }
+        public IOverrideCurve OverrideMoveCurveY { get; set; }
+        public IOverrideCurve OverrideMoveCurveZ { get; set; }
         public IVisualAnim VisualAnim { get; set; }
         public IAreaTriggerSplineCalculator Spline { get; set; }
         public IAreaTriggerOrbit Orbit { get; set; }

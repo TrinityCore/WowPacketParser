@@ -134,9 +134,12 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         {
             packet.ReadPackedGuid128("InspecteeGUID", idx);
             packet.ReadInt32("SpecializationID", idx);
-            var itemCount = packet.ReadUInt32();
-            var nameLen = packet.ReadBits(6);
+            var itemCount = 0u;
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                itemCount = packet.ReadUInt32();
+
             packet.ResetBitReader();
+            var nameLen = packet.ReadBits(6);
             packet.ReadByteE<Gender>("GenderID", idx);
             packet.ReadByteE<Race>("Race", idx);
             packet.ReadByteE<Class>("ClassID", idx);
@@ -146,8 +149,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             for (var j = 0u; j < customizationCount; ++j)
                 ReadChrCustomizationChoice(packet, idx, "Customizations", j);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                itemCount = packet.ReadUInt32();
+
             for (int i = 0; i < itemCount; i++)
-                V8_0_1_27101.Parsers.CharacterHandler.ReadInspectItemData(packet, idx, i);
+                V8_0_1_27101.Parsers.CharacterHandler.ReadInspectItemData(packet, idx, "Items", i);
         }
 
         public static void ReadPVPBracketData(Packet packet, params object[] idx)

@@ -1199,6 +1199,16 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             hotfix.Order = packet.ReadSByte("Order", indexes);
 
             Storage.CfgCategoriesHotfixes1100.Add(hotfix, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                CfgCategoriesLocaleHotfix1100 hotfixLocale = new CfgCategoriesLocaleHotfix1100
+                {
+                    ID = hotfix.ID,
+                    NameLang = hotfix.Name,
+                };
+                Storage.CfgCategoriesHotfixesLocale1100.Add(hotfixLocale, packet.TimeSpan);
+            }
         }
 
         public static void CfgRegionsHandler1100(Packet packet, uint entry, params object[] indexes)

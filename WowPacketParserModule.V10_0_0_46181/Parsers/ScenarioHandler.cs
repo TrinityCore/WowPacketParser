@@ -37,5 +37,11 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             for (int i = 0; i < spellsCount; i++)
                 V7_0_3_22248.Parsers.ScenarioHandler.ReadScenarioSpellUpdate(packet, "ScenarioSpellUpdate", i);
         }
+
+        [Parser(Opcode.SMSG_SCENARIO_PROGRESS_UPDATE, ClientVersionBuild.V10_1_5_50232)]
+        public static void HandleScenarioProgressUpdate(Packet packet)
+        {
+            AchievementHandler.ReadCriteriaProgress(packet, "Progress");
+        }
     }
 }

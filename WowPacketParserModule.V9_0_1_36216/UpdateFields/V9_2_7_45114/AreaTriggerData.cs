@@ -21,8 +21,8 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_2_7_45114
         public System.Nullable<uint> Field_80 { get; set; }
         public System.Nullable<uint> Field_84 { get; set; }
         public WowGuid Field_88 { get; set; }
-        public IScaleCurve OverrideScaleCurve { get; set; }
-        public IScaleCurve ExtraScaleCurve { get; set; }
+        public IOverrideCurve OverrideScaleCurve { get; set; }
+        public IOverrideCurve ExtraScaleCurve { get; set; }
         public IVisualAnim VisualAnim { get; set; }
     }
 }

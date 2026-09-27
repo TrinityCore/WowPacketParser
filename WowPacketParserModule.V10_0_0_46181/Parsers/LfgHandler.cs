@@ -42,10 +42,10 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 packet.ReadByte("PartyIndex");
         }
 
-        [Parser(Opcode.SMSG_LFG_ROLE_CHOSEN, ClientVersionBuild.V10_1_7_51187)]
+        [Parser(Opcode.SMSG_ROLE_CHOSEN, ClientVersionBuild.V10_1_7_51187)]
         public static void HandleLfgRoleChosen(Packet packet)
         {
-            packet.ReadGuid("Player");
+            packet.ReadPackedGuid128("Player");
             packet.ReadByteE<LfgRoleFlag>("RoleMask");
             packet.ReadBit("Accepted");
         }

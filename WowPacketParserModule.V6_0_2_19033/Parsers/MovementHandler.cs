@@ -163,6 +163,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             setTime.GameTimeHolidayOffset = packet.ReadInt32("GameTimeHolidayOffset");
         }
 
+        [Parser(Opcode.SMSG_GAME_TIME_SET)]
         [Parser(Opcode.SMSG_GAME_TIME_UPDATE)]
         public static void HandleGameTimeUpdate(Packet packet)
         {

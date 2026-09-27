@@ -59,5 +59,14 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             if (hasRolesDesired)
                 packet.ReadByte("RolesDesired");
         }
+
+        [Parser(Opcode.CMSG_LEAVE_GROUP, ClientVersionBuild.V10_1_7_51187)]
+        [Parser(Opcode.CMSG_REQUEST_PARTY_JOIN_UPDATES, ClientVersionBuild.V10_1_7_51187)]
+        public static void HandleLeaveGroup(Packet packet)
+        {
+            var hasPartyIndex = packet.ReadBit("HasPartyIndex");
+            if (hasPartyIndex)
+                packet.ReadByte("PartyIndex");
+        }
     }
 }

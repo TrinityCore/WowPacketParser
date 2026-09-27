@@ -3315,9 +3315,9 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
             return data;
         }
 
-        public static IScaleCurve ReadCreateScaleCurve(Packet packet, params object[] indexes)
+        public static IOverrideCurve ReadCreateScaleCurve(Packet packet, params object[] indexes)
         {
-            var data = new ScaleCurve();
+            var data = new OverrideCurve();
             packet.ResetBitReader();
             data.StartTimeOffset = packet.ReadUInt32("StartTimeOffset", indexes);
             for (var i = 0; i < 2; ++i)
@@ -3329,9 +3329,9 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
             return data;
         }
 
-        public static IScaleCurve ReadUpdateScaleCurve(Packet packet, params object[] indexes)
+        public static IOverrideCurve ReadUpdateScaleCurve(Packet packet, params object[] indexes)
         {
-            var data = new ScaleCurve();
+            var data = new OverrideCurve();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(7);
@@ -3447,7 +3447,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
             {
                 if (changesMask[1])
                 {
-                    data.OverrideScaleCurve = ReadUpdateScaleCurve(packet, data.OverrideScaleCurve as ScaleCurve, indexes, "OverrideScaleCurve");
+                    data.OverrideScaleCurve = ReadUpdateScaleCurve(packet, data.OverrideScaleCurve as OverrideCurve, indexes, "OverrideScaleCurve");
                 }
                 if (changesMask[3])
                 {
@@ -3499,7 +3499,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
                 }
                 if (changesMask[2])
                 {
-                    data.ExtraScaleCurve = ReadUpdateScaleCurve(packet, data.ExtraScaleCurve as ScaleCurve, indexes, "ExtraScaleCurve");
+                    data.ExtraScaleCurve = ReadUpdateScaleCurve(packet, data.ExtraScaleCurve as OverrideCurve, indexes, "ExtraScaleCurve");
                 }
                 if (changesMask[15])
                 {

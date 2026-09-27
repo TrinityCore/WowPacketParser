@@ -17,8 +17,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             Substructures.ItemHandler.ReadItemInstance(packet, indexes);
             packet.ReadUInt32("Quantity", indexes);
-            var hasContextFlags = packet.ReadBit("HasContextFlags", indexes);
+
             packet.ResetBitReader();
+            var hasContextFlags = packet.ReadBit("HasContextFlags", indexes);
 
             if (hasContextFlags)
                 packet.ReadInt32("ContextFlags", indexes);
@@ -28,8 +29,9 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             packet.ReadUInt32("CurrencyID", indexes);
             packet.ReadUInt32("Quantity", indexes);
-            var hasContextFlags = packet.ReadBit("HasContextFlags", indexes);
+
             packet.ResetBitReader();
+            var hasContextFlags = packet.ReadBit("HasContextFlags", indexes);
 
             if (hasContextFlags)
                 packet.ReadInt32("ContextFlags", indexes);
@@ -40,14 +42,24 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             var bonusItemCount = packet.ReadUInt32("BonusItemCount", indexes);
             var bonusCurrencyCount = packet.ReadUInt32("BonusCurrencyCount", indexes);
             packet.ReadUInt64("BonusMoney", indexes);
-            packet.ReadBit("BonusContext", indexes);
-            packet.ResetBitReader();
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("BonusContext", indexes);
+            }
 
             for (var i = 0; i < bonusItemCount; ++i)
                 ReadTreasurePickItem(packet, indexes, i);
 
             for (var i = 0; i < bonusCurrencyCount; ++i)
                 ReadTreasurePickCurrency(packet, indexes, i);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("BonusContext", indexes);
+            }
         }
 
         public static void ReadTreasurePick(Packet packet)
@@ -60,8 +72,12 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             var bonusCount = packet.ReadUInt32("BonusCount");
 
             packet.ReadUInt32("Flags");
-            packet.ReadBit("IsChoice");
-            packet.ResetBitReader();
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("IsChoice");
+            }
 
             for (var i = 0; i < itemCount; ++i)
                 ReadTreasurePickItem(packet, i);
@@ -71,6 +87,12 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
             for (var i = 0; i < bonusCount; ++i)
                 ReadTreasurePickerBonus(packet, i);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("IsChoice");
+            }
         }
 
         [Parser(Opcode.SMSG_TREASURE_PICKER_RESPONSE)]

@@ -68,6 +68,13 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadBit("Disqualified", idx);
         }
 
+        public static void ReadClientOpponentSpecData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("SpecializationID", idx);
+            packet.ReadByte("Sex", idx);
+            packet.ReadPackedGuid128("Guid", idx);
+        }
+
         [Parser(Opcode.SMSG_AREA_SPIRIT_HEALER_TIME)]
         public static void HandleAreaSpiritHealerTime(Packet packet)
         {
@@ -243,6 +250,107 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
             packet.ReadByte("NumPlayersIHaveReported");
         }
 
+        [Parser(Opcode.SMSG_ARENA_TEAM_ROSTER)]
+        public static void HandleArenaTeamRoster(Packet packet)
+        {
+            packet.ReadUInt32("TeamID");
+            packet.ReadUInt32("TeamSize");
+            packet.ReadUInt32("MatchesPlayed");
+            packet.ReadUInt32("MatchesWon");
+            packet.ReadUInt32("SeasonMatchesPlayed");
+            packet.ReadUInt32("SeasonMatchesWon");
+            packet.ReadUInt32("Rating");
+            packet.ReadUInt32("Ranking");
+            int size = packet.ReadInt32("MembersCount");
+
+            packet.ResetBitReader();
+            packet.ReadBit("Disqualified");
+
+            for (int i = 0; i < size; ++i)
+            {
+                packet.ReadPackedGuid128("MemberGUID", i);
+                packet.ReadBool("Online", i);
+                packet.ReadUInt32("Rank", i);
+                packet.ReadByte("Level", i);
+                packet.ReadByteE<Class>("Class", i);
+                packet.ReadUInt32("WeekMatches", i);
+                packet.ReadUInt32("WeekWins", i);
+                packet.ReadUInt32("SeasonMatches", i);
+                packet.ReadUInt32("SeasonWins", i);
+                packet.ReadUInt32("ContributionRating", i);
+
+                packet.ResetBitReader();
+                uint nameLength = packet.ReadBits("NameLength", 6, i);
+                bool hasGDFRating = packet.ReadBit("HasGDFRating", i);
+                bool hasGDVariance = packet.ReadBit("HasGDVariance", i);
+
+                packet.ReadWoWString("Name", nameLength, i);
+
+                if (hasGDFRating)
+                {
+                    // Hidden rating, see LUA GetArenaTeamGdfInfo - gdf = Gaussian Density Filter
+                    packet.ReadUInt32("GDFRating", i);
+                }
+                if (hasGDVariance)
+                {
+                    // Hidden rating, see LUA GetArenaTeamGdfInfo - gdf = Gaussian Density Filter
+                    packet.ReadUInt32("GDFVariance", i);
+                }
+            }
+        }
+
+        [Parser(Opcode.SMSG_QUERY_ARENA_TEAM_RESPONSE)]
+        public static void HandleQueryArenaTeamResponse(Packet packet)
+        {
+            packet.ReadUInt32("TeamID");
+
+            packet.ResetBitReader();
+            bool allow = packet.ReadBit();
+
+            if (allow)
+            {
+                packet.ReadUInt32("TeamID");
+                packet.ReadUInt32("TeamSize");
+                packet.ReadUInt32("EmblemBackground");
+                packet.ReadUInt32("EmblemIconStyle");
+                packet.ReadUInt32("EmblemIconColor");
+                packet.ReadUInt32("EmblemBorderStyle");
+                packet.ReadUInt32("EmblemBorderColor");
+
+                packet.ResetBitReader();
+                uint nameLength = packet.ReadBits(7);
+                packet.ReadWoWString("Name", nameLength);
+            }
+        }
+
+        [Parser(Opcode.SMSG_ARENA_CROWD_CONTROL_SPELL_RESULT)]
+        public static void HandleArenaCrowdControlSpellResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGuid");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32<ItemId>("ItemID");
+        }
+
+        [Parser(Opcode.SMSG_ARENA_PREP_OPPONENT_SPECIALIZATIONS)]
+        public static void HandleArenaPrepOpponentSpecializations(Packet packet)
+        {
+            var count = packet.ReadInt32("OpponentDataCount");
+            for (var i = 0; i < count; ++i)
+                ReadClientOpponentSpecData(packet, "OpponentData", i);
+        }
+
+        [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT)]
+        public static void HandleArenaTeamCommandResult(Packet packet)
+        {
+            packet.ReadByte("Action");
+            packet.ReadByte("ErrorId");
+
+            var teamLength = packet.ReadBits(7);
+            var playerLength = packet.ReadBits(8);
+            packet.ReadWoWString("TeamName", teamLength);
+            packet.ReadWoWString("PlayerName", playerLength);
+        }
+
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY)]
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE)]
         public static void HandleAreaSpiritHealer(Packet packet)
@@ -308,13 +416,42 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
         [Parser(Opcode.CMSG_REPORT_PVP_PLAYER_AFK)]
         public static void HandleReportPvPPlayerAfk(Packet packet)
         {
-            packet.ReadGuid("Offender");
+            packet.ReadPackedGuid128("Offender");
         }
 
         [Parser(Opcode.CMSG_JOIN_RATED_BATTLEGROUND)]
         public static void HandleJoinRatedBattleground(Packet packet)
         {
             packet.ReadByteE<LfgRoleFlag>("Roles");
+        }
+
+        [Parser(Opcode.CMSG_ARENA_TEAM_ACCEPT)]
+        [Parser(Opcode.CMSG_ARENA_TEAM_DECLINE)]
+        public static void HandleArenaTeamAccept(Packet packet)
+        {
+            packet.ReadPackedGuid128("Inviter");
+            packet.ReadPackedGuid128("ArenaTeam");
+        }
+
+        [Parser(Opcode.CMSG_ARENA_TEAM_DISBAND)]
+        [Parser(Opcode.CMSG_ARENA_TEAM_LEAVE)]
+        public static void HandleArenaTeamDisband(Packet packet)
+        {
+            packet.ReadInt32("TeamID");
+        }
+
+        [Parser(Opcode.CMSG_ARENA_TEAM_LEADER)]
+        public static void HandleArenaTeamLeader(Packet packet)
+        {
+            packet.ReadInt32("TeamID");
+            packet.ReadPackedGuid128("NewLeader");
+        }
+
+        [Parser(Opcode.CMSG_ARENA_TEAM_REMOVE)]
+        public static void HandleArenaTeamRemove(Packet packet)
+        {
+            packet.ReadInt32("TeamID");
+            packet.ReadPackedGuid128("Player");
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)]

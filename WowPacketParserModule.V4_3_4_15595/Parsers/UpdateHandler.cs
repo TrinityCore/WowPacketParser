@@ -173,7 +173,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                         /*var splineMode =*/
                         packet.ReadBitsE<SplineMode>("Spline Mode", 2, index);
                         hasSplineStartTime = packet.ReadBit("Has spline start time", index);
-                        splineCount = packet.ReadBits("Spline Waypoints", 22, index);
+                        splineCount = packet.ReadBits("PointCount", 22, index);
                         var bits57 = packet.ReadBits(2);
                         switch (bits57)
                         {
@@ -288,7 +288,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                                 Y = packet.ReadSingle()
                             };
 
-                            packet.AddValue("Spline Waypoint", wp, index, i);
+                            packet.AddValue("Points", wp, index, i);
                         }
 
                         if (splineType == SplineType.FacingSpot)

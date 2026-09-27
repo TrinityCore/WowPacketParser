@@ -352,7 +352,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         public static void ReadAreaPoiData(Packet packet, params object[] idx)
         {
-            packet.ReadTime("StartTime", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                packet.ReadTime64("StartTime", idx);
+            else
+                packet.ReadTime("StartTime", idx);
+
             packet.ReadInt32("AreaPoiID", idx);
             packet.ReadInt32("DurationSec", idx);
             packet.ReadUInt32("WorldStateVariableID", idx);

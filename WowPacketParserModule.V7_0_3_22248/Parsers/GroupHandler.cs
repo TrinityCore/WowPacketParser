@@ -125,8 +125,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("CanAccept");
             packet.ReadBit("MightCRZYou");
             packet.ReadBit("IsXRealm");
-            packet.ReadBit("MustBeBNetFriend");
+            packet.ReadBit("ShouldSquelch");
             packet.ReadBit("AllowMultipleRoles");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_1_36216))
+                packet.ReadBit("QuestSessionActive");
             var len = packet.ReadBits(6);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_0_0_55666))
                 packet.ReadBit("IsCrossFaction");
@@ -136,7 +138,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("InviterGuid");
             packet.ReadPackedGuid128("InviterBNetAccountID");
             packet.ReadInt16("InviterCfgRealmID");
-            packet.ReadInt32("ProposedRoles");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_7_51187))
+                packet.ReadByteE<LfgRoleFlag>("ProposedRoles");
+            else
+                packet.ReadInt32E<LfgRoleFlag>("ProposedRoles");
+
             var lfgSlots = packet.ReadInt32();
             packet.ReadInt32("LfgCompletedMask");
             packet.ReadWoWString("InviterName", len);

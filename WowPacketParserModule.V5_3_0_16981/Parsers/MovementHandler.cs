@@ -278,7 +278,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             Vector3 endpos = new Vector3();
             for (var i = 0; i < splineCount; ++i)
             {
-                var spot = packet.ReadVector3("Spline Waypoint", i);
+                var spot = packet.ReadVector3("Points", i);
                 // client always taking first point
                 if (i == 0)
                     endpos = spot;
@@ -313,7 +313,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 vec.Y = mid.Y - vec.Y;
                 vec.Z = mid.Z - vec.Z;
                 monsterMove.PackedPoints.Add(vec);
-                packet.AddValue("Waypoint", vec, i);
+                packet.AddValue("WayPoints", vec, i);
             }
 
             monsterMove.Mover = packet.WriteGuid("Owner GUID", ownerGUID);

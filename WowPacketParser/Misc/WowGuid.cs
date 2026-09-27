@@ -124,6 +124,8 @@ namespace WowPacketParser.Misc
 
     public class WowGuid128 : WowGuid
     {
+        public static readonly WowGuid Empty = new WowGuid128(0, 0);
+
         public WowGuid128(ulong low, ulong high)
         {
             Low = low;

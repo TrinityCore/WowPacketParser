@@ -233,6 +233,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             PacketAuraUpdate packetAuraUpdate = packet.Holder.AuraUpdate = new();
             packet.ReadBit("UpdateAll");
             var count = packet.ReadBits("AurasCount", 9);
+            var guid = WowGuid128.Empty;
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                guid = packet.ReadPackedGuid128("UnitGUID");
 
             var auras = new List<Aura>();
             for (var i = 0; i < count; ++i)
@@ -278,7 +282,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
                     var hasContentTuning = packet.ReadBit("HasContentTuning", i);
 
-                    if (hasContentTuning)
+                    if (hasContentTuning && ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
                         CombatLogHandler.ReadContentTuningParams(packet, i, "ContentTuning");
 
                     if (hasCastUnit)
@@ -305,12 +309,17 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     for (var j = 0; j < effectCount; ++j)
                         packet.ReadSingle("EstimatedPoints", i, j);
 
+                    if (hasContentTuning && ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                        CombatLogHandler.ReadContentTuningParams(packet, i, "ContentTuning");
+
                     auras.Add(aura);
                     packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
                 }
             }
 
-            var guid = packet.ReadPackedGuid128("UnitGUID");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                guid = packet.ReadPackedGuid128("UnitGUID");
+
             packetAuraUpdate.Unit = guid;
 
             if (Storage.Objects.ContainsKey(guid))

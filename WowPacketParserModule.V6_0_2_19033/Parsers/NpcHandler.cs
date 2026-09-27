@@ -18,6 +18,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadTreasureItem(Packet packet, params object[] idx)
         {
+            packet.ResetBitReader();
             packet.ReadBits("Type", 1, idx);
             packet.ReadInt32("ID", idx);
             packet.ReadInt32("Quantity", idx);
@@ -80,10 +81,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 uint rewardsCount = packet.ReadUInt32();
                 for (uint i = 0; i < rewardsCount; ++i)
-                {
-                    packet.ResetBitReader();
                     ReadTreasureItem(packet, idx, "TreasureItem", i);
-                }
             }
 
             gossipOption.OptionText = gossipMessageOption.Text = packet.ReadWoWString("Text", textLen, idx);
@@ -99,7 +97,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 gossipOption.OverrideIconID = packet.ReadInt32("OverrideIconID", idx);
 
             if (failureDescriptionLength > 1)
-                packet.ReadDynamicString("FailureDescription", failureDescriptionLength);
+                packet.ReadDynamicString("FailureDescription", failureDescriptionLength, idx);
 
             gossipOption.FillBroadcastTextIDs();
 

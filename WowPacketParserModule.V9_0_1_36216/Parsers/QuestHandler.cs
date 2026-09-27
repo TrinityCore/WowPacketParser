@@ -566,6 +566,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     packet.AddValue("Duration", duration);
                 }
             }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                for (var i = 0u; i < responseCount; ++i)
+                    ReadPlayerChoiceResponse(packet, choiceId, i, "PlayerChoiceResponse", i);
+
             packet.ResetBitReader();
             var questionLength = packet.ReadBits(8);
             var pendingChoiceTextLength = 0u;
@@ -575,19 +580,30 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var hideWarboardHeader = packet.ReadBit("HideWarboardHeader");
             var keepOpenAfterChoice = packet.ReadBit("KeepOpenAfterChoice");
             byte showChoicesAsList = 0;
-            byte forceDontShowChoicesAsList = 0;
+            byte hasPowerChoice = 0;
             byte requiresSelection = 0;
+            byte showChoicesAsGrid = 0;
+            byte hideAnswerArt = 0;
+            byte showChoicesAsColumns = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_5_60392))
             {
                 showChoicesAsList = packet.ReadBit("ShowChoicesAsList");
-                forceDontShowChoicesAsList = packet.ReadBit("ForceDontShowChoicesAsList");
+                hasPowerChoice = packet.ReadBit("HasPowerChoice");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_0_65390))
                 requiresSelection = packet.ReadBit("RequiresSelection");
 
-            for (var i = 0u; i < responseCount; ++i)
-                ReadPlayerChoiceResponse(packet, choiceId, i, "PlayerChoiceResponse", i);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_0_65390))
+            {
+                showChoicesAsGrid = packet.ReadBit("ShowChoicesAsGrid");
+                hideAnswerArt = packet.ReadBit("HideAnswerArt");
+                showChoicesAsColumns = packet.ReadBit("ShowChoicesAsColumns");
+            }
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                for (var i = 0u; i < responseCount; ++i)
+                    ReadPlayerChoiceResponse(packet, choiceId, i, "PlayerChoiceResponse", i);
 
             var question = packet.ReadWoWString("Question", questionLength);
             var pendingChoiceText = "";
@@ -607,7 +623,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 HideWarboardHeader = hideWarboardHeader,
                 KeepOpenAfterChoice = keepOpenAfterChoice,
                 ShowChoicesAsList = showChoicesAsList,
-                ForceDontShowChoicesAsList = forceDontShowChoicesAsList,
+                HasPowerChoice = hasPowerChoice,
+                ShowChoicesAsGrid = showChoicesAsGrid,
+                HideAnswerArt = hideAnswerArt,
+                ShowChoicesAsColumns = showChoicesAsColumns,
                 RequiresSelection = requiresSelection
             }, packet.TimeSpan);
 
@@ -672,7 +691,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var hasRewardQuestID = packet.ReadBit();
             var hasReward = packet.ReadBit();
             var hasMawPower = packet.ReadBit();
-            if (hasReward)
+            if (hasReward && ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
                 V6_0_2_19033.Parsers.QuestHandler.ReadPlayerChoiceResponseReward(packet, choiceId, responseId, "PlayerChoiceResponseReward", indexes);
 
             var answer = packet.ReadWoWString("Answer", answerLength, indexes);
@@ -685,6 +704,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var rewardQuestID = 0u;
             if (hasRewardQuestID)
                 rewardQuestID = packet.ReadUInt32("RewardQuestID", indexes);
+
+            if (hasReward && ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                V6_0_2_19033.Parsers.QuestHandler.ReadPlayerChoiceResponseReward(packet, choiceId, responseId, "PlayerChoiceResponseReward", indexes);
 
             if (hasMawPower)
                 ReadPlayerChoiceResponseMawPower(packet, indexes);

@@ -317,7 +317,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleGetLandingPageShipmentsResponse(Packet packet)
         {
             if(ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23706))
-                packet.ReadUInt32("UnkUInt32");
+                packet.ReadUInt32("CurrentArtifactKnowledgeExcludingShipments");
 
             uint shipmentsCount = packet.ReadUInt32("ShipmentsCount");
             for (uint i = 0; i < shipmentsCount; i++)

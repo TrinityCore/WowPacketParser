@@ -25,8 +25,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadInt32("BorderStyle");
                 packet.ReadInt32("BackgroundColor");
 
-                packet.ResetBitReader();
-                var nameLen = packet.ReadBits(7);
+                var nameLen = 0u;
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                {
+                    packet.ResetBitReader();
+                    nameLen = packet.ReadBits(7);
+                }
 
                 for (var i = 0; i < rankCount; i++)
                 {
@@ -36,6 +40,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     packet.ResetBitReader();
                     var rankNameLen = packet.ReadBits(7);
                     packet.ReadWoWString("Rank Name", rankNameLen, i);
+                }
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                {
+                    packet.ResetBitReader();
+                    nameLen = packet.ReadBits(7);
                 }
 
                 packet.ReadWoWString("Guild Name", nameLen);
@@ -128,6 +138,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             {
                 packet.ReadInt32("Slot", i);
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                    Substructures.ItemHandler.ReadItemInstance(packet, i, "Item");
+
                 packet.ReadInt32("Count", i);
                 packet.ReadInt32("EnchantmentID", i);
                 packet.ReadInt32("Charges", i);
@@ -135,7 +148,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 var int76 = packet.ReadInt32("SocketEnchant", i);
                 packet.ReadInt32("Flags", i);
 
-                Substructures.ItemHandler.ReadItemInstance(packet, i, "ItemInstance");
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                    Substructures.ItemHandler.ReadItemInstance(packet, i, "Item");
 
                 for (int j = 0; j < int76; j++)
                 {

@@ -564,9 +564,9 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
 
             if (ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_15_5_57638))
                 packet.ReadBit("HasPositionFragment", index);
-            packet.ReadBit("NoBirthAnim", index);
+            moveInfo.NoBirthAnim = packet.ReadBit("NoBirthAnim", index);
             packet.ReadBit("EnablePortals", index);
-            packet.ReadBit("PlayHoverAnim", index);
+            moveInfo.PlayHoverAnim = packet.ReadBit("PlayHoverAnim", index);
 
             var hasMovementUpdate = packet.ReadBit("HasMovementUpdate", index);
             var hasMovementTransport = packet.ReadBit("HasMovementTransport", index);
@@ -860,37 +860,26 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 // CliAreaTrigger
                 packet.ReadUInt32("ElapsedMs", index);
 
-                packet.ReadVector3("RollPitchYaw1", index);
+                createProperties.RollPitchYaw = packet.ReadVector3("RollPitchYaw", index);
 
                 areaTriggerTemplate.Flags = 0;
                 createProperties.Flags = 0;
 
-                if (packet.ReadBit("HasAbsoluteOrientation", index))
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAbsoluteOrientation;
-
-                if (packet.ReadBit("HasDynamicShape", index))
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasDynamicShape;
-
-                if (packet.ReadBit("HasAttached", index))
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAttached;
-
-                if (packet.ReadBit("HasFaceMovementDir", index))
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.FaceMovementDirection;
-
-                if (packet.ReadBit("HasFollowsTerrain", index))
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.FollowsTerrain;
-
-                if (packet.ReadBit("Unk bit WoD62x", index))
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.Unk1;
+                createProperties.AbsoluteOrientation = packet.ReadBit("AbsoluteOrientation", index);
+                createProperties.DynamicShape = packet.ReadBit("DynamicShape", index);
+                createProperties.Attached = packet.ReadBit("Attached", index);
+                createProperties.FaceMovementDir = packet.ReadBit("FaceMovementDir", index);
+                createProperties.FollowsTerrain = packet.ReadBit("FollowsTerrain", index);
+                createProperties.AlwaysExterior = packet.ReadBit("AlwaysExterior", index);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_1_0_49407))
                     packet.ReadBit("Unk1000", index);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_5_52902))
-                    packet.ReadBit("Unk1025", index);
+                    createProperties.UsesUnitRawFacing = packet.ReadBit("UsesUnitRawFacing", index);
 
                 if (packet.ReadBit("HasTargetRollPitchYaw", index))
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasTargetRollPitchYaw;
+                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasTargetRollPitchYaw;
 
                 bool hasScaleCurveID = packet.ReadBit("HasScaleCurveID", index);
                 bool hasMorphCurveID = packet.ReadBit("HasMorphCurveID", index);
@@ -901,18 +890,17 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     hasPositionalSoundKitID = packet.ReadBit("HasPositionalSoundKitID", index);
 
                 bool hasAnimProgress = false;
+                bool hasVisualAnimIsDecay = false;
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_1_5_40772))
                 {
                     if (packet.ReadBit("HasAnimID", index))
-                        createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAnimId;
+                        createProperties.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasAnimId;
 
                     if (packet.ReadBit("HasAnimKitID", index))
-                        createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasAnimKitId;
+                        createProperties.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasAnimKitId;
 
-                    if (packet.ReadBit("HasVisualAnimIsDecay", index))
-                        createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay;
-
+                    hasVisualAnimIsDecay = packet.ReadBit("HasVisualAnimIsDecay", index);
                     hasAnimProgress = packet.ReadBit("HasAnimProgress", index);
                 }
 
@@ -939,25 +927,24 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                 bool hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
 
                 if (packet.ReadBit("HasAreaTriggerOrbit", index))
-                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasOrbit;
+                    createProperties.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasOrbit;
 
                 if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
                     if (packet.ReadBit("HasAreaTriggerMovementScript", index)) // seen with spellid 343597
-                        createProperties.Flags |= (uint)AreaTriggerCreatePropertiesFlags.HasMovementScript;
+                        createProperties.Flags |= (uint)AreaTriggerCreatePropertiesLegacyFlags.HasMovementScript;
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
                 {
-                    if ((createProperties.Flags & (uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay) != 0)
-                        if (!packet.ReadBit("VisualAnimIsDecay", index))
-                            createProperties.Flags &= ~(uint)AreaTriggerCreatePropertiesFlags.VisualAnimIsDecay;
+                    if (hasVisualAnimIsDecay)
+                        createProperties.VisualAnimIsDecay = packet.ReadBit("VisualAnimIsDecay", index);
                 }
 
                 if (hasAreaTriggerSpline)
                     foreach (var splinePoint in AreaTriggerHandler.ReadAreaTriggerSpline(createProperties, packet, index, "AreaTriggerSpline"))
                         Storage.AreaTriggerCreatePropertiesSplinePoints.Add(splinePoint);
 
-                if ((createProperties.Flags & (uint)AreaTriggerCreatePropertiesFlags.HasTargetRollPitchYaw) != 0)
-                    packet.ReadVector3("TargetRollPitchYaw", index);
+                if ((createProperties.Flags & (uint)AreaTriggerCreatePropertiesLegacyFlags.HasTargetRollPitchYaw) != 0)
+                    createProperties.TargetRollPitchYaw = packet.ReadVector3("TargetRollPitchYaw", index);
 
                 if (hasScaleCurveID)
                     createProperties.ScaleCurveId = (int)packet.ReadUInt32("ScaleCurveID", index);
@@ -972,115 +959,113 @@ namespace WowPacketParserModule.V4_4_0_54481.Parsers
                     createProperties.MoveCurveId = (int)packet.ReadUInt32("MoveCurveID", index);
 
                 if (hasPositionalSoundKitID)
-                    packet.ReadUInt32("PositionalSoundKitID", index);
+                    createProperties.PositionalSoundKitId = packet.ReadInt32("PositionalSoundKitID", index);
 
-                if ((createProperties.Flags & (int)AreaTriggerCreatePropertiesFlags.HasAnimId) != 0)
+                if ((createProperties.Flags & (int)AreaTriggerCreatePropertiesLegacyFlags.HasAnimId) != 0)
                     createProperties.AnimId = packet.ReadInt32("AnimId", index);
 
-                if ((createProperties.Flags & (int)AreaTriggerCreatePropertiesFlags.HasAnimKitId) != 0)
+                if ((createProperties.Flags & (int)AreaTriggerCreatePropertiesLegacyFlags.HasAnimKitId) != 0)
                     createProperties.AnimKitId = packet.ReadInt32("AnimKitId", index);
 
                 if (hasAnimProgress)
                     packet.ReadUInt32("AnimProgress", index);
 
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Sphere)
+                switch ((AreaTriggerType)areaTriggerTemplate.Type)
                 {
-                    areaTriggerTemplate.Data[0] = packet.ReadSingle("Radius", index);
-                    areaTriggerTemplate.Data[1] = packet.ReadSingle("RadiusTarget", index);
-                }
-
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Box)
-                {
-                    Vector3 Extents = packet.ReadVector3("Extents", index);
-                    Vector3 ExtentsTarget = packet.ReadVector3("ExtentsTarget", index);
-
-                    areaTriggerTemplate.Data[0] = Extents.X;
-                    areaTriggerTemplate.Data[1] = Extents.Y;
-                    areaTriggerTemplate.Data[2] = Extents.Z;
-
-                    areaTriggerTemplate.Data[3] = ExtentsTarget.X;
-                    areaTriggerTemplate.Data[4] = ExtentsTarget.Y;
-                    areaTriggerTemplate.Data[5] = ExtentsTarget.Z;
-                }
-
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Polygon)
-                {
-                    var verticesCount = packet.ReadUInt32("VerticesCount", index);
-                    var verticesTargetCount = packet.ReadUInt32("VerticesTargetCount", index);
-
-                    List<AreaTriggerCreatePropertiesPolygonVertex> verticesList = new List<AreaTriggerCreatePropertiesPolygonVertex>();
-
-                    areaTriggerTemplate.Data[0] = packet.ReadSingle("Height", index);
-                    areaTriggerTemplate.Data[1] = packet.ReadSingle("HeightTarget", index);
-
-                    for (uint i = 0; i < verticesCount; ++i)
+                    case AreaTriggerType.Sphere:
+                        areaTriggerTemplate.Data[0] = packet.ReadSingle("Radius", index);
+                        areaTriggerTemplate.Data[1] = packet.ReadSingle("RadiusTarget", index);
+                        break;
+                    case AreaTriggerType.Box:
                     {
-                        AreaTriggerCreatePropertiesPolygonVertex spellAreatriggerVertices = new AreaTriggerCreatePropertiesPolygonVertex
+                        Vector3 Extents = packet.ReadVector3("Extents", index);
+                        Vector3 ExtentsTarget = packet.ReadVector3("ExtentsTarget", index);
+
+                        areaTriggerTemplate.Data[0] = Extents.X;
+                        areaTriggerTemplate.Data[1] = Extents.Y;
+                        areaTriggerTemplate.Data[2] = Extents.Z;
+
+                        areaTriggerTemplate.Data[3] = ExtentsTarget.X;
+                        areaTriggerTemplate.Data[4] = ExtentsTarget.Y;
+                        areaTriggerTemplate.Data[5] = ExtentsTarget.Z;
+                        break;
+                    }
+                    case AreaTriggerType.Polygon:
+                    {
+                        var verticesCount = packet.ReadUInt32("VerticesCount", index);
+                        var verticesTargetCount = packet.ReadUInt32("VerticesTargetCount", index);
+
+                        List<AreaTriggerCreatePropertiesPolygonVertex> verticesList = new List<AreaTriggerCreatePropertiesPolygonVertex>();
+
+                        areaTriggerTemplate.Data[0] = packet.ReadSingle("Height", index);
+                        areaTriggerTemplate.Data[1] = packet.ReadSingle("HeightTarget", index);
+
+                        for (uint i = 0; i < verticesCount; ++i)
                         {
-                            areatriggerGuid = guid,
-                            Idx = i
-                        };
+                            AreaTriggerCreatePropertiesPolygonVertex spellAreatriggerVertices = new AreaTriggerCreatePropertiesPolygonVertex
+                            {
+                                areatriggerGuid = guid,
+                                Idx = i
+                            };
 
-                        Vector2 vertices = packet.ReadVector2("Vertices", index, i);
+                            Vector2 vertices = packet.ReadVector2("Vertices", index, i);
 
-                        spellAreatriggerVertices.VerticeX = vertices.X;
-                        spellAreatriggerVertices.VerticeY = vertices.Y;
+                            spellAreatriggerVertices.VerticeX = vertices.X;
+                            spellAreatriggerVertices.VerticeY = vertices.Y;
 
-                        verticesList.Add(spellAreatriggerVertices);
+                            verticesList.Add(spellAreatriggerVertices);
+                        }
+
+                        for (var i = 0; i < verticesTargetCount; ++i)
+                        {
+                            Vector2 verticesTarget = packet.ReadVector2("VerticesTarget", index, i);
+
+                            verticesList[i].VerticeTargetX = verticesTarget.X;
+                            verticesList[i].VerticeTargetY = verticesTarget.Y;
+                        }
+
+                        foreach (AreaTriggerCreatePropertiesPolygonVertex vertice in verticesList)
+                            Storage.AreaTriggerCreatePropertiesPolygonVertices.Add(vertice);
+                        break;
                     }
-
-                    for (var i = 0; i < verticesTargetCount; ++i)
+                    case AreaTriggerType.Cylinder:
+                        areaTriggerTemplate.Data[0] = packet.ReadSingle("Radius", index);
+                        areaTriggerTemplate.Data[1] = packet.ReadSingle("RadiusTarget", index);
+                        areaTriggerTemplate.Data[2] = packet.ReadSingle("Height", index);
+                        areaTriggerTemplate.Data[3] = packet.ReadSingle("HeightTarget", index);
+                        areaTriggerTemplate.Data[4] = packet.ReadSingle("LocationZOffset", index);
+                        areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
+                        break;
+                    case AreaTriggerType.Disk:
+                        areaTriggerTemplate.Data[0] = packet.ReadSingle("InnerRadius", index);
+                        areaTriggerTemplate.Data[1] = packet.ReadSingle("InnerRadiusTarget", index);
+                        areaTriggerTemplate.Data[2] = packet.ReadSingle("OuterRadius", index);
+                        areaTriggerTemplate.Data[3] = packet.ReadSingle("OuterRadiusTarget", index);
+                        areaTriggerTemplate.Data[4] = packet.ReadSingle("Height", index);
+                        areaTriggerTemplate.Data[5] = packet.ReadSingle("HeightTarget", index);
+                        areaTriggerTemplate.Data[6] = packet.ReadSingle("LocationZOffset", index);
+                        areaTriggerTemplate.Data[7] = packet.ReadSingle("LocationZOffsetTarget", index);
+                        break;
+                    case AreaTriggerType.BoundedPlane:
                     {
-                        Vector2 verticesTarget = packet.ReadVector2("VerticesTarget", index, i);
+                        Vector2 extents = packet.ReadVector2("Extents", index);
+                        Vector2 extentsTarget = packet.ReadVector2("ExtentsTarget", index);
 
-                        verticesList[i].VerticeTargetX = verticesTarget.X;
-                        verticesList[i].VerticeTargetY = verticesTarget.Y;
+                        areaTriggerTemplate.Data[0] = extents.X;
+                        areaTriggerTemplate.Data[1] = extents.Y;
+                        areaTriggerTemplate.Data[2] = extentsTarget.X;
+                        areaTriggerTemplate.Data[3] = extentsTarget.Y;
+                        break;
                     }
-
-                    foreach (AreaTriggerCreatePropertiesPolygonVertex vertice in verticesList)
-                        Storage.AreaTriggerCreatePropertiesPolygonVertices.Add(vertice);
                 }
 
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Cylinder)
-                {
-                    areaTriggerTemplate.Data[0] = packet.ReadSingle("Radius", index);
-                    areaTriggerTemplate.Data[1] = packet.ReadSingle("RadiusTarget", index);
-                    areaTriggerTemplate.Data[2] = packet.ReadSingle("Height", index);
-                    areaTriggerTemplate.Data[3] = packet.ReadSingle("HeightTarget", index);
-                    areaTriggerTemplate.Data[4] = packet.ReadSingle("LocationZOffset", index);
-                    areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
-                }
-
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Disk)
-                {
-                    areaTriggerTemplate.Data[0] = packet.ReadSingle("InnerRadius", index);
-                    areaTriggerTemplate.Data[1] = packet.ReadSingle("InnerRadiusTarget", index);
-                    areaTriggerTemplate.Data[2] = packet.ReadSingle("OuterRadius", index);
-                    areaTriggerTemplate.Data[3] = packet.ReadSingle("OuterRadiusTarget", index);
-                    areaTriggerTemplate.Data[4] = packet.ReadSingle("Height", index);
-                    areaTriggerTemplate.Data[5] = packet.ReadSingle("HeightTarget", index);
-                    areaTriggerTemplate.Data[6] = packet.ReadSingle("LocationZOffset", index);
-                    areaTriggerTemplate.Data[7] = packet.ReadSingle("LocationZOffsetTarget", index);
-                }
-
-                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.BoundedPlane)
-                {
-                    Vector2 extents = packet.ReadVector2("Extents", index);
-                    Vector2 extentsTarget = packet.ReadVector2("ExtentsTarget", index);
-
-                    areaTriggerTemplate.Data[0] = extents.X;
-                    areaTriggerTemplate.Data[1] = extents.Y;
-                    areaTriggerTemplate.Data[2] = extentsTarget.X;
-                    areaTriggerTemplate.Data[3] = extentsTarget.Y;
-                }
-
-                if ((createProperties.Flags & (uint)AreaTriggerCreatePropertiesFlags.HasMovementScript) != 0)
+                if ((createProperties.Flags & (uint)AreaTriggerCreatePropertiesLegacyFlags.HasMovementScript) != 0)
                 {
                     packet.ReadInt32("SpellScriptID");
                     packet.ReadVector3("Center");
                 }
 
-                if ((createProperties.Flags & (uint)AreaTriggerCreatePropertiesFlags.HasOrbit) != 0)
+                if ((createProperties.Flags & (uint)AreaTriggerCreatePropertiesLegacyFlags.HasOrbit) != 0)
                     Storage.AreaTriggerCreatePropertiesOrbits.Add(AreaTriggerHandler.ReadAreaTriggerOrbit(createProperties, packet, index, "AreaTriggerOrbit"));
 
                 // TargetedDatabase.Shadowlands stores AreaTriggerCreatePropertiesFlags in Template

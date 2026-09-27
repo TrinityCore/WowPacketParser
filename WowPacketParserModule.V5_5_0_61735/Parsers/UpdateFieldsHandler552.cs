@@ -599,7 +599,6 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V5_5_2_64068
                 if (changesMask[2])
                 {
                     data.PlayerName = new string('*', (int)packet.ReadBits(6));
-                    packet.ResetBitReader();
                     data.PlayerName = packet.ReadWoWString("PlayerName", data.PlayerName.Length, indexes);
                 }
             }
@@ -2086,12 +2085,12 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V5_5_2_64068
                 {
                     data.PersonalTabard = ReadUpdateCustomTabardInfo(packet, indexes, "PersonalTabard");
                 }
+                packet.ResetBitReader();
                 if (changesMask[35])
                 {
                     data.Name = new string('*', (int)packet.ReadBits(6));
                 }
                 hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
-                packet.ResetBitReader();
                 if (changesMask[39])
                 {
                     Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");
@@ -4782,9 +4781,9 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V5_5_2_64068
             return data;
         }
 
-        public static IScaleCurve ReadCreateScaleCurve(Packet packet, params object[] indexes)
+        public static IOverrideCurve ReadCreateScaleCurve(Packet packet, params object[] indexes)
         {
-            var data = new ScaleCurve();
+            var data = new OverrideCurve();
             packet.ResetBitReader();
             data.StartTimeOffset = packet.ReadUInt32("StartTimeOffset", indexes);
             for (var i = 0; i < 2; ++i)
@@ -4796,9 +4795,9 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V5_5_2_64068
             return data;
         }
 
-        public static IScaleCurve ReadUpdateScaleCurve(Packet packet, params object[] indexes)
+        public static IOverrideCurve ReadUpdateScaleCurve(Packet packet, params object[] indexes)
         {
-            var data = new ScaleCurve();
+            var data = new OverrideCurve();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(7);
@@ -4906,7 +4905,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V5_5_2_64068
             var data = new AreaTriggerSplineCalculator();
             packet.ResetBitReader();
             data.Points.Resize(packet.ReadBits(16));
-            data.Catmullrom = packet.ReadBit("Catmullrom", indexes);
+            data.Linear = packet.ReadBit("Linear", indexes);
             for (var i = 0; i < data.Points.Count; ++i)
             {
                 data.Points[i] = packet.ReadVector3("Points", indexes, i);
@@ -4926,7 +4925,7 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V5_5_2_64068
             {
                 if (changesMask[1])
                 {
-                    data.Catmullrom = packet.ReadBit("Catmullrom", indexes);
+                    data.Linear = packet.ReadBit("Linear", indexes);
                 }
                 if (changesMask[2])
                 {

@@ -4,12 +4,26 @@ namespace WowPacketParser.Misc
     {
         public WowGuid MoverGuid;
 
+        public bool NoBirthAnim;
+
+        public bool PlayHoverAnim;
+
         // NOTE: Do not use flag fields in a generic way to handle anything for producing spawns - different versions have different flags
         public uint Flags;
 
         public uint Flags2;
 
         public uint Flags3;
+
+        public ulong Flags64
+        {
+            get => ((ulong)Flags2 << 32) | Flags;
+            set
+            {
+                Flags = (uint)(value & 0xFFFFFFFFu);
+                Flags2 = (uint)(value >> 32);
+            }
+        }
 
         public bool HasSplineData;
 

@@ -624,7 +624,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                                 Y = packet.ReadSingle()
                             };
 
-                            packet.AddValue("Spline Waypoint", wp, index, i);
+                            packet.AddValue("Points", wp, index, i);
                         }
 
                         packet.ReadInt32("Spline Time", index); // if need swap with "Spline Full Time"

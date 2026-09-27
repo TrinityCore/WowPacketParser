@@ -41,7 +41,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ProgressBarWeight")]
         public float? ProgressBarWeight;
 
-        [DBFieldName("ParentObjectiveID")]
+        [DBFieldName("ParentObjectiveID", TargetedDatabaseFlag.SinceTheWarWithin)]
         public int? ParentObjectiveID;
 
         [DBFieldName("Description", LocaleConstant.enUS)]

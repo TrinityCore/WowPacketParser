@@ -860,7 +860,6 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
                 if (changesMask[2])
                 {
                     data.PlayerName = new string('*', (int)packet.ReadBits(6));
-            packet.ResetBitReader();
                     data.PlayerName = packet.ReadWoWString("PlayerName", data.PlayerName.Length, indexes);
                 }
             }
@@ -2587,12 +2586,12 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
                 {
                     data.NpcAsPlayerInfo = ReadUpdateNPCAsPlayerInfo(packet, indexes, "NpcAsPlayerInfo");
                 }
+                packet.ResetBitReader();
                 if (changesMask[36])
                 {
                     data.Name = new string('*', (int)packet.ReadBits(6));
                 }
                 hasDeclinedNames = packet.ReadBit("HasDeclinedNames", indexes);
-            packet.ResetBitReader();
                 if (changesMask[43])
                 {
                     Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");
@@ -4420,9 +4419,9 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
             packet.ResetBitReader();
             data.SetType = packet.ReadByte("SetType", indexes);
             data.Icon = packet.ReadUInt32("Icon", indexes);
+            packet.ResetBitReader();
             data.Name = new string('*', (int)packet.ReadBits(8));
             data.SituationsEnabled = packet.ReadBit("SituationsEnabled", indexes);
-            packet.ResetBitReader();
             data.Name = packet.ReadWoWString("Name", data.Name.Length, indexes);
             return data;
         }
@@ -6907,9 +6906,9 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
             return data;
         }
 
-        public static IScaleCurve ReadCreateScaleCurve(Packet packet, params object[] indexes)
+        public static IOverrideCurve ReadCreateScaleCurve(Packet packet, params object[] indexes)
         {
-            var data = new ScaleCurve();
+            var data = new OverrideCurve();
             packet.ResetBitReader();
             data.StartTimeOffset = packet.ReadUInt32("StartTimeOffset", indexes);
             for (var i = 0; i < 2; ++i)
@@ -6921,9 +6920,9 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
             return data;
         }
 
-        public static IScaleCurve ReadUpdateScaleCurve(Packet packet, params object[] indexes)
+        public static IOverrideCurve ReadUpdateScaleCurve(Packet packet, params object[] indexes)
         {
-            var data = new ScaleCurve();
+            var data = new OverrideCurve();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(7);
@@ -7074,7 +7073,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
             var data = new AreaTriggerSplineCalculator();
             packet.ResetBitReader();
             data.Points.Resize(packet.ReadBits(16));
-            data.Catmullrom = packet.ReadBit("Catmullrom", indexes);
+            data.Linear = packet.ReadBit("Linear", indexes);
             for (var i = 0; i < data.Points.Count; ++i)
             {
                 data.Points[i] = packet.ReadVector3("Points", indexes, i);
@@ -7094,7 +7093,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
             {
                 if (changesMask[1])
                 {
-                    data.Catmullrom = packet.ReadBit("Catmullrom", indexes);
+                    data.Linear = packet.ReadBit("Linear", indexes);
                 }
                 if (changesMask[2])
                 {
@@ -7465,8 +7464,10 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
         {
             var data = new AreaTriggerBoundedPlane();
             packet.ResetBitReader();
-            data.Extents = packet.ReadVector2("Extents", indexes);
-            data.ExtentsTarget = packet.ReadVector2("ExtentsTarget", indexes);
+            data.ExtentsY = packet.ReadSingle("ExtentsY", indexes);
+            data.ExtentsZ = packet.ReadSingle("ExtentsZ", indexes);
+            data.ExtentsTargetY = packet.ReadSingle("ExtentsTargetY", indexes);
+            data.ExtentsTargetZ = packet.ReadSingle("ExtentsTargetZ", indexes);
             return data;
         }
 
@@ -7475,7 +7476,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
             var data = new AreaTriggerBoundedPlane();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(3);
+            rawChangesMask[0] = (int)packet.ReadBits(5);
             var changesMask = new BitArray(rawChangesMask);
 
             packet.ResetBitReader();
@@ -7483,11 +7484,19 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
             {
                 if (changesMask[1])
                 {
-                    data.Extents = packet.ReadVector2("Extents", indexes);
+                    data.ExtentsY = packet.ReadSingle("ExtentsY", indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.ExtentsTarget = packet.ReadVector2("ExtentsTarget", indexes);
+                    data.ExtentsZ = packet.ReadSingle("ExtentsZ", indexes);
+                }
+                if (changesMask[3])
+                {
+                    data.ExtentsTargetY = packet.ReadSingle("ExtentsTargetY", indexes);
+                }
+                if (changesMask[4])
+                {
+                    data.ExtentsTargetZ = packet.ReadSingle("ExtentsTargetZ", indexes);
                 }
             }
             return data;
@@ -7506,7 +7515,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
             data.TimeToTargetScale = packet.ReadUInt32("TimeToTargetScale", indexes);
             data.TimeToTargetExtraScale = packet.ReadUInt32("TimeToTargetExtraScale", indexes);
             data.TimeToTargetPos = packet.ReadUInt32("TimeToTargetPos", indexes);
-            data.TimeToTargetUnk1205Curve = packet.ReadUInt32("TimeToTargetUnk1205Curve", indexes);
+            data.TimeToTargetShape = packet.ReadUInt32("TimeToTargetShape", indexes);
             data.SpellID = packet.ReadInt32("SpellID", indexes);
             data.SpellForVisuals = packet.ReadInt32("SpellForVisuals", indexes);
             data.SpellVisual = ReadCreateSpellCastVisual(packet, indexes, "SpellVisual");
@@ -7571,7 +7580,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
             }
             data.OverrideMoveCurveY = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveY");
             data.OverrideMoveCurveZ = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveZ");
-            data.Unk1205Curve = ReadCreateScaleCurve(packet, indexes, "Unk1205Curve");
+            data.OverrideShapeCurve = ReadCreateScaleCurve(packet, indexes, "OverrideShapeCurve");
             data.VisualAnim = ReadCreateVisualAnim(packet, indexes, "VisualAnim");
             if (data.PathType == 0)
             {
@@ -7628,7 +7637,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
                 }
                 if (changesMask[13])
                 {
-                    data.TimeToTargetUnk1205Curve = packet.ReadUInt32("TimeToTargetUnk1205Curve", indexes);
+                    data.TimeToTargetShape = packet.ReadUInt32("TimeToTargetShape", indexes);
                 }
                 if (changesMask[14])
                 {
@@ -7805,7 +7814,7 @@ namespace WowPacketParserModule.V12_0_0_65390.UpdateFields.V12_0_7_67808
                 }
                 if (changesMask[6])
                 {
-                    data.Unk1205Curve = ReadUpdateScaleCurve(packet, indexes, "Unk1205Curve");
+                    data.OverrideShapeCurve = ReadUpdateScaleCurve(packet, indexes, "OverrideShapeCurve");
                 }
                 if (changesMask[28])
                 {

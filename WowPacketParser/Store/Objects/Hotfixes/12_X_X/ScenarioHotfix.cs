@@ -45,4 +45,50 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("scenario")]
+    public sealed record ScenarioHotfix1205: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("Name")]
+        public string Name;
+
+        [DBFieldName("AreaTableID")]
+        public ushort? AreaTableID;
+
+        [DBFieldName("Type")]
+        public int? Type;
+
+        [DBFieldName("Flags")]
+        public int? Flags;
+
+        [DBFieldName("UiTextureKitID")]
+        public uint? UiTextureKitID;
+
+        [DBFieldName("UiScenarioDisplayInfoID")]
+        public uint? UiScenarioDisplayInfoID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+
+    [Hotfix]
+    [DBTableName("scenario_locale")]
+    public sealed record ScenarioLocaleHotfix1205: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("locale", true)]
+        public string Locale = ClientLocale.PacketLocaleString;
+
+        [DBFieldName("Name_lang")]
+        public string NameLang;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

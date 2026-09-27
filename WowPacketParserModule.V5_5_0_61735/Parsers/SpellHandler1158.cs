@@ -266,7 +266,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);
             var hasDstLoc = packet.ReadBit("HasDstLocation", idx);
             var hasOrient = packet.ReadBit("HasOrientation", idx);
-            var hasMapID = packet.ReadBit("hasMapID ", idx);
+            var hasMapID = packet.ReadBit("HasMapID", idx);
             var nameLength = packet.ReadBits(7);
 
             if (hasSrcLoc)
@@ -428,6 +428,113 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
         public static void HandleSpellStart(Packet packet)
         {
             ReadSpellCastData(packet, "Cast");
+        }
+
+        [Parser(Opcode.CMSG_CAST_SPELL, ClientBranch.TBC)]
+        public static void HandleCastSpell(Packet packet)
+        {
+            ReadSpellCastRequest(packet, "Cast");
+        }
+
+        public static uint ReadSpellCastRequest(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("CastID", idx);
+
+            if (ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796))
+                packet.ReadByte("SendCastFlags", idx);
+
+            uint miscCount = ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_6_68502) ? 3u : 2u;
+            for (var i = 0; i < miscCount; i++)
+                packet.ReadInt32("Misc", idx, i);
+
+            var spellId = packet.ReadUInt32<SpellId>("SpellID", idx);
+            packet.ReadInt32("SpellXSpellVisual", idx);
+            //if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_6_68502))
+            //    packet.ReadInt32("ScriptVisualID", idx);
+
+            ReadMissileTrajectoryRequest(packet, idx, "MissileTrajectory");
+
+            packet.ReadPackedGuid128("CraftingNPC", idx);
+
+            var optionalCurrenciesCount = packet.ReadUInt32("OptionalCurrenciesCount", idx);
+            var optionalReagentsCount = packet.ReadUInt32("OptionalReagentsCount", idx);
+
+            var removedModificationsCount = packet.ReadUInt32("RemovedModificationsCount", idx);
+
+            packet.ReadByte("CraftingFlags", idx);
+
+            for (var j = 0; j < optionalCurrenciesCount; ++j)
+                ReadOptionalCurrency(packet, idx, "OptionalCurrency", j);
+
+            if (ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796) && ClientVersion.RemovedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_6_68502))
+                ReadSpellTargetData(packet, null, spellId, idx, "Target");
+
+            packet.ResetBitReader();
+            if (ClientVersion.RemovedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796))
+                packet.ReadBits("SendCastFlags", 6, idx);
+
+            var hasReceiveTime = false;
+            if (ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_6_68502))
+                packet.ReadBit("HasReceiveTime", idx);
+            var hasMoveUpdate = packet.ReadBit("HasMoveUpdate", idx);
+            var weightCount = packet.ReadBits("WeightCount", 2, idx);
+            var hasCraftingOrderID = packet.ReadBit("HasCrafingOrderID", idx);
+
+            if (ClientVersion.RemovedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796) || ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_6_68502))
+                ReadSpellTargetData(packet, null, spellId, idx, "Target");
+
+            if (hasReceiveTime)
+                packet.ReadUInt32("ReceiveTime", idx);
+
+            if (hasCraftingOrderID && ClientVersion.RemovedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796))
+                packet.ReadUInt64("CraftingOrderID", idx);
+
+            for (var i = 0; i < optionalReagentsCount; ++i)
+                ReadOptionalReagent(packet, idx, "OptionalReagent", i);
+
+            if (hasCraftingOrderID && ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_5_64796))
+                packet.ReadUInt64("CraftingOrderID", idx);
+
+            for (var i = 0; i < removedModificationsCount; ++i)
+                ReadOptionalReagent(packet, idx, "RemovedModifications", i);
+
+            if (hasMoveUpdate)
+                MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");
+
+            for (var i = 0; i < weightCount; ++i)
+                ReadSpellWeight(packet, idx, "Weight", i);
+
+            return spellId;
+        }
+
+        public static void ReadMissileTrajectoryRequest(Packet packet, params object[] idx)
+        {
+            packet.ReadSingle("Pitch", idx);
+            packet.ReadSingle("Speed", idx);
+        }
+
+        public static void ReadOptionalCurrency(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("CurrencyID", indexes);
+            packet.ReadInt32("Count", indexes);
+        }
+
+        public static void ReadOptionalReagent(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32<ItemId>("ItemID", indexes);
+            packet.ReadInt32("DataSlotIndex", indexes);
+            packet.ReadInt32("Quantity", indexes);
+
+            if (packet.ReadBit())
+                packet.ReadByte("Unknown_1000", indexes);
+        }
+
+        public static void ReadSpellWeight(Packet packet, params object[] idx)
+        {
+            packet.ResetBitReader();
+            packet.ReadBits("Type", 2, idx); // Enum SpellweightTokenTypes
+            packet.ReadInt32("ID", idx);
+            packet.ReadUInt32("Quantity", idx);
         }
     }
 }

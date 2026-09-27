@@ -5,8 +5,8 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
 {
     public class AreaTriggerData : IAreaTriggerData
     {
-        public IScaleCurve OverrideScaleCurve { get; set; }
-        public IScaleCurve ExtraScaleCurve { get; set; }
+        public IOverrideCurve OverrideScaleCurve { get; set; }
+        public IOverrideCurve ExtraScaleCurve { get; set; }
         public WowGuid Caster { get; set; }
         public uint Duration { get; set; }
         public uint? TimeToTarget { get; set; }

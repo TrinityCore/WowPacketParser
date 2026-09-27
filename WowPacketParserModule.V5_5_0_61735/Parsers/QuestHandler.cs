@@ -354,7 +354,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
             var hideWarboardHeader = packet.ReadBit("HideWarboardHeader");
             var keepOpenAfterChoice = packet.ReadBit("KeepOpenAfterChoice");
             var showChoicesAsList = packet.ReadBit("ShowChoicesAsList");
-            var forceDontShowChoicesAsList = packet.ReadBit("ForceDontShowChoicesAsList");
+            var hasPowerChoice = packet.ReadBit("HasPowerChoice");
 
             for (var i = 0u; i < responseCount; ++i)
                 ReadPlayerChoiceResponse(packet, choiceId, i, "PlayerChoiceResponse", i);
@@ -375,7 +375,7 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                 HideWarboardHeader = hideWarboardHeader,
                 KeepOpenAfterChoice = keepOpenAfterChoice,
                 ShowChoicesAsList = showChoicesAsList,
-                ForceDontShowChoicesAsList = forceDontShowChoicesAsList
+                HasPowerChoice = hasPowerChoice
             }, packet.TimeSpan);
 
             if (ClientLocale.PacketLocale != LocaleConstant.enUS)

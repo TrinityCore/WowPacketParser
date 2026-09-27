@@ -29,7 +29,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadPackedGuid128("PartyGUID");
             packet.ReadInt32("AchievementID");
             var chatFlags = 0u;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                chatFlags = packet.ReadUInt32("ChatFlags");
+            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
                 chatFlags = packet.ReadUInt16("ChatFlags");
             packet.ReadSingle("DisplayTime");
             if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V10_1_0_49407) || ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_2_50129))

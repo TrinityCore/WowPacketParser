@@ -26,7 +26,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_EXTRA_AURA_INFO_NEED_UPDATE_OBSOLETE)] // 2.4.3
         public static void HandleSetExtraAuraInfo(Packet packet)
         {
-            packet.ReadPackedGuid();
+            packet.ReadPackedGuid("GUID");
             packet.ReadByte("Slot");
             packet.ReadUInt32<SpellId>("SpellID");
             if (packet.CanRead())
@@ -39,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CLEAR_EXTRA_AURA_INFO_OBSOLETE)] // 2.4.3
         public static void HandleClearExtraAuraInfo(Packet packet)
         {
-            packet.ReadPackedGuid();
+            packet.ReadPackedGuid("GUID");
             packet.ReadUInt32<SpellId>("SpellID");
         }
 

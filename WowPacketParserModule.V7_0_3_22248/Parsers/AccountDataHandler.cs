@@ -42,6 +42,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
+        public static void ReadCacheInfoEntry(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+
+            var variableNameLen = packet.ReadBits(6);
+            var valueLen = packet.ReadBits(6);
+
+            packet.AddLine($"VariableName: \"{ packet.ReadWoWString((int)variableNameLen) }\" Value: \"{ packet.ReadWoWString((int)valueLen) }\"", indexes);
+        }
+
         [Parser(Opcode.SMSG_CACHE_INFO)]
         public static void HandleCacheInfo(Packet packet)
         {
@@ -52,14 +62,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var signatureLen = packet.ReadBits(6);
 
             for (var i = 0; i < cacheInfoCount; ++i)
-            {
-                packet.ResetBitReader();
-
-                var variableNameLen = packet.ReadBits(6);
-                var valueLen = packet.ReadBits(6);
-
-                packet.WriteLine($"[{ i.ToString() }] VariableName: \"{ packet.ReadWoWString((int)variableNameLen) }\" Value: \"{ packet.ReadWoWString((int)valueLen) }\"");
-            }
+                ReadCacheInfoEntry(packet, "Entries", i);
 
             packet.ReadWoWString("Signature", signatureLen);
         }

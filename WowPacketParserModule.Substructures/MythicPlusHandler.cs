@@ -118,12 +118,19 @@ namespace WowPacketParserModule.Substructures
         public static void ReadDungeonScoreBestRunForAffix(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("KeystoneAffixID", indexes);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
-                packet.ReadSingle("Score", indexes);
-            else
-                packet.ReadInt32("Score", indexes);
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+                    packet.ReadSingle("Score", indexes);
+                else
+                    packet.ReadInt32("Score", indexes);
+            }
 
             ReadMythicPlusRun(packet, indexes, "Run");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                packet.ReadSingle("Score", indexes);
         }
 
         public static void ReadDungeonScoreMapData(Packet packet, params object[] indexes)

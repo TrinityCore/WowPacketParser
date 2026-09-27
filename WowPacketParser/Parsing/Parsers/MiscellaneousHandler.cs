@@ -646,17 +646,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GAME_TIME_SET)]
         public static void HandleGametimeSet(Packet packet)
         {
-            packet.ReadUInt32("Unk time");
-            packet.ReadUInt32("Unk int32");
+            packet.ReadPackedTime("GameTime");
+            packet.ReadInt32("GameTimeHolidayOffset");
         }
 
         [Parser(Opcode.SMSG_GAME_TIME_UPDATE)]
         public static void HandleGametimeUpdate(Packet packet)
         {
-            packet.ReadUInt32("Unk time"); // Time online?
+            packet.ReadPackedTime("GameTime");
 
             if (packet.CanRead()) // no idea when this was added exactly, doesn't exist in 2.4.0
-                packet.ReadUInt32("Unk int32");
+                packet.ReadInt32("GameTimeHolidayOffset");
         }
 
         [Parser(Opcode.CMSG_FAR_SIGHT)]

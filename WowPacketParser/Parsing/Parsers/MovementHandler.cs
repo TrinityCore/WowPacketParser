@@ -435,7 +435,7 @@ namespace WowPacketParser.Parsing.Parsers
                     vec.Y += mid.Y;
                     vec.Z += mid.Z;
                     monsterMove.PackedPoints.Add(vec);
-                    packet.AddValue("Waypoint: ", vec, 0);
+                    packet.AddValue("WayPoints", vec, 0);
 
                     if (waypoints > 2)
                     {
@@ -447,7 +447,7 @@ namespace WowPacketParser.Parsing.Parsers
                             vec.Z += mid.Z;
 
                             monsterMove.PackedPoints.Add(vec);
-                            packet.AddValue("Waypoint", vec, i);
+                            packet.AddValue("WayPoints", vec, i);
                         }
                     }
                 }
@@ -569,11 +569,11 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLoginSetTimeSpeed(Packet packet)
         {
             PacketLoginSetTimeSpeed setTime = packet.Holder.LoginSetTimeSpeed = new();
-            setTime.GameTime = packet.ReadPackedTime("Game Time").ToUniversalTime().ToTimestamp();
-            setTime.NewSpeed = packet.ReadSingle("Game Speed");
+            setTime.GameTime = packet.ReadPackedTime("GameTime").ToUniversalTime().ToTimestamp();
+            setTime.NewSpeed = packet.ReadSingle("NewSpeed");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
-                packet.ReadInt32("Unk Int32");
+                packet.ReadInt32("GameTimeHolidayOffset");
         }
 
         [Parser(Opcode.SMSG_BIND_POINT_UPDATE)]

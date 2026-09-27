@@ -84,4 +84,201 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("faction")]
+    public sealed record FactionHotfix1205: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("ReputationRaceMask", 4)]
+        public long?[] ReputationRaceMask;
+
+        [DBFieldName("Name")]
+        public string Name;
+
+        [DBFieldName("Description")]
+        public string Description;
+
+        [DBFieldName("ReputationIndex")]
+        public short? ReputationIndex;
+
+        [DBFieldName("ParentFactionID")]
+        public ushort? ParentFactionID;
+
+        [DBFieldName("Expansion")]
+        public byte? Expansion;
+
+        [DBFieldName("FriendshipRepID")]
+        public uint? FriendshipRepID;
+
+        [DBFieldName("Flags")]
+        public int? Flags;
+
+        [DBFieldName("ParagonFactionID")]
+        public ushort? ParagonFactionID;
+
+        [DBFieldName("RenownFactionID")]
+        public int? RenownFactionID;
+
+        [DBFieldName("RenownCurrencyID")]
+        public int? RenownCurrencyID;
+
+        [DBFieldName("ReputationClassMask", 4)]
+        public short?[] ReputationClassMask;
+
+        [DBFieldName("ReputationFlags", 4)]
+        public ushort?[] ReputationFlags;
+
+        [DBFieldName("ReputationBase", 4)]
+        public int?[] ReputationBase;
+
+        [DBFieldName("ReputationMax", 4)]
+        public int?[] ReputationMax;
+
+        [DBFieldName("ParentFactionMod", 2)]
+        public float?[] ParentFactionMod;
+
+        [DBFieldName("ParentFactionCap", 2)]
+        public byte?[] ParentFactionCap;
+
+        [DBFieldName("ReputationRaceMask1_1")]
+        public int? ReputationRaceMask1_1;
+
+        [DBFieldName("ReputationRaceMask1_2")]
+        public int? ReputationRaceMask1_2;
+
+        [DBFieldName("ReputationRaceMask2_1")]
+        public int? ReputationRaceMask2_1;
+
+        [DBFieldName("ReputationRaceMask2_2")]
+        public int? ReputationRaceMask2_2;
+
+        [DBFieldName("ReputationRaceMask3_1")]
+        public int? ReputationRaceMask3_1;
+
+        [DBFieldName("ReputationRaceMask3_2")]
+        public int? ReputationRaceMask3_2;
+
+        [DBFieldName("ReputationRaceMask4_1")]
+        public int? ReputationRaceMask4_1;
+
+        [DBFieldName("ReputationRaceMask4_2")]
+        public int? ReputationRaceMask4_2;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+
+    [Hotfix]
+    [DBTableName("faction_locale")]
+    public sealed record FactionLocaleHotfix1205: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("locale", true)]
+        public string Locale = ClientLocale.PacketLocaleString;
+
+        [DBFieldName("Name_lang")]
+        public string NameLang;
+
+        [DBFieldName("Description_lang")]
+        public string DescriptionLang;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+
+    [Hotfix]
+    [DBTableName("faction")]
+    public sealed record FactionHotfix1207: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("Name")]
+        public string Name;
+
+        [DBFieldName("Description")]
+        public string Description;
+
+        [DBFieldName("ReputationIndex")]
+        public short? ReputationIndex;
+
+        [DBFieldName("ParentFactionID")]
+        public ushort? ParentFactionID;
+
+        [DBFieldName("Expansion")]
+        public byte? Expansion;
+
+        [DBFieldName("FriendshipRepID")]
+        public uint? FriendshipRepID;
+
+        [DBFieldName("Flags")]
+        public int? Flags;
+
+        [DBFieldName("ParagonFactionID")]
+        public ushort? ParagonFactionID;
+
+        [DBFieldName("RenownFactionID")]
+        public int? RenownFactionID;
+
+        [DBFieldName("RenownCurrencyID")]
+        public int? RenownCurrencyID;
+
+        [DBFieldName("ReputationClassMask", 4)]
+        public short?[] ReputationClassMask;
+
+        [DBFieldName("ReputationFlags", 4)]
+        public ushort?[] ReputationFlags;
+
+        [DBFieldName("ReputationBase", 4)]
+        public int?[] ReputationBase;
+
+        [DBFieldName("ReputationMax", 4)]
+        public int?[] ReputationMax;
+
+        [DBFieldName("ParentFactionMod", 2)]
+        public float?[] ParentFactionMod;
+
+        [DBFieldName("ParentFactionCap", 2)]
+        public byte?[] ParentFactionCap;
+
+        [DBFieldName("ReputationRaceMask1", 2)]
+        public int?[] ReputationRaceMask1;
+
+        [DBFieldName("ReputationRaceMask2", 2)]
+        public int?[] ReputationRaceMask2;
+
+        [DBFieldName("ReputationRaceMask3", 2)]
+        public int?[] ReputationRaceMask3;
+
+        [DBFieldName("ReputationRaceMask4", 2)]
+        public int?[] ReputationRaceMask4;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+
+    [Hotfix]
+    [DBTableName("faction_locale")]
+    public sealed record FactionLocaleHotfix1207: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("locale", true)]
+        public string Locale = ClientLocale.PacketLocaleString;
+
+        [DBFieldName("Name_lang")]
+        public string NameLang;
+
+        [DBFieldName("Description_lang")]
+        public string DescriptionLang;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

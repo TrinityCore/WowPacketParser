@@ -36,13 +36,15 @@ namespace WowPacketParser.Enums
         CanSwim                                           = 0x10000000, // UnitFlags 0x8000 UNIT_FLAG_CAN_SWIM
         Floating                                          = 0x20000000, // sets DisableGravity movementflag on spawn/reset
         MoreAudible                                       = 0x40000000, // CREATURE_TYPE_FLAG_MORE_AUDIBLE
-        LargeAoi                                          = 0x80000000  // UnitFlags2 0x200000
+        LargeAoi                                          = 0x80000000, // UnitFlags2 0x200000
+
+        NonServerSide                                     = (Sessile | CanSwim | Floating)
     }
 
     [Flags]
     public enum CreatureStaticFlags2 : uint
     {
-        NoPetScaling = 0x00000001,
+        NoPetScaling                                      = 0x00000001,
         ForcePartyMembersIntoCombat                       = 0x00000002, // Original description: Force Raid Combat
         LockTappersToRaidOnDeath                          = 0x00000004, // "Lock Tappers To Raid On Death", toggleable by 'Set "RAID_LOCK_ON_DEATH" flag for unit(s)' action, CREATURE_FLAG_EXTRA_INSTANCE_BIND
         SpellAttackable                                   = 0x00000008, // CREATURE_TYPE_FLAG_SPELL_ATTACKABLE, original description(not valid anymore?): No Harmful Vertex Coloring
@@ -73,7 +75,9 @@ namespace WowPacketParser.Enums
         CanSafeFall                                       = 0x10000000, // Original description: No Collision
         CanAssist                                         = 0x20000000, // CREATURE_TYPE_FLAG_CAN_ASSIST, original description: Player Can Heal/Buff
         NoSkillGains                                      = 0x40000000, // CREATURE_FLAG_EXTRA_NO_SKILL_GAINS
-        NoPetBar                                          = 0x80000000  // CREATURE_TYPE_FLAG_NO_PET_BAR
+        NoPetBar                                          = 0x80000000, // CREATURE_TYPE_FLAG_NO_PET_BAR
+
+        NonServerSide                                     = (HideBody)
     }
 
     [Flags]
@@ -110,7 +114,10 @@ namespace WowPacketParser.Enums
         PetsAttackWith3DPathing                           = 0x10000000, // "Pets attack with 3d pathing (Kologarn)"
         LinkAll                                           = 0x20000000, // CREATURE_TYPE_FLAG_LINK_ALL
         AiCanAutoTakeoffInCombat                          = 0x40000000,
-        AiCanAutoLandInCombat                             = 0x80000000
+        AiCanAutoLandInCombat                             = 0x80000000,
+
+        NonServerSide                                     = (DoNotFadeIn | CannotSwim | AllowInteractionWhileInCombat |
+                                                             CannotTurn)
     }
 
     [Flags]
@@ -147,7 +154,10 @@ namespace WowPacketParser.Enums
         OnlyGenerateInitialThreat                         = 0x10000000,
         DoNotTargetOnInteraction                          = 0x20000000, // CREATURE_TYPE_FLAG_DO_NOT_TARGET_ON_INTERACTION, original description: Doesn't change target on right click
         DoNotRenderObjectName                             = 0x40000000, // CREATURE_TYPE_FLAG_DO_NOT_RENDER_OBJECT_NAME, original description: Hide name in world frame
-        QuestBoss                                         = 0x80000000  // CREATURE_TYPE_FLAG_QUEST_BOSS
+        QuestBoss                                         = 0x80000000, // CREATURE_TYPE_FLAG_QUEST_BOSS
+
+        NonServerSide                                     = (NoBirthAnim | TreatAsRaidUnitForHelpfulSpells | IgnoreSpellMinRangeRestrictions |
+                                                             PreventSwim | HideInCombatLog)
     }
 
     [Flags]
@@ -184,7 +194,10 @@ namespace WowPacketParser.Enums
         NoPowerRegen                                      = 0x10000000,
         NoPetUnitFrame                                    = 0x20000000,
         NoInteractOnLeftClick                             = 0x40000000, // CREATURE_TYPEFLAGS_2_UNK6
-        GiveCriteriaKillCreditWhenCharmed                 = 0x80000000
+        GiveCriteriaKillCreditWhenCharmed                 = 0x80000000,
+
+        NonServerSide                                     = (UntargetableByClient | UninteractibleIfHostile | InteractWhileHostile |
+                                                             SuppressHighlightWhenTargetedOrMousedOver)
     }
 
     [Flags]
@@ -221,7 +234,9 @@ namespace WowPacketParser.Enums
         AiDontLeaveMeleeForRangedWhenTargetGetsRooted     = 0x10000000,
         DontUseCombatReachForChaining                     = 0x20000000,
         DoNotPlayProceduralWoundAnim                      = 0x40000000,
-        ApplyProceduralWoundAnimToBase                    = 0x80000000  // TFLAG2_UNK14
+        ApplyProceduralWoundAnimToBase                    = 0x80000000,  // TFLAG2_UNK14
+
+        NonServerSide                                     = (0x00000000)
     }
 
     [Flags]
@@ -239,6 +254,8 @@ namespace WowPacketParser.Enums
         InteractOnlyOnQuest                               = 0x00000200,
         DisableKillCreditForOfflinePlayers                = 0x00000400,
         AiAdditionalPathing                               = 0x00080000,
+
+        NonServerSide                                     = (0x00000000)
     }
 
     [Flags]
@@ -247,5 +264,7 @@ namespace WowPacketParser.Enums
         ForceCloseInOnPathFailBehavior                    = 0x00000002,
         Use2DChasingCalculation                           = 0x00000020,
         UseFastClassicHeartbeat                           = 0x00000040,
+
+        NonServerSide                                     = (0x00000000)
     }
 }

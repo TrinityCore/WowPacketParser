@@ -6,6 +6,35 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
 {
     public static class MiscellaneoutHandler
     {
+        public static void ReadQuickJoinConfig(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+
+            packet.ReadSingle("ToastDuration", indexes);
+            packet.ReadSingle("DelayDuration", indexes);
+            packet.ReadSingle("QueueMultiplier", indexes);
+            packet.ReadSingle("PlayerMultiplier", indexes);
+            packet.ReadSingle("PlayerFriendValue", indexes);
+            packet.ReadSingle("PlayerGuildValue", indexes);
+            packet.ReadSingle("ThrottleInitialThreshold", indexes);
+            packet.ReadSingle("ThrottleDecayTime", indexes);
+            packet.ReadSingle("ThrottlePrioritySpike", indexes);
+            packet.ReadSingle("ThrottleMinThreshold", indexes);
+            packet.ReadSingle("ThrottlePvPPriorityNormal", indexes);
+            packet.ReadSingle("ThrottlePvPPriorityLow", indexes);
+            packet.ReadSingle("ThrottlePvPHonorThreshold", indexes);
+            packet.ReadSingle("ThrottleLfgListPriorityDefault", indexes);
+            packet.ReadSingle("ThrottleLfgListPriorityAbove", indexes);
+            packet.ReadSingle("ThrottleLfgListPriorityBelow", indexes);
+            packet.ReadSingle("ThrottleLfgListIlvlScalingAbove", indexes);
+            packet.ReadSingle("ThrottleLfgListIlvlScalingBelow", indexes);
+            packet.ReadSingle("ThrottleRfPriorityAbove", indexes);
+            packet.ReadSingle("ThrottleRfIlvlScalingAbove", indexes);
+            packet.ReadSingle("ThrottleDfMaxItemLevel", indexes);
+            packet.ReadSingle("ThrottleDfBestPriority", indexes);
+            packet.ReadBit("ToastsDisabled", indexes);
+        }
+
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
@@ -22,10 +51,17 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
 
             packet.ReadUInt32("CommercePricePollTimeSeconds");
             packet.ReadUInt32("KioskSessionDurationMinutes");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                ReadQuickJoinConfig(packet, "QuickJoinConfig");
+
             packet.ReadInt64("RedeemForBalanceAmount");
 
             packet.ReadUInt32("ClubsPresenceDelay");
             packet.ReadUInt32("ClubPresenceUnsubscribeDelay");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "Squelch");
 
             packet.ReadInt32("ContentSetID");
             var disabledGameModesCount = packet.ReadUInt32("DisabledGameModesCount");
@@ -119,37 +155,14 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             packet.ReadBit("AddonProfilingEnabled");
             packet.ReadBit("GlobalUserGeneratedContentMuteEnabled");
             packet.ReadBit("AccountUserGeneratedContentIsRisky");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                packet.ReadBit("FriendsDisabled");
 
-            {
-                packet.ResetBitReader();
-                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V11_1_7_61491))
-                    packet.ReadBit("ToastsDisabled", "QuickJoinConfig");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                ReadQuickJoinConfig(packet, "QuickJoinConfig");
 
-                packet.ReadSingle("ToastDuration", "QuickJoinConfig");
-                packet.ReadSingle("DelayDuration", "QuickJoinConfig");
-                packet.ReadSingle("QueueMultiplier", "QuickJoinConfig");
-                packet.ReadSingle("PlayerMultiplier", "QuickJoinConfig");
-                packet.ReadSingle("PlayerFriendValue", "QuickJoinConfig");
-                packet.ReadSingle("PlayerGuildValue", "QuickJoinConfig");
-                packet.ReadSingle("ThrottleInitialThreshold", "QuickJoinConfig");
-                packet.ReadSingle("ThrottleDecayTime", "QuickJoinConfig");
-                packet.ReadSingle("ThrottlePrioritySpike", "QuickJoinConfig");
-                packet.ReadSingle("ThrottleMinThreshold", "QuickJoinConfig");
-                packet.ReadSingle("ThrottlePvPPriorityNormal", "QuickJoinConfig");
-                packet.ReadSingle("ThrottlePvPPriorityLow", "QuickJoinConfig");
-                packet.ReadSingle("ThrottlePvPHonorThreshold", "QuickJoinConfig");
-                packet.ReadSingle("ThrottleLfgListPriorityDefault", "QuickJoinConfig");
-                packet.ReadSingle("ThrottleLfgListPriorityAbove", "QuickJoinConfig");
-                packet.ReadSingle("ThrottleLfgListPriorityBelow", "QuickJoinConfig");
-                packet.ReadSingle("ThrottleLfgListIlvlScalingAbove", "QuickJoinConfig");
-                packet.ReadSingle("ThrottleLfgListIlvlScalingBelow", "QuickJoinConfig");
-                packet.ReadSingle("ThrottleRfPriorityAbove", "QuickJoinConfig");
-                packet.ReadSingle("ThrottleRfIlvlScalingAbove", "QuickJoinConfig");
-                packet.ReadSingle("ThrottleDfMaxItemLevel", "QuickJoinConfig");
-                packet.ReadSingle("ThrottleDfBestPriority", "QuickJoinConfig");
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_1_7_61491))
-                    packet.ReadBit("ToastsDisabled", "QuickJoinConfig");
-            }
+            if (hasEuropaTicketSystemStatus && ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
 
             if (hasSessionAlert)
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadClientSessionAlertConfig(packet, "SessionAlert");
@@ -157,10 +170,13 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_7_54577))
                 packet.ReadWoWString("Unknown1027", unknown1027StrLen);
 
-            V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+            {
+                V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "Squelch");
 
-            if (hasEuropaTicketSystemStatus)
-                V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
+                if (hasEuropaTicketSystemStatus)
+                    V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
+            }
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN)]
@@ -215,7 +231,7 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
 
             packet.ResetBitReader();
 
-            if (europaTicket)
+            if (europaTicket && ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
 
             packet.ReadUInt32("CommercePricePollTimeSeconds");
@@ -241,6 +257,9 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             var debugTimeEventCount = packet.ReadUInt32("DebugTimeEventCount");
             packet.ReadInt32("MostRecentTimeEventID");
             packet.ReadUInt32("EventRealmQueues");
+
+            if (europaTicket && ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
 
             if (launchEta)
                 packet.ReadInt32("LaunchETA");

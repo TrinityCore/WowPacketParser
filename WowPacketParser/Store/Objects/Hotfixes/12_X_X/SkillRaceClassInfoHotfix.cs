@@ -34,4 +34,74 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("skill_race_class_info")]
+    public sealed record SkillRaceClassInfoHotfix1205: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("RaceMask")]
+        public long? RaceMask;
+
+        [DBFieldName("SkillID")]
+        public ushort? SkillID;
+
+        [DBFieldName("ClassMask")]
+        public int? ClassMask;
+
+        [DBFieldName("Flags")]
+        public int? Flags;
+
+        [DBFieldName("Availability")]
+        public int? Availability;
+
+        [DBFieldName("MinLevel")]
+        public sbyte? MinLevel;
+
+        [DBFieldName("SkillTierID")]
+        public short? SkillTierID;
+
+        [DBFieldName("RaceMask_1")]
+        public int? RaceMask_1;
+
+        [DBFieldName("RaceMask_2")]
+        public int? RaceMask_2;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+
+    [Hotfix]
+    [DBTableName("skill_race_class_info")]
+    public sealed record SkillRaceClassInfoHotfix1207: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("SkillID")]
+        public ushort? SkillID;
+
+        [DBFieldName("ClassMask")]
+        public int? ClassMask;
+
+        [DBFieldName("Flags")]
+        public int? Flags;
+
+        [DBFieldName("Availability")]
+        public int? Availability;
+
+        [DBFieldName("MinLevel")]
+        public sbyte? MinLevel;
+
+        [DBFieldName("SkillTierID")]
+        public short? SkillTierID;
+
+        [DBFieldName("RaceMask", 2)]
+        public int?[] RaceMask;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

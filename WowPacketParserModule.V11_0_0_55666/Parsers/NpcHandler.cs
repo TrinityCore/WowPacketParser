@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
         {
             PacketGossipMessage packetGossip = packet.Holder.GossipMessage = new();
 
-            WowGuid guid = packet.ReadPackedGuid128("GossipGUID");
+            var guid = packet.ReadPackedGuid128("GossipGUID");
             packetGossip.GossipSource = guid;
 
             var menuId = packet.ReadInt32("GossipID");
@@ -27,26 +27,29 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
             var lfgDungeonsId = packet.ReadInt32("LfgDungeonsID");
             var friendshipFactionID = packet.ReadInt32("FriendshipFactionID");
 
-            CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, friendshipFactionID, lfgDungeonsId, guid, packet.TimeSpan);
-
             var optionsCount = packet.ReadUInt32("GossipOptionsCount");
             var questsCount = packet.ReadUInt32("GossipQuestsCount");
 
-            var hasBroadcastTextID = packet.ReadBit("HasBroadcastTextID");
-            var hasBroadcastTextID2 = packet.ReadBit("HasBroadcastTextID2");
+            var hasRandomTextID = packet.ReadBit("HasRandomTextID");
+            var hasBroadcastTextID = packet.ReadBit("HasBroadcastTextID2");
 
             for (var i = 0u; i < optionsCount; ++i)
                 packetGossip.Options.Add(V6_0_2_19033.Parsers.NpcHandler.ReadGossipOptionsData((uint)menuId, guid, packet, i, "GossipOptions"));
 
-            uint broadcastTextID = 0;
-            uint npcTextID = 0;
+            var broadcastTextID = 0u;
+            var npcTextID = 0u;
 
-            if (hasBroadcastTextID)
+            if (hasRandomTextID)
+                broadcastTextID = (uint)packet.ReadInt32("RandomTextID");
+            else if (hasBroadcastTextID)
                 broadcastTextID = (uint)packet.ReadInt32("BroadcastTextID");
-            else if (hasBroadcastTextID2)
-                broadcastTextID = (uint)packet.ReadInt32("BroadcastTextID2");
 
-            if (hasBroadcastTextID || hasBroadcastTextID2)
+            for (var i = 0u; i < questsCount; ++i)
+                packetGossip.Quests.Add(V7_0_3_22248.Parsers.NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests"));
+
+            CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, friendshipFactionID, lfgDungeonsId, guid, packet.TimeSpan);
+
+            if (hasRandomTextID || hasBroadcastTextID)
                 npcTextID = SQLDatabase.GetNPCTextIDByMenuIDAndBroadcastText(menuId, broadcastTextID);
 
             if (npcTextID != 0)
@@ -61,11 +64,8 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
 
                 Storage.Gossips.Add(gossip, packet.TimeSpan);
             }
-            else if (hasBroadcastTextID || hasBroadcastTextID2)
+            else if (hasRandomTextID || hasBroadcastTextID)
                 V9_0_1_36216.Parsers.NpcHandler.AddBroadcastTextToGossip(packetGossip.MenuId, broadcastTextID, guid);
-
-            for (var i = 0u; i < questsCount; ++i)
-                packetGossip.Quests.Add(V7_0_3_22248.Parsers.NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests"));
 
             CoreParsers.NpcHandler.AddCreatureTemplateGossip(guid, (uint)menuId, packet.TimeSpan);
             CoreParsers.NpcHandler.UpdateLastGossipOptionActionMessage(packet.TimeSpan, (uint)menuId);
@@ -100,7 +100,7 @@ namespace WowPacketParserModule.V11_0_0_55666.Parsers
                 packet.ReadBit("Refundable", i);
                 packet.ResetBitReader();
 
-                vendor.Item = Substructures.ItemHandler.ReadItemInstance1100(packet, i).ItemID;
+                vendor.Item = Substructures.ItemHandler.ReadItemInstance(packet, i).ItemID;
 
                 vendor.MaxCount = maxCount == -1 ? 0 : (uint)maxCount; // TDB
                 if (vendor.Type == 2)

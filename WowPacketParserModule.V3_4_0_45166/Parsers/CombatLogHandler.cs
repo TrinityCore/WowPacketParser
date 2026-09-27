@@ -16,7 +16,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt16("PlayerLevelDelta", idx);
             packet.ReadSByte("TargetScalingLevelDelta", idx);
             packet.ReadUInt16("PlayerItemlevel", idx);
-            packet.ReadUInt16("TargetItemLevel", idx);
+            packet.ReadUInt32("ItemLevelScalingCurveID", idx);
             packet.ReadByte("ScalesWithItemLevel", idx);
         }
 
@@ -27,7 +27,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadUInt16("PlayerItemLevel", idx);
             packet.ReadInt16("PlayerLevelDelta", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817))
-                packet.ReadUInt32("TargetItemLevel", idx);
+                packet.ReadUInt32("ItemLevelScalingCurveID", idx);
             else
                 packet.ReadUInt16("TargetItemLevel", idx);
             packet.ReadByte("TargetLevel", idx);
@@ -37,64 +37,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadSByte("TargetScalingLevelDelta", idx);
             packet.ReadBits("Type", 4, idx);
             packet.ReadBit("ScalesWithItemLevel", idx);
-        }
-
-        public static void ReadAttackRoundInfo(Packet packet, params object[] indexes)
-        {
-            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo", indexes);
-
-            packet.ReadPackedGuid128("AttackerGUID", indexes);
-            packet.ReadPackedGuid128("TargetGUID", indexes);
-
-            packet.ReadInt32("Damage", indexes);
-            packet.ReadInt32("OriginalDamage", indexes);
-            packet.ReadInt32("OverDamage", indexes);
-
-            var subDmgCount = packet.ReadBool("HasSubDmg", indexes);
-            if (subDmgCount)
-            {
-                packet.ReadInt32("SchoolMask", indexes);
-                packet.ReadSingle("FloatDamage", indexes);
-                packet.ReadInt32("IntDamage", indexes);
-
-                if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
-                    packet.ReadInt32("DamageAbsorbed", indexes);
-
-                if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
-                    packet.ReadInt32("DamageResisted", indexes);
-            }
-
-            packet.ReadByteE<VictimStates>("VictimState", indexes);
-            packet.ReadInt32("AttackerState", indexes);
-
-            packet.ReadInt32<SpellId>("MeleeSpellID", indexes);
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
-                packet.ReadInt32("BlockAmount", indexes);
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_RAGE_GAIN))
-                packet.ReadInt32("RageGained", indexes);
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
-            {
-                packet.ReadInt32("Unk Attacker State 3 1", indexes);
-                packet.ReadSingle("Unk Attacker State 3 2", indexes);
-                packet.ReadSingle("Unk Attacker State 3 3", indexes);
-                packet.ReadSingle("Unk Attacker State 3 4", indexes);
-                packet.ReadSingle("Unk Attacker State 3 5", indexes);
-                packet.ReadSingle("Unk Attacker State 3 6", indexes);
-                packet.ReadSingle("Unk Attacker State 3 7", indexes);
-                packet.ReadSingle("Unk Attacker State 3 8", indexes);
-                packet.ReadSingle("Unk Attacker State 3 9", indexes);
-                packet.ReadSingle("Unk Attacker State 3 10", indexes);
-                packet.ReadSingle("Unk Attacker State 3 11", indexes);
-                packet.ReadInt32("Unk Attacker State 3 12", indexes);
-            }
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
-                packet.ReadSingle("Unk Float", indexes);
-
-            ReadCombatLogContentTuning(packet, indexes, "ContentTuning");
         }
 
         public static void ReadSpellNonMeleeDebugData(Packet packet, params object[] idx)
@@ -111,7 +53,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadSingle("CrushChance", idx);
         }
 
-        public static void ReadAttackRoundInfo344(Packet packet, params object[] indexes)
+        public static void ReadAttackRoundInfo(Packet packet, params object[] indexes)
         {
             var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo", indexes);
 
@@ -122,18 +64,18 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt32("OriginalDamage", indexes);
             packet.ReadInt32("OverDamage", indexes);
 
-            var subDmgCount = packet.ReadBool("HasSubDmg", indexes);
-            if (subDmgCount)
+            var subDmgCount = packet.ReadByte("SubDmgCount", indexes);
+            for (var i = 0; i < subDmgCount; ++i)
             {
-                packet.ReadInt32("SchoolMask", indexes);
-                packet.ReadSingle("FloatDamage", indexes);
-                packet.ReadInt32("IntDamage", indexes);
+                packet.ReadInt32("SchoolMask", indexes, i);
+                packet.ReadSingle("FloatDamage", indexes, i);
+                packet.ReadInt32("IntDamage", indexes, i);
 
                 if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
-                    packet.ReadInt32("DamageAbsorbed", indexes);
+                    packet.ReadInt32("DamageAbsorbed", indexes, i);
 
                 if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
-                    packet.ReadInt32("DamageResisted", indexes);
+                    packet.ReadInt32("DamageResisted", indexes, i);
             }
 
             packet.ReadByteE<VictimStates>("VictimState", indexes);
@@ -149,29 +91,32 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
             {
-                packet.ReadInt32("Unk Attacker State 3 1", indexes);
-                packet.ReadSingle("Unk Attacker State 3 2", indexes);
-                packet.ReadSingle("Unk Attacker State 3 3", indexes);
-                packet.ReadSingle("Unk Attacker State 3 4", indexes);
-                packet.ReadSingle("Unk Attacker State 3 5", indexes);
-                packet.ReadSingle("Unk Attacker State 3 6", indexes);
-                packet.ReadSingle("Unk Attacker State 3 7", indexes);
-                packet.ReadSingle("Unk Attacker State 3 8", indexes);
-                packet.ReadSingle("Unk Attacker State 3 9", indexes);
+                packet.ReadInt32("ArmorReduction", indexes);
+                packet.ReadSingle("CritRollNeeded", indexes);
+                packet.ReadSingle("CombatRoll", indexes);
+                packet.ReadSingle("MissChance", indexes);
+                packet.ReadSingle("DodgeChance", indexes);
+                packet.ReadSingle("ParryChance", indexes);
+                packet.ReadSingle("BlockChance", indexes);
+                packet.ReadSingle("GlanceChance", indexes);
+                packet.ReadSingle("CrushChance", indexes);
 
                 for (var j = 0; j < 5; j++)
                 {
-                    packet.ReadSingle("Unk Attacker State 3 10", j, indexes);
-                    packet.ReadSingle("Unk Attacker State 3 11", j, indexes);
+                    packet.ReadSingle("MinDamage", indexes, j);
+                    packet.ReadSingle("MaxDamage", indexes, j);
                 }
 
-                packet.ReadInt32("Unk Attacker State 3 12", indexes);
+                packet.ReadInt32("SinceLastSwing", indexes);
             }
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
-                packet.ReadSingle("Unk Float", indexes);
+                packet.ReadSingle("BlockRoll", indexes);
 
-            ReadContentTuningParams(packet, indexes, "ContentTuning");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_4_59817))
+                ReadContentTuningParams(packet, indexes, "ContentTuning");
+            else
+                ReadCombatLogContentTuning(packet, indexes, "ContentTuning");
         }
 
         public static void ReadSpellSupportInfo(Packet packet, params object[] idx)
@@ -248,20 +193,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 ReadContentTuningParams(packet, "ContentTuning");
         }
 
-        [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE, ClientVersionBuild.V3_4_0_44832, ClientVersionBuild.V3_4_4_59817)]
-        public static void HandleAttackerStateUpdate(Packet packet)
-        {
-            var unkBit = packet.ReadBit("UnkBit");
-
-            if (unkBit)
-                packet.ReadSByte("UnkSByte");
-
-            packet.ReadInt32("Size");
-
-            ReadAttackRoundInfo(packet, "AttackRoundInfo");
-        }
-
-        [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE, ClientVersionBuild.V3_4_4_59817)]
+        [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE)]
         public static void HandleAttackerStateUpdate344(Packet packet)
         {
             var hasLogData = packet.ReadBit("HasLogData");
@@ -271,7 +203,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ReadInt32("Size");
 
-            ReadAttackRoundInfo344(packet, "AttackRoundInfo");
+            ReadAttackRoundInfo(packet, "AttackRoundInfo");
         }
 
         [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG, ClientVersionBuild.V3_4_4_59817)]
@@ -569,7 +501,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             packet.ReadInt32("Size");
 
-            ReadAttackRoundInfo344(packet, "AttackRoundInfo");
+            ReadAttackRoundInfo(packet, "AttackRoundInfo");
         }
     }
 }

@@ -229,7 +229,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 }
 
                 monsterMove.Points.Add(spot);
-                packet.AddValue("Spline Waypoint", spot, i);
+                packet.AddValue("Points", spot, i);
             }
 
             packet.ReadXORByte(ownerGUID, 6);
@@ -269,7 +269,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     Z = mid.Z - waypoints[i].Z
                 };
                 monsterMove.PackedPoints.Add(vec);
-                packet.AddValue("Waypoint", vec, i);
+                packet.AddValue("WayPoints", vec, i);
             }
 
             monsterMove.Mover = packet.WriteGuid("Owner GUID", ownerGUID);

@@ -22,4 +22,24 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [Hotfix]
+    [DBTableName("path_property")]
+    public sealed record PathPropertyHotfix1205: IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("PathID")]
+        public int? PathID;
+
+        [DBFieldName("PropertyIndex")]
+        public byte? PropertyIndex;
+
+        [DBFieldName("Value")]
+        public int? Value;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

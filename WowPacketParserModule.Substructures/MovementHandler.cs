@@ -83,7 +83,7 @@ namespace WowPacketParserModule.Substructures
             }
         }
 
-        public static MovementInfo ReadMovementStats602(Packet packet, params object[] idx)
+        private static MovementInfo ReadMovementStats602(Packet packet, params object[] idx)
         {
             MovementInfo info = new();
             info.MoverGuid = packet.ReadPackedGuid128("MoverGUID", idx);
@@ -130,7 +130,7 @@ namespace WowPacketParserModule.Substructures
             return info;
         }
 
-        public static MovementInfo ReadMovementStats920(Packet packet, params object[] idx)
+        private static MovementInfo ReadMovementStats920(Packet packet, params object[] idx)
         {
             MovementInfo info = new();
             info.MoverGuid = packet.ReadPackedGuid128("MoverGUID", idx);
@@ -206,8 +206,63 @@ namespace WowPacketParserModule.Substructures
             return info;
         }
 
+        private static MovementInfo ReadMovementStats1210(Packet packet, params object[] idx)
+        {
+            MovementInfo info = new();
+            info.MoverGuid = packet.ReadPackedGuid128("MoverGUID", idx);
+            info.Flags64 = (ulong)packet.ReadUInt64E<WowPacketParser.Enums.v12.MovementFlag>("MovementFlags", idx);
+            packet.ReadUInt32("MoveTime", idx);
+            var position = packet.ReadVector4("Position", idx);
+            info.Position = new Vector3 { X = position.X, Y = position.Y, Z = position.Z };
+            info.Orientation = position.O;
+
+            packet.ReadSingle("Pitch", idx);
+            packet.ReadSingle("StepUpStartElevation", idx);
+            var removeForcesCount = packet.ReadInt32("RemoveForcesCount", idx);
+            packet.ReadInt32("MoveIndex", idx);
+            packet.ReadSingle("GravityModifier", idx);
+
+            for (var i = 0; i < removeForcesCount; i++)
+                packet.ReadPackedGuid128("RemoveForcesIDs", idx, i);
+
+            packet.ResetBitReader();
+
+            var hasStandingOnGameObjectGUID = packet.ReadBit("HasStandingOnGameObjectGUID", idx);
+            var hasTransport = packet.ReadBit("HasTransportData", idx);
+            var hasFall = packet.ReadBit("HasFallData", idx);
+            packet.ReadBit("HasSpline", idx);
+            packet.ReadBit("HeightChangeFailed", idx);
+            packet.ReadBit("RemoteTimeValid", idx);
+            var hasInertia = packet.ReadBit("HasInertia", idx);
+            var hasAdvFlying = packet.ReadBit("HasAdvFlying", idx);
+            var hasDriveStatus = packet.ReadBit("HasDriveStatus", idx);
+
+            if (hasStandingOnGameObjectGUID)
+                packet.ReadPackedGuid128("StandingOnGameObjectGUID", idx);
+
+            if (hasTransport)
+                info.Transport = ReadTransportData(packet, idx, "TransportData");
+
+            if (hasFall)
+                ReadFallData(packet, idx, "FallData");
+
+            if (hasInertia)
+                ReadInertiaData(packet, idx, "Inertia");
+
+            if (hasAdvFlying)
+                ReadAdvFlyingData(packet, idx, "AdvFlying");
+
+            if (hasDriveStatus)
+                ReadDriveStatusData(packet, idx, "DriveStatus");
+
+            return info;
+        }
+
         public static MovementInfo ReadMovementStats(Packet packet, params object[] idx)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                return ReadMovementStats1210(packet, idx);
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
                 return ReadMovementStats920(packet, idx);
 

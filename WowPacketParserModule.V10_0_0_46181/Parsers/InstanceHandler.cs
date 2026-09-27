@@ -10,6 +10,9 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
         {
             packet.ReadPackedGuid128("CasterGUID", idx);
             packet.ReadUInt32<SpellId>("SpellID", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_0_7_68182))
+                packet.ReadInt32("Applications", idx);
         }
 
         public static void ReadItemInfo(Packet packet, params object[] idx)
@@ -96,6 +99,10 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
             packet.ReadInt32("Season", idx);
             packet.ReadInt32("Rating", idx);
             packet.ReadInt32("Tier", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                TraitHandler.ReadTraitConfig(packet, idx, "TraitConfig");
+
             var itemInfoCount = packet.ReadUInt32();
 
             for (var i = 0; i < statCount; i++)
@@ -123,7 +130,8 @@ namespace WowPacketParserModule.V10_0_0_46181.Parsers
                 ReadItemInfo(packet, idx, "ItemInfo", i);
             }
 
-            TraitHandler.ReadTraitConfig(packet, idx, "TraitConfig");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                TraitHandler.ReadTraitConfig(packet, idx, "TraitConfig");
 
             packet.ResetBitReader();
             var hasBFACharacterInfo = packet.ReadBit("HasBFACharacterInfo", idx);

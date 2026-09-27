@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V11_0_0_55666.UpdateFields.V11_2_7_64632
     public class AreaTriggerSplineCalculator : IAreaTriggerSplineCalculator
     {
         public DynamicUpdateField<System.Nullable<Vector3>> Points { get; } = new();
-        public System.Nullable<bool> Catmullrom { get; set; }
+        public System.Nullable<bool> Linear { get; set; }
     }
 }
 

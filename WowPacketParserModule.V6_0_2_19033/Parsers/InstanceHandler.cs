@@ -213,6 +213,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             else
                 packet.ReadInt32<DifficultyId>("DifficultyID");
             packet.ReadInt32("GroupSize");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                packet.ReadUInt32("Time");
+
             packet.ReadBit("Success");
         }
 

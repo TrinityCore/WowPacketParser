@@ -19,6 +19,7 @@ namespace WowPacketParser.Enums.Version.V2_5_5_64796
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new()
         {
+            { Opcode.CMSG_CAST_SPELL, 0x3D015C },
             { Opcode.CMSG_CHAT_MESSAGE_SAY, 0x2F0023 },
             { Opcode.CMSG_AREA_TRIGGER, 0x3D0085 },
             { Opcode.CMSG_SEND_TEXT_EMOTE, 0x3E0013 },
@@ -41,10 +42,12 @@ namespace WowPacketParser.Enums.Version.V2_5_5_64796
             { Opcode.SMSG_ON_MONSTER_MOVE, 0x5C0002 },
             { Opcode.SMSG_UPDATE_OBJECT, 0x5A0000 },
             { Opcode.SMSG_AURA_UPDATE, 0x630011 },
+            { Opcode.SMSG_CAST_FAILED, 0x630046 },
             { Opcode.SMSG_SPELL_GO, 0x630028 },
             { Opcode.SMSG_SPELL_START, 0x630029 },
             { Opcode.SMSG_PET_SPELLS_MESSAGE, 0x630014 },
             { Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, 0x630021 },
+            { Opcode.SMSG_SPELL_INSTAKILL_LOG, 0x630022 },
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new();

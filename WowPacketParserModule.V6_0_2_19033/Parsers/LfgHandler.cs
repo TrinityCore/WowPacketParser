@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -20,7 +19,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_5_43903))
             {
                 packet.ResetBitReader();
-                packet.ReadBit("Unknown925", idx);
+                packet.ReadBit("IsCrossFaction", idx);
             }
         }
 
@@ -184,16 +183,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         ReadLfgPlayerQuestReward(packet, i, j, "ShortageReward");
                 }
 
-                packet.ResetBitReader();
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V12_1_0_69214))
+                {
+                    packet.ResetBitReader();
 
-                packet.ReadBit("FirstReward", i);
-                packet.ReadBit("ShortageEligible", i);
+                    packet.ReadBit("FirstReward", i);
+                    packet.ReadBit("ShortageEligible", i);
+                }
 
                 if (ClientVersion.AddedInVersion(ClientType.Legion))
                 {
                     ReadLfgPlayerQuestReward(packet, i, "Rewards");
                     for (var j = 0; j < shortageRewardCount; ++j)
                         ReadLfgPlayerQuestReward(packet, i, j, "ShortageReward");
+                }
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
+                {
+                    packet.ResetBitReader();
+
+                    packet.ReadBit("FirstReward", i);
+                    packet.ReadBit("ShortageEligible", i);
                 }
             }
         }
@@ -229,31 +239,38 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadCliRideTicket(packet);
 
             packet.ReadByte("SubType");
-            packet.ReadByte("Reason");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                packet.ReadInt32("Reason");
+            else
+                packet.ReadByte("Reason");
 
             if (ClientVersion.RemovedInVersion(ClientType.Legion))
-                for (int i = 0; i < 3; i++)
+                for (var i = 0; i < 3; i++)
                     packet.ReadByte("Needs", i);
 
-            var int8 = packet.ReadInt32("SlotsCount");
+            var slotsCount = packet.ReadInt32("SlotsCount");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_1_7_51187))
                 packet.ReadByteE<LfgRoleFlag>("RequestedRoles");
             else
                 packet.ReadUInt32E<LfgRoleFlag>("RequestedRoles");
 
-            var int4 = packet.ReadInt32("SuspendedPlayersCount");
+            var suspendedPlayersCount = packet.ReadInt32("SuspendedPlayersCount");
 
-            for (int i = 0; i < int8; i++)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
+                packet.ReadInt32<MapId>("QueueMapID");
+
+            for (var i = 0; i < slotsCount; i++)
                 packet.ReadInt32("Slots", i);
 
-            for (int i = 0; i < int4; i++)
+            for (var i = 0; i < suspendedPlayersCount; i++)
                 packet.ReadPackedGuid128("SuspendedPlayers", i);
 
             packet.ResetBitReader();
 
-            packet.ReadBit("IsParty");
             packet.ReadBit("NotifyUI");
+            packet.ReadBit("IsParty");
             packet.ReadBit("Joined");
             packet.ReadBit("LfgJoined");
             packet.ReadBit("Queued");
@@ -434,6 +451,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadCliRideTicket(packet);
             packet.ReadInt64("InstanceID");
             packet.ReadInt32("ProposalID");
+
+            packet.ResetBitReader();
             packet.ReadBit("Accepted");
         }
 

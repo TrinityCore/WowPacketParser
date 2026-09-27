@@ -449,7 +449,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                                 X = packet.ReadSingle()
                             };
 
-                            packet.AddValue("Spline Waypoint", wp, index, i);
+                            packet.AddValue("Points", wp, index, i);
                         }
 
                         if (bit134)

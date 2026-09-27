@@ -744,7 +744,6 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
         {
             var data = new UnitData();
             packet.ResetBitReader();
-            /*
             var rawChangesMask = new int[8];
             var rawMaskMask = new int[1];
             rawMaskMask[0] = (int)packet.ReadBits(8);
@@ -1342,7 +1341,6 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
                     }
                 }
             }
-            */
             return data;
         }
 
@@ -1553,18 +1551,15 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
         public override IPlayerData ReadUpdatePlayerData(Packet packet, params object[] indexes)
         {
             var data = new PlayerData();
-            packet.ResetBitReader();
-            /*
-            var rawChangesMask = new int[4];
+            var rawChangesMask = new int[3];
             var rawMaskMask = new int[1];
-            rawMaskMask[0] = (int)packet.ReadBits(4);
+            rawMaskMask[0] = (int)packet.ReadBits(3);
             var maskMask = new BitArray(rawMaskMask);
-            for (var i = 0; i < 4; ++i)
+            for (var i = 0; i < 3; ++i)
                 if (maskMask[i])
                     rawChangesMask[i] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
 
-            var noQuestLogChangesMask = packet.ReadBit();
             if (changesMask[0])
             {
                 if (changesMask[1])
@@ -1589,7 +1584,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
                     {
                         if (data.Customizations.UpdateMask[i])
                         {
-                            data.Customizations[i] = ReadUpdateChrCustomizationChoice(packet, indexes, "Customizations", i);
+                            data.Customizations[i] = ReadUpdateChrCustomizationChoice(packet, data.Customizations[i] as ChrCustomizationChoice, indexes, "Customizations", i);
                         }
                     }
                 }
@@ -1599,7 +1594,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
                     {
                         if (data.ArenaCooldowns.UpdateMask[i])
                         {
-                            data.ArenaCooldowns[i] = ReadUpdateArenaCooldown(packet, indexes, "ArenaCooldowns", i);
+                            data.ArenaCooldowns[i] = ReadUpdateArenaCooldown(packet, data.ArenaCooldowns[i] as ArenaCooldown, indexes, "ArenaCooldowns", i);
                         }
                     }
                 }
@@ -1645,137 +1640,119 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
                 {
                     data.GuildLevel = packet.ReadInt32("GuildLevel", indexes);
                 }
-                if (changesMask[12])
+                if (changesMask[13])
                 {
                     data.NumBankSlots = packet.ReadByte("NumBankSlots", indexes);
                 }
-                if (changesMask[13])
-                {
-                    data.NativeSex = packet.ReadByte("NativeSex", indexes);
-                }
                 if (changesMask[14])
                 {
-                    data.Inebriation = packet.ReadByte("Inebriation", indexes);
+                    data.PartyType[0] = packet.ReadByte("PartyType", indexes);
                 }
                 if (changesMask[15])
                 {
-                    data.PvpTitle = packet.ReadByte("PvpTitle", indexes);
+                    data.NativeSex = packet.ReadByte("NativeSex", indexes);
                 }
                 if (changesMask[16])
                 {
-                    data.ArenaFaction = packet.ReadByte("ArenaFaction", indexes);
+                    data.Inebriation = packet.ReadByte("Inebriation", indexes);
                 }
                 if (changesMask[17])
                 {
-                    data.PvpRank = packet.ReadByte("PvpRank", indexes);
+                    data.PvpTitle = packet.ReadByte("PvpTitle", indexes);
                 }
                 if (changesMask[18])
                 {
-                    data.DuelTeam = packet.ReadUInt32("DuelTeam", indexes);
+                    data.ArenaFaction = packet.ReadByte("ArenaFaction", indexes);
                 }
                 if (changesMask[19])
                 {
-                    data.GuildTimeStamp = packet.ReadInt32("GuildTimeStamp", indexes);
+                    data.PvpRank = packet.ReadByte("PvpRank", indexes);
                 }
                 if (changesMask[20])
                 {
-                    data.PlayerTitle = packet.ReadInt32("PlayerTitle", indexes);
+                    data.DuelTeam = packet.ReadUInt32("DuelTeam", indexes);
                 }
                 if (changesMask[21])
                 {
-                    data.FakeInebriation = packet.ReadInt32("FakeInebriation", indexes);
+                    data.GuildTimeStamp = packet.ReadInt32("GuildTimeStamp", indexes);
                 }
                 if (changesMask[22])
                 {
-                    data.VirtualPlayerRealm = packet.ReadUInt32("VirtualPlayerRealm", indexes);
+                    data.PlayerTitle = packet.ReadInt32("PlayerTitle", indexes);
                 }
                 if (changesMask[23])
                 {
-                    data.CurrentSpecID = packet.ReadUInt32("CurrentSpecID", indexes);
+                    data.FakeInebriation = packet.ReadInt32("FakeInebriation", indexes);
                 }
                 if (changesMask[24])
                 {
-                    data.TaxiMountAnimKitID = packet.ReadInt32("TaxiMountAnimKitID", indexes);
+                    data.VirtualPlayerRealm = packet.ReadUInt32("VirtualPlayerRealm", indexes);
                 }
                 if (changesMask[25])
                 {
-                    data.CurrentBattlePetBreedQuality = packet.ReadByte("CurrentBattlePetBreedQuality", indexes);
+                    data.CurrentSpecID = packet.ReadUInt32("CurrentSpecID", indexes);
                 }
                 if (changesMask[26])
                 {
-                    data.HonorLevel = packet.ReadInt32("HonorLevel", indexes);
+                    data.TaxiMountAnimKitID = packet.ReadInt32("TaxiMountAnimKitID", indexes);
                 }
                 if (changesMask[27])
                 {
-                    data.LogoutTime = packet.ReadInt64("LogoutTime", indexes);
+                    data.CurrentBattlePetBreedQuality = packet.ReadByte("CurrentBattlePetBreedQuality", indexes);
                 }
                 if (changesMask[28])
                 {
-                    data.CurrentBattlePetSpeciesID = packet.ReadInt32("CurrentBattlePetSpeciesID", indexes);
+                    data.HonorLevel = packet.ReadInt32("HonorLevel", indexes);
                 }
                 if (changesMask[29])
                 {
-                    data.BnetAccount = packet.ReadPackedGuid128("BnetAccount", indexes);
+                    data.LogoutTime = packet.ReadInt64("LogoutTime", indexes);
                 }
                 if (changesMask[30])
                 {
-                    Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, indexes, "DungeonScore");
+                    data.CurrentBattlePetSpeciesID = packet.ReadInt32("CurrentBattlePetSpeciesID", indexes);
                 }
             }
             if (changesMask[31])
             {
-                for (var i = 0; i < 2; ++i)
+                for (var i = 0; i < 25; ++i)
                 {
                     if (changesMask[32 + i])
                     {
-                        data.PartyType[i] = packet.ReadByte("PartyType", indexes, i);
+                        data.QuestLog[i] = ReadUpdateQuestLog(packet, data.QuestLog[i] as QuestLog, indexes, "QuestLog", i);
                     }
                 }
             }
-            if (changesMask[34])
-            {
-                for (var i = 0; i < 25; ++i)
-                {
-                    if (changesMask[35 + i])
-                    {
-                        if (noQuestLogChangesMask)
-                            data.QuestLog[i] = ReadCreateQuestLog(packet, indexes, "QuestLog", i);
-                        else
-                            data.QuestLog[i] = ReadUpdateQuestLog(packet, indexes, "QuestLog", i);
-                    }
-                }
-            }
-            if (changesMask[60])
+            if (changesMask[56])
             {
                 for (var i = 0; i < 19; ++i)
                 {
-                    if (changesMask[61 + i])
+                    if (changesMask[57 + i])
                     {
-                        data.VisibleItems[i] = ReadUpdateVisibleItem(packet, indexes, "VisibleItems", i);
+                        data.VisibleItems[i] = ReadUpdateVisibleItem(packet, data.VisibleItems[i] as VisibleItem, indexes, "VisibleItems", i);
                     }
                 }
             }
-            if (changesMask[80])
+            if (changesMask[76])
             {
                 for (var i = 0; i < 6; ++i)
                 {
-                    if (changesMask[81 + i])
+                    if (changesMask[77 + i])
                     {
                         data.AvgItemLevel[i] = packet.ReadSingle("AvgItemLevel", indexes, i);
                     }
                 }
             }
-            if (changesMask[87])
+            if (changesMask[83])
             {
                 for (var i = 0; i < 19; ++i)
                 {
-                    if (changesMask[88 + i])
+                    if (changesMask[84 + i])
                     {
                         data.Field_3120[i] = packet.ReadUInt32("Field_3120", indexes, i);
                     }
                 }
             }
-            */
             return data;
         }
 
@@ -3434,9 +3411,9 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
             return data;
         }
 
-        public static IScaleCurve ReadCreateScaleCurve(Packet packet, params object[] indexes)
+        public static IOverrideCurve ReadCreateScaleCurve(Packet packet, params object[] indexes)
         {
-            var data = new ScaleCurve();
+            var data = new OverrideCurve();
             packet.ResetBitReader();
             data.StartTimeOffset = packet.ReadUInt32("StartTimeOffset", indexes);
             for (var i = 0; i < 2; ++i)
@@ -3448,9 +3425,9 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
             return data;
         }
 
-        public static IScaleCurve ReadUpdateScaleCurve(Packet packet, params object[] indexes)
+        public static IOverrideCurve ReadUpdateScaleCurve(Packet packet, params object[] indexes)
         {
-            var data = new ScaleCurve();
+            var data = new OverrideCurve();
             packet.ResetBitReader();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(7);
@@ -3566,7 +3543,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
             {
                 if (changesMask[1])
                 {
-                    data.OverrideScaleCurve = ReadUpdateScaleCurve(packet, data.OverrideScaleCurve as ScaleCurve, indexes, "OverrideScaleCurve");
+                    data.OverrideScaleCurve = ReadUpdateScaleCurve(packet, data.OverrideScaleCurve as OverrideCurve, indexes, "OverrideScaleCurve");
                 }
                 if (changesMask[3])
                 {
@@ -3618,7 +3595,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_2_50129
                 }
                 if (changesMask[2])
                 {
-                    data.ExtraScaleCurve = ReadUpdateScaleCurve(packet, data.ExtraScaleCurve as ScaleCurve, indexes, "ExtraScaleCurve");
+                    data.ExtraScaleCurve = ReadUpdateScaleCurve(packet, data.ExtraScaleCurve as OverrideCurve, indexes, "ExtraScaleCurve");
                 }
                 if (changesMask[15])
                 {

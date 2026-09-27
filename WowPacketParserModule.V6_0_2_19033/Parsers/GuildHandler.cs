@@ -170,7 +170,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_GUILD_NEWS)]
-        public static void HandleGuildUpdateRoster(Packet packet)
+        public static void HandleGuildNews(Packet packet)
         {
             var count = packet.ReadInt32("NewsCount");
 
@@ -178,7 +178,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 packet.ReadInt32("Id", i);
                 packet.ReadPackedTime("CompletedDate", i);
-                packet.ReadInt32("Type", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_5_63506))
+                    packet.ReadByte("Type", i);
+                else
+                    packet.ReadInt32("Type", i);
+
                 packet.ReadInt32("Flags", i);
 
                 for (var j = 0; j < 2; ++j)
@@ -193,9 +197,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ResetBitReader();
 
-                var bit80 = packet.ReadBit("HasItemInstance", i);
+                var bit80 = packet.ReadBit("HasItem", i);
                 if (bit80)
-                    Substructures.ItemHandler.ReadItemInstance(packet, i);
+                    Substructures.ItemHandler.ReadItemInstance(packet, i, "Item");
             }
         }
 
@@ -216,12 +220,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GUILD_KNOWN_RECIPES)]
         public static void HandleGuildRecipes(Packet packet)
         {
+            var byteCount = ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213) ? 600 : 300;
+
             var count = packet.ReadInt32("Criteria count");
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadInt32("Skill Id", i);
-                packet.ReadBytes("Skill Bits", 300, i);
+                packet.ReadInt32("SkillLineID", i);
+                packet.ReadBytes("SkillLineBitArray", byteCount, i);
             }
         }
 
@@ -829,11 +835,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GUILD_MEMBER_RECIPES)]
         public static void HandleGuildMemberRecipes(Packet packet)
         {
+            var byteCount = ClientVersion.AddedInVersion(ClientVersionBuild.V11_2_0_62213) ? 600 : 300;
+
             packet.ReadPackedGuid128("Member");
             packet.ReadInt32("SkillLineID");
             packet.ReadInt32("SkillRank");
             packet.ReadInt32("SkillStep");
-            for (int i = 0; i < 0x12C; i++)
+            for (var i = 0; i < byteCount; i++)
                 packet.ReadByte("SkillLineBitArray", i);
         }
 
