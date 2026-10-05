@@ -177,6 +177,7 @@ namespace WowPacketParser.SQL.Builders
                     }
                 }
 
+                output.ReplaceLastCommaWithSemicolon();
                 output.AppendLine();
 
                 ++pathIdCounter;
