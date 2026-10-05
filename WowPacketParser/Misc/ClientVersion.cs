@@ -1816,6 +1816,15 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V2_5_6_69546:
                 case ClientVersionBuild.V2_5_6_69795:
                     return ClientVersionBuild.V5_5_0_61735;
+                case ClientVersionBuild.V1_60_69876:
+                case ClientVersionBuild.V1_60_69893:
+                case ClientVersionBuild.V1_60_69913:
+                case ClientVersionBuild.V1_60_69977:
+                case ClientVersionBuild.V1_60_70009:
+                case ClientVersionBuild.V1_60_70058:
+                case ClientVersionBuild.V1_60_70094:
+                case ClientVersionBuild.V1_60_70124:
+                    return ClientVersionBuild.V1_60_69876;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
                 case ClientVersionBuild.Zero:
@@ -1856,6 +1865,10 @@ namespace WowPacketParser.Misc
                     return ClientVersionBuild.V10_0_0_46181;
                 case ClientVersionBuild.V12_0_0_65390:
                     return ClientVersionBuild.V11_0_0_55666;
+                // Forever is based on 12.x, so lets fallback for now
+                // Do not add any version checks for Forever handlers in 12.x or before
+                case ClientVersionBuild.V1_60_69876:
+                    return ClientVersionBuild.V12_0_0_65390;
                 default:
                     return ClientVersionBuild.Zero;
             }
@@ -1897,6 +1910,8 @@ namespace WowPacketParser.Misc
                 return ClientType.ClassicSoD;
             if (IsCataClientVersionBuild(build))
                 return ClientType.CataClassic;
+            if (IsForeverClientVersionBuild(build))
+                return ClientType.Forever;
             return build switch
             {
                 >= ClientVersionBuild.V12_0_0_65390 => ClientType.Midnight,
@@ -1928,6 +1943,8 @@ namespace WowPacketParser.Misc
                 return ClientBranch.Cata;
             if (IsMoPClassicClientVersionBuild(build))
                 return ClientBranch.MoP;
+            if (IsForeverClientVersionBuild(build))
+                return ClientBranch.Forever;
 
             return ClientBranch.Retail;
         }
@@ -2552,6 +2569,24 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V5_5_3_66839:
                 case ClientVersionBuild.V5_5_3_67158:
                 case ClientVersionBuild.V5_5_3_67509:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsForeverClientVersionBuild(ClientVersionBuild build)
+        {
+            switch (build)
+            {
+                case ClientVersionBuild.V1_60_69876:
+                case ClientVersionBuild.V1_60_69893:
+                case ClientVersionBuild.V1_60_69913:
+                case ClientVersionBuild.V1_60_69977:
+                case ClientVersionBuild.V1_60_70009:
+                case ClientVersionBuild.V1_60_70058:
+                case ClientVersionBuild.V1_60_70094:
+                case ClientVersionBuild.V1_60_70124:
                     return true;
                 default:
                     return false;

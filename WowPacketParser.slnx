@@ -4,6 +4,7 @@
   <Project Path="WowPacketParserModule.BattleNet.V37165/WowPacketParserModule.BattleNet.V37165.csproj" />
   <Project Path="WowPacketParserModule.Substructures/WowPacketParserModule.Substructures.csproj" />
   <Project Path="WowPacketParserModule.V1_13_2_31446/WowPacketParserModule.V1_13_2_31446.csproj" />
+  <Project Path="WowPacketParserModule.V1_60_1_69876/WowPacketParserModule.V1_60_1_69876.csproj" />
   <Project Path="WowPacketParserModule.V2_4_3_8606/WowPacketParserModule.V2_4_3_8606.csproj" />
   <Project Path="WowPacketParserModule.V2_5_1_38707/WowPacketParserModule.V2_5_1_38707.csproj" />
   <Project Path="WowPacketParserModule.V3_4_0_45166/WowPacketParserModule.V3_4_0_45166.csproj" />

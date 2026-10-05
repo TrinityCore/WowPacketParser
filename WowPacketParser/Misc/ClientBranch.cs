@@ -8,5 +8,7 @@
         WotLK   = 3,
         Cata    = 4,
         MoP     = 5,
+        // Forever is not Classic, not Vanilla and not Retail
+        Forever = 60,
     }
 }
