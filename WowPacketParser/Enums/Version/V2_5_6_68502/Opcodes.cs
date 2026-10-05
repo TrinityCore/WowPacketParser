@@ -29,6 +29,9 @@ namespace WowPacketParser.Enums.Version.V2_5_6_68502
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new()
         {
+            { Opcode.SMSG_INIT_WORLD_STATES, 0x4601F4 },
+            { Opcode.SMSG_UPDATE_WORLD_STATE, 0x4601F6 },
+
             { Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, 0x640016 },
             { Opcode.SMSG_QUERY_CREATURE_RESPONSE, 0x4A0006 },
             { Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, 0x4A0007 },
