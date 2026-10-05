@@ -1326,15 +1326,19 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V2_5_6_69546:
                 case ClientVersionBuild.V2_5_6_69795:
                     return ClientVersionBuild.V2_5_6_68502;
-                case ClientVersionBuild.V1_60_69876:
-                case ClientVersionBuild.V1_60_69893:
-                case ClientVersionBuild.V1_60_69913:
-                case ClientVersionBuild.V1_60_69977:
-                case ClientVersionBuild.V1_60_70009:
-                case ClientVersionBuild.V1_60_70058:
-                case ClientVersionBuild.V1_60_70094:
-                case ClientVersionBuild.V1_60_70124:
-                    return ClientVersionBuild.V1_60_69876;
+                case ClientVersionBuild.V1_60_1_69876:
+                case ClientVersionBuild.V1_60_1_69893:
+                case ClientVersionBuild.V1_60_1_69913:
+                case ClientVersionBuild.V1_60_1_69977:
+                case ClientVersionBuild.V1_60_1_70009:
+                case ClientVersionBuild.V1_60_1_70058:
+                case ClientVersionBuild.V1_60_1_70094:
+                case ClientVersionBuild.V1_60_1_70124:
+                case ClientVersionBuild.V1_60_1_70170:
+                case ClientVersionBuild.V1_60_1_70178:
+                case ClientVersionBuild.V1_60_1_70205:
+                case ClientVersionBuild.V1_60_1_70235:
+                    return ClientVersionBuild.V1_60_1_69876;
                 default:
                     return ClientVersionBuild.V3_3_5a_12340;
             }
@@ -1570,7 +1574,7 @@ namespace WowPacketParser.Enums.Version
                     return Opcodes_5_5_2.Opcodes(direction);
                 case ClientVersionBuild.V5_5_3_64802:
                     return Opcodes_5_5_3.Opcodes(direction);
-                case ClientVersionBuild.V1_60_69876:
+                case ClientVersionBuild.V1_60_1_69876:
                     return Opcodes_1_60_1.Opcodes(direction);
                 default:
                     return Opcodes_3_3_5.Opcodes(direction);

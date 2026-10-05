@@ -1816,15 +1816,19 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V2_5_6_69546:
                 case ClientVersionBuild.V2_5_6_69795:
                     return ClientVersionBuild.V5_5_0_61735;
-                case ClientVersionBuild.V1_60_69876:
-                case ClientVersionBuild.V1_60_69893:
-                case ClientVersionBuild.V1_60_69913:
-                case ClientVersionBuild.V1_60_69977:
-                case ClientVersionBuild.V1_60_70009:
-                case ClientVersionBuild.V1_60_70058:
-                case ClientVersionBuild.V1_60_70094:
-                case ClientVersionBuild.V1_60_70124:
-                    return ClientVersionBuild.V1_60_69876;
+                case ClientVersionBuild.V1_60_1_69876:
+                case ClientVersionBuild.V1_60_1_69893:
+                case ClientVersionBuild.V1_60_1_69913:
+                case ClientVersionBuild.V1_60_1_69977:
+                case ClientVersionBuild.V1_60_1_70009:
+                case ClientVersionBuild.V1_60_1_70058:
+                case ClientVersionBuild.V1_60_1_70094:
+                case ClientVersionBuild.V1_60_1_70124:
+                case ClientVersionBuild.V1_60_1_70170:
+                case ClientVersionBuild.V1_60_1_70178:
+                case ClientVersionBuild.V1_60_1_70205:
+                case ClientVersionBuild.V1_60_1_70235:
+                    return ClientVersionBuild.V1_60_1_69876;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
                 case ClientVersionBuild.Zero:
@@ -1867,7 +1871,7 @@ namespace WowPacketParser.Misc
                     return ClientVersionBuild.V11_0_0_55666;
                 // Forever is based on 12.x, so lets fallback for now
                 // Do not add any version checks for Forever handlers in 12.x or before
-                case ClientVersionBuild.V1_60_69876:
+                case ClientVersionBuild.V1_60_1_69876:
                     return ClientVersionBuild.V12_0_0_65390;
                 default:
                     return ClientVersionBuild.Zero;
@@ -2579,14 +2583,18 @@ namespace WowPacketParser.Misc
         {
             switch (build)
             {
-                case ClientVersionBuild.V1_60_69876:
-                case ClientVersionBuild.V1_60_69893:
-                case ClientVersionBuild.V1_60_69913:
-                case ClientVersionBuild.V1_60_69977:
-                case ClientVersionBuild.V1_60_70009:
-                case ClientVersionBuild.V1_60_70058:
-                case ClientVersionBuild.V1_60_70094:
-                case ClientVersionBuild.V1_60_70124:
+                case ClientVersionBuild.V1_60_1_69876:
+                case ClientVersionBuild.V1_60_1_69893:
+                case ClientVersionBuild.V1_60_1_69913:
+                case ClientVersionBuild.V1_60_1_69977:
+                case ClientVersionBuild.V1_60_1_70009:
+                case ClientVersionBuild.V1_60_1_70058:
+                case ClientVersionBuild.V1_60_1_70094:
+                case ClientVersionBuild.V1_60_1_70124:
+                case ClientVersionBuild.V1_60_1_70170:
+                case ClientVersionBuild.V1_60_1_70178:
+                case ClientVersionBuild.V1_60_1_70205:
+                case ClientVersionBuild.V1_60_1_70235:
                     return true;
                 default:
                     return false;
