@@ -65,33 +65,78 @@ namespace WowPacketParser.SQL
         }
 
         /// <summary>
+        /// Replaces the last comma with a custom suffix in StringBuilder.
+        /// Walks backward until it finds the last non-comment line.
+        /// </summary>
+        public static void ReplaceLastComma(this StringBuilder str, string replacement)
+        {
+            for (var lineEnd = str.Length - 1; lineEnd >= 0;)
+            {
+                while (lineEnd >= 0 && (str[lineEnd] == '\r' || str[lineEnd] == '\n'))
+                    --lineEnd;
+
+                if (lineEnd < 0)
+                    return;
+
+                var lineStart = lineEnd;
+                while (lineStart > 0 && str[lineStart - 1] != '\r' && str[lineStart - 1] != '\n')
+                    --lineStart;
+
+                var contentStart = lineStart;
+                while (contentStart <= lineEnd && char.IsWhiteSpace(str[contentStart]))
+                    ++contentStart;
+
+                if (contentStart > lineEnd)
+                {
+                    lineEnd = lineStart - 1;
+                    continue;
+                }
+
+                if (contentStart + 1 <= lineEnd && str[contentStart] == '-' && str[contentStart + 1] == '-')
+                {
+                    lineEnd = lineStart - 1;
+                    continue;
+                }
+
+                var commentStart = -1;
+                for (var i = contentStart; i < lineEnd; ++i)
+                {
+                    if (str[i] == '-' && str[i + 1] == '-')
+                    {
+                        commentStart = i;
+                        break;
+                    }
+                }
+
+                var contentEnd = commentStart == -1 ? lineEnd : commentStart - 1;
+                while (contentEnd >= contentStart && char.IsWhiteSpace(str[contentEnd]))
+                    --contentEnd;
+
+                for (var i = contentEnd; i >= contentStart; --i)
+                {
+                    if (str[i] == ';')
+                        return;
+
+                    if (str[i] == ',')
+                    {
+                        str.Remove(i, 1);
+                        str.Insert(i, replacement);
+                        return;
+                    }
+                }
+
+                lineEnd = lineStart - 1;
+            }
+        }
+
+        /// <summary>
         /// Replaces the last comma with semicolon in StringBuilder
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
         public static void ReplaceLastCommaWithSemicolon(this StringBuilder str)
         {
-            bool isComment = false;
-            int lastCommaPos = -1;
-            for (var i = str.Length - 1; i > 0; i--)
-            {
-                if (i >= 3 && str[i - 3] == ',' && str[i - 2] == ' ' && str[i - 1] == '-' && str[i] == '-')
-                {
-                    str[i - 3] = ';';
-                    isComment = true;
-                    break;
-                }
-
-                if (lastCommaPos == -1 && str[i] == ',')
-                    lastCommaPos = i;
-
-                // only interact with last line, skip trailing newline
-                if ((str[i] == '\n' || str[i] == '\r') && i < str.Length - 3)
-                    break;
-            }
-
-            if (!isComment && lastCommaPos != -1)
-                str[lastCommaPos] = ';';
+            str.ReplaceLastComma(";");
         }
 
         /// <summary>
@@ -208,14 +253,15 @@ namespace WowPacketParser.SQL
         /// <param name="storeList"><see cref="DataBag{T}"/> with items form sniff.</param>
         /// <param name="dbList"><see cref="DataBag{T}"/> with items from database.</param>
         /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
-        public static string Compare<T>(IEnumerable<Tuple<T, TimeSpan?>> storeList, RowList<T> dbList, StoreNameType storeType)
+        public static string Compare<T>(IEnumerable<Tuple<T, TimeSpan?>> storeList, RowList<T> dbList, StoreNameType storeType, bool useOnDuplicateKeyUpdateForInserts = false)
             where T : IDataModel, new()
         {
             var primaryKey = GetFirstPrimaryKey<T>();
             return Compare(storeList, dbList,
                 t => storeType != StoreNameType.None
                     ? StoreGetters.GetName(storeType, Convert.ToInt32(primaryKey.GetValue(t)), false)
-                    : "");
+                    : "",
+                useOnDuplicateKeyUpdateForInserts);
         }
 
         /// <summary>
@@ -229,7 +275,7 @@ namespace WowPacketParser.SQL
         /// <param name="dbList">Dictionary retrieved from  DB</param>
         /// <param name="commentSetter"></param>
         /// <returns>A string containing full SQL queries</returns>
-        public static string Compare<T>(IEnumerable<Tuple<T, TimeSpan?>> storeList, RowList<T> dbList, Func<T, string> commentSetter)
+        public static string Compare<T>(IEnumerable<Tuple<T, TimeSpan?>> storeList, RowList<T> dbList, Func<T, string> commentSetter, bool useOnDuplicateKeyUpdateForInserts = false)
             where T : IDataModel, new()
         {
             if (!IsTableVisible<T>())
@@ -334,7 +380,7 @@ namespace WowPacketParser.SQL
                 }
             }
 
-            return new SQLInsert<T>(rowsIns).Build() + Environment.NewLine +
+            return new SQLInsert<T>(rowsIns, withDelete: !useOnDuplicateKeyUpdateForInserts, onDuplicateKeyUpdate: useOnDuplicateKeyUpdateForInserts).Build() + Environment.NewLine +
                    new SQLUpdate<T>(rowsUpd).Build();
         }
 
