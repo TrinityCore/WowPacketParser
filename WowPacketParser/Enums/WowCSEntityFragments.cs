@@ -140,6 +140,57 @@ namespace WowPacketParser.Enums
         End = 255
     }
 
+    public enum WowCSEntityFragments1215 : int
+    {
+        FEntityPosition = 2,
+        CGObject = 3,
+        FTransportLink = 6,
+        FPlayerOwnershipLink = 14,
+        CActor = 16,
+        FVendor_C = 18,
+        FMirroredObject_C = 19,
+        FMeshObjectData_C = 20,
+        FHousingDecor_C = 21,
+        FHousingRoom_C = 22,
+        FHousingRoomComponentMesh_C = 23,
+        FHousingPlayerHouse_C = 24,
+        FJamHousingCornerstone_C = 28,
+        FHousingDecorActor_C = 29,
+        FNeighborhoodMirrorData_C = 31,
+        FMirroredPositionData_C = 32,
+        PlayerHouseInfoComponent_C = 33,
+        FHousingStorage_C = 34,
+        FHousingFixture_C = 35,
+        PlayerInitiativeComponent_C = 38,
+        FWorldStateListenerData_C = 43,
+        Tag_Item = 200,
+        Tag_Container = 201,
+        Tag_AzeriteEmpoweredItem = 202,
+        Tag_AzeriteItem = 203,
+        Tag_Unit = 204,
+        Tag_Player = 205,
+        Tag_GameObject = 206,
+        Tag_DynamicObject = 207,
+        Tag_Corpse = 208,
+        Tag_AreaTrigger = 209,
+        Tag_SceneObject = 210,
+        Tag_Conversation = 211,
+        Tag_AIGroup = 212,
+        Tag_Scenario = 213,
+        Tag_LootObject = 214,
+        Tag_ActivePlayer = 215,
+        Tag_ActiveClient_S = 216,
+        Tag_ActiveObject_C = 217,
+        Tag_VisibleObject_C = 218,
+        Tag_UnitVehicle = 219,
+        Tag_HousingRoom = 220,
+        Tag_MeshObject = 221,
+        Tag_HouseExteriorPiece = 224,
+        Tag_HouseExteriorRoot = 225,
+        Tag_HousingDecorProxyGameObject = 226,
+        End = 255
+    }
+
     public static class WowCSUtilities
     {
         public static bool IsUpdateable(WowCSEntityFragments fragment)
@@ -297,6 +348,60 @@ namespace WowPacketParser.Enums
                 _ => throw new ArgumentOutOfRangeException(nameof(fragment), fragment, null)
             };
         }
+
+        public static WowCSEntityFragments ToUniversal(WowCSEntityFragments1215 fragment)
+        {
+            return fragment switch
+            {
+                WowCSEntityFragments1215.End => WowCSEntityFragments.End,
+                WowCSEntityFragments1215.FEntityPosition => WowCSEntityFragments.FEntityPosition,
+                WowCSEntityFragments1215.CGObject => WowCSEntityFragments.CGObject,
+                WowCSEntityFragments1215.FTransportLink => WowCSEntityFragments.FTransportLink,
+                WowCSEntityFragments1215.FPlayerOwnershipLink => WowCSEntityFragments.FPlayerOwnershipLink,
+                WowCSEntityFragments1215.CActor => WowCSEntityFragments.CActor,
+                WowCSEntityFragments1215.FVendor_C => WowCSEntityFragments.FVendor_C,
+                WowCSEntityFragments1215.FMirroredObject_C => WowCSEntityFragments.FMirroredObject_C,
+                WowCSEntityFragments1215.FMeshObjectData_C => WowCSEntityFragments.FMeshObjectData_C,
+                WowCSEntityFragments1215.FHousingDecor_C => WowCSEntityFragments.FHousingDecor_C,
+                WowCSEntityFragments1215.FHousingRoom_C => WowCSEntityFragments.FHousingRoom_C,
+                WowCSEntityFragments1215.FHousingRoomComponentMesh_C => WowCSEntityFragments.FHousingRoomComponentMesh_C,
+                WowCSEntityFragments1215.FHousingPlayerHouse_C => WowCSEntityFragments.FHousingPlayerHouse_C,
+                WowCSEntityFragments1215.FJamHousingCornerstone_C => WowCSEntityFragments.FJamHousingCornerstone_C,
+                WowCSEntityFragments1215.FHousingDecorActor_C => WowCSEntityFragments.FHousingDecorActor_C,
+                WowCSEntityFragments1215.FNeighborhoodMirrorData_C => WowCSEntityFragments.FNeighborhoodMirrorData_C,
+                WowCSEntityFragments1215.FMirroredPositionData_C => WowCSEntityFragments.FMirroredPositionData_C,
+                WowCSEntityFragments1215.PlayerHouseInfoComponent_C => WowCSEntityFragments.PlayerHouseInfoComponent_C,
+                WowCSEntityFragments1215.FHousingStorage_C => WowCSEntityFragments.FHousingStorage_C,
+                WowCSEntityFragments1215.FHousingFixture_C => WowCSEntityFragments.FHousingFixture_C,
+                WowCSEntityFragments1215.PlayerInitiativeComponent_C => WowCSEntityFragments.PlayerInitiativeComponent_C,
+                WowCSEntityFragments1215.Tag_Item => WowCSEntityFragments.Tag_Item,
+                WowCSEntityFragments1215.Tag_Container => WowCSEntityFragments.Tag_Container,
+                WowCSEntityFragments1215.Tag_AzeriteEmpoweredItem => WowCSEntityFragments.Tag_AzeriteEmpoweredItem,
+                WowCSEntityFragments1215.Tag_AzeriteItem => WowCSEntityFragments.Tag_AzeriteItem,
+                WowCSEntityFragments1215.Tag_Unit => WowCSEntityFragments.Tag_Unit,
+                WowCSEntityFragments1215.Tag_Player => WowCSEntityFragments.Tag_Player,
+                WowCSEntityFragments1215.Tag_GameObject => WowCSEntityFragments.Tag_GameObject,
+                WowCSEntityFragments1215.Tag_DynamicObject => WowCSEntityFragments.Tag_DynamicObject,
+                WowCSEntityFragments1215.Tag_Corpse => WowCSEntityFragments.Tag_Corpse,
+                WowCSEntityFragments1215.Tag_AreaTrigger => WowCSEntityFragments.Tag_AreaTrigger,
+                WowCSEntityFragments1215.Tag_SceneObject => WowCSEntityFragments.Tag_SceneObject,
+                WowCSEntityFragments1215.Tag_Conversation => WowCSEntityFragments.Tag_Conversation,
+                WowCSEntityFragments1215.Tag_AIGroup => WowCSEntityFragments.Tag_AIGroup,
+                WowCSEntityFragments1215.Tag_Scenario => WowCSEntityFragments.Tag_Scenario,
+                WowCSEntityFragments1215.Tag_LootObject => WowCSEntityFragments.Tag_LootObject,
+                WowCSEntityFragments1215.Tag_ActivePlayer => WowCSEntityFragments.Tag_ActivePlayer,
+                WowCSEntityFragments1215.Tag_ActiveClient_S => WowCSEntityFragments.Tag_ActiveClient_S,
+                WowCSEntityFragments1215.Tag_ActiveObject_C => WowCSEntityFragments.Tag_ActiveObject_C,
+                WowCSEntityFragments1215.Tag_VisibleObject_C => WowCSEntityFragments.Tag_VisibleObject_C,
+                WowCSEntityFragments1215.Tag_UnitVehicle => WowCSEntityFragments.Tag_UnitVehicle,
+                WowCSEntityFragments1215.Tag_HousingRoom => WowCSEntityFragments.Tag_HousingRoom,
+                WowCSEntityFragments1215.Tag_MeshObject => WowCSEntityFragments.Tag_MeshObject,
+                WowCSEntityFragments1215.Tag_HouseExteriorPiece => WowCSEntityFragments.Tag_HouseExteriorPiece,
+                WowCSEntityFragments1215.Tag_HouseExteriorRoot => WowCSEntityFragments.Tag_HouseExteriorRoot,
+                WowCSEntityFragments1215.Tag_HousingDecorProxyGameObject => WowCSEntityFragments.Tag_HousingDecorProxyGameObject,
+                _ => throw new ArgumentOutOfRangeException(nameof(fragment), fragment, null)
+            };
+        }
     }
 
     public readonly record struct WowCSEntityFragment : IComparable<WowCSEntityFragment>
@@ -311,6 +416,12 @@ namespace WowPacketParser.Enums
         }
 
         public WowCSEntityFragment(WowCSEntityFragments1127 versionValue)
+        {
+            UniversalValue = WowCSUtilities.ToUniversal(versionValue);
+            VersionValue = (int)versionValue;
+        }
+
+        public WowCSEntityFragment(WowCSEntityFragments1215 versionValue)
         {
             UniversalValue = WowCSUtilities.ToUniversal(versionValue);
             VersionValue = (int)versionValue;

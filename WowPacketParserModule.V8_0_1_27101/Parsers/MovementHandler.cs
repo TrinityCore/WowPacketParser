@@ -239,7 +239,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             phaseShift.PersonalGuid = packet.ReadPackedGuid128("PersonalGUID");
             for (var i = 0; i < count; ++i)
             {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_5_70340))
+                    packet.ReadByteE<PhaseFlags>("PhaseFlags", i);
+                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
                     packet.ReadUInt32E<PhaseFlags>("PhaseFlags", i);
                 else
                     packet.ReadUInt16E<PhaseFlags>("PhaseFlags", i);

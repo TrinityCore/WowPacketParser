@@ -136,9 +136,16 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
         private static WowCSEntityFragment TransformFragment1127(Packet packet, string name, byte fragmentId, int idx, int fragmentIdx) =>
             new (packet.AddValue(name, (WowCSEntityFragments1127)fragmentId, idx, fragmentIdx));
 
+        private static WowCSEntityFragment TransformFragment1215(Packet packet, string name, byte fragmentId, int idx, int fragmentIdx) =>
+            new (packet.AddValue(name, (WowCSEntityFragments1215)fragmentId, idx, fragmentIdx));
+
         private static List<WowCSEntityFragment> ReadEntityFragments(Packet packet, string name, int idx)
         {
-            var fragmentTransformer = TransformFragment1127;
+            Func<Packet, string, byte, int, int, WowCSEntityFragment> fragmentTransformer;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_5_70340))
+                fragmentTransformer = TransformFragment1215;
+            else
+                fragmentTransformer = TransformFragment1127;
 
             var fragmentIds = new List<WowCSEntityFragment>();
             byte fragmentId;

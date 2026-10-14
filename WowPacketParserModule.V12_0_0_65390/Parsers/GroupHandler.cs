@@ -71,7 +71,7 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
                 packet.ReadByte("Subgroup", i);
                 packet.ReadByte("Flags", i);
                 packet.ReadByte("RolesAssigned", i);
-                packet.ReadByte("RolesUnk_1210", i);
+                packet.ReadByte("RolesDesired", i);
                 packet.ReadByteE<Class>("Class", i);
                 packet.ReadByte("FactionGroup", i);
 

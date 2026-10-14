@@ -63,6 +63,9 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_0_69214))
                 V8_0_1_27101.Parsers.MiscellaneousHandler.ReadVoiceChatManagerSettings(packet, "Squelch");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_5_70340))
+                packet.ReadInt32("AgeVerificationRestrictionState");
+
             packet.ReadInt32("ContentSetID");
             var disabledGameModesCount = packet.ReadUInt32("DisabledGameModesCount");
             var gameRuleValuesCount = packet.ReadUInt32("GameRulesCount");

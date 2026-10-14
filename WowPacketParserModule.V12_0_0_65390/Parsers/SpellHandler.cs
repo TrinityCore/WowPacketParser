@@ -221,7 +221,7 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             packet.ReadInt32("SpellVisualKitID");
             packet.ReadInt32("Duration");
             packet.ReadInt32("Delay");
-            packet.ReadBit("Unknown_1210");
+            packet.ReadBit("IsTransfer");
         }
     }
 }

@@ -92,10 +92,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadPartyMemberPhase(Packet packet, params object[] idx)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
-                packet.ReadUInt32("PhaseFlags", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V12_1_5_70340))
+                packet.ReadByteE<PhaseFlags>("PhaseFlags", idx);
+            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_2_0_52038))
+                packet.ReadUInt32E<PhaseFlags>("PhaseFlags", idx);
             else
-                packet.ReadUInt16("PhaseFlags", idx);
+                packet.ReadUInt16E<PhaseFlags>("PhaseFlags", idx);
             packet.ReadUInt16("Id", idx);
         }
 
