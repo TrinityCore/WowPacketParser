@@ -284,5 +284,14 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
             for (var i = 0; i < debugTimeEventCount; ++i)
                 V9_0_1_36216.Parsers.MiscellaneousHandler.ReadDebugTimeInfo(packet, "DebugTimeEvent", i);
         }
+
+
+        [Parser(Opcode.SMSG_UNIT_DIMINISHING_RETURN_START)]
+        public static void HandleUnitDiminishingReturnStart(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadByte("SpellDiminishID");
+            packet.ReadBit("DiminishingEnded");
+        }
     }
 }
