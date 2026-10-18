@@ -285,7 +285,6 @@ namespace WowPacketParserModule.V12_0_0_65390.Parsers
                 V9_0_1_36216.Parsers.MiscellaneousHandler.ReadDebugTimeInfo(packet, "DebugTimeEvent", i);
         }
 
-
         [Parser(Opcode.SMSG_UNIT_DIMINISHING_RETURN_START)]
         public static void HandleUnitDiminishingReturnStart(Packet packet)
         {
