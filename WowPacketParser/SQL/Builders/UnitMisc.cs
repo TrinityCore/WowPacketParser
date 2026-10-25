@@ -155,7 +155,11 @@ namespace WowPacketParser.SQL.Builders
 
             var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateDifficultiesWDB);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateDifficultiesWDB.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateDifficultiesWDB.ToArray(), templatesDb, StoreNameType.Unit);
+            return SQLUtil.Compare(
+                Settings.SQLOrderByKey ? Storage.CreatureTemplateDifficultiesWDB.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateDifficultiesWDB.ToArray(),
+                templatesDb,
+                StoreNameType.Unit,
+                Settings.UseOnDuplicateKeyUpdateForSplitTables);
         }
 
         public static bool IsCreatureSessile(ref Unit npc)
@@ -331,7 +335,8 @@ namespace WowPacketParser.SQL.Builders
                         sb.Remove(sb.Length - 3, 3);
 
                     return $"{StoreGetters.GetName(StoreNameType.Unit, (int)x.Entry)} - {sb}";
-                });
+                },
+                Settings.UseOnDuplicateKeyUpdateForSplitTables);
         }
 
         [BuilderMethod(Units = true)]
@@ -1021,7 +1026,7 @@ namespace WowPacketParser.SQL.Builders
             }
 
             var templatesDb = SQLDatabase.Get(Storage.CreatureTemplatesNonWDB);
-            return SQLUtil.Compare(Storage.CreatureTemplatesNonWDB, templatesDb, StoreNameType.Unit);
+            return SQLUtil.Compare(Storage.CreatureTemplatesNonWDB, templatesDb, StoreNameType.Unit, Settings.UseOnDuplicateKeyUpdateForSplitTables);
         }
 
         static UnitMisc()
