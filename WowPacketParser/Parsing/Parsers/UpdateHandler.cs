@@ -6,6 +6,7 @@ using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -2938,7 +2939,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(UpdateFlag.Living))
             {
+                PacketMonsterMove monsterMove = packet.Holder.MonsterMove = new();
                 moveInfo = MovementHandler.ReadMovementInfo(packet, guid, index);
+                monsterMove.Position = moveInfo.Position;
+                monsterMove.Mover = moveInfo.MoverGuid;
                 var moveFlags = (MovementFlag)moveInfo.Flags;
 
                 var speeds = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? 9 : 8;
@@ -2972,27 +2976,35 @@ namespace WowPacketParser.Parsing.Parsers
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                     {
                         var splineFlags422 = packet.ReadInt32E<SplineFlag422>("Spline Flags", index);
+                        monsterMove.Flags = splineFlags422.ToUniversal();
                         if (splineFlags422.HasAnyFlag(SplineFlag422.FinalAngle))
                         {
-                            packet.ReadSingle("Final Spline Orientation", index);
+                            monsterMove.LookOrientation = packet.ReadSingle("Final Spline Orientation", index);
                         }
                         else
                         {
                             if (splineFlags422.HasAnyFlag(SplineFlag422.FinalTarget))
-                                packet.ReadGuid("Final Spline Target GUID", index);
+                            {
+                                monsterMove.LookTarget = new();
+                                monsterMove.LookTarget.Target = packet.ReadGuid("Final Spline Target GUID", index);
+                            }
                             else if (splineFlags422.HasAnyFlag(SplineFlag422.FinalPoint))
-                                packet.ReadVector3("Final Spline Coords", index);
+                                monsterMove.LookPosition = packet.ReadVector3("Final Spline Coords", index);
                         }
                     }
                     else
                     {
                         var splineFlags = packet.ReadInt32E<SplineFlag>("Spline Flags", index);
+                        monsterMove.Flags = splineFlags.ToUniversal();
                         if (splineFlags.HasAnyFlag(SplineFlag.FinalTarget))
-                            packet.ReadGuid("Final Spline Target GUID", index);
+                        {
+                            monsterMove.LookTarget = new();
+                            monsterMove.LookTarget.Target = packet.ReadGuid("Final Spline Target GUID", index);
+                        }
                         else if (splineFlags.HasAnyFlag(SplineFlag.FinalAngle))
-                            packet.ReadSingle("Final Spline Orientation", index);
+                            monsterMove.LookOrientation = packet.ReadSingle("Final Spline Orientation", index);
                         else if (splineFlags.HasAnyFlag(SplineFlag.FinalPoint))
-                            packet.ReadVector3("Final Spline Coords", index);
+                            monsterMove.LookPosition = packet.ReadVector3("Final Spline Coords", index);
                     }
 
                     packet.ReadInt32("Spline Time", index);
@@ -3001,10 +3013,11 @@ namespace WowPacketParser.Parsing.Parsers
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                     {
+                        monsterMove.Jump = new();
                         packet.ReadSingle("Spline Duration Multiplier", index);
                         packet.ReadSingle("Spline Duration Multiplier Next", index);
-                        packet.ReadSingle("Spline Vertical Acceleration", index);
-                        packet.ReadInt32("Spline Start Time", index);
+                        monsterMove.Jump.Gravity = packet.ReadSingle("Spline Vertical Acceleration", index);
+                        monsterMove.Jump.StartTime = (uint)packet.ReadInt32("Spline Start Time", index);
                     }
 
                     double distance = 0;
@@ -3017,6 +3030,10 @@ namespace WowPacketParser.Parsing.Parsers
                         if (start != null)
                             distance += Vector3.GetDistance(start.Value, vec);
                         start = vec;
+                        if (monsterMove.Flags.HasFlag(SplineFlag.EnterCycle) || monsterMove.Flags.HasFlag(SplineFlag.Cyclic))
+                            monsterMove.Points.Add(vec);
+                        else
+                            monsterMove.PackedPoints.Add(vec);
                     }
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
@@ -3028,6 +3045,7 @@ namespace WowPacketParser.Parsing.Parsers
                         if (start == null)
                             start = moveInfo.Position;
                         distance += Vector3.GetDistance(start.Value, end);
+                        monsterMove.Destination = end;
                     }
 
                     packet.WriteLine($"[{index}] Computed Spline Distance: " + distance.ToString());
