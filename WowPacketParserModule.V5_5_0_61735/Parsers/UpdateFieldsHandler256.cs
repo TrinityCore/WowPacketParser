@@ -5045,25 +5045,25 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         {
             var data = new AreaTriggerData();
             packet.ResetBitReader();
-            data.OverrideScaleCurve = ReadCreateScaleCurve(packet, indexes, "OverrideScaleCurve");
-            data.Caster = packet.ReadPackedGuid128("Caster", indexes);
-            data.Duration = packet.ReadUInt32("Duration", indexes);
-            data.TimeToTarget = packet.ReadUInt32("TimeToTarget", indexes);
-            data.TimeToTargetScale = packet.ReadUInt32("TimeToTargetScale", indexes);
-            data.TimeToTargetExtraScale = packet.ReadUInt32("TimeToTargetExtraScale", indexes);
-            data.TimeToTargetPos = packet.ReadUInt32("TimeToTargetPos", indexes);
-            data.SpellID = packet.ReadInt32("SpellID", indexes);
-            data.SpellForVisuals = packet.ReadInt32("SpellForVisuals", indexes);
-            data.SpellXSpellVisualID = packet.ReadInt32("SpellXSpellVisualID", indexes);
-            data.BoundsRadius2D = packet.ReadSingle("BoundsRadius2D", indexes);
-            data.DecalPropertiesID = packet.ReadUInt32("DecalPropertiesID", indexes);
-            data.CreatingEffectGUID = packet.ReadPackedGuid128("CreatingEffectGUID", indexes);
-            data.OrbitPathTarget = packet.ReadPackedGuid128("OrbitPathTarget", indexes);
-            data.ExtraScaleCurve = ReadCreateScaleCurve(packet, indexes, "ExtraScaleCurve");
-            data.OverrideMoveCurveX = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveX");
-            data.OverrideMoveCurveY = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveY");
-            data.OverrideMoveCurveZ = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveZ");
-            data.VisualAnim = ReadCreateVisualAnim(packet, indexes, "VisualAnim");
+            //data.OverrideScaleCurve = ReadCreateScaleCurve(packet, indexes, "OverrideScaleCurve");
+            //data.Caster = packet.ReadPackedGuid128("Caster", indexes);
+            //data.Duration = packet.ReadUInt32("Duration", indexes);
+            //data.TimeToTarget = packet.ReadUInt32("TimeToTarget", indexes);
+            //data.TimeToTargetScale = packet.ReadUInt32("TimeToTargetScale", indexes);
+            //data.TimeToTargetExtraScale = packet.ReadUInt32("TimeToTargetExtraScale", indexes);
+            //data.TimeToTargetPos = packet.ReadUInt32("TimeToTargetPos", indexes);
+            //data.SpellID = packet.ReadInt32("SpellID", indexes);
+            //data.SpellForVisuals = packet.ReadInt32("SpellForVisuals", indexes);
+            //data.SpellXSpellVisualID = packet.ReadInt32("SpellXSpellVisualID", indexes);
+            //data.BoundsRadius2D = packet.ReadSingle("BoundsRadius2D", indexes);
+            //data.DecalPropertiesID = packet.ReadUInt32("DecalPropertiesID", indexes);
+            //data.CreatingEffectGUID = packet.ReadPackedGuid128("CreatingEffectGUID", indexes);
+            //data.OrbitPathTarget = packet.ReadPackedGuid128("OrbitPathTarget", indexes);
+            //data.ExtraScaleCurve = ReadCreateScaleCurve(packet, indexes, "ExtraScaleCurve");
+            //data.OverrideMoveCurveX = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveX");
+            //data.OverrideMoveCurveY = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveY");
+            //data.OverrideMoveCurveZ = ReadCreateScaleCurve(packet, indexes, "OverrideMoveCurveZ");
+            //data.VisualAnim = ReadCreateVisualAnim(packet, indexes, "VisualAnim");
             return data;
         }
 
@@ -5071,90 +5071,90 @@ namespace WowPacketParserModule.V5_5_0_61735.UpdateFields.V2_5_6_68502
         {
             var data = new AreaTriggerData();
             packet.ResetBitReader();
-            var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(20);
-            var changesMask = new BitArray(rawChangesMask);
+            //var rawChangesMask = new int[1];
+            //rawChangesMask[0] = (int)packet.ReadBits(20);
+            //var changesMask = new BitArray(rawChangesMask);
 
-            packet.ResetBitReader();
-            if (changesMask[0])
-            {
-                if (changesMask[1])
-                {
-                    data.OverrideScaleCurve = ReadUpdateScaleCurve(packet, indexes, "OverrideScaleCurve");
-                }
-                if (changesMask[6])
-                {
-                    data.Caster = packet.ReadPackedGuid128("Caster", indexes);
-                }
-                if (changesMask[7])
-                {
-                    data.Duration = packet.ReadUInt32("Duration", indexes);
-                }
-                if (changesMask[8])
-                {
-                    data.TimeToTarget = packet.ReadUInt32("TimeToTarget", indexes);
-                }
-                if (changesMask[9])
-                {
-                    data.TimeToTargetScale = packet.ReadUInt32("TimeToTargetScale", indexes);
-                }
-                if (changesMask[10])
-                {
-                    data.TimeToTargetExtraScale = packet.ReadUInt32("TimeToTargetExtraScale", indexes);
-                }
-                if (changesMask[11])
-                {
-                    data.TimeToTargetPos = packet.ReadUInt32("TimeToTargetPos", indexes);
-                }
-                if (changesMask[12])
-                {
-                    data.SpellID = packet.ReadInt32("SpellID", indexes);
-                }
-                if (changesMask[13])
-                {
-                    data.SpellForVisuals = packet.ReadInt32("SpellForVisuals", indexes);
-                }
-                if (changesMask[14])
-                {
-                    data.SpellXSpellVisualID = packet.ReadInt32("SpellXSpellVisualID", indexes);
-                }
-                if (changesMask[15])
-                {
-                    data.BoundsRadius2D = packet.ReadSingle("BoundsRadius2D", indexes);
-                }
-                if (changesMask[16])
-                {
-                    data.DecalPropertiesID = packet.ReadUInt32("DecalPropertiesID", indexes);
-                }
-                if (changesMask[17])
-                {
-                    data.CreatingEffectGUID = packet.ReadPackedGuid128("CreatingEffectGUID", indexes);
-                }
-                if (changesMask[18])
-                {
-                    data.OrbitPathTarget = packet.ReadPackedGuid128("OrbitPathTarget", indexes);
-                }
-                if (changesMask[2])
-                {
-                    data.ExtraScaleCurve = ReadUpdateScaleCurve(packet, indexes, "ExtraScaleCurve");
-                }
-                if (changesMask[3])
-                {
-                    data.OverrideMoveCurveX = ReadUpdateScaleCurve(packet, indexes, "OverrideMoveCurveX");
-                }
-                if (changesMask[4])
-                {
-                    data.OverrideMoveCurveY = ReadUpdateScaleCurve(packet, indexes, "OverrideMoveCurveY");
-                }
-                if (changesMask[5])
-                {
-                    data.OverrideMoveCurveZ = ReadUpdateScaleCurve(packet, indexes, "OverrideMoveCurveZ");
-                }
-                if (changesMask[19])
-                {
-                    data.VisualAnim = ReadUpdateVisualAnim(packet, indexes, "VisualAnim");
-                }
-            }
+            //packet.ResetBitReader();
+            //if (changesMask[0])
+            //{
+            //    if (changesMask[1])
+            //    {
+            //        data.OverrideScaleCurve = ReadUpdateScaleCurve(packet, indexes, "OverrideScaleCurve");
+            //    }
+            //    if (changesMask[6])
+            //    {
+            //        data.Caster = packet.ReadPackedGuid128("Caster", indexes);
+            //    }
+            //    if (changesMask[7])
+            //    {
+            //        data.Duration = packet.ReadUInt32("Duration", indexes);
+            //    }
+            //    if (changesMask[8])
+            //    {
+            //        data.TimeToTarget = packet.ReadUInt32("TimeToTarget", indexes);
+            //    }
+            //    if (changesMask[9])
+            //    {
+            //        data.TimeToTargetScale = packet.ReadUInt32("TimeToTargetScale", indexes);
+            //    }
+            //    if (changesMask[10])
+            //    {
+            //        data.TimeToTargetExtraScale = packet.ReadUInt32("TimeToTargetExtraScale", indexes);
+            //    }
+            //    if (changesMask[11])
+            //    {
+            //        data.TimeToTargetPos = packet.ReadUInt32("TimeToTargetPos", indexes);
+            //    }
+            //    if (changesMask[12])
+            //    {
+            //        data.SpellID = packet.ReadInt32("SpellID", indexes);
+            //    }
+            //    if (changesMask[13])
+            //    {
+            //        data.SpellForVisuals = packet.ReadInt32("SpellForVisuals", indexes);
+            //    }
+            //    if (changesMask[14])
+            //    {
+            //        data.SpellXSpellVisualID = packet.ReadInt32("SpellXSpellVisualID", indexes);
+            //    }
+            //    if (changesMask[15])
+            //    {
+            //        data.BoundsRadius2D = packet.ReadSingle("BoundsRadius2D", indexes);
+            //    }
+            //    if (changesMask[16])
+            //    {
+            //        data.DecalPropertiesID = packet.ReadUInt32("DecalPropertiesID", indexes);
+            //    }
+            //    if (changesMask[17])
+            //    {
+            //        data.CreatingEffectGUID = packet.ReadPackedGuid128("CreatingEffectGUID", indexes);
+            //    }
+            //    if (changesMask[18])
+            //    {
+            //        data.OrbitPathTarget = packet.ReadPackedGuid128("OrbitPathTarget", indexes);
+            //    }
+            //    if (changesMask[2])
+            //    {
+            //        data.ExtraScaleCurve = ReadUpdateScaleCurve(packet, indexes, "ExtraScaleCurve");
+            //    }
+            //    if (changesMask[3])
+            //    {
+            //        data.OverrideMoveCurveX = ReadUpdateScaleCurve(packet, indexes, "OverrideMoveCurveX");
+            //    }
+            //    if (changesMask[4])
+            //    {
+            //        data.OverrideMoveCurveY = ReadUpdateScaleCurve(packet, indexes, "OverrideMoveCurveY");
+            //    }
+            //    if (changesMask[5])
+            //    {
+            //        data.OverrideMoveCurveZ = ReadUpdateScaleCurve(packet, indexes, "OverrideMoveCurveZ");
+            //    }
+            //    if (changesMask[19])
+            //    {
+            //        data.VisualAnim = ReadUpdateVisualAnim(packet, indexes, "VisualAnim");
+            //    }
+            //}
             return data;
         }
 

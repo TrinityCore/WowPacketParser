@@ -209,9 +209,9 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                             case ObjectType.Corpse:
                                 handler.ReadCreateCorpseData(fieldsData, flags, index);
                                 break;
-                            //case ObjectType.AreaTrigger:
-                            //    (obj as AreaTriggerCreateProperties).AreaTriggerData = handler.ReadCreateAreaTriggerData(fieldsData, flags, index);
-                            //    break;
+                            case ObjectType.AreaTrigger:
+                                (obj as AreaTriggerCreateProperties).AreaTriggerData = handler.ReadCreateAreaTriggerData(fieldsData, flags, index);
+                                break;
                             //case ObjectType.SceneObject:
                             //    (obj as SceneObject).SceneObjectData = handler.ReadCreateSceneObjectData(fieldsData, flags, index);
                             //    break;
@@ -407,16 +407,16 @@ namespace WowPacketParserModule.V5_5_0_61735.Parsers
                             handler.ReadUpdateDynamicObjectData(fieldsData, index);
                         if ((updateTypeFlag & 0x0400) != 0)
                             handler.ReadUpdateCorpseData(fieldsData, index);
-                        //if ((updateTypeFlag & 0x0800) != 0)
-                        //{
-                        //    var at = obj as AreaTriggerCreateProperties;
-                        //    var data = handler.ReadUpdateAreaTriggerData(fieldsData, index);
+                        if ((updateTypeFlag & 0x0800) != 0)
+                        {
+                            var at = obj as AreaTriggerCreateProperties;
+                            var data = handler.ReadUpdateAreaTriggerData(fieldsData, index);
 
-                        //    if (data.Spline != null)
-                        //        AreaTriggerHandler.ProcessAreaTriggerSpline(at, data, fieldsData, index);
-                        //    else if (data.Orbit != null)
-                        //        AreaTriggerHandler.ProcessAreaTriggerOrbit(at, data, fieldsData, index);
-                        //}
+                            if (data.Spline != null)
+                                AreaTriggerHandler.ProcessAreaTriggerSpline(at, data, fieldsData, index);
+                            else if (data.Orbit != null)
+                                AreaTriggerHandler.ProcessAreaTriggerOrbit(at, data, fieldsData, index);
+                        }
                         //if ((updateTypeFlag & 0x1000) != 0)
                         //    handler.ReadUpdateSceneObjectData(fieldsData, index);
                         //if ((updateTypeFlag & 0x2000) != 0)
