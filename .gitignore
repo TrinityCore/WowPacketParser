@@ -23,6 +23,7 @@ packages/*
 
 wpp.tgz
 cov-int
+/.build-temp/
 
 # Rider
 .idea
