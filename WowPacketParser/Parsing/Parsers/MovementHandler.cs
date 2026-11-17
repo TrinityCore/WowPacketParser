@@ -1566,7 +1566,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid("Guid");
             packet.ReadInt32("Movement Counter");
             ReadMovementInfo(packet, guid);
-            packet.ReadSingle("Unk float");
+            packet.ReadSingle("Is Applied");
         }
 
         [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
